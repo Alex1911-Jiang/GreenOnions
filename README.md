@@ -1,2 +1,31 @@
 # GreenOnions
-一个依赖于Mirai的QQ机器人, 实现了搜图, 翻译, setu等功能
+
+
+
+### 关于本项目
+
+#### 这是一个依赖于[mirai](https://github.com/mamoe/mirai)的QQ机器人, 使用[Mirai-CSharp](https://github.com/Executor-Cheng/Mirai-CSharp)开发, 实现了搜图, 翻译, setu等功能
+
+搜图功能模仿自[cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot), 目前实现了SauceNao和Ascii2D搜图
+
+翻译功能通过[GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi)实现
+
+色图功能实现自https://api.lolicon.app/的接口~~(自己的接口也建好了, 主要是没图)~~
+
+
+#### 食用方法
+
+安装[mirai](https://github.com/mamoe/mirai)和[mirai-api-http](https://github.com/project-mirai/mirai-api-http), 配置相关host参数, 运行本软件
+
+win10x64用户建议使用GreenOnions.BotManagerWindow, 带有图形界面, 其他系统使用GreenOnions.BotManagerConsole(理论支持linux但我没试过)
+
+配置config.json修改消息命令、返回消息和功能权限
+
+
+#### TODO
+
+1.把图片本地缓存加上, 降低网络压力
+
+2.实现[whatanime](https://trace.moe/)搜番
+
+3.研究RSSHUB看看能不能实现文章转发功能
