@@ -194,6 +194,8 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
+            this.lblProjectURL = new System.Windows.Forms.Label();
+            this.lnkProjectURL = new System.Windows.Forms.LinkLabel();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.tabSearchPicture.SuspendLayout();
@@ -1921,7 +1923,9 @@
             // 
             this.tabAbout.Controls.Add(this.txbContributorName);
             this.tabAbout.Controls.Add(this.txbContributorQQ);
+            this.tabAbout.Controls.Add(this.lnkProjectURL);
             this.tabAbout.Controls.Add(this.lnkContributorGithub);
+            this.tabAbout.Controls.Add(this.lblProjectURL);
             this.tabAbout.Controls.Add(this.lblContributorGithub);
             this.tabAbout.Controls.Add(this.lblContributorQQ);
             this.tabAbout.Controls.Add(this.lblContributorName);
@@ -1948,7 +1952,7 @@
             // 
             this.txbContributorQQ.BackColor = System.Drawing.Color.White;
             this.txbContributorQQ.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txbContributorQQ.Location = new System.Drawing.Point(116, 75);
+            this.txbContributorQQ.Location = new System.Drawing.Point(116, 74);
             this.txbContributorQQ.Name = "txbContributorQQ";
             this.txbContributorQQ.ReadOnly = true;
             this.txbContributorQQ.Size = new System.Drawing.Size(100, 16);
@@ -1958,7 +1962,7 @@
             // lnkContributorGithub
             // 
             this.lnkContributorGithub.AutoSize = true;
-            this.lnkContributorGithub.Location = new System.Drawing.Point(116, 108);
+            this.lnkContributorGithub.Location = new System.Drawing.Point(116, 107);
             this.lnkContributorGithub.Name = "lnkContributorGithub";
             this.lnkContributorGithub.Size = new System.Drawing.Size(207, 17);
             this.lnkContributorGithub.TabIndex = 1;
@@ -1995,6 +1999,27 @@
             this.lblContributorName.Size = new System.Drawing.Size(35, 17);
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
+            // 
+            // lblProjectURL
+            // 
+            this.lblProjectURL.AutoSize = true;
+            this.lblProjectURL.Location = new System.Drawing.Point(36, 142);
+            this.lblProjectURL.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblProjectURL.Name = "lblProjectURL";
+            this.lblProjectURL.Size = new System.Drawing.Size(59, 17);
+            this.lblProjectURL.TabIndex = 0;
+            this.lblProjectURL.Text = "项目地址:";
+            // 
+            // lnkProjectURL
+            // 
+            this.lnkProjectURL.AutoSize = true;
+            this.lnkProjectURL.Location = new System.Drawing.Point(116, 141);
+            this.lnkProjectURL.Name = "lnkProjectURL";
+            this.lnkProjectURL.Size = new System.Drawing.Size(288, 17);
+            this.lnkProjectURL.TabIndex = 1;
+            this.lnkProjectURL.TabStop = true;
+            this.lnkProjectURL.Text = "https://github.com/Alex1911-Jiang/GreenOnions";
+            this.lnkProjectURL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkContributorGithub_LinkClicked);
             // 
             // FrmAppSetting
             // 
@@ -2207,5 +2232,7 @@
         private System.Windows.Forms.TextBox txbContributorName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox chkMultithreading;
+        private System.Windows.Forms.LinkLabel lnkProjectURL;
+        private System.Windows.Forms.Label lblProjectURL;
     }
 }

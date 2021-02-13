@@ -523,7 +523,7 @@ namespace GreenOnions.BotMainManagerWindow
 
         private void lnkContributorGithub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("explorer.exe", lnkContributorGithub.Text);
+            Process.Start("explorer.exe", (sender as Control).Text);
         }
 
         private void chkSearchSauceNAOEnabled_CheckedChanged(object sender, EventArgs e) => txbSauceNAOApiKey.Enabled = chkSearchSauceNAOEnabled.Checked;
