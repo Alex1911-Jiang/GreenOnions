@@ -10,7 +10,7 @@
 
 翻译功能通过[GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi)实现
 
-色图功能实现自https://api.lolicon.app/的接口~~(自己的接口也建好了, 主要是没图)~~
+色图功能实现自 https://api.lolicon.app/ 的接口 ~~(自己的接口也建好了, 主要是没图)~~
 
 
 #### 食用方法
