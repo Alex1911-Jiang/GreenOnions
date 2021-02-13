@@ -1,0 +1,16 @@
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\bin\Release\net5.0\Mirai-CSharp.Utility.deps.json
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\bin\Release\net5.0\Mirai-CSharp.Utility.dll
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\bin\Release\net5.0\ref\Mirai-CSharp.Utility.dll
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\bin\Release\net5.0\Mirai-CSharp.Utility.pdb
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\bin\Release\net5.0\Mirai-CSharp.dll
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\bin\Release\net5.0\Mirai-CSharp.pdb
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\bin\Release\net5.0\Mirai-CSharp.xml
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\obj\Release\net5.0\Mirai-CSharp.Utility.csprojAssemblyReference.cache
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\obj\Release\net5.0\Mirai-CSharp.Utility.GeneratedMSBuildEditorConfig.editorconfig
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\obj\Release\net5.0\Mirai-CSharp.Utility.AssemblyInfoInputs.cache
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\obj\Release\net5.0\Mirai-CSharp.Utility.AssemblyInfo.cs
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\obj\Release\net5.0\Mirai-CSharp.Utility.csproj.CoreCompileInputs.cache
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\obj\Release\net5.0\Mirai-CSharp.Utility.csproj.CopyComplete
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\obj\Release\net5.0\Mirai-CSharp.Utility.dll
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\obj\Release\net5.0\ref\Mirai-CSharp.Utility.dll
+E:\Mirai\Mirai-CSharp-PictureSearcher\Mirai-Csharp.Helper\obj\Release\net5.0\Mirai-CSharp.Utility.pdb

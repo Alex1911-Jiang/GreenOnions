@@ -1,0 +1,17 @@
+E:\Mirai\Mirai-CSharp-master\bin\debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.exe
+E:\Mirai\Mirai-CSharp-master\bin\debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.deps.json
+E:\Mirai\Mirai-CSharp-master\bin\debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.runtimeconfig.json
+E:\Mirai\Mirai-CSharp-master\bin\debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.runtimeconfig.dev.json
+E:\Mirai\Mirai-CSharp-master\bin\debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.dll
+E:\Mirai\Mirai-CSharp-master\bin\debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.pdb
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.csprojAssemblyReference.cache
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai_CSharp.BotMainManagerWindow.FrmAppSetting.resources
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai_CSharp.BotMainManagerWindow.FrmMain.resources
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.csproj.GenerateResource.cache
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.AssemblyInfoInputs.cache
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.AssemblyInfo.cs
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.csproj.CoreCompileInputs.cache
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.csproj.CopyComplete
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.dll
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.pdb
+E:\Mirai\Mirai-CSharp-master\Mirai-CSharp.PicfinderManagerWindow\obj\Debug\netcoreapp3.1\Mirai-CSharp.PicfinderManagerWindow.genruntimeconfig.cache

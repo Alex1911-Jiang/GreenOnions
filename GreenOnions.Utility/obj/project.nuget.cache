@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "gzUq5ZyjvxELmJv6ZVnbWYyYM9hUyospAPJc1xfRC33qZIvwjtqNU/9BLlLXrAazKlDacBTBbqgvcctIFCMykA==",
+  "success": true,
+  "projectFilePath": "D:\\Mirai\\Project\\GreenOnions.Utility\\GreenOnions.Utility.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\nuc\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\nuc\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\nuc\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\nuc\\.nuget\\packages\\system.drawing.common\\5.0.0\\system.drawing.common.5.0.0.nupkg.sha512",
+    "C:\\Users\\nuc\\.nuget\\packages\\system.text.encodings.web\\4.4.0\\system.text.encodings.web.4.4.0.nupkg.sha512",
+    "C:\\Users\\nuc\\.nuget\\packages\\tencent.qcloud.cos.sdk\\5.4.17\\tencent.qcloud.cos.sdk.5.4.17.nupkg.sha512",
+    "C:\\Users\\nuc\\.nuget\\packages\\tencentcloudsdk\\3.0.217\\tencentcloudsdk.3.0.217.nupkg.sha512"
+  ],
+  "logs": []
+}
