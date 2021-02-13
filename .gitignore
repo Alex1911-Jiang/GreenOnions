@@ -1,0 +1,8 @@
+bin/
+GreenOnions.BotMain/obj/
+GreenOnions.BotManagerConsole/obj/
+GreenOnions.BotManagerWindow/obj/
+GreenOnions.HPicture/obj/
+GreenOnions.PictureSearcher/obj/
+GreenOnions.Translate/obj/
+GreenOnions.Utility/obj/
