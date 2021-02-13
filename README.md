@@ -12,6 +12,7 @@
 
 色图功能实现自 https://api.lolicon.app/ 的接口 ~~(自己的接口也建好了, 主要是没图)~~
 
+至于为什么叫葱葱, 一是一开始是给某初音群用的, 叫这个名字可以打压某助手, 二是早期没自己开发的时候使用[cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot)的机器人叫竹竹, 就想找个类似的名字
 
 #### 食用方法
 
