@@ -25,6 +25,9 @@ win10x64用户建议使用GreenOnions.BotManagerWindow, 带有图形界面, 其�
 
 #### TODO
 1.目前只实现了群消息, 下一步先把私聊加上
+
 2.把图片本地缓存加上, 降低网络压力
+
 3.实现[whatanime](https://trace.moe/)搜番
+
 4.研究RSSHUB看看能不能实现文章转发功能
