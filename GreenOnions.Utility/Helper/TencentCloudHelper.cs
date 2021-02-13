@@ -215,9 +215,6 @@ namespace GreenOnions.Utility.Helper
                 .SetRegion(region)
                 .SetDebugLog(true)
                 .Build();
-
-            //string secretId = "AKIDJNOlst9UJsRkncwCfjX5MGtQg7sSr83i"; //"云 API 密钥 SecretId";
-            //string secretKey = "IJ87ZnSu14MyABvUrQknQmslgQ7ZnfiW"; //"云 API 密钥 SecretKey";
             QCloudCredentialProvider cosCredentialProvider = new DefaultQCloudCredentialProvider(secretId, secretKey, durationSecond);
 
             //初始化 CosXmlServer
