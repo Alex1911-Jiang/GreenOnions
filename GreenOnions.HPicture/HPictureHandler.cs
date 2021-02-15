@@ -21,7 +21,7 @@ namespace GreenOnions.HPicture
             try
             {
                 string strHttpRequest;
-                if (BotInfo.HPictureUserCmd != null && BotInfo.HPictureUserCmd.Contains(message))
+                if (BotInfo.HPictureUserCmd.Contains(message))
                 {
                     strHttpRequest = $@"https://api.lolicon.app/setu/?{ (BotInfo.HPictureSize1200 ? "size1200=true" : "") }";
                 }

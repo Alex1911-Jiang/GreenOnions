@@ -92,7 +92,7 @@ namespace GreenOnions.BotMain
             }
             #endregion -- 翻译 --
             #region -- 色图 --
-            else if (regexHPicture.IsMatch(firstMessage))
+            else if (regexHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage))
             {
                 //await foreach (var item in HPictureHandlerAsync.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18 && (!BotInfo.HPictureR18WhiteOnly || BotInfo.HPictureWhiteGroup.Contains(sender.Group.Id))))
                 //{
