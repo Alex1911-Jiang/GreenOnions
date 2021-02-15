@@ -16,9 +16,11 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
     <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.17" />
-    <PackageReference Include="TencentCloudSDK" Version="3.0.217" />
+    <PackageReference Include="TencentCloudSDK" Version="3.0.224" />
   </ItemGroup>
 
 </Project>

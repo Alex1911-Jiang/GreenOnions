@@ -108,7 +108,7 @@
             this.chkTranslateEnabled = new System.Windows.Forms.CheckBox();
             this.tabHPicture = new System.Windows.Forms.TabPage();
             this.pnlEnabelHPicture = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblMultithreading = new System.Windows.Forms.Label();
             this.chkMultithreading = new System.Windows.Forms.CheckBox();
             this.rodHPictureLimitCount = new System.Windows.Forms.RadioButton();
             this.rdoHPictureLimitFrequency = new System.Windows.Forms.RadioButton();
@@ -1010,7 +1010,7 @@
             // 
             // pnlEnabelHPicture
             // 
-            this.pnlEnabelHPicture.Controls.Add(this.label1);
+            this.pnlEnabelHPicture.Controls.Add(this.lblMultithreading);
             this.pnlEnabelHPicture.Controls.Add(this.chkMultithreading);
             this.pnlEnabelHPicture.Controls.Add(this.rodHPictureLimitCount);
             this.pnlEnabelHPicture.Controls.Add(this.rdoHPictureLimitFrequency);
@@ -1096,13 +1096,13 @@
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(180, 926);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(378, 17);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "提示:网络带宽较低的环境下请禁用该功能, 避免带宽占满导致下载超时";
+            this.lblMultithreading.AutoSize = true;
+            this.lblMultithreading.Location = new System.Drawing.Point(180, 926);
+            this.lblMultithreading.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblMultithreading.Name = "label1";
+            this.lblMultithreading.Size = new System.Drawing.Size(378, 17);
+            this.lblMultithreading.TabIndex = 13;
+            this.lblMultithreading.Text = "提示:网络带宽较低的环境下请禁用该功能, 避免带宽占满导致下载超时";
             // 
             // chkMultithreading
             // 
@@ -2173,18 +2173,13 @@
         private System.Windows.Forms.CheckBox chkSearchPictureEnabled;
         private System.Windows.Forms.CheckBox chkSearchASCII2DEnabled;
         private System.Windows.Forms.CheckBox chkSearchSauceNAOEnabled;
-        private System.Windows.Forms.TextBox textBox16;
         private System.Windows.Forms.TextBox txbTencentCloudAPPID;
-        private System.Windows.Forms.TextBox textBox15;
         private System.Windows.Forms.TextBox txbSearchCheckPornErrorReply;
         private System.Windows.Forms.TextBox txbTencentCloudRegion;
         private System.Windows.Forms.TextBox txbSearchCheckPornIllegalReply;
-        private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.TextBox txbSearchLowSimilarityReply;
-        private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.TextBox txbSearchErrorReply;
         private System.Windows.Forms.TextBox txbSearchNoResultReply;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TextBox txbSearchModeOffReply;
         private System.Windows.Forms.TextBox txbSearchModeAlreadyOnReply;
         private System.Windows.Forms.TextBox txbSearchModeOnReply;
@@ -2215,7 +2210,6 @@
         private System.Windows.Forms.Label lblSearchModeTimeOutReply;
         private System.Windows.Forms.Label lblSearchModeOffCmd;
         private System.Windows.Forms.Panel pnlCheckPorn;
-        private System.Windows.Forms.Label lblSauceNAOApi;
         private System.Windows.Forms.TextBox txbSauceNAOApiKey;
         private System.Windows.Forms.Label lblSauceNAOApiKey;
         private System.Windows.Forms.TabPage tabTranslate;
@@ -2226,11 +2220,10 @@
         private System.Windows.Forms.Label lblTranslateToChinese;
         private System.Windows.Forms.CheckBox chkTranslateEnabled;
         private System.Windows.Forms.Label lblContributorGithub;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox txbContributorQQ;
         private System.Windows.Forms.LinkLabel lnkContributorGithub;
         private System.Windows.Forms.TextBox txbContributorName;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblMultithreading;
         private System.Windows.Forms.CheckBox chkMultithreading;
         private System.Windows.Forms.LinkLabel lnkProjectURL;
         private System.Windows.Forms.Label lblProjectURL;

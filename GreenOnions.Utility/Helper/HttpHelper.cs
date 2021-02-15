@@ -260,7 +260,7 @@ namespace GreenOnions.Utility.Helper
                 //TODO:记录错误信息
                 throw;
             }
-            catch (Exception)  //下载图片失败
+            catch (Exception ex )  //下载图片失败
             {
                 //TODO:记录错误信息
                 throw;

@@ -3,8 +3,6 @@ using GreenOnions.Utility;
 using Mirai_CSharp;
 using Mirai_CSharp.Models;
 using Mirai_CSharp.Plugin.Interfaces;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GreenOnions.BotMain
@@ -38,8 +36,7 @@ namespace GreenOnions.BotMain
                         }
                         break;
                     case "Plain":
-                        string strMsg = e.Chain[1].ToString();
-                        PlainMessageHandler.HandleMesage(session, strMsg, e.Sender, quoteMessage);
+                        PlainMessageHandler.HandleGroupMesage(session, e.Chain, e.Sender, quoteMessage);
                         break;
                     case "Image":
                         if (Cache.SearchingPictures.Keys.Contains(e.Sender.Id))

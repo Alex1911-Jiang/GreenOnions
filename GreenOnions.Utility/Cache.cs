@@ -11,9 +11,9 @@ namespace GreenOnions.Utility
     {
         public static readonly string JsonConfigFileName = Environment.CurrentDirectory + @"\config.json";
         public static readonly IDictionary<string, Assembly> Assemblies = new Dictionary<string, Assembly>();
-        public static readonly IDictionary<long, DateTime> CDDic = new Dictionary<long, DateTime>();
-        public static readonly IDictionary<long, DateTime> WhiteCDDic = new Dictionary<long, DateTime>();
-        public static readonly IDictionary<long, DateTime> PMCDDic = new Dictionary<long, DateTime>();
+        public static readonly IDictionary<long, DateTime> HPictureCDDic = new Dictionary<long, DateTime>();
+        public static readonly IDictionary<long, DateTime> HPictureWhiteCDDic = new Dictionary<long, DateTime>();
+        public static readonly IDictionary<long, DateTime> HPicturePMCDDic = new Dictionary<long, DateTime>();
         public static readonly IDictionary<long, int> LimitDic = new Dictionary<long, int>();
         public static readonly List<string> DownloadedImagesName = new List<string>();
         public static readonly IDictionary<long, DateTime> SearchingPictures = new Dictionary<long, DateTime>();
@@ -46,14 +46,14 @@ namespace GreenOnions.Utility
         public static void SetTaskAtFixedTime()
         {
             DateTime now = DateTime.Now;
-            DateTime oneOClock = DateTime.Today.AddHours(0);
+            DateTime oneOClock = DateTime.Today;
             if (now > oneOClock)
             {
                 oneOClock = oneOClock.AddDays(1.0);
             }
-            int msUntilFour = (int)((oneOClock - now).TotalMilliseconds);
+            int msUntilFour = (int)(oneOClock - now).TotalMilliseconds;
 
-            var t = new System.Threading.Timer(DoAt);
+            var t = new Timer(DoAt);
             t.Change(msUntilFour, Timeout.Infinite);
         }
 
@@ -76,6 +76,51 @@ namespace GreenOnions.Utility
             }
         }
 
+        public static bool CheckGroupLimit(long qqId, long groupId)
+        {
+            if (BotInfo.AdminQQ.Contains(qqId) && BotInfo.HPictureAdminNoLimit) return false;
+            if (BotInfo.HPictureWhiteGroup.Contains(groupId) && BotInfo.HPictureWhiteNoLimit) return false;
+            if (LimitDic.ContainsKey(qqId))
+            {
+                if (LimitDic[qqId] >= BotInfo.HPictureLimit)
+                {
+                    return true;  //超过限制
+                }
+            }
+            return false;
+        }
+
+        public static bool CheckGroupCD(long qqId, long groupId)
+        {
+            if (BotInfo.AdminQQ.Contains(qqId) && BotInfo.HPictureAdminNoLimit) return false;
+            if (BotInfo.HPictureWhiteGroup.Contains(groupId))
+            {
+                if (BotInfo.HPictureWhiteNoLimit)
+                {
+                    return false;
+                }
+                if (HPictureWhiteCDDic.ContainsKey(qqId))
+                {
+                    if (DateTime.Now < HPictureWhiteCDDic[qqId])
+                    {
+                        return true;  //还在冷却中
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                if (HPictureCDDic.ContainsKey(qqId))
+                {
+                    if (DateTime.Now < HPictureCDDic[qqId])
+                    {
+                        return true;  //还在冷却中
+                    }
+                }
+                return false;
+            }
+        }
+
         public static void RecordCD(long qqId, long groupId)
         {
 
@@ -83,13 +128,13 @@ namespace GreenOnions.Utility
             {
                 if (BotInfo.HPictureWhiteCD > 0)
                 {
-                    if (WhiteCDDic.ContainsKey(qqId))
+                    if (HPictureWhiteCDDic.ContainsKey(qqId))
                     {
-                        WhiteCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPictureWhiteCD);
+                        HPictureWhiteCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPictureWhiteCD);
                     }
                     else
                     {
-                        WhiteCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureWhiteCD));
+                        HPictureWhiteCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureWhiteCD));
                     }
                 }
             }
@@ -97,13 +142,13 @@ namespace GreenOnions.Utility
             {
                 if (BotInfo.HPictureCD > 0)
                 {
-                    if (CDDic.ContainsKey(qqId))
+                    if (HPictureCDDic.ContainsKey(qqId))
                     {
-                        CDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPictureCD);
+                        HPictureCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPictureCD);
                     }
                     else
                     {
-                        CDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureCD));
+                        HPictureCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureCD));
                     }
                 }
             }

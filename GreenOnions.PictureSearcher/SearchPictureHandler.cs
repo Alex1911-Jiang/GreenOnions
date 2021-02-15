@@ -154,7 +154,7 @@ namespace GreenOnions.PictureSearcher
                                                 {
                                                     session.UploadPictureAsync(UploadTarget.Group, HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.cat/{sauceNaoItem.pixiv_id}.jpg", $"{imagePath}Pixiv_{sauceNaoItem.pixiv_id}_p0.jpg")).ContinueWith(uploaded => session.SendGroupMessageAsync(sender.Group.Id, uploaded.Result));
                                                 }
-                                                catch
+                                                catch (Exception ex)
                                                 {
                                                     //异常只是不发送原图, 不需要处理
                                                 }
@@ -167,7 +167,7 @@ namespace GreenOnions.PictureSearcher
                                         {
                                             session.UploadPictureAsync(UploadTarget.Group, HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.cat/{sauceNaoItem.pixiv_id}-{p + 1}.jpg", $"{imagePath}Pixiv_{sauceNaoItem.pixiv_id}_p{p}.jpg")).ContinueWith(uploaded => session.SendGroupMessageAsync(sender.Group.Id, uploaded.Result));
                                         }
-                                        catch
+                                        catch(Exception ex)
                                         {
                                             //异常只是不发送原图, 不需要处理
                                         }

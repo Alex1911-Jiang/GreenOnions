@@ -81,7 +81,7 @@ namespace GreenOnions.HPicture
                 }
                 catch (Exception ex)
                 {
-                    session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchErrorReply + ex.Message) }, quoteMessage.Id);
+                    session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, quoteMessage.Id);
                     return;
                 }
 
@@ -98,7 +98,7 @@ namespace GreenOnions.HPicture
 
                 if (enumImg == null)
                 {
-                    session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchErrorReply) }, quoteMessage.Id);
+                    session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply) }, quoteMessage.Id);
                     return;
                 }
 
@@ -113,7 +113,7 @@ namespace GreenOnions.HPicture
 
                 if (string.IsNullOrEmpty(sbAddress.ToString()))  //一般不会出现这个情况
                 {
-                    session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchErrorReply) }, quoteMessage.Id);
+                    session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply) }, quoteMessage.Id);
                     return;
                 }
 
@@ -141,7 +141,7 @@ namespace GreenOnions.HPicture
                             catch (Exception ex)
                             {
                             //TODO:记录错误信息
-                            session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchErrorReply + ex.Message) }, quoteMessage.Id);
+                            session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, quoteMessage.Id);
                             }
                         });
                     }
@@ -153,7 +153,7 @@ namespace GreenOnions.HPicture
                         }
                         catch (Exception ex)
                         {
-                            session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchErrorReply + ex.Message) }, quoteMessage.Id);
+                            session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, quoteMessage.Id);
                         }
                     }
                 }
@@ -196,7 +196,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchErrorReply + ex.Message) }, quoteMessage.Id);
+                session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, quoteMessage.Id);
             }
         }
     }
