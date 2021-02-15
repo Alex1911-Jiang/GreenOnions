@@ -3,6 +3,7 @@ using GreenOnions.Utility;
 using Mirai_CSharp;
 using Mirai_CSharp.Models;
 using Mirai_CSharp.Plugin.Interfaces;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GreenOnions.BotMain
@@ -11,6 +12,14 @@ namespace GreenOnions.BotMain
     {
         async Task<bool> IGroupMessage.GroupMessage(MiraiHttpSession session, IGroupMessageEventArgs e)
         {
+            if (BotInfo.BannedGroup.Contains(e.Sender.Group.Id))
+            {
+                return false;
+            }
+            if (BotInfo.BannedUser.Contains(e.Sender.Id))
+            {
+                return false;
+            }
             QuoteMessage quoteMessage = new QuoteMessage((e.Chain[0] as SourceMessage).Id, e.Sender.Group.Id, e.Sender.Id, e.Sender.Id, null);
             if (e.Chain.Length > 1)  //普通消息
             {

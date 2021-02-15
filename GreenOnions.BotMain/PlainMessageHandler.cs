@@ -19,7 +19,7 @@ namespace GreenOnions.BotMain
             Regex regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.Replace("<机器人名称>", BotInfo.BotName));
             Regex regexTranslateTo = new Regex(BotInfo.TranslateToCMD.Replace("<机器人名称>", BotInfo.BotName));
             Regex regexHPicture = new Regex(BotInfo.HPictureCmd.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号:)");
+            Regex regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
 
 
             string firstMessage = Chain[1].ToString();
