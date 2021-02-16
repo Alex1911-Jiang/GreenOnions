@@ -213,6 +213,11 @@ namespace GreenOnions.Utility.Helper
 
         private static byte[] DownloadImageFile(string url, string cacheImageName)
         {
+            string cacheDir = Path.GetDirectoryName(cacheImageName);
+            if (!Directory.Exists(cacheDir))
+            {
+                Directory.CreateDirectory(cacheDir);
+            }
             WebClient webClient = new WebClient();
             webClient.DownloadFile(url, cacheImageName);
             byte[] bytes = File.ReadAllBytes(cacheImageName);
