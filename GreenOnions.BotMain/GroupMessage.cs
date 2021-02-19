@@ -12,14 +12,8 @@ namespace GreenOnions.BotMain
     {
         async Task<bool> IGroupMessage.GroupMessage(MiraiHttpSession session, IGroupMessageEventArgs e)
         {
-            if (BotInfo.BannedGroup.Contains(e.Sender.Group.Id))
-            {
-                return false;
-            }
-            if (BotInfo.BannedUser.Contains(e.Sender.Id))
-            {
-                return false;
-            }
+            if (BotInfo.BannedGroup.Contains(e.Sender.Group.Id)) return false;
+            if (BotInfo.BannedUser.Contains(e.Sender.Id)) return false;
             QuoteMessage quoteMessage = new QuoteMessage((e.Chain[0] as SourceMessage).Id, e.Sender.Group.Id, e.Sender.Id, e.Sender.Id, null);
             if (e.Chain.Length > 1)  //普通消息
             {
@@ -37,7 +31,7 @@ namespace GreenOnions.BotMain
                                     if (e.Chain[i].Type == "Image")
                                     {
                                         ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-                                        await SearchPictureHandler.SearchPicture(session, imgMsg, e.Sender, quoteMessage);
+                                        await SearchPictureHandler.SearchPicture(session, imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));
                                     }
                                 }
                             }
@@ -54,7 +48,7 @@ namespace GreenOnions.BotMain
                             for (int i = 1; i < e.Chain.Length; i++)
                             {
                                 ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-                                await SearchPictureHandler.SuccessiveSearchPicture(session, imgMsg, e.Sender, quoteMessage);
+                                await SearchPictureHandler.SuccessiveSearchPicture(session, imgMsg, e.Sender, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));
                             }
                             #endregion -- 连续搜图 --
                         }

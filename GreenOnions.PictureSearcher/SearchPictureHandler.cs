@@ -18,7 +18,7 @@ namespace GreenOnions.PictureSearcher
     public static class SearchPictureHandler
     {
         private static readonly string imagePath = Environment.CurrentDirectory + "\\Image\\";
-        public static async Task SearchPicture(MiraiHttpSession session, ImageMessage inImgMsg, IGroupMemberInfo sender, QuoteMessage quoteMessage)
+        public static async Task SearchPicture(MiraiHttpSession session, ImageMessage inImgMsg, Func<Stream, Task<ImageMessage>> UploadPicture, Action<IMessageBase[]> SendMessage)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace GreenOnions.PictureSearcher
             }
             catch (Exception)
             {
-                await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchErrorReply) }, quoteMessage.Id);
+                SendMessage(new[] { new PlainMessage(BotInfo.SearchErrorReply) });
             }
 
             async Task SearchSauceNao()
@@ -132,7 +132,7 @@ namespace GreenOnions.PictureSearcher
 
                             if (imageMessage == null)
                             {
-                                imageMessage = await session.UploadPictureAsync(UploadTarget.Group, ms);
+                                imageMessage = await UploadPicture(ms);
 
                                 //如果是pixiv体系尝试下载原图
                                 if (sauceNaoItem.pixiv_id != null)
@@ -152,7 +152,7 @@ namespace GreenOnions.PictureSearcher
                                             {
                                                 try
                                                 {
-                                                    session.UploadPictureAsync(UploadTarget.Group, HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.cat/{sauceNaoItem.pixiv_id}.jpg", $"{imagePath}Pixiv_{sauceNaoItem.pixiv_id}_p0.jpg")).ContinueWith(uploaded => session.SendGroupMessageAsync(sender.Group.Id, uploaded.Result));
+                                                    UploadPicture(HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.cat/{sauceNaoItem.pixiv_id}.jpg", $"{imagePath}Pixiv_{sauceNaoItem.pixiv_id}_p0.jpg")).ContinueWith(uploaded => SendMessage(new[] { uploaded.Result }));
                                                 }
                                                 catch (Exception ex)
                                                 {
@@ -165,7 +165,7 @@ namespace GreenOnions.PictureSearcher
                                     {
                                         try
                                         {
-                                            session.UploadPictureAsync(UploadTarget.Group, HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.cat/{sauceNaoItem.pixiv_id}-{p + 1}.jpg", $"{imagePath}Pixiv_{sauceNaoItem.pixiv_id}_p{p}.jpg")).ContinueWith(uploaded => session.SendGroupMessageAsync(sender.Group.Id, uploaded.Result));
+                                            UploadPicture(HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.cat/{sauceNaoItem.pixiv_id}-{p + 1}.jpg", $"{imagePath}Pixiv_{sauceNaoItem.pixiv_id}_p{p}.jpg")).ContinueWith(uploaded => SendMessage(new[] { uploaded.Result }));
                                         }
                                         catch(Exception ex)
                                         {
@@ -185,7 +185,7 @@ namespace GreenOnions.PictureSearcher
                             }
                             imageMessage = new PlainMessage(strLowSimilarity);
                         }
-                        await session.SendGroupMessageAsync(sender.Group.Id, new[] { plain, imageMessage }, quoteMessage.Id);
+                        SendMessage(new[] { plain, imageMessage });
                         return;
                     }
                     string strNoResult = BotInfo.SearchNoResultReply.Replace("<搜索类型>", "SauceNao");
@@ -194,7 +194,7 @@ namespace GreenOnions.PictureSearcher
                         strNoResult += "\r\n自动使用ASCII2D搜索。";
                         _ = SearchAscii2D();
                     }
-                    await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(strNoResult) }, quoteMessage.Id);
+                    SendMessage(new[] { new PlainMessage(strNoResult) });
                 }
             }
 
@@ -226,8 +226,9 @@ namespace GreenOnions.PictureSearcher
                 //TODO:优先读缓存
                 MemoryStream msColorImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value, thuColorImgCache);
                 IMessageBase imageColorMessage = CheckPorn(msColorImage);
-                if (imageColorMessage == null) imageColorMessage = await session.UploadPictureAsync(UploadTarget.Group, msColorImage);
-                await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage }, quoteMessage.Id);
+                if (imageColorMessage == null) imageColorMessage = await UploadPicture(msColorImage);
+
+                SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage });
                 #endregion -- 颜色搜索 --
 
                 #region -- 特征搜索 --
@@ -253,8 +254,9 @@ namespace GreenOnions.PictureSearcher
                 //TODO:优先读缓存
                 MemoryStream msBovwImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeBovwImage.Attributes["src"].Value, thuBovwImgCache);
                 IMessageBase imageBovwMessage = CheckPorn(msBovwImage);
-                if (imageBovwMessage == null) imageBovwMessage = await session.UploadPictureAsync(UploadTarget.Group, msBovwImage);
-                await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(stringBuilderBovw.ToString()), imageBovwMessage }, quoteMessage.Id);
+               
+                if (imageBovwMessage == null) imageBovwMessage = await UploadPicture(msBovwImage);
+                SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()), imageBovwMessage });
                 #endregion -- 特征搜索 --
             }
 
@@ -280,12 +282,10 @@ namespace GreenOnions.PictureSearcher
             }
         }
 
-
-
-        public static async Task SuccessiveSearchPicture(MiraiHttpSession session, ImageMessage imgMsg, IGroupMemberInfo sender, QuoteMessage quoteMessage)
+        public static async Task SuccessiveSearchPicture(MiraiHttpSession session, ImageMessage imgMsg, IGroupMemberInfo sender, Func<Stream, Task<ImageMessage>> UploadPicture, Action<IMessageBase[]> SendMessage)
         {
             Cache.SearchingPictures[sender.Id] = DateTime.Now.AddMinutes(1);
-            await SearchPicture(session, imgMsg, sender, quoteMessage);
+            await SearchPicture(session, imgMsg, UploadPicture, SendMessage);
         }
     }
 }

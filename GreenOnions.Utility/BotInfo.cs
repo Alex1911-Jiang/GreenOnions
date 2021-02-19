@@ -75,7 +75,7 @@ namespace GreenOnions.Utility
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(ImageCache));
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(ImageCache));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return false;
             }
