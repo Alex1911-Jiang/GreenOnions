@@ -34,6 +34,7 @@ namespace GreenOnions.BotManagerConsole
 
 			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, autoKey);
 			await using MiraiHttpSession session = new MiraiHttpSession();
+			session.AddPlugin(new FriendMessage());
 			session.AddPlugin(new GroupMessage());
 			bool stop = false;
 			await session.ConnectAsync(options, qqId).ContinueWith(callback =>

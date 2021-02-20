@@ -21,7 +21,7 @@ namespace GreenOnions.BotMain
                 switch (e.Chain[1].Type)
                 {
                     case "Plain":
-                        //PlainMessageHandler.HandleFriendMesage(session, e.Chain, e.Sender);
+                        PlainMessageHandler.HandleFriendMesage(session, e.Chain, e.Sender);
                         break;
                     case "Image":
                         for (int i = 1; i < e.Chain.Length; i++)

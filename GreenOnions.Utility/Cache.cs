@@ -121,7 +121,7 @@ namespace GreenOnions.Utility
             }
         }
 
-        public static void RecordCD(long qqId, long groupId)
+        public static void RecordGroupCD(long qqId, long groupId)
         {
 
             if (BotInfo.HPictureWhiteGroup.Contains(groupId))
@@ -150,6 +150,21 @@ namespace GreenOnions.Utility
                     {
                         HPictureCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureCD));
                     }
+                }
+            }
+        }
+
+        public static void RecordFriendCD(long qqId)
+        {
+            if (BotInfo.HPicturePMCD > 0)
+            {
+                if (HPicturePMCDDic.ContainsKey(qqId))
+                {
+                    HPicturePMCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPictureCD);
+                }
+                else
+                {
+                    HPicturePMCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureCD));
                 }
             }
         }

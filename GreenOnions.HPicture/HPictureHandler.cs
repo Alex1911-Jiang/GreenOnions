@@ -16,7 +16,7 @@ namespace GreenOnions.HPicture
 {
     public static class HPictureHandler
     {
-        public static void SendHPictures(MiraiHttpSession session, IGroupMemberInfo sender, QuoteMessage quoteMessage, string message, bool isAllowR18)
+        public static void SendHPictures(MiraiHttpSession session, string message, bool isAllowR18, Func<Stream,Task<ImageMessage>> UploadPicture, Func<IMessageBase[],Task<int>> SendMessage, Action<LimitType> Record, int RevokeSecond)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace GreenOnions.HPicture
                 }
                 catch (Exception ex)
                 {
-                    session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, quoteMessage.Id);
+                    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
                     return;
                 }
 
@@ -90,7 +90,7 @@ namespace GreenOnions.HPicture
 
                 if (jo["code"].ToString() == "1")//没找到对应词条的色图;
                 {
-                    session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchNoResultReply) }, quoteMessage.Id);
+                    SendMessage(new[] {new PlainMessage(BotInfo.SearchNoResultReply) });
                     return;
                 }
 
@@ -98,7 +98,7 @@ namespace GreenOnions.HPicture
 
                 if (enumImg == null)
                 {
-                    session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply) }, quoteMessage.Id);
+                    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply)});
                     return;
                 }
 
@@ -113,17 +113,12 @@ namespace GreenOnions.HPicture
 
                 if (string.IsNullOrEmpty(sbAddress.ToString()))  //一般不会出现这个情况
                 {
-                    session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply) }, quoteMessage.Id);
+                    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply)});
                     return;
                 }
 
-                session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(sbAddress.ToString()) }, quoteMessage.Id).GetAwaiter().GetResult();
-                if (BotInfo.HPictureLimitType == LimitType.Frequency)//地址发出去后记录次数
-                {
-                    Cache.RecordLimit(sender.Id);
-                }
-                Cache.RecordCD(sender.Id, sender.Group.Id);
-
+                SendMessage(new[] { new PlainMessage(sbAddress.ToString()) }).GetAwaiter().GetResult();
+                Record(LimitType.Frequency);
 
                 string imagePath = Environment.CurrentDirectory + "\\Image\\";
                 if (!Directory.Exists(imagePath)) Directory.CreateDirectory(imagePath);
@@ -140,8 +135,8 @@ namespace GreenOnions.HPicture
                             }
                             catch (Exception ex)
                             {
-                            //TODO:记录错误信息
-                            session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, quoteMessage.Id);
+                                //TODO:记录错误信息
+                                SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
                             }
                         });
                     }
@@ -153,7 +148,7 @@ namespace GreenOnions.HPicture
                         }
                         catch (Exception ex)
                         {
-                            session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, quoteMessage.Id);
+                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message)});
                         }
                     }
                 }
@@ -164,25 +159,22 @@ namespace GreenOnions.HPicture
                     string imgName = $"{imagePath}{pair.ID}_{pair.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png";
                     if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                     {
-                        imageMessage = session.UploadPictureAsync(UploadTarget.Group, imgName).GetAwaiter().GetResult();
+                        imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片
                     }
                     else
                     {
                         Stream ms = HttpHelper.DownloadImageAsMemoryStream(pair.URL, imgName);
                         if (ms == null)
                         {
-                            session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", dicAddress[pair.URL])) }, quoteMessage.Id);
+                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", dicAddress[pair.URL]))});
                             return;
                         }
-                        imageMessage = session.UploadPictureAsync(UploadTarget.Group, ms).GetAwaiter().GetResult();  //上传图片
+                        imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片
                     }
 
-                    int messageID = session.SendGroupMessageAsync(sender.Group.Id, new[] { imageMessage }, quoteMessage.Id).GetAwaiter().GetResult();
-                    if (BotInfo.HPictureLimitType == LimitType.Count)
-                    {
-                        Cache.RecordLimit(sender.Id);
-                    }
-                    RevokeHPicture(session, messageID, BotInfo.HPictureWhiteGroup.Contains(sender.Group.Id) ? BotInfo.HPictureWhiteRevoke : BotInfo.HPictureRevoke);
+                    int messageID = SendMessage(new[] {imageMessage }).GetAwaiter().GetResult();
+                    Record(LimitType.Count);
+                    RevokeHPicture(session, messageID, RevokeSecond);
                 }
 
                 void RevokeHPicture(MiraiHttpSession message, int messageId, int delay)
@@ -196,7 +188,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, quoteMessage.Id);
+                SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
             }
         }
     }
