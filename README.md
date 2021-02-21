@@ -30,7 +30,7 @@ win10x64用户建议使用GreenOnions.BotManagerWindow, 带有图形界面, 其�
 
 ~~1.目前只实现了群消息, 下一步先把私聊加上~~
 
-2.把图片本地缓存加上, 降低网络压力
+~~2.把图片本地缓存加上, 降低网络压力~~
 
 3.群友 [Quan](https://github.com/Quan666) 提供了一个美图图库 http://img.shab.fun:5000/, 也实现一下
 
