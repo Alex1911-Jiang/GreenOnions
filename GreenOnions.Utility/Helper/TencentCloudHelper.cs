@@ -82,7 +82,7 @@ namespace GreenOnions.Utility.Helper
             {
                 CreateCosXmlServer(BotInfo.TencentCloudAPPID, BotInfo.TencentCloudRegion, BotInfo.TencentCloudSecretId, BotInfo.TencentCloudSecretKey);
             }
-            if (SaveFileToTencentCOS(file, BotInfo.TencentCloudBucket, "CheckPorn.jpg"))
+            if (SaveFileToTencentCOS(file, BotInfo.TencentCloudBucket, "CheckPorn.png"))
             {
                 return CheckPornScoreInner();
             }
@@ -95,7 +95,7 @@ namespace GreenOnions.Utility.Helper
             {
                 CreateCosXmlServer(BotInfo.TencentCloudAPPID, BotInfo.TencentCloudRegion, BotInfo.TencentCloudSecretId, BotInfo.TencentCloudSecretKey);
             }
-            if (SaveFileToTencentCOS(localFileName, BotInfo.TencentCloudBucket, "CheckPorn.jpg"))
+            if (SaveFileToTencentCOS(localFileName, BotInfo.TencentCloudBucket, "CheckPorn.png"))
             {
                 return CheckPornScoreInner();
             }
@@ -104,7 +104,7 @@ namespace GreenOnions.Utility.Helper
 
         private static string CheckPornScoreInner()
         {
-            using (Stream stream = TencentCOSGetHttpResponse(BotInfo.TencentCloudAPPID, BotInfo.TencentCloudRegion, BotInfo.TencentCloudBucket, "CheckPorn.jpg", "&ci-process=sensitive-content-recognition&detect-type=porn"))
+            using (Stream stream = TencentCOSGetHttpResponse(BotInfo.TencentCloudAPPID, BotInfo.TencentCloudRegion, BotInfo.TencentCloudBucket, "CheckPorn.png", "&ci-process=sensitive-content-recognition&detect-type=porn"))
             {
                 DataSet ds = new DataSet();
                 ds.ReadXml(stream);
