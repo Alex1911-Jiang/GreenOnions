@@ -135,7 +135,7 @@ namespace GreenOnions.HPicture
                             }
                             catch (Exception ex)
                             {
-                                //TODO:记录错误信息
+                                ErrorHelper.WriteErrorLog(ex);
                                 SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
                             }
                         });

@@ -17,6 +17,8 @@ namespace GreenOnions.BotMainManagerWindow
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Application.ThreadException += (_, threadException) => Utility.Helper.ErrorHelper.WriteErrorLog(threadException.Exception);
+            AppDomain.CurrentDomain.UnhandledException += (_, unhandledException) => Utility.Helper.ErrorHelper.WriteErrorLog(unhandledException.ExceptionObject);
             Application.Run(new FrmMain());
         }
     }

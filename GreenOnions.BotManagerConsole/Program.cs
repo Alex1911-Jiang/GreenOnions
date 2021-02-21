@@ -14,6 +14,8 @@ namespace GreenOnions.BotManagerConsole
 	{
 		public static async Task Main()
 		{
+			AppDomain.CurrentDomain.UnhandledException += (_,e) => ErrorHelper.WriteErrorLog(e.ExceptionObject);
+
 			Console.WriteLine("葱葱机器人");
 
 			if (!File.Exists(Cache.JsonConfigFileName))

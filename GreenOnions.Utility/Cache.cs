@@ -138,13 +138,9 @@ namespace GreenOnions.Utility
                 if (BotInfo.HPictureWhiteCD > 0)
                 {
                     if (HPictureWhiteCDDic.ContainsKey(qqId))
-                    {
                         HPictureWhiteCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPictureWhiteCD);
-                    }
                     else
-                    {
                         HPictureWhiteCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureWhiteCD));
-                    }
                 }
             }
             else
@@ -152,13 +148,9 @@ namespace GreenOnions.Utility
                 if (BotInfo.HPictureCD > 0)
                 {
                     if (HPictureCDDic.ContainsKey(qqId))
-                    {
                         HPictureCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPictureCD);
-                    }
                     else
-                    {
                         HPictureCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureCD));
-                    }
                 }
             }
         }
@@ -168,13 +160,9 @@ namespace GreenOnions.Utility
             if (BotInfo.HPicturePMCD > 0)
             {
                 if (HPicturePMCDDic.ContainsKey(qqId))
-                {
                     HPicturePMCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPicturePMCD);
-                }
                 else
-                {
                     HPicturePMCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPicturePMCD));
-                }
             }
         }
     }

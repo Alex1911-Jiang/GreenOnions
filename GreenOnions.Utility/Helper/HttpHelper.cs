@@ -48,31 +48,39 @@ namespace GreenOnions.Utility.Helper
         /// <returns></returns>
         public static Stream GetHttpResponseStream(string url, out string jumpUrl, IDictionary<string, string> headers = null, int timeout = 60000)
         {
-            ServicePointManager.DefaultConnectionLimit = 50;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-
-            request.KeepAlive = false;
-            request.ContentType = "text/html;charset=UTF-8";
-            request.Timeout = timeout;
-            request.Method = "GET";
-            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-            //request.Headers.Add("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3");
-            request.UserAgent = "Mozilla/5.0 (Windows NT 5.2; rv:12.0) Gecko/20100101 Firefox/12.0";
-
-            //request.ContentType = "application/x-www-form-urlencoded";
-
-            //往头部加入自定义验证信息 Authorization
-            if (headers != null)
+            try
             {
-                foreach (KeyValuePair<string, string> header in headers)
+                ServicePointManager.DefaultConnectionLimit = 50;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+                request.KeepAlive = false;
+                request.ContentType = "text/html;charset=UTF-8";
+                request.Timeout = timeout;
+                request.Method = "GET";
+                request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+                //request.Headers.Add("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3");
+                request.UserAgent = "Mozilla/5.0 (Windows NT 5.2; rv:12.0) Gecko/20100101 Firefox/12.0";
+
+                //request.ContentType = "application/x-www-form-urlencoded";
+
+                //往头部加入自定义验证信息 Authorization
+                if (headers != null)
                 {
-                    SetHeaderValue(request.Headers, header.Key, header.Value);
+                    foreach (KeyValuePair<string, string> header in headers)
+                    {
+                        SetHeaderValue(request.Headers, header.Key, header.Value);
+                    }
                 }
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                jumpUrl = response.ResponseUri.ToString();
+                return response.GetResponseStream();
             }
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            jumpUrl = response.ResponseUri.ToString();
-            return response.GetResponseStream();
+            catch (Exception ex)
+            {
+                ErrorHelper.WriteErrorLog(ex);
+                throw;
+            }
         }
 
         /// <summary>
@@ -262,12 +270,12 @@ namespace GreenOnions.Utility.Helper
                     retry = false;
                     goto ILRetry;
                 }
-                //TODO:记录错误信息
+                ErrorHelper.WriteErrorLog(ex);
                 throw;
             }
             catch (Exception ex )  //下载图片失败
             {
-                //TODO:记录错误信息
+                ErrorHelper.WriteErrorLog(ex);
                 throw;
             }
 
