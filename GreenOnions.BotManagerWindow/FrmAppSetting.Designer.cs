@@ -190,12 +190,12 @@
             this.tabAbout = new System.Windows.Forms.TabPage();
             this.txbContributorName = new System.Windows.Forms.TextBox();
             this.txbContributorQQ = new System.Windows.Forms.TextBox();
+            this.lnkProjectURL = new System.Windows.Forms.LinkLabel();
             this.lnkContributorGithub = new System.Windows.Forms.LinkLabel();
+            this.lblProjectURL = new System.Windows.Forms.Label();
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
-            this.lblProjectURL = new System.Windows.Forms.Label();
-            this.lnkProjectURL = new System.Windows.Forms.LinkLabel();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.tabSearchPicture.SuspendLayout();
@@ -1094,12 +1094,12 @@
             this.pnlEnabelHPicture.Size = new System.Drawing.Size(618, 950);
             this.pnlEnabelHPicture.TabIndex = 8;
             // 
-            // label1
+            // lblMultithreading
             // 
             this.lblMultithreading.AutoSize = true;
             this.lblMultithreading.Location = new System.Drawing.Point(180, 926);
             this.lblMultithreading.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblMultithreading.Name = "label1";
+            this.lblMultithreading.Name = "lblMultithreading";
             this.lblMultithreading.Size = new System.Drawing.Size(378, 17);
             this.lblMultithreading.TabIndex = 13;
             this.lblMultithreading.Text = "提示:网络带宽较低的环境下请禁用该功能, 避免带宽占满导致下载超时";
@@ -1159,7 +1159,6 @@
             // 
             // txbPMCD
             // 
-            this.txbPMCD.Enabled = false;
             this.txbPMCD.Location = new System.Drawing.Point(518, 628);
             this.txbPMCD.Margin = new System.Windows.Forms.Padding(4);
             this.txbPMCD.Name = "txbPMCD";
@@ -1182,7 +1181,6 @@
             // 
             // txbPMRevoke
             // 
-            this.txbPMRevoke.Enabled = false;
             this.txbPMRevoke.Location = new System.Drawing.Point(518, 666);
             this.txbPMRevoke.Margin = new System.Windows.Forms.Padding(4);
             this.txbPMRevoke.Name = "txbPMRevoke";
@@ -1496,7 +1494,6 @@
             // chkPMNoLimit
             // 
             this.chkPMNoLimit.AutoSize = true;
-            this.chkPMNoLimit.Enabled = false;
             this.chkPMNoLimit.Location = new System.Drawing.Point(8, 743);
             this.chkPMNoLimit.Margin = new System.Windows.Forms.Padding(4);
             this.chkPMNoLimit.Name = "chkPMNoLimit";
@@ -1553,7 +1550,6 @@
             // chkPM
             // 
             this.chkPM.AutoSize = true;
-            this.chkPM.Enabled = false;
             this.chkPM.Location = new System.Drawing.Point(338, 560);
             this.chkPM.Margin = new System.Windows.Forms.Padding(4);
             this.chkPM.Name = "chkPM";
@@ -1959,6 +1955,17 @@
             this.txbContributorQQ.TabIndex = 2;
             this.txbContributorQQ.Text = "774345562";
             // 
+            // lnkProjectURL
+            // 
+            this.lnkProjectURL.AutoSize = true;
+            this.lnkProjectURL.Location = new System.Drawing.Point(116, 141);
+            this.lnkProjectURL.Name = "lnkProjectURL";
+            this.lnkProjectURL.Size = new System.Drawing.Size(288, 17);
+            this.lnkProjectURL.TabIndex = 1;
+            this.lnkProjectURL.TabStop = true;
+            this.lnkProjectURL.Text = "https://github.com/Alex1911-Jiang/GreenOnions";
+            this.lnkProjectURL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkContributorGithub_LinkClicked);
+            // 
             // lnkContributorGithub
             // 
             this.lnkContributorGithub.AutoSize = true;
@@ -1969,6 +1976,16 @@
             this.lnkContributorGithub.TabStop = true;
             this.lnkContributorGithub.Text = "https://github.com/Alex1911-Jiang";
             this.lnkContributorGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkContributorGithub_LinkClicked);
+            // 
+            // lblProjectURL
+            // 
+            this.lblProjectURL.AutoSize = true;
+            this.lblProjectURL.Location = new System.Drawing.Point(36, 142);
+            this.lblProjectURL.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblProjectURL.Name = "lblProjectURL";
+            this.lblProjectURL.Size = new System.Drawing.Size(59, 17);
+            this.lblProjectURL.TabIndex = 0;
+            this.lblProjectURL.Text = "项目地址:";
             // 
             // lblContributorGithub
             // 
@@ -1999,27 +2016,6 @@
             this.lblContributorName.Size = new System.Drawing.Size(35, 17);
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
-            // 
-            // lblProjectURL
-            // 
-            this.lblProjectURL.AutoSize = true;
-            this.lblProjectURL.Location = new System.Drawing.Point(36, 142);
-            this.lblProjectURL.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblProjectURL.Name = "lblProjectURL";
-            this.lblProjectURL.Size = new System.Drawing.Size(59, 17);
-            this.lblProjectURL.TabIndex = 0;
-            this.lblProjectURL.Text = "项目地址:";
-            // 
-            // lnkProjectURL
-            // 
-            this.lnkProjectURL.AutoSize = true;
-            this.lnkProjectURL.Location = new System.Drawing.Point(116, 141);
-            this.lnkProjectURL.Name = "lnkProjectURL";
-            this.lnkProjectURL.Size = new System.Drawing.Size(288, 17);
-            this.lnkProjectURL.TabIndex = 1;
-            this.lnkProjectURL.TabStop = true;
-            this.lnkProjectURL.Text = "https://github.com/Alex1911-Jiang/GreenOnions";
-            this.lnkProjectURL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkContributorGithub_LinkClicked);
             // 
             // FrmAppSetting
             // 

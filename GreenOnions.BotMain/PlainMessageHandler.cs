@@ -116,7 +116,7 @@ namespace GreenOnions.BotMain
                 //    }
                 //}
 
-                if (sender.Group.Permission == GroupPermission.Member || !BotInfo.HPictureManageNoLimit)
+                if (sender.Permission == GroupPermission.Member || !BotInfo.HPictureManageNoLimit)
                 {
                     if (Cache.CheckGroupLimit(sender.Id, sender.Group.Id))
                     {
@@ -282,6 +282,16 @@ namespace GreenOnions.BotMain
             #region -- 色图 --
             else if (regexHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage))
             {
+                if (Cache.CheckPMLimit(sender.Id))
+                {
+                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.HPictureOutOfLimitReply));
+                    return;
+                }
+                if (Cache.CheckPMCD(sender.Id))
+                {
+                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.HPictureCDUnreadyReply));
+                    return;
+                }
                 HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18, stream => session.UploadPictureAsync(UploadTarget.Friend, stream), msg => session.SendFriendMessageAsync(sender.Id, msg), limitType =>
                 {
                     if (limitType == LimitType.Frequency)

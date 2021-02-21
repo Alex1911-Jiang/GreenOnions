@@ -90,40 +90,49 @@ namespace GreenOnions.Utility
             return false;
         }
 
+        public static bool CheckPMLimit(long qqId)
+        {
+            if (BotInfo.AdminQQ.Contains(qqId) && BotInfo.HPictureAdminNoLimit) return false;
+            if (BotInfo.HPicturePMNoLimit) return false;
+            if (LimitDic.ContainsKey(qqId))
+            {
+                if (LimitDic[qqId] >= BotInfo.HPictureLimit)
+                {
+                    return true;  //超过限制
+                }
+            }
+            return false;
+        }
+
         public static bool CheckGroupCD(long qqId, long groupId)
         {
             if (BotInfo.AdminQQ.Contains(qqId) && BotInfo.HPictureAdminNoLimit) return false;
             if (BotInfo.HPictureWhiteGroup.Contains(groupId))
             {
-                if (BotInfo.HPictureWhiteNoLimit)
-                {
-                    return false;
-                }
+                if (BotInfo.HPictureWhiteNoLimit) return false;
                 if (HPictureWhiteCDDic.ContainsKey(qqId))
-                {
-                    if (DateTime.Now < HPictureWhiteCDDic[qqId])
-                    {
-                        return true;  //还在冷却中
-                    }
-                }
+                    if (DateTime.Now < HPictureWhiteCDDic[qqId]) return true;  //还在冷却中
                 return false;
             }
             else
             {
                 if (HPictureCDDic.ContainsKey(qqId))
-                {
-                    if (DateTime.Now < HPictureCDDic[qqId])
-                    {
-                        return true;  //还在冷却中
-                    }
-                }
+                    if (DateTime.Now < HPictureCDDic[qqId]) return true;  //还在冷却中
                 return false;
             }
         }
 
+        public static bool CheckPMCD(long qqId)
+        {
+            if (BotInfo.AdminQQ.Contains(qqId) && BotInfo.HPictureAdminNoLimit) return false;
+            if (BotInfo.HPicturePMNoLimit) return false;
+            if (HPicturePMCDDic.ContainsKey(qqId))
+                if (DateTime.Now < HPicturePMCDDic[qqId]) return true;  //还在冷却中
+            return false;
+        }
+
         public static void RecordGroupCD(long qqId, long groupId)
         {
-
             if (BotInfo.HPictureWhiteGroup.Contains(groupId))
             {
                 if (BotInfo.HPictureWhiteCD > 0)
@@ -160,11 +169,11 @@ namespace GreenOnions.Utility
             {
                 if (HPicturePMCDDic.ContainsKey(qqId))
                 {
-                    HPicturePMCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPictureCD);
+                    HPicturePMCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPicturePMCD);
                 }
                 else
                 {
-                    HPicturePMCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureCD));
+                    HPicturePMCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPicturePMCD));
                 }
             }
         }
