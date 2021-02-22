@@ -19,6 +19,7 @@ namespace GreenOnions.BotMain
             Regex regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.Replace("<机器人名称>", BotInfo.BotName));
             Regex regexTranslateTo = new Regex(BotInfo.TranslateToCMD.Replace("<机器人名称>", BotInfo.BotName));
             Regex regexHPicture = new Regex(BotInfo.HPictureCmd.Replace("<机器人名称>", BotInfo.BotName));
+            Regex regexShabHPicture = new Regex(BotInfo.ShabHPictureCmd.Replace("<机器人名称>", BotInfo.BotName));
             Regex regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
 
 
@@ -92,8 +93,10 @@ namespace GreenOnions.BotMain
             }
             #endregion -- 翻译 --
             #region -- 色图 --
-            else if (regexHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage))
+            #region -- Lolicon图库 --
+            else if (BotInfo.EnabledLoliconDataBase && (regexHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage)))
             {
+                #region -- 异步流色图(已弃用) --
                 //await foreach (var item in HPictureHandlerAsync.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18 && (!BotInfo.HPictureR18WhiteOnly || BotInfo.HPictureWhiteGroup.Contains(sender.Group.Id))))
                 //{
                 //    int messageID = await session.SendGroupMessageAsync(sender.Group.Id, new[] { item }, quoteMessage.Id);
@@ -115,6 +118,7 @@ namespace GreenOnions.BotMain
                 //        HPictureHandler.RevokeHPicture(session, messageID, BotInfo.HPictureWhiteGroup.Contains(sender.Group.Id) ? BotInfo.HPictureWhiteRevoke : BotInfo.HPictureRevoke);
                 //    }
                 //}
+                #endregion -- 异步流色图(已弃用) --
 
                 if (sender.Permission == GroupPermission.Member || !BotInfo.HPictureManageNoLimit)
                 {
@@ -130,7 +134,7 @@ namespace GreenOnions.BotMain
                     }
                 }
 
-                HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18 && (!BotInfo.HPictureR18WhiteOnly || BotInfo.HPictureWhiteGroup.Contains(sender.Group.Id)), stream => session.UploadPictureAsync(UploadTarget.Group, stream), msg => session.SendGroupMessageAsync(sender.Group.Id, msg, quoteMessage.Id), limitType =>
+                HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18 && (!BotInfo.HPictureR18WhiteOnly || BotInfo.HPictureWhiteGroup.Contains(sender.Group.Id)), BotInfo.HPictureEndCmd, stream => session.UploadPictureAsync(UploadTarget.Group, stream), msg => session.SendGroupMessageAsync(sender.Group.Id, msg, quoteMessage.Id), limitType =>
                 {
                     if (limitType == LimitType.Frequency)
                     {
@@ -142,6 +146,37 @@ namespace GreenOnions.BotMain
                         Cache.RecordLimit(sender.Id);
                 }, BotInfo.HPictureWhiteGroup.Contains(sender.Group.Id) ? BotInfo.HPictureWhiteRevoke : BotInfo.HPictureRevoke);
             }
+            #endregion  -- Lolicon图库 --
+            #region -- Shab图库 --
+            else if (BotInfo.EnabledShabDataBase && (regexShabHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage)))
+            {
+                if (sender.Permission == GroupPermission.Member || !BotInfo.HPictureManageNoLimit)
+                {
+                    if (Cache.CheckGroupLimit(sender.Id, sender.Group.Id))
+                    {
+                        await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureOutOfLimitReply) }, quoteMessage.Id);
+                        return;
+                    }
+                    if (Cache.CheckGroupCD(sender.Id, sender.Group.Id))
+                    {
+                        await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.HPictureCDUnreadyReply) }, quoteMessage.Id);
+                        return;
+                    }
+                }
+
+                HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18 && (!BotInfo.HPictureR18WhiteOnly || BotInfo.HPictureWhiteGroup.Contains(sender.Group.Id)), BotInfo.ShabHPictureEndCmd, stream => session.UploadPictureAsync(UploadTarget.Group, stream), msg => session.SendGroupMessageAsync(sender.Group.Id, msg, quoteMessage.Id), limitType =>
+                {
+                    if (limitType == LimitType.Frequency)
+                    {
+                        Cache.RecordGroupCD(sender.Id, sender.Group.Id);
+                        if (BotInfo.HPictureLimitType == LimitType.Frequency)
+                            Cache.RecordLimit(sender.Id);
+                    }
+                    else if (limitType == LimitType.Count && BotInfo.HPictureLimitType == LimitType.Count)
+                        Cache.RecordLimit(sender.Id);
+                }, BotInfo.HPictureWhiteGroup.Contains(sender.Group.Id) ? BotInfo.HPictureWhiteRevoke : BotInfo.HPictureRevoke);
+            }
+            #endregion -- Shab图库 --
             #endregion -- 色图 --
             else if (firstMessage == $"{BotInfo.BotName}帮助")
             {
@@ -207,6 +242,7 @@ namespace GreenOnions.BotMain
             Regex regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.Replace("<机器人名称>", BotInfo.BotName));
             Regex regexTranslateTo = new Regex(BotInfo.TranslateToCMD.Replace("<机器人名称>", BotInfo.BotName));
             Regex regexHPicture = new Regex(BotInfo.HPictureCmd.Replace("<机器人名称>", BotInfo.BotName));
+            Regex regexShabHPicture = new Regex(BotInfo.ShabHPictureCmd.Replace("<机器人名称>", BotInfo.BotName));
             //Regex regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
 
 
@@ -280,6 +316,7 @@ namespace GreenOnions.BotMain
             }
             #endregion -- 翻译 --
             #region -- 色图 --
+            #region  -- Lolicon图库 --
             else if (regexHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage))
             {
                 if (Cache.CheckPMLimit(sender.Id))
@@ -292,7 +329,7 @@ namespace GreenOnions.BotMain
                     await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.HPictureCDUnreadyReply));
                     return;
                 }
-                HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18, stream => session.UploadPictureAsync(UploadTarget.Friend, stream), msg => session.SendFriendMessageAsync(sender.Id, msg), limitType =>
+                HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18, BotInfo.HPictureEndCmd, stream => session.UploadPictureAsync(UploadTarget.Friend, stream), msg => session.SendFriendMessageAsync(sender.Id, msg), limitType =>
                 {
                     if (limitType == LimitType.Frequency)
                     {
@@ -304,6 +341,33 @@ namespace GreenOnions.BotMain
                         Cache.RecordLimit(sender.Id);
                 }, BotInfo.HPicturePMRevoke);
             }
+            #endregion  -- Lolicon图库 --
+            #region  -- Shab图库 --
+            else if (regexShabHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage))
+            {
+                if (Cache.CheckPMLimit(sender.Id))
+                {
+                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.HPictureOutOfLimitReply));
+                    return;
+                }
+                if (Cache.CheckPMCD(sender.Id))
+                {
+                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.HPictureCDUnreadyReply));
+                    return;
+                }
+                HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18, BotInfo.ShabHPictureEndCmd, stream => session.UploadPictureAsync(UploadTarget.Friend, stream), msg => session.SendFriendMessageAsync(sender.Id, msg), limitType =>
+                {
+                    if (limitType == LimitType.Frequency)
+                    {
+                        Cache.RecordFriendCD(sender.Id);
+                        if (BotInfo.HPictureLimitType == LimitType.Frequency)
+                            Cache.RecordLimit(sender.Id);
+                    }
+                    else if (limitType == LimitType.Count && BotInfo.HPictureLimitType == LimitType.Count)
+                        Cache.RecordLimit(sender.Id);
+                }, BotInfo.HPicturePMRevoke);
+            }
+            #endregion  -- Shab图库 --
             #endregion -- 色图 --
             else if (firstMessage == $"{BotInfo.BotName}帮助")
             {

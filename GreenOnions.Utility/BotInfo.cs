@@ -422,13 +422,75 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 色图完整命令(正则表达式)
+        /// Lolicon图库色图完整命令(正则表达式)
         /// </summary>
         public static string HPictureCmd
         {
-            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureCmd));
-            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureCmd), value);
+            get => GetLoliconHPictureCmd();
         }
+        
+        /// <summary>
+        /// Shab图库色图完整命令(正则表达式)
+        /// </summary>
+        public static string ShabHPictureCmd
+        {
+            get => GetShabHPictureCmd();
+        }
+
+        private static string GetLoliconHPictureCmd()
+        {
+            string LoliconEnd = HPictureEndCmd;
+            if (HPictureEndCmdNull)
+            {
+                LoliconEnd = $"({LoliconEnd})?";
+            }
+
+            return $"^<机器人名称>{GetHPictureCmdInner()}{LoliconEnd}$";
+        }
+
+        private static string GetShabHPictureCmd()
+        {
+            string ShabEnd = ShabHPictureEndCmd;
+            if (ShabHPictureEndCmdNull)
+            {
+                ShabEnd = $"({ShabEnd})?";
+            }
+
+            return $"^<机器人名称>{GetHPictureCmdInner()}{ShabEnd}$";
+        }
+
+        private static string GetHPictureCmdInner() 
+        {
+            string Begin, Count, Unit, R18, Keyword;
+
+            Begin = HPictureBeginCmd;
+            if (HPictureBeginCmdNull)
+            {
+                Begin = $"({Begin})?";
+            }
+            Count = HPictureCountCmd;
+            if (HPictureCountCmdNull)
+            {
+                Count = $"({Count})?";
+            }
+            Unit = HPictureUnitCmd;
+            if (HPictureUnitCmdNull)
+            {
+                Unit = $"({Unit})?";
+            }
+            R18 = HPictureR18Cmd;
+            if (HPictureR18CmdNull)
+            {
+                R18 = $"({R18})?";
+            }
+            Keyword = HPictureKeywordCmd;
+            if (HPictureKeywordCmdNull)
+            {
+                Keyword = $"({Keyword})?";
+            }
+            return $"{Begin}{Count}{Unit}{R18}{Keyword}{R18}";
+        }
+
 
         /// <summary>
         /// 色图命令前缀(正则表达式)
@@ -476,12 +538,21 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 色图结束命令后缀(正则表达式)
+        /// Lolicon图库色图结束命令后缀(正则表达式)
         /// </summary>
         public static string HPictureEndCmd
         {
             get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureEndCmd)) ?? "的?[色瑟][图圖]";
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureEndCmd), value);
+        }
+        
+        /// <summary>
+        /// Lolicon图库色图结束命令后缀(正则表达式)
+        /// </summary>
+        public static string ShabHPictureEndCmd
+        {
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabHPictureEndCmd)) ?? "的?美[图圖]";
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabHPictureEndCmd), value);
         }
 
         /// <summary>
@@ -556,7 +627,7 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否允许色图命令后缀为空
+        /// 是否允许Lolicon图库色图命令后缀为空
         /// </summary>
         public static bool HPictureEndCmdNull
         {
@@ -567,6 +638,48 @@ namespace GreenOnions.Utility
                 return false;
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureEndCmdNull), value.ToString());
+        }
+        
+        /// <summary>
+        /// 是否允许shab图库色图命令后缀为空
+        /// </summary>
+        public static bool ShabHPictureEndCmdNull
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabHPictureEndCmdNull));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabHPictureEndCmdNull), value.ToString());
+        }
+
+        /// <summary>
+        /// 是否启用Lolicon图库色图
+        /// </summary>
+        public static bool EnabledLoliconDataBase
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledLoliconDataBase));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledLoliconDataBase), value.ToString());
+        }
+
+        /// <summary>
+        /// 是否启用Shab图库色图
+        /// </summary>
+        public static bool EnabledShabDataBase
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledShabDataBase));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledShabDataBase), value.ToString());
         }
 
         /// <summary>

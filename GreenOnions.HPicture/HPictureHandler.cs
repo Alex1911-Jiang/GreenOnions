@@ -16,7 +16,7 @@ namespace GreenOnions.HPicture
 {
     public static class HPictureHandler
     {
-        public static void SendHPictures(MiraiHttpSession session, string message, bool isAllowR18, Func<Stream,Task<ImageMessage>> UploadPicture, Func<IMessageBase[],Task<int>> SendMessage, Action<LimitType> Record, int RevokeSecond)
+        public static void SendHPictures(MiraiHttpSession session, string message, bool isAllowR18, string HPictureEndCmd, Func<Stream,Task<ImageMessage>> UploadPicture, Func<IMessageBase[],Task<int>> SendMessage, Action<LimitType> Record, int RevokeSecond)
         {
             try
             {
@@ -24,12 +24,12 @@ namespace GreenOnions.HPicture
                 if (BotInfo.HPictureUserCmd.Contains(message))
                 {
                     strHttpRequest = $@"https://api.lolicon.app/setu/?{ (BotInfo.HPictureSize1200 ? "size1200=true" : "") }";
+                    SendLoliconHPhicture(strHttpRequest);
                 }
                 else
                 {
                     //分割请求接口所需的参数
                     long lImgCount = 1;
-                    string keyword = "";
                     string size1200 = "";
                     string strR18 = "0";
 
@@ -43,7 +43,7 @@ namespace GreenOnions.HPicture
                     if (!isAllowR18) strR18 = "0";//如果不允许R18
                     #endregion -- R18 --
 
-                    #region -- 色图数量 -- ;
+                    #region -- 色图数量 -- 
                     string strCount = StringHelper.GetRegex(message, BotInfo.HPictureBeginCmd, BotInfo.HPictureCountCmd, BotInfo.HPictureUnitCmd);
 
                     if (!long.TryParse(strCount, out lImgCount) && !string.IsNullOrEmpty(strCount)) lImgCount = StringHelper.Chinese2Num(strCount);
@@ -57,103 +57,130 @@ namespace GreenOnions.HPicture
                     #endregion -- 色图数量 -- 
 
                     #region -- 关键词 --
-                    string strKeyword = StringHelper.GetRegex(message, BotInfo.HPictureUnitCmd, BotInfo.HPictureKeywordCmd, BotInfo.HPictureEndCmd);
+                    string strKeyword = StringHelper.GetRegex(message, BotInfo.HPictureUnitCmd, BotInfo.HPictureKeywordCmd, HPictureEndCmd);
 
-                    if (!string.IsNullOrWhiteSpace(strKeyword))
-                    {
-                        if (strKeyword.EndsWith("的"))
-                        {
-                            strKeyword = strKeyword.Substring(0, strKeyword.Length - 1);
-                        }
-                        keyword = "&keyword=" + strKeyword;
-                    }
+                    
                     #endregion -- 关键词 --
 
-                    if (BotInfo.HPictureSize1200) size1200 = "&size1200=true";
+                    if (BotInfo.HPictureSize1200) 
+                        size1200 = "&size1200=true";
 
-                    strHttpRequest = $@"https://api.lolicon.app/setu/?apikey={BotInfo.HPictureApiKey}&num={lImgCount}&r18={strR18}{keyword}{size1200}";
-                }
-
-                string resultValue = "";
-                try
-                {
-                    resultValue = HttpHelper.GetHttpResponseStringAsync(strHttpRequest, out _).GetAwaiter().GetResult();
-                }
-                catch (Exception ex)
-                {
-                    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
-                    return;
-                }
-
-                JObject jo = (JObject)JsonConvert.DeserializeObject(resultValue);
-                JToken jt = jo["data"];
-
-                if (jo["code"].ToString() == "1")//没找到对应词条的色图;
-                {
-                    SendMessage(new[] {new PlainMessage(BotInfo.SearchNoResultReply) });
-                    return;
-                }
-
-                IEnumerable<HPictureItem> enumImg = jt.Select(i => new HPictureItem(i["p"].ToString(), i["pid"].ToString(), i["url"].ToString()));
-
-                if (enumImg == null)
-                {
-                    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply)});
-                    return;
-                }
-
-                Dictionary<string, string> dicAddress = new Dictionary<string, string>();
-                StringBuilder sbAddress = new StringBuilder();
-                foreach (var item in enumImg)
-                {
-                    string strAddress = @"https://www.pixiv.net/artworks/" + item.ID + $" (p{item.P})";
-                    dicAddress.Add(item.ID, strAddress);
-                    sbAddress.AppendLine(strAddress);
-                }
-
-                if (string.IsNullOrEmpty(sbAddress.ToString()))  //一般不会出现这个情况
-                {
-                    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply)});
-                    return;
-                }
-
-                SendMessage(new[] { new PlainMessage(sbAddress.ToString()) }).GetAwaiter().GetResult();
-                Record(LimitType.Frequency);
-
-                string imagePath = Environment.CurrentDirectory + "\\Image\\";
-                if (!Directory.Exists(imagePath)) Directory.CreateDirectory(imagePath);
-
-                foreach (var pair in enumImg)
-                {
-                    if (BotInfo.HPictureMultithreading)
+                    if (HPictureEndCmd == BotInfo.HPictureEndCmd)
                     {
-                        Task.Run(() =>
+                        string keyword = "";
+                        if (!string.IsNullOrWhiteSpace(strKeyword))
+                        {
+                            if (strKeyword.EndsWith("的"))
+                                strKeyword = strKeyword.Substring(0, strKeyword.Length - 1);
+                            keyword = "&keyword=" + strKeyword;
+                        }
+
+                        strHttpRequest = $@"https://api.lolicon.app/setu/?apikey={BotInfo.HPictureApiKey}&num={lImgCount}&r18={strR18}{keyword}{size1200}";
+                        SendLoliconHPhicture(strHttpRequest);
+                    }
+                    else if (HPictureEndCmd == BotInfo.ShabHPictureEndCmd)
+                    {
+                        strHttpRequest = $@"http://img.shab.fun:5000/api/tag/{strKeyword},{lImgCount},{strR18}";
+                        SendShabHPicture(strHttpRequest);
+                    }
+                }
+
+                void SendShabHPicture(string strHttpRequestUrl)
+                {
+                    //string resultValue = "";
+                    //try
+                    //{
+                    //    resultValue = HttpHelper.GetHttpResponseStringAsync(strHttpRequestUrl, out _).GetAwaiter().GetResult();
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
+                    //    return;
+                    //}
+                }
+
+                void SendLoliconHPhicture(string strHttpRequestUrl)
+                {
+                    string resultValue = "";
+                    try
+                    {
+                        resultValue = HttpHelper.GetHttpResponseStringAsync(strHttpRequestUrl, out _).GetAwaiter().GetResult();
+                    }
+                    catch (Exception ex)
+                    {
+                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
+                        return;
+                    }
+
+                    JObject jo = (JObject)JsonConvert.DeserializeObject(resultValue);
+                    JToken jt = jo["data"];
+
+                    if (jo["code"].ToString() == "1")//没找到对应词条的色图;
+                    {
+                        SendMessage(new[] { new PlainMessage(BotInfo.SearchNoResultReply) });
+                        return;
+                    }
+
+                    IEnumerable<HPictureItem> enumImg = jt.Select(i => new HPictureItem(i["p"].ToString(), i["pid"].ToString(), i["url"].ToString(), @$"https://www.pixiv.net/artworks/{i["pid"].ToString()}(p{i["p"].ToString()}"));
+
+                    if (enumImg == null)
+                    {
+                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply) });
+                        return;
+                    }
+
+                    StringBuilder sbAddress = new StringBuilder();
+                    foreach (var item in enumImg)
+                    {
+                        string strAddress = @"https://www.pixiv.net/artworks/" + item.ID + $" (p{item.P})";
+                        sbAddress.AppendLine(strAddress);
+                    }
+
+                    if (string.IsNullOrEmpty(sbAddress.ToString()))  //一般不会出现这个情况
+                    {
+                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply) });
+                        return;
+                    }
+
+                    SendMessage(new[] { new PlainMessage(sbAddress.ToString()) }).GetAwaiter().GetResult();
+                    Record(LimitType.Frequency);
+
+                    string imagePath = Environment.CurrentDirectory + "\\Image\\";
+                    if (!Directory.Exists(imagePath)) Directory.CreateDirectory(imagePath);
+
+                    foreach (var pair in enumImg)
+                    {
+                        if (BotInfo.HPictureMultithreading)
+                        {
+                            Task.Run(() =>
+                            {
+                                try
+                                {
+                                    SendOnceLoliconHPicture(pair, imagePath);
+                                }
+                                catch (Exception ex)
+                                {
+                                    ErrorHelper.WriteErrorLog(ex);
+                                    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
+                                }
+                            });
+                        }
+                        else
                         {
                             try
                             {
-                                SendOnceHPicture(pair);
+                                SendOnceLoliconHPicture(pair, imagePath);
                             }
                             catch (Exception ex)
                             {
-                                ErrorHelper.WriteErrorLog(ex);
                                 SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
                             }
-                        });
-                    }
-                    else
-                    {
-                        try
-                        {
-                            SendOnceHPicture(pair);
-                        }
-                        catch (Exception ex)
-                        {
-                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message)});
                         }
                     }
+
                 }
 
-                void SendOnceHPicture(HPictureItem pair)
+                void SendOnceLoliconHPicture(HPictureItem pair, string imagePath)
                 {
                     ImageMessage imageMessage = null;
                     string imgName = $"{imagePath}{pair.ID}_{pair.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png";
@@ -166,7 +193,7 @@ namespace GreenOnions.HPicture
                         Stream ms = HttpHelper.DownloadImageAsMemoryStream(pair.URL, imgName);
                         if (ms == null)
                         {
-                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", dicAddress[pair.URL]))});
+                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", pair.Address))});
                             return;
                         }
                         imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片

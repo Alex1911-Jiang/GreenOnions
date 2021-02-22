@@ -52,6 +52,12 @@ namespace GreenOnions.Utility.Helper
 			string strSearchEnabledASCII2D = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNamePictureSearcher, nameof(BotInfo.SearchEnabledASCII2D));
 			if (!string.IsNullOrEmpty(strSearchEnabledASCII2D))
 				BotInfo.SearchEnabledASCII2D = Convert.ToBoolean(strSearchEnabledASCII2D);
+			string strShabHPictureEndCmd = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNamePictureSearcher, nameof(BotInfo.ShabHPictureEndCmd));
+			if (!string.IsNullOrEmpty(strShabHPictureEndCmd))
+				BotInfo.ShabHPictureEndCmd = strShabHPictureEndCmd;
+			string strShabHPictureEndCmdNull = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNamePictureSearcher, nameof(BotInfo.ShabHPictureEndCmdNull));
+			if (!string.IsNullOrEmpty(strShabHPictureEndCmdNull))
+				BotInfo.ShabHPictureEndCmdNull = Convert.ToBoolean(strShabHPictureEndCmdNull);
 			string strSearchModeOnCmd = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNamePictureSearcher, nameof(BotInfo.SearchModeOnCmd));
 			if (!string.IsNullOrEmpty(strSearchModeOnCmd))
 				BotInfo.SearchModeOnCmd = strSearchModeOnCmd;
@@ -119,12 +125,15 @@ namespace GreenOnions.Utility.Helper
 			string strHPictureEnabled = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNameHPicture, nameof(BotInfo.HPictureEnabled));
 			if (!string.IsNullOrEmpty(strHPictureEnabled))
 				BotInfo.HPictureEnabled = Convert.ToBoolean(strHPictureEnabled);
+			string strEnabledLoliconDataBase = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNameHPicture, nameof(BotInfo.EnabledLoliconDataBase));
+			if (!string.IsNullOrEmpty(strEnabledLoliconDataBase))
+				BotInfo.EnabledLoliconDataBase = Convert.ToBoolean(strEnabledLoliconDataBase);
+			string strEnabledShabDataBase = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNameHPicture, nameof(BotInfo.EnabledShabDataBase));
+			if (!string.IsNullOrEmpty(strEnabledShabDataBase))
+				BotInfo.EnabledShabDataBase = Convert.ToBoolean(strEnabledShabDataBase);
 			string strHPictureApiKey = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNameHPicture, nameof(BotInfo.HPictureApiKey));
 			if (!string.IsNullOrEmpty(strHPictureApiKey))
 				BotInfo.HPictureApiKey = @strHPictureApiKey;
-			string strHPictureCmd = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNameHPicture, nameof(BotInfo.HPictureCmd));
-			if (!string.IsNullOrEmpty(strHPictureCmd))
-				BotInfo.HPictureCmd = @strHPictureCmd;
 			string strHPictureBeginCmd = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNameHPicture, nameof(BotInfo.HPictureBeginCmd));
 			if (!string.IsNullOrEmpty(strHPictureBeginCmd))
 				BotInfo.HPictureBeginCmd = strHPictureBeginCmd;

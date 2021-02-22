@@ -8,10 +8,7 @@ namespace GreenOnions.BotMainManagerWindow
 {
     public partial class FrmAppSetting : Form
     {
-        public FrmAppSetting()
-        {
-            InitializeComponent();
-        }
+        public FrmAppSetting() => InitializeComponent();
 
         protected override void OnLoad(EventArgs e)
         {
@@ -84,7 +81,8 @@ namespace GreenOnions.BotMainManagerWindow
             #endregion -- 翻译设置 --
 
             #region -- 色图设置 --
-
+            chkEnabledLoliconHPicture.Checked = BotInfo.EnabledLoliconDataBase;
+            chkEnabledShabHPicture.Checked = BotInfo.EnabledShabDataBase;
             chkEnabledHPicture.Checked = BotInfo.HPictureEnabled;
             txbHPictureApiKey.Text = BotInfo.HPictureApiKey;
             txbHPictureCmd.Text = BotInfo.HPictureCmd;
@@ -94,12 +92,14 @@ namespace GreenOnions.BotMainManagerWindow
             txbHPictureR18.Text = BotInfo.HPictureR18Cmd;
             txbHPictureKeyword.Text = BotInfo.HPictureKeywordCmd;
             txbHPictureEnd.Text = BotInfo.HPictureEndCmd;
+            txbShabHPictureEnd.Text = BotInfo.ShabHPictureEndCmd;
             chkHPictureBeginNull.Checked = BotInfo.HPictureBeginCmdNull;
             chkHPictureCountNull.Checked = BotInfo.HPictureCountCmdNull;
             chkHPictureUnitNull.Checked = BotInfo.HPictureUnitCmdNull;
             chkHPictureR18Null.Checked = BotInfo.HPictureR18CmdNull;
             chkHPictureKeywordNull.Checked = BotInfo.HPictureKeywordCmdNull;
             chkHPictureEndNull.Checked = BotInfo.HPictureEndCmdNull;
+            chkShabHPictureEndNull.Checked = BotInfo.ShabHPictureEndCmdNull;
             if (BotInfo.HPictureUserCmd != null)
             {
                 foreach (var item in BotInfo.HPictureUserCmd)
@@ -227,21 +227,24 @@ namespace GreenOnions.BotMainManagerWindow
             #endregion  -- 翻译设置 --
 
             #region -- 色图设置 --
+            BotInfo.EnabledLoliconDataBase = chkEnabledLoliconHPicture.Checked;
+            BotInfo.EnabledShabDataBase = chkEnabledShabHPicture.Checked;
             BotInfo.HPictureEnabled = chkEnabledHPicture.Checked;
             BotInfo.HPictureApiKey = txbHPictureApiKey.Text;
-            BotInfo.HPictureCmd = txbHPictureCmd.Text;
             BotInfo.HPictureBeginCmd = txbHPictureBegin.Text;
             BotInfo.HPictureCountCmd = txbHPictureCount.Text;
             BotInfo.HPictureUnitCmd = txbHPictureUnit.Text;
             BotInfo.HPictureR18Cmd = txbHPictureR18.Text;
             BotInfo.HPictureKeywordCmd = txbHPictureKeyword.Text;
             BotInfo.HPictureEndCmd = txbHPictureEnd.Text;
+            BotInfo.ShabHPictureEndCmd = txbShabHPictureEnd.Text;
             BotInfo.HPictureBeginCmdNull = chkHPictureBeginNull.Checked;
             BotInfo.HPictureCountCmdNull = chkHPictureCountNull.Checked;
             BotInfo.HPictureUnitCmdNull = chkHPictureUnitNull.Checked;
             BotInfo.HPictureR18CmdNull = chkHPictureR18Null.Checked;
             BotInfo.HPictureKeywordCmdNull = chkHPictureKeywordNull.Checked;
             BotInfo.HPictureEndCmdNull = chkHPictureEndNull.Checked;
+            BotInfo.ShabHPictureEndCmdNull = chkShabHPictureEndNull.Checked;
             List<string> tempHPictureUserCmd = new List<string>();
             foreach (ListViewItem item in lstHPictureUserCmd.Items)
             {
@@ -280,17 +283,14 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.HPictureMultithreading = chkMultithreading.Checked;
             #endregion -- 色图设置 --
 
-            this.Close();
+            Close();
         }
 
-        private void txbHPictureEnd_TextChanged(object sender, EventArgs e)
-        {
-            AddStringToCmd();
-        }
+        private void txbHPictureEnd_TextChanged(object sender, EventArgs e) => AddStringToCmd();
 
         private void AddStringToCmd()
         {
-            string Begin, Count, Unit, R18, Keyword, End;
+            string Begin, Count, Unit, R18, Keyword, LoliconEnd, ShabEnd;
 
             Begin = txbHPictureBegin.Text;
             if (chkHPictureBeginNull.Checked)
@@ -317,13 +317,19 @@ namespace GreenOnions.BotMainManagerWindow
             {
                 Keyword = $"({Keyword})?";
             }
-            End = txbHPictureEnd.Text;
+            LoliconEnd = txbHPictureEnd.Text;
             if (chkHPictureEndNull.Checked)
             {
-                End = $"({End})?";
+                LoliconEnd = $"({LoliconEnd})?";
+            }
+            ShabEnd = txbShabHPictureEnd.Text;
+            if (chkShabHPictureEndNull.Checked)
+            {
+                ShabEnd = $"({ShabEnd})?";
             }
 
-            txbHPictureCmd.Text = $"^<机器人名称>{Begin}{Count}{Unit}{R18}{Keyword}{R18}{End}$";
+            txbHPictureCmd.Text = $"^<机器人名称>{Begin}{Count}{Unit}{R18}{Keyword}{R18}{LoliconEnd}$";
+            txbShabHPictureCmd.Text = $"^<机器人名称>{Begin}{Count}{Unit}{R18}{Keyword}{R18}{ShabEnd}$";
         }
 
         private void chkEnableHPicture_CheckedChanged(object sender, EventArgs e)
@@ -398,7 +404,7 @@ namespace GreenOnions.BotMainManagerWindow
             }
         }
 
-        private void lnkReset_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void lnkResetHPicture_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             chkHPictureBeginNull.Checked = false;
             chkHPictureCountNull.Checked = true;
@@ -413,6 +419,9 @@ namespace GreenOnions.BotMainManagerWindow
             txbHPictureR18.Text = "[Rr]-?18的?";
             txbHPictureKeyword.Text = ".+?";
             txbHPictureEnd.Text = "的?[色瑟][图圖]";
+            txbShabHPictureEnd.Text = "的?美[图圖]";
+            chkEnabledLoliconHPicture.Checked = true;
+            chkEnabledShabHPicture.Checked = true;
             AddStringToCmd();
         }
 
