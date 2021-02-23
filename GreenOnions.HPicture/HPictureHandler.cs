@@ -160,6 +160,11 @@ namespace GreenOnions.HPicture
                     }
 
                     JArray ja = (JArray)JsonConvert.DeserializeObject(resultValue);
+                    if (ja.Count == 0)
+                    {
+                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureNoResultReply) });
+                        return;
+                    }
                     IEnumerable<ShabHPictureItem> enumImg = ja.Select(i => new ShabHPictureItem(i["id"].ToString(), i["link"].ToString(), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
                     string addresses = string.Join("\r\n", enumImg.Select(l => l.Link));
                     SendMessage(new[] { new PlainMessage(addresses) });
