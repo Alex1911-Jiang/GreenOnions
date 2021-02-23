@@ -16,6 +16,14 @@ namespace GreenOnions.HPicture
 {
     public static class HPictureHandler
     {
+        private static string ImagePath = Environment.CurrentDirectory + "\\Image\\";
+
+        static HPictureHandler()
+        {
+            if (!Directory.Exists(ImagePath))
+                Directory.CreateDirectory(ImagePath);
+        }
+
         public static void SendHPictures(MiraiHttpSession session, string message, bool isAllowR18, string HPictureEndCmd, Func<Stream,Task<ImageMessage>> UploadPicture, Func<IMessageBase[],Task<int>> SendMessage, Action<LimitType> Record, int RevokeSecond)
         {
             try
@@ -80,23 +88,9 @@ namespace GreenOnions.HPicture
                     }
                     else if (HPictureEndCmd == BotInfo.ShabHPictureEndCmd)
                     {
-                        strHttpRequest = $@"http://img.shab.fun:5000/api/tag/{strKeyword},{lImgCount},{strR18}";
+                        strHttpRequest = string.IsNullOrEmpty(strKeyword) ? $@"http://img.shab.fun:5000/api/img/{lImgCount},{strR18}" : $@"http://img.shab.fun:5000/api/tag/{strKeyword},{lImgCount},{strR18}"; 
                         SendShabHPicture(strHttpRequest);
                     }
-                }
-
-                void SendShabHPicture(string strHttpRequestUrl)
-                {
-                    //string resultValue = "";
-                    //try
-                    //{
-                    //    resultValue = HttpHelper.GetHttpResponseStringAsync(strHttpRequestUrl, out _).GetAwaiter().GetResult();
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
-                    //    return;
-                    //}
                 }
 
                 void SendLoliconHPhicture(string strHttpRequestUrl)
@@ -115,13 +109,13 @@ namespace GreenOnions.HPicture
                     JObject jo = (JObject)JsonConvert.DeserializeObject(resultValue);
                     JToken jt = jo["data"];
 
-                    if (jo["code"].ToString() == "1")//没找到对应词条的色图;
+                    if (jo["code"].ToString() == "404")//没找到对应词条的色图;
                     {
-                        SendMessage(new[] { new PlainMessage(BotInfo.SearchNoResultReply) });
+                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureNoResultReply) });
                         return;
                     }
 
-                    IEnumerable<HPictureItem> enumImg = jt.Select(i => new HPictureItem(i["p"].ToString(), i["pid"].ToString(), i["url"].ToString(), @$"https://www.pixiv.net/artworks/{i["pid"].ToString()}(p{i["p"].ToString()}"));
+                    IEnumerable<LoliconHPictureItem> enumImg = jt.Select(i => new LoliconHPictureItem(i["p"].ToString(), i["pid"].ToString(), i["url"].ToString(), @$"https://www.pixiv.net/artworks/{i["pid"]}(p{i["p"]}"));
 
                     if (enumImg == null)
                     {
@@ -129,77 +123,128 @@ namespace GreenOnions.HPicture
                         return;
                     }
 
-                    StringBuilder sbAddress = new StringBuilder();
-                    foreach (var item in enumImg)
-                    {
-                        string strAddress = @"https://www.pixiv.net/artworks/" + item.ID + $" (p{item.P})";
-                        sbAddress.AppendLine(strAddress);
-                    }
+                    //StringBuilder sbAddress = new StringBuilder();
+                    //foreach (var item in enumImg)
+                    //{
+                    //    string strAddress = @"https://www.pixiv.net/artworks/" + item.ID + $" (p{item.P})";
+                    //    sbAddress.AppendLine(strAddress);
+                    //}
 
-                    if (string.IsNullOrEmpty(sbAddress.ToString()))  //一般不会出现这个情况
+                    //if (string.IsNullOrEmpty(sbAddress.ToString()))  //一般不会出现这个情况
+                    //{
+                    //    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply) });
+                    //    return;
+                    //}
+
+                    string addresses = string.Join("\r\n", enumImg.Select(i => @"https://www.pixiv.net/artworks/" + i.ID + $" (p{i.P})"));
+                    SendMessage(new[] { new PlainMessage(addresses) }).GetAwaiter().GetResult();
+                    Record(LimitType.Frequency);
+
+                    foreach (LoliconHPictureItem imgItem in enumImg)
                     {
-                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply) });
+                        SendOnceHPicture(() => SendOnceLoliconHPicture(imgItem));
+                    }
+                }
+
+                void SendShabHPicture(string strHttpRequestUrl)
+                {
+                    string resultValue = "";
+                    try
+                    {
+                        resultValue = HttpHelper.GetHttpResponseStringAsync(strHttpRequestUrl, out _).GetAwaiter().GetResult();
+                    }
+                    catch (Exception ex)
+                    {
+                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
                         return;
                     }
 
-                    SendMessage(new[] { new PlainMessage(sbAddress.ToString()) }).GetAwaiter().GetResult();
-                    Record(LimitType.Frequency);
+                    JArray ja = (JArray)JsonConvert.DeserializeObject(resultValue);
+                    IEnumerable<ShabHPictureItem> enumImg = ja.Select(i => new ShabHPictureItem(i["id"].ToString(), i["link"].ToString(), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
+                    string addresses = string.Join("\r\n", enumImg.Select(l => l.Link));
+                    SendMessage(new[] { new PlainMessage(addresses) });
+                    //包含twimg.com的图墙内无法访问, 暂时不处理
 
-                    string imagePath = Environment.CurrentDirectory + "\\Image\\";
-                    if (!Directory.Exists(imagePath)) Directory.CreateDirectory(imagePath);
-
-                    foreach (var pair in enumImg)
+                    foreach (ShabHPictureItem imgItem in enumImg)
                     {
-                        if (BotInfo.HPictureMultithreading)
-                        {
-                            Task.Run(() =>
-                            {
-                                try
-                                {
-                                    SendOnceLoliconHPicture(pair, imagePath);
-                                }
-                                catch (Exception ex)
-                                {
-                                    ErrorHelper.WriteErrorLog(ex);
-                                    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
-                                }
-                            });
-                        }
-                        else
+                        SendOnceHPicture(() => SendOnceShabHPicture(imgItem));
+                    }
+                }
+
+                void SendOnceHPicture(Action SendHPictureInner)
+                {
+                    if (BotInfo.HPictureMultithreading)
+                    {
+                        Task.Run(() =>
                         {
                             try
                             {
-                                SendOnceLoliconHPicture(pair, imagePath);
+                                SendHPictureInner();
                             }
                             catch (Exception ex)
                             {
+                                ErrorHelper.WriteErrorLog(ex);
                                 SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
                             }
+                        });
+                    }
+                    else
+                    {
+                        try
+                        {
+                            SendHPictureInner();
+                        }
+                        catch (Exception ex)
+                        {
+                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
                         }
                     }
-
                 }
 
-                void SendOnceLoliconHPicture(HPictureItem pair, string imagePath)
+                void SendOnceLoliconHPicture(LoliconHPictureItem item)
                 {
                     ImageMessage imageMessage = null;
-                    string imgName = $"{imagePath}{pair.ID}_{pair.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png";
+                    string imgName = $"{ImagePath}{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png";
                     if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                     {
                         imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片
                     }
                     else
                     {
-                        Stream ms = HttpHelper.DownloadImageAsMemoryStream(pair.URL, imgName);
+                        Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.URL, imgName);
                         if (ms == null)
                         {
-                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", pair.Address))});
+                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", item.Address))});
                             return;
                         }
                         imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片
                     }
 
                     int messageID = SendMessage(new[] {imageMessage }).GetAwaiter().GetResult();
+                    Record(LimitType.Count);
+                    RevokeHPicture(session, messageID, RevokeSecond);
+                }
+
+                void SendOnceShabHPicture(ShabHPictureItem item)
+                {
+                    ImageMessage imageMessage = null;
+                    string imgName = $"{ImagePath}Shab_{item.ID}.png";
+                    if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
+                    {
+                        imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片
+                    }
+                    else
+                    {
+                        Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.Link, imgName);
+                        if (ms == null)
+                        {
+                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", item.Source).Replace("<机器人名称>", BotInfo.BotName)) });
+                            return;
+                        }
+                        imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片
+                    }
+
+                    int messageID = SendMessage(new IMessageBase[] { imageMessage, new PlainMessage($"地址:{item.Source}\r\n日文标签:{item.Jp_Tag}\r\n中文标签:{item.Zh_Tags}\r\n作者:{item.Author}") }).GetAwaiter().GetResult();
                     Record(LimitType.Count);
                     RevokeHPicture(session, messageID, RevokeSecond);
                 }

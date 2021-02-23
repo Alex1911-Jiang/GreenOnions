@@ -99,16 +99,14 @@ namespace GreenOnions.HPicture
                 yield break;
             }
 
-            IEnumerable<HPictureItem> enumImg = jt.Select(i => new HPictureItem(i["p"].ToString(), i["pid"].ToString(), i["url"].ToString()));
+            IEnumerable<LoliconHPictureItem> enumImg = jt.Select(i => new LoliconHPictureItem(i["p"].ToString(), i["pid"].ToString(), i["url"].ToString(), @$"https://www.pixiv.net/artworks/{i["pid"].ToString()}(p{i["p"].ToString()}"));
 
             if (enumImg == null) yield break;  //一般不会出现这个情况, 但是防止它报错
 
-            Dictionary<string, string> dicAddress = new Dictionary<string, string>();
             StringBuilder sbAddress = new StringBuilder();
             foreach (var item in enumImg)
             {
                 string strAddress = @"https://www.pixiv.net/artworks/" + item.ID + $" (p{item.P})";
-                dicAddress.Add(item.ID, strAddress);
                 sbAddress.AppendLine(strAddress);
             }
 
@@ -126,7 +124,7 @@ namespace GreenOnions.HPicture
 
                 Stream ms = HttpHelper.DownloadImageAsMemoryStream(pair.URL, imgName);
 
-                if (ms == null) yield return new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", dicAddress[pair.URL]));
+                if (ms == null) yield return new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", pair.Address));
 
                 yield return await session.UploadPictureAsync(UploadTarget.Group, ms);  //上传图片
             }
