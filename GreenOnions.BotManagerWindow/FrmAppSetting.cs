@@ -100,6 +100,7 @@ namespace GreenOnions.BotMainManagerWindow
             chkHPictureKeywordNull.Checked = BotInfo.HPictureKeywordCmdNull;
             chkHPictureEndNull.Checked = BotInfo.HPictureEndCmdNull;
             chkShabHPictureEndNull.Checked = BotInfo.ShabHPictureEndCmdNull;
+            chkShabDontRevokeWithOutR18.Checked = BotInfo.ShabDontRevokeWithOutR18;
             if (BotInfo.HPictureUserCmd != null)
             {
                 foreach (var item in BotInfo.HPictureUserCmd)
@@ -245,6 +246,7 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.HPictureKeywordCmdNull = chkHPictureKeywordNull.Checked;
             BotInfo.HPictureEndCmdNull = chkHPictureEndNull.Checked;
             BotInfo.ShabHPictureEndCmdNull = chkShabHPictureEndNull.Checked;
+            BotInfo.ShabDontRevokeWithOutR18 = chkShabDontRevokeWithOutR18.Checked;
             List<string> tempHPictureUserCmd = new List<string>();
             foreach (ListViewItem item in lstHPictureUserCmd.Items)
             {

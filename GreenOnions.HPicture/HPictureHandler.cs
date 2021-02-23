@@ -48,7 +48,8 @@ namespace GreenOnions.HPicture
                         strR18 = "1";
                         message = message.Replace(mchR18.Value, "");  //无论是否允许R18都现将命令中的R18移除, 避免和数量混淆
                     }
-                    if (!isAllowR18) strR18 = "0";//如果不允许R18
+                    if (!isAllowR18) 
+                        strR18 = "0";//如果不允许R18
                     #endregion -- R18 --
 
                     #region -- 色图数量 -- 
@@ -89,7 +90,7 @@ namespace GreenOnions.HPicture
                     else if (HPictureEndCmd == BotInfo.ShabHPictureEndCmd)
                     {
                         strHttpRequest = string.IsNullOrEmpty(strKeyword) ? $@"http://img.shab.fun:5000/api/img/{lImgCount},{strR18}" : $@"http://img.shab.fun:5000/api/tag/{strKeyword},{lImgCount},{strR18}"; 
-                        SendShabHPicture(strHttpRequest);
+                        SendShabHPicture(strHttpRequest, strR18 == "1");
                     }
                 }
 
@@ -146,7 +147,7 @@ namespace GreenOnions.HPicture
                     }
                 }
 
-                void SendShabHPicture(string strHttpRequestUrl)
+                void SendShabHPicture(string strHttpRequestUrl, bool isR18)
                 {
                     string resultValue = "";
                     try
@@ -169,11 +170,7 @@ namespace GreenOnions.HPicture
                     string addresses = string.Join("\r\n", enumImg.Select(l => l.Source));
                     SendMessage(new[] { new PlainMessage(addresses) });
                     //包含twimg.com的图墙内无法访问, 暂时不处理
-
-                    foreach (ShabHPictureItem imgItem in enumImg)
-                    {
-                        SendOnceHPicture(() => SendOnceShabHPicture(imgItem));
-                    }
+                    SendOnceHPicture(() => SendOnceShabHPicture(enumImg, isR18));
                 }
 
                 void SendOnceHPicture(Action SendHPictureInner)
@@ -230,28 +227,34 @@ namespace GreenOnions.HPicture
                     RevokeHPicture(session, messageID, RevokeSecond);
                 }
 
-                void SendOnceShabHPicture(ShabHPictureItem item)
+                void SendOnceShabHPicture(IEnumerable<ShabHPictureItem> items, bool isR18)
                 {
-                    ImageMessage imageMessage = null;
-                    string imgName = $"{ImagePath}Shab_{item.ID}.png";
-                    if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
+                    foreach (var item in items)
                     {
-                        imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片
-                    }
-                    else
-                    {
-                        Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.Link, imgName);
-                        if (ms == null)
+                        ImageMessage imageMessage = null;
+                        string imgName = $"{ImagePath}Shab_{item.ID}.png";
+                        if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                         {
-                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", item.Link).Replace("<机器人名称>", BotInfo.BotName)) });
-                            return;
+                            imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片
                         }
-                        imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片
-                    }
+                        else
+                        {
+                            Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.Link, imgName);
+                            if (ms == null)
+                            {
+                                SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", item.Link).Replace("<机器人名称>", BotInfo.BotName)) });
+                                return;
+                            }
+                            imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片
+                        }
 
-                    int messageID = SendMessage(new IMessageBase[] { imageMessage, new PlainMessage($"地址:{item.Source}\r\n日文标签:{item.Jp_Tag}\r\n中文标签:{item.Zh_Tags}\r\n作者:{item.Author}") }).GetAwaiter().GetResult();
-                    Record(LimitType.Count);
-                    RevokeHPicture(session, messageID, RevokeSecond);
+                        int messageID = SendMessage(new IMessageBase[] { imageMessage, new PlainMessage($"地址:{item.Source}\r\n日文标签:{item.Jp_Tag}\r\n中文标签:{item.Zh_Tags}\r\n作者:{item.Author}") }).GetAwaiter().GetResult();
+                        Record(LimitType.Count);
+                        if (!BotInfo.ShabDontRevokeWithOutR18 || isR18)
+                        {
+                            RevokeHPicture(session, messageID, RevokeSecond);
+                        }
+                    }
                 }
 
                 void RevokeHPicture(MiraiHttpSession message, int messageId, int delay)

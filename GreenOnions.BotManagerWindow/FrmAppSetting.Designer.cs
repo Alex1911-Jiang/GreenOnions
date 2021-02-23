@@ -108,6 +108,7 @@
             this.chkTranslateEnabled = new System.Windows.Forms.CheckBox();
             this.tabHPicture = new System.Windows.Forms.TabPage();
             this.pnlEnabelHPicture = new System.Windows.Forms.Panel();
+            this.chkEnabledShabHPicture = new System.Windows.Forms.CheckBox();
             this.chkEnabledLoliconHPicture = new System.Windows.Forms.CheckBox();
             this.lblMultithreading = new System.Windows.Forms.Label();
             this.chkMultithreading = new System.Windows.Forms.CheckBox();
@@ -202,7 +203,7 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
-            this.chkEnabledShabHPicture = new System.Windows.Forms.CheckBox();
+            this.chkShabDontRevokeWithOutR18 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.tabSearchPicture.SuspendLayout();
@@ -1018,6 +1019,7 @@
             // pnlEnabelHPicture
             // 
             this.pnlEnabelHPicture.AutoSize = true;
+            this.pnlEnabelHPicture.Controls.Add(this.chkShabDontRevokeWithOutR18);
             this.pnlEnabelHPicture.Controls.Add(this.chkEnabledShabHPicture);
             this.pnlEnabelHPicture.Controls.Add(this.chkEnabledLoliconHPicture);
             this.pnlEnabelHPicture.Controls.Add(this.lblMultithreading);
@@ -1109,10 +1111,20 @@
             this.pnlEnabelHPicture.Size = new System.Drawing.Size(629, 1087);
             this.pnlEnabelHPicture.TabIndex = 8;
             // 
+            // chkEnabledShabHPicture
+            // 
+            this.chkEnabledShabHPicture.AutoSize = true;
+            this.chkEnabledShabHPicture.Location = new System.Drawing.Point(510, 382);
+            this.chkEnabledShabHPicture.Name = "chkEnabledShabHPicture";
+            this.chkEnabledShabHPicture.Size = new System.Drawing.Size(104, 21);
+            this.chkEnabledShabHPicture.TabIndex = 14;
+            this.chkEnabledShabHPicture.Text = "启用Shab图库";
+            this.chkEnabledShabHPicture.UseVisualStyleBackColor = true;
+            // 
             // chkEnabledLoliconHPicture
             // 
             this.chkEnabledLoliconHPicture.AutoSize = true;
-            this.chkEnabledLoliconHPicture.Location = new System.Drawing.Point(510, 293);
+            this.chkEnabledLoliconHPicture.Location = new System.Drawing.Point(510, 268);
             this.chkEnabledLoliconHPicture.Name = "chkEnabledLoliconHPicture";
             this.chkEnabledLoliconHPicture.Size = new System.Drawing.Size(116, 21);
             this.chkEnabledLoliconHPicture.TabIndex = 14;
@@ -1564,7 +1576,7 @@
             // chkSize1200
             // 
             this.chkSize1200.AutoSize = true;
-            this.chkSize1200.Location = new System.Drawing.Point(510, 697);
+            this.chkSize1200.Location = new System.Drawing.Point(510, 298);
             this.chkSize1200.Margin = new System.Windows.Forms.Padding(4);
             this.chkSize1200.Name = "chkSize1200";
             this.chkSize1200.Size = new System.Drawing.Size(103, 21);
@@ -2094,15 +2106,15 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
-            // chkEnabledShabHPicture
+            // chkShabDontRevokeWithOutR18
             // 
-            this.chkEnabledShabHPicture.AutoSize = true;
-            this.chkEnabledShabHPicture.Location = new System.Drawing.Point(510, 401);
-            this.chkEnabledShabHPicture.Name = "chkEnabledShabHPicture";
-            this.chkEnabledShabHPicture.Size = new System.Drawing.Size(104, 21);
-            this.chkEnabledShabHPicture.TabIndex = 14;
-            this.chkEnabledShabHPicture.Text = "启用Shab图库";
-            this.chkEnabledShabHPicture.UseVisualStyleBackColor = true;
+            this.chkShabDontRevokeWithOutR18.AutoSize = true;
+            this.chkShabDontRevokeWithOutR18.Location = new System.Drawing.Point(510, 409);
+            this.chkShabDontRevokeWithOutR18.Name = "chkShabDontRevokeWithOutR18";
+            this.chkShabDontRevokeWithOutR18.Size = new System.Drawing.Size(102, 21);
+            this.chkShabDontRevokeWithOutR18.TabIndex = 14;
+            this.chkShabDontRevokeWithOutR18.Text = "非R-18不撤回";
+            this.chkShabDontRevokeWithOutR18.UseVisualStyleBackColor = true;
             // 
             // FrmAppSetting
             // 
@@ -2317,5 +2329,6 @@
         private System.Windows.Forms.TextBox txbShabHPictureEnd;
         private System.Windows.Forms.CheckBox chkEnabledLoliconHPicture;
         private System.Windows.Forms.CheckBox chkEnabledShabHPicture;
+        private System.Windows.Forms.CheckBox chkShabDontRevokeWithOutR18;
     }
 }

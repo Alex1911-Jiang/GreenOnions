@@ -251,6 +251,9 @@ namespace GreenOnions.Utility.Helper
 			string strHPictureWhiteNoLimit = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNameHPicture, nameof(BotInfo.HPictureWhiteNoLimit));
 			if (!string.IsNullOrEmpty(strHPictureWhiteNoLimit))
 				BotInfo.HPictureWhiteNoLimit = Convert.ToBoolean(strHPictureWhiteNoLimit);
+			string strShabDontRevokeWithOutR18 = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, BotInfo.JsonNodeNameHPicture, nameof(BotInfo.ShabDontRevokeWithOutR18));
+			if (!string.IsNullOrEmpty(strShabDontRevokeWithOutR18))
+				BotInfo.ShabDontRevokeWithOutR18 = Convert.ToBoolean(strShabDontRevokeWithOutR18);
 			#endregion -- 色图属性 --
 
 		}

@@ -652,6 +652,20 @@ namespace GreenOnions.Utility
                 return false;
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabHPictureEndCmdNull), value.ToString());
+        } 
+        
+        /// <summary>
+        /// Shab图库非R-18是否不撤回
+        /// </summary>
+        public static bool ShabDontRevokeWithOutR18
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabDontRevokeWithOutR18));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabDontRevokeWithOutR18), value.ToString());
         }
 
         /// <summary>
