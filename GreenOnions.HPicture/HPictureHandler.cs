@@ -166,7 +166,7 @@ namespace GreenOnions.HPicture
                         return;
                     }
                     IEnumerable<ShabHPictureItem> enumImg = ja.Select(i => new ShabHPictureItem(i["id"].ToString(), i["link"].ToString(), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
-                    string addresses = string.Join("\r\n", enumImg.Select(l => l.Link));
+                    string addresses = string.Join("\r\n", enumImg.Select(l => l.Source));
                     SendMessage(new[] { new PlainMessage(addresses) });
                     //包含twimg.com的图墙内无法访问, 暂时不处理
 
@@ -243,7 +243,7 @@ namespace GreenOnions.HPicture
                         Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.Link, imgName);
                         if (ms == null)
                         {
-                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", item.Source).Replace("<机器人名称>", BotInfo.BotName)) });
+                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", item.Link).Replace("<机器人名称>", BotInfo.BotName)) });
                             return;
                         }
                         imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片
