@@ -14,6 +14,16 @@ namespace GreenOnions.BotMain
         {
             if (BotInfo.BannedGroup.Contains(e.Sender.Group.Id)) return false;
             if (BotInfo.BannedUser.Contains(e.Sender.Id)) return false;
+            if (BotInfo.DebugMode)
+            {
+                if (BotInfo.DebugReplyAdminOnly)
+                    if (!BotInfo.AdminQQ.Contains(e.Sender.Id))
+                        return false;
+                if (BotInfo.OnlyReplyDebugGroup)
+                    if (!BotInfo.DebugGroups.Contains(e.Sender.Group.Id))
+                        return false;
+            }
+            
             QuoteMessage quoteMessage = new QuoteMessage((e.Chain[0] as SourceMessage).Id, e.Sender.Group.Id, e.Sender.Id, e.Sender.Id, null);
             if (e.Chain.Length > 1)  //普通消息
             {

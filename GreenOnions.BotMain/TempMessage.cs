@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace GreenOnions.BotMain
 {
-    public class FriendMessage : IFriendMessage
+    public class TempMessage : ITempMessage
     {
-        async Task<bool> IFriendMessage.FriendMessage(MiraiHttpSession session, IFriendMessageEventArgs e)
+        async Task<bool> ITempMessage.TempMessage(MiraiHttpSession session, ITempMessageEventArgs e)
         {
             if (BotInfo.BannedUser.Contains(e.Sender.Id)) return false;
             if (BotInfo.DebugMode)
@@ -28,7 +28,7 @@ namespace GreenOnions.BotMain
                     case "Image":
                         for (int i = 1; i < e.Chain.Length; i++)
                         {
-                            ImageMessage imgMsg = e.Chain[i] as ImageMessage; 
+                            ImageMessage imgMsg = e.Chain[i] as ImageMessage;
                             await SearchPictureHandler.SearchPicture(session, imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendFriendMessageAsync(e.Sender.Id, msg));
                         }
                         break;

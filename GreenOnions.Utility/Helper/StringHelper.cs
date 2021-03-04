@@ -7,6 +7,7 @@ namespace GreenOnions.Utility.Helper
 {
     public static class StringHelper
     {
+
         #region -- 中文数字转换 --
         /// <summary>
         /// 中文转数字
@@ -217,6 +218,19 @@ namespace GreenOnions.Utility.Helper
                 break;
             }
             return result;
+        }
+
+        public static string ReplaceGreenOnionsTags(this string OriginString, params KeyValuePair<string, string>[] CustomTags)
+        {
+            OriginString = AssemblyHelper.ReplacePropertyChineseNameToValue(OriginString);
+            if (CustomTags != null)
+            {
+                foreach (var tag in CustomTags)
+                {
+                    OriginString = OriginString.Replace($"<{tag.Key}>", tag.Value);
+                }
+            }
+            return OriginString;
         }
     }
 }

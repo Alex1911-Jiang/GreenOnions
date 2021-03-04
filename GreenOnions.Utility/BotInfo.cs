@@ -13,6 +13,7 @@ namespace GreenOnions.Utility
         public const string JsonNodeNameTranslate = "Translate";
 
         #region -- 公共属性 --
+        [PropertyChineseName("机器人QQ号")]
         public static long QQId
         {
             get
@@ -45,6 +46,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 机器人名称
         /// </summary>
+        [PropertyChineseName("机器人名称")]
         public static string BotName
         {
             get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(BotName)) ?? "葱葱";
@@ -77,7 +79,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(ImageCache));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
+                return true;
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(ImageCache), value.ToString());
         }
@@ -139,6 +141,67 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(AccelerateUrl));
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(AccelerateUrl), value);
         }
+
+        /// <summary>
+        /// 是否启用调试模式
+        /// </summary>
+        public static bool DebugMode
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(DebugMode));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(DebugMode), value.ToString());
+        }
+
+        /// <summary>
+        /// 调试组
+        /// </summary>
+        public static IEnumerable<long> DebugGroups
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(DebugGroups));
+                if (string.IsNullOrEmpty(strValue))
+                {
+                    return new List<long>();
+                }
+                return strValue.Split(';').Select(long.Parse);
+
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(DebugGroups), string.Join(";", value));
+        }
+
+        /// <summary>
+        /// 是否启用调试模式
+        /// </summary>
+        public static bool OnlyReplyDebugGroup
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(OnlyReplyDebugGroup));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(OnlyReplyDebugGroup), value.ToString());
+        }
+
+        /// <summary>
+        /// 是否启用调试模式
+        /// </summary>
+        public static bool DebugReplyAdminOnly
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(DebugReplyAdminOnly));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(DebugReplyAdminOnly), value.ToString());
+        }
+
         #endregion -- 公共属性 --
 
         #region -- 搜图属性 --
@@ -277,6 +340,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 相似度阈值
         /// </summary>
+        [PropertyChineseName("相似度阈值")]
         public static int SearchLowSimilarity
         {
             get

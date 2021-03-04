@@ -27,8 +27,6 @@ namespace GreenOnions.BotMainManagerWindow
 					OpenSetting();
 				}
 
-				ConfigHelper.ReadConfig();
-
 				txbQQ.Text = BotInfo.QQId.ToString();
 				txbIP.Text = BotInfo.IP;
 				txbPort.Text = BotInfo.Port;
@@ -41,10 +39,11 @@ namespace GreenOnions.BotMainManagerWindow
 			#endregion -- 读取配置 --
 		}
 
-		public async Task Main(long qqId, string ip, int port, string autoKey)
+        public async Task Main(long qqId, string ip, int port, string autoKey)
 		{
 			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, autoKey);
 			await using MiraiHttpSession session = new MiraiHttpSession();
+			session.AddPlugin(new TempMessage());
 			session.AddPlugin(new FriendMessage());
 			session.AddPlugin(new GroupMessage());
 			bool stop = false;

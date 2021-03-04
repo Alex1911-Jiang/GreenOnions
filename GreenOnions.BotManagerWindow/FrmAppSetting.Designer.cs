@@ -30,12 +30,21 @@
         {
             this.txbBotName = new System.Windows.Forms.TextBox();
             this.lblBotName = new System.Windows.Forms.Label();
-            this.lblBotInfo = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.txbAddAdmin = new System.Windows.Forms.TextBox();
             this.lblAdmin = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabBot = new System.Windows.Forms.TabPage();
+            this.pnlDebugMode = new System.Windows.Forms.Panel();
+            this.chkOnlyReplyDebugGroup = new System.Windows.Forms.CheckBox();
+            this.lstDebugGroups = new System.Windows.Forms.ListView();
+            this.chkDebugReplyAdminOnly = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblDebugGroup = new System.Windows.Forms.Label();
+            this.btnAddDebugGroup = new System.Windows.Forms.Button();
+            this.btnRemoveDebugGroup = new System.Windows.Forms.Button();
+            this.txbAddDebugGroup = new System.Windows.Forms.TextBox();
+            this.chkDebugMode = new System.Windows.Forms.CheckBox();
             this.chkImageCache = new System.Windows.Forms.CheckBox();
             this.txbBanUser = new System.Windows.Forms.TextBox();
             this.txbBanGroup = new System.Windows.Forms.TextBox();
@@ -108,6 +117,7 @@
             this.chkTranslateEnabled = new System.Windows.Forms.CheckBox();
             this.tabHPicture = new System.Windows.Forms.TabPage();
             this.pnlEnabelHPicture = new System.Windows.Forms.Panel();
+            this.chkShabDontRevokeWithOutR18 = new System.Windows.Forms.CheckBox();
             this.chkEnabledShabHPicture = new System.Windows.Forms.CheckBox();
             this.chkEnabledLoliconHPicture = new System.Windows.Forms.CheckBox();
             this.lblMultithreading = new System.Windows.Forms.Label();
@@ -203,9 +213,9 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
-            this.chkShabDontRevokeWithOutR18 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
+            this.pnlDebugMode.SuspendLayout();
             this.tabSearchPicture.SuspendLayout();
             this.pnlSearchPicture.SuspendLayout();
             this.pnlCheckPorn.SuspendLayout();
@@ -234,16 +244,6 @@
             this.lblBotName.TabIndex = 1;
             this.lblBotName.Text = "机器人名称：";
             // 
-            // lblBotInfo
-            // 
-            this.lblBotInfo.AutoSize = true;
-            this.lblBotInfo.Location = new System.Drawing.Point(130, 57);
-            this.lblBotInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblBotInfo.Name = "lblBotInfo";
-            this.lblBotInfo.Size = new System.Drawing.Size(305, 17);
-            this.lblBotInfo.TabIndex = 2;
-            this.lblBotInfo.Text = "用于在群组中呼叫机器人的名称，不能超过255个字符。";
-            // 
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -259,7 +259,7 @@
             // 
             // txbAddAdmin
             // 
-            this.txbAddAdmin.Location = new System.Drawing.Point(450, 119);
+            this.txbAddAdmin.Location = new System.Drawing.Point(450, 75);
             this.txbAddAdmin.Margin = new System.Windows.Forms.Padding(4);
             this.txbAddAdmin.Name = "txbAddAdmin";
             this.txbAddAdmin.ShortcutsEnabled = false;
@@ -271,12 +271,12 @@
             // lblAdmin
             // 
             this.lblAdmin.AutoSize = true;
-            this.lblAdmin.Location = new System.Drawing.Point(4, 98);
+            this.lblAdmin.Location = new System.Drawing.Point(7, 54);
             this.lblAdmin.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAdmin.Name = "lblAdmin";
             this.lblAdmin.Size = new System.Drawing.Size(112, 17);
             this.lblAdmin.TabIndex = 1;
-            this.lblAdmin.Text = "启用的管理员QQ：";
+            this.lblAdmin.Text = "机器人管理员QQ：";
             // 
             // tabControl1
             // 
@@ -297,6 +297,8 @@
             // 
             // tabBot
             // 
+            this.tabBot.Controls.Add(this.pnlDebugMode);
+            this.tabBot.Controls.Add(this.chkDebugMode);
             this.tabBot.Controls.Add(this.chkImageCache);
             this.tabBot.Controls.Add(this.txbBanUser);
             this.tabBot.Controls.Add(this.txbBanGroup);
@@ -318,7 +320,6 @@
             this.tabBot.Controls.Add(this.lblAdmin);
             this.tabBot.Controls.Add(this.txbBotName);
             this.tabBot.Controls.Add(this.lblImageCache);
-            this.tabBot.Controls.Add(this.lblBotInfo);
             this.tabBot.Controls.Add(this.lblBotName);
             this.tabBot.Location = new System.Drawing.Point(4, 26);
             this.tabBot.Margin = new System.Windows.Forms.Padding(4);
@@ -329,10 +330,124 @@
             this.tabBot.Text = "机器人设置";
             this.tabBot.UseVisualStyleBackColor = true;
             // 
+            // pnlDebugMode
+            // 
+            this.pnlDebugMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlDebugMode.Controls.Add(this.chkOnlyReplyDebugGroup);
+            this.pnlDebugMode.Controls.Add(this.lstDebugGroups);
+            this.pnlDebugMode.Controls.Add(this.chkDebugReplyAdminOnly);
+            this.pnlDebugMode.Controls.Add(this.label1);
+            this.pnlDebugMode.Controls.Add(this.lblDebugGroup);
+            this.pnlDebugMode.Controls.Add(this.btnAddDebugGroup);
+            this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
+            this.pnlDebugMode.Controls.Add(this.txbAddDebugGroup);
+            this.pnlDebugMode.Enabled = false;
+            this.pnlDebugMode.Location = new System.Drawing.Point(7, 528);
+            this.pnlDebugMode.Name = "pnlDebugMode";
+            this.pnlDebugMode.Size = new System.Drawing.Size(635, 156);
+            this.pnlDebugMode.TabIndex = 12;
+            // 
+            // chkOnlyReplyDebugGroup
+            // 
+            this.chkOnlyReplyDebugGroup.AutoSize = true;
+            this.chkOnlyReplyDebugGroup.Location = new System.Drawing.Point(125, 101);
+            this.chkOnlyReplyDebugGroup.Name = "chkOnlyReplyDebugGroup";
+            this.chkOnlyReplyDebugGroup.Size = new System.Drawing.Size(147, 21);
+            this.chkOnlyReplyDebugGroup.TabIndex = 12;
+            this.chkOnlyReplyDebugGroup.Text = "只响应调试群组的消息";
+            this.chkOnlyReplyDebugGroup.UseVisualStyleBackColor = true;
+            // 
+            // lstDebugGroups
+            // 
+            this.lstDebugGroups.FullRowSelect = true;
+            this.lstDebugGroups.HideSelection = false;
+            this.lstDebugGroups.Location = new System.Drawing.Point(125, 9);
+            this.lstDebugGroups.Margin = new System.Windows.Forms.Padding(4);
+            this.lstDebugGroups.Name = "lstDebugGroups";
+            this.lstDebugGroups.Size = new System.Drawing.Size(186, 85);
+            this.lstDebugGroups.TabIndex = 3;
+            this.lstDebugGroups.UseCompatibleStateImageBehavior = false;
+            this.lstDebugGroups.View = System.Windows.Forms.View.List;
+            // 
+            // chkDebugReplyAdminOnly
+            // 
+            this.chkDebugReplyAdminOnly.AutoSize = true;
+            this.chkDebugReplyAdminOnly.Location = new System.Drawing.Point(125, 128);
+            this.chkDebugReplyAdminOnly.Name = "chkDebugReplyAdminOnly";
+            this.chkDebugReplyAdminOnly.Size = new System.Drawing.Size(195, 21);
+            this.chkDebugReplyAdminOnly.TabIndex = 11;
+            this.chkDebugReplyAdminOnly.Text = "只响应来自机器人管理员的消息";
+            this.chkDebugReplyAdminOnly.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(441, 9);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(116, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "添加调试模式群号：";
+            // 
+            // lblDebugGroup
+            // 
+            this.lblDebugGroup.AutoSize = true;
+            this.lblDebugGroup.Location = new System.Drawing.Point(5, 20);
+            this.lblDebugGroup.Name = "lblDebugGroup";
+            this.lblDebugGroup.Size = new System.Drawing.Size(68, 17);
+            this.lblDebugGroup.TabIndex = 10;
+            this.lblDebugGroup.Text = "调试群组：";
+            // 
+            // btnAddDebugGroup
+            // 
+            this.btnAddDebugGroup.Location = new System.Drawing.Point(335, 30);
+            this.btnAddDebugGroup.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAddDebugGroup.Name = "btnAddDebugGroup";
+            this.btnAddDebugGroup.Size = new System.Drawing.Size(88, 23);
+            this.btnAddDebugGroup.TabIndex = 4;
+            this.btnAddDebugGroup.Text = "<<添加<<";
+            this.btnAddDebugGroup.UseVisualStyleBackColor = true;
+            this.btnAddDebugGroup.Click += new System.EventHandler(this.btnAddDebugGroup_Click);
+            // 
+            // btnRemoveDebugGroup
+            // 
+            this.btnRemoveDebugGroup.Location = new System.Drawing.Point(335, 61);
+            this.btnRemoveDebugGroup.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRemoveDebugGroup.Name = "btnRemoveDebugGroup";
+            this.btnRemoveDebugGroup.Size = new System.Drawing.Size(88, 23);
+            this.btnRemoveDebugGroup.TabIndex = 4;
+            this.btnRemoveDebugGroup.Text = ">>移除>>";
+            this.btnRemoveDebugGroup.UseVisualStyleBackColor = true;
+            this.btnRemoveDebugGroup.Click += new System.EventHandler(this.btnRemoveDebugGroup_Click);
+            // 
+            // txbAddDebugGroup
+            // 
+            this.txbAddDebugGroup.Location = new System.Drawing.Point(443, 30);
+            this.txbAddDebugGroup.Margin = new System.Windows.Forms.Padding(4);
+            this.txbAddDebugGroup.Name = "txbAddDebugGroup";
+            this.txbAddDebugGroup.ShortcutsEnabled = false;
+            this.txbAddDebugGroup.Size = new System.Drawing.Size(186, 23);
+            this.txbAddDebugGroup.TabIndex = 0;
+            this.txbAddDebugGroup.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
+            this.txbAddDebugGroup.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            // 
+            // chkDebugMode
+            // 
+            this.chkDebugMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkDebugMode.AutoSize = true;
+            this.chkDebugMode.Location = new System.Drawing.Point(7, 501);
+            this.chkDebugMode.Name = "chkDebugMode";
+            this.chkDebugMode.Size = new System.Drawing.Size(75, 21);
+            this.chkDebugMode.TabIndex = 9;
+            this.chkDebugMode.Text = "调试模式";
+            this.chkDebugMode.UseVisualStyleBackColor = true;
+            this.chkDebugMode.CheckedChanged += new System.EventHandler(this.chkDebugMode_CheckedChanged);
+            // 
             // chkImageCache
             // 
             this.chkImageCache.AutoSize = true;
-            this.chkImageCache.Location = new System.Drawing.Point(7, 198);
+            this.chkImageCache.Location = new System.Drawing.Point(7, 154);
             this.chkImageCache.Name = "chkImageCache";
             this.chkImageCache.Size = new System.Drawing.Size(111, 21);
             this.chkImageCache.TabIndex = 8;
@@ -341,7 +456,7 @@
             // 
             // txbBanUser
             // 
-            this.txbBanUser.Location = new System.Drawing.Point(450, 409);
+            this.txbBanUser.Location = new System.Drawing.Point(450, 349);
             this.txbBanUser.Margin = new System.Windows.Forms.Padding(4);
             this.txbBanUser.Name = "txbBanUser";
             this.txbBanUser.ShortcutsEnabled = false;
@@ -352,7 +467,7 @@
             // 
             // txbBanGroup
             // 
-            this.txbBanGroup.Location = new System.Drawing.Point(450, 263);
+            this.txbBanGroup.Location = new System.Drawing.Point(450, 203);
             this.txbBanGroup.Margin = new System.Windows.Forms.Padding(4);
             this.txbBanGroup.Name = "txbBanGroup";
             this.txbBanGroup.ShortcutsEnabled = false;
@@ -363,67 +478,67 @@
             // 
             // btnRemoveBanUser
             // 
-            this.btnRemoveBanUser.Location = new System.Drawing.Point(342, 450);
+            this.btnRemoveBanUser.Location = new System.Drawing.Point(342, 390);
             this.btnRemoveBanUser.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveBanUser.Name = "btnRemoveBanUser";
-            this.btnRemoveBanUser.Size = new System.Drawing.Size(100, 23);
+            this.btnRemoveBanUser.Size = new System.Drawing.Size(88, 23);
             this.btnRemoveBanUser.TabIndex = 4;
-            this.btnRemoveBanUser.Text = ">>>移除>>>";
+            this.btnRemoveBanUser.Text = ">>移除>>";
             this.btnRemoveBanUser.UseVisualStyleBackColor = true;
             this.btnRemoveBanUser.Click += new System.EventHandler(this.btnRemoveBanUser_Click);
             // 
             // btnRemoveBanGroup
             // 
-            this.btnRemoveBanGroup.Location = new System.Drawing.Point(342, 304);
+            this.btnRemoveBanGroup.Location = new System.Drawing.Point(342, 244);
             this.btnRemoveBanGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveBanGroup.Name = "btnRemoveBanGroup";
-            this.btnRemoveBanGroup.Size = new System.Drawing.Size(100, 23);
+            this.btnRemoveBanGroup.Size = new System.Drawing.Size(88, 23);
             this.btnRemoveBanGroup.TabIndex = 4;
-            this.btnRemoveBanGroup.Text = ">>>移除>>>";
+            this.btnRemoveBanGroup.Text = ">>移除>>";
             this.btnRemoveBanGroup.UseVisualStyleBackColor = true;
             this.btnRemoveBanGroup.Click += new System.EventHandler(this.btnRemoveBanGroup_Click);
             // 
             // btnRemoveAdmin
             // 
-            this.btnRemoveAdmin.Location = new System.Drawing.Point(342, 160);
+            this.btnRemoveAdmin.Location = new System.Drawing.Point(342, 106);
             this.btnRemoveAdmin.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveAdmin.Name = "btnRemoveAdmin";
-            this.btnRemoveAdmin.Size = new System.Drawing.Size(100, 23);
+            this.btnRemoveAdmin.Size = new System.Drawing.Size(88, 23);
             this.btnRemoveAdmin.TabIndex = 4;
-            this.btnRemoveAdmin.Text = ">>>移除>>>";
+            this.btnRemoveAdmin.Text = ">>移除>>";
             this.btnRemoveAdmin.UseVisualStyleBackColor = true;
             this.btnRemoveAdmin.Click += new System.EventHandler(this.btnRemoveAdmin_Click);
             // 
             // btnAddBanUser
             // 
-            this.btnAddBanUser.Location = new System.Drawing.Point(342, 409);
+            this.btnAddBanUser.Location = new System.Drawing.Point(342, 349);
             this.btnAddBanUser.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddBanUser.Name = "btnAddBanUser";
-            this.btnAddBanUser.Size = new System.Drawing.Size(100, 23);
+            this.btnAddBanUser.Size = new System.Drawing.Size(88, 23);
             this.btnAddBanUser.TabIndex = 4;
-            this.btnAddBanUser.Text = "<<<添加<<<";
+            this.btnAddBanUser.Text = "<<添加<<";
             this.btnAddBanUser.UseVisualStyleBackColor = true;
             this.btnAddBanUser.Click += new System.EventHandler(this.btnAddBanUser_Click);
             // 
             // btnAddBanGroup
             // 
-            this.btnAddBanGroup.Location = new System.Drawing.Point(342, 263);
+            this.btnAddBanGroup.Location = new System.Drawing.Point(342, 203);
             this.btnAddBanGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddBanGroup.Name = "btnAddBanGroup";
-            this.btnAddBanGroup.Size = new System.Drawing.Size(100, 23);
+            this.btnAddBanGroup.Size = new System.Drawing.Size(88, 23);
             this.btnAddBanGroup.TabIndex = 4;
-            this.btnAddBanGroup.Text = "<<<添加<<<";
+            this.btnAddBanGroup.Text = "<<添加<<";
             this.btnAddBanGroup.UseVisualStyleBackColor = true;
             this.btnAddBanGroup.Click += new System.EventHandler(this.btnAddBanGroup_Click);
             // 
             // btnAddAdmin
             // 
-            this.btnAddAdmin.Location = new System.Drawing.Point(342, 119);
+            this.btnAddAdmin.Location = new System.Drawing.Point(342, 75);
             this.btnAddAdmin.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddAdmin.Name = "btnAddAdmin";
-            this.btnAddAdmin.Size = new System.Drawing.Size(100, 23);
+            this.btnAddAdmin.Size = new System.Drawing.Size(88, 23);
             this.btnAddAdmin.TabIndex = 4;
-            this.btnAddAdmin.Text = "<<<添加<<<";
+            this.btnAddAdmin.Text = "<<添加<<";
             this.btnAddAdmin.UseVisualStyleBackColor = true;
             this.btnAddAdmin.Click += new System.EventHandler(this.btnAddAdmin_Click);
             // 
@@ -431,7 +546,7 @@
             // 
             this.lstBannedUser.FullRowSelect = true;
             this.lstBannedUser.HideSelection = false;
-            this.lstBannedUser.Location = new System.Drawing.Point(132, 388);
+            this.lstBannedUser.Location = new System.Drawing.Point(132, 328);
             this.lstBannedUser.Margin = new System.Windows.Forms.Padding(4);
             this.lstBannedUser.Name = "lstBannedUser";
             this.lstBannedUser.Size = new System.Drawing.Size(186, 136);
@@ -442,7 +557,7 @@
             // lblBanUser
             // 
             this.lblBanUser.AutoSize = true;
-            this.lblBanUser.Location = new System.Drawing.Point(448, 388);
+            this.lblBanUser.Location = new System.Drawing.Point(448, 328);
             this.lblBanUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBanUser.Name = "lblBanUser";
             this.lblBanUser.Size = new System.Drawing.Size(116, 17);
@@ -453,7 +568,7 @@
             // 
             this.lstBannedGroup.FullRowSelect = true;
             this.lstBannedGroup.HideSelection = false;
-            this.lstBannedGroup.Location = new System.Drawing.Point(132, 242);
+            this.lstBannedGroup.Location = new System.Drawing.Point(132, 182);
             this.lstBannedGroup.Margin = new System.Windows.Forms.Padding(4);
             this.lstBannedGroup.Name = "lstBannedGroup";
             this.lstBannedGroup.Size = new System.Drawing.Size(186, 136);
@@ -464,7 +579,7 @@
             // lblBanGroup
             // 
             this.lblBanGroup.AutoSize = true;
-            this.lblBanGroup.Location = new System.Drawing.Point(448, 242);
+            this.lblBanGroup.Location = new System.Drawing.Point(448, 182);
             this.lblBanGroup.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBanGroup.Name = "lblBanGroup";
             this.lblBanGroup.Size = new System.Drawing.Size(104, 17);
@@ -474,7 +589,7 @@
             // lblBannedUser
             // 
             this.lblBannedUser.AutoSize = true;
-            this.lblBannedUser.Location = new System.Drawing.Point(7, 388);
+            this.lblBannedUser.Location = new System.Drawing.Point(7, 328);
             this.lblBannedUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBannedUser.Name = "lblBannedUser";
             this.lblBannedUser.Size = new System.Drawing.Size(80, 17);
@@ -485,7 +600,7 @@
             // 
             this.lstAdmins.FullRowSelect = true;
             this.lstAdmins.HideSelection = false;
-            this.lstAdmins.Location = new System.Drawing.Point(132, 98);
+            this.lstAdmins.Location = new System.Drawing.Point(132, 54);
             this.lstAdmins.Margin = new System.Windows.Forms.Padding(4);
             this.lstAdmins.Name = "lstAdmins";
             this.lstAdmins.Size = new System.Drawing.Size(186, 85);
@@ -496,7 +611,7 @@
             // lblBannedGroup
             // 
             this.lblBannedGroup.AutoSize = true;
-            this.lblBannedGroup.Location = new System.Drawing.Point(7, 242);
+            this.lblBannedGroup.Location = new System.Drawing.Point(7, 182);
             this.lblBannedGroup.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBannedGroup.Name = "lblBannedGroup";
             this.lblBannedGroup.Size = new System.Drawing.Size(68, 17);
@@ -506,7 +621,7 @@
             // lblAddAdmin
             // 
             this.lblAddAdmin.AutoSize = true;
-            this.lblAddAdmin.Location = new System.Drawing.Point(448, 98);
+            this.lblAddAdmin.Location = new System.Drawing.Point(448, 54);
             this.lblAddAdmin.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAddAdmin.Name = "lblAddAdmin";
             this.lblAddAdmin.Size = new System.Drawing.Size(100, 17);
@@ -516,7 +631,7 @@
             // lblImageCache
             // 
             this.lblImageCache.AutoSize = true;
-            this.lblImageCache.Location = new System.Drawing.Point(132, 199);
+            this.lblImageCache.Location = new System.Drawing.Point(132, 155);
             this.lblImageCache.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblImageCache.Name = "lblImageCache";
             this.lblImageCache.Size = new System.Drawing.Size(314, 17);
@@ -1105,11 +1220,21 @@
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureCount);
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureR18);
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureUnit);
-            this.pnlEnabelHPicture.Location = new System.Drawing.Point(4, 31);
+            this.pnlEnabelHPicture.Location = new System.Drawing.Point(4, 37);
             this.pnlEnabelHPicture.Margin = new System.Windows.Forms.Padding(4);
             this.pnlEnabelHPicture.Name = "pnlEnabelHPicture";
             this.pnlEnabelHPicture.Size = new System.Drawing.Size(629, 1087);
             this.pnlEnabelHPicture.TabIndex = 8;
+            // 
+            // chkShabDontRevokeWithOutR18
+            // 
+            this.chkShabDontRevokeWithOutR18.AutoSize = true;
+            this.chkShabDontRevokeWithOutR18.Location = new System.Drawing.Point(510, 409);
+            this.chkShabDontRevokeWithOutR18.Name = "chkShabDontRevokeWithOutR18";
+            this.chkShabDontRevokeWithOutR18.Size = new System.Drawing.Size(102, 21);
+            this.chkShabDontRevokeWithOutR18.TabIndex = 14;
+            this.chkShabDontRevokeWithOutR18.Text = "非R-18不撤回";
+            this.chkShabDontRevokeWithOutR18.UseVisualStyleBackColor = true;
             // 
             // chkEnabledShabHPicture
             // 
@@ -1406,6 +1531,7 @@
             // 
             this.txbDownloadFailReply.Location = new System.Drawing.Point(141, 1034);
             this.txbDownloadFailReply.Margin = new System.Windows.Forms.Padding(4);
+            this.txbDownloadFailReply.Multiline = true;
             this.txbDownloadFailReply.Name = "txbDownloadFailReply";
             this.txbDownloadFailReply.Size = new System.Drawing.Size(469, 23);
             this.txbDownloadFailReply.TabIndex = 8;
@@ -1414,6 +1540,7 @@
             // 
             this.txbHPictureNoResultReply.Location = new System.Drawing.Point(141, 1004);
             this.txbHPictureNoResultReply.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureNoResultReply.Multiline = true;
             this.txbHPictureNoResultReply.Name = "txbHPictureNoResultReply";
             this.txbHPictureNoResultReply.Size = new System.Drawing.Size(469, 23);
             this.txbHPictureNoResultReply.TabIndex = 8;
@@ -1422,6 +1549,7 @@
             // 
             this.txbHPictureErrorReplyReply.Location = new System.Drawing.Point(141, 974);
             this.txbHPictureErrorReplyReply.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureErrorReplyReply.Multiline = true;
             this.txbHPictureErrorReplyReply.Name = "txbHPictureErrorReplyReply";
             this.txbHPictureErrorReplyReply.Size = new System.Drawing.Size(469, 23);
             this.txbHPictureErrorReplyReply.TabIndex = 8;
@@ -1430,6 +1558,7 @@
             // 
             this.txbOutOfLimitReply.Location = new System.Drawing.Point(141, 944);
             this.txbOutOfLimitReply.Margin = new System.Windows.Forms.Padding(4);
+            this.txbOutOfLimitReply.Multiline = true;
             this.txbOutOfLimitReply.Name = "txbOutOfLimitReply";
             this.txbOutOfLimitReply.Size = new System.Drawing.Size(469, 23);
             this.txbOutOfLimitReply.TabIndex = 8;
@@ -1447,6 +1576,7 @@
             // 
             this.txbCDUnreadyReply.Location = new System.Drawing.Point(141, 914);
             this.txbCDUnreadyReply.Margin = new System.Windows.Forms.Padding(4);
+            this.txbCDUnreadyReply.Multiline = true;
             this.txbCDUnreadyReply.Name = "txbCDUnreadyReply";
             this.txbCDUnreadyReply.Size = new System.Drawing.Size(469, 23);
             this.txbCDUnreadyReply.TabIndex = 8;
@@ -2106,16 +2236,6 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
-            // chkShabDontRevokeWithOutR18
-            // 
-            this.chkShabDontRevokeWithOutR18.AutoSize = true;
-            this.chkShabDontRevokeWithOutR18.Location = new System.Drawing.Point(510, 409);
-            this.chkShabDontRevokeWithOutR18.Name = "chkShabDontRevokeWithOutR18";
-            this.chkShabDontRevokeWithOutR18.Size = new System.Drawing.Size(102, 21);
-            this.chkShabDontRevokeWithOutR18.TabIndex = 14;
-            this.chkShabDontRevokeWithOutR18.Text = "非R-18不撤回";
-            this.chkShabDontRevokeWithOutR18.UseVisualStyleBackColor = true;
-            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -2132,6 +2252,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabBot.ResumeLayout(false);
             this.tabBot.PerformLayout();
+            this.pnlDebugMode.ResumeLayout(false);
+            this.pnlDebugMode.PerformLayout();
             this.tabSearchPicture.ResumeLayout(false);
             this.tabSearchPicture.PerformLayout();
             this.pnlSearchPicture.ResumeLayout(false);
@@ -2156,7 +2278,6 @@
 
         private System.Windows.Forms.TextBox txbBotName;
         private System.Windows.Forms.Label lblBotName;
-        private System.Windows.Forms.Label lblBotInfo;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.TextBox txbAddAdmin;
         private System.Windows.Forms.Label lblAdmin;
@@ -2330,5 +2451,15 @@
         private System.Windows.Forms.CheckBox chkEnabledLoliconHPicture;
         private System.Windows.Forms.CheckBox chkEnabledShabHPicture;
         private System.Windows.Forms.CheckBox chkShabDontRevokeWithOutR18;
+        private System.Windows.Forms.Panel pnlDebugMode;
+        private System.Windows.Forms.ListView lstDebugGroups;
+        private System.Windows.Forms.CheckBox chkDebugReplyAdminOnly;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblDebugGroup;
+        private System.Windows.Forms.Button btnAddDebugGroup;
+        private System.Windows.Forms.Button btnRemoveDebugGroup;
+        private System.Windows.Forms.TextBox txbAddDebugGroup;
+        private System.Windows.Forms.CheckBox chkDebugMode;
+        private System.Windows.Forms.CheckBox chkOnlyReplyDebugGroup;
     }
 }

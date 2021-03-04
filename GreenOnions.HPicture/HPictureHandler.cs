@@ -216,7 +216,7 @@ namespace GreenOnions.HPicture
                         Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.URL, imgName);
                         if (ms == null)
                         {
-                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", item.Address))});
+                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Address)))});
                             return;
                         }
                         imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片
@@ -242,7 +242,7 @@ namespace GreenOnions.HPicture
                             Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.Link, imgName);
                             if (ms == null)
                             {
-                                SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.Replace("<URL>", item.Link).Replace("<机器人名称>", BotInfo.BotName)) });
+                                SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Link))) });
                                 return;
                             }
                             imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片

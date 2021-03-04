@@ -205,7 +205,7 @@ namespace GreenOnions.PictureSearcher
                         }
                         else
                         {
-                            string strLowSimilarity = BotInfo.SearchLowSimilarityReply.Replace("<相似度阈值>", BotInfo.SearchLowSimilarity.ToString());
+                            string strLowSimilarity = BotInfo.SearchLowSimilarityReply.ReplaceGreenOnionsTags();
                             if (BotInfo.SearchEnabledASCII2D)
                             {
                                 strLowSimilarity += "\r\n自动使用ASCII2D搜索。";
@@ -216,7 +216,7 @@ namespace GreenOnions.PictureSearcher
                         SendMessage(new[] { plain, imageMessage });
                         return;
                     }
-                    string strNoResult = BotInfo.SearchNoResultReply.Replace("<搜索类型>", "SauceNao");
+                    string strNoResult = BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", "SauceNao"));
                     if (BotInfo.SearchEnabledASCII2D)
                     {
                         strNoResult += "\r\n自动使用ASCII2D搜索。";
@@ -375,7 +375,7 @@ namespace GreenOnions.PictureSearcher
             }
             catch (Exception ex)
             {
-                imageMessage = new PlainMessage(BotInfo.SearchCheckPornErrorReply.Replace("<错误信息>", ex.Message));
+                imageMessage = new PlainMessage(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", ex.Message)));
             }
             return imageMessage;
         }

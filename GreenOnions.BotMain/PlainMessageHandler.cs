@@ -1,6 +1,7 @@
 ﻿using GreenOnions.HPicture;
 using GreenOnions.Translate;
 using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using Mirai_CSharp;
 using Mirai_CSharp.Models;
 using System;
@@ -14,12 +15,12 @@ namespace GreenOnions.BotMain
     {
         public static async void HandleGroupMesage(MiraiHttpSession session, IMessageBase[] Chain, IGroupMemberInfo sender, QuoteMessage quoteMessage)
         {
-            Regex regexSearchOn = new Regex(BotInfo.SearchModeOnCmd.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexSearchOff = new Regex(BotInfo.SearchModeOffCmd.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexTranslateTo = new Regex(BotInfo.TranslateToCMD.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexHPicture = new Regex(BotInfo.HPictureCmd.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexShabHPicture = new Regex(BotInfo.ShabHPictureCmd.Replace("<机器人名称>", BotInfo.BotName));
+            Regex regexSearchOn = new Regex(BotInfo.SearchModeOnCmd.ReplaceGreenOnionsTags());
+            Regex regexSearchOff = new Regex(BotInfo.SearchModeOffCmd.ReplaceGreenOnionsTags());
+            Regex regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags());
+            Regex regexTranslateTo = new Regex(BotInfo.TranslateToCMD.ReplaceGreenOnionsTags());
+            Regex regexHPicture = new Regex(BotInfo.HPictureCmd.ReplaceGreenOnionsTags());
+            Regex regexShabHPicture = new Regex(BotInfo.ShabHPictureCmd.ReplaceGreenOnionsTags());
             Regex regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
 
 
@@ -31,16 +32,16 @@ namespace GreenOnions.BotMain
                 if (Cache.SearchingPictures.ContainsKey(sender.Id))
                 {
                     Cache.SearchingPictures[sender.Id] = DateTime.Now.AddMinutes(1);
-                    await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchModeAlreadyOnReply.Replace("<机器人名称>", BotInfo.BotName)) }, quoteMessage.Id);
+                    await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchModeAlreadyOnReply.ReplaceGreenOnionsTags()) }, quoteMessage.Id);
                 }
                 else
                 {
                     Cache.SearchingPictures.Add(sender.Id, DateTime.Now.AddMinutes(1));
-                    await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchModeOnReply.Replace("<机器人名称>", BotInfo.BotName)) }, quoteMessage.Id);
+                    await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags()) }, quoteMessage.Id);
                     Cache.CheckSearchPictureTime(callback =>
                     {
                         Cache.SearchingPictures.Remove(sender.Id);
-                        session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchModeTimeOutReply.Replace("<机器人名称>", BotInfo.BotName)) }, quoteMessage.Id);
+                        session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsTags()) }, quoteMessage.Id);
                     });
                 }
             }
@@ -49,11 +50,11 @@ namespace GreenOnions.BotMain
                 if (Cache.SearchingPictures.ContainsKey(sender.Id))
                 {
                     Cache.SearchingPictures.Remove(sender.Id);
-                    await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchModeOffReply.Replace("<机器人名称>", BotInfo.BotName)) }, quoteMessage.Id);
+                    await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchModeOffReply.ReplaceGreenOnionsTags()) }, quoteMessage.Id);
                 }
                 else
                 {
-                    await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchModeAlreadyOffReply.Replace("<机器人名称>", BotInfo.BotName)) }, quoteMessage.Id);
+                    await session.SendGroupMessageAsync(sender.Group.Id, new[] { new PlainMessage(BotInfo.SearchModeAlreadyOffReply.ReplaceGreenOnionsTags()) }, quoteMessage.Id);
                 }
             }
             #endregion -- 连续搜图 --
@@ -235,14 +236,14 @@ namespace GreenOnions.BotMain
         }
 
 
-        public static async void HandleFriendMesage(MiraiHttpSession session, IMessageBase[] Chain, IFriendInfo sender)
+        public static async void HandleFriendMesage(MiraiHttpSession session, IMessageBase[] Chain, long qqId)
         {
-            Regex regexSearchOn = new Regex(BotInfo.SearchModeOnCmd.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexSearchOff = new Regex(BotInfo.SearchModeOffCmd.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexTranslateTo = new Regex(BotInfo.TranslateToCMD.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexHPicture = new Regex(BotInfo.HPictureCmd.Replace("<机器人名称>", BotInfo.BotName));
-            Regex regexShabHPicture = new Regex(BotInfo.ShabHPictureCmd.Replace("<机器人名称>", BotInfo.BotName));
+            Regex regexSearchOn = new Regex(BotInfo.SearchModeOnCmd.ReplaceGreenOnionsTags());
+            Regex regexSearchOff = new Regex(BotInfo.SearchModeOffCmd.ReplaceGreenOnionsTags());
+            Regex regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags());
+            Regex regexTranslateTo = new Regex(BotInfo.TranslateToCMD.ReplaceGreenOnionsTags());
+            Regex regexHPicture = new Regex(BotInfo.HPictureCmd.ReplaceGreenOnionsTags());
+            Regex regexShabHPicture = new Regex(BotInfo.ShabHPictureCmd.ReplaceGreenOnionsTags());
             //Regex regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
 
 
@@ -251,32 +252,32 @@ namespace GreenOnions.BotMain
             #region -- 连续搜图 --
             if (regexSearchOn.IsMatch(firstMessage))
             {
-                if (Cache.SearchingPictures.ContainsKey(sender.Id))
+                if (Cache.SearchingPictures.ContainsKey(qqId))
                 {
-                    Cache.SearchingPictures[sender.Id] = DateTime.Now.AddMinutes(1);
-                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.SearchModeAlreadyOnReply.Replace("<机器人名称>", BotInfo.BotName)));
+                    Cache.SearchingPictures[qqId] = DateTime.Now.AddMinutes(1);
+                    await session.SendFriendMessageAsync(qqId, new PlainMessage(BotInfo.SearchModeAlreadyOnReply.ReplaceGreenOnionsTags()));
                 }
                 else
                 {
-                    Cache.SearchingPictures.Add(sender.Id, DateTime.Now.AddMinutes(1));
-                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.SearchModeOnReply.Replace("<机器人名称>", BotInfo.BotName)));
+                    Cache.SearchingPictures.Add(qqId, DateTime.Now.AddMinutes(1));
+                    await session.SendFriendMessageAsync(qqId, new PlainMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags()));
                     Cache.CheckSearchPictureTime(callback =>
                     {
-                        Cache.SearchingPictures.Remove(sender.Id);
-                        session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.SearchModeTimeOutReply.Replace("<机器人名称>", BotInfo.BotName)));
+                        Cache.SearchingPictures.Remove(qqId);
+                        session.SendFriendMessageAsync(qqId, new PlainMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsTags()));
                     });
                 }
             }
             else if (regexSearchOff.IsMatch(firstMessage))
             {
-                if (Cache.SearchingPictures.ContainsKey(sender.Id))
+                if (Cache.SearchingPictures.ContainsKey(qqId))
                 {
-                    Cache.SearchingPictures.Remove(sender.Id);
-                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.SearchModeOffReply.Replace("<机器人名称>", BotInfo.BotName)));
+                    Cache.SearchingPictures.Remove(qqId);
+                    await session.SendFriendMessageAsync(qqId, new PlainMessage(BotInfo.SearchModeOffReply.ReplaceGreenOnionsTags()));
                 }
                 else
                 {
-                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.SearchModeAlreadyOffReply.Replace("<机器人名称>", BotInfo.BotName)));
+                    await session.SendFriendMessageAsync(qqId, new PlainMessage(BotInfo.SearchModeAlreadyOffReply.ReplaceGreenOnionsTags()));
                 }
             }
             #endregion -- 连续搜图 --
@@ -287,11 +288,11 @@ namespace GreenOnions.BotMain
                 {
                     try
                     {
-                        await session.SendFriendMessageAsync(sender.Id, new PlainMessage(await GoogleTranslateHelper.TranslateToChinese(firstMessage.Substring(match.Value.Length))));
+                        await session.SendFriendMessageAsync(qqId, new PlainMessage(await GoogleTranslateHelper.TranslateToChinese(firstMessage.Substring(match.Value.Length))));
                     }
                     catch (Exception ex)
                     {
-                        await session.SendFriendMessageAsync(sender.Id, new PlainMessage("翻译失败，" + ex.Message));
+                        await session.SendFriendMessageAsync(qqId, new PlainMessage("翻译失败，" + ex.Message));
                     }
                     break;
                 }
@@ -304,11 +305,11 @@ namespace GreenOnions.BotMain
                     {
                         try
                         {
-                            await session.SendFriendMessageAsync(sender.Id, new PlainMessage(await GoogleTranslateHelper.TranslateTo(firstMessage.Substring(match.Value.Length), match.Groups[1].Value)));
+                            await session.SendFriendMessageAsync(qqId, new PlainMessage(await GoogleTranslateHelper.TranslateTo(firstMessage.Substring(match.Value.Length), match.Groups[1].Value)));
                         }
                         catch (Exception ex)
                         {
-                            await session.SendFriendMessageAsync(sender.Id, new PlainMessage("翻译失败，" + ex.Message));
+                            await session.SendFriendMessageAsync(qqId, new PlainMessage("翻译失败，" + ex.Message));
                         }
                     }
                     break;
@@ -319,52 +320,52 @@ namespace GreenOnions.BotMain
             #region  -- Lolicon图库 --
             else if (regexHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage))
             {
-                if (Cache.CheckPMLimit(sender.Id))
+                if (Cache.CheckPMLimit(qqId))
                 {
-                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.HPictureOutOfLimitReply));
+                    await session.SendFriendMessageAsync(qqId, new PlainMessage(BotInfo.HPictureOutOfLimitReply));
                     return;
                 }
-                if (Cache.CheckPMCD(sender.Id))
+                if (Cache.CheckPMCD(qqId))
                 {
-                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.HPictureCDUnreadyReply));
+                    await session.SendFriendMessageAsync(qqId, new PlainMessage(BotInfo.HPictureCDUnreadyReply));
                     return;
                 }
-                HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18, BotInfo.HPictureEndCmd, stream => session.UploadPictureAsync(UploadTarget.Friend, stream), msg => session.SendFriendMessageAsync(sender.Id, msg), limitType =>
+                HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18, BotInfo.HPictureEndCmd, stream => session.UploadPictureAsync(UploadTarget.Friend, stream), msg => session.SendFriendMessageAsync(qqId, msg), limitType =>
                 {
                     if (limitType == LimitType.Frequency)
                     {
-                        Cache.RecordFriendCD(sender.Id);
+                        Cache.RecordFriendCD(qqId);
                         if (BotInfo.HPictureLimitType == LimitType.Frequency)
-                            Cache.RecordLimit(sender.Id);
+                            Cache.RecordLimit(qqId);
                     }
                     else if (limitType == LimitType.Count && BotInfo.HPictureLimitType == LimitType.Count)
-                        Cache.RecordLimit(sender.Id);
+                        Cache.RecordLimit(qqId);
                 }, BotInfo.HPicturePMRevoke);
             }
             #endregion  -- Lolicon图库 --
             #region  -- Shab图库 --
             else if (regexShabHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage))
             {
-                if (Cache.CheckPMLimit(sender.Id))
+                if (Cache.CheckPMLimit(qqId))
                 {
-                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.HPictureOutOfLimitReply));
+                    await session.SendFriendMessageAsync(qqId, new PlainMessage(BotInfo.HPictureOutOfLimitReply));
                     return;
                 }
-                if (Cache.CheckPMCD(sender.Id))
+                if (Cache.CheckPMCD(qqId))
                 {
-                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage(BotInfo.HPictureCDUnreadyReply));
+                    await session.SendFriendMessageAsync(qqId, new PlainMessage(BotInfo.HPictureCDUnreadyReply));
                     return;
                 }
-                HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18, BotInfo.ShabHPictureEndCmd, stream => session.UploadPictureAsync(UploadTarget.Friend, stream), msg => session.SendFriendMessageAsync(sender.Id, msg), limitType =>
+                HPictureHandler.SendHPictures(session, firstMessage, BotInfo.HPictureAllowR18, BotInfo.ShabHPictureEndCmd, stream => session.UploadPictureAsync(UploadTarget.Friend, stream), msg => session.SendFriendMessageAsync(qqId, msg), limitType =>
                 {
                     if (limitType == LimitType.Frequency)
                     {
-                        Cache.RecordFriendCD(sender.Id);
+                        Cache.RecordFriendCD(qqId);
                         if (BotInfo.HPictureLimitType == LimitType.Frequency)
-                            Cache.RecordLimit(sender.Id);
+                            Cache.RecordLimit(qqId);
                     }
                     else if (limitType == LimitType.Count && BotInfo.HPictureLimitType == LimitType.Count)
-                        Cache.RecordLimit(sender.Id);
+                        Cache.RecordLimit(qqId);
                 }, BotInfo.HPicturePMRevoke);
             }
             #endregion  -- Shab图库 --
@@ -389,7 +390,7 @@ namespace GreenOnions.BotMain
                 //    lstEnabledFeatures.Add("查手机号");
                 //}
                 string strHelpResult = $"现在您可以让我{string.Join("，", lstEnabledFeatures)}。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。";
-                await session.SendFriendMessageAsync(sender.Id, new PlainMessage(strHelpResult));
+                await session.SendFriendMessageAsync(qqId, new PlainMessage(strHelpResult));
             }
             //#region -- 查询手机号(夹带私货) --
             //else if (regexSelectPhone.IsMatch(firstMessage))
@@ -407,16 +408,16 @@ namespace GreenOnions.BotMain
             //                    try
             //                    {
             //                        string result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetPhoneByQQ", lQQNumber);
-            //                        await session.SendFriendMessageAsync(sender.Id, new PlainMessage(result));
+            //                        await session.SendFriendMessageAsync(qqId, new PlainMessage(result));
             //                    }
             //                    catch (Exception ex)
             //                    {
-            //                        await session.SendFriendMessageAsync(sender.Id, new PlainMessage("查询失败" + ex.Message));
+            //                        await session.SendFriendMessageAsync(qqId, new PlainMessage("查询失败" + ex.Message));
             //                    }
             //                }
             //                else
             //                {
-            //                    await session.SendFriendMessageAsync(sender.Id, new PlainMessage("请输入正确的QQ号码(不支持以邮箱查询)"));
+            //                    await session.SendFriendMessageAsync(qqId, new PlainMessage("请输入正确的QQ号码(不支持以邮箱查询)"));
             //                }
             //            }
             //        }

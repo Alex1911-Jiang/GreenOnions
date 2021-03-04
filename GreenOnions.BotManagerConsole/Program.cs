@@ -32,10 +32,9 @@ namespace GreenOnions.BotManagerConsole
 			Console.WriteLine("请输入mirai-api-http autoKey:");
 			string autoKey = Console.ReadLine();
 
-			ConfigHelper.ReadConfig();
-
 			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, autoKey);
 			await using MiraiHttpSession session = new MiraiHttpSession();
+			session.AddPlugin(new TempMessage());
 			session.AddPlugin(new FriendMessage());
 			session.AddPlugin(new GroupMessage());
 			bool stop = false;

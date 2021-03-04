@@ -1,11 +1,9 @@
-﻿using GreenOnions.Utility;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace GreenOnions.BotMain
+namespace GreenOnions.Utility.Helper
 {
     public static class AssemblyHelper
     {
@@ -32,6 +30,27 @@ namespace GreenOnions.BotMain
             }
             Type type = assembly.GetType(className);
             return type;
+        }
+
+        public static string ReplacePropertyChineseNameToValue(string str)
+        {
+            PropertyInfo[] PropertyInfos = CreateType("GreenOnions.Utility", "GreenOnions.Utility.BotInfo").GetProperties();
+            foreach (PropertyInfo item in PropertyInfos)
+            {
+                foreach (var attributes in item.CustomAttributes)
+                {
+                    if (attributes.AttributeType.Name == "PropertyChineseNameAttribute")
+                    {
+                        var attribute = attributes.ConstructorArguments.Select(v => v.Value).FirstOrDefault();
+                        if (attribute != null)
+                        {
+                            string strAttribute = attribute.ToString();
+                            return str.Replace($"<{strAttribute}>", item.GetValue(null).ToString());
+                        }
+                    }
+                }
+            }
+            return str;
         }
     }
 }
