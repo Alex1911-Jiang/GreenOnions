@@ -45,7 +45,7 @@ namespace GreenOnions.Utility.Helper
                         if (attribute != null)
                         {
                             string strAttribute = attribute.ToString();
-                            return str.Replace($"<{strAttribute}>", item.GetValue(null).ToString());
+                            str = str.Replace($"<{strAttribute}>", item.GetValue(null).ToString());
                         }
                     }
                 }
