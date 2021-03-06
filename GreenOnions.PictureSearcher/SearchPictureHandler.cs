@@ -22,8 +22,6 @@ namespace GreenOnions.PictureSearcher
         {
             try
             {
-                var v = await session.GetFriendListAsync();
-
                 if (BotInfo.SearchEnabledSauceNao)
                 {
                     await SearchSauceNao();

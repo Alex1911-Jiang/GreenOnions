@@ -347,7 +347,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(SearchLowSimilarity));
                 if (int.TryParse(strValue, out int iValue)) return iValue;
-                return 50;
+                return 60;
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(SearchLowSimilarity), value.ToString());
         }

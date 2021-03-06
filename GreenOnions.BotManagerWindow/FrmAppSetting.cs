@@ -220,7 +220,7 @@ namespace GreenOnions.BotMainManagerWindow
             int iLowSimilarity;
             if (!int.TryParse(txbSearchLowSimilarity.Text, out iLowSimilarity))
             {
-                iLowSimilarity = 50;
+                iLowSimilarity = 60;
             }
             BotInfo.SearchLowSimilarity = iLowSimilarity;  //相似度阈值
             BotInfo.SearchLowSimilarityReply = txbSearchLowSimilarityReply.Text;
