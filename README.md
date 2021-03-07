@@ -34,6 +34,6 @@ win10x64用户建议使用GreenOnions.BotManagerWindow, 带有图形界面, 其�
 
 ~~3.群友 [Quan](https://github.com/Quan666) 提供了一个美图图库 http://img.shab.fun:5000/, 也实现一下~~
 
-4.实现[whatanime](https://trace.moe/)、[trace moe](https://trace.moe/)搜番
+~~4.实现[trace moe](https://trace.moe/)搜番~~
 
 5.研究RSSHUB看看能不能实现文章转发功能
