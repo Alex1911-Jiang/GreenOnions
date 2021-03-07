@@ -273,7 +273,7 @@ namespace GreenOnions.Utility.Helper
                 ErrorHelper.WriteErrorLog(ex);
                 throw;
             }
-            catch (Exception ex )  //下载图片失败
+            catch (Exception ex)  //下载图片失败
             {
                 ErrorHelper.WriteErrorLog(ex);
                 throw;

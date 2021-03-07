@@ -24,7 +24,7 @@ namespace GreenOnions.HPicture
                 Directory.CreateDirectory(ImagePath);
         }
 
-        public static void SendHPictures(MiraiHttpSession session, string message, bool isAllowR18, string HPictureEndCmd, Func<Stream,Task<ImageMessage>> UploadPicture, Func<IMessageBase[],Task<int>> SendMessage, Action<LimitType> Record, int RevokeSecond)
+        public static void SendHPictures(MiraiHttpSession session, string message, bool isAllowR18, string HPictureEndCmd, Func<Stream, Task<ImageMessage>> UploadPicture, Func<IMessageBase[], Task<int>> SendMessage, Action<LimitType> Record, int RevokeSecond)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace GreenOnions.HPicture
                         strR18 = "1";
                         message = message.Replace(mchR18.Value, "");  //无论是否允许R18都现将命令中的R18移除, 避免和数量混淆
                     }
-                    if (!isAllowR18) 
+                    if (!isAllowR18)
                         strR18 = "0";//如果不允许R18
                     #endregion -- R18 --
 
@@ -68,10 +68,10 @@ namespace GreenOnions.HPicture
                     #region -- 关键词 --
                     string strKeyword = StringHelper.GetRegex(message, BotInfo.HPictureUnitCmd, BotInfo.HPictureKeywordCmd, HPictureEndCmd);
 
-                    
+
                     #endregion -- 关键词 --
 
-                    if (BotInfo.HPictureSize1200) 
+                    if (BotInfo.HPictureSize1200)
                         size1200 = "&size1200=true";
 
                     if (HPictureEndCmd == BotInfo.HPictureEndCmd)
@@ -89,7 +89,7 @@ namespace GreenOnions.HPicture
                     }
                     else if (HPictureEndCmd == BotInfo.ShabHPictureEndCmd)
                     {
-                        strHttpRequest = string.IsNullOrEmpty(strKeyword) ? $@"http://img.shab.fun:5000/api/img/{lImgCount},{strR18}" : $@"http://img.shab.fun:5000/api/tag/{strKeyword},{lImgCount},{strR18}"; 
+                        strHttpRequest = string.IsNullOrEmpty(strKeyword) ? $@"http://img.shab.fun:5000/api/img/{lImgCount},{strR18}" : $@"http://img.shab.fun:5000/api/tag/{strKeyword},{lImgCount},{strR18}";
                         SendShabHPicture(strHttpRequest, strR18 == "1");
                     }
                 }
@@ -216,13 +216,13 @@ namespace GreenOnions.HPicture
                         Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.URL, imgName);
                         if (ms == null)
                         {
-                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Address)))});
+                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Address))) });
                             return;
                         }
                         imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片
                     }
 
-                    int messageID = SendMessage(new[] {imageMessage }).GetAwaiter().GetResult();
+                    int messageID = SendMessage(new[] { imageMessage }).GetAwaiter().GetResult();
                     Record(LimitType.Count);
                     RevokeHPicture(session, messageID, RevokeSecond);
                 }

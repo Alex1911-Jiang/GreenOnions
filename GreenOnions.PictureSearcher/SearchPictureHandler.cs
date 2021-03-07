@@ -18,7 +18,7 @@ namespace GreenOnions.PictureSearcher
     public static class SearchPictureHandler
     {
         private static readonly string imagePath = Environment.CurrentDirectory + "\\Image\\";
-        public static async Task SearchPicture(MiraiHttpSession session, ImageMessage inImgMsg, Func<Stream, Task<ImageMessage>> UploadPicture, Action<IMessageBase[]> SendMessage)
+        public static async Task SearchPicture(ImageMessage inImgMsg, Func<Stream, Task<ImageMessage>> UploadPicture, Action<IMessageBase[]> SendMessage)
         {
             try
             {
@@ -39,6 +39,33 @@ namespace GreenOnions.PictureSearcher
 
             async Task SearchSauceNao()
             {
+                if (BotInfo.SearchEnabledTraceMoe)
+                {
+                    string strSauceTraceMoe = await HttpHelper.GetHttpResponseStringAsync(@$"https://trace.moe/api/search?url={inImgMsg.Url}", out _);
+                    JToken json = JsonConvert.DeserializeObject<JToken>(strSauceTraceMoe);
+                    JArray jResults = json["docs"] as JArray;
+                    if (jResults.Count > 0)
+                    {
+                        double similarity = Math.Round(Convert.ToDouble(jResults[0]["similarity"]), 2) * 100; //相似度
+                        if (similarity >= BotInfo.TraceMoeSendThreshold)
+                        {
+                            //string anilist_id = jResults[0]["anilist_id"].ToString();
+                            //string filename = HttpUtility.UrlEncode(jResults[0]["filename"].ToString());
+                            //string tokenthumb = jResults[0]["tokenthumb"].ToString();
+                            string anime = jResults[0]["anime"].ToString();         //动画名称
+                            string title = jResults[0]["title"].ToString();         //标题
+                            //string title_chinese = jResults[0]["title_chinese"].ToString(); //中文标题
+                            //string title_english = jResults[0]["title_english"].ToString(); //英文标题
+                            string episode = jResults[0]["episode"].ToString();  //集数
+                            string at = jResults[0]["at"].ToString(); //时间
+                            int seconds = (int)Convert.ToSingle(at); //时间
+                            TimeSpan timeSpan = new TimeSpan(0, 0, seconds);
+                            string time = $"{timeSpan.Hours}小时{timeSpan.Minutes}分{timeSpan.Seconds}秒";
+                            SendMessage(new[] { new PlainMessage($"动画名称:{anime}\r\n标题:{title}\r\n相似度:{similarity}% (trace.moe)\r\n第{episode}集 {time}处") });
+                            if (similarity >= BotInfo.TraceMoeStopThreshold) return;
+                        }
+                    }
+                }
                 if (BotInfo.SearchEnabledSauceNao)
                 {
                     string strSauceNaoResult = await HttpHelper.GetHttpResponseStringAsync(@$"https://saucenao.com/search.php?db=999&output_type=2&api_key={BotInfo.SauceNAOApiKey}&testmode=1&numres=16&url={inImgMsg.Url}", out _);
@@ -381,7 +408,7 @@ namespace GreenOnions.PictureSearcher
         public static async Task SuccessiveSearchPicture(MiraiHttpSession session, ImageMessage imgMsg, IGroupMemberInfo sender, Func<Stream, Task<ImageMessage>> UploadPicture, Action<IMessageBase[]> SendMessage)
         {
             Cache.SearchingPictures[sender.Id] = DateTime.Now.AddMinutes(1);
-            await SearchPicture(session, imgMsg, UploadPicture, SendMessage);
+            await SearchPicture(imgMsg, UploadPicture, SendMessage);
         }
     }
 }

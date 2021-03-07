@@ -257,6 +257,20 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
+        /// 是否启用TraceMoe搜番
+        /// </summary>
+        public static bool SearchEnabledTraceMoe
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(SearchEnabledTraceMoe));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(SearchEnabledTraceMoe), value.ToString());
+        }
+
+        /// <summary>
         /// 开启连续搜图命令(正则表达式)
         /// </summary>
         public static string SearchModeOnCmd
@@ -350,6 +364,36 @@ namespace GreenOnions.Utility
                 return 60;
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(SearchLowSimilarity), value.ToString());
+        }
+
+        /// <summary>
+        /// TraceMoe搜图相似度大于此数值时发送搜番结果
+        /// </summary>
+        [PropertyChineseName("TraceMoe发送阈值")]
+        public static int TraceMoeSendThreshold
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 87;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold), value.ToString());
+        }
+
+        /// <summary>
+        /// TraceMoe搜图相似度大于此数值时不进行后续搜图
+        /// </summary>
+        [PropertyChineseName("TraceMoe中断阈值")]
+        public static int TraceMoeStopThreshold
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(TraceMoeStopThreshold));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 95;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(TraceMoeStopThreshold), value.ToString());
         }
 
         /// <summary>
@@ -492,7 +536,7 @@ namespace GreenOnions.Utility
         {
             get => GetLoliconHPictureCmd();
         }
-        
+
         /// <summary>
         /// Shab图库色图完整命令(正则表达式)
         /// </summary>
@@ -523,7 +567,7 @@ namespace GreenOnions.Utility
             return $"^<机器人名称>{GetHPictureCmdInner()}{ShabEnd}$";
         }
 
-        private static string GetHPictureCmdInner() 
+        private static string GetHPictureCmdInner()
         {
             string Begin, Count, Unit, R18, Keyword;
 
@@ -609,7 +653,7 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureEndCmd)) ?? "的?[色瑟][图圖]";
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureEndCmd), value);
         }
-        
+
         /// <summary>
         /// Lolicon图库色图结束命令后缀(正则表达式)
         /// </summary>
@@ -703,7 +747,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureEndCmdNull), value.ToString());
         }
-        
+
         /// <summary>
         /// 是否允许shab图库色图命令后缀为空
         /// </summary>
@@ -716,8 +760,8 @@ namespace GreenOnions.Utility
                 return false;
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabHPictureEndCmdNull), value.ToString());
-        } 
-        
+        }
+
         /// <summary>
         /// Shab图库非R-18是否不撤回
         /// </summary>

@@ -13,11 +13,11 @@ using System.Windows.Forms;
 
 namespace GreenOnions.BotMainManagerWindow
 {
-    public partial class FrmMain : Form
+	public partial class FrmMain : Form
 	{
 		public FrmMain()
-        {
-            InitializeComponent();
+		{
+			InitializeComponent();
 			#region -- 读取配置 --
 			try
 			{
@@ -39,7 +39,7 @@ namespace GreenOnions.BotMainManagerWindow
 			#endregion -- 读取配置 --
 		}
 
-        public async Task Main(long qqId, string ip, int port, string autoKey)
+		public async Task Main(long qqId, string ip, int port, string autoKey)
 		{
 			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, autoKey);
 			await using MiraiHttpSession session = new MiraiHttpSession();
@@ -49,11 +49,11 @@ namespace GreenOnions.BotMainManagerWindow
 			bool stop = false;
 			await session.ConnectAsync(options, qqId).ContinueWith(callback =>
 			{
-                if (callback.IsFaulted)
-                {
+				if (callback.IsFaulted)
+				{
 					stop = true;
 					MessageBox.Show("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+				}
 			});
 
 			if (stop) return;
@@ -86,8 +86,8 @@ namespace GreenOnions.BotMainManagerWindow
 			}
 		}
 
-        private void btnDeconnect_Click(object sender, EventArgs e)
-        {
+		private void btnDeconnect_Click(object sender, EventArgs e)
+		{
 			TextReader sr = new StringReader("exit");
 			Console.SetIn(sr);
 
@@ -95,15 +95,15 @@ namespace GreenOnions.BotMainManagerWindow
 			btnConnect.Click += btnConnect_Click;
 		}
 
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-            try
+		private void btnConnect_Click(object sender, EventArgs e)
+		{
+			try
 			{
-                if (string.IsNullOrEmpty(txbQQ.Text))
-                {
+				if (string.IsNullOrEmpty(txbQQ.Text))
+				{
 					MessageBox.Show("请先输入机器人QQ号。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					return;
-                }
+				}
 				if (string.IsNullOrEmpty(txbIP.Text))
 				{
 					MessageBox.Show("请先输入mirai-api-http host IP。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -126,18 +126,18 @@ namespace GreenOnions.BotMainManagerWindow
 
 				Task.Run(() => Main(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToInt32(txbPort.Text), txbAutoKey.Text));
 			}
-            catch (Exception ex)
-            {
+			catch (Exception ex)
+			{
 				MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+			}
 		}
 
 		private void btnBotSettings_Click(object sender, EventArgs e) => OpenSetting();
 
 		private void OpenSetting()
-        {
+		{
 			FrmAppSetting frmAppSetting = new FrmAppSetting();
 			frmAppSetting.ShowDialog();
 		}
-    }
+	}
 }

@@ -23,7 +23,7 @@ namespace GreenOnions.BotMain
                     if (!BotInfo.DebugGroups.Contains(e.Sender.Group.Id))
                         return false;
             }
-            
+
             QuoteMessage quoteMessage = new QuoteMessage((e.Chain[0] as SourceMessage).Id, e.Sender.Group.Id, e.Sender.Id, e.Sender.Id, null);
             if (e.Chain.Length > 1)  //普通消息
             {
@@ -41,7 +41,7 @@ namespace GreenOnions.BotMain
                                     if (e.Chain[i].Type == "Image")
                                     {
                                         ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-                                        await SearchPictureHandler.SearchPicture(session, imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));
+                                        await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));
                                     }
                                 }
                             }

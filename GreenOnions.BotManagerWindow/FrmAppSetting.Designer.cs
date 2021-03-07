@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.txbBotName = new System.Windows.Forms.TextBox();
             this.lblBotName = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
@@ -39,7 +40,7 @@
             this.chkOnlyReplyDebugGroup = new System.Windows.Forms.CheckBox();
             this.lstDebugGroups = new System.Windows.Forms.ListView();
             this.chkDebugReplyAdminOnly = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblAddDebugGroup = new System.Windows.Forms.Label();
             this.lblDebugGroup = new System.Windows.Forms.Label();
             this.btnAddDebugGroup = new System.Windows.Forms.Button();
             this.btnRemoveDebugGroup = new System.Windows.Forms.Button();
@@ -66,6 +67,7 @@
             this.tabSearchPicture = new System.Windows.Forms.TabPage();
             this.chkSearchPictureEnabled = new System.Windows.Forms.CheckBox();
             this.pnlSearchPicture = new System.Windows.Forms.Panel();
+            this.chkTraceMoeEnabled = new System.Windows.Forms.CheckBox();
             this.pnlCheckPorn = new System.Windows.Forms.Panel();
             this.txbSearchCheckPornIllegalReply = new System.Windows.Forms.TextBox();
             this.lblTencentCloudBucket = new System.Windows.Forms.Label();
@@ -213,6 +215,11 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
+            this.txbTraceMoeSendThreshold = new System.Windows.Forms.TextBox();
+            this.lblTraceMoeSendThreshold = new System.Windows.Forms.Label();
+            this.txbTraceMoeStopThreshold = new System.Windows.Forms.TextBox();
+            this.lblTraceMoeStopThreshold = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.pnlDebugMode.SuspendLayout();
@@ -337,7 +344,7 @@
             this.pnlDebugMode.Controls.Add(this.chkOnlyReplyDebugGroup);
             this.pnlDebugMode.Controls.Add(this.lstDebugGroups);
             this.pnlDebugMode.Controls.Add(this.chkDebugReplyAdminOnly);
-            this.pnlDebugMode.Controls.Add(this.label1);
+            this.pnlDebugMode.Controls.Add(this.lblAddDebugGroup);
             this.pnlDebugMode.Controls.Add(this.lblDebugGroup);
             this.pnlDebugMode.Controls.Add(this.btnAddDebugGroup);
             this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
@@ -380,15 +387,15 @@
             this.chkDebugReplyAdminOnly.Text = "只响应来自机器人管理员的消息";
             this.chkDebugReplyAdminOnly.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // lblAddDebugGroup
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(441, 9);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "添加调试模式群号：";
+            this.lblAddDebugGroup.AutoSize = true;
+            this.lblAddDebugGroup.Location = new System.Drawing.Point(441, 9);
+            this.lblAddDebugGroup.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblAddDebugGroup.Name = "lblAddDebugGroup";
+            this.lblAddDebugGroup.Size = new System.Drawing.Size(116, 17);
+            this.lblAddDebugGroup.TabIndex = 1;
+            this.lblAddDebugGroup.Text = "添加调试模式群号：";
             // 
             // lblDebugGroup
             // 
@@ -662,6 +669,8 @@
             // 
             // pnlSearchPicture
             // 
+            this.pnlSearchPicture.AutoScroll = true;
+            this.pnlSearchPicture.Controls.Add(this.chkTraceMoeEnabled);
             this.pnlSearchPicture.Controls.Add(this.pnlCheckPorn);
             this.pnlSearchPicture.Controls.Add(this.lblSearchLowSimilarityReply);
             this.pnlSearchPicture.Controls.Add(this.chkCheckPorn);
@@ -674,6 +683,8 @@
             this.pnlSearchPicture.Controls.Add(this.lblSearchModeOffReply);
             this.pnlSearchPicture.Controls.Add(this.lblSearchModeAlreadyOnReply);
             this.pnlSearchPicture.Controls.Add(this.lblSearchModeOnReply);
+            this.pnlSearchPicture.Controls.Add(this.lblTraceMoeStopThreshold);
+            this.pnlSearchPicture.Controls.Add(this.lblTraceMoeSendThreshold);
             this.pnlSearchPicture.Controls.Add(this.lblSauceNAOApiKey);
             this.pnlSearchPicture.Controls.Add(this.lblSearchModeOnCmd);
             this.pnlSearchPicture.Controls.Add(this.txbSearchLowSimilarityReply);
@@ -684,7 +695,9 @@
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeOffCmd);
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeAlreadyOffReply);
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeOffReply);
+            this.pnlSearchPicture.Controls.Add(this.txbTraceMoeStopThreshold);
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeAlreadyOnReply);
+            this.pnlSearchPicture.Controls.Add(this.txbTraceMoeSendThreshold);
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeOnReply);
             this.pnlSearchPicture.Controls.Add(this.txbSauceNAOApiKey);
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeOnCmd);
@@ -694,6 +707,16 @@
             this.pnlSearchPicture.Name = "pnlSearchPicture";
             this.pnlSearchPicture.Size = new System.Drawing.Size(642, 649);
             this.pnlSearchPicture.TabIndex = 14;
+            // 
+            // chkTraceMoeEnabled
+            // 
+            this.chkTraceMoeEnabled.AutoSize = true;
+            this.chkTraceMoeEnabled.Location = new System.Drawing.Point(18, 8);
+            this.chkTraceMoeEnabled.Name = "chkTraceMoeEnabled";
+            this.chkTraceMoeEnabled.Size = new System.Drawing.Size(138, 21);
+            this.chkTraceMoeEnabled.TabIndex = 34;
+            this.chkTraceMoeEnabled.Text = "启用Trace Moe搜番";
+            this.chkTraceMoeEnabled.UseVisualStyleBackColor = true;
             // 
             // pnlCheckPorn
             // 
@@ -712,7 +735,7 @@
             this.pnlCheckPorn.Controls.Add(this.lblSearchCheckPornIllegalReply);
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudSecretKey);
             this.pnlCheckPorn.Enabled = false;
-            this.pnlCheckPorn.Location = new System.Drawing.Point(11, 440);
+            this.pnlCheckPorn.Location = new System.Drawing.Point(11, 519);
             this.pnlCheckPorn.Name = "pnlCheckPorn";
             this.pnlCheckPorn.Size = new System.Drawing.Size(621, 206);
             this.pnlCheckPorn.TabIndex = 33;
@@ -832,7 +855,7 @@
             // lblSearchLowSimilarityReply
             // 
             this.lblSearchLowSimilarityReply.AutoSize = true;
-            this.lblSearchLowSimilarityReply.Location = new System.Drawing.Point(18, 384);
+            this.lblSearchLowSimilarityReply.Location = new System.Drawing.Point(18, 463);
             this.lblSearchLowSimilarityReply.Name = "lblSearchLowSimilarityReply";
             this.lblSearchLowSimilarityReply.Size = new System.Drawing.Size(131, 17);
             this.lblSearchLowSimilarityReply.TabIndex = 25;
@@ -841,7 +864,7 @@
             // chkCheckPorn
             // 
             this.chkCheckPorn.AutoSize = true;
-            this.chkCheckPorn.Location = new System.Drawing.Point(18, 413);
+            this.chkCheckPorn.Location = new System.Drawing.Point(18, 492);
             this.chkCheckPorn.Name = "chkCheckPorn";
             this.chkCheckPorn.Size = new System.Drawing.Size(87, 21);
             this.chkCheckPorn.TabIndex = 13;
@@ -852,7 +875,7 @@
             // lblSearchLowSimilarity
             // 
             this.lblSearchLowSimilarity.AutoSize = true;
-            this.lblSearchLowSimilarity.Location = new System.Drawing.Point(18, 355);
+            this.lblSearchLowSimilarity.Location = new System.Drawing.Point(18, 434);
             this.lblSearchLowSimilarity.Name = "lblSearchLowSimilarity";
             this.lblSearchLowSimilarity.Size = new System.Drawing.Size(71, 17);
             this.lblSearchLowSimilarity.TabIndex = 24;
@@ -861,7 +884,7 @@
             // lblSearchErrorReply
             // 
             this.lblSearchErrorReply.AutoSize = true;
-            this.lblSearchErrorReply.Location = new System.Drawing.Point(18, 326);
+            this.lblSearchErrorReply.Location = new System.Drawing.Point(18, 405);
             this.lblSearchErrorReply.Name = "lblSearchErrorReply";
             this.lblSearchErrorReply.Size = new System.Drawing.Size(95, 17);
             this.lblSearchErrorReply.TabIndex = 23;
@@ -870,7 +893,7 @@
             // lblSearchNoResultReply
             // 
             this.lblSearchNoResultReply.AutoSize = true;
-            this.lblSearchNoResultReply.Location = new System.Drawing.Point(18, 297);
+            this.lblSearchNoResultReply.Location = new System.Drawing.Point(18, 376);
             this.lblSearchNoResultReply.Name = "lblSearchNoResultReply";
             this.lblSearchNoResultReply.Size = new System.Drawing.Size(131, 17);
             this.lblSearchNoResultReply.TabIndex = 22;
@@ -879,7 +902,7 @@
             // lblSearchModeAlreadyOffReply
             // 
             this.lblSearchModeAlreadyOffReply.AutoSize = true;
-            this.lblSearchModeAlreadyOffReply.Location = new System.Drawing.Point(18, 268);
+            this.lblSearchModeAlreadyOffReply.Location = new System.Drawing.Point(18, 347);
             this.lblSearchModeAlreadyOffReply.Name = "lblSearchModeAlreadyOffReply";
             this.lblSearchModeAlreadyOffReply.Size = new System.Drawing.Size(155, 17);
             this.lblSearchModeAlreadyOffReply.TabIndex = 21;
@@ -888,7 +911,7 @@
             // lblSearchModeTimeOutReply
             // 
             this.lblSearchModeTimeOutReply.AutoSize = true;
-            this.lblSearchModeTimeOutReply.Location = new System.Drawing.Point(18, 210);
+            this.lblSearchModeTimeOutReply.Location = new System.Drawing.Point(18, 289);
             this.lblSearchModeTimeOutReply.Name = "lblSearchModeTimeOutReply";
             this.lblSearchModeTimeOutReply.Size = new System.Drawing.Size(143, 17);
             this.lblSearchModeTimeOutReply.TabIndex = 20;
@@ -897,7 +920,7 @@
             // lblSearchModeOffCmd
             // 
             this.lblSearchModeOffCmd.AutoSize = true;
-            this.lblSearchModeOffCmd.Location = new System.Drawing.Point(18, 181);
+            this.lblSearchModeOffCmd.Location = new System.Drawing.Point(18, 260);
             this.lblSearchModeOffCmd.Name = "lblSearchModeOffCmd";
             this.lblSearchModeOffCmd.Size = new System.Drawing.Size(131, 17);
             this.lblSearchModeOffCmd.TabIndex = 20;
@@ -906,7 +929,7 @@
             // lblSearchModeOffReply
             // 
             this.lblSearchModeOffReply.AutoSize = true;
-            this.lblSearchModeOffReply.Location = new System.Drawing.Point(18, 239);
+            this.lblSearchModeOffReply.Location = new System.Drawing.Point(18, 318);
             this.lblSearchModeOffReply.Name = "lblSearchModeOffReply";
             this.lblSearchModeOffReply.Size = new System.Drawing.Size(143, 17);
             this.lblSearchModeOffReply.TabIndex = 20;
@@ -915,7 +938,7 @@
             // lblSearchModeAlreadyOnReply
             // 
             this.lblSearchModeAlreadyOnReply.AutoSize = true;
-            this.lblSearchModeAlreadyOnReply.Location = new System.Drawing.Point(18, 152);
+            this.lblSearchModeAlreadyOnReply.Location = new System.Drawing.Point(18, 231);
             this.lblSearchModeAlreadyOnReply.Name = "lblSearchModeAlreadyOnReply";
             this.lblSearchModeAlreadyOnReply.Size = new System.Drawing.Size(155, 17);
             this.lblSearchModeAlreadyOnReply.TabIndex = 19;
@@ -924,7 +947,7 @@
             // lblSearchModeOnReply
             // 
             this.lblSearchModeOnReply.AutoSize = true;
-            this.lblSearchModeOnReply.Location = new System.Drawing.Point(18, 123);
+            this.lblSearchModeOnReply.Location = new System.Drawing.Point(18, 202);
             this.lblSearchModeOnReply.Name = "lblSearchModeOnReply";
             this.lblSearchModeOnReply.Size = new System.Drawing.Size(143, 17);
             this.lblSearchModeOnReply.TabIndex = 18;
@@ -933,7 +956,7 @@
             // lblSauceNAOApiKey
             // 
             this.lblSauceNAOApiKey.AutoSize = true;
-            this.lblSauceNAOApiKey.Location = new System.Drawing.Point(18, 39);
+            this.lblSauceNAOApiKey.Location = new System.Drawing.Point(18, 114);
             this.lblSauceNAOApiKey.Name = "lblSauceNAOApiKey";
             this.lblSauceNAOApiKey.Size = new System.Drawing.Size(122, 17);
             this.lblSauceNAOApiKey.TabIndex = 17;
@@ -942,7 +965,7 @@
             // lblSearchModeOnCmd
             // 
             this.lblSearchModeOnCmd.AutoSize = true;
-            this.lblSearchModeOnCmd.Location = new System.Drawing.Point(18, 94);
+            this.lblSearchModeOnCmd.Location = new System.Drawing.Point(18, 173);
             this.lblSearchModeOnCmd.Name = "lblSearchModeOnCmd";
             this.lblSearchModeOnCmd.Size = new System.Drawing.Size(131, 17);
             this.lblSearchModeOnCmd.TabIndex = 17;
@@ -950,84 +973,84 @@
             // 
             // txbSearchLowSimilarityReply
             // 
-            this.txbSearchLowSimilarityReply.Location = new System.Drawing.Point(179, 381);
+            this.txbSearchLowSimilarityReply.Location = new System.Drawing.Point(179, 460);
             this.txbSearchLowSimilarityReply.Name = "txbSearchLowSimilarityReply";
             this.txbSearchLowSimilarityReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchLowSimilarityReply.TabIndex = 16;
             // 
             // txbSearchLowSimilarity
             // 
-            this.txbSearchLowSimilarity.Location = new System.Drawing.Point(179, 352);
+            this.txbSearchLowSimilarity.Location = new System.Drawing.Point(179, 431);
             this.txbSearchLowSimilarity.Name = "txbSearchLowSimilarity";
             this.txbSearchLowSimilarity.Size = new System.Drawing.Size(440, 23);
             this.txbSearchLowSimilarity.TabIndex = 16;
             // 
             // txbSearchErrorReply
             // 
-            this.txbSearchErrorReply.Location = new System.Drawing.Point(179, 323);
+            this.txbSearchErrorReply.Location = new System.Drawing.Point(179, 402);
             this.txbSearchErrorReply.Name = "txbSearchErrorReply";
             this.txbSearchErrorReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchErrorReply.TabIndex = 16;
             // 
             // txbSearchNoResultReply
             // 
-            this.txbSearchNoResultReply.Location = new System.Drawing.Point(179, 294);
+            this.txbSearchNoResultReply.Location = new System.Drawing.Point(179, 373);
             this.txbSearchNoResultReply.Name = "txbSearchNoResultReply";
             this.txbSearchNoResultReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchNoResultReply.TabIndex = 16;
             // 
             // txbSearchModeTimeOutReply
             // 
-            this.txbSearchModeTimeOutReply.Location = new System.Drawing.Point(179, 207);
+            this.txbSearchModeTimeOutReply.Location = new System.Drawing.Point(179, 286);
             this.txbSearchModeTimeOutReply.Name = "txbSearchModeTimeOutReply";
             this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchModeTimeOutReply.TabIndex = 16;
             // 
             // txbSearchModeOffCmd
             // 
-            this.txbSearchModeOffCmd.Location = new System.Drawing.Point(179, 178);
+            this.txbSearchModeOffCmd.Location = new System.Drawing.Point(179, 257);
             this.txbSearchModeOffCmd.Name = "txbSearchModeOffCmd";
             this.txbSearchModeOffCmd.Size = new System.Drawing.Size(440, 23);
             this.txbSearchModeOffCmd.TabIndex = 16;
             // 
             // txbSearchModeAlreadyOffReply
             // 
-            this.txbSearchModeAlreadyOffReply.Location = new System.Drawing.Point(179, 265);
+            this.txbSearchModeAlreadyOffReply.Location = new System.Drawing.Point(179, 344);
             this.txbSearchModeAlreadyOffReply.Name = "txbSearchModeAlreadyOffReply";
             this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchModeAlreadyOffReply.TabIndex = 16;
             // 
             // txbSearchModeOffReply
             // 
-            this.txbSearchModeOffReply.Location = new System.Drawing.Point(179, 236);
+            this.txbSearchModeOffReply.Location = new System.Drawing.Point(179, 315);
             this.txbSearchModeOffReply.Name = "txbSearchModeOffReply";
             this.txbSearchModeOffReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchModeOffReply.TabIndex = 16;
             // 
             // txbSearchModeAlreadyOnReply
             // 
-            this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(179, 149);
+            this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(179, 228);
             this.txbSearchModeAlreadyOnReply.Name = "txbSearchModeAlreadyOnReply";
             this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchModeAlreadyOnReply.TabIndex = 16;
             // 
             // txbSearchModeOnReply
             // 
-            this.txbSearchModeOnReply.Location = new System.Drawing.Point(179, 120);
+            this.txbSearchModeOnReply.Location = new System.Drawing.Point(179, 199);
             this.txbSearchModeOnReply.Name = "txbSearchModeOnReply";
             this.txbSearchModeOnReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchModeOnReply.TabIndex = 16;
             // 
             // txbSauceNAOApiKey
             // 
-            this.txbSauceNAOApiKey.Location = new System.Drawing.Point(179, 36);
+            this.txbSauceNAOApiKey.Location = new System.Drawing.Point(179, 111);
             this.txbSauceNAOApiKey.Name = "txbSauceNAOApiKey";
             this.txbSauceNAOApiKey.Size = new System.Drawing.Size(440, 23);
             this.txbSauceNAOApiKey.TabIndex = 16;
             // 
             // txbSearchModeOnCmd
             // 
-            this.txbSearchModeOnCmd.Location = new System.Drawing.Point(179, 91);
+            this.txbSearchModeOnCmd.Location = new System.Drawing.Point(179, 170);
             this.txbSearchModeOnCmd.Name = "txbSearchModeOnCmd";
             this.txbSearchModeOnCmd.Size = new System.Drawing.Size(440, 23);
             this.txbSearchModeOnCmd.TabIndex = 16;
@@ -1035,7 +1058,7 @@
             // chkSearchASCII2DEnabled
             // 
             this.chkSearchASCII2DEnabled.AutoSize = true;
-            this.chkSearchASCII2DEnabled.Location = new System.Drawing.Point(18, 64);
+            this.chkSearchASCII2DEnabled.Location = new System.Drawing.Point(18, 143);
             this.chkSearchASCII2DEnabled.Name = "chkSearchASCII2DEnabled";
             this.chkSearchASCII2DEnabled.Size = new System.Drawing.Size(122, 21);
             this.chkSearchASCII2DEnabled.TabIndex = 15;
@@ -1045,7 +1068,7 @@
             // chkSearchSauceNAOEnabled
             // 
             this.chkSearchSauceNAOEnabled.AutoSize = true;
-            this.chkSearchSauceNAOEnabled.Location = new System.Drawing.Point(18, 11);
+            this.chkSearchSauceNAOEnabled.Location = new System.Drawing.Point(18, 90);
             this.chkSearchSauceNAOEnabled.Name = "chkSearchSauceNAOEnabled";
             this.chkSearchSauceNAOEnabled.Size = new System.Drawing.Size(137, 21);
             this.chkSearchSauceNAOEnabled.TabIndex = 15;
@@ -1220,7 +1243,7 @@
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureCount);
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureR18);
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureUnit);
-            this.pnlEnabelHPicture.Location = new System.Drawing.Point(4, 37);
+            this.pnlEnabelHPicture.Location = new System.Drawing.Point(4, 491);
             this.pnlEnabelHPicture.Margin = new System.Windows.Forms.Padding(4);
             this.pnlEnabelHPicture.Name = "pnlEnabelHPicture";
             this.pnlEnabelHPicture.Size = new System.Drawing.Size(629, 1087);
@@ -2236,6 +2259,42 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
+            // txbTraceMoeSendThreshold
+            // 
+            this.txbTraceMoeSendThreshold.Location = new System.Drawing.Point(179, 29);
+            this.txbTraceMoeSendThreshold.Name = "txbTraceMoeSendThreshold";
+            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(440, 23);
+            this.txbTraceMoeSendThreshold.TabIndex = 16;
+            this.toolTip1.SetToolTip(this.txbTraceMoeSendThreshold, "相似度大于等于此数值时发送搜番结果(TraceMoe官方参考值为87%)");
+            // 
+            // lblTraceMoeSendThreshold
+            // 
+            this.lblTraceMoeSendThreshold.AutoSize = true;
+            this.lblTraceMoeSendThreshold.Location = new System.Drawing.Point(18, 32);
+            this.lblTraceMoeSendThreshold.Name = "lblTraceMoeSendThreshold";
+            this.lblTraceMoeSendThreshold.Size = new System.Drawing.Size(118, 17);
+            this.lblTraceMoeSendThreshold.TabIndex = 17;
+            this.lblTraceMoeSendThreshold.Text = "TraceMoe发送阈值:";
+            this.toolTip1.SetToolTip(this.lblTraceMoeSendThreshold, "相似度大于等于此数值时发送搜番结果(TraceMoe官方参考值为87%)");
+            // 
+            // txbTraceMoeStopThreshold
+            // 
+            this.txbTraceMoeStopThreshold.Location = new System.Drawing.Point(179, 58);
+            this.txbTraceMoeStopThreshold.Name = "txbTraceMoeStopThreshold";
+            this.txbTraceMoeStopThreshold.Size = new System.Drawing.Size(440, 23);
+            this.txbTraceMoeStopThreshold.TabIndex = 16;
+            this.toolTip1.SetToolTip(this.txbTraceMoeStopThreshold, "相似度大于等于此数值时不进行后续搜图");
+            // 
+            // lblTraceMoeStopThreshold
+            // 
+            this.lblTraceMoeStopThreshold.AutoSize = true;
+            this.lblTraceMoeStopThreshold.Location = new System.Drawing.Point(18, 61);
+            this.lblTraceMoeStopThreshold.Name = "lblTraceMoeStopThreshold";
+            this.lblTraceMoeStopThreshold.Size = new System.Drawing.Size(118, 17);
+            this.lblTraceMoeStopThreshold.TabIndex = 17;
+            this.lblTraceMoeStopThreshold.Text = "TraceMoe中断阈值:";
+            this.toolTip1.SetToolTip(this.lblTraceMoeStopThreshold, "相似度大于等于此数值时不进行后续搜图");
+            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -2454,12 +2513,18 @@
         private System.Windows.Forms.Panel pnlDebugMode;
         private System.Windows.Forms.ListView lstDebugGroups;
         private System.Windows.Forms.CheckBox chkDebugReplyAdminOnly;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblAddDebugGroup;
         private System.Windows.Forms.Label lblDebugGroup;
         private System.Windows.Forms.Button btnAddDebugGroup;
         private System.Windows.Forms.Button btnRemoveDebugGroup;
         private System.Windows.Forms.TextBox txbAddDebugGroup;
         private System.Windows.Forms.CheckBox chkDebugMode;
         private System.Windows.Forms.CheckBox chkOnlyReplyDebugGroup;
+        private System.Windows.Forms.CheckBox chkTraceMoeEnabled;
+        private System.Windows.Forms.Label lblTraceMoeStopThreshold;
+        private System.Windows.Forms.Label lblTraceMoeSendThreshold;
+        private System.Windows.Forms.TextBox txbTraceMoeStopThreshold;
+        private System.Windows.Forms.TextBox txbTraceMoeSendThreshold;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

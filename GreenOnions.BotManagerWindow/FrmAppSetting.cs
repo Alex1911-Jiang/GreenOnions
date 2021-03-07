@@ -46,10 +46,13 @@ namespace GreenOnions.BotMainManagerWindow
             #endregion -- 通用设置 --
 
             #region -- 搜图设置 --
+            txbTraceMoeSendThreshold.Text = BotInfo.TraceMoeSendThreshold.ToString();
+            txbTraceMoeStopThreshold.Text = BotInfo.TraceMoeStopThreshold.ToString();
             chkSearchPictureEnabled.Checked = BotInfo.SearchEnabled;  //是否启用搜图功能
             chkSearchSauceNAOEnabled.Checked = BotInfo.SearchEnabledSauceNao;  //SauceNao Api-Key
             txbSauceNAOApiKey.Text = BotInfo.SauceNAOApiKey;
             chkSearchASCII2DEnabled.Checked = BotInfo.SearchEnabledASCII2D;  //是否启用ASCII2D搜图
+            chkTraceMoeEnabled.Checked = BotInfo.SearchEnabledTraceMoe;  //是否启用TraceMoe搜番
             txbSearchModeOnCmd.Text = BotInfo.SearchModeOnCmd;
             txbSearchModeOffCmd.Text = BotInfo.SearchModeOffCmd;
             txbSearchModeTimeOutReply.Text = BotInfo.SearchModeTimeOutReply;
@@ -153,18 +156,6 @@ namespace GreenOnions.BotMainManagerWindow
             #endregion -- 色图设置 --
         }
 
-        //protected override void OnLoad(EventArgs e)
-        //{
-        //    base.OnLoad(e);
-
-        //    pnlSearchPicture.Enabled = chkSearchPictureEnabled.Checked;
-        //    txbSauceNAOApiKey.Enabled = chkSearchSauceNAOEnabled.Checked;
-        //    pnlCheckPorn.Enabled = chkCheckPorn.Checked;
-        //    pnlTranslate.Enabled = chkTranslateEnabled.Checked;
-        //    pnlEnabelHPicture.Enabled = chkEnabledHPicture.Checked;
-        //    pnlDebugMode.Enabled = chkDebugMode.Checked;
-        //}
-
         private void btnOk_Click(object sender, EventArgs e)
         {
             #region -- 通用设置 --
@@ -204,10 +195,23 @@ namespace GreenOnions.BotMainManagerWindow
             #endregion -- 通用设置 --
 
             #region -- 搜图设置 --
+            int iTraceMoeSendThreshold;
+            if (!int.TryParse(txbTraceMoeSendThreshold.Text, out iTraceMoeSendThreshold))
+            {
+                iTraceMoeSendThreshold = 87;
+            }
+            BotInfo.TraceMoeSendThreshold = iTraceMoeSendThreshold;
+            int iTraceMoeStopThreshold;
+            if (!int.TryParse(txbTraceMoeStopThreshold.Text, out iTraceMoeStopThreshold))
+            {
+                iTraceMoeStopThreshold = 95;
+            }
             BotInfo.SearchEnabled = chkSearchPictureEnabled.Checked;  //是否启用搜图功能
             BotInfo.SearchEnabledSauceNao = chkSearchSauceNAOEnabled.Checked;  //是否启用SauceNao搜图
             BotInfo.SauceNAOApiKey = txbSauceNAOApiKey.Text;
+            BotInfo.TraceMoeStopThreshold = iTraceMoeStopThreshold;
             BotInfo.SearchEnabledASCII2D = chkSearchASCII2DEnabled.Checked;  //是否启用ASCII2D搜图
+            BotInfo.SearchEnabledTraceMoe = chkTraceMoeEnabled.Checked;  //是否启用TraceMoe搜番
             BotInfo.SearchModeOnCmd = txbSearchModeOnCmd.Text;
             BotInfo.SearchModeOffCmd = txbSearchModeOffCmd.Text;
             BotInfo.SearchModeTimeOutReply = txbSearchModeTimeOutReply.Text;
@@ -447,7 +451,7 @@ namespace GreenOnions.BotMainManagerWindow
 
         private void btnRemoveDebugGroup_Click(object sender, EventArgs e) => RemoveItemFromListView(lstDebugGroups);
 
-        private void AddItemToListView( ListView listView , string value)
+        private void AddItemToListView(ListView listView, string value)
         {
             if (!string.IsNullOrEmpty(value))
             {

@@ -29,7 +29,7 @@ namespace GreenOnions.BotMain
                         for (int i = 1; i < e.Chain.Length; i++)
                         {
                             ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-                            await SearchPictureHandler.SearchPicture(session, imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendTempMessageAsync(e.Sender.Id, e.Sender.Group.Id, msg));
+                            await SearchPictureHandler.SearchPicture( imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendTempMessageAsync(e.Sender.Id, e.Sender.Group.Id, msg));
                         }
                         break;
                 }
