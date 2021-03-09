@@ -94,6 +94,8 @@
             this.lblSearchModeOffReply = new System.Windows.Forms.Label();
             this.lblSearchModeAlreadyOnReply = new System.Windows.Forms.Label();
             this.lblSearchModeOnReply = new System.Windows.Forms.Label();
+            this.lblTraceMoeStopThreshold = new System.Windows.Forms.Label();
+            this.lblTraceMoeSendThreshold = new System.Windows.Forms.Label();
             this.lblSauceNAOApiKey = new System.Windows.Forms.Label();
             this.lblSearchModeOnCmd = new System.Windows.Forms.Label();
             this.txbSearchLowSimilarityReply = new System.Windows.Forms.TextBox();
@@ -104,7 +106,9 @@
             this.txbSearchModeOffCmd = new System.Windows.Forms.TextBox();
             this.txbSearchModeAlreadyOffReply = new System.Windows.Forms.TextBox();
             this.txbSearchModeOffReply = new System.Windows.Forms.TextBox();
+            this.txbTraceMoeStopThreshold = new System.Windows.Forms.TextBox();
             this.txbSearchModeAlreadyOnReply = new System.Windows.Forms.TextBox();
+            this.txbTraceMoeSendThreshold = new System.Windows.Forms.TextBox();
             this.txbSearchModeOnReply = new System.Windows.Forms.TextBox();
             this.txbSauceNAOApiKey = new System.Windows.Forms.TextBox();
             this.txbSearchModeOnCmd = new System.Windows.Forms.TextBox();
@@ -215,10 +219,6 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
-            this.txbTraceMoeSendThreshold = new System.Windows.Forms.TextBox();
-            this.lblTraceMoeSendThreshold = new System.Windows.Forms.Label();
-            this.txbTraceMoeStopThreshold = new System.Windows.Forms.TextBox();
-            this.lblTraceMoeStopThreshold = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
@@ -299,7 +299,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(656, 717);
+            this.tabControl1.Size = new System.Drawing.Size(660, 717);
             this.tabControl1.TabIndex = 4;
             // 
             // tabBot
@@ -953,6 +953,26 @@
             this.lblSearchModeOnReply.TabIndex = 18;
             this.lblSearchModeOnReply.Text = "开启连续搜图模式提示语:";
             // 
+            // lblTraceMoeStopThreshold
+            // 
+            this.lblTraceMoeStopThreshold.AutoSize = true;
+            this.lblTraceMoeStopThreshold.Location = new System.Drawing.Point(18, 61);
+            this.lblTraceMoeStopThreshold.Name = "lblTraceMoeStopThreshold";
+            this.lblTraceMoeStopThreshold.Size = new System.Drawing.Size(118, 17);
+            this.lblTraceMoeStopThreshold.TabIndex = 17;
+            this.lblTraceMoeStopThreshold.Text = "TraceMoe中断阈值:";
+            this.toolTip1.SetToolTip(this.lblTraceMoeStopThreshold, "相似度大于等于此数值时不进行后续搜图");
+            // 
+            // lblTraceMoeSendThreshold
+            // 
+            this.lblTraceMoeSendThreshold.AutoSize = true;
+            this.lblTraceMoeSendThreshold.Location = new System.Drawing.Point(18, 32);
+            this.lblTraceMoeSendThreshold.Name = "lblTraceMoeSendThreshold";
+            this.lblTraceMoeSendThreshold.Size = new System.Drawing.Size(118, 17);
+            this.lblTraceMoeSendThreshold.TabIndex = 17;
+            this.lblTraceMoeSendThreshold.Text = "TraceMoe发送阈值:";
+            this.toolTip1.SetToolTip(this.lblTraceMoeSendThreshold, "相似度大于等于此数值时发送搜番结果(TraceMoe官方参考值为87%)");
+            // 
             // lblSauceNAOApiKey
             // 
             this.lblSauceNAOApiKey.AutoSize = true;
@@ -1027,12 +1047,28 @@
             this.txbSearchModeOffReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchModeOffReply.TabIndex = 16;
             // 
+            // txbTraceMoeStopThreshold
+            // 
+            this.txbTraceMoeStopThreshold.Location = new System.Drawing.Point(179, 58);
+            this.txbTraceMoeStopThreshold.Name = "txbTraceMoeStopThreshold";
+            this.txbTraceMoeStopThreshold.Size = new System.Drawing.Size(440, 23);
+            this.txbTraceMoeStopThreshold.TabIndex = 16;
+            this.toolTip1.SetToolTip(this.txbTraceMoeStopThreshold, "相似度大于等于此数值时不进行后续搜图");
+            // 
             // txbSearchModeAlreadyOnReply
             // 
             this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(179, 228);
             this.txbSearchModeAlreadyOnReply.Name = "txbSearchModeAlreadyOnReply";
             this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchModeAlreadyOnReply.TabIndex = 16;
+            // 
+            // txbTraceMoeSendThreshold
+            // 
+            this.txbTraceMoeSendThreshold.Location = new System.Drawing.Point(179, 29);
+            this.txbTraceMoeSendThreshold.Name = "txbTraceMoeSendThreshold";
+            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(440, 23);
+            this.txbTraceMoeSendThreshold.TabIndex = 16;
+            this.toolTip1.SetToolTip(this.txbTraceMoeSendThreshold, "相似度大于等于此数值时发送搜番结果(TraceMoe官方参考值为87%)");
             // 
             // txbSearchModeOnReply
             // 
@@ -1149,7 +1185,7 @@
             this.tabHPicture.Margin = new System.Windows.Forms.Padding(4);
             this.tabHPicture.Name = "tabHPicture";
             this.tabHPicture.Padding = new System.Windows.Forms.Padding(4);
-            this.tabHPicture.Size = new System.Drawing.Size(648, 687);
+            this.tabHPicture.Size = new System.Drawing.Size(652, 687);
             this.tabHPicture.TabIndex = 0;
             this.tabHPicture.Text = "色图设置";
             this.tabHPicture.UseVisualStyleBackColor = true;
@@ -1243,7 +1279,7 @@
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureCount);
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureR18);
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureUnit);
-            this.pnlEnabelHPicture.Location = new System.Drawing.Point(4, 491);
+            this.pnlEnabelHPicture.Location = new System.Drawing.Point(4, 32);
             this.pnlEnabelHPicture.Margin = new System.Windows.Forms.Padding(4);
             this.pnlEnabelHPicture.Name = "pnlEnabelHPicture";
             this.pnlEnabelHPicture.Size = new System.Drawing.Size(629, 1087);
@@ -2258,42 +2294,6 @@
             this.lblContributorName.Size = new System.Drawing.Size(35, 17);
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
-            // 
-            // txbTraceMoeSendThreshold
-            // 
-            this.txbTraceMoeSendThreshold.Location = new System.Drawing.Point(179, 29);
-            this.txbTraceMoeSendThreshold.Name = "txbTraceMoeSendThreshold";
-            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(440, 23);
-            this.txbTraceMoeSendThreshold.TabIndex = 16;
-            this.toolTip1.SetToolTip(this.txbTraceMoeSendThreshold, "相似度大于等于此数值时发送搜番结果(TraceMoe官方参考值为87%)");
-            // 
-            // lblTraceMoeSendThreshold
-            // 
-            this.lblTraceMoeSendThreshold.AutoSize = true;
-            this.lblTraceMoeSendThreshold.Location = new System.Drawing.Point(18, 32);
-            this.lblTraceMoeSendThreshold.Name = "lblTraceMoeSendThreshold";
-            this.lblTraceMoeSendThreshold.Size = new System.Drawing.Size(118, 17);
-            this.lblTraceMoeSendThreshold.TabIndex = 17;
-            this.lblTraceMoeSendThreshold.Text = "TraceMoe发送阈值:";
-            this.toolTip1.SetToolTip(this.lblTraceMoeSendThreshold, "相似度大于等于此数值时发送搜番结果(TraceMoe官方参考值为87%)");
-            // 
-            // txbTraceMoeStopThreshold
-            // 
-            this.txbTraceMoeStopThreshold.Location = new System.Drawing.Point(179, 58);
-            this.txbTraceMoeStopThreshold.Name = "txbTraceMoeStopThreshold";
-            this.txbTraceMoeStopThreshold.Size = new System.Drawing.Size(440, 23);
-            this.txbTraceMoeStopThreshold.TabIndex = 16;
-            this.toolTip1.SetToolTip(this.txbTraceMoeStopThreshold, "相似度大于等于此数值时不进行后续搜图");
-            // 
-            // lblTraceMoeStopThreshold
-            // 
-            this.lblTraceMoeStopThreshold.AutoSize = true;
-            this.lblTraceMoeStopThreshold.Location = new System.Drawing.Point(18, 61);
-            this.lblTraceMoeStopThreshold.Name = "lblTraceMoeStopThreshold";
-            this.lblTraceMoeStopThreshold.Size = new System.Drawing.Size(118, 17);
-            this.lblTraceMoeStopThreshold.TabIndex = 17;
-            this.lblTraceMoeStopThreshold.Text = "TraceMoe中断阈值:";
-            this.toolTip1.SetToolTip(this.lblTraceMoeStopThreshold, "相似度大于等于此数值时不进行后续搜图");
             // 
             // FrmAppSetting
             // 
