@@ -244,7 +244,7 @@ namespace GreenOnions.BotMain
             Regex regexTranslateTo = new Regex(BotInfo.TranslateToCMD.ReplaceGreenOnionsTags());
             Regex regexHPicture = new Regex(BotInfo.HPictureCmd.ReplaceGreenOnionsTags());
             Regex regexShabHPicture = new Regex(BotInfo.ShabHPictureCmd.ReplaceGreenOnionsTags());
-            //Regex regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
+            Regex regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
 
 
             string firstMessage = Chain[1].ToString();
@@ -385,45 +385,45 @@ namespace GreenOnions.BotMain
                 {
                     lstEnabledFeatures.Add("GHS");
                 }
-                //if (BotInfo.QQId == 3246934384)
-                //{
-                //    lstEnabledFeatures.Add("查手机号");
-                //}
+                if (BotInfo.QQId == 3246934384)
+                {
+                    lstEnabledFeatures.Add("查手机号");
+                }
                 string strHelpResult = $"现在您可以让我{string.Join("，", lstEnabledFeatures)}。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。";
                 await session.SendFriendMessageAsync(qqId, new PlainMessage(strHelpResult));
             }
-            //#region -- 查询手机号(夹带私货) --
-            //else if (regexSelectPhone.IsMatch(firstMessage))
-            //{
-            //    if (BotInfo.QQId == 3246934384)
-            //    {
-            //        foreach (Match match in regexSelectPhone.Matches(firstMessage))
-            //        {
-            //            if (match.Groups.Count > 1)
-            //            {
-            //                string qqNumber = firstMessage.Substring(match.Groups[1].Length);
-            //                long lQQNumber;
-            //                if (long.TryParse(qqNumber, out lQQNumber))
-            //                {
-            //                    try
-            //                    {
-            //                        string result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetPhoneByQQ", lQQNumber);
-            //                        await session.SendFriendMessageAsync(qqId, new PlainMessage(result));
-            //                    }
-            //                    catch (Exception ex)
-            //                    {
-            //                        await session.SendFriendMessageAsync(qqId, new PlainMessage("查询失败" + ex.Message));
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    await session.SendFriendMessageAsync(qqId, new PlainMessage("请输入正确的QQ号码(不支持以邮箱查询)"));
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //#endregion -- 查询手机号(夹带私货) --
+            #region -- 查询手机号(夹带私货) --
+            else if (regexSelectPhone.IsMatch(firstMessage))
+            {
+                if (BotInfo.QQId == 3246934384)
+                {
+                    foreach (Match match in regexSelectPhone.Matches(firstMessage))
+                    {
+                        if (match.Groups.Count > 1)
+                        {
+                            string qqNumber = firstMessage.Substring(match.Groups[1].Length);
+                            long lQQNumber;
+                            if (long.TryParse(qqNumber, out lQQNumber))
+                            {
+                                try
+                                {
+                                    string result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", lQQNumber == qqId ? "GetSelfPhoneByQQ" : "GetPhoneByQQ", lQQNumber);
+                                    await session.SendFriendMessageAsync(qqId, new PlainMessage(result));
+                                }
+                                catch (Exception ex)
+                                {
+                                    await session.SendFriendMessageAsync(qqId, new PlainMessage("查询失败" + ex.Message));
+                                }
+                            }
+                            else
+                            {
+                                await session.SendFriendMessageAsync(qqId, new PlainMessage("请输入正确的QQ号码(不支持以邮箱查询)"));
+                            }
+                        }
+                    }
+                }
+            }
+            #endregion -- 查询手机号(夹带私货) --
         }
     }
 }

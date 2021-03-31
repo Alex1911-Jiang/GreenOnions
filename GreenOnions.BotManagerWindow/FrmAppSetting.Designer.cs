@@ -94,7 +94,6 @@
             this.lblSearchModeOffReply = new System.Windows.Forms.Label();
             this.lblSearchModeAlreadyOnReply = new System.Windows.Forms.Label();
             this.lblSearchModeOnReply = new System.Windows.Forms.Label();
-            this.lblTraceMoeStopThreshold = new System.Windows.Forms.Label();
             this.lblTraceMoeSendThreshold = new System.Windows.Forms.Label();
             this.lblSauceNAOApiKey = new System.Windows.Forms.Label();
             this.lblSearchModeOnCmd = new System.Windows.Forms.Label();
@@ -106,7 +105,6 @@
             this.txbSearchModeOffCmd = new System.Windows.Forms.TextBox();
             this.txbSearchModeAlreadyOffReply = new System.Windows.Forms.TextBox();
             this.txbSearchModeOffReply = new System.Windows.Forms.TextBox();
-            this.txbTraceMoeStopThreshold = new System.Windows.Forms.TextBox();
             this.txbSearchModeAlreadyOnReply = new System.Windows.Forms.TextBox();
             this.txbTraceMoeSendThreshold = new System.Windows.Forms.TextBox();
             this.txbSearchModeOnReply = new System.Windows.Forms.TextBox();
@@ -332,7 +330,7 @@
             this.tabBot.Margin = new System.Windows.Forms.Padding(4);
             this.tabBot.Name = "tabBot";
             this.tabBot.Padding = new System.Windows.Forms.Padding(4);
-            this.tabBot.Size = new System.Drawing.Size(648, 687);
+            this.tabBot.Size = new System.Drawing.Size(652, 687);
             this.tabBot.TabIndex = 1;
             this.tabBot.Text = "机器人设置";
             this.tabBot.UseVisualStyleBackColor = true;
@@ -651,7 +649,7 @@
             this.tabSearchPicture.Controls.Add(this.pnlSearchPicture);
             this.tabSearchPicture.Location = new System.Drawing.Point(4, 26);
             this.tabSearchPicture.Name = "tabSearchPicture";
-            this.tabSearchPicture.Size = new System.Drawing.Size(648, 687);
+            this.tabSearchPicture.Size = new System.Drawing.Size(652, 687);
             this.tabSearchPicture.TabIndex = 3;
             this.tabSearchPicture.Text = "搜图设置";
             this.tabSearchPicture.UseVisualStyleBackColor = true;
@@ -683,7 +681,6 @@
             this.pnlSearchPicture.Controls.Add(this.lblSearchModeOffReply);
             this.pnlSearchPicture.Controls.Add(this.lblSearchModeAlreadyOnReply);
             this.pnlSearchPicture.Controls.Add(this.lblSearchModeOnReply);
-            this.pnlSearchPicture.Controls.Add(this.lblTraceMoeStopThreshold);
             this.pnlSearchPicture.Controls.Add(this.lblTraceMoeSendThreshold);
             this.pnlSearchPicture.Controls.Add(this.lblSauceNAOApiKey);
             this.pnlSearchPicture.Controls.Add(this.lblSearchModeOnCmd);
@@ -695,7 +692,6 @@
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeOffCmd);
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeAlreadyOffReply);
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeOffReply);
-            this.pnlSearchPicture.Controls.Add(this.txbTraceMoeStopThreshold);
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeAlreadyOnReply);
             this.pnlSearchPicture.Controls.Add(this.txbTraceMoeSendThreshold);
             this.pnlSearchPicture.Controls.Add(this.txbSearchModeOnReply);
@@ -953,16 +949,6 @@
             this.lblSearchModeOnReply.TabIndex = 18;
             this.lblSearchModeOnReply.Text = "开启连续搜图模式提示语:";
             // 
-            // lblTraceMoeStopThreshold
-            // 
-            this.lblTraceMoeStopThreshold.AutoSize = true;
-            this.lblTraceMoeStopThreshold.Location = new System.Drawing.Point(18, 61);
-            this.lblTraceMoeStopThreshold.Name = "lblTraceMoeStopThreshold";
-            this.lblTraceMoeStopThreshold.Size = new System.Drawing.Size(118, 17);
-            this.lblTraceMoeStopThreshold.TabIndex = 17;
-            this.lblTraceMoeStopThreshold.Text = "TraceMoe中断阈值:";
-            this.toolTip1.SetToolTip(this.lblTraceMoeStopThreshold, "相似度大于等于此数值时不进行后续搜图");
-            // 
             // lblTraceMoeSendThreshold
             // 
             this.lblTraceMoeSendThreshold.AutoSize = true;
@@ -1047,14 +1033,6 @@
             this.txbSearchModeOffReply.Size = new System.Drawing.Size(440, 23);
             this.txbSearchModeOffReply.TabIndex = 16;
             // 
-            // txbTraceMoeStopThreshold
-            // 
-            this.txbTraceMoeStopThreshold.Location = new System.Drawing.Point(179, 58);
-            this.txbTraceMoeStopThreshold.Name = "txbTraceMoeStopThreshold";
-            this.txbTraceMoeStopThreshold.Size = new System.Drawing.Size(440, 23);
-            this.txbTraceMoeStopThreshold.TabIndex = 16;
-            this.toolTip1.SetToolTip(this.txbTraceMoeStopThreshold, "相似度大于等于此数值时不进行后续搜图");
-            // 
             // txbSearchModeAlreadyOnReply
             // 
             this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(179, 228);
@@ -1118,7 +1096,7 @@
             this.tabTranslate.Controls.Add(this.chkTranslateEnabled);
             this.tabTranslate.Location = new System.Drawing.Point(4, 26);
             this.tabTranslate.Name = "tabTranslate";
-            this.tabTranslate.Size = new System.Drawing.Size(648, 687);
+            this.tabTranslate.Size = new System.Drawing.Size(652, 687);
             this.tabTranslate.TabIndex = 4;
             this.tabTranslate.Text = "翻译设置";
             this.tabTranslate.UseVisualStyleBackColor = true;
@@ -2206,7 +2184,7 @@
             this.tabAbout.Location = new System.Drawing.Point(4, 26);
             this.tabAbout.Margin = new System.Windows.Forms.Padding(4);
             this.tabAbout.Name = "tabAbout";
-            this.tabAbout.Size = new System.Drawing.Size(648, 687);
+            this.tabAbout.Size = new System.Drawing.Size(652, 687);
             this.tabAbout.TabIndex = 2;
             this.tabAbout.Text = "关于";
             this.tabAbout.UseVisualStyleBackColor = true;
@@ -2521,9 +2499,7 @@
         private System.Windows.Forms.CheckBox chkDebugMode;
         private System.Windows.Forms.CheckBox chkOnlyReplyDebugGroup;
         private System.Windows.Forms.CheckBox chkTraceMoeEnabled;
-        private System.Windows.Forms.Label lblTraceMoeStopThreshold;
         private System.Windows.Forms.Label lblTraceMoeSendThreshold;
-        private System.Windows.Forms.TextBox txbTraceMoeStopThreshold;
         private System.Windows.Forms.TextBox txbTraceMoeSendThreshold;
         private System.Windows.Forms.ToolTip toolTip1;
     }

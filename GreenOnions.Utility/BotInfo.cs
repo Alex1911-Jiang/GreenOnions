@@ -381,20 +381,20 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold), value.ToString());
         }
 
-        /// <summary>
-        /// TraceMoe搜图相似度大于此数值时不进行后续搜图
-        /// </summary>
-        [PropertyChineseName("TraceMoe中断阈值")]
-        public static int TraceMoeStopThreshold
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(TraceMoeStopThreshold));
-                if (int.TryParse(strValue, out int iValue)) return iValue;
-                return 95;
-            }
-            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(TraceMoeStopThreshold), value.ToString());
-        }
+        ///// <summary>
+        ///// TraceMoe搜图相似度大于此数值时不进行后续搜图
+        ///// </summary>
+        //[PropertyChineseName("TraceMoe中断阈值")]
+        //public static int TraceMoeStopThreshold
+        //{
+        //    get
+        //    {
+        //        string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(TraceMoeStopThreshold));
+        //        if (int.TryParse(strValue, out int iValue)) return iValue;
+        //        return 95;
+        //    }
+        //    set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNamePictureSearcher, nameof(TraceMoeStopThreshold), value.ToString());
+        //}
 
         /// <summary>
         /// 相似度低于阈值返回消息

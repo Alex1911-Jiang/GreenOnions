@@ -7,9 +7,9 @@ namespace GreenOnions.Utility.Helper
 {
     public static class SqlHelper
     {
-        private static string _ConnStr = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
-        public static DataSet Select(string sql)
+        public static DataSet Select(string sql, string dataBaseName = "GreenOnions")
         {
+            string _ConnStr = ConfigurationManager.ConnectionStrings[dataBaseName + "ConnectString"].ConnectionString;
             using (SqlConnection sqlConnection = new SqlConnection(_ConnStr))
             {
                 if (sqlConnection.State != ConnectionState.Open)

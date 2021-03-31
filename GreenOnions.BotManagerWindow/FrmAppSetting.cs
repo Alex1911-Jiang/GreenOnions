@@ -47,7 +47,7 @@ namespace GreenOnions.BotMainManagerWindow
 
             #region -- 搜图设置 --
             txbTraceMoeSendThreshold.Text = BotInfo.TraceMoeSendThreshold.ToString();
-            txbTraceMoeStopThreshold.Text = BotInfo.TraceMoeStopThreshold.ToString();
+            //txbTraceMoeStopThreshold.Text = BotInfo.TraceMoeStopThreshold.ToString();
             chkSearchPictureEnabled.Checked = BotInfo.SearchEnabled;  //是否启用搜图功能
             chkSearchSauceNAOEnabled.Checked = BotInfo.SearchEnabledSauceNao;  //SauceNao Api-Key
             txbSauceNAOApiKey.Text = BotInfo.SauceNAOApiKey;
@@ -201,15 +201,15 @@ namespace GreenOnions.BotMainManagerWindow
                 iTraceMoeSendThreshold = 87;
             }
             BotInfo.TraceMoeSendThreshold = iTraceMoeSendThreshold;
-            int iTraceMoeStopThreshold;
-            if (!int.TryParse(txbTraceMoeStopThreshold.Text, out iTraceMoeStopThreshold))
-            {
-                iTraceMoeStopThreshold = 95;
-            }
+            //int iTraceMoeStopThreshold;
+            //if (!int.TryParse(txbTraceMoeStopThreshold.Text, out iTraceMoeStopThreshold))
+            //{
+            //    iTraceMoeStopThreshold = 95;
+            //}
             BotInfo.SearchEnabled = chkSearchPictureEnabled.Checked;  //是否启用搜图功能
             BotInfo.SearchEnabledSauceNao = chkSearchSauceNAOEnabled.Checked;  //是否启用SauceNao搜图
             BotInfo.SauceNAOApiKey = txbSauceNAOApiKey.Text;
-            BotInfo.TraceMoeStopThreshold = iTraceMoeStopThreshold;
+            //BotInfo.TraceMoeStopThreshold = iTraceMoeStopThreshold;
             BotInfo.SearchEnabledASCII2D = chkSearchASCII2DEnabled.Checked;  //是否启用ASCII2D搜图
             BotInfo.SearchEnabledTraceMoe = chkTraceMoeEnabled.Checked;  //是否启用TraceMoe搜番
             BotInfo.SearchModeOnCmd = txbSearchModeOnCmd.Text;
