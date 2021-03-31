@@ -43,9 +43,10 @@ namespace GreenOnions.PictureSearcher
 
             async Task SearchTraceMoe()
             {
+                string TraceMoeUrl = @$"https://trace.moe/api/search?url={inImgMsg.Url}";
                 try
                 {
-                    string strSauceTraceMoe = await HttpHelper.GetHttpResponseStringAsync(@$"https://trace.moe/api/search?url={inImgMsg.Url}", out _);
+                    string strSauceTraceMoe = await HttpHelper.GetHttpResponseStringAsync(TraceMoeUrl, out _);
                     JToken json = JsonConvert.DeserializeObject<JToken>(strSauceTraceMoe);
                     JArray jResults = json["docs"] as JArray;
                     if (jResults.Count > 0)
@@ -72,15 +73,25 @@ namespace GreenOnions.PictureSearcher
                 }
                 catch (Exception ex)
                 {
-                    ErrorHelper.WriteErrorLog(ex + "请求地址为：" + @$"https://trace.moe/api/search?url={inImgMsg.Url}");
+                    ErrorHelper.WriteErrorLogWithUserMessage("TraceMoe搜番失败", ex, $"请求地址为：{TraceMoeUrl}");
                     SendMessage(new[] { new PlainMessage("TraceMoe搜番失败，" + ex.Message) });
                 }
             }
 
             async Task SearchSauceNao()
             {
-                string strSauceNaoResult = await HttpHelper.GetHttpResponseStringAsync(@$"https://saucenao.com/search.php?db=999&output_type=2&api_key={BotInfo.SauceNAOApiKey}&testmode=1&numres=16&url={inImgMsg.Url}", out _);
-
+                string SauceNaoUrl = @$"https://saucenao.com/search.php?db=999&output_type=2&api_key={BotInfo.SauceNAOApiKey}&testmode=1&numres=16&url={inImgMsg.Url}";
+                string strSauceNaoResult;
+                try
+                {
+                    strSauceNaoResult = await HttpHelper.GetHttpResponseStringAsync(SauceNaoUrl, out _);
+                }
+                catch (Exception ex)
+                {
+                    ErrorHelper.WriteErrorLogWithUserMessage("SauceNao搜图失败", ex, $"请求地址为：{SauceNaoUrl}");
+                    SendMessage(new[] { new PlainMessage("SauceNao搜图失败，" + ex.Message) });
+                    return;
+                }
                 JToken json = JsonConvert.DeserializeObject<JToken>(strSauceNaoResult);
                 JArray jResults = json["results"] as JArray;
 
@@ -129,19 +140,19 @@ namespace GreenOnions.PictureSearcher
 
                     if (sauceNaoItem.ext_urls != null)
                     {
-                        string url = "";
+                        string sauceNaoUrl = "";
                         if (sauceNaoItem.ext_urls.Count == 1)
                         {
-                            url = $"地址:{sauceNaoItem.ext_urls[0]}\r\n";
+                            sauceNaoUrl = $"地址:{sauceNaoItem.ext_urls[0]}\r\n";
                         }
                         else
                         {
                             for (int k = 0; k < sauceNaoItem.ext_urls.Count; k++)
                             {
-                                url += $"地址{k + 1}:{sauceNaoItem.ext_urls[k]}\r\n";
+                                sauceNaoUrl += $"地址{k + 1}:{sauceNaoItem.ext_urls[k]}\r\n";
                             }
                         }
-                        stringBuilder.AppendLine(url);
+                        stringBuilder.AppendLine(sauceNaoUrl);
                     }
                     if (!string.IsNullOrEmpty(sauceNaoItem.source)) stringBuilder.AppendLine("图片来源:" + HttpUtility.UrlDecode(sauceNaoItem.source));
                     stringBuilder.AppendLine($"相似度:{sauceNaoItem.similarity}%(SauceNAO)");  //一定有相似度
@@ -264,6 +275,9 @@ namespace GreenOnions.PictureSearcher
                 string strAscii2dColorResult = await HttpHelper.GetHttpResponseStringAsync(@$"https://ascii2d.net/search/url/{inImgMsg.Url}", out string colorUrl);
                 string strAscii2dBovwResult = await HttpHelper.GetHttpResponseStringAsync(colorUrl.Replace("/color/", "/bovw/"), out _);
 
+                bool bColorError = false;
+                bool bBovwError = false;
+
                 try
                 {
                     #region -- 颜色搜索 --
@@ -324,7 +338,8 @@ namespace GreenOnions.PictureSearcher
                 }
                 catch (Exception ex)
                 {
-                    ErrorHelper.WriteErrorLog(ex);
+                    bColorError = true;
+                    ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D颜色搜索失败", ex, $"请求地址为：{strAscii2dColorResult}");
                 }
 
                 try
@@ -387,7 +402,13 @@ namespace GreenOnions.PictureSearcher
                 }
                 catch (Exception ex)
                 {
-                    ErrorHelper.WriteErrorLog(ex);
+                    bBovwError = true;
+                    ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D特征搜索失败", ex, $"请求地址为：{strAscii2dBovwResult}");
+                }
+
+                if (bColorError && bBovwError)
+                {
+                    SendMessage(new[] { new PlainMessage("Ascii2D搜索失败。") });
                 }
             }
         }

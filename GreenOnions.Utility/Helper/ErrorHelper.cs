@@ -26,6 +26,27 @@ namespace GreenOnions.Utility.Helper
                 WriteErrorLogInner(ex);
         }
 
+        public static void WriteErrorLogWithUserMessage(string messageStart, object exObj, string messageEnd)
+        {
+            Exception ex = exObj as Exception;
+            if (ex == null)
+                WriteLogText($"{messageStart}。{exObj?.ToString()}。{messageEnd}");
+            else if (ex is AggregateException)
+            {
+                WriteLogText(messageStart);
+                   AggregateException aex = ex as AggregateException;
+                foreach (var iex in aex.InnerExceptions)
+                    WriteErrorLogInner(iex);
+                WriteLogText(messageEnd);
+            }
+            else
+            {
+                WriteLogText(messageStart);
+                WriteErrorLogInner(ex);
+                WriteLogText(messageEnd);
+            }
+        }
+
         private static void WriteErrorLogInner(Exception ex) => WriteLogText($"发生异常:\r\n    错误信息:{ex.Message}\r\n    调用堆栈:{ex.StackTrace}\r\n    源:{ex.Source}\r\n");
 
         private static void WriteLogText(string Text)
