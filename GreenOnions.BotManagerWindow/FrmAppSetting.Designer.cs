@@ -208,6 +208,19 @@
             this.txbHPictureR18 = new System.Windows.Forms.TextBox();
             this.txbHPictureUnit = new System.Windows.Forms.TextBox();
             this.chkEnabledHPicture = new System.Windows.Forms.CheckBox();
+            this.tabRepeater = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblRandomRepeatProbability = new System.Windows.Forms.Label();
+            this.txbVerticalMirrorImageProbability = new System.Windows.Forms.TextBox();
+            this.txbHorizontalMirrorImageProbability = new System.Windows.Forms.TextBox();
+            this.txbSuccessiveRepeatCount = new System.Windows.Forms.TextBox();
+            this.txbRandomRepeatProbability = new System.Windows.Forms.TextBox();
+            this.chkVerticalMirrorImage = new System.Windows.Forms.CheckBox();
+            this.chkHorizontalMirrorImage = new System.Windows.Forms.CheckBox();
+            this.chkSuccessiveRepeat = new System.Windows.Forms.CheckBox();
+            this.chkRandomRepeat = new System.Windows.Forms.CheckBox();
             this.tabAbout = new System.Windows.Forms.TabPage();
             this.txbContributorName = new System.Windows.Forms.TextBox();
             this.txbContributorQQ = new System.Windows.Forms.TextBox();
@@ -228,6 +241,7 @@
             this.pnlTranslate.SuspendLayout();
             this.tabHPicture.SuspendLayout();
             this.pnlEnabelHPicture.SuspendLayout();
+            this.tabRepeater.SuspendLayout();
             this.tabAbout.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -270,8 +284,8 @@
             this.txbAddAdmin.ShortcutsEnabled = false;
             this.txbAddAdmin.Size = new System.Drawing.Size(186, 23);
             this.txbAddAdmin.TabIndex = 0;
-            this.txbAddAdmin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbAddAdmin.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbAddAdmin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbAddAdmin.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // lblAdmin
             // 
@@ -292,6 +306,7 @@
             this.tabControl1.Controls.Add(this.tabSearchPicture);
             this.tabControl1.Controls.Add(this.tabTranslate);
             this.tabControl1.Controls.Add(this.tabHPicture);
+            this.tabControl1.Controls.Add(this.tabRepeater);
             this.tabControl1.Controls.Add(this.tabAbout);
             this.tabControl1.Location = new System.Drawing.Point(14, 8);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
@@ -434,8 +449,8 @@
             this.txbAddDebugGroup.ShortcutsEnabled = false;
             this.txbAddDebugGroup.Size = new System.Drawing.Size(186, 23);
             this.txbAddDebugGroup.TabIndex = 0;
-            this.txbAddDebugGroup.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbAddDebugGroup.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbAddDebugGroup.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbAddDebugGroup.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // chkDebugMode
             // 
@@ -467,8 +482,8 @@
             this.txbBanUser.ShortcutsEnabled = false;
             this.txbBanUser.Size = new System.Drawing.Size(186, 23);
             this.txbBanUser.TabIndex = 0;
-            this.txbBanUser.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbBanUser.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbBanUser.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbBanUser.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // txbBanGroup
             // 
@@ -478,8 +493,8 @@
             this.txbBanGroup.ShortcutsEnabled = false;
             this.txbBanGroup.Size = new System.Drawing.Size(186, 23);
             this.txbBanGroup.TabIndex = 0;
-            this.txbBanGroup.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbBanGroup.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbBanGroup.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbBanGroup.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // btnRemoveBanUser
             // 
@@ -1345,8 +1360,8 @@
             this.txbAddToWhiteGroup.ShortcutsEnabled = false;
             this.txbAddToWhiteGroup.Size = new System.Drawing.Size(186, 23);
             this.txbAddToWhiteGroup.TabIndex = 8;
-            this.txbAddToWhiteGroup.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbAddToWhiteGroup.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbAddToWhiteGroup.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbAddToWhiteGroup.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // txbUserHPictureCmd
             // 
@@ -1364,8 +1379,8 @@
             this.txbPMCD.ShortcutsEnabled = false;
             this.txbPMCD.Size = new System.Drawing.Size(93, 23);
             this.txbPMCD.TabIndex = 8;
-            this.txbPMCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbPMCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbPMCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbPMCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // txbWhiteCD
             // 
@@ -1375,8 +1390,8 @@
             this.txbWhiteCD.ShortcutsEnabled = false;
             this.txbWhiteCD.Size = new System.Drawing.Size(93, 23);
             this.txbWhiteCD.TabIndex = 8;
-            this.txbWhiteCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbWhiteCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbWhiteCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbWhiteCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // txbPMRevoke
             // 
@@ -1386,8 +1401,8 @@
             this.txbPMRevoke.ShortcutsEnabled = false;
             this.txbPMRevoke.Size = new System.Drawing.Size(93, 23);
             this.txbPMRevoke.TabIndex = 8;
-            this.txbPMRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbPMRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbPMRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbPMRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // txbWhiteRevoke
             // 
@@ -1397,8 +1412,8 @@
             this.txbWhiteRevoke.ShortcutsEnabled = false;
             this.txbWhiteRevoke.Size = new System.Drawing.Size(93, 23);
             this.txbWhiteRevoke.TabIndex = 8;
-            this.txbWhiteRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbWhiteRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbWhiteRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbWhiteRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // lstHPictureUserCmd
             // 
@@ -1626,8 +1641,8 @@
             this.txbCD.ShortcutsEnabled = false;
             this.txbCD.Size = new System.Drawing.Size(93, 23);
             this.txbCD.TabIndex = 8;
-            this.txbCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // txbLimit
             // 
@@ -1637,8 +1652,8 @@
             this.txbLimit.ShortcutsEnabled = false;
             this.txbLimit.Size = new System.Drawing.Size(93, 23);
             this.txbLimit.TabIndex = 8;
-            this.txbLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbLimit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbLimit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // txbRevoke
             // 
@@ -1648,8 +1663,8 @@
             this.txbRevoke.ShortcutsEnabled = false;
             this.txbRevoke.Size = new System.Drawing.Size(93, 23);
             this.txbRevoke.TabIndex = 8;
-            this.txbRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbUserHPictureCmd_KeyPress);
-            this.txbRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbUserHPictureCmd_KeyUp);
+            this.txbRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // chkAllowR18
             // 
@@ -2171,6 +2186,139 @@
             this.chkEnabledHPicture.UseVisualStyleBackColor = true;
             this.chkEnabledHPicture.CheckedChanged += new System.EventHandler(this.chkEnableHPicture_CheckedChanged);
             // 
+            // tabRepeater
+            // 
+            this.tabRepeater.Controls.Add(this.label4);
+            this.tabRepeater.Controls.Add(this.label3);
+            this.tabRepeater.Controls.Add(this.label1);
+            this.tabRepeater.Controls.Add(this.lblRandomRepeatProbability);
+            this.tabRepeater.Controls.Add(this.txbVerticalMirrorImageProbability);
+            this.tabRepeater.Controls.Add(this.txbHorizontalMirrorImageProbability);
+            this.tabRepeater.Controls.Add(this.txbSuccessiveRepeatCount);
+            this.tabRepeater.Controls.Add(this.txbRandomRepeatProbability);
+            this.tabRepeater.Controls.Add(this.chkVerticalMirrorImage);
+            this.tabRepeater.Controls.Add(this.chkHorizontalMirrorImage);
+            this.tabRepeater.Controls.Add(this.chkSuccessiveRepeat);
+            this.tabRepeater.Controls.Add(this.chkRandomRepeat);
+            this.tabRepeater.Location = new System.Drawing.Point(4, 26);
+            this.tabRepeater.Name = "tabRepeater";
+            this.tabRepeater.Size = new System.Drawing.Size(652, 687);
+            this.tabRepeater.TabIndex = 5;
+            this.tabRepeater.Text = "复读设置";
+            this.tabRepeater.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(202, 146);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(56, 17);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "概率为：";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(202, 106);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(56, 17);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "概率为：";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(202, 64);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 17);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "次数为：";
+            // 
+            // lblRandomRepeatProbability
+            // 
+            this.lblRandomRepeatProbability.AutoSize = true;
+            this.lblRandomRepeatProbability.Location = new System.Drawing.Point(202, 24);
+            this.lblRandomRepeatProbability.Name = "lblRandomRepeatProbability";
+            this.lblRandomRepeatProbability.Size = new System.Drawing.Size(56, 17);
+            this.lblRandomRepeatProbability.TabIndex = 2;
+            this.lblRandomRepeatProbability.Text = "概率为：";
+            // 
+            // txbVerticalMirrorImageProbability
+            // 
+            this.txbVerticalMirrorImageProbability.Location = new System.Drawing.Point(264, 143);
+            this.txbVerticalMirrorImageProbability.Name = "txbVerticalMirrorImageProbability";
+            this.txbVerticalMirrorImageProbability.Size = new System.Drawing.Size(359, 23);
+            this.txbVerticalMirrorImageProbability.TabIndex = 1;
+            this.txbVerticalMirrorImageProbability.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbVerticalMirrorImageProbability.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            // 
+            // txbHorizontalMirrorImageProbability
+            // 
+            this.txbHorizontalMirrorImageProbability.Location = new System.Drawing.Point(264, 103);
+            this.txbHorizontalMirrorImageProbability.Name = "txbHorizontalMirrorImageProbability";
+            this.txbHorizontalMirrorImageProbability.Size = new System.Drawing.Size(359, 23);
+            this.txbHorizontalMirrorImageProbability.TabIndex = 1;
+            this.txbHorizontalMirrorImageProbability.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbHorizontalMirrorImageProbability.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            // 
+            // txbSuccessiveRepeatCount
+            // 
+            this.txbSuccessiveRepeatCount.Location = new System.Drawing.Point(264, 61);
+            this.txbSuccessiveRepeatCount.Name = "txbSuccessiveRepeatCount";
+            this.txbSuccessiveRepeatCount.Size = new System.Drawing.Size(359, 23);
+            this.txbSuccessiveRepeatCount.TabIndex = 1;
+            this.txbSuccessiveRepeatCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbSuccessiveRepeatCount.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            // 
+            // txbRandomRepeatProbability
+            // 
+            this.txbRandomRepeatProbability.Location = new System.Drawing.Point(264, 21);
+            this.txbRandomRepeatProbability.Name = "txbRandomRepeatProbability";
+            this.txbRandomRepeatProbability.Size = new System.Drawing.Size(359, 23);
+            this.txbRandomRepeatProbability.TabIndex = 1;
+            this.txbRandomRepeatProbability.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbRandomRepeatProbability.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            // 
+            // chkVerticalMirrorImage
+            // 
+            this.chkVerticalMirrorImage.AutoSize = true;
+            this.chkVerticalMirrorImage.Location = new System.Drawing.Point(21, 145);
+            this.chkVerticalMirrorImage.Name = "chkVerticalMirrorImage";
+            this.chkVerticalMirrorImage.Size = new System.Drawing.Size(147, 21);
+            this.chkVerticalMirrorImage.TabIndex = 0;
+            this.chkVerticalMirrorImage.Text = "启用垂直镜像复读图片";
+            this.chkVerticalMirrorImage.UseVisualStyleBackColor = true;
+            // 
+            // chkHorizontalMirrorImage
+            // 
+            this.chkHorizontalMirrorImage.AutoSize = true;
+            this.chkHorizontalMirrorImage.Location = new System.Drawing.Point(21, 105);
+            this.chkHorizontalMirrorImage.Name = "chkHorizontalMirrorImage";
+            this.chkHorizontalMirrorImage.Size = new System.Drawing.Size(147, 21);
+            this.chkHorizontalMirrorImage.TabIndex = 0;
+            this.chkHorizontalMirrorImage.Text = "启用水平镜像复读图片";
+            this.chkHorizontalMirrorImage.UseVisualStyleBackColor = true;
+            // 
+            // chkSuccessiveRepeat
+            // 
+            this.chkSuccessiveRepeat.AutoSize = true;
+            this.chkSuccessiveRepeat.Location = new System.Drawing.Point(21, 63);
+            this.chkSuccessiveRepeat.Name = "chkSuccessiveRepeat";
+            this.chkSuccessiveRepeat.Size = new System.Drawing.Size(99, 21);
+            this.chkSuccessiveRepeat.TabIndex = 0;
+            this.chkSuccessiveRepeat.Text = "启用连续复读";
+            this.chkSuccessiveRepeat.UseVisualStyleBackColor = true;
+            // 
+            // chkRandomRepeat
+            // 
+            this.chkRandomRepeat.AutoSize = true;
+            this.chkRandomRepeat.Location = new System.Drawing.Point(21, 23);
+            this.chkRandomRepeat.Name = "chkRandomRepeat";
+            this.chkRandomRepeat.Size = new System.Drawing.Size(99, 21);
+            this.chkRandomRepeat.TabIndex = 0;
+            this.chkRandomRepeat.Text = "启用随机复读";
+            this.chkRandomRepeat.UseVisualStyleBackColor = true;
+            // 
             // tabAbout
             // 
             this.tabAbout.Controls.Add(this.txbContributorName);
@@ -2305,6 +2453,8 @@
             this.tabHPicture.PerformLayout();
             this.pnlEnabelHPicture.ResumeLayout(false);
             this.pnlEnabelHPicture.PerformLayout();
+            this.tabRepeater.ResumeLayout(false);
+            this.tabRepeater.PerformLayout();
             this.tabAbout.ResumeLayout(false);
             this.tabAbout.PerformLayout();
             this.ResumeLayout(false);
@@ -2502,5 +2652,18 @@
         private System.Windows.Forms.Label lblTraceMoeSendThreshold;
         private System.Windows.Forms.TextBox txbTraceMoeSendThreshold;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.TabPage tabRepeater;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblRandomRepeatProbability;
+        private System.Windows.Forms.TextBox txbHorizontalMirrorImageProbability;
+        private System.Windows.Forms.TextBox txbSuccessiveRepeatCount;
+        private System.Windows.Forms.TextBox txbRandomRepeatProbability;
+        private System.Windows.Forms.CheckBox chkVerticalMirrorImage;
+        private System.Windows.Forms.CheckBox chkHorizontalMirrorImage;
+        private System.Windows.Forms.CheckBox chkSuccessiveRepeat;
+        private System.Windows.Forms.CheckBox chkRandomRepeat;
+        private System.Windows.Forms.TextBox txbVerticalMirrorImageProbability;
     }
 }

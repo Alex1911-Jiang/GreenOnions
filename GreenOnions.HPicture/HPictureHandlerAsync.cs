@@ -124,6 +124,11 @@ namespace GreenOnions.HPicture
 
                 Stream ms = HttpHelper.DownloadImageAsMemoryStream(pair.URL, imgName);
 
+                if (BotInfo.HPictureAntiShielding)
+                {
+                    ms = ms.StreamAntiShielding();
+                }
+
                 if (ms == null) yield return new PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", pair.Address)));
 
                 yield return await session.UploadPictureAsync(UploadTarget.Group, ms);  //上传图片

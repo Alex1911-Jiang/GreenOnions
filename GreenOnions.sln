@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Translate", "Gr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotManagerConsole", "GreenOnions.BotManagerConsole\GreenOnions.BotManagerConsole.csproj", "{219D4C6E-2799-4780-9BD5-F42AD10857B4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Repeater", "GreenOnions.Repeater\GreenOnions.Repeater.csproj", "{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{219D4C6E-2799-4780-9BD5-F42AD10857B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{219D4C6E-2799-4780-9BD5-F42AD10857B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{219D4C6E-2799-4780-9BD5-F42AD10857B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

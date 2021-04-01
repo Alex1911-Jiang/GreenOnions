@@ -214,6 +214,12 @@ namespace GreenOnions.HPicture
                     else
                     {
                         Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.URL, imgName);
+
+                        if (BotInfo.HPictureAntiShielding)
+                        {
+                            ms = ms.StreamAntiShielding();
+                        }
+
                         if (ms == null)
                         {
                             SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Address))) });
@@ -240,6 +246,12 @@ namespace GreenOnions.HPicture
                         else
                         {
                             Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.Link, imgName);
+
+                            if (BotInfo.HPictureAntiShielding)
+                            {
+                                ms = ms.StreamAntiShielding();
+                            }
+
                             if (ms == null)
                             {
                                 SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Link))) });

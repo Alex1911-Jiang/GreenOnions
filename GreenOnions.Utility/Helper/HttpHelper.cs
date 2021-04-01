@@ -278,17 +278,7 @@ namespace GreenOnions.Utility.Helper
                 ErrorHelper.WriteErrorLog(ex);
                 throw;
             }
-
             MemoryStream ms = new MemoryStream(imageByte);
-            if (BotInfo.HPictureAntiShielding)
-            {
-                Bitmap bmp = new Bitmap(Image.FromStream(ms));
-                bmp.AntiShielding();
-                ms.Close();
-                ms = new MemoryStream();
-                bmp.Save(ms, ImageFormat.Png);
-            }
-
             return ms;
         }
     }

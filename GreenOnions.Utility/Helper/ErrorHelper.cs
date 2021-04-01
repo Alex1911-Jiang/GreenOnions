@@ -26,7 +26,7 @@ namespace GreenOnions.Utility.Helper
                 WriteErrorLogInner(ex);
         }
 
-        public static void WriteErrorLogWithUserMessage(string messageStart, object exObj, string messageEnd)
+        public static void WriteErrorLogWithUserMessage(string messageStart, object exObj, string messageEnd = "")
         {
             Exception ex = exObj as Exception;
             if (ex == null)

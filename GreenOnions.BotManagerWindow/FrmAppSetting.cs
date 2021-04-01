@@ -154,6 +154,17 @@ namespace GreenOnions.BotMainManagerWindow
             chkMultithreading.Checked = BotInfo.HPictureMultithreading;
 
             #endregion -- 色图设置 --
+
+            #region -- 复读设置 --
+            chkRandomRepeat.Checked = BotInfo.RandomRepeatEnabled;
+            txbRandomRepeatProbability.Text = BotInfo.RandomRepeatProbability.ToString();
+            chkSuccessiveRepeat.Checked = BotInfo.SuccessiveRepeatEnabled;
+            txbSuccessiveRepeatCount.Text = BotInfo.SuccessiveRepeatCount.ToString();
+            chkHorizontalMirrorImage.Checked = BotInfo.HorizontalMirrorImageEnabled;
+            txbHorizontalMirrorImageProbability.Text = BotInfo.HorizontalMirrorImageProbability.ToString();
+            chkVerticalMirrorImage.Checked = BotInfo.VerticalMirrorImageEnabled;
+            txbVerticalMirrorImageProbability.Text = BotInfo.VerticalMirrorImageProbability.ToString();
+            #endregion -- 复读设置 --
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -307,6 +318,17 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.HPictureMultithreading = chkMultithreading.Checked;
             #endregion -- 色图设置 --
 
+            #region -- 复读设置 --
+            BotInfo.RandomRepeatEnabled = chkRandomRepeat.Checked;
+            BotInfo.RandomRepeatProbability = string.IsNullOrEmpty(txbRandomRepeatProbability.Text) ? 0 : Convert.ToInt32(txbRandomRepeatProbability.Text);
+            BotInfo.SuccessiveRepeatEnabled = chkSuccessiveRepeat.Checked;
+            BotInfo.SuccessiveRepeatCount = string.IsNullOrEmpty(txbSuccessiveRepeatCount.Text) ? 0 : Convert.ToInt32(txbSuccessiveRepeatCount.Text);
+            BotInfo.HorizontalMirrorImageEnabled = chkHorizontalMirrorImage.Checked;
+            BotInfo.HorizontalMirrorImageProbability = string.IsNullOrEmpty(txbHorizontalMirrorImageProbability.Text) ? 0 : Convert.ToInt32(txbHorizontalMirrorImageProbability.Text);
+            BotInfo.VerticalMirrorImageEnabled = chkVerticalMirrorImage.Checked;
+            BotInfo.VerticalMirrorImageProbability = string.IsNullOrEmpty(txbVerticalMirrorImageProbability.Text) ? 0 : Convert.ToInt32(txbVerticalMirrorImageProbability.Text);
+            #endregion -- 复读设置 --
+
             Close();
         }
 
@@ -358,7 +380,7 @@ namespace GreenOnions.BotMainManagerWindow
 
         private void chkEnableHPicture_CheckedChanged(object sender, EventArgs e) => pnlEnabelHPicture.Enabled = chkEnabledHPicture.Checked;
 
-        private void txbUserHPictureCmd_KeyPress(object sender, KeyPressEventArgs e)
+        private void checkNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!(Char.IsNumber(e.KeyChar) || e.KeyChar == (char)8))
             {
@@ -366,7 +388,7 @@ namespace GreenOnions.BotMainManagerWindow
             }
         }
 
-        private void txbUserHPictureCmd_KeyUp(object sender, KeyEventArgs e)
+        private void checkNumber_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyData == (Keys.Control | Keys.V))
             {

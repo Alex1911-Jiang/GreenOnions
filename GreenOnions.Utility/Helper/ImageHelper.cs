@@ -1,11 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace GreenOnions.Utility.Helper
 {
     public static class ImageHelper
     {
+        public static Stream StreamAntiShielding(this Stream ms)
+        {
+            Bitmap bmp = new Bitmap(Image.FromStream(ms));
+            bmp.AntiShielding();
+            ms.Close();
+            ms = new MemoryStream();
+            bmp.Save(ms, ImageFormat.Png);
+            return ms;
+        }
+
+        public static MemoryStream HorizontalMirrorImageStream(this MemoryStream ms)
+        {
+            Bitmap bmp = new Bitmap(Image.FromStream(ms));
+            bmp.HorizontalFlip();
+            ms.Close();
+            ms = new MemoryStream();
+            bmp.Save(ms, ImageFormat.Png);
+            return ms;
+        }
+
+        public static MemoryStream VerticalMirrorImageStream(this MemoryStream ms)
+        {
+            Bitmap bmp = new Bitmap(Image.FromStream(ms));
+            bmp.VerticalFlip();
+            ms.Close();
+            ms = new MemoryStream();
+            bmp.Save(ms, ImageFormat.Png);
+            return ms;
+        }
+
+        public static Bitmap HorizontalFlip(this Bitmap bmp)
+        {
+            try
+            {
+                var width = bmp.Width;
+                var height = bmp.Height;
+                Graphics g = Graphics.FromImage(bmp);
+                Rectangle rect = new Rectangle(0, 0, width, height);
+                bmp.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                g.DrawImage(bmp, rect);
+                return bmp;
+            }
+            catch (Exception ex)
+            {
+                ErrorHelper.WriteErrorLogWithUserMessage("水平镜像图片错误", ex.Message);
+                return bmp;
+            }
+        }
+
+        public static Bitmap VerticalFlip(this Bitmap bmp)
+        {
+            try
+            {
+                Graphics g = Graphics.FromImage(bmp);
+                Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                g.DrawImage(bmp, rect);
+                return bmp;
+            }
+            catch (Exception ex)
+            {
+                ErrorHelper.WriteErrorLogWithUserMessage("垂直镜像图片错误", ex.Message);
+                return bmp;
+            }
+        }
+
         public static void AntiShielding(this Bitmap bmp)
         {
             Random r = new Random();

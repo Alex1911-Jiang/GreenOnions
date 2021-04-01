@@ -11,6 +11,7 @@ namespace GreenOnions.Utility
         public const string JsonNodeNamePictureSearcher = "PictureSearcher";
         public const string JsonNodeNameHPicture = "HPicture";
         public const string JsonNodeNameTranslate = "Translate";
+        public const string JsonNodeNameRepeater = "Repeater";
 
         #region -- 公共属性 --
         [PropertyChineseName("机器人QQ号")]
@@ -1166,6 +1167,113 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureEnabled), value.ToString());
         }
         #endregion -- 色图属性 --
+
+        #region -- 复读属性 --
+        /// <summary>
+        /// 是否启用随机复读
+        /// </summary>
+        public static bool RandomRepeatEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(RandomRepeatEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(RandomRepeatEnabled), value.ToString());
+        }
+        /// <summary>
+        /// 随机复读概率
+        /// </summary>
+        public static int RandomRepeatProbability
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(RandomRepeatProbability));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 1;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(RandomRepeatProbability), value.ToString());
+        }
+        /// <summary>
+        /// 是否启用连续复读
+        /// </summary>
+        public static bool SuccessiveRepeatEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(SuccessiveRepeatEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(SuccessiveRepeatEnabled), value.ToString());
+        }
+        /// <summary>
+        /// 参与连续复读所需的复读次数
+        /// </summary>
+        public static int SuccessiveRepeatCount
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(SuccessiveRepeatCount));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 3;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(SuccessiveRepeatCount), value.ToString());
+        }
+        /// <summary>
+        /// 是否水平反转复读图片
+        /// </summary>
+        public static bool HorizontalMirrorImageEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(HorizontalMirrorImageEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(HorizontalMirrorImageEnabled), value.ToString());
+        }
+        /// <summary>
+        /// 水平反转复读图片概率
+        /// </summary>
+        public static int HorizontalMirrorImageProbability
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(HorizontalMirrorImageProbability));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 50;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(HorizontalMirrorImageProbability), value.ToString());
+        }
+        /// <summary>
+        /// 是否垂直翻转复读图片
+        /// </summary>
+        public static bool VerticalMirrorImageEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(VerticalMirrorImageEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(VerticalMirrorImageEnabled), value.ToString());
+        }
+        /// <summary>
+        /// 垂直翻转复读图片概率
+        /// </summary>
+        public static int VerticalMirrorImageProbability
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(VerticalMirrorImageProbability));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 50;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(VerticalMirrorImageProbability), value.ToString());
+        }
+        #endregion -- 复读属性 --
     }
     public enum LimitType
     {

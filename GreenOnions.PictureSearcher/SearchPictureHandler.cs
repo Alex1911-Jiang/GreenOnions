@@ -310,16 +310,23 @@ namespace GreenOnions.PictureSearcher
                     Stream streamColorImage = null;
                     if (thuColorImgCacheFiles.Length > 0 && new FileInfo(thuColorImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
                     {
-                        if (thuColorImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
-                            imageColorMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
-                        else if (thuColorImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
-                            streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
-                        else  //曾经没参与鉴黄的
+                        if (BotInfo.SearchCheckPornEnabled)
                         {
-                            byte[] colorImageByte = File.ReadAllBytes(thuColorImgCacheFiles[0]);
-                            imageColorMessage = CheckPorn(thuColorImgCacheFiles[0], colorImageByte);
-                            if (imageColorMessage == null)
-                                streamColorImage = new MemoryStream(colorImageByte);  //上传本地图片
+                            if (thuColorImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
+                                imageColorMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
+                            else if (thuColorImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
+                                streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
+                            else  //曾经没参与鉴黄的
+                            {
+                                byte[] colorImageByte = File.ReadAllBytes(thuColorImgCacheFiles[0]);
+                                imageColorMessage = CheckPorn(thuColorImgCacheFiles[0], colorImageByte);
+                                if (imageColorMessage == null)
+                                    streamColorImage = new MemoryStream(colorImageByte);  //上传本地图片
+                            }
+                        }
+                        else
+                        {
+                            streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
                         }
                     }
                     else
@@ -374,16 +381,24 @@ namespace GreenOnions.PictureSearcher
                     Stream streamBovwImage = null;
                     if (thuBovwImgCacheFiles.Length > 0 && new FileInfo(thuBovwImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
                     {
-                        if (thuBovwImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
-                            imageBovwMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
-                        else if (thuBovwImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
-                            streamBovwImage = new FileStream(thuBovwImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
-                        else  //曾经没参与鉴黄的
+                        if (BotInfo.SearchCheckPornEnabled)
                         {
-                            byte[] bovwImageByte = File.ReadAllBytes(thuBovwImgCacheFiles[0]);
-                            imageBovwMessage = CheckPorn(thuBovwImgCacheFiles[0], bovwImageByte);
-                            if (imageBovwMessage == null)
-                                streamBovwImage = new MemoryStream(bovwImageByte);  //上传本地图片
+                            if (thuBovwImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
+                                imageBovwMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
+                            else if (thuBovwImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
+                                streamBovwImage = new FileStream(thuBovwImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
+                            else  //曾经没参与鉴黄的
+                            {
+                                byte[] bovwImageByte = File.ReadAllBytes(thuBovwImgCacheFiles[0]);
+                                if (BotInfo.SearchCheckPornEnabled)
+                                    imageBovwMessage = CheckPorn(thuBovwImgCacheFiles[0], bovwImageByte);
+                                if (imageBovwMessage == null)
+                                    streamBovwImage = new MemoryStream(bovwImageByte);  //上传本地图片
+                            }
+                        }
+                        else
+                        {
+                            streamBovwImage = new FileStream(thuBovwImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
                         }
                     }
                     else

@@ -1,4 +1,5 @@
 ﻿using GreenOnions.PictureSearcher;
+using GreenOnions.Repeater;
 using GreenOnions.Utility;
 using Mirai_CSharp;
 using Mirai_CSharp.Models;
@@ -63,6 +64,12 @@ namespace GreenOnions.BotMain
                             #endregion -- 连续搜图 --
                         }
                         break;
+                }
+
+                IMessageBase repeatingMessage = Repeat.Repeating(e.Chain[1], picStream => session.UploadPictureAsync(UploadTarget.Group, picStream).GetAwaiter().GetResult());
+                if (repeatingMessage != null)
+                {
+                    await session.SendGroupMessageAsync(e.Sender.Group.Id, repeatingMessage);
                 }
             }
             return false;

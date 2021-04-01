@@ -23,7 +23,6 @@ namespace GreenOnions.BotMain
             Regex regexShabHPicture = new Regex(BotInfo.ShabHPictureCmd.ReplaceGreenOnionsTags());
             Regex regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
 
-
             string firstMessage = Chain[1].ToString();
 
             #region -- 连续搜图 --
@@ -194,6 +193,11 @@ namespace GreenOnions.BotMain
                 {
                     lstEnabledFeatures.Add("GHS");
                 }
+                if (BotInfo.RandomRepeatEnabled || BotInfo.SuccessiveRepeatEnabled)
+                {
+                    lstEnabledFeatures.Add("复读");
+                }
+
                 if (BotInfo.QQId == 3246934384)
                 {
                     lstEnabledFeatures.Add("查手机号");
