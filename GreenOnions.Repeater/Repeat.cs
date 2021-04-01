@@ -12,6 +12,8 @@ namespace GreenOnions.Repeater
         private static string lastOneMessageValue = "";
         private static int RepeatedCount = 0;
         private static readonly string imagePath = Environment.CurrentDirectory + "\\Image\\";
+        private static bool IsRepeated = false;
+
         public static IMessageBase Repeating(IMessageBase message, Func<Stream, ImageMessage> UploadPicture)
         {
             if (BotInfo.SuccessiveRepeatEnabled)
@@ -62,14 +64,22 @@ namespace GreenOnions.Repeater
                 if (lastOneMessageValue == value)
                     RepeatedCount++;
                 else
+                {
+                    IsRepeated = false;
                     RepeatedCount = 1;
+                }
                 lastOneMessageValue = value;
 
-                if (RepeatedCount >= BotInfo.SuccessiveRepeatCount)
+                if (!IsRepeated)
                 {
-                    RepeatedCount = 0;
-                    return new PlainMessage(value);
+                    if (RepeatedCount >= BotInfo.SuccessiveRepeatCount)
+                    {
+                        IsRepeated = true;
+                        RepeatedCount = 0;
+                        return new PlainMessage(value);
+                    }
                 }
+                
             }
             else if (message is ImageMessage)
             {
@@ -78,18 +88,24 @@ namespace GreenOnions.Repeater
                 if (lastOneMessageValue == value)
                     RepeatedCount++;
                 else
+                {
+                    IsRepeated = false;
                     RepeatedCount = 1;
+                }
                 lastOneMessageValue = value;
 
-                if (RepeatedCount >= BotInfo.SuccessiveRepeatCount)
+                if (!IsRepeated)
                 {
-                    RepeatedCount = 0;
-
-                    MemoryStream ms = MirrorImage(imageMessage);
-                    if (ms == null)
-                        return new ImageMessage(imageMessage.ImageId, null, null);
-                    else
-                        return UploadPicture(ms);
+                    if (RepeatedCount >= BotInfo.SuccessiveRepeatCount)
+                    {
+                        IsRepeated = true;
+                        RepeatedCount = 0;
+                        MemoryStream ms = MirrorImage(imageMessage);
+                        if (ms == null)
+                            return new ImageMessage(imageMessage.ImageId, null, null);
+                        else
+                            return UploadPicture(ms);
+                    }
                 }
             }
             return null;
