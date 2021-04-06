@@ -16,14 +16,6 @@ namespace GreenOnions.HPicture
 {
     public static class HPictureHandler
     {
-        private static string ImagePath = Environment.CurrentDirectory + "\\Image\\";
-
-        static HPictureHandler()
-        {
-            if (!Directory.Exists(ImagePath))
-                Directory.CreateDirectory(ImagePath);
-        }
-
         public static void SendHPictures(MiraiHttpSession session, string message, bool isAllowR18, string HPictureEndCmd, Func<Stream, Task<ImageMessage>> UploadPicture, Func<IMessageBase[], Task<int>> SendMessage, Action<LimitType> Record, int RevokeSecond)
         {
             try
@@ -206,7 +198,7 @@ namespace GreenOnions.HPicture
                 void SendOnceLoliconHPicture(LoliconHPictureItem item)
                 {
                     ImageMessage imageMessage = null;
-                    string imgName = $"{ImagePath}{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png";
+                    string imgName = $"{ImageHelper.ImagePath}{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png";
                     if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                     {
                         imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片
@@ -238,7 +230,7 @@ namespace GreenOnions.HPicture
                     foreach (var item in items)
                     {
                         ImageMessage imageMessage = null;
-                        string imgName = $"{ImagePath}Shab_{item.ID}.png";
+                        string imgName = $"{ImageHelper.ImagePath}Shab_{item.ID}.png";
                         if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                         {
                             imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片

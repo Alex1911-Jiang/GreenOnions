@@ -66,11 +66,16 @@ namespace GreenOnions.BotMain
                         break;
                 }
 
-                IMessageBase repeatingMessage = Repeat.Repeating(e.Chain[1], picStream => session.UploadPictureAsync(UploadTarget.Group, picStream).GetAwaiter().GetResult());
-                if (repeatingMessage != null)
+                #region -- 复读 --
+                if (e.Chain.Length == 2)
                 {
-                    await session.SendGroupMessageAsync(e.Sender.Group.Id, repeatingMessage);
+                    IMessageBase repeatingMessage = Repeat.Repeating(e.Chain[1], e.Sender.Group.Id, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream).GetAwaiter().GetResult());
+                    if (repeatingMessage != null)
+                    {
+                        await session.SendGroupMessageAsync(e.Sender.Group.Id, repeatingMessage);
+                    }
                 }
+                #endregion -- 复读 --
             }
             return false;
         }

@@ -213,7 +213,6 @@ namespace GreenOnions.Utility.Helper
             if (BotInfo.ImageCache)
             {
                 File.WriteAllBytes(cacheImageName, bytes);
-                Cache.DownloadedImagesName.Add(cacheImageName);
             }
 
             return bytes;
@@ -229,11 +228,7 @@ namespace GreenOnions.Utility.Helper
             WebClient webClient = new WebClient();
             webClient.DownloadFile(url, cacheImageName);
             byte[] bytes = File.ReadAllBytes(cacheImageName);
-            if (BotInfo.ImageCache)
-            {
-                Cache.DownloadedImagesName.Add(cacheImageName);
-            }
-            else
+            if (!BotInfo.ImageCache)
             {
                 File.Delete(cacheImageName);
             }

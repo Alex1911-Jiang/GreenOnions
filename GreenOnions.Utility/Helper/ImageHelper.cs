@@ -8,6 +8,18 @@ namespace GreenOnions.Utility.Helper
 {
     public static class ImageHelper
     {
+        private static readonly string _imagePath = Environment.CurrentDirectory + "\\Image\\";
+        public static string ImagePath
+        {
+            get
+            {
+                if (!Directory.Exists(_imagePath))
+                {
+                    Directory.CreateDirectory(_imagePath);
+                }
+                return _imagePath;
+            }
+        }
         public static Stream StreamAntiShielding(this Stream ms)
         {
             Bitmap bmp = new Bitmap(Image.FromStream(ms));
@@ -20,57 +32,157 @@ namespace GreenOnions.Utility.Helper
 
         public static MemoryStream HorizontalMirrorImageStream(this MemoryStream ms)
         {
-            Bitmap bmp = new Bitmap(Image.FromStream(ms));
-            bmp.HorizontalFlip();
-            ms.Close();
-            ms = new MemoryStream();
-            bmp.Save(ms, ImageFormat.Png);
-            return ms;
+            return ms.MirrorImageStream(MirrorImageDirection.Horizontal);
         }
+
 
         public static MemoryStream VerticalMirrorImageStream(this MemoryStream ms)
         {
-            Bitmap bmp = new Bitmap(Image.FromStream(ms));
-            bmp.VerticalFlip();
-            ms.Close();
-            ms = new MemoryStream();
-            bmp.Save(ms, ImageFormat.Png);
+            return ms.MirrorImageStream(MirrorImageDirection.Vertical);
+        }
+
+        private static MemoryStream MirrorImageStream(this MemoryStream ms, MirrorImageDirection mirrorImageDirection )
+        {
+            Image img = Image.FromStream(ms);
+            if (img.RawFormat == ImageFormat.Gif || String.Equals(img.RawFormat.ToString(), "Gif", StringComparison.CurrentCultureIgnoreCase))
+            {
+                string tempGifFileName = ImagePath + "翻转.gif";
+                Bitmap gif = new Bitmap(img.Width, img.Height);
+                Bitmap frame = new Bitmap(img.Width, img.Height);
+                Graphics g = Graphics.FromImage(gif);
+                Rectangle rg = new Rectangle(0, 0, img.Width, img.Height);
+                Graphics gFrame = Graphics.FromImage(frame);
+
+                switch (mirrorImageDirection)
+                {
+                    case MirrorImageDirection.Horizontal:
+                        g.TranslateTransform(img.Width, 0);
+                        g.ScaleTransform(-1, 1);
+                        gFrame.TranslateTransform(img.Width, 0);
+                        gFrame.ScaleTransform(-1, 1);
+                        break;
+                    case MirrorImageDirection.Vertical:
+                        g.TranslateTransform(0, img.Height);
+                        g.ScaleTransform(1, -1);
+                        gFrame.TranslateTransform(0, img.Height);
+                        gFrame.ScaleTransform(1, -1);
+                        break;
+                }
+
+                foreach (Guid gd in img.FrameDimensionsList)
+                {
+                    FrameDimension fd = new FrameDimension(gd);
+                    FrameDimension f = FrameDimension.Time;
+                    int count = img.GetFrameCount(fd);
+                    ImageCodecInfo codecInfo = GetEncoder(ImageFormat.Gif);
+                    Encoder encoder = Encoder.SaveFlag;
+                    EncoderParameters eps;
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        img.SelectActiveFrame(f, i);
+                        if (0 == i)
+                        {
+                            g.Clear(Color.White);
+
+                            g.DrawImage(img, rg);
+                            eps = new EncoderParameters(1);
+                            eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.MultiFrame);
+                            BindProperty(img, gif);
+                            gif.Save(tempGifFileName, codecInfo, eps);
+                        }
+                        else
+                        {
+                            gFrame.Clear(Color.White);
+
+                            gFrame.DrawImage(img, rg);
+
+                            eps = new EncoderParameters(1);
+                            eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.FrameDimensionTime);
+                            BindProperty(img, frame);
+                            gif.SaveAdd(frame, eps);
+                        }
+                    }
+
+                    eps = new EncoderParameters(1);
+                    eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.Flush);
+                    gif.SaveAdd(eps);
+                }
+                ms.Close();
+                ms = new MemoryStream(File.ReadAllBytes(tempGifFileName));
+            }
+            else
+            {
+                switch (mirrorImageDirection)
+                {
+                    case MirrorImageDirection.Horizontal:
+                        img.HorizontalFlip();
+                        break;
+                    case MirrorImageDirection.Vertical:
+                        img.VerticalFlip();
+                        break;
+                }
+                ms.Close();
+                ms = new MemoryStream();
+                img.Save(ms, ImageFormat.Png);
+            }
             return ms;
         }
 
-        public static Bitmap HorizontalFlip(this Bitmap bmp)
+        private static void BindProperty(Image originImage, Image copyImage)
+        {
+            for (int i = 0; i < originImage.PropertyItems.Length; i++)
+            {
+                copyImage.SetPropertyItem(originImage.PropertyItems[i]);
+            }
+        }
+
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
+
+        public static Image HorizontalFlip(this Image img)
         {
             try
             {
-                var width = bmp.Width;
-                var height = bmp.Height;
-                Graphics g = Graphics.FromImage(bmp);
+                var width = img.Width;
+                var height = img.Height;
+                Graphics g = Graphics.FromImage(img);
                 Rectangle rect = new Rectangle(0, 0, width, height);
-                bmp.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                g.DrawImage(bmp, rect);
-                return bmp;
+                img.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                g.DrawImage(img, rect);
+                return img;
             }
             catch (Exception ex)
             {
                 ErrorHelper.WriteErrorLogWithUserMessage("水平镜像图片错误", ex.Message);
-                return bmp;
+                return img;
             }
         }
 
-        public static Bitmap VerticalFlip(this Bitmap bmp)
+        public static Image VerticalFlip(this Image img)
         {
             try
             {
-                Graphics g = Graphics.FromImage(bmp);
-                Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-                bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
-                g.DrawImage(bmp, rect);
-                return bmp;
+                Graphics g = Graphics.FromImage(img);
+                Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
+                img.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                g.DrawImage(img, rect);
+                return img;
             }
             catch (Exception ex)
             {
                 ErrorHelper.WriteErrorLogWithUserMessage("垂直镜像图片错误", ex.Message);
-                return bmp;
+                return img;
             }
         }
 
@@ -89,6 +201,12 @@ namespace GreenOnions.Utility.Helper
             {
                 bmp.SetPixel(x, y, Color.FromArgb(c.A + 1, c.R, c.G, c.B));
             }
+        }
+
+        private enum MirrorImageDirection
+        {
+            Horizontal,
+            Vertical,
         }
     }
 

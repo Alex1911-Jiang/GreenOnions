@@ -114,12 +114,9 @@ namespace GreenOnions.HPicture
 
             yield return new PlainMessage(sbAddress.ToString());  //第一条地址
 
-            string imagePath = Environment.CurrentDirectory + "\\Image\\";
-            if (!Directory.Exists(imagePath)) Directory.CreateDirectory(imagePath);
-
             foreach (var pair in enumImg)
             {
-                string imgName = $"{imagePath} {pair.ID}  _{ pair.P }{(BotInfo.HPictureSize1200 ? "_1200" : "")} .png";
+                string imgName = $"{ImageHelper.ImagePath} {pair.ID}  _{ pair.P }{(BotInfo.HPictureSize1200 ? "_1200" : "")} .png";
                 if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) yield return await session.UploadPictureAsync(UploadTarget.Group, imgName);  //存在本地缓存时优先使用缓存
 
                 Stream ms = HttpHelper.DownloadImageAsMemoryStream(pair.URL, imgName);

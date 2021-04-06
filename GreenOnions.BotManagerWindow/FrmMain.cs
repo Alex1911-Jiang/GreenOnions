@@ -83,6 +83,7 @@ namespace GreenOnions.BotMainManagerWindow
 					}));
 					return;
 				}
+				Task.Delay(100).Wait();
 			}
 		}
 

@@ -17,7 +17,6 @@ namespace GreenOnions.PictureSearcher
 {
     public static class SearchPictureHandler
     {
-        private static readonly string imagePath = Environment.CurrentDirectory + "\\Image\\";
         public static async Task SearchPicture(ImageMessage inImgMsg, Func<Stream, Task<ImageMessage>> UploadPicture, Action<IMessageBase[]> SendMessage)
         {
             try
@@ -170,8 +169,7 @@ namespace GreenOnions.PictureSearcher
                     //相似度大于设定的阈值
                     if (sauceNaoItem.similarity > BotInfo.SearchLowSimilarity)
                     {
-                        if (!Directory.Exists(imagePath)) Directory.CreateDirectory(imagePath);
-                        string[] thuImgCacheFiles = sauceNaoItem.pixiv_id == null ? Directory.GetFiles(imagePath, $"Thu_Other_{sauceNaoItem.thumbnail.Substring(sauceNaoItem.thumbnail.LastIndexOf("=") + 1)}*") : Directory.GetFiles(imagePath, $"Thu_{sauceNaoItem.pixiv_id}*");
+                        string[] thuImgCacheFiles = sauceNaoItem.pixiv_id == null ? Directory.GetFiles(ImageHelper.ImagePath, $"Thu_Other_{sauceNaoItem.thumbnail.Substring(sauceNaoItem.thumbnail.LastIndexOf("=") + 1)}*") : Directory.GetFiles(ImageHelper.ImagePath, $"Thu_{sauceNaoItem.pixiv_id}*");
                         Stream stream = null;
                         if (thuImgCacheFiles.Length > 0 && new FileInfo(thuImgCacheFiles[0]).Length > 0)  //存在本地缓存
                         {
@@ -191,7 +189,7 @@ namespace GreenOnions.PictureSearcher
                         }
                         else  //没有本地缓存
                         {
-                            string cacheImageName = Path.Combine(imagePath, $"Thu_{sauceNaoItem.pixiv_id}.png");
+                            string cacheImageName = Path.Combine(ImageHelper.ImagePath, $"Thu_{sauceNaoItem.pixiv_id}.png");
                             stream = HttpHelper.DownloadImageAsMemoryStream(sauceNaoItem.thumbnail, cacheImageName);
                             if (BotInfo.SearchCheckPornEnabled)
                                 imageMessage = CheckPorn(cacheImageName, (stream as MemoryStream).ToArray());
@@ -217,7 +215,7 @@ namespace GreenOnions.PictureSearcher
                                         {
                                             try
                                             {
-                                                string imgName = $"{imagePath}Pixiv_{sauceNaoItem.pixiv_id}_p0.png";
+                                                string imgName = $"{ImageHelper.ImagePath}Pixiv_{sauceNaoItem.pixiv_id}_p0.png";
                                                 if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
                                                         UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(uploaded => SendMessage(new[] { uploaded.Result }));
                                                 else
@@ -234,7 +232,7 @@ namespace GreenOnions.PictureSearcher
                                 {
                                     try
                                     {
-                                        string imgName = $"{imagePath}Pixiv_{sauceNaoItem.pixiv_id}_p{p}.png";
+                                        string imgName = $"{ImageHelper.ImagePath}Pixiv_{sauceNaoItem.pixiv_id}_p{p}.png";
                                         if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
                                                 UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(uploaded => SendMessage(new[] { uploaded.Result }));
                                         else
@@ -301,11 +299,8 @@ namespace GreenOnions.PictureSearcher
                     stringBuilderColor.AppendLine($"地址:{nodeColorUrl.Attributes["href"].Value}");
                     stringBuilderColor.AppendLine($"作者:{nodeColorMember.InnerText}");
                     stringBuilderColor.AppendLine($"主页:{nodeColorMember.Attributes["href"].Value}");
-                    if (!Directory.Exists(imagePath))
-                    {
-                        Directory.CreateDirectory(imagePath);
-                    }
-                    string[] thuColorImgCacheFiles = Directory.GetFiles(imagePath, $"Thu_{nodeColorHash.InnerHtml}*");
+
+                    string[] thuColorImgCacheFiles = Directory.GetFiles(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}*");
                     IMessageBase imageColorMessage = null;
                     Stream streamColorImage = null;
                     if (thuColorImgCacheFiles.Length > 0 && new FileInfo(thuColorImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
@@ -331,7 +326,7 @@ namespace GreenOnions.PictureSearcher
                     }
                     else
                     {
-                        string thuColorImgCache = Path.Combine(imagePath, $"Thu_{nodeColorHash.InnerHtml}.png");
+                        string thuColorImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}.png");
                         streamColorImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value, thuColorImgCache);
                         if (BotInfo.SearchCheckPornEnabled)
                             imageColorMessage = CheckPorn(thuColorImgCache, (streamColorImage as MemoryStream).ToArray());
@@ -372,11 +367,8 @@ namespace GreenOnions.PictureSearcher
                     stringBuilderBovw.AppendLine($"地址:{nodeBovwUrl.Attributes["href"].Value}");
                     stringBuilderBovw.AppendLine($"作者:{nodeBovwMember.InnerText}");
                     stringBuilderBovw.AppendLine($"主页:{nodeBovwMember.Attributes["href"].Value}");
-                    if (!Directory.Exists(imagePath))
-                    {
-                        Directory.CreateDirectory(imagePath);
-                    }
-                    string[] thuBovwImgCacheFiles = Directory.GetFiles(imagePath, $"Thu_{nodeBovwHash.InnerHtml}*");
+
+                    string[] thuBovwImgCacheFiles = Directory.GetFiles(ImageHelper.ImagePath, $"Thu_{nodeBovwHash.InnerHtml}*");
                     IMessageBase imageBovwMessage = null;
                     Stream streamBovwImage = null;
                     if (thuBovwImgCacheFiles.Length > 0 && new FileInfo(thuBovwImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
@@ -403,7 +395,7 @@ namespace GreenOnions.PictureSearcher
                     }
                     else
                     {
-                        string thuBovwImgCache = Path.Combine(imagePath, $"Thu_{nodeBovwHash.InnerHtml}.png");
+                        string thuBovwImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeBovwHash.InnerHtml}.png");
                         streamBovwImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeBovwImage.Attributes["src"].Value, thuBovwImgCache);
                         if (BotInfo.SearchCheckPornEnabled)
                             imageBovwMessage = CheckPorn(thuBovwImgCache, (streamBovwImage as MemoryStream).ToArray());

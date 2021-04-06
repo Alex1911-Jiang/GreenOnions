@@ -15,7 +15,6 @@ namespace GreenOnions.Utility
         public static readonly IDictionary<long, DateTime> HPictureWhiteCDDic = new Dictionary<long, DateTime>();
         public static readonly IDictionary<long, DateTime> HPicturePMCDDic = new Dictionary<long, DateTime>();
         public static readonly IDictionary<long, int> LimitDic = new Dictionary<long, int>();
-        public static readonly List<string> DownloadedImagesName = new List<string>();
         public static readonly IDictionary<long, DateTime> SearchingPictures = new Dictionary<long, DateTime>();
 
         private static Task _TaskCheckSearchPictureTime = null;
