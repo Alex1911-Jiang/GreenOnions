@@ -24,31 +24,48 @@ namespace GreenOnions.BotManagerConsole
 				Console.WriteLine("初次使用本机器人，请先设置config.json相关参数。");
 			}
 
-			Console.WriteLine("请输入机器人QQ号:");
-			long qqId = Convert.ToInt64(Console.ReadLine());
-			Console.WriteLine("请输入mirai-api-http host IP:");
-			string ip = Console.ReadLine();
-			Console.WriteLine("请输入mirai-api-http端口:");
-			int port = Convert.ToInt32(Console.ReadLine());
-			Console.WriteLine("请输入mirai-api-http autoKey:");
-			string autoKey = Console.ReadLine();
-
-			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, autoKey);
 			await using MiraiHttpSession session = new MiraiHttpSession();
 			session.AddPlugin(new TempMessage());
 			session.AddPlugin(new FriendMessage());
 			session.AddPlugin(new GroupMessage());
-			bool stop = false;
+
+		ILRetry:;
+			Console.WriteLine("请输入机器人QQ号:");
+			long qqId = 0;
+            if (!long.TryParse(Console.ReadLine(), out qqId))
+			{
+				Console.WriteLine("输入的QQ号不正确，请重新输入。");
+				goto ILRetry;
+			}
+			Console.WriteLine("请输入mirai-api-http host IP:");
+			string ip = Console.ReadLine();
+		ILReadPort:;
+			Console.WriteLine("请输入mirai-api-http端口:");
+			int port = 0;
+			if (!int.TryParse(Console.ReadLine(), out port) || port < 0 || port > 65535)
+			{
+				Console.WriteLine("输入的端口号不正确，请重新输入:");
+				goto ILReadPort;
+			}
+			Console.WriteLine("请输入mirai-api-http autoKey:");
+			string autoKey = Console.ReadLine();
+
+			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, autoKey);
+			bool retry = false;
 			await session.ConnectAsync(options, qqId).ContinueWith(callback =>
 			{
 				if (callback.IsFaulted)
 				{
-					stop = true;
-					Console.WriteLine("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数。");
+					retry = true;
+					Console.WriteLine("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数，按任意键重试。");
 				}
 			});
 
-			if (stop) return;
+			if (retry)
+			{
+				Console.ReadKey();
+				goto ILRetry;
+			}
 
 			Cache.SetTaskAtFixedTime();
 
