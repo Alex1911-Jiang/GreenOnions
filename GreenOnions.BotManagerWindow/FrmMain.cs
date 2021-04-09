@@ -30,7 +30,7 @@ namespace GreenOnions.BotMainManagerWindow
 				txbQQ.Text = BotInfo.QQId.ToString();
 				txbIP.Text = BotInfo.IP;
 				txbPort.Text = BotInfo.Port;
-				txbAutoKey.Text = BotInfo.AutoKey;
+				txbAuthKey.Text = BotInfo.AuthKey;
 			}
 			catch (Exception ex)
 			{
@@ -39,9 +39,9 @@ namespace GreenOnions.BotMainManagerWindow
 			#endregion -- 读取配置 --
 		}
 
-		public async Task Main(long qqId, string ip, int port, string autoKey)
+		public async Task Main(long qqId, string ip, int port, string authKey)
 		{
-			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, autoKey);
+			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, authKey);
 			await using MiraiHttpSession session = new MiraiHttpSession();
 			session.AddPlugin(new TempMessage());
 			session.AddPlugin(new FriendMessage());
@@ -115,7 +115,7 @@ namespace GreenOnions.BotMainManagerWindow
 					MessageBox.Show("请先输入mirai-api-http端口号。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					return;
 				}
-				if (string.IsNullOrEmpty(txbAutoKey.Text))
+				if (string.IsNullOrEmpty(txbAuthKey.Text))
 				{
 					MessageBox.Show("请先输入mirai-api-http authKey。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					return;
@@ -123,9 +123,9 @@ namespace GreenOnions.BotMainManagerWindow
 				BotInfo.QQId = Convert.ToInt64(txbQQ.Text);
 				BotInfo.IP = txbIP.Text;
 				BotInfo.Port = txbPort.Text;
-				BotInfo.AutoKey = txbAutoKey.Text;
+				BotInfo.AuthKey = txbAuthKey.Text;
 
-				Task.Run(() => Main(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToInt32(txbPort.Text), txbAutoKey.Text));
+				Task.Run(() => Main(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToInt32(txbPort.Text), txbAuthKey.Text));
 			}
 			catch (Exception ex)
 			{

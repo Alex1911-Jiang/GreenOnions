@@ -32,11 +32,11 @@ namespace GreenOnions.BotMainManagerWindow
             this.lblQQ = new System.Windows.Forms.Label();
             this.lblIP = new System.Windows.Forms.Label();
             this.lblPort = new System.Windows.Forms.Label();
-            this.lblAutoKey = new System.Windows.Forms.Label();
+            this.lblAuthKey = new System.Windows.Forms.Label();
             this.txbQQ = new System.Windows.Forms.MaskedTextBox();
             this.txbIP = new System.Windows.Forms.MaskedTextBox();
             this.txbPort = new System.Windows.Forms.MaskedTextBox();
-            this.txbAutoKey = new System.Windows.Forms.MaskedTextBox();
+            this.txbAuthKey = new System.Windows.Forms.MaskedTextBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnBotSettings = new System.Windows.Forms.Button();
             this.lblState = new System.Windows.Forms.Label();
@@ -69,14 +69,14 @@ namespace GreenOnions.BotMainManagerWindow
             this.lblPort.TabIndex = 0;
             this.lblPort.Text = "端口号:";
             // 
-            // lblAutoKey
+            // lblAuthKey
             // 
-            this.lblAutoKey.AutoSize = true;
-            this.lblAutoKey.Location = new System.Drawing.Point(44, 117);
-            this.lblAutoKey.Name = "lblAutoKey";
-            this.lblAutoKey.Size = new System.Drawing.Size(59, 17);
-            this.lblAutoKey.TabIndex = 0;
-            this.lblAutoKey.Text = "AutoKey:";
+            this.lblAuthKey.AutoSize = true;
+            this.lblAuthKey.Location = new System.Drawing.Point(44, 117);
+            this.lblAuthKey.Name = "lblAuthKey";
+            this.lblAuthKey.Size = new System.Drawing.Size(59, 17);
+            this.lblAuthKey.TabIndex = 0;
+            this.lblAuthKey.Text = "AuthKey:";
             // 
             // txbQQ
             // 
@@ -102,13 +102,13 @@ namespace GreenOnions.BotMainManagerWindow
             this.txbPort.TabIndex = 1;
             this.txbPort.Text = "33111";
             // 
-            // txbAutoKey
+            // txbAuthKey
             // 
-            this.txbAutoKey.Location = new System.Drawing.Point(109, 114);
-            this.txbAutoKey.Name = "txbAutoKey";
-            this.txbAutoKey.Size = new System.Drawing.Size(281, 23);
-            this.txbAutoKey.TabIndex = 1;
-            this.txbAutoKey.Text = "Alex1911";
+            this.txbAuthKey.Location = new System.Drawing.Point(109, 114);
+            this.txbAuthKey.Name = "txbAuthKey";
+            this.txbAuthKey.Size = new System.Drawing.Size(281, 23);
+            this.txbAuthKey.TabIndex = 1;
+            this.txbAuthKey.Text = "Alex1911";
             // 
             // btnConnect
             // 
@@ -148,11 +148,11 @@ namespace GreenOnions.BotMainManagerWindow
             this.Controls.Add(this.lblState);
             this.Controls.Add(this.btnBotSettings);
             this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.txbAutoKey);
+            this.Controls.Add(this.txbAuthKey);
             this.Controls.Add(this.txbPort);
             this.Controls.Add(this.txbIP);
             this.Controls.Add(this.txbQQ);
-            this.Controls.Add(this.lblAutoKey);
+            this.Controls.Add(this.lblAuthKey);
             this.Controls.Add(this.lblPort);
             this.Controls.Add(this.lblIP);
             this.Controls.Add(this.lblQQ);
@@ -170,11 +170,11 @@ namespace GreenOnions.BotMainManagerWindow
         private System.Windows.Forms.Label lblQQ;
         private System.Windows.Forms.Label lblIP;
         private System.Windows.Forms.Label lblPort;
-        private System.Windows.Forms.Label lblAutoKey;
+        private System.Windows.Forms.Label lblAuthKey;
         private System.Windows.Forms.MaskedTextBox txbQQ;
         private System.Windows.Forms.MaskedTextBox txbIP;
         private System.Windows.Forms.MaskedTextBox txbPort;
-        private System.Windows.Forms.MaskedTextBox txbAutoKey;
+        private System.Windows.Forms.MaskedTextBox txbAuthKey;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnBotSettings;
         private System.Windows.Forms.Label lblState;

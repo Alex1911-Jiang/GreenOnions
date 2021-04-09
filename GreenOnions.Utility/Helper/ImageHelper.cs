@@ -30,11 +30,15 @@ namespace GreenOnions.Utility.Helper
             return ms;
         }
 
+        public static MemoryStream RewindGifStream(this MemoryStream ms)
+        {
+            return ms.MirrorImageStream(MirrorImageDirection.Time);
+        }
+
         public static MemoryStream HorizontalMirrorImageStream(this MemoryStream ms)
         {
             return ms.MirrorImageStream(MirrorImageDirection.Horizontal);
         }
-
 
         public static MemoryStream VerticalMirrorImageStream(this MemoryStream ms)
         {
@@ -71,17 +75,32 @@ namespace GreenOnions.Utility.Helper
 
                 foreach (Guid gd in img.FrameDimensionsList)
                 {
-                    FrameDimension fd = new FrameDimension(gd);
-                    FrameDimension f = FrameDimension.Time;
-                    int count = img.GetFrameCount(fd);
+                    int count = img.GetFrameCount(new FrameDimension(gd));
                     ImageCodecInfo codecInfo = GetEncoder(ImageFormat.Gif);
                     Encoder encoder = Encoder.SaveFlag;
                     EncoderParameters eps;
 
-                    for (int i = 0; i < count; i++)
+                    bool firstFrame = true;
+
+                    if (mirrorImageDirection == MirrorImageDirection.Time)
                     {
-                        img.SelectActiveFrame(f, i);
-                        if (0 == i)
+                        for (int i = count - 1; i >= 0; i--)
+                        {
+                            SetFrameToGif(i);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < count; i++)
+                        {
+                            SetFrameToGif(i);
+                        }
+                    }
+
+                    void SetFrameToGif(int frameId)
+                    {
+                        img.SelectActiveFrame(FrameDimension.Time, frameId);
+                        if (firstFrame)
                         {
                             g.Clear(Color.White);
 
@@ -90,6 +109,8 @@ namespace GreenOnions.Utility.Helper
                             eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.MultiFrame);
                             BindProperty(img, gif);
                             gif.Save(tempGifFileName, codecInfo, eps);
+
+                            firstFrame = false;
                         }
                         else
                         {
@@ -207,6 +228,7 @@ namespace GreenOnions.Utility.Helper
         {
             Horizontal,
             Vertical,
+            Time,
         }
     }
 

@@ -231,6 +231,9 @@
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.chkRewindGif = new System.Windows.Forms.CheckBox();
+            this.txbRewindGifProbability = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.pnlDebugMode.SuspendLayout();
@@ -2188,9 +2191,12 @@
             // 
             // tabRepeater
             // 
+            this.tabRepeater.Controls.Add(this.chkRewindGif);
+            this.tabRepeater.Controls.Add(this.label5);
             this.tabRepeater.Controls.Add(this.label4);
             this.tabRepeater.Controls.Add(this.label3);
             this.tabRepeater.Controls.Add(this.label1);
+            this.tabRepeater.Controls.Add(this.txbRewindGifProbability);
             this.tabRepeater.Controls.Add(this.lblRandomRepeatProbability);
             this.tabRepeater.Controls.Add(this.txbVerticalMirrorImageProbability);
             this.tabRepeater.Controls.Add(this.txbHorizontalMirrorImageProbability);
@@ -2210,7 +2216,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(202, 146);
+            this.label4.Location = new System.Drawing.Point(202, 188);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 17);
             this.label4.TabIndex = 2;
@@ -2219,7 +2225,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(202, 106);
+            this.label3.Location = new System.Drawing.Point(202, 148);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(56, 17);
             this.label3.TabIndex = 2;
@@ -2228,7 +2234,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(202, 64);
+            this.label1.Location = new System.Drawing.Point(202, 65);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 17);
             this.label1.TabIndex = 2;
@@ -2245,7 +2251,7 @@
             // 
             // txbVerticalMirrorImageProbability
             // 
-            this.txbVerticalMirrorImageProbability.Location = new System.Drawing.Point(264, 143);
+            this.txbVerticalMirrorImageProbability.Location = new System.Drawing.Point(264, 185);
             this.txbVerticalMirrorImageProbability.Name = "txbVerticalMirrorImageProbability";
             this.txbVerticalMirrorImageProbability.Size = new System.Drawing.Size(359, 23);
             this.txbVerticalMirrorImageProbability.TabIndex = 1;
@@ -2254,7 +2260,7 @@
             // 
             // txbHorizontalMirrorImageProbability
             // 
-            this.txbHorizontalMirrorImageProbability.Location = new System.Drawing.Point(264, 103);
+            this.txbHorizontalMirrorImageProbability.Location = new System.Drawing.Point(264, 145);
             this.txbHorizontalMirrorImageProbability.Name = "txbHorizontalMirrorImageProbability";
             this.txbHorizontalMirrorImageProbability.Size = new System.Drawing.Size(359, 23);
             this.txbHorizontalMirrorImageProbability.TabIndex = 1;
@@ -2263,7 +2269,7 @@
             // 
             // txbSuccessiveRepeatCount
             // 
-            this.txbSuccessiveRepeatCount.Location = new System.Drawing.Point(264, 61);
+            this.txbSuccessiveRepeatCount.Location = new System.Drawing.Point(264, 62);
             this.txbSuccessiveRepeatCount.Name = "txbSuccessiveRepeatCount";
             this.txbSuccessiveRepeatCount.Size = new System.Drawing.Size(359, 23);
             this.txbSuccessiveRepeatCount.TabIndex = 1;
@@ -2282,7 +2288,7 @@
             // chkVerticalMirrorImage
             // 
             this.chkVerticalMirrorImage.AutoSize = true;
-            this.chkVerticalMirrorImage.Location = new System.Drawing.Point(21, 145);
+            this.chkVerticalMirrorImage.Location = new System.Drawing.Point(21, 187);
             this.chkVerticalMirrorImage.Name = "chkVerticalMirrorImage";
             this.chkVerticalMirrorImage.Size = new System.Drawing.Size(147, 21);
             this.chkVerticalMirrorImage.TabIndex = 0;
@@ -2292,7 +2298,7 @@
             // chkHorizontalMirrorImage
             // 
             this.chkHorizontalMirrorImage.AutoSize = true;
-            this.chkHorizontalMirrorImage.Location = new System.Drawing.Point(21, 105);
+            this.chkHorizontalMirrorImage.Location = new System.Drawing.Point(21, 147);
             this.chkHorizontalMirrorImage.Name = "chkHorizontalMirrorImage";
             this.chkHorizontalMirrorImage.Size = new System.Drawing.Size(147, 21);
             this.chkHorizontalMirrorImage.TabIndex = 0;
@@ -2302,7 +2308,7 @@
             // chkSuccessiveRepeat
             // 
             this.chkSuccessiveRepeat.AutoSize = true;
-            this.chkSuccessiveRepeat.Location = new System.Drawing.Point(21, 63);
+            this.chkSuccessiveRepeat.Location = new System.Drawing.Point(21, 64);
             this.chkSuccessiveRepeat.Name = "chkSuccessiveRepeat";
             this.chkSuccessiveRepeat.Size = new System.Drawing.Size(99, 21);
             this.chkSuccessiveRepeat.TabIndex = 0;
@@ -2420,6 +2426,34 @@
             this.lblContributorName.Size = new System.Drawing.Size(35, 17);
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
+            // 
+            // chkRewindGif
+            // 
+            this.chkRewindGif.AutoSize = true;
+            this.chkRewindGif.Location = new System.Drawing.Point(21, 105);
+            this.chkRewindGif.Name = "chkRewindGif";
+            this.chkRewindGif.Size = new System.Drawing.Size(67, 21);
+            this.chkRewindGif.TabIndex = 3;
+            this.chkRewindGif.Text = "倒放Gif";
+            this.chkRewindGif.UseVisualStyleBackColor = true;
+            // 
+            // txbRewindGifProbability
+            // 
+            this.txbRewindGifProbability.Location = new System.Drawing.Point(264, 103);
+            this.txbRewindGifProbability.Name = "txbRewindGifProbability";
+            this.txbRewindGifProbability.Size = new System.Drawing.Size(359, 23);
+            this.txbRewindGifProbability.TabIndex = 1;
+            this.txbRewindGifProbability.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbRewindGifProbability.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(202, 106);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(56, 17);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "概率为：";
             // 
             // FrmAppSetting
             // 
@@ -2665,5 +2699,8 @@
         private System.Windows.Forms.CheckBox chkSuccessiveRepeat;
         private System.Windows.Forms.CheckBox chkRandomRepeat;
         private System.Windows.Forms.TextBox txbVerticalMirrorImageProbability;
+        private System.Windows.Forms.CheckBox chkRewindGif;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txbRewindGifProbability;
     }
 }

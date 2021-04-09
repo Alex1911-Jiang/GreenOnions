@@ -160,6 +160,8 @@ namespace GreenOnions.BotMainManagerWindow
             txbRandomRepeatProbability.Text = BotInfo.RandomRepeatProbability.ToString();
             chkSuccessiveRepeat.Checked = BotInfo.SuccessiveRepeatEnabled;
             txbSuccessiveRepeatCount.Text = BotInfo.SuccessiveRepeatCount.ToString();
+            chkRewindGif.Checked = BotInfo.RewindGifEnabled;
+            txbRewindGifProbability.Text = BotInfo.RewindGifProbability.ToString();
             chkHorizontalMirrorImage.Checked = BotInfo.HorizontalMirrorImageEnabled;
             txbHorizontalMirrorImageProbability.Text = BotInfo.HorizontalMirrorImageProbability.ToString();
             chkVerticalMirrorImage.Checked = BotInfo.VerticalMirrorImageEnabled;
@@ -323,6 +325,8 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.RandomRepeatProbability = string.IsNullOrEmpty(txbRandomRepeatProbability.Text) ? 0 : Convert.ToInt32(txbRandomRepeatProbability.Text);
             BotInfo.SuccessiveRepeatEnabled = chkSuccessiveRepeat.Checked;
             BotInfo.SuccessiveRepeatCount = string.IsNullOrEmpty(txbSuccessiveRepeatCount.Text) ? 0 : Convert.ToInt32(txbSuccessiveRepeatCount.Text);
+            BotInfo.RewindGifEnabled = chkRewindGif.Checked;
+            BotInfo.RewindGifProbability = Convert.ToInt32(txbRewindGifProbability.Text);
             BotInfo.HorizontalMirrorImageEnabled = chkHorizontalMirrorImage.Checked;
             BotInfo.HorizontalMirrorImageProbability = string.IsNullOrEmpty(txbHorizontalMirrorImageProbability.Text) ? 0 : Convert.ToInt32(txbHorizontalMirrorImageProbability.Text);
             BotInfo.VerticalMirrorImageEnabled = chkVerticalMirrorImage.Checked;

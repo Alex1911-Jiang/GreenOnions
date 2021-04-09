@@ -121,22 +121,36 @@ namespace GreenOnions.Repeater
 
         private static MemoryStream MirrorImage(string url, string imageId)
         {
+            bool bRewind = false;
             bool bHorizontalMirror = false;
             bool bVerticalMirror = false;
-            if (BotInfo.HorizontalMirrorImageEnabled)
+            if (BotInfo.RewindGifEnabled)
             {
-                bHorizontalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.HorizontalMirrorImageProbability;
+                bRewind = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.RewindGifProbability;
             }
-            if (BotInfo.VerticalMirrorImageEnabled)
+            if (!bRewind)
             {
-                bVerticalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.VerticalMirrorImageProbability;
+                if (BotInfo.HorizontalMirrorImageEnabled)
+                {
+                    bHorizontalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.HorizontalMirrorImageProbability;
+                }
+                if (BotInfo.VerticalMirrorImageEnabled)
+                {
+                    bVerticalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.VerticalMirrorImageProbability;
+                }
             }
+            
 
-            if (bHorizontalMirror || bVerticalMirror)
+            if (bRewind || bHorizontalMirror || bVerticalMirror)
             {
                 string imgName = $"{ImageHelper.ImagePath}复读图片{imageId}";
                 MemoryStream ms = HttpHelper.DownloadImageAsMemoryStream(url, imgName);
 
+                //倒放和镜像不会同时发生且倒放优先级高于镜像, 但水平镜像和垂直镜像可能同时发生
+                if (bRewind)
+                {
+                    ms = ms.RewindGifStream();
+                }
                 if (bHorizontalMirror)
                 {
                     ms = ms.HorizontalMirrorImageStream();

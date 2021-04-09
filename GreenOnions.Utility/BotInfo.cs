@@ -38,10 +38,10 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(Port), value);
         }
 
-        public static string AutoKey
+        public static string AuthKey
         {
-            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(AutoKey));
-            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(AutoKey), value);
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(AuthKey));
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(AuthKey), value);
         }
 
         /// <summary>
@@ -1220,6 +1220,32 @@ namespace GreenOnions.Utility
                 return 3;
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(SuccessiveRepeatCount), value.ToString());
+        }
+        /// <summary>
+        /// 是否倒放复读Gif
+        /// </summary>
+        public static bool RewindGifEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(RewindGifEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(RewindGifEnabled), value.ToString());
+        }
+        /// <summary>
+        /// 倒放复读Gif概率
+        /// </summary>
+        public static int RewindGifProbability
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(RewindGifProbability));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 50;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(RewindGifProbability), value.ToString());
         }
         /// <summary>
         /// 是否水平反转复读图片

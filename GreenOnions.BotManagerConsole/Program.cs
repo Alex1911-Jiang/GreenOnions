@@ -47,10 +47,10 @@ namespace GreenOnions.BotManagerConsole
 				Console.WriteLine("输入的端口号不正确，请重新输入:");
 				goto ILReadPort;
 			}
-			Console.WriteLine("请输入mirai-api-http autoKey:");
-			string autoKey = Console.ReadLine();
+			Console.WriteLine("请输入mirai-api-http authKey:");
+			string authKey = Console.ReadLine();
 
-			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, autoKey);
+			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, authKey);
 			bool retry = false;
 			await session.ConnectAsync(options, qqId).ContinueWith(callback =>
 			{
