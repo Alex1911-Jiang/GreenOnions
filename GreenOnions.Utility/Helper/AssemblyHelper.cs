@@ -52,5 +52,15 @@ namespace GreenOnions.Utility.Helper
             }
             return str;
         }
+
+        public static void CreateConfig()
+        {
+            PropertyInfo[] PropertyInfos = CreateType("GreenOnions.Utility", "GreenOnions.Utility.BotInfo").GetProperties();
+            for (int i = 0; i < PropertyInfos.Length; i++)
+            {
+                if (PropertyInfos[i].CanWrite)
+                    PropertyInfos[i].SetValue(null, PropertyInfos[i].GetValue(null));
+            }
+        }
     }
 }

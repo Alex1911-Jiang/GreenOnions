@@ -20,6 +20,7 @@ namespace GreenOnions.BotManagerConsole
 
 			if (!File.Exists(Cache.JsonConfigFileName))
 			{
+				AssemblyHelper.CreateConfig();
 				Console.WriteLine("初次使用本机器人，请先设置config.json相关参数。");
 			}
 
@@ -61,6 +62,7 @@ namespace GreenOnions.BotManagerConsole
 				{
 					return;
 				}
+				Task.Delay(100).Wait();
 			}
 		}
     }
