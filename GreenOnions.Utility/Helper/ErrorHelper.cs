@@ -10,6 +10,9 @@ namespace GreenOnions.Utility.Helper
     public static class ErrorHelper
     {
         public static void WriteErrorLog(Exception ex) => WriteErrorLogInner(ex);
+        private static readonly string _logName;
+
+        static ErrorHelper() => _logName = Path.Combine(Environment.CurrentDirectory, "error.log");
 
         public static void WriteErrorLog(object exObj)
         {
@@ -51,8 +54,7 @@ namespace GreenOnions.Utility.Helper
 
         private static void WriteLogText(string Text)
         {
-            string logName = Environment.CurrentDirectory + @"\error.log";
-            File.AppendAllTextAsync(logName, Text + $"    异常发生时间:{DateTime.Now}\r\n\r\n");
+            File.AppendAllTextAsync(_logName, Text + $"    异常发生时间:{DateTime.Now}\r\n\r\n");
         }
     }
 }
