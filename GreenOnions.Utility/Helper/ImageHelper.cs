@@ -8,7 +8,8 @@ namespace GreenOnions.Utility.Helper
 {
     public static class ImageHelper
     {
-        private static readonly string _imagePath = Environment.CurrentDirectory + "\\Image\\";
+        private static readonly string _imagePath;
+
         public static string ImagePath
         {
             get
@@ -20,6 +21,12 @@ namespace GreenOnions.Utility.Helper
                 return _imagePath;
             }
         }
+
+        static ImageHelper()
+        {
+            _imagePath = Path.Combine(Environment.CurrentDirectory, "Image");
+        }
+
         public static Stream StreamAntiShielding(this Stream ms)
         {
             Bitmap bmp = new Bitmap(Image.FromStream(ms));

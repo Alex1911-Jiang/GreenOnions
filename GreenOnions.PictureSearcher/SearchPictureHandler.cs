@@ -215,7 +215,7 @@ namespace GreenOnions.PictureSearcher
                                         {
                                             try
                                             {
-                                                string imgName = $"{ImageHelper.ImagePath}Pixiv_{sauceNaoItem.pixiv_id}_p0.png";
+                                                string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{sauceNaoItem.pixiv_id}_p0.png");
                                                 if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
                                                         UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(uploaded => SendMessage(new[] { uploaded.Result }));
                                                 else
@@ -232,7 +232,7 @@ namespace GreenOnions.PictureSearcher
                                 {
                                     try
                                     {
-                                        string imgName = $"{ImageHelper.ImagePath}Pixiv_{sauceNaoItem.pixiv_id}_p{p}.png";
+                                        string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{sauceNaoItem.pixiv_id}_p{p}.png");
                                         if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
                                                 UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(uploaded => SendMessage(new[] { uploaded.Result }));
                                         else

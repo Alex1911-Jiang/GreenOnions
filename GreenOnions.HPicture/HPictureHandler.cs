@@ -198,7 +198,7 @@ namespace GreenOnions.HPicture
                 void SendOnceLoliconHPicture(LoliconHPictureItem item)
                 {
                     ImageMessage imageMessage = null;
-                    string imgName = $"{ImageHelper.ImagePath}{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png";
+                    string imgName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png");
                     if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                     {
                         imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片
@@ -230,7 +230,7 @@ namespace GreenOnions.HPicture
                     foreach (var item in items)
                     {
                         ImageMessage imageMessage = null;
-                        string imgName = $"{ImageHelper.ImagePath}Shab_{item.ID}.png";
+                        string imgName = Path.Combine(ImageHelper.ImagePath,$"Shab_{item.ID}.png");
                         if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                         {
                             imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片
