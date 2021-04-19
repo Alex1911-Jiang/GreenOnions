@@ -29,6 +29,10 @@ namespace GreenOnions.BotManagerConsole
 			session.AddPlugin(new FriendMessage());
 			session.AddPlugin(new GroupMessage());
 
+			session.GroupMemberJoinedEvt += GroupEvents.Session_GroupMemberJoinedEvt;
+			session.GroupMemberPositiveLeaveEvt += GroupEvents.Session_GroupMemberPositiveLeaveEvt;
+			session.GroupMemberKickedEvt += GroupEvents.Session_GroupMemberKickedEvt;
+
 		ILRetry:;
 			Console.WriteLine("请输入机器人QQ号:");
 			long qqId = 0;

@@ -46,6 +46,11 @@ namespace GreenOnions.BotMainManagerWindow
 			session.AddPlugin(new TempMessage());
 			session.AddPlugin(new FriendMessage());
 			session.AddPlugin(new GroupMessage());
+
+            session.GroupMemberJoinedEvt += GroupEvents.Session_GroupMemberJoinedEvt;
+            session.GroupMemberPositiveLeaveEvt += GroupEvents.Session_GroupMemberPositiveLeaveEvt;
+            session.GroupMemberKickedEvt += GroupEvents.Session_GroupMemberKickedEvt;
+
 			bool stop = false;
 			await session.ConnectAsync(options, qqId).ContinueWith(callback =>
 			{

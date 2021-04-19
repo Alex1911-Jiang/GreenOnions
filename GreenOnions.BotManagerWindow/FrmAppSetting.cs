@@ -167,6 +167,15 @@ namespace GreenOnions.BotMainManagerWindow
             chkVerticalMirrorImage.Checked = BotInfo.VerticalMirrorImageEnabled;
             txbVerticalMirrorImageProbability.Text = BotInfo.VerticalMirrorImageProbability.ToString();
             #endregion -- 复读设置 --
+
+            #region -- 进/退群消息设置 --
+            chkSendMemberJoinedMessage.Checked = BotInfo.SendMemberJoinedMessage;
+            chkSendMemberPositiveLeaveMessage.Checked = BotInfo.SendMemberPositiveLeaveMessage;
+            chkSendMemberBeKickedMessage.Checked = BotInfo.SendMemberBeKickedMessage;
+            txbMemberJoinedMessage.Text = BotInfo.MemberJoinedMessage;
+            txbMemberPositiveLeaveMessage.Text = BotInfo.MemberPositiveLeaveMessage;
+            txbMemberBeKickedMessage.Text = BotInfo.MemberBeKickedMessage;
+            #endregion  -- 进/退群消息设置 --
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -332,6 +341,17 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.VerticalMirrorImageEnabled = chkVerticalMirrorImage.Checked;
             BotInfo.VerticalMirrorImageProbability = string.IsNullOrEmpty(txbVerticalMirrorImageProbability.Text) ? 0 : Convert.ToInt32(txbVerticalMirrorImageProbability.Text);
             #endregion -- 复读设置 --
+
+            #region -- 进/退群消息设置 --
+
+            BotInfo.SendMemberJoinedMessage = chkSendMemberJoinedMessage.Checked;
+            BotInfo.SendMemberPositiveLeaveMessage = chkSendMemberPositiveLeaveMessage.Checked;
+            BotInfo.SendMemberBeKickedMessage = chkSendMemberBeKickedMessage.Checked;
+            BotInfo.MemberJoinedMessage = txbMemberJoinedMessage.Text;
+            BotInfo.MemberPositiveLeaveMessage = txbMemberPositiveLeaveMessage.Text;
+            BotInfo.MemberBeKickedMessage = txbMemberBeKickedMessage.Text;
+
+            #endregion  -- 进/退群消息设置 --
 
             Close();
         }

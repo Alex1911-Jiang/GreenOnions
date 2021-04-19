@@ -209,9 +209,12 @@
             this.txbHPictureUnit = new System.Windows.Forms.TextBox();
             this.chkEnabledHPicture = new System.Windows.Forms.CheckBox();
             this.tabRepeater = new System.Windows.Forms.TabPage();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.chkRewindGif = new System.Windows.Forms.CheckBox();
+            this.lblRewindGifProbability = new System.Windows.Forms.Label();
+            this.lblVerticalMirrorImageProbability = new System.Windows.Forms.Label();
+            this.lblHorizontalMirrorImageProbability = new System.Windows.Forms.Label();
+            this.lblSuccessiveRepeatCount = new System.Windows.Forms.Label();
+            this.txbRewindGifProbability = new System.Windows.Forms.TextBox();
             this.lblRandomRepeatProbability = new System.Windows.Forms.Label();
             this.txbVerticalMirrorImageProbability = new System.Windows.Forms.TextBox();
             this.txbHorizontalMirrorImageProbability = new System.Windows.Forms.TextBox();
@@ -221,6 +224,13 @@
             this.chkHorizontalMirrorImage = new System.Windows.Forms.CheckBox();
             this.chkSuccessiveRepeat = new System.Windows.Forms.CheckBox();
             this.chkRandomRepeat = new System.Windows.Forms.CheckBox();
+            this.tabGroupMemberEvents = new System.Windows.Forms.TabPage();
+            this.txbMemberBeKickedMessage = new System.Windows.Forms.TextBox();
+            this.txbMemberPositiveLeaveMessage = new System.Windows.Forms.TextBox();
+            this.txbMemberJoinedMessage = new System.Windows.Forms.TextBox();
+            this.chkSendMemberBeKickedMessage = new System.Windows.Forms.CheckBox();
+            this.chkSendMemberPositiveLeaveMessage = new System.Windows.Forms.CheckBox();
+            this.chkSendMemberJoinedMessage = new System.Windows.Forms.CheckBox();
             this.tabAbout = new System.Windows.Forms.TabPage();
             this.txbContributorName = new System.Windows.Forms.TextBox();
             this.txbContributorQQ = new System.Windows.Forms.TextBox();
@@ -231,9 +241,6 @@
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.chkRewindGif = new System.Windows.Forms.CheckBox();
-            this.txbRewindGifProbability = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.pnlDebugMode.SuspendLayout();
@@ -245,6 +252,7 @@
             this.tabHPicture.SuspendLayout();
             this.pnlEnabelHPicture.SuspendLayout();
             this.tabRepeater.SuspendLayout();
+            this.tabGroupMemberEvents.SuspendLayout();
             this.tabAbout.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -310,6 +318,7 @@
             this.tabControl1.Controls.Add(this.tabTranslate);
             this.tabControl1.Controls.Add(this.tabHPicture);
             this.tabControl1.Controls.Add(this.tabRepeater);
+            this.tabControl1.Controls.Add(this.tabGroupMemberEvents);
             this.tabControl1.Controls.Add(this.tabAbout);
             this.tabControl1.Location = new System.Drawing.Point(14, 8);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
@@ -2192,10 +2201,10 @@
             // tabRepeater
             // 
             this.tabRepeater.Controls.Add(this.chkRewindGif);
-            this.tabRepeater.Controls.Add(this.label5);
-            this.tabRepeater.Controls.Add(this.label4);
-            this.tabRepeater.Controls.Add(this.label3);
-            this.tabRepeater.Controls.Add(this.label1);
+            this.tabRepeater.Controls.Add(this.lblRewindGifProbability);
+            this.tabRepeater.Controls.Add(this.lblVerticalMirrorImageProbability);
+            this.tabRepeater.Controls.Add(this.lblHorizontalMirrorImageProbability);
+            this.tabRepeater.Controls.Add(this.lblSuccessiveRepeatCount);
             this.tabRepeater.Controls.Add(this.txbRewindGifProbability);
             this.tabRepeater.Controls.Add(this.lblRandomRepeatProbability);
             this.tabRepeater.Controls.Add(this.txbVerticalMirrorImageProbability);
@@ -2213,32 +2222,60 @@
             this.tabRepeater.Text = "复读设置";
             this.tabRepeater.UseVisualStyleBackColor = true;
             // 
-            // label4
+            // chkRewindGif
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(202, 188);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(56, 17);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "概率为：";
+            this.chkRewindGif.AutoSize = true;
+            this.chkRewindGif.Location = new System.Drawing.Point(21, 105);
+            this.chkRewindGif.Name = "chkRewindGif";
+            this.chkRewindGif.Size = new System.Drawing.Size(67, 21);
+            this.chkRewindGif.TabIndex = 3;
+            this.chkRewindGif.Text = "倒放Gif";
+            this.chkRewindGif.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // lblRewindGifProbability
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(202, 148);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 17);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "概率为：";
+            this.lblRewindGifProbability.AutoSize = true;
+            this.lblRewindGifProbability.Location = new System.Drawing.Point(202, 106);
+            this.lblRewindGifProbability.Name = "lblRewindGifProbability";
+            this.lblRewindGifProbability.Size = new System.Drawing.Size(56, 17);
+            this.lblRewindGifProbability.TabIndex = 2;
+            this.lblRewindGifProbability.Text = "概率为：";
             // 
-            // label1
+            // lblVerticalMirrorImageProbability
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(202, 65);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 17);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "次数为：";
+            this.lblVerticalMirrorImageProbability.AutoSize = true;
+            this.lblVerticalMirrorImageProbability.Location = new System.Drawing.Point(202, 188);
+            this.lblVerticalMirrorImageProbability.Name = "lblVerticalMirrorImageProbability";
+            this.lblVerticalMirrorImageProbability.Size = new System.Drawing.Size(56, 17);
+            this.lblVerticalMirrorImageProbability.TabIndex = 2;
+            this.lblVerticalMirrorImageProbability.Text = "概率为：";
+            // 
+            // lblHorizontalMirrorImageProbability
+            // 
+            this.lblHorizontalMirrorImageProbability.AutoSize = true;
+            this.lblHorizontalMirrorImageProbability.Location = new System.Drawing.Point(202, 148);
+            this.lblHorizontalMirrorImageProbability.Name = "lblHorizontalMirrorImageProbability";
+            this.lblHorizontalMirrorImageProbability.Size = new System.Drawing.Size(56, 17);
+            this.lblHorizontalMirrorImageProbability.TabIndex = 2;
+            this.lblHorizontalMirrorImageProbability.Text = "概率为：";
+            // 
+            // lblSuccessiveRepeatCount
+            // 
+            this.lblSuccessiveRepeatCount.AutoSize = true;
+            this.lblSuccessiveRepeatCount.Location = new System.Drawing.Point(202, 65);
+            this.lblSuccessiveRepeatCount.Name = "lblSuccessiveRepeatCount";
+            this.lblSuccessiveRepeatCount.Size = new System.Drawing.Size(56, 17);
+            this.lblSuccessiveRepeatCount.TabIndex = 2;
+            this.lblSuccessiveRepeatCount.Text = "次数为：";
+            // 
+            // txbRewindGifProbability
+            // 
+            this.txbRewindGifProbability.Location = new System.Drawing.Point(264, 103);
+            this.txbRewindGifProbability.Name = "txbRewindGifProbability";
+            this.txbRewindGifProbability.Size = new System.Drawing.Size(359, 23);
+            this.txbRewindGifProbability.TabIndex = 1;
+            this.txbRewindGifProbability.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbRewindGifProbability.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // lblRandomRepeatProbability
             // 
@@ -2324,6 +2361,72 @@
             this.chkRandomRepeat.TabIndex = 0;
             this.chkRandomRepeat.Text = "启用随机复读";
             this.chkRandomRepeat.UseVisualStyleBackColor = true;
+            // 
+            // tabGroupMemberEvents
+            // 
+            this.tabGroupMemberEvents.Controls.Add(this.txbMemberBeKickedMessage);
+            this.tabGroupMemberEvents.Controls.Add(this.txbMemberPositiveLeaveMessage);
+            this.tabGroupMemberEvents.Controls.Add(this.txbMemberJoinedMessage);
+            this.tabGroupMemberEvents.Controls.Add(this.chkSendMemberBeKickedMessage);
+            this.tabGroupMemberEvents.Controls.Add(this.chkSendMemberPositiveLeaveMessage);
+            this.tabGroupMemberEvents.Controls.Add(this.chkSendMemberJoinedMessage);
+            this.tabGroupMemberEvents.Location = new System.Drawing.Point(4, 26);
+            this.tabGroupMemberEvents.Name = "tabGroupMemberEvents";
+            this.tabGroupMemberEvents.Size = new System.Drawing.Size(652, 687);
+            this.tabGroupMemberEvents.TabIndex = 6;
+            this.tabGroupMemberEvents.Text = "进/退群提醒";
+            this.tabGroupMemberEvents.UseVisualStyleBackColor = true;
+            // 
+            // txbMemberBeKickedMessage
+            // 
+            this.txbMemberBeKickedMessage.Location = new System.Drawing.Point(244, 110);
+            this.txbMemberBeKickedMessage.Name = "txbMemberBeKickedMessage";
+            this.txbMemberBeKickedMessage.Size = new System.Drawing.Size(379, 23);
+            this.txbMemberBeKickedMessage.TabIndex = 3;
+            // 
+            // txbMemberPositiveLeaveMessage
+            // 
+            this.txbMemberPositiveLeaveMessage.Location = new System.Drawing.Point(244, 68);
+            this.txbMemberPositiveLeaveMessage.Name = "txbMemberPositiveLeaveMessage";
+            this.txbMemberPositiveLeaveMessage.Size = new System.Drawing.Size(379, 23);
+            this.txbMemberPositiveLeaveMessage.TabIndex = 3;
+            // 
+            // txbMemberJoinedMessage
+            // 
+            this.txbMemberJoinedMessage.Location = new System.Drawing.Point(244, 26);
+            this.txbMemberJoinedMessage.Name = "txbMemberJoinedMessage";
+            this.txbMemberJoinedMessage.Size = new System.Drawing.Size(379, 23);
+            this.txbMemberJoinedMessage.TabIndex = 3;
+            // 
+            // chkSendMemberBeKickedMessage
+            // 
+            this.chkSendMemberBeKickedMessage.AutoSize = true;
+            this.chkSendMemberBeKickedMessage.Location = new System.Drawing.Point(27, 112);
+            this.chkSendMemberBeKickedMessage.Name = "chkSendMemberBeKickedMessage";
+            this.chkSendMemberBeKickedMessage.Size = new System.Drawing.Size(123, 21);
+            this.chkSendMemberBeKickedMessage.TabIndex = 0;
+            this.chkSendMemberBeKickedMessage.Text = "发送群员被踢消息";
+            this.chkSendMemberBeKickedMessage.UseVisualStyleBackColor = true;
+            // 
+            // chkSendMemberPositiveLeaveMessage
+            // 
+            this.chkSendMemberPositiveLeaveMessage.AutoSize = true;
+            this.chkSendMemberPositiveLeaveMessage.Location = new System.Drawing.Point(27, 70);
+            this.chkSendMemberPositiveLeaveMessage.Name = "chkSendMemberPositiveLeaveMessage";
+            this.chkSendMemberPositiveLeaveMessage.Size = new System.Drawing.Size(123, 21);
+            this.chkSendMemberPositiveLeaveMessage.TabIndex = 0;
+            this.chkSendMemberPositiveLeaveMessage.Text = "发送群员退群消息";
+            this.chkSendMemberPositiveLeaveMessage.UseVisualStyleBackColor = true;
+            // 
+            // chkSendMemberJoinedMessage
+            // 
+            this.chkSendMemberJoinedMessage.AutoSize = true;
+            this.chkSendMemberJoinedMessage.Location = new System.Drawing.Point(27, 28);
+            this.chkSendMemberJoinedMessage.Name = "chkSendMemberJoinedMessage";
+            this.chkSendMemberJoinedMessage.Size = new System.Drawing.Size(123, 21);
+            this.chkSendMemberJoinedMessage.TabIndex = 0;
+            this.chkSendMemberJoinedMessage.Text = "发送新人入群消息";
+            this.chkSendMemberJoinedMessage.UseVisualStyleBackColor = true;
             // 
             // tabAbout
             // 
@@ -2427,34 +2530,6 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
-            // chkRewindGif
-            // 
-            this.chkRewindGif.AutoSize = true;
-            this.chkRewindGif.Location = new System.Drawing.Point(21, 105);
-            this.chkRewindGif.Name = "chkRewindGif";
-            this.chkRewindGif.Size = new System.Drawing.Size(67, 21);
-            this.chkRewindGif.TabIndex = 3;
-            this.chkRewindGif.Text = "倒放Gif";
-            this.chkRewindGif.UseVisualStyleBackColor = true;
-            // 
-            // txbRewindGifProbability
-            // 
-            this.txbRewindGifProbability.Location = new System.Drawing.Point(264, 103);
-            this.txbRewindGifProbability.Name = "txbRewindGifProbability";
-            this.txbRewindGifProbability.Size = new System.Drawing.Size(359, 23);
-            this.txbRewindGifProbability.TabIndex = 1;
-            this.txbRewindGifProbability.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
-            this.txbRewindGifProbability.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(202, 106);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(56, 17);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "概率为：";
-            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -2489,6 +2564,8 @@
             this.pnlEnabelHPicture.PerformLayout();
             this.tabRepeater.ResumeLayout(false);
             this.tabRepeater.PerformLayout();
+            this.tabGroupMemberEvents.ResumeLayout(false);
+            this.tabGroupMemberEvents.PerformLayout();
             this.tabAbout.ResumeLayout(false);
             this.tabAbout.PerformLayout();
             this.ResumeLayout(false);
@@ -2687,9 +2764,9 @@
         private System.Windows.Forms.TextBox txbTraceMoeSendThreshold;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.TabPage tabRepeater;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblVerticalMirrorImageProbability;
+        private System.Windows.Forms.Label lblHorizontalMirrorImageProbability;
+        private System.Windows.Forms.Label lblSuccessiveRepeatCount;
         private System.Windows.Forms.Label lblRandomRepeatProbability;
         private System.Windows.Forms.TextBox txbHorizontalMirrorImageProbability;
         private System.Windows.Forms.TextBox txbSuccessiveRepeatCount;
@@ -2700,7 +2777,14 @@
         private System.Windows.Forms.CheckBox chkRandomRepeat;
         private System.Windows.Forms.TextBox txbVerticalMirrorImageProbability;
         private System.Windows.Forms.CheckBox chkRewindGif;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblRewindGifProbability;
         private System.Windows.Forms.TextBox txbRewindGifProbability;
+        private System.Windows.Forms.TabPage tabGroupMemberEvents;
+        private System.Windows.Forms.TextBox txbMemberJoinedMessage;
+        private System.Windows.Forms.CheckBox chkSendMemberBeKickedMessage;
+        private System.Windows.Forms.CheckBox chkSendMemberPositiveLeaveMessage;
+        private System.Windows.Forms.CheckBox chkSendMemberJoinedMessage;
+        private System.Windows.Forms.TextBox txbMemberBeKickedMessage;
+        private System.Windows.Forms.TextBox txbMemberPositiveLeaveMessage;
     }
 }

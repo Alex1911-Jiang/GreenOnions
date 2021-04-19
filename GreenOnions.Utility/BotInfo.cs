@@ -12,6 +12,7 @@ namespace GreenOnions.Utility
         public const string JsonNodeNameHPicture = "HPicture";
         public const string JsonNodeNameTranslate = "Translate";
         public const string JsonNodeNameRepeater = "Repeater";
+        public const string JsonNodeNameGroupMemberEvent = "GroupMemberEvent";
 
         #region -- 公共属性 --
         [PropertyChineseName("机器人QQ号")]
@@ -1300,6 +1301,79 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameRepeater, nameof(VerticalMirrorImageProbability), value.ToString());
         }
         #endregion -- 复读属性 --
+
+        #region -- 进/退群消息属性 --
+
+        /// <summary>
+        /// 是否启用新人入群消息
+        /// </summary>
+        public static bool SendMemberJoinedMessage
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(SendMemberJoinedMessage));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(SendMemberJoinedMessage), value.ToString());
+        }
+
+        /// <summary>
+        /// 是否启用成员退群消息
+        /// </summary>
+        public static bool SendMemberPositiveLeaveMessage
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(SendMemberPositiveLeaveMessage));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(SendMemberPositiveLeaveMessage), value.ToString());
+        }
+
+        /// <summary>
+        /// 是否启用成员被踢消息
+        /// </summary>
+        public static bool SendMemberBeKickedMessage
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(SendMemberBeKickedMessage));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(SendMemberBeKickedMessage), value.ToString());
+        }
+
+        /// <summary>
+        /// 新人入群消息
+        /// </summary>
+        public static string MemberJoinedMessage
+        {
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(MemberJoinedMessage)) ?? "<@成员QQ> 欢迎新大佬，群地位-1 (ΩДΩ)";
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(MemberJoinedMessage), value);
+        }
+
+        /// <summary>
+        /// 成员退群消息
+        /// </summary>
+        public static string MemberPositiveLeaveMessage
+        {
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(MemberPositiveLeaveMessage)) ?? "QQ号：<成员QQ> 退出了群，群地位+1 o(╥﹏╥)o";
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(MemberPositiveLeaveMessage), value);
+        }
+
+        /// <summary>
+        /// 成员被踢消息
+        /// </summary>
+        public static string MemberBeKickedMessage
+        {
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(MemberBeKickedMessage)) ?? "QQ号：<成员QQ> 被 <操作者昵称> 踢了出群，群地位+1 (*^▽^*)";
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(MemberBeKickedMessage), value);
+        }
+
+        #endregion  -- 进/退群消息属性 --
     }
     public enum LimitType
     {
