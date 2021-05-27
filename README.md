@@ -11,7 +11,7 @@
 2.多平台兼容, .Net5能装的平台都能运行(当然非Windows就没有图形界面了)<br>
 3.搜图功能可配置接入腾讯云鉴黄, 可以有效避免被内鬼炸号炸群, 尤其是Ascii2D乱开车的时候<br>
 4.搜图功能会尝试自动下载原图发送(不只有缩略图)<br>
-5.支持一句命令多张setu, 支持限制QQ号调用次数和频率(等一个 [mirai-api-http](https://github.com/project-mirai/mirai-api-http) 实现合并转发功能降低内鬼炸号概率) 支持定时撤回, 支持配置返回语等<br>
+5.支持一句命令多张setu, 支持限制QQ号调用次数和频率(等一个 [SDK](https://github.com/Executor-Cheng/Mirai-CSharp) 实现合并转发功能降低内鬼炸号概率) 支持定时撤回, 支持配置返回语等<br>
 
 ### Windows食用方法(傻瓜版):
 
@@ -60,3 +60,4 @@
 ### 长期计划(GUDO):
 
 1.实现RSS相关转发功能<br>
+2.适配Mirai-Go平台
