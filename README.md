@@ -46,7 +46,7 @@
 2.[ascii2d](https://ascii2d.net/) 搜图<br>
 3.[trace.moe](https://trace.moe/) 搜番<br>
 4.[lolicon](https://api.lolicon.app/#/setu) setu<br>
-5.群友[Quan](https://github.com/Quan666)的[ELF图库](http://img.shab.fun:5000/) 美图<br>
+5.群友 [Quan](https://github.com/Quan666) 的 [ELF图库](http://img.shab.fun:5000/) 美图<br>
 6.[GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi) 翻译<br>
 7.随机复读, 连续复读, 镜像复读图片和倒带gif(可配置触发几率)<br>
 8.新人入群/退群/被踢提醒(支持定义)<br>
