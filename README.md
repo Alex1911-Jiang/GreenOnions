@@ -48,7 +48,8 @@
 4.[lolicon](https://api.lolicon.app/#/setu) setu<br>
 5.群友[Quan](https://github.com/Quan666)的[ELF图库](http://img.shab.fun:5000/) 美图<br>
 6.[GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi) 翻译<br>
-7.新人入群/退群/被踢提醒(支持定义)<br>
+7.随机复读, 连续复读, 镜像复读图片和倒带gif(可配置触发几率)
+8.新人入群/退群/被踢提醒(支持定义)<br>
 
 ###### 至于为什么叫葱葱, 一是一开始是给某初音群用的, 叫这个名字可以打压某助手, 二是早期没自己开发的时候使用 [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot) 的机器人叫竹竹, 就想找个类似的名字<br>
 
