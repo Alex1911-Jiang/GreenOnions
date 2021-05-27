@@ -54,7 +54,7 @@
 
 ### 短期计划(TODO):
 
-1.先把自家图库 [GreenOnions.Gallery](https://github.com/Alex1911-Jiang/GreenOnions.Gallery) 爬来的图片审核完然后实现自家图库<br>
+1.先把自家图库 [GreenOnions.Gallery](https://github.com/Alex1911-Jiang/GreenOnions.Gallery) 爬来的图片审核完然后实现自家图库 [实例](http://alex1911.top/) 的调用<br>
 2.群友要求定时提醒功能(定时提醒饮茶)<br>
 
 ### 长期计划(GUDO):
