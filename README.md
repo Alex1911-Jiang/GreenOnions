@@ -2,8 +2,8 @@
 
 ### 关于本项目
 
-###### 这是一个[mirai](https://github.com/mamoe/mirai)平台的QQ机器人, 使用[Mirai-CSharp] <br>(https://github.com/Executor-Cheng/Mirai-CSharp)开发, 实现了搜图, 翻译, setu等功能<br>
-###### 搜图和setu功能设计思路参考自[cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot)<br>
+#### 这是一个[mirai](https://github.com/mamoe/mirai)平台的QQ机器人, 使用[Mirai-CSharp] <br>(https://github.com/Executor-Cheng/Mirai-CSharp)开发, 实现了搜图, 翻译, setu等功能<br>
+#### 搜图和setu功能设计思路参考自[cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot)<br>
 
 ### 项目优势:
 
