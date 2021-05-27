@@ -26,7 +26,7 @@
 #### 二、安装机器人框架(注意不能和Go通用)
 
 1.到 [mirai-console-loader/releases](https://github.com/iTXTech/mirai-console-loader/releases) 下载MCL (尽量选择不带beta的最新版, 下载.zip结尾的那个)<br>
-2.解压到任意目录, 并在此目录上运行cmd, 输入".\mcl", 待停止后按Ctrl+C撤销当前操作, 再输入".\mcl --update-package net.mamoe:mirai-api-http --channel stable --type plugin"安装 [mirai-api-http](https://github.com/project-mirai/mirai-api-http) (这个链接不用点)<br>
+2.解压到任意目录, 并在此目录上运行cmd, 输入".\mcl", 待停止后按Ctrl+C中止当前操作, 再输入".\mcl --update-package net.mamoe:mirai-api-http --channel stable --type plugin"安装 [mirai-api-http](https://github.com/project-mirai/mirai-api-http) (这个链接不用点)<br>
 3.打开mcl目录\config\net.mamoe.mirai-api-http\setting.yml文件, 修改 host: '127.0.0.1' port: 33111 authKey: Alex1911<br>
 4.回到cmd窗口, 输入\login 机器人QQ号 密码登录<br>
 
