@@ -216,7 +216,7 @@ namespace GreenOnions.Utility.Helper
 
         public static void AntiShielding(this Bitmap bmp)
         {
-            Random r = new Random();
+            Random r = new Random(Guid.NewGuid().GetHashCode());
             int x = r.Next(0, bmp.Width);
             int y = r.Next(0, bmp.Height);
 

@@ -19,6 +19,7 @@ namespace GreenOnions.PictureSearcher
     {
         public static async Task SearchPicture(ImageMessage inImgMsg, Func<Stream, Task<ImageMessage>> UploadPicture, Action<IMessageBase[]> SendMessage)
         {
+            inImgMsg.Url = inImgMsg.Url.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
             try
             {
                 if (BotInfo.SearchEnabledTraceMoe)
@@ -95,6 +96,13 @@ namespace GreenOnions.PictureSearcher
                 JArray jResults = json["results"] as JArray;
 
                 //jResults = new JArray(jResults.OrderByDescending(x => x["header"]["similarity"]));  //按相似度排序
+
+                if (jResults == null)
+                {
+                    ErrorHelper.WriteErrorLogWithUserMessage("SauceNao没有搜索到结果", null, $"请求地址为：{SauceNaoUrl}");
+                    SendMessage(new[] { new PlainMessage(BotInfo.SearchNoResultReply.Replace("<搜索类型>", "SauceNao")) });
+                    return;
+                }
 
                 for (int j = 0; j < jResults.Count; j++)
                 {
@@ -259,7 +267,7 @@ namespace GreenOnions.PictureSearcher
                     SendMessage(new[] { plain, imageMessage });
                     return;
                 }
-                string strNoResult = BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", "SauceNao"));
+                string strNoResult = BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("<搜索类型>", "SauceNao"));
                 if (BotInfo.SearchEnabledASCII2D)
                 {
                     strNoResult += "\r\n自动使用ASCII2D搜索。";
