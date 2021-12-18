@@ -64,9 +64,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(AdminQQ));
                 if (string.IsNullOrEmpty(strValue))
-                {
                     return new List<long>();
-                }
                 return strValue.Split(';').Select(long.Parse);
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(AdminQQ), string.Join(";", value));
@@ -95,9 +93,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(BannedGroup));
                 if (string.IsNullOrEmpty(strValue))
-                {
                     return new List<long>();
-                }
                 return strValue.Split(';').Select(long.Parse);
 
             }
@@ -113,9 +109,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(BannedUser));
                 if (string.IsNullOrEmpty(strValue))
-                {
                     return new List<long>();
-                }
                 return strValue.Split(';').Select(long.Parse);
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(BannedUser), string.Join(";", value));
@@ -167,9 +161,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(DebugGroups));
                 if (string.IsNullOrEmpty(strValue))
-                {
                     return new List<long>();
-                }
                 return strValue.Split(';').Select(long.Parse);
 
             }
@@ -522,6 +514,19 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameTranslate, nameof(TranslateToCMD), value);
         }
 
+        public static IEnumerable<long> AutoTranslateGroupMemoriesQQ
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameTranslate, nameof(AutoTranslateGroupMemoriesQQ));
+                if (string.IsNullOrEmpty(strValue))
+                    return new List<long>();
+                return strValue.Split(';').Select(long.Parse);
+
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameTranslate, nameof(AutoTranslateGroupMemoriesQQ), string.Join(";", value));
+        }
+
         #endregion -- 翻译属性 --
 
         #region -- 色图属性 --
@@ -540,36 +545,36 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// Shab图库色图完整命令(正则表达式)
+        /// 美图完整命令(正则表达式)
         /// </summary>
-        public static string ShabHPictureCmd
+        public static string BeautyPictureCmd
         {
-            get => GetShabHPictureCmd();
+            get => GetBeautyPictureCmd();
         }
 
         private static string GetLoliconHPictureCmd()
         {
-            string LoliconEnd = HPictureEndCmd;
+            string HPictureEnd = HPictureEndCmd;
             if (HPictureEndCmdNull)
             {
-                LoliconEnd = $"({LoliconEnd})?";
+                HPictureEnd = $"({HPictureEnd})?";
             }
 
-            return $"^<机器人名称>{GetHPictureCmdInner()}{LoliconEnd}$";
+            return $"^<机器人名称>{GetPictureCmdInner()}{HPictureEnd}$";
         }
 
-        private static string GetShabHPictureCmd()
+        private static string GetBeautyPictureCmd()
         {
-            string ShabEnd = ShabHPictureEndCmd;
-            if (ShabHPictureEndCmdNull)
+            string BeautyPictureEnd = BeautyPictureEndCmd;
+            if (BeautyPictureEndCmdNull)
             {
-                ShabEnd = $"({ShabEnd})?";
+                BeautyPictureEnd = $"({BeautyPictureEnd})?";
             }
 
-            return $"^<机器人名称>{GetHPictureCmdInner()}{ShabEnd}$";
+            return $"^<机器人名称>{GetPictureCmdInner()}{BeautyPictureEnd}$";
         }
 
-        private static string GetHPictureCmdInner()
+        private static string GetPictureCmdInner()
         {
             string Begin, Count, Unit, R18, Keyword;
 
@@ -648,7 +653,7 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// Lolicon图库色图结束命令后缀(正则表达式)
+        /// 色图结束命令后缀(正则表达式)
         /// </summary>
         public static string HPictureEndCmd
         {
@@ -657,12 +662,12 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// Lolicon图库色图结束命令后缀(正则表达式)
+        /// 美图结束命令后缀(正则表达式)
         /// </summary>
-        public static string ShabHPictureEndCmd
+        public static string BeautyPictureEndCmd
         {
-            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabHPictureEndCmd)) ?? "的?美[图圖]";
-            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabHPictureEndCmd), value);
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(BeautyPictureEndCmd)) ?? "的?美[图圖]";
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(BeautyPictureEndCmd), value);
         }
 
         /// <summary>
@@ -737,7 +742,7 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否允许Lolicon图库色图命令后缀为空
+        /// 是否允许色图命令后缀为空
         /// </summary>
         public static bool HPictureEndCmdNull
         {
@@ -751,59 +756,55 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否允许shab图库色图命令后缀为空
+        /// 是否允许美图命令后缀为空
         /// </summary>
-        public static bool ShabHPictureEndCmdNull
+        public static bool BeautyPictureEndCmdNull
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabHPictureEndCmdNull));
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(BeautyPictureEndCmdNull));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return false;
             }
-            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabHPictureEndCmdNull), value.ToString());
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(BeautyPictureEndCmdNull), value.ToString());
         }
 
         /// <summary>
-        /// Shab图库非R-18是否不撤回
+        /// 是否撤回美图(撤回时间跟随色图撤回时间设置)
         /// </summary>
-        public static bool ShabDontRevokeWithOutR18
+        public static bool RevokeBeautyPicture
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabDontRevokeWithOutR18));
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(RevokeBeautyPicture));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return true;
             }
-            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(ShabDontRevokeWithOutR18), value.ToString());
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(RevokeBeautyPicture), value.ToString());
         }
 
-        /// <summary>
-        /// 是否启用Lolicon图库色图
-        /// </summary>
-        public static bool EnabledLoliconDataBase
+        public static List<PictureSource> EnabledBeautyPictureSource
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledLoliconDataBase));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledBeautyPictureSource));
+                if (string.IsNullOrEmpty(strValue))
+                    return new List<PictureSource>();
+                return strValue.Split(';').Select(s => (PictureSource)Enum.Parse(typeof(PictureSource), s)).ToList();
             }
-            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledLoliconDataBase), value.ToString());
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledBeautyPictureSource), string.Join(";", value));
         }
 
-        /// <summary>
-        /// 是否启用Shab图库色图
-        /// </summary>
-        public static bool EnabledShabDataBase
+        public static List<PictureSource> EnabledHPictureSource
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledShabDataBase));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledHPictureSource));
+                if (string.IsNullOrEmpty(strValue))
+                    return new List<PictureSource>();
+                return strValue.Split(';').Select(s => (PictureSource)Enum.Parse(typeof(PictureSource), s)).ToList();
             }
-            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledShabDataBase), value.ToString());
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(EnabledHPictureSource), string.Join(";", value));
         }
 
         /// <summary>
@@ -815,9 +816,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureUserCmd));
                 if (string.IsNullOrEmpty(strValue))
-                {
                     return new List<string>();
-                }
                 return strValue.Split(';');
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureUserCmd), string.Join(";", value));
@@ -832,9 +831,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureWhiteGroup));
                 if (string.IsNullOrEmpty(strValue))
-                {
                     return new List<long>();
-                }
                 return strValue.Split(';').Select(long.Parse);
             }
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureWhiteGroup), string.Join(";", value));
@@ -1369,7 +1366,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string MemberBeKickedMessage
         {
-            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(MemberBeKickedMessage)) ?? "QQ号：<成员QQ> 被 <操作者昵称> 踢了出群，群地位+1 (*^▽^*)";
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(MemberBeKickedMessage)) ?? " <成员昵称> ( <成员QQ> ) 被 <操作者昵称> 踢了出群，群地位+1 (*^▽^*)";
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameGroupMemberEvent, nameof(MemberBeKickedMessage), value);
         }
 
@@ -1385,5 +1382,12 @@ namespace GreenOnions.Utility
         /// 记张
         /// </summary>
         Count = 1,
+    }
+
+    public enum PictureSource
+    {
+        Lolicon = 0,
+        ELF = 1,
+        GreenOnions = 2,
     }
 }

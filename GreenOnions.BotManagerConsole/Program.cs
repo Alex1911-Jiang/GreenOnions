@@ -1,20 +1,16 @@
-﻿using GreenOnions.BotMain;
-using GreenOnions.Utility;
+﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using Mirai_CSharp;
-using Mirai_CSharp.Models;
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GreenOnions.BotManagerConsole
 {
-	public static class Program
+    public static class Program
 	{
 		public static async Task Main()
 		{
-			AppDomain.CurrentDomain.UnhandledException += (_,e) => ErrorHelper.WriteErrorLog(e.ExceptionObject);
+			AppDomain.CurrentDomain.UnhandledException += (_, e) => ErrorHelper.WriteErrorLog(e.ExceptionObject);
 
 			Console.WriteLine("葱葱机器人");
 
@@ -24,19 +20,10 @@ namespace GreenOnions.BotManagerConsole
 				Console.WriteLine("初次使用本机器人，请先设置config.json相关参数。");
 			}
 
-			await using MiraiHttpSession session = new MiraiHttpSession();
-			session.AddPlugin(new TempMessage());
-			session.AddPlugin(new FriendMessage());
-			session.AddPlugin(new GroupMessage());
-
-			session.GroupMemberJoinedEvt += GroupEvents.Session_GroupMemberJoinedEvt;
-			session.GroupMemberPositiveLeaveEvt += GroupEvents.Session_GroupMemberPositiveLeaveEvt;
-			session.GroupMemberKickedEvt += GroupEvents.Session_GroupMemberKickedEvt;
-
 		ILRetry:;
 			Console.WriteLine("请输入机器人QQ号:");
 			long qqId = 0;
-            if (!long.TryParse(Console.ReadLine(), out qqId))
+			if (!long.TryParse(Console.ReadLine(), out qqId))
 			{
 				Console.WriteLine("输入的QQ号不正确，请重新输入。");
 				goto ILRetry;
@@ -54,37 +41,24 @@ namespace GreenOnions.BotManagerConsole
 			Console.WriteLine("请输入mirai-api-http authKey:");
 			string authKey = Console.ReadLine();
 
-			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, authKey);
-			bool retry = false;
-			await session.ConnectAsync(options, qqId).ContinueWith(callback =>
+			await BotMain.Program.Main(qqId, ip, port, authKey, (bConnect, nickNameOrErrorMessage) =>
 			{
-				if (callback.IsFaulted)
+				if (bConnect)
 				{
-					retry = true;
-					Console.WriteLine("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数，按任意键重试。");
+					Console.WriteLine($"连接状态: 已连接到mirai-api-http, 登录昵称:{nickNameOrErrorMessage}");
+				}
+				else if (nickNameOrErrorMessage == null)  //连接失败且没有异常
+				{
+					Console.WriteLine("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数。");
+				}
+				else  //发生异常
+				{
+					if (nickNameOrErrorMessage.Length > 0)
+					{
+						Console.WriteLine("连接失败，" + nickNameOrErrorMessage);
+					}
 				}
 			});
-
-			if (retry)
-			{
-				Console.ReadKey();
-				goto ILRetry;
-			}
-
-			Cache.SetTaskAtFixedTime();
-
-			string nickname = (await session.GetFriendListAsync()).Where(m => m.Id == qqId).FirstOrDefault().Name;
-
-			Console.WriteLine($"已连接到mirai-api-http, 登录昵称:{nickname}, 输入exit或按下Ctrl+C断开连接。");
-
-			while (true)
-			{
-				if (await Console.In.ReadLineAsync() == "exit")
-				{
-					return;
-				}
-				Task.Delay(100).Wait();
-			}
 		}
-    }
+	}
 }

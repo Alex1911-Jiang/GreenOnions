@@ -1,6 +1,7 @@
 ﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using Mirai_CSharp.Models;
+using Mirai.CSharp.Models;
+using Mirai.CSharp.Models.ChatMessages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +13,7 @@ namespace GreenOnions.Repeater
     {
         private static Dictionary<long, MessageItem> MessageItems = new Dictionary<long, MessageItem>();
 
-        public static IMessageBase Repeating(IMessageBase message, long groupId, Func<Stream, ImageMessage> UploadPicture)
+        public async static Task<IChatMessage> Repeating(IChatMessage message, long groupId, Func<Stream, Task<IImageMessage>> UploadPicture)
         {
             MessageItem tempMessageItem = new MessageItem(message.GetType(), message.ToString(), null, null);
             if (MessageItems.ContainsKey(groupId))
@@ -36,7 +37,7 @@ namespace GreenOnions.Repeater
             {
                 if (BotInfo.SuccessiveRepeatEnabled)
                 {
-                    IMessageBase resultMessage = SuccessiveRepeat(groupId, message, tempMessageItem, UploadPicture);
+                    IChatMessage resultMessage = await SuccessiveRepeat(message, tempMessageItem, UploadPicture);
                     if (resultMessage != null)
                     {
                         return resultMessage;
@@ -44,7 +45,7 @@ namespace GreenOnions.Repeater
                 }
                 if (BotInfo.RandomRepeatEnabled)
                 {
-                    IMessageBase resultMessage = RandomRepeat(groupId, message, tempMessageItem, UploadPicture);
+                    IChatMessage resultMessage = await RandomRepeat(message, tempMessageItem, UploadPicture);
                     if (resultMessage != null)
                     {
                         return resultMessage;
@@ -57,29 +58,28 @@ namespace GreenOnions.Repeater
         /// <summary>
         /// 随机复读
         /// </summary>
-        /// <param name="groupId">群号</param>
         /// <param name="message">消息体</param>
         /// <param name="messageItem">消息记录</param>
         /// <param name="UploadPicture">上传图片</param>
         /// <returns></returns>
-        private static IMessageBase RandomRepeat(long groupId, IMessageBase message, MessageItem messageItem, Func<Stream, ImageMessage> UploadPicture)
+        private static async Task<IChatMessage> RandomRepeat(IChatMessage message, MessageItem messageItem, Func<Stream, Task<IImageMessage>> UploadPicture)
         {
             if (new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) <= BotInfo.RandomRepeatProbability)
             {
-                if (message is PlainMessage)
+                if (message is Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage)
                 {
                     messageItem.IsRepeated = true;
-                    return new PlainMessage(message.ToString());
+                    return new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(message.ToString());
                 }
-                else if (message is ImageMessage)
+                else if (message is IImageMessage)
                 {
                     messageItem.IsRepeated = true;
-                    ImageMessage imageMessage = message as ImageMessage;
+                    IImageMessage imageMessage = message as IImageMessage;
                     MemoryStream ms = MirrorImage(imageMessage.Url, imageMessage.ImageId);
                     if (ms == null)
-                        return new ImageMessage(imageMessage.ImageId, null, null);
+                        return new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imageMessage.ImageId, null, null);
                     else
-                        return UploadPicture(ms);
+                        return await UploadPicture(ms);
                 }
             }
             return null;
@@ -88,32 +88,31 @@ namespace GreenOnions.Repeater
         /// <summary>
         /// 连续复读
         /// </summary>
-        /// <param name="groupId">群号</param>
         /// <param name="message">消息体</param>
         /// <param name="messageItem">消息记录</param>
         /// <param name="UploadPicture">上传图片</param>
         /// <returns></returns>
-        private static IMessageBase SuccessiveRepeat(long groupId, IMessageBase message, MessageItem messageItem, Func<Stream, ImageMessage> UploadPicture)
+        private static async Task<IChatMessage> SuccessiveRepeat(IChatMessage message, MessageItem messageItem, Func<Stream, Task<IImageMessage>> UploadPicture)
         {
-            if (message is PlainMessage)
+            if (message is Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage)
             {
                 if (messageItem.RepeatedCount >= BotInfo.SuccessiveRepeatCount)
                 {
                     messageItem.IsRepeated = true;
-                    return (PlainMessage)message;
+                    return (Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage)message;
                 }
             }
-            else if (message is ImageMessage)
+            else if (message is IImageMessage)
             {
-                ImageMessage imageMessage = message as ImageMessage;
+                IImageMessage imageMessage = message as IImageMessage;
                 if (messageItem.RepeatedCount >= BotInfo.SuccessiveRepeatCount)
                 {
                     messageItem.IsRepeated = true;
                     MemoryStream ms = MirrorImage(imageMessage.Url, imageMessage.ImageId);
                     if (ms == null)
-                        return new ImageMessage(imageMessage.ImageId, null, null);
+                        return new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imageMessage.ImageId, null, null);
                     else
-                        return UploadPicture(ms);
+                        return await UploadPicture(ms);
                 }
             }
             return null;
@@ -210,11 +209,11 @@ namespace GreenOnions.Repeater
 
             public override int GetHashCode()
             {
-                if (MessageType == typeof(PlainMessage))
+                if (MessageType == typeof(Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage))  //只有文字消息和图片消息才复读
                 {
                     return StringComparer.InvariantCulture.GetHashCode(MessageValue);
                 }
-                else if (MessageType == typeof(ImageMessage))
+                else if (MessageType == typeof(Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage))  //只有文字消息和图片消息才复读
                 {
                     return StringComparer.InvariantCulture.GetHashCode(ImageId);
                 }

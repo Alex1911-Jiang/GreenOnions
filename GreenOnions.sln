@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotMain", "GreenOnions.BotMain\GreenOnions.BotMain.csproj", "{2D7B2824-CF77-474F-B46A-955FEB3A0F7A}"
 EndProject
@@ -18,6 +18,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotManagerConsole", "GreenOnions.BotManagerConsole\GreenOnions.BotManagerConsole.csproj", "{219D4C6E-2799-4780-9BD5-F42AD10857B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Repeater", "GreenOnions.Repeater\GreenOnions.Repeater.csproj", "{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mirai-CSharp.HttpApi", "..\Mirai-CSharp\Mirai-CSharp.HttpApi\Mirai-CSharp.HttpApi.csproj", "{1742E594-435A-4D17-A5DC-917C86EC5E73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mirai-CSharp", "..\Mirai-CSharp\Mirai-CSharp\Mirai-CSharp.csproj", "{F3FF05F2-A74D-4662-807F-AF2DE478352D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1742E594-435A-4D17-A5DC-917C86EC5E73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1742E594-435A-4D17-A5DC-917C86EC5E73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1742E594-435A-4D17-A5DC-917C86EC5E73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1742E594-435A-4D17-A5DC-917C86EC5E73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3FF05F2-A74D-4662-807F-AF2DE478352D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3FF05F2-A74D-4662-807F-AF2DE478352D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3FF05F2-A74D-4662-807F-AF2DE478352D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3FF05F2-A74D-4662-807F-AF2DE478352D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

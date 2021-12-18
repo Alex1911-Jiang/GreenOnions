@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GreenOnions.HPicture
 {
-    public struct ShabHPictureItem
+    public struct ELFHPictureItem
     {
         public string ID { get; private set; }
         public string Link { get; private set; }
@@ -14,7 +14,7 @@ namespace GreenOnions.HPicture
         public string Jp_Tag { get; private set; }
         public string Zh_Tags { get; private set; }
         public string Author { get; private set; }
-        public ShabHPictureItem(string id,string link, string source, string jp_tag, string zh_tags, string author)
+        public ELFHPictureItem(string id,string link, string source, string jp_tag, string zh_tags, string author)
         {
             ID = id;
             Link = link;

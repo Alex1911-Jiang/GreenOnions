@@ -1,4 +1,6 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.BotMain;
+using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,7 +15,6 @@ namespace GreenOnions.BotMainManagerWindow
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-
 
             #region -- 通用设置 --
 
@@ -82,11 +83,30 @@ namespace GreenOnions.BotMainManagerWindow
             txbTranslateToChinese.Text = BotInfo.TranslateToChineseCMD;
             txbTranslateTo.Text = BotInfo.TranslateToCMD;
 
+            foreach (long item in BotInfo.AutoTranslateGroupMemoriesQQ)
+            {
+                lstAutoTranslateGroupMemoriesQQ.Items.Add(item.ToString());
+            }
+
             #endregion -- 翻译设置 --
 
             #region -- 色图设置 --
-            chkEnabledLoliconHPicture.Checked = BotInfo.EnabledLoliconDataBase;
-            chkEnabledShabHPicture.Checked = BotInfo.EnabledShabDataBase;
+
+            foreach (var hSource in BotInfo.EnabledHPictureSource)
+            {
+                if (hSource == PictureSource.Lolicon)
+                    chkEnabledLoliconHPicture.Checked = true;
+                if (hSource == PictureSource.GreenOnions)
+                    chkEnabledGreenOnionsHPicture.Checked = true;
+            }
+            foreach (var beautySource in BotInfo.EnabledBeautyPictureSource)
+            {
+                if (beautySource == PictureSource.ELF)
+                    chkEnabledELFBeautyPicture.Checked = true;
+                if (beautySource == PictureSource.GreenOnions)
+                    chkEnabledGreenOnionsBeautyPicture.Checked = true;
+            }
+
             chkEnabledHPicture.Checked = BotInfo.HPictureEnabled;
             txbHPictureApiKey.Text = BotInfo.HPictureApiKey;
             txbHPictureCmd.Text = BotInfo.HPictureCmd;
@@ -96,15 +116,15 @@ namespace GreenOnions.BotMainManagerWindow
             txbHPictureR18.Text = BotInfo.HPictureR18Cmd;
             txbHPictureKeyword.Text = BotInfo.HPictureKeywordCmd;
             txbHPictureEnd.Text = BotInfo.HPictureEndCmd;
-            txbShabHPictureEnd.Text = BotInfo.ShabHPictureEndCmd;
+            txbBeautyPictureEnd.Text = BotInfo.BeautyPictureEndCmd;
             chkHPictureBeginNull.Checked = BotInfo.HPictureBeginCmdNull;
             chkHPictureCountNull.Checked = BotInfo.HPictureCountCmdNull;
             chkHPictureUnitNull.Checked = BotInfo.HPictureUnitCmdNull;
             chkHPictureR18Null.Checked = BotInfo.HPictureR18CmdNull;
             chkHPictureKeywordNull.Checked = BotInfo.HPictureKeywordCmdNull;
             chkHPictureEndNull.Checked = BotInfo.HPictureEndCmdNull;
-            chkShabHPictureEndNull.Checked = BotInfo.ShabHPictureEndCmdNull;
-            chkShabDontRevokeWithOutR18.Checked = BotInfo.ShabDontRevokeWithOutR18;
+            chkBeautyPictureEndNull.Checked = BotInfo.BeautyPictureEndCmdNull;
+            chkRevokeBeautyPicture.Checked = BotInfo.RevokeBeautyPicture;
             if (BotInfo.HPictureUserCmd != null)
             {
                 foreach (var item in BotInfo.HPictureUserCmd)
@@ -269,11 +289,30 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.TranslateToChineseCMD = txbTranslateToChinese.Text;
             BotInfo.TranslateToCMD = txbTranslateTo.Text;
 
+            List<long> tempAutoTranslateGroupMemoriesQQ = new List<long>();
+            foreach (ListViewItem item in lstAutoTranslateGroupMemoriesQQ.Items)
+            {
+                tempAutoTranslateGroupMemoriesQQ.Add(Convert.ToInt64(item.SubItems[0].Text));
+            }
+            BotInfo.AutoTranslateGroupMemoriesQQ = tempAutoTranslateGroupMemoriesQQ;
+
             #endregion  -- 翻译设置 --
 
             #region -- 色图设置 --
-            BotInfo.EnabledLoliconDataBase = chkEnabledLoliconHPicture.Checked;
-            BotInfo.EnabledShabDataBase = chkEnabledShabHPicture.Checked;
+
+            List<PictureSource> EnabledHPictureSource = new List<PictureSource>();
+            List<PictureSource> EnabledBeautyPictureSource = new List<PictureSource>();
+            if (chkEnabledLoliconHPicture.Checked)
+                EnabledHPictureSource.Add(PictureSource.Lolicon);
+            if (chkEnabledGreenOnionsHPicture.Checked)
+                EnabledHPictureSource.Add(PictureSource.GreenOnions);
+            if (chkEnabledELFBeautyPicture.Checked)
+                EnabledBeautyPictureSource.Add(PictureSource.ELF);
+            if (chkEnabledGreenOnionsBeautyPicture.Checked)
+                EnabledBeautyPictureSource.Add(PictureSource.GreenOnions);
+            BotInfo.EnabledHPictureSource = EnabledHPictureSource;
+            BotInfo.EnabledBeautyPictureSource = EnabledBeautyPictureSource;
+
             BotInfo.HPictureEnabled = chkEnabledHPicture.Checked;
             BotInfo.HPictureApiKey = txbHPictureApiKey.Text;
             BotInfo.HPictureBeginCmd = txbHPictureBegin.Text;
@@ -282,15 +321,15 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.HPictureR18Cmd = txbHPictureR18.Text;
             BotInfo.HPictureKeywordCmd = txbHPictureKeyword.Text;
             BotInfo.HPictureEndCmd = txbHPictureEnd.Text;
-            BotInfo.ShabHPictureEndCmd = txbShabHPictureEnd.Text;
+            BotInfo.BeautyPictureEndCmd = txbBeautyPictureEnd.Text;
             BotInfo.HPictureBeginCmdNull = chkHPictureBeginNull.Checked;
             BotInfo.HPictureCountCmdNull = chkHPictureCountNull.Checked;
             BotInfo.HPictureUnitCmdNull = chkHPictureUnitNull.Checked;
             BotInfo.HPictureR18CmdNull = chkHPictureR18Null.Checked;
             BotInfo.HPictureKeywordCmdNull = chkHPictureKeywordNull.Checked;
             BotInfo.HPictureEndCmdNull = chkHPictureEndNull.Checked;
-            BotInfo.ShabHPictureEndCmdNull = chkShabHPictureEndNull.Checked;
-            BotInfo.ShabDontRevokeWithOutR18 = chkShabDontRevokeWithOutR18.Checked;
+            BotInfo.BeautyPictureEndCmdNull = chkBeautyPictureEndNull.Checked;
+            BotInfo.RevokeBeautyPicture = chkRevokeBeautyPicture.Checked;
             List<string> tempHPictureUserCmd = new List<string>();
             foreach (ListViewItem item in lstHPictureUserCmd.Items)
             {
@@ -353,6 +392,10 @@ namespace GreenOnions.BotMainManagerWindow
 
             #endregion  -- 进/退群消息设置 --
 
+            JsonHelper.SaveConfigFile();
+
+            PlainMessageHandler.UpdateRegexs();
+
             Close();
         }
 
@@ -392,14 +435,14 @@ namespace GreenOnions.BotMainManagerWindow
             {
                 LoliconEnd = $"({LoliconEnd})?";
             }
-            ShabEnd = txbShabHPictureEnd.Text;
-            if (chkShabHPictureEndNull.Checked)
+            ShabEnd = txbBeautyPictureEnd.Text;
+            if (chkBeautyPictureEndNull.Checked)
             {
                 ShabEnd = $"({ShabEnd})?";
             }
 
             txbHPictureCmd.Text = $"^<机器人名称>{Begin}{Count}{Unit}{R18}{Keyword}{R18}{LoliconEnd}$";
-            txbShabHPictureCmd.Text = $"^<机器人名称>{Begin}{Count}{Unit}{R18}{Keyword}{R18}{ShabEnd}$";
+            txbBeautyPictureCmd.Text = $"^<机器人名称>{Begin}{Count}{Unit}{R18}{Keyword}{R18}{ShabEnd}$";
         }
 
         private void chkEnableHPicture_CheckedChanged(object sender, EventArgs e) => pnlEnabelHPicture.Enabled = chkEnabledHPicture.Checked;
@@ -450,9 +493,8 @@ namespace GreenOnions.BotMainManagerWindow
             txbHPictureR18.Text = "[Rr]-?18的?";
             txbHPictureKeyword.Text = ".+?";
             txbHPictureEnd.Text = "的?[色瑟][图圖]";
-            txbShabHPictureEnd.Text = "的?美[图圖]";
+            txbBeautyPictureEnd.Text = "的?美[图圖]";
             chkEnabledLoliconHPicture.Checked = true;
-            chkEnabledShabHPicture.Checked = true;
             AddStringToCmd();
         }
 
@@ -526,5 +568,9 @@ namespace GreenOnions.BotMainManagerWindow
         #endregion -- 添加或移除ListView --
 
         private void chkDebugMode_CheckedChanged(object sender, EventArgs e) => pnlDebugMode.Enabled = chkDebugMode.Checked;
+
+        private void btnAddAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => AddItemToListView(lstAutoTranslateGroupMemoriesQQ, txbAddAutoTranslateGroupMemoryQQ.Text);
+
+        private void btnRemoveAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => RemoveItemFromListView(lstAutoTranslateGroupMemoriesQQ);
     }
 }

@@ -2,11 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +14,22 @@ namespace GreenOnions.Utility.Helper
     public static class HttpHelper
     {
         #region -- Https请求 --
-        public static string GetHttpResponseString(string url, out string jumpUrl, Dictionary<string, string> headers = null, int timeout = 60000)
+        public static HttpClient CreateHttpClient(string url, IDictionary<string, string> headers = null)
         {
-            using (Stream stream = GetHttpResponseStream(url, out jumpUrl, headers, timeout))
+            HttpClient httpClient = new HttpClient();
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+                }
+            }
+            return httpClient;
+        }
+
+        public static string GetHttpResponseString(string url, out string jumpUrl, IDictionary<string, string> headers = null)
+        {
+            using (Stream stream = GetHttpResponseStream(url, out jumpUrl, headers))
             {
                 using (StreamReader streamReader = new StreamReader(stream)) // Encoding.GetEncoding("utf-8")
                 {
@@ -27,10 +38,23 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        public static Task<string> GetHttpResponseStringAsync(string url, out string jumpUrl, Dictionary<string, string> headers = null, int timeout = 60000)
+        public async static Task<(string response, string jumpUrl)> GetHttpResponseStringAndJumpUrlAsync(string url, IDictionary<string, string> headers = null)
         {
-            Stream stream = GetHttpResponseStream(url, out jumpUrl, headers, timeout);
-            return GetStreamToStringAsync(stream);
+            Stream stream = GetHttpResponseStream(url, out string jumpUrl, headers);
+            return (await GetStreamToStringAsync(stream), jumpUrl);
+        }
+
+        public async static Task<string> GetHttpResponseStringAsync(string url, IDictionary<string, string> headers = null)
+        {
+            try
+            {
+                return await CreateHttpClient(url, headers).GetStringAsync(url);
+            }
+            catch (Exception ex)
+            {
+                ErrorHelper.WriteErrorLog(ex);
+                throw;
+            }
         }
 
         private static Task<string> GetStreamToStringAsync(Stream stream)
@@ -83,6 +107,19 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
+        public async static Task<Stream> GetHttpResponseStreamAsync(string url, IDictionary<string, string> headers = null)
+        {
+            try
+            {
+                return await CreateHttpClient(url, headers).GetStreamAsync(url);
+            }
+            catch (Exception ex)
+            {
+                ErrorHelper.WriteErrorLog(ex);
+                throw;
+            }
+        }
+
         /// <summary>
         /// post方法
         /// </summary>
@@ -91,7 +128,7 @@ namespace GreenOnions.Utility.Helper
         /// <param name="headers">头部信息的键值对</param>
         /// <param name="timeout">超时时间，默认为60000毫秒（1分钟）</param>
         /// <returns></returns>
-        public static string PostHttpResponse(string url, IDictionary<string, string> parameters, IDictionary<string, string> headers = null, int timeout = 60000)
+        public static string PostHttpResponse(string url, IDictionary<string, string> parameters, IDictionary<string, string> headers = null)
         {
             //HTTPSQ请求
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
@@ -99,7 +136,7 @@ namespace GreenOnions.Utility.Helper
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
             request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
-            request.Timeout = timeout;
+            request.Timeout = 60000;
 
             //往头部加入自定义验证信息 Authorization
             if (headers != null)
@@ -151,7 +188,7 @@ namespace GreenOnions.Utility.Helper
         /// <param name="headers">头部信息的键值对</param>
         /// <param name="timeout">超时时间，默认为60000毫秒（1分钟）</param>
         /// <returns></returns>
-        public static string PostHttpResponse(string url, object PostData, IDictionary<string, string> headers = null, int timeout = 60000)
+        public static string PostHttpResponse(string url, object PostData, IDictionary<string, string> headers = null)
         {
             //HTTPSQ请求
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
@@ -159,7 +196,7 @@ namespace GreenOnions.Utility.Helper
             request.Method = "POST";
             request.ContentType = "application/json";
             request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
-            request.Timeout = timeout;
+            request.Timeout = 60000;
 
             //往头部加入自定义验证信息 Authorization
             if (headers != null)
@@ -253,6 +290,9 @@ namespace GreenOnions.Utility.Helper
                     imageByte = DownloadImageFile(BotInfo.AccelerateUrl + url, cacheImageName);
                 else
                     imageByte = DownloadImageFile(url, cacheImageName);
+
+                MemoryStream ms = new MemoryStream(imageByte);
+                return ms;
             }
             catch (WebException ex)
             {
@@ -266,15 +306,12 @@ namespace GreenOnions.Utility.Helper
                     goto ILRetry;
                 }
                 ErrorHelper.WriteErrorLog(ex);
-                throw;
             }
             catch (Exception ex)  //下载图片失败
             {
                 ErrorHelper.WriteErrorLog(ex);
-                throw;
             }
-            MemoryStream ms = new MemoryStream(imageByte);
-            return ms;
+            return null;
         }
     }
 }

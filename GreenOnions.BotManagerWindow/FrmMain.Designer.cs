@@ -74,7 +74,7 @@ namespace GreenOnions.BotMainManagerWindow
             this.lblAuthKey.AutoSize = true;
             this.lblAuthKey.Location = new System.Drawing.Point(44, 117);
             this.lblAuthKey.Name = "lblAuthKey";
-            this.lblAuthKey.Size = new System.Drawing.Size(59, 17);
+            this.lblAuthKey.Size = new System.Drawing.Size(58, 17);
             this.lblAuthKey.TabIndex = 0;
             this.lblAuthKey.Text = "AuthKey:";
             // 
@@ -159,7 +159,7 @@ namespace GreenOnions.BotMainManagerWindow
             this.MaximizeBox = false;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "葱葱机器人主窗口";
+            this.Text = "葱葱机器人2.0主窗口";
             this.ResumeLayout(false);
             this.PerformLayout();
 

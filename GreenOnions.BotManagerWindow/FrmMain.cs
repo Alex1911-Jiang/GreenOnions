@@ -1,19 +1,13 @@
-﻿using GreenOnions.BotMain;
-using GreenOnions.Utility;
-using GreenOnions.Utility.Helper;
-using Mirai_CSharp;
-using Mirai_CSharp.Models;
+﻿using GreenOnions.Utility;
 using System;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GreenOnions.BotMainManagerWindow
 {
-	public partial class FrmMain : Form
+    public partial class FrmMain : Form
 	{
 		public FrmMain()
 		{
@@ -25,9 +19,9 @@ namespace GreenOnions.BotMainManagerWindow
 				{
 					MessageBox.Show("初次使用本机器人，请先配置相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					OpenSetting();
-				}
+                }
 
-				txbQQ.Text = BotInfo.QQId.ToString();
+                txbQQ.Text = BotInfo.QQId.ToString();
 				txbIP.Text = BotInfo.IP;
 				txbPort.Text = BotInfo.Port;
 				txbAuthKey.Text = BotInfo.AuthKey;
@@ -41,55 +35,34 @@ namespace GreenOnions.BotMainManagerWindow
 
 		public async Task Main(long qqId, string ip, int port, string authKey)
 		{
-			MiraiHttpSessionOptions options = new MiraiHttpSessionOptions(ip, port, authKey);
-			await using MiraiHttpSession session = new MiraiHttpSession();
-			session.AddPlugin(new TempMessage());
-			session.AddPlugin(new FriendMessage());
-			session.AddPlugin(new GroupMessage());
-
-            session.GroupMemberJoinedEvt += GroupEvents.Session_GroupMemberJoinedEvt;
-            session.GroupMemberPositiveLeaveEvt += GroupEvents.Session_GroupMemberPositiveLeaveEvt;
-            session.GroupMemberKickedEvt += GroupEvents.Session_GroupMemberKickedEvt;
-
-			bool stop = false;
-			await session.ConnectAsync(options, qqId).ContinueWith(callback =>
+			await BotMain.Program.Main(qqId, ip, port, authKey, (bConnect, nickNameOrErrorMessage) =>
 			{
-				if (callback.IsFaulted)
+				Invoke(new Action(() =>
 				{
-					stop = true;
-					MessageBox.Show("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				}
-			});
-
-			if (stop) return;
-
-			Cache.SetTaskAtFixedTime();
-
-			string nickname = (await session.GetFriendListAsync()).Where(m => m.Id == qqId).FirstOrDefault().Name;
-
-			Invoke(new Action(() =>
-			{
-				lblState.Text = $"连接状态: 已连接到mirai-api-http, 登录昵称:{nickname}";
-				lblState.ForeColor = Color.Black;
-				btnConnect.Text = "断开连接";
-				btnConnect.Click -= btnConnect_Click;
-				btnConnect.Click += btnDeconnect_Click;
-			}));
-
-			while (true)
-			{
-				if (await Console.In.ReadLineAsync() == "exit")
-				{
-					Invoke(new Action(() =>
+					if (bConnect)
+					{
+						lblState.Text = $"连接状态: 已连接到mirai-api-http, 登录昵称:{nickNameOrErrorMessage}";
+						lblState.ForeColor = Color.Black;
+						btnConnect.Text = "断开连接";
+						btnConnect.Click -= btnConnect_Click;
+						btnConnect.Click += btnDeconnect_Click;
+					}
+					else if (nickNameOrErrorMessage == null)  //连接失败且没有异常
+					{
+						MessageBox.Show("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					}
+					else  //发生异常
 					{
 						btnConnect.Text = "连接到mirai-api-http";
 						lblState.Text = "连接状态: 未连接到mirai-api-http";
 						lblState.ForeColor = Color.Red;
-					}));
-					return;
-				}
-				Task.Delay(100).Wait();
-			}
+                        if (nickNameOrErrorMessage.Length > 0)
+                        {
+                            MessageBox.Show("连接失败，" + nickNameOrErrorMessage, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+					}
+				}));
+            });
 		}
 
 		private void btnDeconnect_Click(object sender, EventArgs e)

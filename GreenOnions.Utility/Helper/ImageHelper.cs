@@ -27,13 +27,14 @@ namespace GreenOnions.Utility.Helper
             _imagePath = Path.Combine(Environment.CurrentDirectory, "Image");
         }
 
-        public static Stream StreamAntiShielding(this Stream ms)
+        public static MemoryStream StreamAntiShielding(this MemoryStream ms)
         {
-            Bitmap bmp = new Bitmap(Image.FromStream(ms));
+            Bitmap bmp = new Bitmap(ms);
+            ImageFormat format = bmp.RawFormat;
             bmp.AntiShielding();
             ms.Close();
             ms = new MemoryStream();
-            bmp.Save(ms, ImageFormat.Png);
+            bmp.Save(ms, format);
             return ms;
         }
 

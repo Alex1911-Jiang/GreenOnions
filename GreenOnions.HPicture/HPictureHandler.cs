@@ -1,14 +1,15 @@
 ﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using Mirai_CSharp;
-using Mirai_CSharp.Models;
+using Microsoft.Win32.SafeHandles;
+using Mirai.CSharp.Models.ChatMessages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace GreenOnions.HPicture
 {
     public static class HPictureHandler
     {
-        public static void SendHPictures(MiraiHttpSession session, string message, bool isAllowR18, string HPictureEndCmd, Func<Stream, Task<ImageMessage>> UploadPicture, Func<IMessageBase[], Task<int>> SendMessage, Action<LimitType> Record, int RevokeSecond)
+        public static void SendHPictures(string message, PictureSource pictureSource, bool isAllowR18, string PictureEndCmd, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[], bool> SendMessage, Action<LimitType> Record)
         {
             try
             {
@@ -51,14 +52,15 @@ namespace GreenOnions.HPicture
 
                     if (string.IsNullOrEmpty(strCount)) lImgCount = 1;
 
-                    if (lImgCount <= 0) return;  //犯贱呢要0张或以下色图
+                    if (lImgCount <= 0)   //犯贱呢要0张或以下色图
+                        return;
 
                     if (lImgCount > 10) lImgCount = 10;
 
                     #endregion -- 色图数量 -- 
 
                     #region -- 关键词 --
-                    string strKeyword = StringHelper.GetRegex(message, BotInfo.HPictureUnitCmd, BotInfo.HPictureKeywordCmd, HPictureEndCmd);
+                    string strKeyword = StringHelper.GetRegex(message, BotInfo.HPictureUnitCmd, BotInfo.HPictureKeywordCmd, PictureEndCmd);
 
 
                     #endregion -- 关键词 --
@@ -66,7 +68,7 @@ namespace GreenOnions.HPicture
                     if (BotInfo.HPictureSize1200)
                         size1200 = "&size1200=true";
 
-                    if (HPictureEndCmd == BotInfo.HPictureEndCmd)
+                    if (pictureSource == PictureSource.Lolicon)
                     {
                         string keyword = "";
                         if (!string.IsNullOrWhiteSpace(strKeyword))
@@ -79,23 +81,27 @@ namespace GreenOnions.HPicture
                         strHttpRequest = $@"https://api.lolicon.app/setu/?apikey={BotInfo.HPictureApiKey}&num={lImgCount}&r18={strR18}{keyword}{size1200}";
                         SendLoliconHPhicture(strHttpRequest);
                     }
-                    else if (HPictureEndCmd == BotInfo.ShabHPictureEndCmd)
+                    else if (pictureSource == PictureSource.ELF)
                     {
                         strHttpRequest = string.IsNullOrEmpty(strKeyword) ? $@"http://img.shab.fun:5000/api/img/{lImgCount},{strR18}" : $@"http://img.shab.fun:5000/api/tag/{strKeyword},{lImgCount},{strR18}";
-                        SendShabHPicture(strHttpRequest, strR18 == "1");
+                        SendShabHPicture(strHttpRequest);
+                    }
+                    else if (pictureSource == PictureSource.GreenOnions)
+                    {
+
                     }
                 }
 
-                void SendLoliconHPhicture(string strHttpRequestUrl)
+                async void SendLoliconHPhicture(string strHttpRequestUrl)
                 {
                     string resultValue = "";
                     try
                     {
-                        resultValue = HttpHelper.GetHttpResponseStringAsync(strHttpRequestUrl, out _).GetAwaiter().GetResult();
+                        resultValue = await HttpHelper.GetHttpResponseStringAsync(strHttpRequestUrl);
                     }
                     catch (Exception ex)
                     {
-                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
+                        SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, false);
                         return;
                     }
 
@@ -104,7 +110,7 @@ namespace GreenOnions.HPicture
 
                     if (jo["code"].ToString() == "404")//没找到对应词条的色图;
                     {
-                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureNoResultReply) });
+                        SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureNoResultReply) }, false);
                         return;
                     }
 
@@ -112,25 +118,12 @@ namespace GreenOnions.HPicture
 
                     if (enumImg == null)
                     {
-                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply) });
+                        SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureErrorReply) }, false);
                         return;
                     }
 
-                    //StringBuilder sbAddress = new StringBuilder();
-                    //foreach (var item in enumImg)
-                    //{
-                    //    string strAddress = @"https://www.pixiv.net/artworks/" + item.ID + $" (p{item.P})";
-                    //    sbAddress.AppendLine(strAddress);
-                    //}
-
-                    //if (string.IsNullOrEmpty(sbAddress.ToString()))  //一般不会出现这个情况
-                    //{
-                    //    SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply) });
-                    //    return;
-                    //}
-
                     string addresses = string.Join("\r\n", enumImg.Select(i => @"https://www.pixiv.net/artworks/" + i.ID + $" (p{i.P})"));
-                    SendMessage(new[] { new PlainMessage(addresses) }).GetAwaiter().GetResult();
+                    SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(addresses) }, false);
                     Record(LimitType.Frequency);
 
                     foreach (LoliconHPictureItem imgItem in enumImg)
@@ -139,30 +132,30 @@ namespace GreenOnions.HPicture
                     }
                 }
 
-                void SendShabHPicture(string strHttpRequestUrl, bool isR18)
+                async void SendShabHPicture(string strHttpRequestUrl)
                 {
                     string resultValue = "";
                     try
                     {
-                        resultValue = HttpHelper.GetHttpResponseStringAsync(strHttpRequestUrl, out _).GetAwaiter().GetResult();
+                        resultValue = await HttpHelper.GetHttpResponseStringAsync(strHttpRequestUrl);
                     }
                     catch (Exception ex)
                     {
-                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
+                        SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, false);
                         return;
                     }
 
                     JArray ja = (JArray)JsonConvert.DeserializeObject(resultValue);
                     if (ja.Count == 0)
                     {
-                        SendMessage(new[] { new PlainMessage(BotInfo.HPictureNoResultReply) });
+                        SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureNoResultReply) }, false);
                         return;
                     }
-                    IEnumerable<ShabHPictureItem> enumImg = ja.Select(i => new ShabHPictureItem(i["id"].ToString(), i["link"].ToString(), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
+                    IEnumerable<ELFHPictureItem> enumImg = ja.Select(i => new ELFHPictureItem(i["id"].ToString(), i["link"].ToString(), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
                     string addresses = string.Join("\r\n", enumImg.Select(l => l.Source));
-                    SendMessage(new[] { new PlainMessage(addresses) });
+                    SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(addresses) }, false);
                     //包含twimg.com的图墙内无法访问, 暂时不处理
-                    SendOnceHPicture(() => SendOnceShabHPicture(enumImg, isR18));
+                    SendOnceHPicture(() => SendOnceShabHPicture(enumImg));
                 }
 
                 void SendOnceHPicture(Action SendHPictureInner)
@@ -178,7 +171,7 @@ namespace GreenOnions.HPicture
                             catch (Exception ex)
                             {
                                 ErrorHelper.WriteErrorLog(ex);
-                                SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
+                                SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, false);
                             }
                         });
                     }
@@ -190,54 +183,53 @@ namespace GreenOnions.HPicture
                         }
                         catch (Exception ex)
                         {
-                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
+                            SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, false);
                         }
                     }
                 }
 
-                void SendOnceLoliconHPicture(LoliconHPictureItem item)
+                async void SendOnceLoliconHPicture(LoliconHPictureItem item)
                 {
-                    ImageMessage imageMessage = null;
+                    IImageMessage imageMessage = null;
                     string imgName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png");
                     if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                     {
-                        imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片
+                        imageMessage = await UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read));  //上传图片
                     }
                     else
                     {
-                        Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.URL, imgName);
-
-                        if (BotInfo.HPictureAntiShielding)
-                        {
-                            ms = ms.StreamAntiShielding();
-                        }
+                        MemoryStream ms = HttpHelper.DownloadImageAsMemoryStream(item.URL, imgName);
 
                         if (ms == null)
                         {
-                            SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Address))) });
+                            if (BotInfo.HPictureAntiShielding)
+                            {
+                                ms = ms.StreamAntiShielding();
+                            }
+                            ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
+
+                            SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Address))) }, false);
                             return;
                         }
-                        imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片
+                        imageMessage = await UploadPicture(ms);  //上传图片
                     }
-
-                    int messageID = SendMessage(new[] { imageMessage }).GetAwaiter().GetResult();
-                    Record(LimitType.Count);
-                    RevokeHPicture(session, messageID, RevokeSecond);
+                    SendMessage(new[] { imageMessage }, true);
+                    Record(LimitType.Count);  //记录冷却时间
                 }
 
-                void SendOnceShabHPicture(IEnumerable<ShabHPictureItem> items, bool isR18)
+                async void SendOnceShabHPicture(IEnumerable<ELFHPictureItem> items)
                 {
                     foreach (var item in items)
                     {
-                        ImageMessage imageMessage = null;
+                        IImageMessage imageMessage = null;
                         string imgName = Path.Combine(ImageHelper.ImagePath,$"Shab_{item.ID}.png");
                         if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                         {
-                            imageMessage = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).GetAwaiter().GetResult();  //上传图片
+                            imageMessage = await UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read));  //上传图片
                         }
                         else
                         {
-                            Stream ms = HttpHelper.DownloadImageAsMemoryStream(item.Link, imgName);
+                            MemoryStream ms = HttpHelper.DownloadImageAsMemoryStream(item.Link, imgName);
 
                             if (BotInfo.HPictureAntiShielding)
                             {
@@ -246,33 +238,20 @@ namespace GreenOnions.HPicture
 
                             if (ms == null)
                             {
-                                SendMessage(new[] { new PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Link))) });
+                                SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Link))) }, false);
                                 return;
                             }
-                            imageMessage = UploadPicture(ms).GetAwaiter().GetResult();  //上传图片
+                            imageMessage = await UploadPicture(ms);  //上传图片
                         }
 
-                        int messageID = SendMessage(new IMessageBase[] { imageMessage, new PlainMessage($"地址:{item.Source}\r\n日文标签:{item.Jp_Tag}\r\n中文标签:{item.Zh_Tags}\r\n作者:{item.Author}") }).GetAwaiter().GetResult();
-                        Record(LimitType.Count);
-                        if (!BotInfo.ShabDontRevokeWithOutR18 || isR18)
-                        {
-                            RevokeHPicture(session, messageID, RevokeSecond);
-                        }
-                    }
-                }
-
-                void RevokeHPicture(MiraiHttpSession message, int messageId, int delay)
-                {
-                    if (delay > 0)
-                    {
-                        Task.Delay(delay * 1000).Wait();
-                        message.RevokeMessageAsync(messageId);
+                        SendMessage(new IChatMessage[] { imageMessage, new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage($"地址:{item.Source}\r\n日文标签:{item.Jp_Tag}\r\n中文标签:{item.Zh_Tags}\r\n作者:{item.Author}") }, true);
+                        Record(LimitType.Count);  //记录冷却时间
                     }
                 }
             }
             catch (Exception ex)
             {
-                SendMessage(new[] { new PlainMessage(BotInfo.HPictureErrorReply + ex.Message) });
+                SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, false);
             }
         }
     }
