@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GreenOnions.Utility.Helper
 {
@@ -54,7 +50,13 @@ namespace GreenOnions.Utility.Helper
 
         private static void WriteLogText(string Text)
         {
-            File.AppendAllTextAsync(_logName, Text + $"    异常发生时间:{DateTime.Now}\r\n\r\n");
+            try
+            {
+                File.AppendAllTextAsync(_logName, Text + $"    异常发生时间:{DateTime.Now}\r\n\r\n");
+            }
+            catch
+            {
+            }
         }
     }
 }

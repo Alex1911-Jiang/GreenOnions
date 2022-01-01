@@ -246,7 +246,7 @@ namespace GreenOnions.PictureSearcher
                                                 if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
                                                         UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith( async uploaded => SendMessage(new[] { await uploaded }));
                                                 else
-                                                    UploadPicture(HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.cat/{sauceNaoItem.pixiv_id}.png", imgName)).ContinueWith(async uploaded => SendMessage(new[] {await uploaded }));
+                                                    UploadPicture(HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.re/{sauceNaoItem.pixiv_id}.png", imgName)).ContinueWith(async uploaded => SendMessage(new[] {await uploaded }));
                                             }
                                             catch (Exception ex)
                                             {
@@ -263,7 +263,7 @@ namespace GreenOnions.PictureSearcher
                                         if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
                                                 UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
                                         else
-                                            UploadPicture(HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.cat/{sauceNaoItem.pixiv_id}-{p + 1}.png", imgName)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
+                                            UploadPicture(HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.re/{sauceNaoItem.pixiv_id}-{p + 1}.png", imgName)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
                                     }
                                     catch (Exception ex)
                                     {

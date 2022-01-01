@@ -79,7 +79,10 @@ namespace GreenOnions.Repeater
                     if (ms == null)
                         return new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imageMessage.ImageId, null, null);
                     else
+                    {
+                        ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
                         return await UploadPicture(ms);
+                    }
                 }
             }
             return null;
@@ -112,7 +115,10 @@ namespace GreenOnions.Repeater
                     if (ms == null)
                         return new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imageMessage.ImageId, null, null);
                     else
+                    {
+                        ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
                         return await UploadPicture(ms);
+                    }
                 }
             }
             return null;

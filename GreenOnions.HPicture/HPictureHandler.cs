@@ -1,15 +1,12 @@
 ﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using Microsoft.Win32.SafeHandles;
 using Mirai.CSharp.Models.ChatMessages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -24,7 +21,7 @@ namespace GreenOnions.HPicture
                 string strHttpRequest;
                 if (BotInfo.HPictureUserCmd.Contains(message))
                 {
-                    strHttpRequest = $@"https://api.lolicon.app/setu/?{ (BotInfo.HPictureSize1200 ? "size1200=true" : "") }";
+                    strHttpRequest = $@"https://api.lolicon.app/setu/?{ (BotInfo.HPictureSize1200 ? "size1200=true" : "") }&proxy=i.pixiv.re";
                     SendLoliconHPhicture(strHttpRequest);
                 }
                 else
@@ -78,7 +75,7 @@ namespace GreenOnions.HPicture
                             keyword = "&keyword=" + strKeyword;
                         }
 
-                        strHttpRequest = $@"https://api.lolicon.app/setu/?apikey={BotInfo.HPictureApiKey}&num={lImgCount}&r18={strR18}{keyword}{size1200}";
+                        strHttpRequest = $@"https://api.lolicon.app/setu/?apikey={BotInfo.HPictureApiKey}&num={lImgCount}&proxy=i.pixiv.re&r18={strR18}{keyword}{size1200}";
                         SendLoliconHPhicture(strHttpRequest);
                     }
                     else if (pictureSource == PictureSource.ELF)
@@ -114,7 +111,7 @@ namespace GreenOnions.HPicture
                         return;
                     }
 
-                    IEnumerable<LoliconHPictureItem> enumImg = jt.Select(i => new LoliconHPictureItem(i["p"].ToString(), i["pid"].ToString(), i["url"].ToString(), @$"https://www.pixiv.net/artworks/{i["pid"]}(p{i["p"]}"));
+                    IEnumerable<LoliconHPictureItem> enumImg = jt.Select(i => new LoliconHPictureItem(i["p"].ToString(), i["pid"].ToString(), i["url"].ToString(), @$"https://www.pixiv.net/artworks/{i["pid"]}(p{i["p"]})"));
 
                     if (enumImg == null)
                     {
@@ -200,14 +197,16 @@ namespace GreenOnions.HPicture
                     {
                         MemoryStream ms = HttpHelper.DownloadImageAsMemoryStream(item.URL, imgName);
 
-                        if (ms == null)
+                        if (ms != null)
                         {
                             if (BotInfo.HPictureAntiShielding)
                             {
                                 ms = ms.StreamAntiShielding();
                             }
                             ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
-
+                        }
+                        else
+                        {
                             SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Address))) }, false);
                             return;
                         }
@@ -241,6 +240,7 @@ namespace GreenOnions.HPicture
                                 SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Link))) }, false);
                                 return;
                             }
+                            ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
                             imageMessage = await UploadPicture(ms);  //上传图片
                         }
 
