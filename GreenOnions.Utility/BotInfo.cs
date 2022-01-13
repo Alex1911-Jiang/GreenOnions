@@ -13,6 +13,7 @@ namespace GreenOnions.Utility
         public const string JsonNodeNameTranslate = "Translate";
         public const string JsonNodeNameRepeater = "Repeater";
         public const string JsonNodeNameGroupMemberEvent = "GroupMemberEvent";
+        public const string JsonNodeNameForgeMessage = "ForgeMessage";
 
         #region -- 公共属性 --
         [PropertyChineseName("机器人QQ号")]
@@ -1371,6 +1372,138 @@ namespace GreenOnions.Utility
         }
 
         #endregion  -- 进/退群消息属性 --
+
+        #region -- 伪造消息 --
+        /// <summary>
+        /// 是否启用伪造消息功能
+        /// </summary>
+        public static bool EnabledForgeMessage
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(EnabledForgeMessage));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(EnabledForgeMessage), value.ToString());
+        }
+
+        /// <summary>
+        /// 伪造消息前缀
+        /// </summary>
+        public static string ForgeMessageCmdBegin
+        {
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageCmdBegin)) ?? "<机器人名称>伪造(消息|聊天[记記][录錄])";
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageCmdBegin), value);
+        }
+
+        /// <summary>
+        /// 伪造消息分行符(分行符前后的内容会分成两条消息)
+        /// </summary>
+        public static string ForgeMessageCmdNewLine
+        {
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageCmdNewLine)) ?? @"\r\n";
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageCmdNewLine), value);
+        }
+
+        /// <summary>
+        /// 是否在伪造消息末端追加消息
+        /// </summary>
+        public static bool ForgeMessageAppendBotMessageEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageAppendBotMessageEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageAppendBotMessageEnabled), value.ToString());
+        }
+        
+        /// <summary>
+        /// 是否只允许机器人管理员使用伪造消息功能
+        /// </summary>
+        public static bool ForgeMessageAdminOnly
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageAdminOnly));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageAdminOnly), value.ToString());
+        }
+        
+        /// <summary>
+        /// 机器人管理员使用伪造消息功能时是否不在末端追加消息
+        /// </summary>
+        public static bool ForgeMessageAdminDontAppend
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageAdminDontAppend));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageAdminDontAppend), value.ToString());
+        }
+
+        /// <summary>
+        /// 追加消息内容
+        /// </summary>
+        public static string ForgeMessageAppendMessage
+        {
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageAppendMessage)) ?? "此消息为<机器人名称>伪造，仅作娱乐，请勿用于非法用途。";
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(ForgeMessageAppendMessage), value);
+        }
+
+        /// <summary>
+        /// 是否拒绝伪造机器人管理员的消息
+        /// </summary>
+        public static bool RefuseForgeAdmin
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(RefuseForgeAdmin));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(RefuseForgeAdmin), value.ToString());
+        }
+
+        /// <summary>
+        /// 试图伪造机器人管理员消息时的回复语
+        /// </summary>
+        public static string RefuseForgeAdminReply
+        {
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(RefuseForgeAdminReply)) ?? "你不能让我伪造我主人的消息。";
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(RefuseForgeAdminReply), value);
+        }
+
+        /// <summary>
+        /// 是否拒绝伪造机器人的消息(如果由机器人管理员发起则不会校验此项目)
+        /// </summary>
+        public static bool RefuseForgeBot
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(RefuseForgeBot));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(RefuseForgeBot), value.ToString());
+        }
+
+        /// <summary>
+        /// 试图伪造机器人消息时的回复语
+        /// </summary>
+        public static string RefuseForgeBotReply
+        {
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(RefuseForgeBotReply)) ?? "你不会以为我会伪造自己的消息吧，不会吧不会吧？";
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameForgeMessage, nameof(RefuseForgeBotReply), value);
+        }
+
+        #endregion -- 伪造消息
     }
     public enum LimitType
     {

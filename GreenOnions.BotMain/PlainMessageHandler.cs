@@ -2,6 +2,7 @@
 using GreenOnions.Translate;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
+using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
 using Mirai.CSharp.Models.ChatMessages;
 using System;
@@ -22,6 +23,7 @@ namespace GreenOnions.BotMain
         private static Regex regexTranslateTo;
         private static Regex regexHPicture;
         private static Regex regexBeautyPicture;
+        private static Regex regexForgeMessage;
         private static Regex regexSelectPhone;
 
         static PlainMessageHandler() => UpdateRegexs();
@@ -34,12 +36,88 @@ namespace GreenOnions.BotMain
             regexTranslateTo = new Regex(BotInfo.TranslateToCMD.ReplaceGreenOnionsTags());
             regexHPicture = new Regex(BotInfo.HPictureCmd.ReplaceGreenOnionsTags());
             regexBeautyPicture = new Regex(BotInfo.BeautyPictureCmd.ReplaceGreenOnionsTags());
+            regexForgeMessage = new Regex(BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsTags());
             regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
         }
 
         public static async Task HandleMesage(IChatMessage[] Chain, IBaseInfo sender, Action<IChatMessage[], bool> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture)
         {
             string firstMessage = Chain[1].ToString();
+
+            #region -- 伪造消息 --
+            if (BotInfo.EnabledForgeMessage && regexForgeMessage.IsMatch(firstMessage))
+            {
+                if (!BotInfo.ForgeMessageAdminOnly || BotInfo.AdminQQ.Contains(sender.Id))
+                {
+                    if (Chain.Length > 3 && (Chain[2] is MyAtMessage))
+                    {
+                        MyAtMessage atMessage = Chain[2] as MyAtMessage;
+                        if (!BotInfo.AdminQQ.Contains(sender.Id) && BotInfo.AdminQQ.Contains(atMessage.Target))
+                        {
+                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.RefuseForgeAdminReply.ReplaceGreenOnionsTags()) }, false);
+                            return;
+                        }
+                        if (!BotInfo.AdminQQ.Contains(sender.Id) && atMessage.Target == BotInfo.QQId)
+                        {
+                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.RefuseForgeBotReply.ReplaceGreenOnionsTags()) }, false);
+                            return;
+                        }
+
+                        List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode> forwardMessageNodes = new List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode>();
+                        for (int i = 3; i < Chain.Length; i++)
+                        {
+                            if (Chain[i] is IChatMessage)
+                            {
+                                string[] plainMsgs = Chain[i].ToString().Split(BotInfo.ForgeMessageCmdNewLine);
+                                for (int j = 0; j < plainMsgs.Length; j++)
+                                {
+                                    forwardMessageNodes.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
+                                    {
+                                        Id = forwardMessageNodes.Count,
+                                        Name = atMessage.Name,
+                                        QQNumber = atMessage.Target,
+                                        Time = DateTime.Now,
+                                        Chain = new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(plainMsgs[j]) },
+                                    });
+                                }
+                            }
+                            else if (Chain[i] is IImageMessage)
+                            {
+                                forwardMessageNodes.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
+                                {
+                                    Id = forwardMessageNodes.Count,
+                                    Name = atMessage.Name,
+                                    QQNumber = atMessage.Target,
+                                    Time = DateTime.Now,
+                                    Chain = new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage((Chain[i] as IImageMessage).ImageId, null, null) },
+                                });
+                            }
+                            else
+                                continue;
+                        }
+
+                        if (BotInfo.ForgeMessageAppendBotMessageEnabled)
+                        {
+                            if (!BotInfo.ForgeMessageAdminDontAppend || !BotInfo.AdminQQ.Contains(sender.Id))
+                            {
+                                forwardMessageNodes.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
+                                {
+                                    Id = forwardMessageNodes.Count,
+                                    Name = BotInfo.BotName,
+                                    QQNumber = BotInfo.QQId,
+                                    Time = DateTime.Now,
+                                    Chain = new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.ForgeMessageAppendMessage.ReplaceGreenOnionsTags()) },
+                                });
+                            }
+                        }
+
+                        Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage forwardMessage = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage(forwardMessageNodes.ToArray());
+                        SendMessage?.Invoke(new[] { forwardMessage }, false);
+                        return;
+                    }
+                }
+            }
+            #endregion -- 伪造消息 --
 
             #region -- 连续搜图 --
             if (regexSearchOn.IsMatch(firstMessage))

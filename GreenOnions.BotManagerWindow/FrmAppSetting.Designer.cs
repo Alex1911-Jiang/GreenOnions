@@ -127,7 +127,7 @@
             this.chkTranslateEnabled = new System.Windows.Forms.CheckBox();
             this.tabHPicture = new System.Windows.Forms.TabPage();
             this.pnlEnabelHPicture = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblBeautyPictureSource = new System.Windows.Forms.Label();
             this.lblHPictureSource = new System.Windows.Forms.Label();
             this.chkEnabledGreenOnionsBeautyPicture = new System.Windows.Forms.CheckBox();
             this.chkEnabledGreenOnionsHPicture = new System.Windows.Forms.CheckBox();
@@ -184,7 +184,7 @@
             this.lblAddToWhiteGroupInformation = new System.Windows.Forms.Label();
             this.lblApiKey = new System.Windows.Forms.Label();
             this.lblHPictureBegin = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblBeautyPictureCmd = new System.Windows.Forms.Label();
             this.lblLoliconHPictureCmd = new System.Windows.Forms.Label();
             this.btnRemoveWhiteGroup = new System.Windows.Forms.Button();
             this.btnAddToWhiteGroup = new System.Windows.Forms.Button();
@@ -207,8 +207,8 @@
             this.lblLimitType = new System.Windows.Forms.Label();
             this.lblUserCmd = new System.Windows.Forms.Label();
             this.chkHPictureBeginNull = new System.Windows.Forms.CheckBox();
-            this.txbBeautyPictureCmd = new System.Windows.Forms.RichTextBox();
-            this.txbHPictureCmd = new System.Windows.Forms.RichTextBox();
+            this.txbBeautyPictureCmd = new System.Windows.Forms.TextBox();
+            this.txbHPictureCmd = new System.Windows.Forms.TextBox();
             this.txbHPictureApiKey = new System.Windows.Forms.TextBox();
             this.txbBeautyPictureEnd = new System.Windows.Forms.TextBox();
             this.txbHPictureEnd = new System.Windows.Forms.TextBox();
@@ -241,6 +241,26 @@
             this.chkSendMemberBeKickedMessage = new System.Windows.Forms.CheckBox();
             this.chkSendMemberPositiveLeaveMessage = new System.Windows.Forms.CheckBox();
             this.chkSendMemberJoinedMessage = new System.Windows.Forms.CheckBox();
+            this.tabForgeMessage = new System.Windows.Forms.TabPage();
+            this.pnlForgeMessage = new System.Windows.Forms.Panel();
+            this.lblForgeMessageCmd = new System.Windows.Forms.Label();
+            this.txbForgeMessageCmd = new System.Windows.Forms.TextBox();
+            this.chkForgeMessageAdminDontAppend = new System.Windows.Forms.CheckBox();
+            this.chkForgeMessageAdminOnly = new System.Windows.Forms.CheckBox();
+            this.chkRefuseForgeBot = new System.Windows.Forms.CheckBox();
+            this.chkRefuseForgeAdmin = new System.Windows.Forms.CheckBox();
+            this.lblRefuseForgeBotReply = new System.Windows.Forms.Label();
+            this.chkForgeMessageAppendBotMessageEnabled = new System.Windows.Forms.CheckBox();
+            this.lblRefuseForgeAdminReply = new System.Windows.Forms.Label();
+            this.txbRefuseForgeBotReply = new System.Windows.Forms.TextBox();
+            this.lblForgeMessageAppendSelfMessage = new System.Windows.Forms.Label();
+            this.txbRefuseForgeAdminReply = new System.Windows.Forms.TextBox();
+            this.txbForgeMessageAppendMessage = new System.Windows.Forms.TextBox();
+            this.lblForgeMessageCmdNewLine = new System.Windows.Forms.Label();
+            this.txbForgeMessageCmdNewLine = new System.Windows.Forms.TextBox();
+            this.lblForgeMessageCmdBegin = new System.Windows.Forms.Label();
+            this.txbForgeMessageCmdBegin = new System.Windows.Forms.TextBox();
+            this.chkEnabledForgeMessage = new System.Windows.Forms.CheckBox();
             this.tabAbout = new System.Windows.Forms.TabPage();
             this.txbContributorName = new System.Windows.Forms.TextBox();
             this.txbContributorQQ = new System.Windows.Forms.TextBox();
@@ -263,6 +283,8 @@
             this.pnlEnabelHPicture.SuspendLayout();
             this.tabRepeater.SuspendLayout();
             this.tabGroupMemberEvents.SuspendLayout();
+            this.tabForgeMessage.SuspendLayout();
+            this.pnlForgeMessage.SuspendLayout();
             this.tabAbout.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -329,6 +351,7 @@
             this.tabControl1.Controls.Add(this.tabHPicture);
             this.tabControl1.Controls.Add(this.tabRepeater);
             this.tabControl1.Controls.Add(this.tabGroupMemberEvents);
+            this.tabControl1.Controls.Add(this.tabForgeMessage);
             this.tabControl1.Controls.Add(this.tabAbout);
             this.tabControl1.Location = new System.Drawing.Point(14, 8);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
@@ -1277,7 +1300,7 @@
             // pnlEnabelHPicture
             // 
             this.pnlEnabelHPicture.AutoSize = true;
-            this.pnlEnabelHPicture.Controls.Add(this.label1);
+            this.pnlEnabelHPicture.Controls.Add(this.lblBeautyPictureSource);
             this.pnlEnabelHPicture.Controls.Add(this.lblHPictureSource);
             this.pnlEnabelHPicture.Controls.Add(this.chkEnabledGreenOnionsBeautyPicture);
             this.pnlEnabelHPicture.Controls.Add(this.chkEnabledGreenOnionsHPicture);
@@ -1334,7 +1357,7 @@
             this.pnlEnabelHPicture.Controls.Add(this.lblAddToWhiteGroupInformation);
             this.pnlEnabelHPicture.Controls.Add(this.lblApiKey);
             this.pnlEnabelHPicture.Controls.Add(this.lblHPictureBegin);
-            this.pnlEnabelHPicture.Controls.Add(this.label2);
+            this.pnlEnabelHPicture.Controls.Add(this.lblBeautyPictureCmd);
             this.pnlEnabelHPicture.Controls.Add(this.lblLoliconHPictureCmd);
             this.pnlEnabelHPicture.Controls.Add(this.btnRemoveWhiteGroup);
             this.pnlEnabelHPicture.Controls.Add(this.btnAddToWhiteGroup);
@@ -1373,15 +1396,15 @@
             this.pnlEnabelHPicture.Size = new System.Drawing.Size(629, 1198);
             this.pnlEnabelHPicture.TabIndex = 8;
             // 
-            // label1
+            // lblBeautyPictureSource
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 493);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 17);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "美图图库:";
+            this.lblBeautyPictureSource.AutoSize = true;
+            this.lblBeautyPictureSource.Location = new System.Drawing.Point(8, 493);
+            this.lblBeautyPictureSource.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblBeautyPictureSource.Name = "lblBeautyPictureSource";
+            this.lblBeautyPictureSource.Size = new System.Drawing.Size(59, 17);
+            this.lblBeautyPictureSource.TabIndex = 15;
+            this.lblBeautyPictureSource.Text = "美图图库:";
             // 
             // lblHPictureSource
             // 
@@ -1402,6 +1425,7 @@
             this.chkEnabledGreenOnionsBeautyPicture.TabIndex = 14;
             this.chkEnabledGreenOnionsBeautyPicture.Text = "启用葱葱图库";
             this.chkEnabledGreenOnionsBeautyPicture.UseVisualStyleBackColor = true;
+            this.chkEnabledGreenOnionsBeautyPicture.Visible = false;
             // 
             // chkEnabledGreenOnionsHPicture
             // 
@@ -1412,6 +1436,7 @@
             this.chkEnabledGreenOnionsHPicture.TabIndex = 14;
             this.chkEnabledGreenOnionsHPicture.Text = "启用葱葱图库";
             this.chkEnabledGreenOnionsHPicture.UseVisualStyleBackColor = true;
+            this.chkEnabledGreenOnionsHPicture.Visible = false;
             // 
             // chkEnabledELFBeautyPicture
             // 
@@ -1963,15 +1988,15 @@
             this.lblHPictureBegin.TabIndex = 0;
             this.lblHPictureBegin.Text = "色图命令前缀:";
             // 
-            // label2
+            // lblBeautyPictureCmd
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 402);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 17);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "美图命令:";
+            this.lblBeautyPictureCmd.AutoSize = true;
+            this.lblBeautyPictureCmd.Location = new System.Drawing.Point(8, 402);
+            this.lblBeautyPictureCmd.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblBeautyPictureCmd.Name = "lblBeautyPictureCmd";
+            this.lblBeautyPictureCmd.Size = new System.Drawing.Size(59, 17);
+            this.lblBeautyPictureCmd.TabIndex = 0;
+            this.lblBeautyPictureCmd.Text = "美图命令:";
             // 
             // lblLoliconHPictureCmd
             // 
@@ -2220,22 +2245,22 @@
             this.txbBeautyPictureCmd.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txbBeautyPictureCmd.Location = new System.Drawing.Point(137, 360);
             this.txbBeautyPictureCmd.Margin = new System.Windows.Forms.Padding(4);
+            this.txbBeautyPictureCmd.Multiline = true;
             this.txbBeautyPictureCmd.Name = "txbBeautyPictureCmd";
             this.txbBeautyPictureCmd.ReadOnly = true;
             this.txbBeautyPictureCmd.Size = new System.Drawing.Size(366, 98);
             this.txbBeautyPictureCmd.TabIndex = 1;
-            this.txbBeautyPictureCmd.Text = "";
             // 
             // txbHPictureCmd
             // 
             this.txbHPictureCmd.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txbHPictureCmd.Location = new System.Drawing.Point(137, 255);
             this.txbHPictureCmd.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureCmd.Multiline = true;
             this.txbHPictureCmd.Name = "txbHPictureCmd";
             this.txbHPictureCmd.ReadOnly = true;
             this.txbHPictureCmd.Size = new System.Drawing.Size(366, 98);
             this.txbHPictureCmd.TabIndex = 1;
-            this.txbHPictureCmd.Text = "";
             // 
             // txbHPictureApiKey
             // 
@@ -2551,6 +2576,210 @@
             this.chkSendMemberJoinedMessage.Text = "发送新人入群消息";
             this.chkSendMemberJoinedMessage.UseVisualStyleBackColor = true;
             // 
+            // tabForgeMessage
+            // 
+            this.tabForgeMessage.Controls.Add(this.pnlForgeMessage);
+            this.tabForgeMessage.Controls.Add(this.chkEnabledForgeMessage);
+            this.tabForgeMessage.Location = new System.Drawing.Point(4, 26);
+            this.tabForgeMessage.Name = "tabForgeMessage";
+            this.tabForgeMessage.Size = new System.Drawing.Size(652, 687);
+            this.tabForgeMessage.TabIndex = 7;
+            this.tabForgeMessage.Text = "伪造消息";
+            this.tabForgeMessage.UseVisualStyleBackColor = true;
+            // 
+            // pnlForgeMessage
+            // 
+            this.pnlForgeMessage.Controls.Add(this.lblForgeMessageCmd);
+            this.pnlForgeMessage.Controls.Add(this.txbForgeMessageCmd);
+            this.pnlForgeMessage.Controls.Add(this.chkForgeMessageAdminDontAppend);
+            this.pnlForgeMessage.Controls.Add(this.chkForgeMessageAdminOnly);
+            this.pnlForgeMessage.Controls.Add(this.chkRefuseForgeBot);
+            this.pnlForgeMessage.Controls.Add(this.chkRefuseForgeAdmin);
+            this.pnlForgeMessage.Controls.Add(this.lblRefuseForgeBotReply);
+            this.pnlForgeMessage.Controls.Add(this.chkForgeMessageAppendBotMessageEnabled);
+            this.pnlForgeMessage.Controls.Add(this.lblRefuseForgeAdminReply);
+            this.pnlForgeMessage.Controls.Add(this.txbRefuseForgeBotReply);
+            this.pnlForgeMessage.Controls.Add(this.lblForgeMessageAppendSelfMessage);
+            this.pnlForgeMessage.Controls.Add(this.txbRefuseForgeAdminReply);
+            this.pnlForgeMessage.Controls.Add(this.txbForgeMessageAppendMessage);
+            this.pnlForgeMessage.Controls.Add(this.lblForgeMessageCmdNewLine);
+            this.pnlForgeMessage.Controls.Add(this.txbForgeMessageCmdNewLine);
+            this.pnlForgeMessage.Controls.Add(this.lblForgeMessageCmdBegin);
+            this.pnlForgeMessage.Controls.Add(this.txbForgeMessageCmdBegin);
+            this.pnlForgeMessage.Location = new System.Drawing.Point(3, 40);
+            this.pnlForgeMessage.Name = "pnlForgeMessage";
+            this.pnlForgeMessage.Size = new System.Drawing.Size(646, 644);
+            this.pnlForgeMessage.TabIndex = 11;
+            // 
+            // lblForgeMessageCmd
+            // 
+            this.lblForgeMessageCmd.AutoSize = true;
+            this.lblForgeMessageCmd.Location = new System.Drawing.Point(26, 248);
+            this.lblForgeMessageCmd.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblForgeMessageCmd.Name = "lblForgeMessageCmd";
+            this.lblForgeMessageCmd.Size = new System.Drawing.Size(59, 17);
+            this.lblForgeMessageCmd.TabIndex = 13;
+            this.lblForgeMessageCmd.Text = "完整命令:";
+            // 
+            // txbForgeMessageCmd
+            // 
+            this.txbForgeMessageCmd.BackColor = System.Drawing.SystemColors.Control;
+            this.txbForgeMessageCmd.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txbForgeMessageCmd.Location = new System.Drawing.Point(93, 246);
+            this.txbForgeMessageCmd.Margin = new System.Windows.Forms.Padding(4);
+            this.txbForgeMessageCmd.Name = "txbForgeMessageCmd";
+            this.txbForgeMessageCmd.ReadOnly = true;
+            this.txbForgeMessageCmd.Size = new System.Drawing.Size(517, 23);
+            this.txbForgeMessageCmd.TabIndex = 14;
+            // 
+            // chkForgeMessageAdminDontAppend
+            // 
+            this.chkForgeMessageAdminDontAppend.AutoSize = true;
+            this.chkForgeMessageAdminDontAppend.Location = new System.Drawing.Point(360, 69);
+            this.chkForgeMessageAdminDontAppend.Margin = new System.Windows.Forms.Padding(4);
+            this.chkForgeMessageAdminDontAppend.Name = "chkForgeMessageAdminDontAppend";
+            this.chkForgeMessageAdminDontAppend.Size = new System.Drawing.Size(195, 21);
+            this.chkForgeMessageAdminDontAppend.TabIndex = 12;
+            this.chkForgeMessageAdminDontAppend.Text = "机器人管理员使用时不追加消息";
+            this.chkForgeMessageAdminDontAppend.UseVisualStyleBackColor = true;
+            // 
+            // chkForgeMessageAdminOnly
+            // 
+            this.chkForgeMessageAdminOnly.AutoSize = true;
+            this.chkForgeMessageAdminOnly.Location = new System.Drawing.Point(205, 69);
+            this.chkForgeMessageAdminOnly.Margin = new System.Windows.Forms.Padding(4);
+            this.chkForgeMessageAdminOnly.Name = "chkForgeMessageAdminOnly";
+            this.chkForgeMessageAdminOnly.Size = new System.Drawing.Size(147, 21);
+            this.chkForgeMessageAdminOnly.TabIndex = 12;
+            this.chkForgeMessageAdminOnly.Text = "仅限机器人管理员可用";
+            this.chkForgeMessageAdminOnly.UseVisualStyleBackColor = true;
+            // 
+            // chkRefuseForgeBot
+            // 
+            this.chkRefuseForgeBot.AutoSize = true;
+            this.chkRefuseForgeBot.Location = new System.Drawing.Point(26, 188);
+            this.chkRefuseForgeBot.Margin = new System.Windows.Forms.Padding(4);
+            this.chkRefuseForgeBot.Name = "chkRefuseForgeBot";
+            this.chkRefuseForgeBot.Size = new System.Drawing.Size(147, 21);
+            this.chkRefuseForgeBot.TabIndex = 12;
+            this.chkRefuseForgeBot.Text = "拒绝伪造机器人的消息";
+            this.chkRefuseForgeBot.UseVisualStyleBackColor = true;
+            // 
+            // chkRefuseForgeAdmin
+            // 
+            this.chkRefuseForgeAdmin.AutoSize = true;
+            this.chkRefuseForgeAdmin.Location = new System.Drawing.Point(26, 127);
+            this.chkRefuseForgeAdmin.Margin = new System.Windows.Forms.Padding(4);
+            this.chkRefuseForgeAdmin.Name = "chkRefuseForgeAdmin";
+            this.chkRefuseForgeAdmin.Size = new System.Drawing.Size(183, 21);
+            this.chkRefuseForgeAdmin.TabIndex = 12;
+            this.chkRefuseForgeAdmin.Text = "拒绝伪造机器人管理员的消息";
+            this.chkRefuseForgeAdmin.UseVisualStyleBackColor = true;
+            // 
+            // lblRefuseForgeBotReply
+            // 
+            this.lblRefuseForgeBotReply.AutoSize = true;
+            this.lblRefuseForgeBotReply.Location = new System.Drawing.Point(26, 219);
+            this.lblRefuseForgeBotReply.Name = "lblRefuseForgeBotReply";
+            this.lblRefuseForgeBotReply.Size = new System.Drawing.Size(179, 17);
+            this.lblRefuseForgeBotReply.TabIndex = 11;
+            this.lblRefuseForgeBotReply.Text = "试图伪造机器人消息时的回复语:";
+            // 
+            // chkForgeMessageAppendBotMessageEnabled
+            // 
+            this.chkForgeMessageAppendBotMessageEnabled.AutoSize = true;
+            this.chkForgeMessageAppendBotMessageEnabled.Location = new System.Drawing.Point(26, 69);
+            this.chkForgeMessageAppendBotMessageEnabled.Margin = new System.Windows.Forms.Padding(4);
+            this.chkForgeMessageAppendBotMessageEnabled.Name = "chkForgeMessageAppendBotMessageEnabled";
+            this.chkForgeMessageAppendBotMessageEnabled.Size = new System.Drawing.Size(171, 21);
+            this.chkForgeMessageAppendBotMessageEnabled.TabIndex = 12;
+            this.chkForgeMessageAppendBotMessageEnabled.Text = "在消息末尾追加机器人消息";
+            this.chkForgeMessageAppendBotMessageEnabled.UseVisualStyleBackColor = true;
+            // 
+            // lblRefuseForgeAdminReply
+            // 
+            this.lblRefuseForgeAdminReply.AutoSize = true;
+            this.lblRefuseForgeAdminReply.Location = new System.Drawing.Point(26, 158);
+            this.lblRefuseForgeAdminReply.Name = "lblRefuseForgeAdminReply";
+            this.lblRefuseForgeAdminReply.Size = new System.Drawing.Size(215, 17);
+            this.lblRefuseForgeAdminReply.TabIndex = 11;
+            this.lblRefuseForgeAdminReply.Text = "试图伪造机器人管理员消息时的回复语:";
+            // 
+            // txbRefuseForgeBotReply
+            // 
+            this.txbRefuseForgeBotReply.Location = new System.Drawing.Point(247, 216);
+            this.txbRefuseForgeBotReply.Name = "txbRefuseForgeBotReply";
+            this.txbRefuseForgeBotReply.Size = new System.Drawing.Size(363, 23);
+            this.txbRefuseForgeBotReply.TabIndex = 12;
+            // 
+            // lblForgeMessageAppendSelfMessage
+            // 
+            this.lblForgeMessageAppendSelfMessage.AutoSize = true;
+            this.lblForgeMessageAppendSelfMessage.Location = new System.Drawing.Point(26, 100);
+            this.lblForgeMessageAppendSelfMessage.Name = "lblForgeMessageAppendSelfMessage";
+            this.lblForgeMessageAppendSelfMessage.Size = new System.Drawing.Size(83, 17);
+            this.lblForgeMessageAppendSelfMessage.TabIndex = 11;
+            this.lblForgeMessageAppendSelfMessage.Text = "追加消息内容:";
+            // 
+            // txbRefuseForgeAdminReply
+            // 
+            this.txbRefuseForgeAdminReply.Location = new System.Drawing.Point(247, 155);
+            this.txbRefuseForgeAdminReply.Name = "txbRefuseForgeAdminReply";
+            this.txbRefuseForgeAdminReply.Size = new System.Drawing.Size(363, 23);
+            this.txbRefuseForgeAdminReply.TabIndex = 12;
+            // 
+            // txbForgeMessageAppendSelfMessage
+            // 
+            this.txbForgeMessageAppendMessage.Location = new System.Drawing.Point(151, 97);
+            this.txbForgeMessageAppendMessage.Name = "txbForgeMessageAppendSelfMessage";
+            this.txbForgeMessageAppendMessage.Size = new System.Drawing.Size(459, 23);
+            this.txbForgeMessageAppendMessage.TabIndex = 12;
+            // 
+            // lblForgeMessageCmdNewLine
+            // 
+            this.lblForgeMessageCmdNewLine.AutoSize = true;
+            this.lblForgeMessageCmdNewLine.Location = new System.Drawing.Point(26, 42);
+            this.lblForgeMessageCmdNewLine.Name = "lblForgeMessageCmdNewLine";
+            this.lblForgeMessageCmdNewLine.Size = new System.Drawing.Size(95, 17);
+            this.lblForgeMessageCmdNewLine.TabIndex = 11;
+            this.lblForgeMessageCmdNewLine.Text = "伪造消息分行符:";
+            // 
+            // txbForgeMessageCmdNewLine
+            // 
+            this.txbForgeMessageCmdNewLine.Location = new System.Drawing.Point(151, 39);
+            this.txbForgeMessageCmdNewLine.Name = "txbForgeMessageCmdNewLine";
+            this.txbForgeMessageCmdNewLine.Size = new System.Drawing.Size(459, 23);
+            this.txbForgeMessageCmdNewLine.TabIndex = 12;
+            // 
+            // lblForgeMessageCmdBegin
+            // 
+            this.lblForgeMessageCmdBegin.AutoSize = true;
+            this.lblForgeMessageCmdBegin.Location = new System.Drawing.Point(26, 13);
+            this.lblForgeMessageCmdBegin.Name = "lblForgeMessageCmdBegin";
+            this.lblForgeMessageCmdBegin.Size = new System.Drawing.Size(107, 17);
+            this.lblForgeMessageCmdBegin.TabIndex = 9;
+            this.lblForgeMessageCmdBegin.Text = "伪造消息命令前缀:";
+            // 
+            // txbForgeMessageCmdBegin
+            // 
+            this.txbForgeMessageCmdBegin.Location = new System.Drawing.Point(151, 10);
+            this.txbForgeMessageCmdBegin.Name = "txbForgeMessageCmdBegin";
+            this.txbForgeMessageCmdBegin.Size = new System.Drawing.Size(459, 23);
+            this.txbForgeMessageCmdBegin.TabIndex = 10;
+            this.txbForgeMessageCmdBegin.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
+            // 
+            // chkEnabledForgeMessage
+            // 
+            this.chkEnabledForgeMessage.AutoSize = true;
+            this.chkEnabledForgeMessage.Location = new System.Drawing.Point(13, 12);
+            this.chkEnabledForgeMessage.Margin = new System.Windows.Forms.Padding(4);
+            this.chkEnabledForgeMessage.Name = "chkEnabledForgeMessage";
+            this.chkEnabledForgeMessage.Size = new System.Drawing.Size(123, 21);
+            this.chkEnabledForgeMessage.TabIndex = 8;
+            this.chkEnabledForgeMessage.Text = "启用伪造消息功能";
+            this.chkEnabledForgeMessage.UseVisualStyleBackColor = true;
+            this.chkEnabledForgeMessage.CheckedChanged += new System.EventHandler(this.chkEnabledForgeMessage_CheckedChanged);
+            // 
             // tabAbout
             // 
             this.tabAbout.Controls.Add(this.txbContributorName);
@@ -2689,6 +2918,10 @@
             this.tabRepeater.PerformLayout();
             this.tabGroupMemberEvents.ResumeLayout(false);
             this.tabGroupMemberEvents.PerformLayout();
+            this.tabForgeMessage.ResumeLayout(false);
+            this.tabForgeMessage.PerformLayout();
+            this.pnlForgeMessage.ResumeLayout(false);
+            this.pnlForgeMessage.PerformLayout();
             this.tabAbout.ResumeLayout(false);
             this.tabAbout.PerformLayout();
             this.ResumeLayout(false);
@@ -2709,7 +2942,7 @@
         private System.Windows.Forms.Button btnAddAdmin;
         private System.Windows.Forms.Label lblAddAdmin;
         private System.Windows.Forms.Label lblLoliconHPictureCmd;
-        private System.Windows.Forms.RichTextBox txbHPictureCmd;
+        private System.Windows.Forms.TextBox txbHPictureCmd;
         private System.Windows.Forms.TextBox txbHPictureBegin;
         private System.Windows.Forms.Label lblHPictureBegin;
         private System.Windows.Forms.TextBox txbHPictureR18;
@@ -2864,10 +3097,10 @@
         private System.Windows.Forms.CheckBox chkMultithreading;
         private System.Windows.Forms.LinkLabel lnkProjectURL;
         private System.Windows.Forms.Label lblProjectURL;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblBeautyPictureCmd;
         private System.Windows.Forms.CheckBox chkBeautyPictureEndNull;
         private System.Windows.Forms.Label lblShabHPictureEnd;
-        private System.Windows.Forms.RichTextBox txbBeautyPictureCmd;
+        private System.Windows.Forms.TextBox txbBeautyPictureCmd;
         private System.Windows.Forms.TextBox txbBeautyPictureEnd;
         private System.Windows.Forms.CheckBox chkEnabledLoliconHPicture;
         private System.Windows.Forms.CheckBox chkRevokeBeautyPicture;
@@ -2908,7 +3141,7 @@
         private System.Windows.Forms.CheckBox chkSendMemberJoinedMessage;
         private System.Windows.Forms.TextBox txbMemberBeKickedMessage;
         private System.Windows.Forms.TextBox txbMemberPositiveLeaveMessage;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblBeautyPictureSource;
         private System.Windows.Forms.Label lblHPictureSource;
         private System.Windows.Forms.CheckBox chkEnabledGreenOnionsBeautyPicture;
         private System.Windows.Forms.CheckBox chkEnabledGreenOnionsHPicture;
@@ -2919,5 +3152,26 @@
         private System.Windows.Forms.ListView lstAutoTranslateGroupMemoriesQQ;
         private System.Windows.Forms.Label lblAddAutoTranslateGroupMemoryQQ;
         private System.Windows.Forms.Label lblAutoTranslateGroupMemoriesQQ;
+        private System.Windows.Forms.TabPage tabForgeMessage;
+        private System.Windows.Forms.Panel pnlForgeMessage;
+        private System.Windows.Forms.CheckBox chkForgeMessageAdminDontAppend;
+        private System.Windows.Forms.CheckBox chkForgeMessageAdminOnly;
+        private System.Windows.Forms.CheckBox chkRefuseForgeBot;
+        private System.Windows.Forms.CheckBox chkRefuseForgeAdmin;
+        private System.Windows.Forms.Label lblRefuseForgeBotReply;
+        private System.Windows.Forms.CheckBox chkForgeMessageAppendBotMessageEnabled;
+        private System.Windows.Forms.Label lblRefuseForgeAdminReply;
+        private System.Windows.Forms.TextBox txbRefuseForgeBotReply;
+        private System.Windows.Forms.Label lblForgeMessageAppendSelfMessage;
+        private System.Windows.Forms.TextBox txbRefuseForgeAdminReply;
+        private System.Windows.Forms.TextBox txbForgeMessageAppendMessage;
+        private System.Windows.Forms.Label lblForgeMessageCmdNewLine;
+        private System.Windows.Forms.TextBox txbForgeMessageCmdNewLine;
+        private System.Windows.Forms.Label lblForgeMessageCmdBegin;
+        private System.Windows.Forms.TextBox txbForgeMessageCmdBegin;
+        private System.Windows.Forms.CheckBox chkEnabledForgeMessage;
+        private System.Windows.Forms.Label lblForgeMessageCmdDemo;
+        private System.Windows.Forms.Label lblForgeMessageCmd;
+        private System.Windows.Forms.TextBox txbForgeMessageCmd;
     }
 }

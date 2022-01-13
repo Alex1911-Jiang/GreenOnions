@@ -19,10 +19,10 @@ namespace GreenOnions.BotMain
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMemberJoinedEventArgs, GroupMemberJoinedEventArgs>))]
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMemberPositiveLeaveEventArgs, GroupMemberPositiveLeaveEventArgs>))]
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMemberKickedEventArgs, GroupMemberKickedEventArgs>))]
-    public class GroupMessage : IMiraiHttpMessageHandler<IGroupMessageEventArgs>,
-                                IMiraiHttpMessageHandler<IGroupMemberJoinedEventArgs>,
-                                IMiraiHttpMessageHandler<IGroupMemberPositiveLeaveEventArgs>,
-                                IMiraiHttpMessageHandler<IGroupMemberKickedEventArgs>
+    public class GroupMessage : IContravarianceMiraiHttpMessageHandler<IGroupMessageEventArgs>,
+                                IContravarianceMiraiHttpMessageHandler<IGroupMemberJoinedEventArgs>,
+                                IContravarianceMiraiHttpMessageHandler<IGroupMemberPositiveLeaveEventArgs>,
+                                IContravarianceMiraiHttpMessageHandler<IGroupMemberKickedEventArgs>
     {
         public async Task HandleMessageAsync(IMiraiHttpSession session, IGroupMessageEventArgs e)
         {
@@ -34,6 +34,17 @@ namespace GreenOnions.BotMain
             QuoteMessage quoteMessage = new QuoteMessage((e.Chain[0] as SourceMessage).Id, e.Sender.Group.Id, e.Sender.Id, e.Sender.Id);
             if (e.Chain.Length > 1)  //普通消息
             {
+                for (int i = 1; i < e.Chain.Length; i++)
+                {
+                    if (e.Chain[i] is IAtMessage)
+                    {
+                        IAtMessage atMessage = e.Chain[i] as IAtMessage;
+                        IGroupMemberInfo memberInfo = await session.GetGroupMemberInfoAsync(atMessage.Target, e.Sender.Group.Id);
+                        MyAtMessage myAtMessage = new MyAtMessage(atMessage.Target, memberInfo.Name);
+                        e.Chain[i] = myAtMessage;
+                    }
+                }
+
                 switch (e.Chain[1].Type)
                 {
                     case "At":
@@ -130,9 +141,9 @@ namespace GreenOnions.BotMain
             return session.SendGroupMessageAsync(e.Member.Group.Id, ReplaceMessage(session.GetMessageChainBuilder(), BotInfo.MemberBeKickedMessage, e.Member, e.Operator));
         }
 
-        private static readonly Regex regexTags = new Regex("<@?成员QQ>|<成员昵称>|<@?操作者QQ>|<操作者昵称>");
+        private readonly Regex regexTags = new Regex("<@?成员QQ>|<成员昵称>|<@?操作者QQ>|<操作者昵称>");
 
-        private static bool CheckPreconditions(IGroupMemberInfo e)
+        private bool CheckPreconditions(IGroupMemberInfo e)
         {
             if (BotInfo.BannedGroup.Contains(e.Group.Id) ||
                 BotInfo.BannedUser.Contains(e.Id))
@@ -151,7 +162,7 @@ namespace GreenOnions.BotMain
             return true;
         }
 
-        private static IMessageChainBuilder ReplaceMessage(IMessageChainBuilder builder, string messageCmd, IGroupMemberInfo member, IGroupMemberInfo Operator = null)
+        private IMessageChainBuilder ReplaceMessage(IMessageChainBuilder builder, string messageCmd, IGroupMemberInfo member, IGroupMemberInfo Operator = null)
         {
             string remainMessage = messageCmd;
             foreach (Match match in regexTags.Matches(messageCmd))

@@ -196,6 +196,22 @@ namespace GreenOnions.BotMainManagerWindow
             txbMemberPositiveLeaveMessage.Text = BotInfo.MemberPositiveLeaveMessage;
             txbMemberBeKickedMessage.Text = BotInfo.MemberBeKickedMessage;
             #endregion  -- 进/退群消息设置 --
+
+            #region -- 伪造消息 --
+
+            chkEnabledForgeMessage.Checked = BotInfo.EnabledForgeMessage;
+            txbForgeMessageCmdBegin.Text = BotInfo.ForgeMessageCmdBegin;
+            txbForgeMessageCmdNewLine.Text = BotInfo.ForgeMessageCmdNewLine;
+            chkForgeMessageAppendBotMessageEnabled.Checked = BotInfo.ForgeMessageAppendBotMessageEnabled;
+            chkForgeMessageAdminOnly.Checked = BotInfo.ForgeMessageAdminOnly;
+            chkForgeMessageAdminDontAppend.Checked = BotInfo.ForgeMessageAdminDontAppend;
+            txbForgeMessageAppendMessage.Text = BotInfo.ForgeMessageAppendMessage;
+            chkRefuseForgeAdmin.Checked = BotInfo.RefuseForgeAdmin;
+            txbRefuseForgeAdminReply.Text = BotInfo.RefuseForgeAdminReply;
+            chkRefuseForgeBot.Checked = BotInfo.RefuseForgeBot;
+            txbRefuseForgeBotReply.Text = BotInfo.RefuseForgeBotReply;
+
+            #endregion -- 伪造消息 --
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -392,6 +408,22 @@ namespace GreenOnions.BotMainManagerWindow
 
             #endregion  -- 进/退群消息设置 --
 
+            #region -- 伪造消息 --
+
+            BotInfo.EnabledForgeMessage = chkEnabledForgeMessage.Checked;
+            BotInfo.ForgeMessageCmdBegin = txbForgeMessageCmdBegin.Text;
+            BotInfo.ForgeMessageCmdNewLine = txbForgeMessageCmdNewLine.Text;
+            BotInfo.ForgeMessageAppendBotMessageEnabled = chkForgeMessageAppendBotMessageEnabled.Checked;
+            BotInfo.ForgeMessageAdminOnly = chkForgeMessageAdminOnly.Checked;
+            BotInfo.ForgeMessageAdminDontAppend = chkForgeMessageAdminDontAppend.Checked;
+            BotInfo.ForgeMessageAppendMessage = txbForgeMessageAppendMessage.Text;
+            BotInfo.RefuseForgeAdmin = chkRefuseForgeAdmin.Checked;
+            BotInfo.RefuseForgeAdminReply = txbRefuseForgeAdminReply.Text;
+            BotInfo.RefuseForgeBot = chkRefuseForgeBot.Checked;
+            BotInfo.RefuseForgeBotReply = txbRefuseForgeBotReply.Text;
+
+            #endregion -- 伪造消息 --
+
             JsonHelper.SaveConfigFile();
 
             PlainMessageHandler.UpdateRegexs();
@@ -443,6 +475,9 @@ namespace GreenOnions.BotMainManagerWindow
 
             txbHPictureCmd.Text = $"^<机器人名称>{Begin}{Count}{Unit}{R18}{Keyword}{R18}{LoliconEnd}$";
             txbBeautyPictureCmd.Text = $"^<机器人名称>{Begin}{Count}{Unit}{R18}{Keyword}{R18}{ShabEnd}$";
+
+            txbForgeMessageCmd.Text = $"{txbForgeMessageCmdBegin.Text}<@QQ><伪造内容>";
+
         }
 
         private void chkEnableHPicture_CheckedChanged(object sender, EventArgs e) => pnlEnabelHPicture.Enabled = chkEnabledHPicture.Checked;
@@ -572,5 +607,7 @@ namespace GreenOnions.BotMainManagerWindow
         private void btnAddAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => AddItemToListView(lstAutoTranslateGroupMemoriesQQ, txbAddAutoTranslateGroupMemoryQQ.Text);
 
         private void btnRemoveAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => RemoveItemFromListView(lstAutoTranslateGroupMemoriesQQ);
+
+        private void chkEnabledForgeMessage_CheckedChanged(object sender, EventArgs e) => pnlForgeMessage.Enabled = chkEnabledForgeMessage.Checked;
     }
 }
