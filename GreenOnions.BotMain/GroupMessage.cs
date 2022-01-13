@@ -165,30 +165,31 @@ namespace GreenOnions.BotMain
                 }
                 string right = remainMessage.Substring(index + matchString.Length);
                 remainMessage = right;
+                string identifier = match.ToString();
 
-                if (match.ToString() == "<@成员QQ>")
+                if (identifier == "<@成员QQ>")
                 {
                     builder.AddAtMessage(member.Id);
                 }
-                else if (match.ToString() == "<成员QQ>")
+                else if (identifier == "<成员QQ>")
                 {
                     builder.AddPlainMessage(member.Id.ToString());
                 }
-                else if (match.ToString() == "<成员昵称>")
+                else if (identifier == "<成员昵称>")
                 {
                     builder.AddPlainMessage(member.Name);
                 }
                 else if (Operator != null)
                 {
-                    if (match.ToString() == "<@操作者QQ>")
+                    if (identifier == "<@操作者QQ>")
                     {
                         builder.AddAtMessage(Operator.Id);
                     }
-                    else if (match.ToString() == "<操作者QQ>")
+                    else if (identifier == "<操作者QQ>")
                     {
                         builder.AddPlainMessage(Operator.Id.ToString());
                     }
-                    else if (match.ToString() == "<操作者昵称>")
+                    else if (identifier == "<操作者昵称>")
                     {
                         builder.AddPlainMessage(Operator.Name);
                     }
