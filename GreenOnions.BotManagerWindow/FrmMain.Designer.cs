@@ -32,11 +32,11 @@ namespace GreenOnions.BotMainManagerWindow
             this.lblQQ = new System.Windows.Forms.Label();
             this.lblIP = new System.Windows.Forms.Label();
             this.lblPort = new System.Windows.Forms.Label();
-            this.lblAuthKey = new System.Windows.Forms.Label();
+            this.lblVerifyKey = new System.Windows.Forms.Label();
             this.txbQQ = new System.Windows.Forms.MaskedTextBox();
             this.txbIP = new System.Windows.Forms.MaskedTextBox();
             this.txbPort = new System.Windows.Forms.MaskedTextBox();
-            this.txbAuthKey = new System.Windows.Forms.MaskedTextBox();
+            this.txbVerifyKey = new System.Windows.Forms.MaskedTextBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnBotSettings = new System.Windows.Forms.Button();
             this.lblState = new System.Windows.Forms.Label();
@@ -69,46 +69,46 @@ namespace GreenOnions.BotMainManagerWindow
             this.lblPort.TabIndex = 0;
             this.lblPort.Text = "端口号:";
             // 
-            // lblAuthKey
+            // lblVerifyKey
             // 
-            this.lblAuthKey.AutoSize = true;
-            this.lblAuthKey.Location = new System.Drawing.Point(44, 117);
-            this.lblAuthKey.Name = "lblAuthKey";
-            this.lblAuthKey.Size = new System.Drawing.Size(58, 17);
-            this.lblAuthKey.TabIndex = 0;
-            this.lblAuthKey.Text = "AuthKey:";
+            this.lblVerifyKey.AutoSize = true;
+            this.lblVerifyKey.Location = new System.Drawing.Point(44, 117);
+            this.lblVerifyKey.Name = "lblVerifyKey";
+            this.lblVerifyKey.Size = new System.Drawing.Size(65, 17);
+            this.lblVerifyKey.TabIndex = 0;
+            this.lblVerifyKey.Text = "VerifyKey:";
             // 
             // txbQQ
             // 
-            this.txbQQ.Location = new System.Drawing.Point(109, 27);
+            this.txbQQ.Location = new System.Drawing.Point(115, 27);
             this.txbQQ.Name = "txbQQ";
-            this.txbQQ.Size = new System.Drawing.Size(281, 23);
+            this.txbQQ.Size = new System.Drawing.Size(275, 23);
             this.txbQQ.TabIndex = 1;
             this.txbQQ.Text = "3246934384";
             // 
             // txbIP
             // 
-            this.txbIP.Location = new System.Drawing.Point(109, 56);
+            this.txbIP.Location = new System.Drawing.Point(115, 56);
             this.txbIP.Name = "txbIP";
-            this.txbIP.Size = new System.Drawing.Size(281, 23);
+            this.txbIP.Size = new System.Drawing.Size(275, 23);
             this.txbIP.TabIndex = 1;
             this.txbIP.Text = "127.0.0.1";
             // 
             // txbPort
             // 
-            this.txbPort.Location = new System.Drawing.Point(109, 85);
+            this.txbPort.Location = new System.Drawing.Point(115, 85);
             this.txbPort.Name = "txbPort";
-            this.txbPort.Size = new System.Drawing.Size(281, 23);
+            this.txbPort.Size = new System.Drawing.Size(275, 23);
             this.txbPort.TabIndex = 1;
             this.txbPort.Text = "33111";
             // 
-            // txbAuthKey
+            // txbVerifyKey
             // 
-            this.txbAuthKey.Location = new System.Drawing.Point(109, 114);
-            this.txbAuthKey.Name = "txbAuthKey";
-            this.txbAuthKey.Size = new System.Drawing.Size(281, 23);
-            this.txbAuthKey.TabIndex = 1;
-            this.txbAuthKey.Text = "Alex1911";
+            this.txbVerifyKey.Location = new System.Drawing.Point(115, 114);
+            this.txbVerifyKey.Name = "txbVerifyKey";
+            this.txbVerifyKey.Size = new System.Drawing.Size(275, 23);
+            this.txbVerifyKey.TabIndex = 1;
+            this.txbVerifyKey.Text = "Alex1911";
             // 
             // btnConnect
             // 
@@ -148,11 +148,11 @@ namespace GreenOnions.BotMainManagerWindow
             this.Controls.Add(this.lblState);
             this.Controls.Add(this.btnBotSettings);
             this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.txbAuthKey);
+            this.Controls.Add(this.txbVerifyKey);
             this.Controls.Add(this.txbPort);
             this.Controls.Add(this.txbIP);
             this.Controls.Add(this.txbQQ);
-            this.Controls.Add(this.lblAuthKey);
+            this.Controls.Add(this.lblVerifyKey);
             this.Controls.Add(this.lblPort);
             this.Controls.Add(this.lblIP);
             this.Controls.Add(this.lblQQ);
@@ -170,11 +170,11 @@ namespace GreenOnions.BotMainManagerWindow
         private System.Windows.Forms.Label lblQQ;
         private System.Windows.Forms.Label lblIP;
         private System.Windows.Forms.Label lblPort;
-        private System.Windows.Forms.Label lblAuthKey;
+        private System.Windows.Forms.Label lblVerifyKey;
         private System.Windows.Forms.MaskedTextBox txbQQ;
         private System.Windows.Forms.MaskedTextBox txbIP;
         private System.Windows.Forms.MaskedTextBox txbPort;
-        private System.Windows.Forms.MaskedTextBox txbAuthKey;
+        private System.Windows.Forms.MaskedTextBox txbVerifyKey;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnBotSettings;
         private System.Windows.Forms.Label lblState;

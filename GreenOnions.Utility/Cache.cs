@@ -78,6 +78,12 @@ namespace GreenOnions.Utility
             }
         }
 
+        /// <summary>
+        /// 检查群聊次数限制 true为超过限制
+        /// </summary>
+        /// <param name="qqId"></param>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
         public static bool CheckGroupLimit(long qqId, long groupId)
         {
             if (BotInfo.AdminQQ.Contains(qqId) && BotInfo.HPictureAdminNoLimit) return false;
@@ -92,6 +98,11 @@ namespace GreenOnions.Utility
             return false;
         }
 
+        /// <summary>
+        /// 检查私聊次数限制 true为超过限制
+        /// </summary>
+        /// <param name="qqId"></param>
+        /// <returns></returns>
         public static bool CheckPMLimit(long qqId)
         {
             if (BotInfo.AdminQQ.Contains(qqId) && BotInfo.HPictureAdminNoLimit) return false;

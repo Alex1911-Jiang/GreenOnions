@@ -38,10 +38,10 @@ namespace GreenOnions.BotManagerConsole
 				Console.WriteLine("输入的端口号不正确，请重新输入:");
 				goto ILReadPort;
 			}
-			Console.WriteLine("请输入mirai-api-http authKey:");
-			string authKey = Console.ReadLine();
+			Console.WriteLine("请输入mirai-api-http verifyKey:");
+			string verifyKey = Console.ReadLine();
 
-			await BotMain.Program.Main(qqId, ip, port, authKey, (bConnect, nickNameOrErrorMessage) =>
+			await BotMain.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) =>
 			{
 				if (bConnect)
 				{

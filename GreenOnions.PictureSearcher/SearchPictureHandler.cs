@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace GreenOnions.PictureSearcher
     {
         public static async Task SearchPicture(IImageMessage inImgMsg, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage)
         {
-            string url = inImgMsg.Url.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
+            string qqImgUrl = inImgMsg.Url.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
             try
             {
                 if (BotInfo.SearchEnabledTraceMoe)
@@ -45,7 +46,7 @@ namespace GreenOnions.PictureSearcher
 
             async Task SearchTraceMoe()
             {
-                string TraceMoeUrl = @$"https://api.trace.moe/search?anilistInfo&url={url}";  //https://trace.moe/?url=  //https://trace.moe/api/search?url=
+                string TraceMoeUrl = @$"https://api.trace.moe/search?anilistInfo&url={qqImgUrl}";  //https://trace.moe/?url=  //https://trace.moe/api/search?url=
                 try
                 {
                     string strSauceTraceMoe = await HttpHelper.GetHttpResponseStringAsync(TraceMoeUrl);
@@ -99,7 +100,7 @@ namespace GreenOnions.PictureSearcher
 
             async Task SearchSauceNao()
             {
-                string SauceNaoUrl = @$"https://saucenao.com/search.php?db=999&output_type=2&api_key={BotInfo.SauceNAOApiKey}&testmode=1&numres=16&url={url}";
+                string SauceNaoUrl = @$"https://saucenao.com/search.php?db=999&output_type=2&api_key={BotInfo.SauceNAOApiKey}&testmode=1&numres=16&url={qqImgUrl}";
                 string strSauceNaoResult;
                 try
                 {
@@ -229,47 +230,31 @@ namespace GreenOnions.PictureSearcher
                             //如果是pixiv体系尝试下载原图
                             if (sauceNaoItem.pixiv_id != null)
                             {
-                                string getP = @$".+{sauceNaoItem.pixiv_id}_p([0-9]+)[_\.].+";
-                                Match matchBigImg = Regex.Match(sauceNaoItem.index_name, getP);
-                                int p = 0;
-                                //在p0的情况下暂时还不知道怎么判断是单图ID还是多图ID, 就都请求一次
+                                Match matchBigImg = Regex.Match(sauceNaoItem.index_name, @$".+{sauceNaoItem.pixiv_id}_p([0-9]+)[_\.].+");
                                 if (matchBigImg.Groups.Count > 1)
                                 {
-                                    p = Convert.ToInt32(matchBigImg.Groups[1].Value);
-                                    if (p == 0)
+                                    int p = Convert.ToInt32(matchBigImg.Groups[1].Value);
+                                    string imgUrlHasP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}-{p + 1}.png";
+                                    if (p == 0)  //NAO返回的P为0
                                     {
-                                        _ = Task.Run(() =>
+                                        using (var httpClient = new HttpClient())
                                         {
-                                            try
+                                            string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
+                                            using (var request = new HttpRequestMessage(new HttpMethod("GET"), imgUrlHasP))  //尝试带着P请求一次cat
                                             {
-                                                string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{sauceNaoItem.pixiv_id}_p0.png");
-                                                if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
-                                                        UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith( async uploaded => SendMessage(new[] { await uploaded }));
-                                                else
-                                                    UploadPicture(HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.re/{sauceNaoItem.pixiv_id}.png", imgName)).ContinueWith(async uploaded => SendMessage(new[] {await uploaded }));
+                                                HttpResponseMessage response = await httpClient.SendAsync(request);
+                                                HtmlDocument docColor = new HtmlDocument();
+                                                docColor.LoadHtml(await response.Content.ReadAsStringAsync());
+                                                if (docColor.DocumentNode.ChildNodes.Count == 3)  //Body三个标签说明返回的是路由错误的提示, 真实地址没有P
+                                                    SendOriginImage(imgUrlNoP, sauceNaoItem.pixiv_id);
+                                                else  //真实地址有P=0
+                                                    SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id);
                                             }
-                                            catch (Exception ex)
-                                            {
-                                                ErrorHelper.WriteErrorLog(ex);  //异常只是不发送原图, 不需要返回消息
-                                            }
-                                        });
+                                        }
                                     }
+                                    else  //地址有P且>0
+                                        SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id);
                                 }
-                                _ = Task.Run(() =>
-                                {
-                                    try
-                                    {
-                                        string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{sauceNaoItem.pixiv_id}_p{p}.png");
-                                        if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
-                                                UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
-                                        else
-                                            UploadPicture(HttpHelper.DownloadImageAsMemoryStream($"https://pixiv.re/{sauceNaoItem.pixiv_id}-{p + 1}.png", imgName)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        ErrorHelper.WriteErrorLog(ex);  //异常只是不发送原图, 不需要返回消息
-                                    }
-                                });
                             }
                         }
                     }
@@ -293,11 +278,30 @@ namespace GreenOnions.PictureSearcher
                     _ = SearchAscii2D();
                 }
                 SendMessage(new[] { new PlainMessage(strNoResult) });
+
+                void SendOriginImage(string url, string pixivID)
+                {
+                    Task.Run(() =>
+                    {
+                        try
+                        {
+                            string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{pixivID}_p0.png");
+                            if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
+                                UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
+                            else
+                                UploadPicture(HttpHelper.DownloadImageAsMemoryStream(url, imgName)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));  //请求不含P的地址
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorHelper.WriteErrorLog(ex);  //异常只是不发送原图, 不需要返回消息
+                        }
+                    });
+                }
             }
 
             async Task SearchAscii2D()
             {
-                var response = await HttpHelper.GetHttpResponseStringAndJumpUrlAsync(@$"https://ascii2d.net/search/url/{url}");
+                var response = await HttpHelper.GetHttpResponseStringAndJumpUrlAsync(@$"https://ascii2d.net/search/url/{qqImgUrl}");
                 string strAscii2dColorResult = response.response;
                 string strAscii2dBovwResult = await HttpHelper.GetHttpResponseStringAsync(response.jumpUrl.Replace("/color/", "/bovw/"));
 
@@ -471,9 +475,9 @@ namespace GreenOnions.PictureSearcher
             return IImageMessage;
         }
 
-        public static async Task SuccessiveSearchPicture(IImageMessage imgMsg, IGroupMemberInfo sender, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage)
+        public static async Task SuccessiveSearchPicture(IImageMessage imgMsg, long qqId, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage)
         {
-            Cache.SearchingPictures[sender.Id] = DateTime.Now.AddMinutes(1);
+            Cache.SearchingPictures[qqId] = DateTime.Now.AddMinutes(1);
             await SearchPicture(imgMsg, UploadPicture, SendMessage);
         }
     }

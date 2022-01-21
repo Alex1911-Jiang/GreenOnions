@@ -19,10 +19,10 @@ namespace GreenOnions.BotMain
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMemberJoinedEventArgs, GroupMemberJoinedEventArgs>))]
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMemberPositiveLeaveEventArgs, GroupMemberPositiveLeaveEventArgs>))]
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMemberKickedEventArgs, GroupMemberKickedEventArgs>))]
-    public class GroupMessage : IContravarianceMiraiHttpMessageHandler<IGroupMessageEventArgs>,
-                                IContravarianceMiraiHttpMessageHandler<IGroupMemberJoinedEventArgs>,
-                                IContravarianceMiraiHttpMessageHandler<IGroupMemberPositiveLeaveEventArgs>,
-                                IContravarianceMiraiHttpMessageHandler<IGroupMemberKickedEventArgs>
+    public class GroupMessage : IMiraiHttpMessageHandler<IGroupMessageEventArgs>,
+                                IMiraiHttpMessageHandler<IGroupMemberJoinedEventArgs>,
+                                IMiraiHttpMessageHandler<IGroupMemberPositiveLeaveEventArgs>,
+                                IMiraiHttpMessageHandler<IGroupMemberKickedEventArgs>
     {
         public async Task HandleMessageAsync(IMiraiHttpSession session, IGroupMessageEventArgs e)
         {
@@ -92,7 +92,7 @@ namespace GreenOnions.BotMain
                             for (int i = 1; i < e.Chain.Length; i++)
                             {
                                 ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-                                await SearchPictureHandler.SuccessiveSearchPicture(imgMsg, e.Sender,
+                                await SearchPictureHandler.SuccessiveSearchPicture(imgMsg, e.Sender.Id,
                                     picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),  //上传图片
                                     msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));  //发送群消息
                             }

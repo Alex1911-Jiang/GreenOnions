@@ -1,61 +1,108 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GreenOnions.PictureSearcher;
+using GreenOnions.Repeater;
 using GreenOnions.Utility;
-using Mirai.CSharp.Handlers;
 using Mirai.CSharp.HttpApi.Handlers;
 using Mirai.CSharp.HttpApi.Models.ChatMessages;
 using Mirai.CSharp.HttpApi.Models.EventArgs;
 using Mirai.CSharp.HttpApi.Parsers;
 using Mirai.CSharp.HttpApi.Parsers.Attributes;
 using Mirai.CSharp.HttpApi.Session;
-using Mirai.CSharp.Session;
+using Mirai.CSharp.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GreenOnions.BotMain
 {
-    //[RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IFriendMessageEventArgs, FriendMessageEventArgs>))]
+    [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IFriendMessageEventArgs, FriendMessageEventArgs>))]
     public partial class FriendPlugin : IMiraiHttpMessageHandler<IFriendMessageEventArgs>
     {
         public async Task HandleMessageAsync(IMiraiHttpSession session, IFriendMessageEventArgs e) // 法2: 使用 params IMessageBase[]
         {
+            if (!CheckPreconditions(e.Sender))
+            {
+                return;
+            }
 
-            IChatMessage plain1 = new PlainMessage($"收到了来自{e.Sender.Name}({e.Sender.Remark})[{e.Sender.Id}]的私聊消息:{string.Join(null, (IEnumerable<IChatMessage>)e.Chain)}");
-            //                                                /   好友昵称  /  /    好友备注    /  /  好友QQ号  /                                                        / 消息链 /
-            IChatMessage plain2 = new PlainMessage("嘤嘤嘤"); // 在下边的 SendFriendMessageAsync, 你可以串起n个 IChatMessage
-            await session.SendFriendMessageAsync(e.Sender.Id, plain1/*, plain2, /* etc... */); // 向消息来源好友异步发送由以上chain表示的消息
-            e.BlockRemainingHandlers = false; // 不阻断消息传递。如需阻断请返回true
+            QuoteMessage quoteMessage = new QuoteMessage((e.Chain[0] as SourceMessage).Id, e.Sender.Id, e.Sender.Id, e.Sender.Id);
+            if (e.Chain.Length > 1)  //普通消息
+            {
+                switch (e.Chain[1].Type)
+                {
+                    case "At":
+                        if (e.Chain.Length > 2)
+                        {
+                            #region -- @搜图 --
+                            AtMessage atMe = e.Chain[1] as AtMessage;
+                            if (atMe.Target == BotInfo.QQId)  //@自己
+                            {
+                                for (int i = 2; i < e.Chain.Length; i++)
+                                {
+                                    if (e.Chain[i].Type == "Image")
+                                    {
+                                        ImageMessage imgMsg = e.Chain[i] as ImageMessage;
+                                        await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream), msg => session.SendFriendMessageAsync(e.Sender.Id, msg));
+                                    }
+                                }
+                            }
+                            #endregion -- @搜图 --
+                        }
+                        break;
+                    case "Plain":
+                        await PlainMessageHandler.HandleMesage(e.Chain, e.Sender,
+                            (chatMessages, bRevoke) =>
+                            {
+                                session.SendFriendMessageAsync(e.Sender.Id, chatMessages, quoteMessage.Id).ContinueWith(callback =>
+                                {
+                                    if (bRevoke)
+                                    {
+                                        if (BotInfo.HPicturePMRevoke > 0)
+                                        {
+                                            Task.Delay(BotInfo.HPicturePMRevoke * 1000).ContinueWith(_ => session.RevokeMessageAsync(callback.Result));
+                                        }
+                                    }
+                                });  //发送好友消息
+
+                            },
+                            picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream));  //上传图片
+                        break;
+                    case "Image":
+                        if (Cache.SearchingPictures.Keys.Contains(e.Sender.Id))
+                        {
+                            #region -- 连续搜图 --
+                            for (int i = 1; i < e.Chain.Length; i++)
+                            {
+                                ImageMessage imgMsg = e.Chain[i] as ImageMessage;
+                                await SearchPictureHandler.SuccessiveSearchPicture(imgMsg, e.Sender.Id,
+                                    picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream),  //上传图片
+                                    msg => session.SendFriendMessageAsync(e.Sender.Id, msg));  //发送好友消息
+                            }
+                            #endregion -- 连续搜图 --
+                        }
+                        break;
+                }
+
+                #region -- 复读 --
+                if (e.Chain.Length == 2)
+                {
+                    Mirai.CSharp.Models.ChatMessages.IChatMessage repeatingMessage = await Repeat.Repeating(e.Chain[1], e.Sender.Id, picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream));
+                    if (repeatingMessage != null)
+                    {
+                        await session.SendFriendMessageAsync(e.Sender.Id, repeatingMessage);
+                    }
+                }
+                #endregion -- 复读 --
+            }
         }
 
-        //public async Task HandleMessageAsync(IMiraiSession client, IFriendMessageEventArgs message)
-        //{
-        //    if (BotInfo.BannedUser.Contains(message.Sender.Id)) return;
-        //    if (BotInfo.DebugMode)
-        //        if (BotInfo.DebugReplyAdminOnly)
-        //            if (!BotInfo.AdminQQ.Contains(message.Sender.Id))
-        //                return;
-
-        //    IChatMessage plain1 = new PlainMessage($"收到了来自{message.Sender.Name}({message.Sender.Remark})[{message.Sender.Id}]的私聊消息:{string.Join(null, (IEnumerable<IChatMessage>)message.Chain)}");
-        //    //                                                /   好友昵称  /  /    好友备注    /  /  好友QQ号  /                                                        / 消息链 /
-        //    await client.SendFriendMessageAsync(message.Sender.Id, plain1); // 向消息来源好友异步发送由以上chain表示的消息
-        //    message.BlockRemainingHandlers = false; // 不阻断消息传递。如需阻断请返回true
-
-
-        //    //if (e.Chain.Length > 1)  //普通消息
-        //    //{
-        //    //    switch (e.Chain[1].Type)
-        //    //    {
-        //    //        case "Plain":
-        //    //            PlainMessageHandler.HandleFriendMesage(session, e.Chain, e.Sender.Id);
-        //    //            break;
-        //    //        case "Image":
-        //    //            for (int i = 1; i < e.Chain.Length; i++)
-        //    //            {
-        //    //                ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-        //    //                await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendFriendMessageAsync(e.Sender.Id, msg));
-        //    //            }
-        //    //            break;
-        //    //    }
-        //    //}
-        //}
+        private bool CheckPreconditions(Mirai.CSharp.HttpApi.Models.IFriendInfo e)
+        {
+            if (BotInfo.BannedUser.Contains(e.Id)) 
+                return false;
+            if (BotInfo.DebugMode)
+                if (BotInfo.DebugReplyAdminOnly)
+                    if (!BotInfo.AdminQQ.Contains(e.Id))
+                        return false;
+            return true;
+        }
     }
 }

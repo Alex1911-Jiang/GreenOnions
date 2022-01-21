@@ -24,7 +24,7 @@ namespace GreenOnions.BotMainManagerWindow
                 txbQQ.Text = BotInfo.QQId.ToString();
 				txbIP.Text = BotInfo.IP;
 				txbPort.Text = BotInfo.Port;
-				txbAuthKey.Text = BotInfo.AuthKey;
+				txbVerifyKey.Text = BotInfo.VerifyKey;
 			}
 			catch (Exception ex)
 			{
@@ -33,9 +33,9 @@ namespace GreenOnions.BotMainManagerWindow
 			#endregion -- 读取配置 --
 		}
 
-		public async Task Main(long qqId, string ip, int port, string authKey)
+		public async Task Main(long qqId, string ip, int port, string verifyKey)
 		{
-			await BotMain.Program.Main(qqId, ip, port, authKey, (bConnect, nickNameOrErrorMessage) =>
+			await BotMain.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) =>
 			{
 				Invoke(new Action(() =>
 				{
@@ -93,17 +93,17 @@ namespace GreenOnions.BotMainManagerWindow
 					MessageBox.Show("请先输入mirai-api-http端口号。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					return;
 				}
-				if (string.IsNullOrEmpty(txbAuthKey.Text))
+				if (string.IsNullOrEmpty(txbVerifyKey.Text))
 				{
-					MessageBox.Show("请先输入mirai-api-http authKey。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("请先输入mirai-api-http verifyKey。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					return;
 				}
 				BotInfo.QQId = Convert.ToInt64(txbQQ.Text);
 				BotInfo.IP = txbIP.Text;
 				BotInfo.Port = txbPort.Text;
-				BotInfo.AuthKey = txbAuthKey.Text;
+				BotInfo.VerifyKey = txbVerifyKey.Text;
 
-				Task.Run(() => Main(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToInt32(txbPort.Text), txbAuthKey.Text));
+				Task.Run(() => Main(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToInt32(txbPort.Text), txbVerifyKey.Text));
 			}
 			catch (Exception ex)
 			{

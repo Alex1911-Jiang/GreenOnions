@@ -30,7 +30,8 @@ namespace GreenOnions.BotMain
                                                                    .ResolveParser<DynamicPlugin>() // 只提前解析 DynamicPlugin 将要用到的消息解析器
                                                                    .AddInvoker<MiraiHttpMessageHandlerInvoker>() // 使用默认的调度器
                                                                    .AddHandler<HttpApiPlugin>() // 可以如此添加更多消息处理器
-                                                                   .AddHandler<GroupMessage>() // 可以如此添加更多消息处理器
+                                                                   .AddHandler<GroupMessage>() // 群消息
+                                                                   .AddHandler<FriendPlugin>() // 好友消息
                                                                    .AddClient<MiraiHttpSession>() // 使用默认的客户端
                                                                    .Services
                                                                    // 由于 MiraiHttpSession 使用 IOptions<MiraiHttpSessionOptions>, 其作为 Singleton 被注册
@@ -43,8 +44,8 @@ namespace GreenOnions.BotMain
                                                                    {
                                                                        options.Host = ip;
                                                                        options.Port = port; // 端口
-                                                                   options.AuthKey = authKey; // 凭据
-                                                               })
+                                                                       options.AuthKey = authKey; // 凭据
+                                                                   })
                                                                    .AddLogging()
                                                                    .BuildServiceProvider();
                 IServiceScope scope = services.CreateScope();

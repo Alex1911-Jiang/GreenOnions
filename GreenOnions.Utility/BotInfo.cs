@@ -40,10 +40,10 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(Port), value);
         }
 
-        public static string AuthKey
+        public static string VerifyKey
         {
-            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(AuthKey));
-            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(AuthKey), value);
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(VerifyKey));
+            set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameBot, nameof(VerifyKey), value);
         }
 
         /// <summary>
