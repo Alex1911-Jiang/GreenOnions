@@ -18,17 +18,20 @@ namespace GreenOnions.HPicture
         {
             try
             {
+                string size = "original";
+                if (BotInfo.HPictureSize1200)
+                    size = "regular";
+
                 string strHttpRequest;
                 if (BotInfo.HPictureUserCmd.Contains(message))
                 {
-                    strHttpRequest = $@"https://api.lolicon.app/setu/?{ (BotInfo.HPictureSize1200 ? "size1200=true" : "") }&proxy=i.pixiv.re";
-                    SendLoliconHPhicture(strHttpRequest);
+                    strHttpRequest = $@"https://api.lolicon.app/setu/v2?size={size}&proxy=i.pixiv.re";
+                    SendLoliconHPhicture(strHttpRequest, size);
                 }
                 else
                 {
                     //分割请求接口所需的参数
                     long lImgCount = 1;
-                    string size1200 = "";
                     string strR18 = "0";
 
                     #region -- R18 --
@@ -52,19 +55,13 @@ namespace GreenOnions.HPicture
                     if (lImgCount <= 0)   //犯贱呢要0张或以下色图
                         return;
 
-                    if (lImgCount > 10) lImgCount = 10;
+                    if (lImgCount > 100) lImgCount = 100;
 
                     #endregion -- 色图数量 -- 
 
                     #region -- 关键词 --
                     string strKeyword = StringHelper.GetRegex(message, BotInfo.HPictureUnitCmd, BotInfo.HPictureKeywordCmd, PictureEndCmd);
-
-
                     #endregion -- 关键词 --
-
-                    if (BotInfo.HPictureSize1200)
-                        size1200 = "&size1200=true";
-
                     if (pictureSource == PictureSource.Lolicon)
                     {
                         string keyword = "";
@@ -72,11 +69,24 @@ namespace GreenOnions.HPicture
                         {
                             if (strKeyword.EndsWith("的"))
                                 strKeyword = strKeyword.Substring(0, strKeyword.Length - 1);
-                            keyword = "&keyword=" + strKeyword;
+
+                            if (strKeyword.Contains("&") || strKeyword.Contains("|"))
+                            {
+                                string[] ands = strKeyword.Split("&");
+                                keyword = "&tag=" + string.Join("&tag=", ands);
+                            }
+                            else
+                            {
+                                keyword = "&keyword=" + strKeyword;
+                            }
                         }
 
-                        strHttpRequest = $@"https://api.lolicon.app/setu/?apikey={BotInfo.HPictureApiKey}&num={lImgCount}&proxy=i.pixiv.re&r18={strR18}{keyword}{size1200}";
-                        SendLoliconHPhicture(strHttpRequest);
+                        //string strApiKey = "";
+                        //if (!string.IsNullOrWhiteSpace(BotInfo.HPictureApiKey))
+                        //    strApiKey = $"apikey={BotInfo.HPictureApiKey}&";
+
+                        strHttpRequest = $@"https://api.lolicon.app/setu/v2?num={lImgCount}&proxy=i.pixiv.re&r18={strR18}{keyword}&size={size}";
+                        SendLoliconHPhicture(strHttpRequest, size);
                     }
                     else if (pictureSource == PictureSource.ELF)
                     {
@@ -89,7 +99,7 @@ namespace GreenOnions.HPicture
                     }
                 }
 
-                async void SendLoliconHPhicture(string strHttpRequestUrl)
+                async void SendLoliconHPhicture(string strHttpRequestUrl, string sizeUrlName)
                 {
                     string resultValue = "";
                     try
@@ -104,14 +114,28 @@ namespace GreenOnions.HPicture
 
                     JObject jo = (JObject)JsonConvert.DeserializeObject(resultValue);
                     JToken jt = jo["data"];
-
-                    if (jo["code"].ToString() == "404")//没找到对应词条的色图;
+                    string err = jo["error"].ToString();
+                    if (!string.IsNullOrWhiteSpace(err))//Api错误
+                    {
+                        SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(err) }, false);
+                        return;
+                    }
+                    
+                    if (jt.Count() == 0)//没找到对应词条的色图;
                     {
                         SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureNoResultReply) }, false);
                         return;
                     }
 
-                    IEnumerable<LoliconHPictureItem> enumImg = jt.Select(i => new LoliconHPictureItem(i["p"].ToString(), i["pid"].ToString(), i["url"].ToString(), @$"https://www.pixiv.net/artworks/{i["pid"]}(p{i["p"]})"));
+                    IEnumerable<LoliconHPictureItem> enumImg = jt.Select(i => new LoliconHPictureItem(
+                        i["p"].ToString(), 
+                        i["pid"].ToString(),
+                        i["urls"][sizeUrlName].ToString(),
+                        i["title"].ToString(),
+                        i["author"].ToString(),
+                        string.Join(",", (i["tags"] as JArray)),
+                        @$"https://www.pixiv.net/artworks/{i["pid"]}(p{i["p"]})")
+                    );
 
                     if (enumImg == null)
                     {
@@ -119,7 +143,8 @@ namespace GreenOnions.HPicture
                         return;
                     }
 
-                    string addresses = string.Join("\r\n", enumImg.Select(i => @"https://www.pixiv.net/artworks/" + i.ID + $" (p{i.P})"));
+                    //发送地址和标签
+                    string addresses = string.Join("\r\n", enumImg.Select(i => @"https://www.pixiv.net/artworks/" + i.ID + $" (p{i.P})\r\n标题:{i.Title}\r\n作者:{i.Author}\r\n标签:{i.Tags}"));
                     SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(addresses) }, false);
                     Record(LimitType.Frequency);
 
@@ -155,6 +180,7 @@ namespace GreenOnions.HPicture
                     SendOnceHPicture(() => SendOnceShabHPicture(enumImg));
                 }
 
+                //发送图片
                 void SendOnceHPicture(Action SendHPictureInner)
                 {
                     if (BotInfo.HPictureMultithreading)

@@ -1971,6 +1971,7 @@
             // lblApiKey
             // 
             this.lblApiKey.AutoSize = true;
+            this.lblApiKey.Enabled = false;
             this.lblApiKey.Location = new System.Drawing.Point(8, 9);
             this.lblApiKey.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblApiKey.Name = "lblApiKey";
@@ -2264,6 +2265,7 @@
             // 
             // txbHPictureApiKey
             // 
+            this.txbHPictureApiKey.Enabled = false;
             this.txbHPictureApiKey.Location = new System.Drawing.Point(137, 6);
             this.txbHPictureApiKey.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureApiKey.Name = "txbHPictureApiKey";
@@ -2728,10 +2730,10 @@
             this.txbRefuseForgeAdminReply.Size = new System.Drawing.Size(363, 23);
             this.txbRefuseForgeAdminReply.TabIndex = 12;
             // 
-            // txbForgeMessageAppendSelfMessage
+            // txbForgeMessageAppendMessage
             // 
             this.txbForgeMessageAppendMessage.Location = new System.Drawing.Point(151, 97);
-            this.txbForgeMessageAppendMessage.Name = "txbForgeMessageAppendSelfMessage";
+            this.txbForgeMessageAppendMessage.Name = "txbForgeMessageAppendMessage";
             this.txbForgeMessageAppendMessage.Size = new System.Drawing.Size(459, 23);
             this.txbForgeMessageAppendMessage.TabIndex = 12;
             // 

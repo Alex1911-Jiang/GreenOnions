@@ -1118,7 +1118,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string HPictureDownloadFailReply
         {
-            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureDownloadFailReply)) ?? "地址为:<URL>的图不见了，画师可能被送温暖了o(╥﹏╥)o (如连续出现时请检查<机器人名称>网络/代理/加速链/墙问题。)";
+            get => JsonHelper.GetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureDownloadFailReply)) ?? "地址为:<URL>的色图不见了，可能是色图服务器下载失败或图真的没了o(╥﹏╥)o (如连续出现时请检查<机器人名称>网络/代理/加速链/墙问题。)";
             set => JsonHelper.SetSerializationValue(Cache.JsonConfigFileName, JsonNodeNameHPicture, nameof(HPictureDownloadFailReply), value);
         }
 
