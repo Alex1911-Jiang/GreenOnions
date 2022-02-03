@@ -55,7 +55,7 @@ namespace GreenOnions.HPicture
                     if (lImgCount <= 0)   //犯贱呢要0张或以下色图
                         return;
 
-                    if (lImgCount > 100) lImgCount = 100;
+                    if (lImgCount > BotInfo.HPictureOnceMessageMaxImageCount) lImgCount = BotInfo.HPictureOnceMessageMaxImageCount;
 
                     #endregion -- 色图数量 -- 
 

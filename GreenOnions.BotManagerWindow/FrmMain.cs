@@ -1,4 +1,6 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.RSS;
+using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using System;
 using System.Drawing;
 using System.IO;
@@ -15,13 +17,15 @@ namespace GreenOnions.BotMainManagerWindow
 			#region -- 读取配置 --
 			try
 			{
-				if (!File.Exists(Cache.JsonConfigFileName))
+				if (!File.Exists(JsonHelper.JsonConfigFileName))
 				{
 					MessageBox.Show("初次使用本机器人，请先配置相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					OpenSetting();
-                }
+				}
+				if (!File.Exists(JsonHelper.JsonCacheFileName))
+					JsonHelper.CreateCache();
 
-                txbQQ.Text = BotInfo.QQId.ToString();
+				txbQQ.Text = BotInfo.QQId.ToString();
 				txbIP.Text = BotInfo.IP;
 				txbPort.Text = BotInfo.Port;
 				txbVerifyKey.Text = BotInfo.VerifyKey;

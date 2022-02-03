@@ -59,7 +59,7 @@ namespace GreenOnions.BotMain
                                     if (e.Chain[i].Type == "Image")
                                     {
                                         ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-                                        await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));
+                                        await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id), urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));
                                     }
                                 }
                             }
@@ -94,7 +94,8 @@ namespace GreenOnions.BotMain
                                 ImageMessage imgMsg = e.Chain[i] as ImageMessage;
                                 await SearchPictureHandler.SuccessiveSearchPicture(imgMsg, e.Sender.Id,
                                     picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),  //上传图片
-                                    msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));  //发送群消息
+                                    msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id),  //发送群消息
+                                    urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));
                             }
                             #endregion -- 连续搜图 --
                         }

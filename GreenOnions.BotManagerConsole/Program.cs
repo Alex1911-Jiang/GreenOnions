@@ -14,13 +14,15 @@ namespace GreenOnions.BotManagerConsole
 
 			Console.WriteLine("葱葱机器人");
 
-			if (!File.Exists(Cache.JsonConfigFileName))
+			if (!File.Exists(JsonHelper.JsonConfigFileName))
 			{
-				AssemblyHelper.CreateConfig();
+				JsonHelper.CreateConfig();
 				Console.WriteLine("初次使用本机器人，请先设置config.json相关参数。");
 			}
+			if (!File.Exists(JsonHelper.JsonCacheFileName))
+				JsonHelper.CreateCache();
 
-		ILRetry:;
+			ILRetry:;
 			Console.WriteLine("请输入机器人QQ号:");
 			long qqId = 0;
 			if (!long.TryParse(Console.ReadLine(), out qqId))

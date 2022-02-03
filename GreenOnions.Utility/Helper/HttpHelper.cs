@@ -242,16 +242,10 @@ namespace GreenOnions.Utility.Helper
         }
         #endregion -- Https请求 --
 
-        private static byte[] DownloadImageData(string url, string cacheImageName)
+        private static byte[] DownloadImageData(string url)
         {
             WebClient webClient = new WebClient();
             byte[] bytes = webClient.DownloadData(url);
-
-            if (BotInfo.ImageCache)
-            {
-                File.WriteAllBytes(cacheImageName, bytes);
-            }
-
             return bytes;
         }
 
@@ -259,37 +253,33 @@ namespace GreenOnions.Utility.Helper
         {
             string cacheDir = Path.GetDirectoryName(cacheImageName);
             if (!Directory.Exists(cacheDir))
-            {
                 Directory.CreateDirectory(cacheDir);
-            }
             WebClient webClient = new WebClient();
             webClient.DownloadFile(url, cacheImageName);
             byte[] bytes = File.ReadAllBytes(cacheImageName);
             if (!BotInfo.ImageCache)
-            {
                 File.Delete(cacheImageName);
-            }
             return bytes;
         }
 
-        private static async Task<byte[]> DownloadImageDataAsync(string url)
-        {
-            WebClient webClient = new WebClient();
-            byte[] bytes = await webClient.DownloadDataTaskAsync(url);
-            return bytes;
-        }
-
-        public static MemoryStream DownloadImageAsMemoryStream(string url, string cacheImageName)
+        public static MemoryStream DownloadImageAsMemoryStream(string url, string cacheImageName = null)
         {
             bool retry = true;
             byte[] imageByte;
         ILRetry:;
             try
             {
-                if (BotInfo.EnabledAccelerate)
-                    imageByte = DownloadImageFile(BotInfo.AccelerateUrl + url, cacheImageName);
+                if (string.IsNullOrEmpty(cacheImageName) || !BotInfo.ImageCache)
+                {
+                    imageByte = DownloadImageData(url);
+                }
                 else
-                    imageByte = DownloadImageFile(url, cacheImageName);
+                {
+                    if (BotInfo.EnabledAccelerate)
+                        imageByte = DownloadImageFile(BotInfo.AccelerateUrl + url, cacheImageName);
+                    else
+                        imageByte = DownloadImageFile(url, cacheImageName);
+                }
 
                 MemoryStream ms = new MemoryStream(imageByte);
                 return ms;

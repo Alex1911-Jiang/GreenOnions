@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GreenOnions.Utility.Helper;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,15 +12,34 @@ namespace GreenOnions.Utility
 {
     public static class Cache
     {
-        public static readonly string JsonConfigFileName;
-        public static readonly IDictionary<string, Assembly> Assemblies = new Dictionary<string, Assembly>();
-        public static readonly IDictionary<long, DateTime> HPictureCDDic = new Dictionary<long, DateTime>();
-        public static readonly IDictionary<long, DateTime> HPictureWhiteCDDic = new Dictionary<long, DateTime>();
-        public static readonly IDictionary<long, DateTime> HPicturePMCDDic = new Dictionary<long, DateTime>();
-        public static readonly IDictionary<long, int> LimitDic = new Dictionary<long, int>();
-        public static readonly IDictionary<long, DateTime> SearchingPictures = new Dictionary<long, DateTime>();
+        public static IDictionary<string, Assembly> Assemblies { get; } = new Dictionary<string, Assembly>();
+        public static IDictionary<long, DateTime> HPictureCDDic { get; } = new Dictionary<long, DateTime>();
+        public static IDictionary<long, DateTime> HPictureWhiteCDDic { get; } = new Dictionary<long, DateTime>();
+        public static IDictionary<long, DateTime> HPicturePMCDDic { get; } = new Dictionary<long, DateTime>();
+        public static IDictionary<long, int> LimitDic { get; } = new Dictionary<long, int>();
+        public static IDictionary<long, DateTime> SearchingPictures { get; } = new Dictionary<long, DateTime>();
 
-        static Cache() => JsonConfigFileName = Path.Combine(Environment.CurrentDirectory, "config.json");
+        private static IDictionary<string, DateTime> _LastOneSendRssTime = null;
+        public static IDictionary<string, DateTime> LastOneSendRssTime 
+        {
+            get
+            {
+                if (_LastOneSendRssTime == null)
+                {
+                    string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonCacheFileName, JsonHelper.JsonNodeNameRss, nameof(LastOneSendRssTime));
+                    if (string.IsNullOrEmpty(strValue))
+                        _LastOneSendRssTime = new Dictionary<string, DateTime>();
+                    else
+                        _LastOneSendRssTime = JsonConvert.DeserializeObject<Dictionary<string, DateTime>>(strValue);
+                }
+                return _LastOneSendRssTime;
+            }
+            set 
+            {
+                JsonHelper.SetSerializationValue(JsonHelper.JsonCacheFileName, JsonHelper.JsonNodeNameRss, nameof(LastOneSendRssTime), JsonConvert.SerializeObject(value));
+            }
+        }
+
 
         private static Task _TaskCheckSearchPictureTime = null;
         public static void CheckSearchPictureTime(Action<long> Callback)

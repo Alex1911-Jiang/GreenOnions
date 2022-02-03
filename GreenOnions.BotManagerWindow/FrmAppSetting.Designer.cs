@@ -114,6 +114,9 @@
             this.chkSearchSauceNAOEnabled = new System.Windows.Forms.CheckBox();
             this.tabTranslate = new System.Windows.Forms.TabPage();
             this.pnlTranslate = new System.Windows.Forms.Panel();
+            this.lblTranslateEngineHelp = new System.Windows.Forms.Label();
+            this.cboTranslateEngine = new System.Windows.Forms.ComboBox();
+            this.lblTranslateEngine = new System.Windows.Forms.Label();
             this.txbAddAutoTranslateGroupMemoryQQ = new System.Windows.Forms.TextBox();
             this.btnRemoveAutoTranslateGroupMemoryQQ = new System.Windows.Forms.Button();
             this.btnAddAutoTranslateGroupMemoryQQ = new System.Windows.Forms.Button();
@@ -261,6 +264,13 @@
             this.lblForgeMessageCmdBegin = new System.Windows.Forms.Label();
             this.txbForgeMessageCmdBegin = new System.Windows.Forms.TextBox();
             this.chkEnabledForgeMessage = new System.Windows.Forms.CheckBox();
+            this.tabRss = new System.Windows.Forms.TabPage();
+            this.pnlRss = new System.Windows.Forms.Panel();
+            this.pnlRssSubscriptionList = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnAddRssSubscription = new System.Windows.Forms.Button();
+            this.txbReadRssInterval = new System.Windows.Forms.TextBox();
+            this.lblReadRssInterval = new System.Windows.Forms.Label();
+            this.chkRssEnabled = new System.Windows.Forms.CheckBox();
             this.tabAbout = new System.Windows.Forms.TabPage();
             this.txbContributorName = new System.Windows.Forms.TextBox();
             this.txbContributorQQ = new System.Windows.Forms.TextBox();
@@ -271,6 +281,9 @@
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.lblHPictureOnceMessageMaxImageCount = new System.Windows.Forms.Label();
+            this.txbHPictureOnceMessageMaxImageCount = new System.Windows.Forms.TextBox();
+            this.lblHPictureOnceMessageMaxImageCountHelp = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.pnlDebugMode.SuspendLayout();
@@ -285,6 +298,9 @@
             this.tabGroupMemberEvents.SuspendLayout();
             this.tabForgeMessage.SuspendLayout();
             this.pnlForgeMessage.SuspendLayout();
+            this.tabRss.SuspendLayout();
+            this.pnlRss.SuspendLayout();
+            this.pnlRssSubscriptionList.SuspendLayout();
             this.tabAbout.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -352,6 +368,7 @@
             this.tabControl1.Controls.Add(this.tabRepeater);
             this.tabControl1.Controls.Add(this.tabGroupMemberEvents);
             this.tabControl1.Controls.Add(this.tabForgeMessage);
+            this.tabControl1.Controls.Add(this.tabRss);
             this.tabControl1.Controls.Add(this.tabAbout);
             this.tabControl1.Location = new System.Drawing.Point(14, 8);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
@@ -727,6 +744,9 @@
             // 
             // pnlSearchPicture
             // 
+            this.pnlSearchPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlSearchPicture.AutoScroll = true;
             this.pnlSearchPicture.Controls.Add(this.chkTraceMoeEnabled);
             this.pnlSearchPicture.Controls.Add(this.pnlCheckPorn);
@@ -1163,6 +1183,12 @@
             // 
             // pnlTranslate
             // 
+            this.pnlTranslate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTranslate.Controls.Add(this.lblTranslateEngineHelp);
+            this.pnlTranslate.Controls.Add(this.cboTranslateEngine);
+            this.pnlTranslate.Controls.Add(this.lblTranslateEngine);
             this.pnlTranslate.Controls.Add(this.txbAddAutoTranslateGroupMemoryQQ);
             this.pnlTranslate.Controls.Add(this.btnRemoveAutoTranslateGroupMemoryQQ);
             this.pnlTranslate.Controls.Add(this.btnAddAutoTranslateGroupMemoryQQ);
@@ -1175,12 +1201,42 @@
             this.pnlTranslate.Controls.Add(this.lblTranslateToChinese);
             this.pnlTranslate.Location = new System.Drawing.Point(3, 43);
             this.pnlTranslate.Name = "pnlTranslate";
-            this.pnlTranslate.Size = new System.Drawing.Size(646, 228);
+            this.pnlTranslate.Size = new System.Drawing.Size(646, 277);
             this.pnlTranslate.TabIndex = 1;
+            // 
+            // lblTranslateEngineHelp
+            // 
+            this.lblTranslateEngineHelp.AutoSize = true;
+            this.lblTranslateEngineHelp.Location = new System.Drawing.Point(137, 31);
+            this.lblTranslateEngineHelp.Name = "lblTranslateEngineHelp";
+            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(483, 17);
+            this.lblTranslateEngineHelp.TabIndex = 13;
+            this.lblTranslateEngineHelp.Text = "提示: 谷歌翻译Api需翻墙, 有道翻译Api仅支持任意译中(其实还支持中译英, 但是我懒得做)";
+            // 
+            // cboTranslateEngine
+            // 
+            this.cboTranslateEngine.FormattingEnabled = true;
+            this.cboTranslateEngine.Items.AddRange(new object[] {
+            "Google",
+            "YouDao"});
+            this.cboTranslateEngine.Location = new System.Drawing.Point(137, 3);
+            this.cboTranslateEngine.Name = "cboTranslateEngine";
+            this.cboTranslateEngine.Size = new System.Drawing.Size(485, 25);
+            this.cboTranslateEngine.TabIndex = 12;
+            this.cboTranslateEngine.SelectedIndexChanged += new System.EventHandler(this.cboTranslateEngine_SelectedIndexChanged);
+            // 
+            // lblTranslateEngine
+            // 
+            this.lblTranslateEngine.AutoSize = true;
+            this.lblTranslateEngine.Location = new System.Drawing.Point(12, 6);
+            this.lblTranslateEngine.Name = "lblTranslateEngine";
+            this.lblTranslateEngine.Size = new System.Drawing.Size(59, 17);
+            this.lblTranslateEngine.TabIndex = 11;
+            this.lblTranslateEngine.Text = "翻译引擎:";
             // 
             // txbAddAutoTranslateGroupMemoryQQ
             // 
-            this.txbAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(452, 153);
+            this.txbAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(455, 200);
             this.txbAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4);
             this.txbAddAutoTranslateGroupMemoryQQ.Name = "txbAddAutoTranslateGroupMemoryQQ";
             this.txbAddAutoTranslateGroupMemoryQQ.ShortcutsEnabled = false;
@@ -1189,7 +1245,7 @@
             // 
             // btnRemoveAutoTranslateGroupMemoryQQ
             // 
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(344, 184);
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(347, 231);
             this.btnRemoveAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveAutoTranslateGroupMemoryQQ.Name = "btnRemoveAutoTranslateGroupMemoryQQ";
             this.btnRemoveAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(88, 23);
@@ -1200,7 +1256,7 @@
             // 
             // btnAddAutoTranslateGroupMemoryQQ
             // 
-            this.btnAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(344, 153);
+            this.btnAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(347, 200);
             this.btnAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddAutoTranslateGroupMemoryQQ.Name = "btnAddAutoTranslateGroupMemoryQQ";
             this.btnAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(88, 23);
@@ -1213,7 +1269,7 @@
             // 
             this.lstAutoTranslateGroupMemoriesQQ.FullRowSelect = true;
             this.lstAutoTranslateGroupMemoriesQQ.HideSelection = false;
-            this.lstAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(156, 132);
+            this.lstAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(156, 179);
             this.lstAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(4);
             this.lstAutoTranslateGroupMemoriesQQ.Name = "lstAutoTranslateGroupMemoriesQQ";
             this.lstAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(167, 85);
@@ -1224,7 +1280,7 @@
             // lblAddAutoTranslateGroupMemoryQQ
             // 
             this.lblAddAutoTranslateGroupMemoryQQ.AutoSize = true;
-            this.lblAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(450, 132);
+            this.lblAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(453, 179);
             this.lblAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAddAutoTranslateGroupMemoryQQ.Name = "lblAddAutoTranslateGroupMemoryQQ";
             this.lblAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(160, 17);
@@ -1234,7 +1290,7 @@
             // lblAutoTranslateGroupMemoriesQQ
             // 
             this.lblAutoTranslateGroupMemoriesQQ.AutoSize = true;
-            this.lblAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(12, 132);
+            this.lblAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(12, 179);
             this.lblAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAutoTranslateGroupMemoriesQQ.Name = "lblAutoTranslateGroupMemoriesQQ";
             this.lblAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(136, 17);
@@ -1243,22 +1299,22 @@
             // 
             // txbTranslateTo
             // 
-            this.txbTranslateTo.Location = new System.Drawing.Point(134, 44);
+            this.txbTranslateTo.Location = new System.Drawing.Point(137, 101);
             this.txbTranslateTo.Name = "txbTranslateTo";
-            this.txbTranslateTo.Size = new System.Drawing.Size(459, 23);
+            this.txbTranslateTo.Size = new System.Drawing.Size(485, 23);
             this.txbTranslateTo.TabIndex = 3;
             // 
             // txbTranslateToChinese
             // 
-            this.txbTranslateToChinese.Location = new System.Drawing.Point(134, 8);
+            this.txbTranslateToChinese.Location = new System.Drawing.Point(137, 66);
             this.txbTranslateToChinese.Name = "txbTranslateToChinese";
-            this.txbTranslateToChinese.Size = new System.Drawing.Size(459, 23);
+            this.txbTranslateToChinese.Size = new System.Drawing.Size(485, 23);
             this.txbTranslateToChinese.TabIndex = 2;
             // 
             // lblTranslateTo
             // 
             this.lblTranslateTo.AutoSize = true;
-            this.lblTranslateTo.Location = new System.Drawing.Point(9, 47);
+            this.lblTranslateTo.Location = new System.Drawing.Point(12, 104);
             this.lblTranslateTo.Name = "lblTranslateTo";
             this.lblTranslateTo.Size = new System.Drawing.Size(119, 17);
             this.lblTranslateTo.TabIndex = 1;
@@ -1267,7 +1323,7 @@
             // lblTranslateToChinese
             // 
             this.lblTranslateToChinese.AutoSize = true;
-            this.lblTranslateToChinese.Location = new System.Drawing.Point(9, 11);
+            this.lblTranslateToChinese.Location = new System.Drawing.Point(12, 69);
             this.lblTranslateToChinese.Name = "lblTranslateToChinese";
             this.lblTranslateToChinese.Size = new System.Drawing.Size(95, 17);
             this.lblTranslateToChinese.TabIndex = 0;
@@ -1299,7 +1355,13 @@
             // 
             // pnlEnabelHPicture
             // 
-            this.pnlEnabelHPicture.AutoSize = true;
+            this.pnlEnabelHPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlEnabelHPicture.AutoScroll = true;
+            this.pnlEnabelHPicture.Controls.Add(this.lblHPictureOnceMessageMaxImageCountHelp);
+            this.pnlEnabelHPicture.Controls.Add(this.txbHPictureOnceMessageMaxImageCount);
+            this.pnlEnabelHPicture.Controls.Add(this.lblHPictureOnceMessageMaxImageCount);
             this.pnlEnabelHPicture.Controls.Add(this.lblBeautyPictureSource);
             this.pnlEnabelHPicture.Controls.Add(this.lblHPictureSource);
             this.pnlEnabelHPicture.Controls.Add(this.chkEnabledGreenOnionsBeautyPicture);
@@ -1390,10 +1452,10 @@
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureCount);
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureR18);
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureUnit);
-            this.pnlEnabelHPicture.Location = new System.Drawing.Point(4, 32);
+            this.pnlEnabelHPicture.Location = new System.Drawing.Point(4, 41);
             this.pnlEnabelHPicture.Margin = new System.Windows.Forms.Padding(4);
             this.pnlEnabelHPicture.Name = "pnlEnabelHPicture";
-            this.pnlEnabelHPicture.Size = new System.Drawing.Size(629, 1198);
+            this.pnlEnabelHPicture.Size = new System.Drawing.Size(644, 642);
             this.pnlEnabelHPicture.TabIndex = 8;
             // 
             // lblBeautyPictureSource
@@ -2339,7 +2401,7 @@
             // chkEnabledHPicture
             // 
             this.chkEnabledHPicture.AutoSize = true;
-            this.chkEnabledHPicture.Location = new System.Drawing.Point(9, 8);
+            this.chkEnabledHPicture.Location = new System.Drawing.Point(13, 12);
             this.chkEnabledHPicture.Margin = new System.Windows.Forms.Padding(4);
             this.chkEnabledHPicture.Name = "chkEnabledHPicture";
             this.chkEnabledHPicture.Size = new System.Drawing.Size(99, 21);
@@ -2591,6 +2653,9 @@
             // 
             // pnlForgeMessage
             // 
+            this.pnlForgeMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlForgeMessage.Controls.Add(this.lblForgeMessageCmd);
             this.pnlForgeMessage.Controls.Add(this.txbForgeMessageCmd);
             this.pnlForgeMessage.Controls.Add(this.chkForgeMessageAdminDontAppend);
@@ -2782,6 +2847,86 @@
             this.chkEnabledForgeMessage.UseVisualStyleBackColor = true;
             this.chkEnabledForgeMessage.CheckedChanged += new System.EventHandler(this.chkEnabledForgeMessage_CheckedChanged);
             // 
+            // tabRss
+            // 
+            this.tabRss.Controls.Add(this.pnlRss);
+            this.tabRss.Controls.Add(this.chkRssEnabled);
+            this.tabRss.Location = new System.Drawing.Point(4, 26);
+            this.tabRss.Name = "tabRss";
+            this.tabRss.Size = new System.Drawing.Size(652, 687);
+            this.tabRss.TabIndex = 8;
+            this.tabRss.Text = "RSS转发";
+            this.tabRss.UseVisualStyleBackColor = true;
+            // 
+            // pnlRss
+            // 
+            this.pnlRss.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlRss.Controls.Add(this.pnlRssSubscriptionList);
+            this.pnlRss.Controls.Add(this.txbReadRssInterval);
+            this.pnlRss.Controls.Add(this.lblReadRssInterval);
+            this.pnlRss.Location = new System.Drawing.Point(3, 40);
+            this.pnlRss.Name = "pnlRss";
+            this.pnlRss.Size = new System.Drawing.Size(646, 644);
+            this.pnlRss.TabIndex = 1;
+            // 
+            // pnlRssSubscriptionList
+            // 
+            this.pnlRssSubscriptionList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlRssSubscriptionList.AutoScroll = true;
+            this.pnlRssSubscriptionList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlRssSubscriptionList.Controls.Add(this.btnAddRssSubscription);
+            this.pnlRssSubscriptionList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.pnlRssSubscriptionList.Location = new System.Drawing.Point(23, 32);
+            this.pnlRssSubscriptionList.Name = "pnlRssSubscriptionList";
+            this.pnlRssSubscriptionList.Size = new System.Drawing.Size(600, 609);
+            this.pnlRssSubscriptionList.TabIndex = 2;
+            this.pnlRssSubscriptionList.WrapContents = false;
+            this.pnlRssSubscriptionList.SizeChanged += new System.EventHandler(this.pnlRssSubscriptionList_SizeChanged);
+            this.pnlRssSubscriptionList.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.PnlRssSubscriptionList_ControlChanged);
+            this.pnlRssSubscriptionList.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.PnlRssSubscriptionList_ControlChanged);
+            // 
+            // btnAddRssSubscription
+            // 
+            this.btnAddRssSubscription.Image = global::GreenOnions.BotManagerWindow.Properties.Resources.add;
+            this.btnAddRssSubscription.Location = new System.Drawing.Point(3, 3);
+            this.btnAddRssSubscription.Name = "btnAddRssSubscription";
+            this.btnAddRssSubscription.Size = new System.Drawing.Size(592, 150);
+            this.btnAddRssSubscription.TabIndex = 0;
+            this.btnAddRssSubscription.UseVisualStyleBackColor = true;
+            this.btnAddRssSubscription.Click += new System.EventHandler(this.btnAddRssSubscription_Click);
+            // 
+            // txbReadRssInterval
+            // 
+            this.txbReadRssInterval.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbReadRssInterval.Location = new System.Drawing.Point(169, 3);
+            this.txbReadRssInterval.Name = "txbReadRssInterval";
+            this.txbReadRssInterval.Size = new System.Drawing.Size(454, 23);
+            this.txbReadRssInterval.TabIndex = 1;
+            // 
+            // lblReadRssInterval
+            // 
+            this.lblReadRssInterval.AutoSize = true;
+            this.lblReadRssInterval.Location = new System.Drawing.Point(24, 6);
+            this.lblReadRssInterval.Name = "lblReadRssInterval";
+            this.lblReadRssInterval.Size = new System.Drawing.Size(139, 17);
+            this.lblReadRssInterval.TabIndex = 0;
+            this.lblReadRssInterval.Text = "获取内容时间间隔(分钟):";
+            // 
+            // chkRssEnabled
+            // 
+            this.chkRssEnabled.AutoSize = true;
+            this.chkRssEnabled.Location = new System.Drawing.Point(13, 12);
+            this.chkRssEnabled.Name = "chkRssEnabled";
+            this.chkRssEnabled.Size = new System.Drawing.Size(121, 21);
+            this.chkRssEnabled.TabIndex = 0;
+            this.chkRssEnabled.Text = "启用RSS订阅转发";
+            this.chkRssEnabled.UseVisualStyleBackColor = true;
+            // 
             // tabAbout
             // 
             this.tabAbout.Controls.Add(this.txbContributorName);
@@ -2884,6 +3029,34 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
+            // lblHPictureOnceMessageMaxImageCount
+            // 
+            this.lblHPictureOnceMessageMaxImageCount.AutoSize = true;
+            this.lblHPictureOnceMessageMaxImageCount.Location = new System.Drawing.Point(9, 523);
+            this.lblHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHPictureOnceMessageMaxImageCount.Name = "lblHPictureOnceMessageMaxImageCount";
+            this.lblHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(131, 17);
+            this.lblHPictureOnceMessageMaxImageCount.TabIndex = 16;
+            this.lblHPictureOnceMessageMaxImageCount.Text = "单次请求最大图片数量:";
+            // 
+            // txbHPictureOnceMessageMaxImageCount
+            // 
+            this.txbHPictureOnceMessageMaxImageCount.Location = new System.Drawing.Point(137, 520);
+            this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
+            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(366, 23);
+            this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
+            // 
+            // lblHPictureOnceMessageMaxImageCountHelp
+            // 
+            this.lblHPictureOnceMessageMaxImageCountHelp.AutoSize = true;
+            this.lblHPictureOnceMessageMaxImageCountHelp.Location = new System.Drawing.Point(137, 547);
+            this.lblHPictureOnceMessageMaxImageCountHelp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHPictureOnceMessageMaxImageCountHelp.Name = "lblHPictureOnceMessageMaxImageCountHelp";
+            this.lblHPictureOnceMessageMaxImageCountHelp.Size = new System.Drawing.Size(261, 17);
+            this.lblHPictureOnceMessageMaxImageCountHelp.TabIndex = 18;
+            this.lblHPictureOnceMessageMaxImageCountHelp.Text = "支持1-100, 建议不超过10个, 否则可能无法撤回";
+            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -2924,6 +3097,11 @@
             this.tabForgeMessage.PerformLayout();
             this.pnlForgeMessage.ResumeLayout(false);
             this.pnlForgeMessage.PerformLayout();
+            this.tabRss.ResumeLayout(false);
+            this.tabRss.PerformLayout();
+            this.pnlRss.ResumeLayout(false);
+            this.pnlRss.PerformLayout();
+            this.pnlRssSubscriptionList.ResumeLayout(false);
             this.tabAbout.ResumeLayout(false);
             this.tabAbout.PerformLayout();
             this.ResumeLayout(false);
@@ -3175,5 +3353,18 @@
         private System.Windows.Forms.Label lblForgeMessageCmdDemo;
         private System.Windows.Forms.Label lblForgeMessageCmd;
         private System.Windows.Forms.TextBox txbForgeMessageCmd;
+        private System.Windows.Forms.TabPage tabRss;
+        private System.Windows.Forms.CheckBox chkRssEnabled;
+        private System.Windows.Forms.Panel pnlRss;
+        private System.Windows.Forms.TextBox txbReadRssInterval;
+        private System.Windows.Forms.Label lblReadRssInterval;
+        private System.Windows.Forms.FlowLayoutPanel pnlRssSubscriptionList;
+        private System.Windows.Forms.Button btnAddRssSubscription;
+        private System.Windows.Forms.Label lblTranslateEngineHelp;
+        private System.Windows.Forms.ComboBox cboTranslateEngine;
+        private System.Windows.Forms.Label lblTranslateEngine;
+        private System.Windows.Forms.TextBox txbHPictureOnceMessageMaxImageCount;
+        private System.Windows.Forms.Label lblHPictureOnceMessageMaxImageCount;
+        private System.Windows.Forms.Label lblHPictureOnceMessageMaxImageCountHelp;
     }
 }

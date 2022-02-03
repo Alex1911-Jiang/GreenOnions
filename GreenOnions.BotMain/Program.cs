@@ -1,4 +1,5 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.RSS;
+using GreenOnions.Utility;
 using Microsoft.Extensions.DependencyInjection;
 using Mirai.CSharp.Builders;
 using Mirai.CSharp.HttpApi.Builder;
@@ -60,7 +61,6 @@ namespace GreenOnions.BotMain
 
                 Cache.SetTaskAtFixedTime();
 
-
                 IFriendInfo[] IFriendInfos = await session.GetFriendListAsync();
                 string nickname = "未知";
 
@@ -70,10 +70,22 @@ namespace GreenOnions.BotMain
 
                 ConnectedEvent?.Invoke(true, nickname);
 
+                BotInfo.IsLogin = true;
+
+                RssHelper.StartRssTask((target, stream) => session.UploadPictureAsync(target, stream), (qqId, msg, type) => 
+                {
+                    if (type == UploadTarget.Group)
+                        session.SendGroupMessageAsync(qqId, msg);
+                    else if (type == UploadTarget.Friend)
+                        session.SendFriendMessageAsync(qqId, msg);
+                });
+
                 while (true)
                 {
+                    BotInfo.IsLogin = true;
                     if (Console.ReadLine() == "exit")
                     {
+                        BotInfo.IsLogin = false;
                         resistration.Dispose(); // 实时移除
                         session.Dispose();
                         ConnectedEvent?.Invoke(false, "");

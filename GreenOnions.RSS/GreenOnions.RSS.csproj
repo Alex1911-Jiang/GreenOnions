@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.30" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mirai-CSharp\Mirai-CSharp.HttpApi\Mirai-CSharp.HttpApi.csproj" />
+    <ProjectReference Include="..\..\Mirai-CSharp\Mirai-CSharp\Mirai-CSharp.csproj" />
+    <ProjectReference Include="..\GreenOnions.Translate\GreenOnions.Translate.csproj" />
+    <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />
+  </ItemGroup>
+
+</Project>

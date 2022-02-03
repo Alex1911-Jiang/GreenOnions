@@ -1,9 +1,12 @@
 ﻿using GreenOnions.BotMain;
+using GreenOnions.BotManagerWindow;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
+using GreenOnions.Utility.Items;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace GreenOnions.BotMainManagerWindow
@@ -80,13 +83,12 @@ namespace GreenOnions.BotMainManagerWindow
             #region -- 翻译设置 --
 
             chkTranslateEnabled.Checked = BotInfo.TranslateEnabled;
+            cboTranslateEngine.SelectedIndex = (int)BotInfo.TranslateEngineType;
             txbTranslateToChinese.Text = BotInfo.TranslateToChineseCMD;
             txbTranslateTo.Text = BotInfo.TranslateToCMD;
 
             foreach (long item in BotInfo.AutoTranslateGroupMemoriesQQ)
-            {
                 lstAutoTranslateGroupMemoriesQQ.Items.Add(item.ToString());
-            }
 
             #endregion -- 翻译设置 --
 
@@ -106,7 +108,7 @@ namespace GreenOnions.BotMainManagerWindow
                 if (beautySource == PictureSource.GreenOnions)
                     chkEnabledGreenOnionsBeautyPicture.Checked = true;
             }
-
+            txbHPictureOnceMessageMaxImageCount.Text = BotInfo.HPictureOnceMessageMaxImageCount.ToString();
             chkEnabledHPicture.Checked = BotInfo.HPictureEnabled;
             txbHPictureApiKey.Text = BotInfo.HPictureApiKey;
             txbHPictureCmd.Text = BotInfo.HPictureCmd;
@@ -212,6 +214,28 @@ namespace GreenOnions.BotMainManagerWindow
             txbRefuseForgeBotReply.Text = BotInfo.RefuseForgeBotReply;
 
             #endregion -- 伪造消息 --
+
+            #region -- RSS --
+            chkRssEnabled.Checked = BotInfo.RssEnabled;
+            if (BotInfo.RssSubscription != null)
+            {
+                pnlRssSubscriptionList.Controls.Remove(btnAddRssSubscription);
+                foreach (RssSubscriptionItem item in BotInfo.RssSubscription)
+                {
+                    CtrlRssItem ctrlRssItem = new CtrlRssItem();
+                    ctrlRssItem.Width = RssItemCtrlWidth;
+                    ctrlRssItem.RssSubscriptionUrl = item.Url;
+                    ctrlRssItem.RssRemark = item.Remark;
+                    ctrlRssItem.RssForwardGroups = item.ForwardGroups;
+                    ctrlRssItem.RssForwardQQs = item.ForwardQQs;
+                    ctrlRssItem.RssTranslate = item.Translate;
+                    ctrlRssItem.RemoveClick += (_, _) => pnlRssSubscriptionList.Controls.Remove(ctrlRssItem);
+                    pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
+                }
+                pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
+            }
+            txbReadRssInterval.Text = BotInfo.ReadRssInterval.ToString();
+            #endregion  -- RSS --
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -302,6 +326,7 @@ namespace GreenOnions.BotMainManagerWindow
             #region -- 翻译设置 --
 
             BotInfo.TranslateEnabled = chkTranslateEnabled.Checked;
+            BotInfo.TranslateEngineType = (TranslateEngine)cboTranslateEngine.SelectedIndex;
             BotInfo.TranslateToChineseCMD = txbTranslateToChinese.Text;
             BotInfo.TranslateToCMD = txbTranslateTo.Text;
 
@@ -328,7 +353,7 @@ namespace GreenOnions.BotMainManagerWindow
                 EnabledBeautyPictureSource.Add(PictureSource.GreenOnions);
             BotInfo.EnabledHPictureSource = EnabledHPictureSource;
             BotInfo.EnabledBeautyPictureSource = EnabledBeautyPictureSource;
-
+            BotInfo.HPictureOnceMessageMaxImageCount = string.IsNullOrEmpty(txbHPictureOnceMessageMaxImageCount.Text) ? 10 : Convert.ToInt32(txbHPictureOnceMessageMaxImageCount.Text);
             BotInfo.HPictureEnabled = chkEnabledHPicture.Checked;
             BotInfo.HPictureApiKey = txbHPictureApiKey.Text;
             BotInfo.HPictureBeginCmd = txbHPictureBegin.Text;
@@ -424,6 +449,21 @@ namespace GreenOnions.BotMainManagerWindow
 
             #endregion -- 伪造消息 --
 
+            #region -- RSS --
+
+            BotInfo.RssEnabled = chkRssEnabled.Checked;
+            BotInfo.RssSubscription = pnlRssSubscriptionList.Controls.OfType<CtrlRssItem>().Select(i => new RssSubscriptionItem()
+            {
+                Url = i.RssSubscriptionUrl,
+                Remark = i.RssRemark,
+                ForwardGroups = i.RssForwardGroups,
+                ForwardQQs = i.RssForwardQQs,
+                Translate = i.RssTranslate,
+            });
+            BotInfo.ReadRssInterval = Convert.ToInt32(txbReadRssInterval.Text);
+
+            #endregion -- RSS --
+
             JsonHelper.SaveConfigFile();
 
             PlainMessageHandler.UpdateRegexs();
@@ -484,7 +524,7 @@ namespace GreenOnions.BotMainManagerWindow
 
         private void checkNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!(Char.IsNumber(e.KeyChar) || e.KeyChar == (char)8))
+            if (!(char.IsNumber(e.KeyChar) || e.KeyChar == (char)8))
             {
                 e.Handled = true;
             }
@@ -499,11 +539,7 @@ namespace GreenOnions.BotMainManagerWindow
                     try
                     {
                         Convert.ToInt64(Clipboard.GetText());  //检查是否数字
-                        ((TextBox)sender).SelectedText = Clipboard.GetText().Trim(); //Ctrl+V 粘贴  
-                        if (((TextBox)sender).TextLength > 10)
-                        {
-                            ((TextBox)sender).Text = ((TextBox)sender).Text.Remove(10); //TextBox最大长度为10  移除多余的
-                        }
+                        ((TextBox)sender).SelectedText = Clipboard.GetText().Trim(); //Ctrl+V 粘贴
                     }
                     catch (Exception)
                     {
@@ -609,5 +645,36 @@ namespace GreenOnions.BotMainManagerWindow
         private void btnRemoveAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => RemoveItemFromListView(lstAutoTranslateGroupMemoriesQQ);
 
         private void chkEnabledForgeMessage_CheckedChanged(object sender, EventArgs e) => pnlForgeMessage.Enabled = chkEnabledForgeMessage.Checked;
+
+        #region -- RSS --
+
+        private int RssItemCtrlWidth = 592;
+        private void btnAddRssSubscription_Click(object sender, EventArgs e)
+        {
+            pnlRssSubscriptionList.Controls.Remove(btnAddRssSubscription);
+            CtrlRssItem ctrlRssItem = new CtrlRssItem();
+            ctrlRssItem.Width = RssItemCtrlWidth;
+            ctrlRssItem.RemoveClick += (_, _) => pnlRssSubscriptionList.Controls.Remove(ctrlRssItem);
+            pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
+            pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
+            pnlRssSubscriptionList.ScrollControlIntoView(btnAddRssSubscription);
+        }
+
+        private void PnlRssSubscriptionList_ControlChanged(object sender, ControlEventArgs e) => ComputeRssItemWidth();
+
+        private void pnlRssSubscriptionList_SizeChanged(object sender, EventArgs e) => ComputeRssItemWidth();
+
+        private void ComputeRssItemWidth()
+        {
+            RssItemCtrlWidth = pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Height + pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Margin.Top * 2 + btnAddRssSubscription.Margin.Top - 1 > pnlRssSubscriptionList.Height ? pnlRssSubscriptionList.Width - 25 : pnlRssSubscriptionList.Width - 8;
+            foreach (Control item in pnlRssSubscriptionList.Controls)
+                item.Width = RssItemCtrlWidth;
+        }
+        #endregion -- RSS --
+
+        private void cboTranslateEngine_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txbTranslateTo.Enabled = cboTranslateEngine.SelectedIndex == (int)TranslateEngine.Google;
+        }
     }
 }

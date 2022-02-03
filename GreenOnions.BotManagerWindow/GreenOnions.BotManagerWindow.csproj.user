@@ -4,6 +4,9 @@
     <_LastSelectedProfileId>D:\Project\Github\GreenOnions\GreenOnions.BotManagerWindow\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="CtrlRssItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="FrmAppSetting.cs">
       <SubType>Form</SubType>
     </Compile>

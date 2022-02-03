@@ -40,6 +40,14 @@ namespace GreenOnions.BotMain
             regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
         }
 
+        /// <summary>
+        /// 处理消息
+        /// </summary>
+        /// <param name="Chain">传入的消息体</param>
+        /// <param name="sender">传入消息的QQ或群的属性</param>
+        /// <param name="SendMessage">发送消息的委托(需要发出的消息体, 是否撤回或是否以回复的方式发送消息)</param>
+        /// <param name="UploadPicture">上传图片事件(图片流, 返回上传完毕后的图片消息体)</param>
+        /// <returns></returns>
         public static async Task HandleMesage(IChatMessage[] Chain, IBaseInfo sender, Action<IChatMessage[], bool> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture)
         {
             string firstMessage = Chain[1].ToString();
@@ -154,12 +162,13 @@ namespace GreenOnions.BotMain
             #region -- 翻译 --
             if (regexTranslateToChinese.IsMatch(firstMessage))
             {
-
                 foreach (Match match in regexTranslateToChinese.Matches(firstMessage))
                 {
                     try
                     {
-                        SendMessage?.Invoke(new [] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(await GoogleTranslateHelper.TranslateToChinese(firstMessage.Substring(match.Value.Length))) }, false);
+                        string text = firstMessage.Substring(match.Value.Length);
+                        string translateResult = await (BotInfo.TranslateEngineType == TranslateEngine.Google ?  GoogleTranslateHelper.TranslateToChinese(text) : YouDaoTranslateHelper.TranslateToChinese(text));
+                        SendMessage?.Invoke(new [] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(translateResult) }, false);
                     }
                     catch (Exception ex)
                     {
@@ -169,17 +178,20 @@ namespace GreenOnions.BotMain
             }
             if (regexTranslateTo.IsMatch(firstMessage))
             {
-                foreach (Match match in regexTranslateTo.Matches(firstMessage))
+                if (BotInfo.TranslateEngineType == TranslateEngine.Google)
                 {
-                    if (match.Groups.Count > 1)
+                    foreach (Match match in regexTranslateTo.Matches(firstMessage))
                     {
-                        try
+                        if (match.Groups.Count > 1)
                         {
-                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(await GoogleTranslateHelper.TranslateTo(firstMessage.Substring(match.Value.Length), match.Groups[1].Value)) }, false);
-                        }
-                        catch (Exception ex)
-                        {
-                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("翻译失败，" + ex.Message) }, false);
+                            try
+                            {
+                                SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(await GoogleTranslateHelper.TranslateTo(firstMessage.Substring(match.Value.Length), match.Groups[1].Value)) }, false);
+                            }
+                            catch (Exception ex)
+                            {
+                                SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("翻译失败，" + ex.Message) }, false);
+                            }
                         }
                     }
                 }
@@ -261,29 +273,19 @@ namespace GreenOnions.BotMain
             {
                 List<string> lstEnabledFeatures = new List<string>();
                 if (BotInfo.SearchEnabled)
-                {
                     lstEnabledFeatures.Add("搜图");
-                }
                 if (BotInfo.TranslateEnabled)
-                {
                     lstEnabledFeatures.Add("翻译");
-                }
                 if (BotInfo.HPictureEnabled)
-                {
                     lstEnabledFeatures.Add("GHS");
-                }
                 if (BotInfo.RandomRepeatEnabled || BotInfo.SuccessiveRepeatEnabled)
-                {
                     lstEnabledFeatures.Add("复读");
-                }
                 if (BotInfo.EnabledForgeMessage)
-                {
                     lstEnabledFeatures.Add("伪造消息");
-                }
+                if (BotInfo.RssEnabled)
+                    lstEnabledFeatures.Add("RSS订阅转发");
                 if (BotInfo.QQId == 3246934384)
-                {
                     lstEnabledFeatures.Add("查手机号");
-                }
                 string strHelpResult = $"现在您可以让我{string.Join("，", lstEnabledFeatures)}。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。";
                 SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(strHelpResult) }, false);
             }

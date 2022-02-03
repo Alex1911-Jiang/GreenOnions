@@ -28,25 +28,6 @@ namespace GreenOnions.BotMain
             {
                 switch (e.Chain[1].Type)
                 {
-                    case "At":
-                        if (e.Chain.Length > 2)
-                        {
-                            #region -- @搜图 --
-                            AtMessage atMe = e.Chain[1] as AtMessage;
-                            if (atMe.Target == BotInfo.QQId)  //@自己
-                            {
-                                for (int i = 2; i < e.Chain.Length; i++)
-                                {
-                                    if (e.Chain[i].Type == "Image")
-                                    {
-                                        ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-                                        await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream), msg => session.SendFriendMessageAsync(e.Sender.Id, msg));
-                                    }
-                                }
-                            }
-                            #endregion -- @搜图 --
-                        }
-                        break;
                     case "Plain":
                         await PlainMessageHandler.HandleMesage(e.Chain, e.Sender,
                             (chatMessages, bRevoke) =>
@@ -74,7 +55,8 @@ namespace GreenOnions.BotMain
                                 ImageMessage imgMsg = e.Chain[i] as ImageMessage;
                                 await SearchPictureHandler.SuccessiveSearchPicture(imgMsg, e.Sender.Id,
                                     picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream),  //上传图片
-                                    msg => session.SendFriendMessageAsync(e.Sender.Id, msg));  //发送好友消息
+                                    msg => session.SendFriendMessageAsync(e.Sender.Id, msg),  //发送好友消息
+                                    urls => session.SendImageToFriendAsync(e.Sender.Id, urls));
                             }
                             #endregion -- 连续搜图 --
                         }

@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -20,7 +21,7 @@ namespace GreenOnions.PictureSearcher
 {
     public static class SearchPictureHandler
     {
-        public static async Task SearchPicture(IImageMessage inImgMsg, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage)
+        public static async Task SearchPicture(IImageMessage inImgMsg, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage, Func<string[], Task<string[]>> SendImage)
         {
             string qqImgUrl = inImgMsg.Url.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
             try
@@ -281,15 +282,21 @@ namespace GreenOnions.PictureSearcher
 
                 void SendOriginImage(string url, string pixivID)
                 {
-                    Task.Run(() =>
+                    Task.Run(async () =>
                     {
                         try
                         {
+                            SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage( (await SendImage(new[] { url })).First(), null, null) });
                             string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{pixivID}_p0.png");
-                            if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
-                                UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
-                            else
-                                UploadPicture(HttpHelper.DownloadImageAsMemoryStream(url, imgName)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));  //请求不含P的地址
+                            if (BotInfo.ImageCache && File.Exists(imgName) && new FileInfo(imgName).Length > 0)
+                            {
+                                _ = Task.Run(() =>HttpHelper.DownloadImageAsMemoryStream(url, imgName));  //仅下载
+                            }
+
+                            //if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
+                            //    UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
+                            //else
+                            //    UploadPicture(HttpHelper.DownloadImageAsMemoryStream(url, imgName)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));  //请求不含P的地址
                         }
                         catch (Exception ex)
                         {
@@ -475,10 +482,10 @@ namespace GreenOnions.PictureSearcher
             return IImageMessage;
         }
 
-        public static async Task SuccessiveSearchPicture(IImageMessage imgMsg, long qqId, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage)
+        public static async Task SuccessiveSearchPicture(IImageMessage imgMsg, long qqId, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage, Func<string[], Task<string[]>> SendImage)
         {
             Cache.SearchingPictures[qqId] = DateTime.Now.AddMinutes(1);
-            await SearchPicture(imgMsg, UploadPicture, SendMessage);
+            await SearchPicture(imgMsg, UploadPicture, SendMessage, SendImage);
         }
     }
 }

@@ -25,6 +25,7 @@
     <ProjectReference Include="..\GreenOnions.HPicture\GreenOnions.HPicture.csproj" />
     <ProjectReference Include="..\GreenOnions.PictureSearcher\GreenOnions.PictureSearcher.csproj" />
     <ProjectReference Include="..\GreenOnions.Repeater\GreenOnions.Repeater.csproj" />
+    <ProjectReference Include="..\GreenOnions.RSS\GreenOnions.RSS.csproj" />
     <ProjectReference Include="..\GreenOnions.Translate\GreenOnions.Translate.csproj" />
     <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />
   </ItemGroup>

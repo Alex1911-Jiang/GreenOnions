@@ -14,7 +14,7 @@ namespace GreenOnions.Utility.Helper
             return (T)method.Invoke(null, param);
         }
 
-        private static Type CreateType(string dllName, string className)
+        public static Type CreateType(string dllName, string className)
         {
             string dllFileName = Path.Combine(Environment.CurrentDirectory, dllName + ".dll");
             Assembly assembly;
@@ -51,16 +51,6 @@ namespace GreenOnions.Utility.Helper
                 }
             }
             return str;
-        }
-
-        public static void CreateConfig()
-        {
-            PropertyInfo[] PropertyInfos = CreateType("GreenOnions.Utility", "GreenOnions.Utility.BotInfo").GetProperties();
-            for (int i = 0; i < PropertyInfos.Length; i++)
-            {
-                if (PropertyInfos[i].CanWrite)
-                    PropertyInfos[i].SetValue(null, PropertyInfos[i].GetValue(null));
-            }
         }
     }
 }
