@@ -2,7 +2,7 @@
 
 ### 关于本项目
 
-#### 这是一个 [mirai](https://github.com/mamoe/mirai) 平台的QQ机器人, 使用 [Mirai-CSharp](https://github.com/Executor-Cheng/Mirai-CSharp) 开发, 实现了搜图, 翻译, setu等功能<br>
+#### 这是一个 [mirai](https://github.com/mamoe/mirai) 平台的QQ机器人, 使用 [Mirai-CSharp](https://github.com/Executor-Cheng/Mirai-CSharp) 开发, 实现了搜图, 翻译, setu RSS订阅转发等功能<br>
 #### 搜图和setu功能设计思路参考自 [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot) <br>
 
 ### 项目优势:
@@ -42,23 +42,23 @@
 
 ### 功能介绍
 
-1.[SauceNao](https://saucenao.com/) 搜图<br>
-2.[ascii2d](https://ascii2d.net/) 搜图<br>
-3.[trace.moe](https://trace.moe/) 搜番<br>
-4.[lolicon](https://api.lolicon.app/#/setu) setu<br>
-5.群友 [Quan](https://github.com/Quan666) 的 [ELF图库](http://img.shab.fun:5000/) 美图<br>
-6.[GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi) 翻译<br>
-7.随机复读, 连续复读, 镜像复读图片和倒带gif(可配置触发几率)<br>
-8.新人入群/退群/被踢提醒(支持定义)<br>
+- [x] 1.[SauceNao](https://saucenao.com/) 搜图<br>
+- [x] 2.[ascii2d](https://ascii2d.net/) 搜图<br>
+- [x] 3.[trace.moe](https://trace.moe/) 搜番<br>
+- [x] 4.[lolicon](https://api.lolicon.app/#/setu) setu<br>
+- [x] 5.群友 [Quan](https://github.com/Quan666) 的 [ELF图库](http://img.shab.fun:5000/) 美图<br>
+- [x] 6.[GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi) 翻译<br>
+- [x] 7.随机复读, 连续复读, 镜像复读图片和倒带gif(可配置触发几率)<br>
+- [x] 8.新人入群/退群/被踢提醒(支持定义)<br>
+- [x] 9.RSS订阅转发<br>
 
 ###### 至于为什么叫葱葱, 一是一开始是给某初音群用的, 叫这个名字可以打压某助手, 二是早期没自己开发的时候使用 [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot) 的机器人叫竹竹, 就想找个类似的名字<br>
 
 ### 短期计划(TODO):
 
-1.先把自家图库 [GreenOnions.Gallery](https://github.com/Alex1911-Jiang/GreenOnions.Gallery) 爬来的图片审核完然后实现自家图库 [实例](http://alex1911.top/) 的调用<br>
-2.群友要求定时提醒功能(定时提醒饮茶)<br>
+1.完善消息帮助<br>
+2.通过消息配置属性<br>
 
 ### 长期计划(GUDO):
 
-1.实现RSS相关转发功能<br>
-2.适配Mirai-Go平台
+1.适配Mirai-Go平台
