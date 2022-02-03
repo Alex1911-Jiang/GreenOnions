@@ -286,7 +286,8 @@ namespace GreenOnions.PictureSearcher
                     {
                         try
                         {
-                            SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage( (await SendImage(new[] { url })).First(), null, null) });
+                            string[] imgIds = await SendImage(new[] { url });
+                            //SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imgIds.First(), null, null) });
                             string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{pixivID}_p0.png");
                             if (BotInfo.ImageCache && File.Exists(imgName) && new FileInfo(imgName).Length > 0)
                             {
