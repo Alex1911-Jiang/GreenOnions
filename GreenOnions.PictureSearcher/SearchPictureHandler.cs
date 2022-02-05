@@ -1,15 +1,13 @@
 ﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using HtmlAgilityPack;
-using Mirai.CSharp.HttpApi.Session;
-using Mirai.CSharp.Models;
 using Mirai.CSharp.Models.ChatMessages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -240,17 +238,13 @@ namespace GreenOnions.PictureSearcher
                                     {
                                         using (var httpClient = new HttpClient())
                                         {
-                                            string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
-                                            using (var request = new HttpRequestMessage(new HttpMethod("GET"), imgUrlHasP))  //尝试带着P请求一次cat
+                                            if (string.IsNullOrEmpty(await CheckCatRoute(Convert.ToInt64(sauceNaoItem.pixiv_id), -1)))
                                             {
-                                                HttpResponseMessage response = await httpClient.SendAsync(request);
-                                                HtmlDocument docColor = new HtmlDocument();
-                                                docColor.LoadHtml(await response.Content.ReadAsStringAsync());
-                                                if (docColor.DocumentNode.ChildNodes.Count == 3)  //Body三个标签说明返回的是路由错误的提示, 真实地址没有P
-                                                    SendOriginImage(imgUrlNoP, sauceNaoItem.pixiv_id);
-                                                else  //真实地址有P=0
-                                                    SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id);
+                                                string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
+                                                SendOriginImage(imgUrlNoP, sauceNaoItem.pixiv_id);
                                             }
+                                            else
+                                                SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id);
                                         }
                                     }
                                     else  //地址有P且>0
@@ -452,6 +446,42 @@ namespace GreenOnions.PictureSearcher
                 if (bColorError && bBovwError)
                     SendMessage(new[] { new PlainMessage("Ascii2D搜索失败。") });
             }
+        }
+
+        private static async Task<string> CheckCatRoute(long id, int p = -1)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                string index = "";
+                if (p != -1)
+                    index = $"-{p + 1}";
+
+                using (var request = new HttpRequestMessage(new HttpMethod("GET"), $"https://pixiv.re/{id}{index}.png"))
+                {
+                    HttpResponseMessage response = await httpClient.SendAsync(request);
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        HtmlDocument docColor = new HtmlDocument();
+                        docColor.LoadHtml(await response.Content.ReadAsStringAsync());
+                        HtmlNode node = docColor.DocumentNode.SelectNodes("/html/body/p")[0];
+                        return node.InnerText;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static async Task DownloadPixivOriginPicture(Func<string[], Task<string[]>> SendImage, Action<IChatMessage[]> SendMessage, long id, int p = -1)
+        {
+            string msg = await CheckCatRoute(id, p);
+            string index = "";
+            if (p != -1)
+                index = $"-{p + 1}";
+
+            if (string.IsNullOrEmpty(msg))
+                await SendImage(new[] { $"https://pixiv.re/{id}{index}.png" });
+            else
+                SendMessage(new[] { new PlainMessage(msg) });
         }
 
         private static IChatMessage CheckPorn(string cacheImageName, byte[] image)

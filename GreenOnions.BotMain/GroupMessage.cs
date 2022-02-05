@@ -50,20 +50,28 @@ namespace GreenOnions.BotMain
                     case "At":
                         if (e.Chain.Length > 2)
                         {
-                            #region -- @搜图 --
                             AtMessage atMe = e.Chain[1] as AtMessage;
                             if (atMe.Target == BotInfo.QQId)  //@自己
                             {
                                 for (int i = 2; i < e.Chain.Length; i++)
                                 {
+                                    #region -- @搜图 --
                                     if (e.Chain[i].Type == "Image")
                                     {
                                         ImageMessage imgMsg = e.Chain[i] as ImageMessage;
                                         await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id), urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));
                                     }
+                                    #endregion -- @搜图 --
+                                    #region -- @下载原图 --
+                                    if (e.Chain[i].Type == "Plain")
+                                    {
+                                        await PlainMessageHandler.SendPixivOriginPictureWithIdAndP(e.Chain[i].ToString(),
+                                            urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls), 
+                                            msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));
+                                    }
+                                    #endregion -- @下载原图 --
                                 }
                             }
-                            #endregion -- @搜图 --
                         }
                         break;
                     case "Plain":
@@ -81,9 +89,9 @@ namespace GreenOnions.BotMain
                                         }
                                     }
                                 });  //发送群消息
-                                
                             },
-                            picStream => session.UploadPictureAsync(UploadTarget.Group, picStream));  //上传图片
+                            picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
+                            urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));  //上传图片
                         break;
                     case "Image":
                         if (Cache.SearchingPictures.Keys.Contains(e.Sender.Id))

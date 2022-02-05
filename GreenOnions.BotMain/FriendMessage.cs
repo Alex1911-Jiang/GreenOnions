@@ -42,9 +42,9 @@ namespace GreenOnions.BotMain
                                         }
                                     }
                                 });  //发送好友消息
-
                             },
-                            picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream));  //上传图片
+                            picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream),
+                            urls => session.SendImageToFriendAsync(e.Sender.Id, urls));  //上传图片
                         break;
                     case "Image":
                         if (Cache.SearchingPictures.Keys.Contains(e.Sender.Id))

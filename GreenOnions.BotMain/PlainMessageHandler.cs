@@ -1,8 +1,8 @@
 ﻿using GreenOnions.HPicture;
+using GreenOnions.PictureSearcher;
 using GreenOnions.Translate;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
 using Mirai.CSharp.Models.ChatMessages;
 using System;
@@ -24,9 +24,15 @@ namespace GreenOnions.BotMain
         private static Regex regexHPicture;
         private static Regex regexBeautyPicture;
         private static Regex regexForgeMessage;
+        private static Regex regexDownloadPixivOriginPicture;
         private static Regex regexSelectPhone;
 
-        static PlainMessageHandler() => UpdateRegexs();
+        static PlainMessageHandler()
+        {
+            regexDownloadPixivOriginPicture = new Regex($"{BotInfo.BotName}下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]");
+            regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
+            UpdateRegexs();
+        }
 
         public static void UpdateRegexs()
         {
@@ -37,7 +43,6 @@ namespace GreenOnions.BotMain
             regexHPicture = new Regex(BotInfo.HPictureCmd.ReplaceGreenOnionsTags());
             regexBeautyPicture = new Regex(BotInfo.BeautyPictureCmd.ReplaceGreenOnionsTags());
             regexForgeMessage = new Regex(BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsTags());
-            regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
         }
 
         /// <summary>
@@ -48,7 +53,7 @@ namespace GreenOnions.BotMain
         /// <param name="SendMessage">发送消息的委托(需要发出的消息体, 是否撤回或是否以回复的方式发送消息)</param>
         /// <param name="UploadPicture">上传图片事件(图片流, 返回上传完毕后的图片消息体)</param>
         /// <returns></returns>
-        public static async Task HandleMesage(IChatMessage[] Chain, IBaseInfo sender, Action<IChatMessage[], bool> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture)
+        public static async Task HandleMesage(IChatMessage[] Chain, IBaseInfo sender, Action<IChatMessage[], bool> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture, Func<string[], Task<string[]>> SendImage)
         {
             string firstMessage = Chain[1].ToString();
 
@@ -159,6 +164,7 @@ namespace GreenOnions.BotMain
                 }
             }
             #endregion -- 连续搜图 --
+
             #region -- 翻译 --
             if (regexTranslateToChinese.IsMatch(firstMessage))
             {
@@ -197,6 +203,7 @@ namespace GreenOnions.BotMain
                 }
             }
             #endregion -- 翻译 --
+
             #region -- 色图 --
             if (regexHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage))
             {
@@ -257,6 +264,7 @@ namespace GreenOnions.BotMain
                 return;
             }
             #endregion -- 色图 --
+
             #region -- 美图 --
             if (regexBeautyPicture.IsMatch(firstMessage))
             {
@@ -269,6 +277,20 @@ namespace GreenOnions.BotMain
                 return;
             }
             #endregion -- 美图 --
+
+            #region -- 下载Pixiv原图 --
+            if (regexDownloadPixivOriginPicture.IsMatch(firstMessage))
+            {
+                Match match = regexDownloadPixivOriginPicture.Matches(firstMessage).FirstOrDefault();
+                if (match.Groups.Count > 1)
+                {
+                    string strId = firstMessage.Substring(match.Groups[0].Length);
+                    await SendPixivOriginPictureWithIdAndP(strId, SendImage, msg => SendMessage?.Invoke(msg, false));
+                    return;
+                }
+            }
+            #endregion -- 下载Pixiv原图 --
+
             if (firstMessage == $"{BotInfo.BotName}帮助")
             {
                 List<string> lstEnabledFeatures = new List<string>();
@@ -289,6 +311,7 @@ namespace GreenOnions.BotMain
                 string strHelpResult = $"现在您可以让我{string.Join("，", lstEnabledFeatures)}。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。";
                 SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(strHelpResult) }, false);
             }
+
             #region -- 查询手机号(夹带私货) --
             if (regexSelectPhone.IsMatch(firstMessage))
             {
@@ -358,6 +381,33 @@ namespace GreenOnions.BotMain
                     else if (limitType == LimitType.Count && BotInfo.HPictureLimitType == LimitType.Count)  //如果本次记录是记张且设置是记张
                         Cache.RecordLimit(sender.Id);
                 });
+            }
+        }
+
+        public static async Task SendPixivOriginPictureWithIdAndP(string strId, Func<string[], Task<string[]>> SendImage, Action<IChatMessage[]> SendMessage)
+        {
+            string[] idWithIndex = strId.Split("-");
+            if (idWithIndex.Length == 2)
+            {
+                if (int.TryParse(idWithIndex[1], out int index) && long.TryParse(idWithIndex[0], out long id))
+                {
+                    await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, SendMessage, id, index - 1);
+                }
+                return;
+            }
+            string[] idWithP = strId.ToLower().Split("p");
+            if (idWithP.Length == 2)
+            {
+                if (int.TryParse(idWithP[1], out int p) && long.TryParse(idWithP[0], out long id))
+                {
+                    await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, SendMessage, id, p);
+                }
+                return;
+            }
+            if (long.TryParse(strId, out long idNoneP))
+            {
+                await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, SendMessage, idNoneP, -1);
+                return;
             }
         }
     }
