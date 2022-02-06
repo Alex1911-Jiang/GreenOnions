@@ -81,7 +81,9 @@ namespace GreenOnions.Repeater
                     else
                     {
                         ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
-                        return await UploadPicture(ms);
+                        IImageMessage imgMsg = await UploadPicture(ms);
+                        ms.Close();
+                        return imgMsg;
                     }
                 }
             }
@@ -117,7 +119,9 @@ namespace GreenOnions.Repeater
                     else
                     {
                         ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
-                        return await UploadPicture(ms);
+                        IImageMessage imgMsg = await UploadPicture(ms);
+                        ms.Close();
+                        return imgMsg;
                     }
                 }
             }

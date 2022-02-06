@@ -70,6 +70,7 @@ namespace GreenOnions.RSS
                                                 {
                                                     MemoryStream stream = new MemoryStream(imgList[i].ToArray());
                                                     chatGroupMessages.Add(await UploadPicture(UploadTarget.Group, stream));
+                                                    stream.Close();
                                                 }
                                             }
 
@@ -92,6 +93,7 @@ namespace GreenOnions.RSS
                                                 {
                                                     MemoryStream stream = new MemoryStream(imgList[i].ToArray());
                                                     chatFriendMessages.Add(await UploadPicture(UploadTarget.Friend, stream));
+                                                    stream.Close();
                                                 }
                                             }
 

@@ -366,6 +366,7 @@ namespace GreenOnions.PictureSearcher
 
                     if (imageColorMessage == null)
                         imageColorMessage = await UploadPicture(streamColorImage);
+                    streamColorImage?.Close();
 
                     SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage });
                     #endregion -- 颜色搜索 --
@@ -432,6 +433,7 @@ namespace GreenOnions.PictureSearcher
                     }
                     if (imageBovwMessage == null)
                         imageBovwMessage = await UploadPicture(streamBovwImage);
+                    streamBovwImage?.Close();
 
                     SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()), imageBovwMessage });
                     #endregion -- 特征搜索 --
@@ -461,9 +463,9 @@ namespace GreenOnions.PictureSearcher
                     HttpResponseMessage response = await httpClient.SendAsync(request);
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        HtmlDocument docColor = new HtmlDocument();
-                        docColor.LoadHtml(await response.Content.ReadAsStringAsync());
-                        HtmlNode node = docColor.DocumentNode.SelectNodes("/html/body/p")[0];
+                        HtmlDocument docCat = new HtmlDocument();
+                        docCat.LoadHtml(await response.Content.ReadAsStringAsync());
+                        HtmlNode node = docCat.DocumentNode.SelectNodes("/html/body/p")[0];
                         return node.InnerText;
                     }
                 }
