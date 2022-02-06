@@ -36,7 +36,12 @@ namespace GreenOnions.BotManagerWindow
             get => txbRssRemark.Text;
             set => txbRssRemark.Text = value;
         }
-
+        public bool RssSendByForward
+        {
+            get => chkRssSendByForward.Checked;
+            set => chkRssSendByForward.Checked = value;
+        }
+        
         private void btnRssRemoveItem_Click(object sender, EventArgs e) => RemoveClick?.Invoke(sender, e);
 
         private void checkNumber_KeyPress(object sender, KeyPressEventArgs e)

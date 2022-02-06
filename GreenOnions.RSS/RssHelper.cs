@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using IChatMessage = Mirai.CSharp.Models.ChatMessages.IChatMessage;
+using System.Linq;
 
 namespace GreenOnions.RSS
 {
@@ -77,8 +78,24 @@ namespace GreenOnions.RSS
                                             chatGroupMessages.Add(new PlainMessage($"\r\n更新时间:{rss.pubDate}"));
                                             chatGroupMessages.Add(new PlainMessage($"\r\n原文地址:{rss.link}"));
 
-                                            for (int i = 0; i < item.ForwardGroups.Length; i++)
-                                                SendMessage?.Invoke(item.ForwardGroups[i], chatGroupMessages.ToArray(), UploadTarget.Group);
+                                            if (item.SendByForward)
+                                            {
+                                                ForwardMessage forwardMessage = new ForwardMessage(new[] { new ForwardMessageNode()
+                                                {
+                                                    Id = 0,
+                                                    Name = BotInfo.BotName,
+                                                    QQNumber = BotInfo.QQId,
+                                                    Time = DateTime.Now,
+                                                    Chain = chatGroupMessages.Select( c => c as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
+                                                }});
+                                                for (int i = 0; i < item.ForwardGroups.Length; i++)
+                                                    SendMessage?.Invoke(item.ForwardGroups[i], new[] { forwardMessage }, UploadTarget.Group);
+                                            }
+                                            else
+                                            {
+                                                for (int i = 0; i < item.ForwardGroups.Length; i++)
+                                                    SendMessage?.Invoke(item.ForwardGroups[i], chatGroupMessages.ToArray(), UploadTarget.Group);
+                                            }
                                         }
                                         if (item.ForwardQQs.Length > 0)
                                         {
@@ -100,8 +117,24 @@ namespace GreenOnions.RSS
                                             chatFriendMessages.Add(new PlainMessage($"\r\n更新时间:{rss.pubDate}"));
                                             chatFriendMessages.Add(new PlainMessage($"\r\n原文地址:{rss.link}"));
 
-                                            for (int i = 0; i < item.ForwardQQs.Length; i++)
-                                                SendMessage?.Invoke(item.ForwardQQs[i], chatFriendMessages.ToArray(), UploadTarget.Friend);
+                                            if (item.SendByForward)
+                                            {
+                                                ForwardMessage forwardMessage = new ForwardMessage(new[] { new ForwardMessageNode()
+                                                {
+                                                    Id = 0,
+                                                    Name = BotInfo.BotName,
+                                                    QQNumber = BotInfo.QQId,
+                                                    Time = DateTime.Now,
+                                                    Chain = chatFriendMessages.Select( c => c as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
+                                                }});
+                                                for (int i = 0; i < item.ForwardQQs.Length; i++)
+                                                    SendMessage?.Invoke(item.ForwardQQs[i], new[] { forwardMessage }, UploadTarget.Friend);
+                                            }
+                                            else
+                                            {
+                                                for (int i = 0; i < item.ForwardQQs.Length; i++)
+                                                    SendMessage?.Invoke(item.ForwardQQs[i], chatFriendMessages.ToArray(), UploadTarget.Friend);
+                                            }
                                         }
 
                                         if (Cache.LastOneSendRssTime.ContainsKey(item.Url))
@@ -181,7 +214,7 @@ namespace GreenOnions.RSS
                                                 description = description.Replace(match.Groups[0].Value, "");
                                         }
 
-                                        description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</iframe>", "");
+                                        description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</iframe>", "").Replace("<p>", "").Replace("</p>", "\r\n");
 
                                         break;
                                     case "link":

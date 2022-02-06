@@ -38,6 +38,7 @@
             this.btnRssRemoveItem = new System.Windows.Forms.Button();
             this.txbRssRemark = new System.Windows.Forms.TextBox();
             this.lblRssRemark = new System.Windows.Forms.Label();
+            this.chkRssSendByForward = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblRssSubscriptionUrl
@@ -77,7 +78,7 @@
             // txbRssTranslate
             // 
             this.txbRssTranslate.AutoSize = true;
-            this.txbRssTranslate.Location = new System.Drawing.Point(515, 94);
+            this.txbRssTranslate.Location = new System.Drawing.Point(515, 108);
             this.txbRssTranslate.Name = "txbRssTranslate";
             this.txbRssTranslate.Size = new System.Drawing.Size(51, 21);
             this.txbRssTranslate.TabIndex = 3;
@@ -131,11 +132,22 @@
             this.lblRssRemark.TabIndex = 6;
             this.lblRssRemark.Text = "备      注:";
             // 
+            // chkRssSendByForward
+            // 
+            this.chkRssSendByForward.AutoSize = true;
+            this.chkRssSendByForward.Location = new System.Drawing.Point(515, 76);
+            this.chkRssSendByForward.Name = "chkRssSendByForward";
+            this.chkRssSendByForward.Size = new System.Drawing.Size(51, 21);
+            this.chkRssSendByForward.TabIndex = 8;
+            this.chkRssSendByForward.Text = "转发";
+            this.chkRssSendByForward.UseVisualStyleBackColor = true;
+            // 
             // CtrlRssItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.chkRssSendByForward);
             this.Controls.Add(this.txbRssRemark);
             this.Controls.Add(this.lblRssRemark);
             this.Controls.Add(this.btnRssRemoveItem);
@@ -165,5 +177,6 @@
         private System.Windows.Forms.Button btnRssRemoveItem;
         private System.Windows.Forms.TextBox txbRssRemark;
         private System.Windows.Forms.Label lblRssRemark;
+        private System.Windows.Forms.CheckBox chkRssSendByForward;
     }
 }

@@ -79,19 +79,22 @@ namespace GreenOnions.BotMain
                         List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode> forwardMessageNodes = new List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode>();
                         for (int i = 3; i < Chain.Length; i++)
                         {
-                            if (Chain[i] is IChatMessage)
+                            if (Chain[i] is IPlainMessage)
                             {
-                                string[] plainMsgs = Chain[i].ToString().Split(BotInfo.ForgeMessageCmdNewLine);
+                                string[] plainMsgs = Chain[i].ToString().Trim().Split(BotInfo.ForgeMessageCmdNewLine);
                                 for (int j = 0; j < plainMsgs.Length; j++)
                                 {
-                                    forwardMessageNodes.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
+                                    if (!string.IsNullOrEmpty(plainMsgs[j]))
                                     {
-                                        Id = forwardMessageNodes.Count,
-                                        Name = atMessage.Name,
-                                        QQNumber = atMessage.Target,
-                                        Time = DateTime.Now,
-                                        Chain = new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(plainMsgs[j]) },
-                                    });
+                                        forwardMessageNodes.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
+                                        {
+                                            Id = forwardMessageNodes.Count,
+                                            Name = atMessage.Name,
+                                            QQNumber = atMessage.Target,
+                                            Time = DateTime.Now,
+                                            Chain = new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(plainMsgs[j]) },
+                                        });
+                                    }
                                 }
                             }
                             else if (Chain[i] is IImageMessage)
