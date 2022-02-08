@@ -201,7 +201,7 @@ namespace GreenOnions.BotMainManagerWindow
 
             #region -- 伪造消息 --
 
-            chkEnabledForgeMessage.Checked = BotInfo.EnabledForgeMessage;
+            chkEnabledForgeMessage.Checked = BotInfo.ForgeMessageEnabled;
             txbForgeMessageCmdBegin.Text = BotInfo.ForgeMessageCmdBegin;
             txbForgeMessageCmdNewLine.Text = BotInfo.ForgeMessageCmdNewLine;
             chkForgeMessageAppendBotMessageEnabled.Checked = BotInfo.ForgeMessageAppendBotMessageEnabled;
@@ -436,7 +436,7 @@ namespace GreenOnions.BotMainManagerWindow
 
             #region -- 伪造消息 --
 
-            BotInfo.EnabledForgeMessage = chkEnabledForgeMessage.Checked;
+            BotInfo.ForgeMessageEnabled = chkEnabledForgeMessage.Checked;
             BotInfo.ForgeMessageCmdBegin = txbForgeMessageCmdBegin.Text;
             BotInfo.ForgeMessageCmdNewLine = txbForgeMessageCmdNewLine.Text;
             BotInfo.ForgeMessageAppendBotMessageEnabled = chkForgeMessageAppendBotMessageEnabled.Checked;
@@ -678,5 +678,7 @@ namespace GreenOnions.BotMainManagerWindow
         {
             txbTranslateTo.Enabled = cboTranslateEngine.SelectedIndex == (int)TranslateEngine.Google;
         }
+
+        private void chkRssEnabled_CheckedChanged(object sender, EventArgs e) => pnlRss.Enabled = chkRssEnabled.Checked;
     }
 }

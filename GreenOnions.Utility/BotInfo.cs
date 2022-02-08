@@ -266,7 +266,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string SearchModeOnCmd
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnCmd)) ?? "<机器人名称>搜[图圖]";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnCmd)) ?? "<机器人名称>搜[图圖図]";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnCmd), value);
         }
 
@@ -630,7 +630,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string HPictureCountCmd
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCountCmd)) ?? "[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿]+?";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCountCmd)) ?? "[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+?";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCountCmd), value);
         }
 
@@ -666,7 +666,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string HPictureEndCmd
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureEndCmd)) ?? "的?[色瑟][图圖]";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureEndCmd)) ?? "的?[色瑟][图圖図]";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureEndCmd), value);
         }
 
@@ -675,7 +675,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string BeautyPictureEndCmd
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(BeautyPictureEndCmd)) ?? "的?美[图圖]";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(BeautyPictureEndCmd)) ?? "的?美[图圖図]";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(BeautyPictureEndCmd), value);
         }
 
@@ -792,6 +792,9 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(RevokeBeautyPicture), value.ToString());
         }
 
+        /// <summary>
+        /// 启动的美图图库
+        /// </summary>
         public static List<PictureSource> EnabledBeautyPictureSource
         {
             get
@@ -804,6 +807,9 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(EnabledBeautyPictureSource), string.Join(";", value));
         }
 
+        /// <summary>
+        /// 启动的色图图库
+        /// </summary>
         public static List<PictureSource> EnabledHPictureSource
         {
             get
@@ -1160,6 +1166,9 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureMultithreading), value.ToString());
         }
 
+        /// <summary>
+        /// 一条色图命令最多允许返回多少张色图
+        /// </summary>
         public static int HPictureOnceMessageMaxImageCount
         {
             get
@@ -1396,15 +1405,15 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用伪造消息功能
         /// </summary>
-        public static bool EnabledForgeMessage
+        public static bool ForgeMessageEnabled
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(EnabledForgeMessage));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(ForgeMessageEnabled));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return true;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(EnabledForgeMessage), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(ForgeMessageEnabled), value.ToString());
         }
 
         /// <summary>

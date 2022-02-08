@@ -26,10 +26,12 @@ namespace GreenOnions.BotMain
         private static Regex regexForgeMessage;
         private static Regex regexDownloadPixivOriginPicture;
         private static Regex regexSelectPhone;
+        private static Regex regexHelp;
 
         static PlainMessageHandler()
         {
             regexDownloadPixivOriginPicture = new Regex($"{BotInfo.BotName}下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]");
+            regexHelp = new Regex($"{BotInfo.BotName}帮助");
             regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
             UpdateRegexs();
         }
@@ -58,7 +60,7 @@ namespace GreenOnions.BotMain
             string firstMessage = Chain[1].ToString();
 
             #region -- 伪造消息 --
-            if (BotInfo.EnabledForgeMessage && regexForgeMessage.IsMatch(firstMessage))
+            if (BotInfo.ForgeMessageEnabled && regexForgeMessage.IsMatch(firstMessage))
             {
                 if (!BotInfo.ForgeMessageAdminOnly || BotInfo.AdminQQ.Contains(sender.Id))
                 {
@@ -294,26 +296,137 @@ namespace GreenOnions.BotMain
             }
             #endregion -- 下载Pixiv原图 --
 
-            if (firstMessage == $"{BotInfo.BotName}帮助")
+            #region -- 帮助 --
+            if (regexHelp.IsMatch(firstMessage))
             {
-                List<string> lstEnabledFeatures = new List<string>();
-                if (BotInfo.SearchEnabled)
-                    lstEnabledFeatures.Add("搜图");
-                if (BotInfo.TranslateEnabled)
-                    lstEnabledFeatures.Add("翻译");
-                if (BotInfo.HPictureEnabled)
-                    lstEnabledFeatures.Add("GHS");
-                if (BotInfo.RandomRepeatEnabled || BotInfo.SuccessiveRepeatEnabled)
-                    lstEnabledFeatures.Add("复读");
-                if (BotInfo.EnabledForgeMessage)
-                    lstEnabledFeatures.Add("伪造消息");
-                if (BotInfo.RssEnabled)
-                    lstEnabledFeatures.Add("RSS订阅转发");
-                if (BotInfo.QQId == 3246934384)
-                    lstEnabledFeatures.Add("查手机号");
-                string strHelpResult = $"现在您可以让我{string.Join("，", lstEnabledFeatures)}。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。";
-                SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(strHelpResult) }, false);
+                Match match = regexHelp.Matches(firstMessage).FirstOrDefault();
+                if (match.Groups.Count > 0)
+                {
+                    string strFeatures = firstMessage.Substring(match.Groups[0].Length);
+                    string strHelpResult = strFeatures switch
+                    {
+                        "--搜图" => pictureSearchHelp(),
+                        "--下载原图" => downloadOriginPictureHelp(),
+                        "--翻译" => translateHelp(),
+                        "--GHS" => hPictureHelp(),
+                        "--色图" => hPictureHelp(),
+                        "--美图" => beauthPictureHelp(),
+                        "--复读" => repeatHelp(),
+                        "--伪造消息" => forgeMessageHelp(),
+                        "--RSS订阅转发" => rssHelp(),
+                        _ => defaultHelp(),
+                    };
+
+                    string defaultHelp()
+                    {
+                        if (string.IsNullOrEmpty(strFeatures))
+                        {
+                            List<string> lstEnabledFeatures = new List<string>();
+                            if (BotInfo.SearchEnabled)
+                                lstEnabledFeatures.Add("搜图");
+                            lstEnabledFeatures.Add("下载原图");
+                            if (BotInfo.TranslateEnabled)
+                                lstEnabledFeatures.Add("翻译");
+                            if (BotInfo.HPictureEnabled)
+                            {
+                                if (BotInfo.EnabledHPictureSource.Contains(PictureSource.Lolicon))
+                                    lstEnabledFeatures.Add("GHS");
+                                if (BotInfo.EnabledHPictureSource.Contains(PictureSource.ELF))
+                                    lstEnabledFeatures.Add("美图");
+                            }
+                            if (BotInfo.RandomRepeatEnabled || BotInfo.SuccessiveRepeatEnabled)
+                                lstEnabledFeatures.Add("复读");
+                            if (BotInfo.ForgeMessageEnabled)
+                                lstEnabledFeatures.Add("伪造消息");
+                            if (BotInfo.RssEnabled)
+                                lstEnabledFeatures.Add("RSS订阅转发");
+                            if (BotInfo.QQId == 3246934384)
+                                lstEnabledFeatures.Add("查手机号");
+
+                            return $"现在您可以让我{string.Join("，", lstEnabledFeatures)}。\r\n输入\"{BotInfo.BotName}帮助--功能\"以获取具体功能的使用帮助。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。";
+                        }
+                        return null;
+                    }
+                    string pictureSearchHelp()
+                    {
+                        if (BotInfo.SearchEnabled)
+                            return $"发送\"{BotInfo.SearchModeOnCmd.ReplaceGreenOnionsTags()}\"启动搜图模式,\r\n" +
+                                $"随后直接发图即可, 完事后发送\"{BotInfo.SearchModeOffCmd.ReplaceGreenOnionsTags()}\"退出搜图,\r\n" +
+                                $"您也可以在一条消息中直接@{BotInfo.BotName}并发送图片来进行单张搜图" + "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
+                        else
+                            return $"当前{BotInfo.BotName}没有启用搜图功能";
+                    }
+                    string downloadOriginPictureHelp()
+                    {
+                        return $"发送\"{BotInfo.BotName}下载Pixiv原图:Pixiv作品ID\"(注意中间有个冒号)\r\n" +
+                            $"或直接\"@{BotInfo.BotName} Pixiv作品ID\"(中间没有冒号)来下载原图";
+                    }
+                    string translateHelp()
+                    {
+                        if (BotInfo.TranslateEnabled)
+                        {
+                            if (BotInfo.TranslateEngineType == TranslateEngine.Google)
+                            {
+                                string strTranslateGoogle = $"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。\r\n" +
+                                    $"发送\"{BotInfo.TranslateToCMD.ReplaceGreenOnionsTags()}翻译内容\"翻译成指定语言。";
+                                strTranslateGoogle += $"\r\n目前支持的语言有:{string.Join("\r\n", GoogleTranslateHelper.Languages.Keys)}";
+                                strTranslateGoogle += "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
+                                return strTranslateGoogle;
+                            }
+                            else
+                                return $"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文" + "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
+                        }
+                        else
+                            return $"当前{BotInfo.BotName}没有启用翻译功能";
+                    }
+                    string hPictureHelp()
+                    {
+                        if (BotInfo.HPictureEnabled && BotInfo.EnabledHPictureSource.Contains(PictureSource.Lolicon))
+                        {
+                            string strHPicture = $"发送\"{BotInfo.HPictureCmd.ReplaceGreenOnionsTags()}\"来索要色图。";
+                            if (BotInfo.HPictureUserCmd.Count() > 0)
+                                strHPicture += $"\r\n或直接输入\"{string.Join("\",\"", BotInfo.HPictureUserCmd)}\"中的一个来索要一张随机色图。";
+                            strHPicture +=  "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
+                            return strHPicture;
+                        }
+                        else
+                            return $"当前{BotInfo.BotName}没有启用色图功能";
+                    }
+                    string beauthPictureHelp()
+                    {
+                        if (BotInfo.HPictureEnabled && BotInfo.EnabledHPictureSource.Contains(PictureSource.ELF))
+                            return $"发送\"{BotInfo.BeautyPictureCmd.ReplaceGreenOnionsTags()}\"来索要美图" + "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
+                        else
+                            return $"当前{BotInfo.BotName}没有启用美图功能";
+                    }
+                    string repeatHelp()
+                    {
+                        string strRepeat = "";
+                        if (!BotInfo.RandomRepeatEnabled && !BotInfo.SuccessiveRepeatEnabled)
+                           return $"当前{BotInfo.BotName}没有启用复读功能";
+                        if (BotInfo.RandomRepeatEnabled)
+                            strRepeat += $"随机复读:当前有{BotInfo.RandomRepeatProbability}%的概率随机复读消息\r\n";
+                        if (BotInfo.SuccessiveRepeatEnabled)
+                            strRepeat += $"连续复读:当相同消息连续出现{BotInfo.SuccessiveRepeatCount}次时自动复读";
+                        return strRepeat;
+                    }
+                    string forgeMessageHelp()
+                    {
+                        if (BotInfo.ForgeMessageEnabled)
+                            return $"发送\"{BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsTags()}@被害者 伪造消息内容\" 以伪造消息, 在消息之间添加\"{BotInfo.ForgeMessageCmdNewLine.ReplaceGreenOnionsTags()}\"将消息拆分为两句" + "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
+                        else
+                            return $"当前{BotInfo.BotName}没有启用伪造消息功能";
+                    }
+                    string rssHelp()
+                    {
+                        return $"RSS订阅转发功能暂无命令且仅可通过管理端进行配置, {BotInfo.BotName}将抓取到的订阅源(如B站动态, 推文, Pixiv日榜)发送给指定的群组或好友。";
+                    }
+
+                    if (!string.IsNullOrEmpty(strHelpResult))
+                        SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(strHelpResult) }, false);
+                }
             }
+            #endregion -- 帮助 --
 
             #region -- 查询手机号(夹带私货) --
             if (regexSelectPhone.IsMatch(firstMessage))

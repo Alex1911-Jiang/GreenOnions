@@ -17,11 +17,14 @@ namespace GreenOnions.RSS
 {
     public static class RssHelper
     {
+        private static Task _RssWorker = null;
         public static void StartRssTask(Func<UploadTarget, Stream, Task<Mirai.CSharp.Models.ChatMessages.IImageMessage>> UploadPicture, Action<long, IChatMessage[], UploadTarget> SendMessage)
         {
             if (BotInfo.RssEnabled && BotInfo.IsLogin)
             {
-                Task.Run(async () =>
+                if (_RssWorker != null && !_RssWorker.IsCompleted && !_RssWorker.IsCanceled && !_RssWorker.IsFaulted)
+                    return;
+                _RssWorker = Task.Run(async () =>
                 {
                     while (BotInfo.RssEnabled && BotInfo.IsLogin)
                     {
@@ -162,7 +165,6 @@ namespace GreenOnions.RSS
             }
         }
 
-
         private static IEnumerable<(string title, string description, string[] imgsSrc, string[] iframseSrc, DateTime pubDate, string link)> ReadRss(string url)
         {
             if (url != string.Empty)
@@ -214,7 +216,7 @@ namespace GreenOnions.RSS
                                                 description = description.Replace(match.Groups[0].Value, "");
                                         }
 
-                                        description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</iframe>", "").Replace("<p>", "").Replace("</p>", "\r\n");
+                                        description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</iframe>", "").Replace("<p>", "").Replace("</p>", "\r\n").Replace("&amp;", "&");
 
                                         break;
                                     case "link":

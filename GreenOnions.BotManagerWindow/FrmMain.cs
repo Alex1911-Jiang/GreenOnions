@@ -37,7 +37,18 @@ namespace GreenOnions.BotMainManagerWindow
 			#endregion -- 读取配置 --
 		}
 
-		public async Task Main(long qqId, string ip, int port, string verifyKey)
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+			if (WindowState == FormWindowState.Minimized)
+			{
+				Hide();
+				ShowInTaskbar = false;
+				notifyIcon1.Visible = true;
+			}
+		}
+
+        public async Task Main(long qqId, string ip, int port, string verifyKey)
 		{
 			await BotMain.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) =>
 			{
@@ -122,5 +133,13 @@ namespace GreenOnions.BotMainManagerWindow
 			FrmAppSetting frmAppSetting = new FrmAppSetting();
 			frmAppSetting.ShowDialog();
 		}
-	}
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+			Visible = true;
+			ShowInTaskbar = true;
+			WindowState = FormWindowState.Normal;
+			notifyIcon1.Visible = false;
+		}
+    }
 }

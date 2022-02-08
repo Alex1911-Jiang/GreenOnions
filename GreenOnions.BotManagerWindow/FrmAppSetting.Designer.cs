@@ -130,6 +130,9 @@
             this.chkTranslateEnabled = new System.Windows.Forms.CheckBox();
             this.tabHPicture = new System.Windows.Forms.TabPage();
             this.pnlEnabelHPicture = new System.Windows.Forms.Panel();
+            this.lblHPictureOnceMessageMaxImageCountHelp = new System.Windows.Forms.Label();
+            this.txbHPictureOnceMessageMaxImageCount = new System.Windows.Forms.TextBox();
+            this.lblHPictureOnceMessageMaxImageCount = new System.Windows.Forms.Label();
             this.lblBeautyPictureSource = new System.Windows.Forms.Label();
             this.lblHPictureSource = new System.Windows.Forms.Label();
             this.chkEnabledGreenOnionsBeautyPicture = new System.Windows.Forms.CheckBox();
@@ -281,9 +284,6 @@
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.lblHPictureOnceMessageMaxImageCount = new System.Windows.Forms.Label();
-            this.txbHPictureOnceMessageMaxImageCount = new System.Windows.Forms.TextBox();
-            this.lblHPictureOnceMessageMaxImageCountHelp = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.pnlDebugMode.SuspendLayout();
@@ -1215,6 +1215,7 @@
             // 
             // cboTranslateEngine
             // 
+            this.cboTranslateEngine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTranslateEngine.FormattingEnabled = true;
             this.cboTranslateEngine.Items.AddRange(new object[] {
             "Google",
@@ -1457,6 +1458,34 @@
             this.pnlEnabelHPicture.Name = "pnlEnabelHPicture";
             this.pnlEnabelHPicture.Size = new System.Drawing.Size(644, 642);
             this.pnlEnabelHPicture.TabIndex = 8;
+            // 
+            // lblHPictureOnceMessageMaxImageCountHelp
+            // 
+            this.lblHPictureOnceMessageMaxImageCountHelp.AutoSize = true;
+            this.lblHPictureOnceMessageMaxImageCountHelp.Location = new System.Drawing.Point(137, 547);
+            this.lblHPictureOnceMessageMaxImageCountHelp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHPictureOnceMessageMaxImageCountHelp.Name = "lblHPictureOnceMessageMaxImageCountHelp";
+            this.lblHPictureOnceMessageMaxImageCountHelp.Size = new System.Drawing.Size(261, 17);
+            this.lblHPictureOnceMessageMaxImageCountHelp.TabIndex = 18;
+            this.lblHPictureOnceMessageMaxImageCountHelp.Text = "支持1-100, 建议不超过10个, 否则可能无法撤回";
+            // 
+            // txbHPictureOnceMessageMaxImageCount
+            // 
+            this.txbHPictureOnceMessageMaxImageCount.Location = new System.Drawing.Point(137, 520);
+            this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
+            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(366, 23);
+            this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
+            // 
+            // lblHPictureOnceMessageMaxImageCount
+            // 
+            this.lblHPictureOnceMessageMaxImageCount.AutoSize = true;
+            this.lblHPictureOnceMessageMaxImageCount.Location = new System.Drawing.Point(9, 523);
+            this.lblHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHPictureOnceMessageMaxImageCount.Name = "lblHPictureOnceMessageMaxImageCount";
+            this.lblHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(131, 17);
+            this.lblHPictureOnceMessageMaxImageCount.TabIndex = 16;
+            this.lblHPictureOnceMessageMaxImageCount.Text = "单次请求最大图片数量:";
             // 
             // lblBeautyPictureSource
             // 
@@ -2926,6 +2955,7 @@
             this.chkRssEnabled.TabIndex = 0;
             this.chkRssEnabled.Text = "启用RSS订阅转发";
             this.chkRssEnabled.UseVisualStyleBackColor = true;
+            this.chkRssEnabled.CheckedChanged += new System.EventHandler(this.chkRssEnabled_CheckedChanged);
             // 
             // tabAbout
             // 
@@ -3028,34 +3058,6 @@
             this.lblContributorName.Size = new System.Drawing.Size(35, 17);
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
-            // 
-            // lblHPictureOnceMessageMaxImageCount
-            // 
-            this.lblHPictureOnceMessageMaxImageCount.AutoSize = true;
-            this.lblHPictureOnceMessageMaxImageCount.Location = new System.Drawing.Point(9, 523);
-            this.lblHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblHPictureOnceMessageMaxImageCount.Name = "lblHPictureOnceMessageMaxImageCount";
-            this.lblHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(131, 17);
-            this.lblHPictureOnceMessageMaxImageCount.TabIndex = 16;
-            this.lblHPictureOnceMessageMaxImageCount.Text = "单次请求最大图片数量:";
-            // 
-            // txbHPictureOnceMessageMaxImageCount
-            // 
-            this.txbHPictureOnceMessageMaxImageCount.Location = new System.Drawing.Point(137, 520);
-            this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
-            this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
-            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(366, 23);
-            this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
-            // 
-            // lblHPictureOnceMessageMaxImageCountHelp
-            // 
-            this.lblHPictureOnceMessageMaxImageCountHelp.AutoSize = true;
-            this.lblHPictureOnceMessageMaxImageCountHelp.Location = new System.Drawing.Point(137, 547);
-            this.lblHPictureOnceMessageMaxImageCountHelp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblHPictureOnceMessageMaxImageCountHelp.Name = "lblHPictureOnceMessageMaxImageCountHelp";
-            this.lblHPictureOnceMessageMaxImageCountHelp.Size = new System.Drawing.Size(261, 17);
-            this.lblHPictureOnceMessageMaxImageCountHelp.TabIndex = 18;
-            this.lblHPictureOnceMessageMaxImageCountHelp.Text = "支持1-100, 建议不超过10个, 否则可能无法撤回";
             // 
             // FrmAppSetting
             // 

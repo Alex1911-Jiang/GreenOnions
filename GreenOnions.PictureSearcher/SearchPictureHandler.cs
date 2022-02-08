@@ -68,7 +68,7 @@ namespace GreenOnions.PictureSearcher
                             int seconds = (int)Convert.ToSingle(from); //时间
                             TimeSpan timeSpan = new TimeSpan(0, 0, seconds);
                             string time = $"{timeSpan.Hours}小时{timeSpan.Minutes}分{timeSpan.Seconds}秒";
-                            string previewSize = "m";  //TODO:选择是否发送缩略图和尺寸
+                            string previewSize = "m";
                             string previewURL = jResults[0]["image"].ToString() + $"&size={previewSize}";
                             string imgName = Path.Combine(ImageHelper.ImagePath, $"TraceMoe_{id}_{previewSize}.png");
 
