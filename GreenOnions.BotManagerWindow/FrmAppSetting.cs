@@ -68,9 +68,29 @@ namespace GreenOnions.BotMainManagerWindow
             txbSearchErrorReply.Text = BotInfo.SearchErrorReply;
             txbSearchLowSimilarity.Text = BotInfo.SearchLowSimilarity.ToString();
             txbSearchLowSimilarityReply.Text = BotInfo.SearchLowSimilarityReply;
-            chkCheckPorn.Checked = BotInfo.SearchCheckPornEnabled;  //是否启用腾讯云鉴黄
+
+            chkCheckPornEnabled.Checked = BotInfo.CheckPornEnabled; //是否启用腾讯云鉴黄
+            chkPictureSearcherCheckPornEnabled.Checked = BotInfo.SearchCheckPornEnabled;  //是否在搜图启用鉴黄
             txbSearchCheckPornIllegalReply.Text = BotInfo.SearchCheckPornIllegalReply;
             txbSearchCheckPornErrorReply.Text = BotInfo.SearchCheckPornErrorReply;
+
+            chkOriginPictureEnabled.Checked = BotInfo.OriginPictureEnabled;
+            chkOriginPictureCheckPornEnabled.Checked = BotInfo.OriginPictureCheckPornEnabled;  //是否在搜图启用鉴黄
+            switch (BotInfo.OriginPictureCheckPornEvent)
+            {
+                case 0:
+                    rdoOriginPictureCheckPornSendByForward.Checked = true;
+                    break;
+                case 1:
+                    rdoOriginPictureCheckPornDoNothing.Checked = true;
+                    break;
+                case 2:
+                    rdoOriginPictureCheckPornReply.Checked = true;
+                    break;
+            }
+            txbOriginPictureCheckPornIllegalReply.Text = BotInfo.OriginPictureCheckPornIllegalReply;
+            txbOriginPictureCheckPornErrorReply.Text = BotInfo.OriginPictureCheckPornErrorReply;
+
             #region -- 腾讯云相关设置 --
             txbTencentCloudAPPID.Text = BotInfo.TencentCloudAPPID;
             txbTencentCloudRegion.Text = BotInfo.TencentCloudRegion;
@@ -311,7 +331,8 @@ namespace GreenOnions.BotMainManagerWindow
             }
             BotInfo.SearchLowSimilarity = iLowSimilarity;  //相似度阈值
             BotInfo.SearchLowSimilarityReply = txbSearchLowSimilarityReply.Text;
-            BotInfo.SearchCheckPornEnabled = chkCheckPorn.Checked;  //是否启用腾讯云鉴黄
+            BotInfo.CheckPornEnabled = chkCheckPornEnabled.Checked;  //是否启用腾讯云鉴黄
+            BotInfo.SearchCheckPornEnabled = chkPictureSearcherCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
             BotInfo.SearchCheckPornIllegalReply = txbSearchCheckPornIllegalReply.Text;
             BotInfo.SearchCheckPornErrorReply = txbSearchCheckPornErrorReply.Text;
             #region -- 腾讯云相关设置 --
@@ -323,6 +344,16 @@ namespace GreenOnions.BotMainManagerWindow
             #endregion -- 腾讯云相关设置 --
 
             #endregion -- 搜图设置 --
+
+            #region -- 下载原图设置 --
+
+            BotInfo.OriginPictureEnabled = chkOriginPictureEnabled.Checked;
+            BotInfo.OriginPictureCheckPornEnabled = chkOriginPictureCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
+            BotInfo.OriginPictureCheckPornEvent = Convert.ToInt32(pnlOriginPictureCheckPornEvent.Controls.OfType<RadioButton>().Where(x => x.Checked).First().Tag);
+            BotInfo.OriginPictureCheckPornIllegalReply = txbOriginPictureCheckPornIllegalReply.Text;
+            BotInfo.OriginPictureCheckPornErrorReply = txbOriginPictureCheckPornErrorReply.Text;
+
+            #endregion -- 下载原图设置 --
 
             #region -- 翻译设置 --
 
@@ -577,7 +608,7 @@ namespace GreenOnions.BotMainManagerWindow
 
         private void chkSearchPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchPicture.Enabled = chkSearchPictureEnabled.Checked;
 
-        private void chkCheckPorn_CheckedChanged(object sender, EventArgs e) => pnlCheckPorn.Enabled = chkCheckPorn.Checked;
+        private void chkCheckPorn_CheckedChanged(object sender, EventArgs e) => pnlCheckPorn.Enabled = chkCheckPornEnabled.Checked;
 
         private void lnkContributorGithub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -680,5 +711,15 @@ namespace GreenOnions.BotMainManagerWindow
         }
 
         private void chkRssEnabled_CheckedChanged(object sender, EventArgs e) => pnlRss.Enabled = chkRssEnabled.Checked;
+
+        private void chkPictureSearcherCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlPictureSearcherCheckPorn.Enabled = chkPictureSearcherCheckPornEnabled.Checked;
+
+        private void chkOriginPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlOriginPicture.Enabled = chkOriginPictureEnabled.Checked;
+
+        private void chkOriginPictureCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlOriginPictureCheckPorn.Enabled = chkOriginPictureCheckPornEnabled.Checked;
+
+        private void rdoOriginPictureCheckPornSendByForward_CheckedChanged(object sender, EventArgs e) => pnlOriginPictureCheckPornMessage.Enabled = rdoOriginPictureCheckPornReply.Checked;
+
+        private void chkTranslateEnabled_CheckedChanged(object sender, EventArgs e) => pnlTranslate.Enabled = chkTranslateEnabled.Checked;
     }
 }

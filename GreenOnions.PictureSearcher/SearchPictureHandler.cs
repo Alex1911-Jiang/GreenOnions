@@ -200,14 +200,14 @@ namespace GreenOnions.PictureSearcher
                         Stream stream = null;
                         if (thuImgCacheFiles.Length > 0 && new FileInfo(thuImgCacheFiles[0]).Length > 0)  //存在本地缓存
                         {
-                            if (BotInfo.SearchCheckPornEnabled)
+                            if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                             {
                                 if (thuImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
                                     IImageMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
                                 else if (thuImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
                                     stream = new FileStream(thuImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
                                 else  //曾经没参与鉴黄的
-                                    IImageMessage = CheckPorn(thuImgCacheFiles[0], File.ReadAllBytes(thuImgCacheFiles[0]));
+                                    IImageMessage = CheckPornSearch(thuImgCacheFiles[0], File.ReadAllBytes(thuImgCacheFiles[0]));
                             }
                             else
                             {
@@ -218,8 +218,8 @@ namespace GreenOnions.PictureSearcher
                         {
                             string cacheImageName = Path.Combine(ImageHelper.ImagePath, $"Thu_{sauceNaoItem.pixiv_id}.png");
                             stream = HttpHelper.DownloadImageAsMemoryStream(sauceNaoItem.thumbnail, cacheImageName);
-                            if (BotInfo.SearchCheckPornEnabled)
-                                IImageMessage = CheckPorn(cacheImageName, (stream as MemoryStream).ToArray());
+                            if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                IImageMessage = CheckPornSearch(cacheImageName, (stream as MemoryStream).ToArray());
                         }
 
                         if (IImageMessage == null)
@@ -241,14 +241,14 @@ namespace GreenOnions.PictureSearcher
                                             if (string.IsNullOrEmpty(await CheckCatRoute(Convert.ToInt64(sauceNaoItem.pixiv_id), -1)))
                                             {
                                                 string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
-                                                SendOriginImage(imgUrlNoP, sauceNaoItem.pixiv_id);
+                                                SendOriginImage(imgUrlNoP, sauceNaoItem.pixiv_id, p);
                                             }
                                             else
-                                                SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id);
+                                                SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id, p);
                                         }
                                     }
                                     else  //地址有P且>0
-                                        SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id);
+                                        SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id, p);
                                 }
                             }
                         }
@@ -274,7 +274,7 @@ namespace GreenOnions.PictureSearcher
                 }
                 SendMessage(new[] { new PlainMessage(strNoResult) });
 
-                void SendOriginImage(string url, string pixivID)
+                void SendOriginImage(string url, string pixivID, int p)
                 {
                     Task.Run(async () =>
                     {
@@ -282,10 +282,10 @@ namespace GreenOnions.PictureSearcher
                         {
                             string[] imgIds = await SendImage(new[] { url });
                             //SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imgIds.First(), null, null) });
-                            string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{pixivID}_p0.png");
+                            string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{pixivID}_p{p}.png");
                             if (BotInfo.ImageCache && File.Exists(imgName) && new FileInfo(imgName).Length > 0)
                             {
-                                _ = Task.Run(() =>HttpHelper.DownloadImageAsMemoryStream(url, imgName));  //仅下载
+                                _ = Task.Run(() => HttpHelper.DownloadImageAsMemoryStream(url, imgName));  //仅下载
                             }
 
                             //if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
@@ -339,7 +339,7 @@ namespace GreenOnions.PictureSearcher
                     Stream streamColorImage = null;
                     if (thuColorImgCacheFiles.Length > 0 && new FileInfo(thuColorImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
                     {
-                        if (BotInfo.SearchCheckPornEnabled)
+                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                         {
                             if (thuColorImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
                                 imageColorMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
@@ -348,7 +348,7 @@ namespace GreenOnions.PictureSearcher
                             else  //曾经没参与鉴黄的
                             {
                                 byte[] colorImageByte = File.ReadAllBytes(thuColorImgCacheFiles[0]);
-                                imageColorMessage = CheckPorn(thuColorImgCacheFiles[0], colorImageByte);
+                                imageColorMessage = CheckPornSearch(thuColorImgCacheFiles[0], colorImageByte);
                                 if (imageColorMessage == null)
                                     streamColorImage = new MemoryStream(colorImageByte);  //上传本地图片
                             }
@@ -360,8 +360,8 @@ namespace GreenOnions.PictureSearcher
                     {
                         string thuColorImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}.png");
                         streamColorImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value, thuColorImgCache);
-                        if (BotInfo.SearchCheckPornEnabled)
-                            imageColorMessage = CheckPorn(thuColorImgCache, (streamColorImage as MemoryStream).ToArray());
+                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                            imageColorMessage = CheckPornSearch(thuColorImgCache, (streamColorImage as MemoryStream).ToArray());
                     }
 
                     if (imageColorMessage == null)
@@ -406,7 +406,7 @@ namespace GreenOnions.PictureSearcher
                     Stream streamBovwImage = null;
                     if (thuBovwImgCacheFiles.Length > 0 && new FileInfo(thuBovwImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
                     {
-                        if (BotInfo.SearchCheckPornEnabled)
+                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                         {
                             if (thuBovwImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
                                 imageBovwMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
@@ -415,8 +415,7 @@ namespace GreenOnions.PictureSearcher
                             else  //曾经没参与鉴黄的
                             {
                                 byte[] bovwImageByte = File.ReadAllBytes(thuBovwImgCacheFiles[0]);
-                                if (BotInfo.SearchCheckPornEnabled)
-                                    imageBovwMessage = CheckPorn(thuBovwImgCacheFiles[0], bovwImageByte);
+                                imageBovwMessage = CheckPornSearch(thuBovwImgCacheFiles[0], bovwImageByte);
                                 if (imageBovwMessage == null)
                                     streamBovwImage = new MemoryStream(bovwImageByte);  //上传本地图片
                             }
@@ -428,8 +427,8 @@ namespace GreenOnions.PictureSearcher
                     {
                         string thuBovwImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeBovwHash.InnerHtml}.png");
                         streamBovwImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeBovwImage.Attributes["src"].Value, thuBovwImgCache);
-                        if (BotInfo.SearchCheckPornEnabled)
-                            imageBovwMessage = CheckPorn(thuBovwImgCache, (streamBovwImage as MemoryStream).ToArray());
+                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                            imageBovwMessage = CheckPornSearch(thuBovwImgCache, (streamBovwImage as MemoryStream).ToArray());
                     }
                     if (imageBovwMessage == null)
                         imageBovwMessage = await UploadPicture(streamBovwImage);
@@ -473,7 +472,7 @@ namespace GreenOnions.PictureSearcher
             return null;
         }
 
-        public static async Task DownloadPixivOriginPicture(Func<string[], Task<string[]>> SendImage, Action<IChatMessage[]> SendMessage, long id, int p = -1)
+        public static async Task DownloadPixivOriginPicture(Func<string[], Task<string[]>> SendImage, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage, long id, int p = -1)
         {
             string msg = await CheckCatRoute(id, p);
             string index = "";
@@ -481,38 +480,120 @@ namespace GreenOnions.PictureSearcher
                 index = $"-{p + 1}";
 
             if (string.IsNullOrEmpty(msg))
-                await SendImage(new[] { $"https://pixiv.re/{id}{index}.png" });
+            {
+                string url = $"https://pixiv.re/{id}{index}.png";
+                string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}.png");
+                MemoryStream imageMs = HttpHelper.DownloadImageAsMemoryStream(url, imgName);
+                MemoryStream ms = new MemoryStream(imageMs.ToArray());
+                imageMs.Close();
+                IImageMessage imgMsg = await UploadPicture(ms);
+                if (BotInfo.CheckPornEnabled && BotInfo.OriginPictureCheckPornEnabled)
+                {
+                    switch (CheckPorn(imgName, ms.ToArray(), out string errorMessage))
+                    {
+                        case 0:  //鉴黄通过
+                            await SendImage(new[] { url });
+                            break;
+                        case 1:  //鉴黄不通过
+                            switch (BotInfo.OriginPictureCheckPornEvent)
+                            {
+                                case 0:  //合并转发
+                                    SendByForward(imgMsg);
+                                    break;
+                                case 2:  //回复消息
+                                    SendMessage(new[] { new PlainMessage(BotInfo.OriginPictureCheckPornIllegalReply) });
+                                    break;
+                            }
+                            break;
+                        case 2:  //鉴黄错误
+                            switch (BotInfo.OriginPictureCheckPornEvent)
+                            {
+                                case 0:  //合并转发
+                                    SendByForward(imgMsg);
+                                    break;
+                                case 2:  //回复消息
+                                    SendMessage(new[] { new PlainMessage(BotInfo.OriginPictureCheckPornErrorReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", errorMessage))) });
+                                    break;
+                            }
+                            break;
+                    }
+                    ms.Close();
+                }
+                else
+                {
+                    await SendImage(new[] { url });
+                }
+
+                void SendByForward(IImageMessage imgMsg)
+                {
+                    Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage forwardMessage = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
+                   {
+                       Id = 0,
+                       Name = BotInfo.BotName,
+                       QQNumber = BotInfo.QQId,
+                       Time = DateTime.Now,
+                       Chain = new []{ imgMsg as Mirai.CSharp.HttpApi.Models.ChatMessages.IImageMessage },
+                   }});
+                    SendMessage(new[] { forwardMessage });
+                }
+            }
             else
                 SendMessage(new[] { new PlainMessage(msg) });
         }
 
-        private static IChatMessage CheckPorn(string cacheImageName, byte[] image)
+        private static IChatMessage CheckPornSearch(string cacheImageName, byte[] image)
         {
             IChatMessage IImageMessage = null;
+            switch (CheckPorn(cacheImageName, image, out string errorMessage))
+            {
+                case 1:
+                    IImageMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply);
+                    break;
+                case 2:
+                    IImageMessage = new PlainMessage(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", errorMessage)));
+                    break;
+            }
+            return IImageMessage;
+        }
+
+        /// <summary>
+        /// 鉴黄指定的图片
+        /// </summary>
+        /// <returns>0.鉴黄通过 1.鉴黄不通过 2.鉴黄发生错误</returns>
+        private static int CheckPorn(string cacheImageName, byte[] image, out string errorMessage)
+        {
+            errorMessage = null;
+            int checkPornType = 0;
             string path = Path.GetDirectoryName(cacheImageName);
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(cacheImageName);
             string healthFileName = Path.Combine(path, fileNameWithoutExtension + "_IsHealth.png");
+            if (File.Exists(healthFileName) && new FileInfo(healthFileName).Length > 0)
+                return 0;
             string notHealthFileName = Path.Combine(path, fileNameWithoutExtension + "_NotHealth.png");
+            if (File.Exists(notHealthFileName) && new FileInfo(notHealthFileName).Length > 0)
+                return 1;
+
             try
             {
+                if (!File.Exists(cacheImageName))
+                    File.WriteAllBytes(cacheImageName, image);
                 bool bHealth = TencentCloudHelper.CheckImageHealth(image);
                 if (bHealth)
                 {
-                    if (File.Exists(cacheImageName))
-                        File.Move(cacheImageName, healthFileName, true);
+                    File.Move(cacheImageName, healthFileName, true);
                 }
                 else
                 {
-                    IImageMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply);
-                    if (File.Exists(cacheImageName))
-                        File.Move(cacheImageName, notHealthFileName, true);
+                    checkPornType = 1;
+                    File.Move(cacheImageName, notHealthFileName, true);
                 }
             }
             catch (Exception ex)
             {
-                IImageMessage = new PlainMessage(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", ex.Message)));
+                checkPornType = 2;
+                errorMessage = ex.Message;
             }
-            return IImageMessage;
+            return checkPornType;
         }
 
         public static async Task SuccessiveSearchPicture(IImageMessage imgMsg, long qqId, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage, Func<string[], Task<string[]>> SendImage)

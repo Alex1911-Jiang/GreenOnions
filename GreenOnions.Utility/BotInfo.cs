@@ -371,22 +371,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold), value.ToString());
         }
-
-        ///// <summary>
-        ///// TraceMoe搜图相似度大于此数值时不进行后续搜图
-        ///// </summary>
-        //[PropertyChineseName("TraceMoe中断阈值")]
-        //public static int TraceMoeStopThreshold
-        //{
-        //    get
-        //    {
-        //        string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeStopThreshold));
-        //        if (int.TryParse(strValue, out int iValue)) return iValue;
-        //        return 95;
-        //    }
-        //    set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeStopThreshold), value.ToString());
-        //}
-
+        
         /// <summary>
         /// 相似度低于阈值返回消息
         /// </summary>
@@ -397,21 +382,35 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否启用腾讯云AI鉴黄
+        /// 是否接入腾讯云AI鉴黄
         /// </summary>
-        public static bool SearchCheckPornEnabled
+        public static bool CheckPornEnabled
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornEnabled));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornEnabled));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
+                return true;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornEnabled), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornEnabled), value.ToString());
         }
 
         /// <summary>
-        /// 鉴黄不通过返回消息
+        /// 是否在下载原图功能上启用鉴黄
+        /// </summary>
+        public static bool OriginPictureCheckPornEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornEnabled), value.ToString());
+        }
+
+        /// <summary>
+        /// 搜图功能鉴黄不通过返回消息
         /// </summary>
         public static string SearchCheckPornIllegalReply
         {
@@ -420,7 +419,7 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 鉴黄发生异常返回消息
+        /// 搜图功能鉴黄发生异常返回消息
         /// </summary>
         public static string SearchCheckPornErrorReply
         {
@@ -476,6 +475,68 @@ namespace GreenOnions.Utility
         #endregion -- 腾讯云相关属性 --
 
         #endregion -- 搜图属性 --
+
+        #region -- 下载原图属性 --
+        /// <summary>
+        /// 是否启用下载原图
+        /// </summary>
+        public static bool OriginPictureEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureEnabled), value.ToString());
+        }
+
+        /// <summary>
+        /// 是否在搜图功能上启用鉴黄
+        /// </summary>
+        public static bool SearchCheckPornEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornEnabled), value.ToString());
+        }
+
+        /// <summary>
+        /// 下载原图功能上鉴黄不通过时做以下动作: 0.以合并转发的方式发送原图 1.不做任何事 2.回复设置的语句
+        /// </summary>
+        public static int OriginPictureCheckPornEvent
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornEvent));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 87;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornEvent), value.ToString());
+        }
+
+        /// <summary>
+        /// 下载原图功能鉴黄不通过返回消息
+        /// </summary>
+        public static string OriginPictureCheckPornIllegalReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornIllegalReply)) ?? "AI鉴黄不通过。";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornIllegalReply), value);
+        }
+
+        /// <summary>
+        /// 下载原图功能鉴黄错误返回消息
+        /// </summary>
+        public static string OriginPictureCheckPornErrorReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornErrorReply)) ?? "AI鉴黄发生错误。<错误信息>";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornErrorReply), value);
+        }
+        #endregion  -- 下载原图属性 --
 
         #region -- 翻译属性 --
 

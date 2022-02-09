@@ -66,7 +66,8 @@ namespace GreenOnions.BotMain
                                     if (e.Chain[i].Type == "Plain")
                                     {
                                         await PlainMessageHandler.SendPixivOriginPictureWithIdAndP(e.Chain[i].ToString(),
-                                            urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls), 
+                                            urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls),
+                                            picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
                                             msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));
                                     }
                                     #endregion -- @下载原图 --

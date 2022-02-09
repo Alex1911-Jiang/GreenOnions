@@ -242,14 +242,14 @@ namespace GreenOnions.Utility.Helper
         }
         #endregion -- Https请求 --
 
-        private static byte[] DownloadImageData(string url)
+        public static byte[] DownloadImageData(string url)
         {
             WebClient webClient = new WebClient();
             byte[] bytes = webClient.DownloadData(url);
             return bytes;
         }
 
-        private static byte[] DownloadImageFile(string url, string cacheImageName)
+        public static byte[] DownloadImageFile(string url, string cacheImageName)
         {
             string cacheDir = Path.GetDirectoryName(cacheImageName);
             if (!Directory.Exists(cacheDir))

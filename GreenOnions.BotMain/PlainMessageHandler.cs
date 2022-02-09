@@ -290,7 +290,7 @@ namespace GreenOnions.BotMain
                 if (match.Groups.Count > 1)
                 {
                     string strId = firstMessage.Substring(match.Groups[0].Length);
-                    await SendPixivOriginPictureWithIdAndP(strId, SendImage, msg => SendMessage?.Invoke(msg, false));
+                    await SendPixivOriginPictureWithIdAndP(strId, SendImage, UploadPicture, msg => SendMessage?.Invoke(msg, false));
                     return;
                 }
             }
@@ -384,6 +384,7 @@ namespace GreenOnions.BotMain
                         if (BotInfo.HPictureEnabled && BotInfo.EnabledHPictureSource.Contains(PictureSource.Lolicon))
                         {
                             string strHPicture = $"发送\"{BotInfo.HPictureCmd.ReplaceGreenOnionsTags()}\"来索要色图。";
+                            strHPicture += $"\r\n需要注意的是, 关键词中, 如果仅输入一个关键词, 则按模糊匹配查询, 如果用|或&连接多个关键词, 则按标签精确匹配(|代表或, &代表与)";
                             if (BotInfo.HPictureUserCmd.Count() > 0)
                                 strHPicture += $"\r\n或直接输入\"{string.Join("\",\"", BotInfo.HPictureUserCmd)}\"中的一个来索要一张随机色图。";
                             strHPicture +=  "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
@@ -500,14 +501,14 @@ namespace GreenOnions.BotMain
             }
         }
 
-        public static async Task SendPixivOriginPictureWithIdAndP(string strId, Func<string[], Task<string[]>> SendImage, Action<IChatMessage[]> SendMessage)
+        public static async Task SendPixivOriginPictureWithIdAndP(string strId, Func<string[], Task<string[]>> SendImage, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage)
         {
             string[] idWithIndex = strId.Split("-");
             if (idWithIndex.Length == 2)
             {
                 if (int.TryParse(idWithIndex[1], out int index) && long.TryParse(idWithIndex[0], out long id))
                 {
-                    await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, SendMessage, id, index - 1);
+                    await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, UploadPicture, SendMessage, id, index - 1);
                 }
                 return;
             }
@@ -516,13 +517,13 @@ namespace GreenOnions.BotMain
             {
                 if (int.TryParse(idWithP[1], out int p) && long.TryParse(idWithP[0], out long id))
                 {
-                    await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, SendMessage, id, p);
+                    await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, UploadPicture, SendMessage, id, p);
                 }
                 return;
             }
             if (long.TryParse(strId, out long idNoneP))
             {
-                await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, SendMessage, idNoneP, -1);
+                await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, UploadPicture, SendMessage, idNoneP, -1);
                 return;
             }
         }
