@@ -54,9 +54,12 @@ namespace GreenOnions.Utility.Helper
             {
                 if (Score > 90)
                 {
-                    return false;
+                    //鉴黄不通过删除图片(腾讯云竟然会因为留存色图而封号...)
+                    DeleteObjectRequest request = new DeleteObjectRequest(BotInfo.TencentCloudBucket, "CheckPorn.png");
+                    CosXml.DeleteObject(request);
+                    return false;  //非法
                 }
-                return true;
+                return true;  //合法
             }
             return false;
         }
