@@ -207,6 +207,7 @@ namespace GreenOnions.BotMainManagerWindow
             chkHorizontalMirrorImage.Checked = BotInfo.HorizontalMirrorImageEnabled;
             txbHorizontalMirrorImageProbability.Text = BotInfo.HorizontalMirrorImageProbability.ToString();
             chkVerticalMirrorImage.Checked = BotInfo.VerticalMirrorImageEnabled;
+            chkReplaceMeToYou.Checked = BotInfo.ReplaceMeToYou;
             txbVerticalMirrorImageProbability.Text = BotInfo.VerticalMirrorImageProbability.ToString();
             #endregion -- 复读设置 --
 
@@ -451,6 +452,7 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.HorizontalMirrorImageEnabled = chkHorizontalMirrorImage.Checked;
             BotInfo.HorizontalMirrorImageProbability = string.IsNullOrEmpty(txbHorizontalMirrorImageProbability.Text) ? 0 : Convert.ToInt32(txbHorizontalMirrorImageProbability.Text);
             BotInfo.VerticalMirrorImageEnabled = chkVerticalMirrorImage.Checked;
+            BotInfo.ReplaceMeToYou = chkReplaceMeToYou.Checked;
             BotInfo.VerticalMirrorImageProbability = string.IsNullOrEmpty(txbVerticalMirrorImageProbability.Text) ? 0 : Convert.ToInt32(txbVerticalMirrorImageProbability.Text);
             #endregion -- 复读设置 --
 
@@ -705,11 +707,8 @@ namespace GreenOnions.BotMainManagerWindow
         }
         #endregion -- RSS --
 
-        private void cboTranslateEngine_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txbTranslateTo.Enabled = cboTranslateEngine.SelectedIndex == (int)TranslateEngine.Google;
-        }
-
+        private void cboTranslateEngine_SelectedIndexChanged(object sender, EventArgs e) => txbTranslateTo.Enabled = cboTranslateEngine.SelectedIndex == (int)TranslateEngine.Google;
+        
         private void chkRssEnabled_CheckedChanged(object sender, EventArgs e) => pnlRss.Enabled = chkRssEnabled.Checked;
 
         private void chkPictureSearcherCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlPictureSearcherCheckPorn.Enabled = chkPictureSearcherCheckPornEnabled.Checked;

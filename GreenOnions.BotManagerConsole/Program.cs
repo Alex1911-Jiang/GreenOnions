@@ -12,7 +12,7 @@ namespace GreenOnions.BotManagerConsole
 		{
 			AppDomain.CurrentDomain.UnhandledException += (_, e) => ErrorHelper.WriteErrorLog(e.ExceptionObject);
 
-			Console.WriteLine("葱葱机器人");
+			Console.WriteLine("葱葱机器人2.0");
 
 			if (!File.Exists(JsonHelper.JsonConfigFileName))
 			{
@@ -46,20 +46,12 @@ namespace GreenOnions.BotManagerConsole
 			await BotMain.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) =>
 			{
 				if (bConnect)
-				{
 					Console.WriteLine($"连接状态: 已连接到mirai-api-http, 登录昵称:{nickNameOrErrorMessage}");
-				}
 				else if (nickNameOrErrorMessage == null)  //连接失败且没有异常
-				{
 					Console.WriteLine("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数。");
-				}
 				else  //发生异常
-				{
 					if (nickNameOrErrorMessage.Length > 0)
-					{
 						Console.WriteLine("连接失败，" + nickNameOrErrorMessage);
-					}
-				}
 			});
 		}
 	}

@@ -30,6 +30,9 @@ namespace GreenOnions.RSS
                     {
                         foreach (RssSubscriptionItem item in BotInfo.RssSubscription)  //若干条订阅地址
                         {
+                            //如果在调试模式并且转发的QQ和群组均不在管理员和调试群组集合中时不去请求
+                            if (BotInfo.DebugMode && ((BotInfo.DebugReplyAdminOnly && item.ForwardQQs.Intersect(BotInfo.AdminQQ).Count() == 0) || (BotInfo.OnlyReplyDebugGroup && item.ForwardGroups.Intersect(BotInfo.DebugGroups).Count() == 0)))
+                                continue;
                             try
                             {
                                 if (item.ForwardGroups.Length == 0 && item.ForwardQQs.Length == 0)
@@ -92,12 +95,19 @@ namespace GreenOnions.RSS
                                                     Chain = chatGroupMessages.Select( c => c as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
                                                 }});
                                                 for (int i = 0; i < item.ForwardGroups.Length; i++)
-                                                    SendMessage?.Invoke(item.ForwardGroups[i], new[] { forwardMessage }, UploadTarget.Group);
+                                                {
+                                                    if (!BotInfo.DebugMode || BotInfo.DebugGroups.Contains(item.ForwardGroups[i]))
+                                                        SendMessage?.Invoke(item.ForwardGroups[i], new[] { forwardMessage }, UploadTarget.Group);
+                                                }
                                             }
                                             else
                                             {
                                                 for (int i = 0; i < item.ForwardGroups.Length; i++)
-                                                    SendMessage?.Invoke(item.ForwardGroups[i], chatGroupMessages.ToArray(), UploadTarget.Group);
+                                                {
+
+                                                    if (!BotInfo.DebugMode || BotInfo.DebugGroups.Contains(item.ForwardGroups[i]))
+                                                        SendMessage?.Invoke(item.ForwardGroups[i], chatGroupMessages.ToArray(), UploadTarget.Group);
+                                                }
                                             }
                                         }
                                         if (item.ForwardQQs.Length > 0)
@@ -131,12 +141,18 @@ namespace GreenOnions.RSS
                                                     Chain = chatFriendMessages.Select( c => c as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
                                                 }});
                                                 for (int i = 0; i < item.ForwardQQs.Length; i++)
-                                                    SendMessage?.Invoke(item.ForwardQQs[i], new[] { forwardMessage }, UploadTarget.Friend);
+                                                {
+                                                    if (!BotInfo.DebugMode || BotInfo.AdminQQ.Contains(item.ForwardQQs[i]))
+                                                        SendMessage?.Invoke(item.ForwardQQs[i], new[] { forwardMessage }, UploadTarget.Friend);
+                                                }
                                             }
                                             else
                                             {
                                                 for (int i = 0; i < item.ForwardQQs.Length; i++)
-                                                    SendMessage?.Invoke(item.ForwardQQs[i], chatFriendMessages.ToArray(), UploadTarget.Friend);
+                                                {
+                                                    if (!BotInfo.DebugMode || BotInfo.AdminQQ.Contains(item.ForwardQQs[i]))
+                                                        SendMessage?.Invoke(item.ForwardQQs[i], chatFriendMessages.ToArray(), UploadTarget.Friend);
+                                                }
                                             }
                                         }
 

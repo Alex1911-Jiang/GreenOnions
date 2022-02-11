@@ -69,6 +69,7 @@ namespace GreenOnions.BotMain
                                             urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls),
                                             picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
                                             msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));
+                                        return;
                                     }
                                     #endregion -- @下载原图 --
                                 }
@@ -90,6 +91,7 @@ namespace GreenOnions.BotMain
                                         }
                                     }
                                 });  //发送群消息
+                                return;
                             },
                             picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
                             urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));  //上传图片

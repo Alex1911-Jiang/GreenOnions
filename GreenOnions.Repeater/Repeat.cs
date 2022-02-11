@@ -1,6 +1,5 @@
 ﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using Mirai.CSharp.Models;
 using Mirai.CSharp.Models.ChatMessages;
 using System;
 using System.Collections.Generic;
@@ -24,14 +23,10 @@ namespace GreenOnions.Repeater
                     tempMessageItem = MessageItems[groupId];
                 }
                 else
-                {
                     MessageItems[groupId] = tempMessageItem;
-                }
             }
             else
-            {
                 MessageItems.Add(groupId, tempMessageItem);
-            }
 
             if (!tempMessageItem.IsRepeated)  //已经参与过复读的消息不再参与随机复读
             {
@@ -39,17 +34,13 @@ namespace GreenOnions.Repeater
                 {
                     IChatMessage resultMessage = await SuccessiveRepeat(message, tempMessageItem, UploadPicture);
                     if (resultMessage != null)
-                    {
                         return resultMessage;
-                    }
                 }
                 if (BotInfo.RandomRepeatEnabled)
                 {
                     IChatMessage resultMessage = await RandomRepeat(message, tempMessageItem, UploadPicture);
                     if (resultMessage != null)
-                    {
                         return resultMessage;
-                    }
                 }
             }
             return null;
@@ -65,28 +56,7 @@ namespace GreenOnions.Repeater
         private static async Task<IChatMessage> RandomRepeat(IChatMessage message, MessageItem messageItem, Func<Stream, Task<IImageMessage>> UploadPicture)
         {
             if (new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) <= BotInfo.RandomRepeatProbability)
-            {
-                if (message is Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage)
-                {
-                    messageItem.IsRepeated = true;
-                    return new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(message.ToString());
-                }
-                else if (message is IImageMessage)
-                {
-                    messageItem.IsRepeated = true;
-                    IImageMessage imageMessage = message as IImageMessage;
-                    MemoryStream ms = MirrorImage(imageMessage.Url, imageMessage.ImageId);
-                    if (ms == null)
-                        return new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imageMessage.ImageId, null, null);
-                    else
-                    {
-                        ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
-                        IImageMessage imgMsg = await UploadPicture(ms);
-                        ms.Close();
-                        return imgMsg;
-                    }
-                }
-            }
+                return await Pepeat(message, messageItem, UploadPicture);
             return null;
         }
 
@@ -99,30 +69,34 @@ namespace GreenOnions.Repeater
         /// <returns></returns>
         private static async Task<IChatMessage> SuccessiveRepeat(IChatMessage message, MessageItem messageItem, Func<Stream, Task<IImageMessage>> UploadPicture)
         {
+            if (messageItem.RepeatedCount >= BotInfo.SuccessiveRepeatCount)
+                return await Pepeat(message, messageItem, UploadPicture);
+            return null;
+        }
+
+        private static async Task<IChatMessage> Pepeat(IChatMessage message, MessageItem messageItem, Func<Stream, Task<IImageMessage>> UploadPicture)
+        {
             if (message is Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage)
             {
-                if (messageItem.RepeatedCount >= BotInfo.SuccessiveRepeatCount)
-                {
-                    messageItem.IsRepeated = true;
-                    return (Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage)message;
-                }
+                messageItem.IsRepeated = true;
+                string msg = message.ToString();
+                if (BotInfo.ReplaceMeToYou)
+                    msg = msg.Replace("我", "你");
+                return new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(msg);
             }
             else if (message is IImageMessage)
             {
+                messageItem.IsRepeated = true;
                 IImageMessage imageMessage = message as IImageMessage;
-                if (messageItem.RepeatedCount >= BotInfo.SuccessiveRepeatCount)
+                MemoryStream ms = MirrorImage(imageMessage.Url, imageMessage.ImageId);
+                if (ms == null)
+                    return new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imageMessage.ImageId, null, null);
+                else
                 {
-                    messageItem.IsRepeated = true;
-                    MemoryStream ms = MirrorImage(imageMessage.Url, imageMessage.ImageId);
-                    if (ms == null)
-                        return new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imageMessage.ImageId, null, null);
-                    else
-                    {
-                        ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
-                        IImageMessage imgMsg = await UploadPicture(ms);
-                        ms.Close();
-                        return imgMsg;
-                    }
+                    ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
+                    IImageMessage imgMsg = await UploadPicture(ms);
+                    ms.Close();
+                    return imgMsg;
                 }
             }
             return null;
@@ -134,22 +108,15 @@ namespace GreenOnions.Repeater
             bool bHorizontalMirror = false;
             bool bVerticalMirror = false;
             if (BotInfo.RewindGifEnabled)
-            {
                 bRewind = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.RewindGifProbability;
-            }
             if (!bRewind)
             {
                 if (BotInfo.HorizontalMirrorImageEnabled)
-                {
                     bHorizontalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.HorizontalMirrorImageProbability;
-                }
                 if (BotInfo.VerticalMirrorImageEnabled)
-                {
                     bVerticalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.VerticalMirrorImageProbability;
-                }
             }
             
-
             if (bRewind || bHorizontalMirror || bVerticalMirror)
             {
                 string imgName = Path.Combine(ImageHelper.ImagePath, $"复读图片{imageId}");
@@ -157,17 +124,11 @@ namespace GreenOnions.Repeater
 
                 //倒放和镜像不会同时发生且倒放优先级高于镜像, 但水平镜像和垂直镜像可能同时发生
                 if (bRewind)
-                {
                     ms = ms.RewindGifStream();
-                }
                 if (bHorizontalMirror)
-                {
                     ms = ms.HorizontalMirrorImageStream();
-                }
                 if (bVerticalMirror)
-                {
                     ms = ms.VerticalMirrorImageStream();
-                }
                 return ms;
             }
             return null;
@@ -202,31 +163,24 @@ namespace GreenOnions.Repeater
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
-
-                if (ReferenceEquals(this, obj)) return true;
-
-                if (obj.GetType() != GetType()) return false;
-
-                MessageItem other = (MessageItem)obj;
-
-                if (MessageValue == other.MessageValue && ImageId == other.ImageId)
-                {
+                if (ReferenceEquals(null, obj)) 
+                    return false;
+                if (ReferenceEquals(this, obj)) 
                     return true;
-                }
+                if (obj.GetType() != GetType()) 
+                    return false;
+                MessageItem other = (MessageItem)obj;
+                if (MessageValue == other.MessageValue && ImageId == other.ImageId)
+                    return true;
                 return false;
             }
 
             public override int GetHashCode()
             {
                 if (MessageType == typeof(Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage))  //只有文字消息和图片消息才复读
-                {
                     return StringComparer.InvariantCulture.GetHashCode(MessageValue);
-                }
                 else if (MessageType == typeof(Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage))  //只有文字消息和图片消息才复读
-                {
                     return StringComparer.InvariantCulture.GetHashCode(ImageId);
-                }
                 return 0;
             }
         }

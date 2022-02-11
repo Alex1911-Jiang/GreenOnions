@@ -302,6 +302,7 @@
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.chkReplaceMeToYou = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -2654,6 +2655,7 @@
             // 
             // tabRepeater
             // 
+            this.tabRepeater.Controls.Add(this.chkReplaceMeToYou);
             this.tabRepeater.Controls.Add(this.chkRewindGif);
             this.tabRepeater.Controls.Add(this.lblRewindGifProbability);
             this.tabRepeater.Controls.Add(this.lblVerticalMirrorImageProbability);
@@ -3274,6 +3276,16 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
+            // chkReplaceMeToYou
+            // 
+            this.chkReplaceMeToYou.AutoSize = true;
+            this.chkReplaceMeToYou.Location = new System.Drawing.Point(21, 227);
+            this.chkReplaceMeToYou.Name = "chkReplaceMeToYou";
+            this.chkReplaceMeToYou.Size = new System.Drawing.Size(155, 21);
+            this.chkReplaceMeToYou.TabIndex = 4;
+            this.chkReplaceMeToYou.Text = "复读时把\"我\"替换为\"你\"";
+            this.chkReplaceMeToYou.UseVisualStyleBackColor = true;
+            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -3614,5 +3626,6 @@
         private System.Windows.Forms.Label lblOriginPictureCheckPornErrorReply;
         private System.Windows.Forms.Panel pnlOriginPictureCheckPornMessage;
         private System.Windows.Forms.Panel pnlOriginPicture;
+        private System.Windows.Forms.CheckBox chkReplaceMeToYou;
     }
 }

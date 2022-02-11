@@ -166,7 +166,7 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否启用调试模式
+        /// 调试模式下是否只响应指定群组的消息
         /// </summary>
         public static bool OnlyReplyDebugGroup
         {
@@ -180,7 +180,7 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否启用调试模式
+        /// 调试模式下是否只响应机器人管理员的消息
         /// </summary>
         public static bool DebugReplyAdminOnly
         {
@@ -1386,6 +1386,19 @@ namespace GreenOnions.Utility
                 return 50;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRepeater, nameof(VerticalMirrorImageProbability), value.ToString());
+        }
+        /// <summary>
+        /// 将"我"替换为"你"
+        /// </summary>
+        public static bool ReplaceMeToYou
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRepeater, nameof(ReplaceMeToYou));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRepeater, nameof(ReplaceMeToYou), value.ToString());
         }
         #endregion -- 复读属性 --
 

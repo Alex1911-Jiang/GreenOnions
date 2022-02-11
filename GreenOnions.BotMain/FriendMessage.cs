@@ -16,7 +16,7 @@ namespace GreenOnions.BotMain
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IFriendMessageEventArgs, FriendMessageEventArgs>))]
     public partial class FriendPlugin : IMiraiHttpMessageHandler<IFriendMessageEventArgs>
     {
-        public async Task HandleMessageAsync(IMiraiHttpSession session, IFriendMessageEventArgs e) // 法2: 使用 params IMessageBase[]
+        public async Task HandleMessageAsync(IMiraiHttpSession session, IFriendMessageEventArgs e)
         {
             if (!CheckPreconditions(e.Sender))
             {
@@ -62,17 +62,6 @@ namespace GreenOnions.BotMain
                         }
                         break;
                 }
-
-                #region -- 复读 --
-                if (e.Chain.Length == 2)
-                {
-                    Mirai.CSharp.Models.ChatMessages.IChatMessage repeatingMessage = await Repeat.Repeating(e.Chain[1], e.Sender.Id, picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream));
-                    if (repeatingMessage != null)
-                    {
-                        await session.SendFriendMessageAsync(e.Sender.Id, repeatingMessage);
-                    }
-                }
-                #endregion -- 复读 --
             }
         }
 
