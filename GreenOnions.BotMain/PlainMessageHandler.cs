@@ -217,7 +217,7 @@ namespace GreenOnions.BotMain
                     if (sender is IGroupMemberInfo)  //群消息
                     {
                         IGroupMemberInfo senderGroup = sender as IGroupMemberInfo;
-                        if (!BotInfo.HPictureR18WhiteOnly || (BotInfo.HPictureR18WhiteOnly && BotInfo.HPictureWhiteGroup.Contains(senderGroup.Group.Id)))
+                        if (!BotInfo.HPictureWhiteOnly || (BotInfo.HPictureR18WhiteOnly && BotInfo.HPictureWhiteGroup.Contains(senderGroup.Group.Id)))
                         {
                             if (senderGroup.Permission == GroupPermission.Member || !BotInfo.HPictureManageNoLimit)
                             {

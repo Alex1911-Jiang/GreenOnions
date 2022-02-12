@@ -65,6 +65,8 @@ namespace GreenOnions.BotMain
                                     #region -- @下载原图 --
                                     if (e.Chain[i].Type == "Plain")
                                     {
+                                        if (string.IsNullOrWhiteSpace(e.Chain[i].ToString()))
+                                            continue;
                                         await PlainMessageHandler.SendPixivOriginPictureWithIdAndP(e.Chain[i].ToString(),
                                             urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls),
                                             picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
