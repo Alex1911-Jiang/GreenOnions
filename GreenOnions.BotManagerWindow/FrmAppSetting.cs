@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace GreenOnions.BotMainManagerWindow
+namespace GreenOnions.BotManagerWindow
 {
     public partial class FrmAppSetting : Form
     {
@@ -46,7 +46,7 @@ namespace GreenOnions.BotMainManagerWindow
             }
             chkOnlyReplyDebugGroup.Checked = BotInfo.OnlyReplyDebugGroup;
             chkDebugReplyAdminOnly.Checked = BotInfo.DebugReplyAdminOnly;
-
+            chkHttpRequestByWebBrowser.Checked = BotInfo.HttpRequestByWebBrowser;
             #endregion -- 通用设置 --
 
             #region -- 搜图设置 --
@@ -90,6 +90,7 @@ namespace GreenOnions.BotMainManagerWindow
             }
             txbOriginPictureCheckPornIllegalReply.Text = BotInfo.OriginPictureCheckPornIllegalReply;
             txbOriginPictureCheckPornErrorReply.Text = BotInfo.OriginPictureCheckPornErrorReply;
+            chkASCII2DRequestByWebBrowser.Checked = BotInfo.ASCII2DRequestByWebBrowser;
 
             #region -- 腾讯云相关设置 --
             txbTencentCloudAPPID.Text = BotInfo.TencentCloudAPPID;
@@ -295,6 +296,7 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.DebugGroups = tempDebugGroups;
             BotInfo.OnlyReplyDebugGroup = chkOnlyReplyDebugGroup.Checked;
             BotInfo.DebugReplyAdminOnly = chkDebugReplyAdminOnly.Checked;
+            BotInfo.HttpRequestByWebBrowser = chkHttpRequestByWebBrowser.Checked;
 
             #endregion -- 通用设置 --
 
@@ -336,6 +338,8 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.SearchCheckPornEnabled = chkPictureSearcherCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
             BotInfo.SearchCheckPornIllegalReply = txbSearchCheckPornIllegalReply.Text;
             BotInfo.SearchCheckPornErrorReply = txbSearchCheckPornErrorReply.Text;
+            BotInfo.ASCII2DRequestByWebBrowser = chkASCII2DRequestByWebBrowser.Checked;
+
             #region -- 腾讯云相关设置 --
             BotInfo.TencentCloudAPPID = txbTencentCloudAPPID.Text;
             BotInfo.TencentCloudRegion = txbTencentCloudRegion.Text;
@@ -343,7 +347,6 @@ namespace GreenOnions.BotMainManagerWindow
             BotInfo.TencentCloudSecretKey = txbTencentCloudSecretKey.Text;
             BotInfo.TencentCloudBucket = txbTencentCloudBucket.Text;
             #endregion -- 腾讯云相关设置 --
-
             #endregion -- 搜图设置 --
 
             #region -- 下载原图设置 --

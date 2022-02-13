@@ -1,5 +1,5 @@
 ﻿
-namespace GreenOnions.BotMainManagerWindow
+namespace GreenOnions.BotManagerWindow
 {
     partial class FrmMain
 {

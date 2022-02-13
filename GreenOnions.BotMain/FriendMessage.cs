@@ -1,5 +1,4 @@
 ﻿using GreenOnions.PictureSearcher;
-using GreenOnions.Repeater;
 using GreenOnions.Utility;
 using Mirai.CSharp.HttpApi.Handlers;
 using Mirai.CSharp.HttpApi.Models.ChatMessages;
@@ -8,13 +7,14 @@ using Mirai.CSharp.HttpApi.Parsers;
 using Mirai.CSharp.HttpApi.Parsers.Attributes;
 using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GreenOnions.BotMain
 {
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IFriendMessageEventArgs, FriendMessageEventArgs>))]
-    public partial class FriendPlugin : IMiraiHttpMessageHandler<IFriendMessageEventArgs>
+    public partial class FriendMessage : IMiraiHttpMessageHandler<IFriendMessageEventArgs>
     {
         public async Task HandleMessageAsync(IMiraiHttpSession session, IFriendMessageEventArgs e)
         {

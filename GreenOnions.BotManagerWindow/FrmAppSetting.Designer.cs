@@ -1,4 +1,4 @@
-﻿namespace GreenOnions.BotMainManagerWindow
+﻿namespace GreenOnions.BotManagerWindow
 {
     partial class FrmAppSetting
     {
@@ -243,6 +243,7 @@
             this.txbHPictureUnit = new System.Windows.Forms.TextBox();
             this.chkEnabledHPicture = new System.Windows.Forms.CheckBox();
             this.tabRepeater = new System.Windows.Forms.TabPage();
+            this.chkReplaceMeToYou = new System.Windows.Forms.CheckBox();
             this.chkRewindGif = new System.Windows.Forms.CheckBox();
             this.lblRewindGifProbability = new System.Windows.Forms.Label();
             this.lblVerticalMirrorImageProbability = new System.Windows.Forms.Label();
@@ -302,7 +303,8 @@
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.chkReplaceMeToYou = new System.Windows.Forms.CheckBox();
+            this.chkHttpRequestByWebBrowser = new System.Windows.Forms.CheckBox();
+            this.chkASCII2DRequestByWebBrowser = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -419,6 +421,7 @@
             // pnlBot
             // 
             this.pnlBot.AutoScroll = true;
+            this.pnlBot.Controls.Add(this.chkHttpRequestByWebBrowser);
             this.pnlBot.Controls.Add(this.chkCheckPornEnabled);
             this.pnlBot.Controls.Add(this.chkImageCache);
             this.pnlBot.Controls.Add(this.pnlDebugMode);
@@ -453,7 +456,7 @@
             // chkCheckPornEnabled
             // 
             this.chkCheckPornEnabled.AutoSize = true;
-            this.chkCheckPornEnabled.Location = new System.Drawing.Point(7, 458);
+            this.chkCheckPornEnabled.Location = new System.Drawing.Point(7, 481);
             this.chkCheckPornEnabled.Name = "chkCheckPornEnabled";
             this.chkCheckPornEnabled.Size = new System.Drawing.Size(111, 21);
             this.chkCheckPornEnabled.TabIndex = 34;
@@ -484,9 +487,9 @@
             this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
             this.pnlDebugMode.Controls.Add(this.txbAddDebugGroup);
             this.pnlDebugMode.Enabled = false;
-            this.pnlDebugMode.Location = new System.Drawing.Point(4, 661);
+            this.pnlDebugMode.Location = new System.Drawing.Point(4, 684);
             this.pnlDebugMode.Name = "pnlDebugMode";
-            this.pnlDebugMode.Size = new System.Drawing.Size(601, 153);
+            this.pnlDebugMode.Size = new System.Drawing.Size(584, 153);
             this.pnlDebugMode.TabIndex = 12;
             // 
             // chkOnlyReplyDebugGroup
@@ -597,7 +600,7 @@
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudAPPID);
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudSecretKey);
             this.pnlCheckPorn.Enabled = false;
-            this.pnlCheckPorn.Location = new System.Drawing.Point(4, 485);
+            this.pnlCheckPorn.Location = new System.Drawing.Point(4, 508);
             this.pnlCheckPorn.Name = "pnlCheckPorn";
             this.pnlCheckPorn.Size = new System.Drawing.Size(618, 145);
             this.pnlCheckPorn.TabIndex = 35;
@@ -696,7 +699,7 @@
             // chkDebugMode
             // 
             this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(7, 637);
+            this.chkDebugMode.Location = new System.Drawing.Point(7, 660);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(75, 21);
             this.chkDebugMode.TabIndex = 9;
@@ -894,6 +897,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlSearchPicture.AutoScroll = true;
+            this.pnlSearchPicture.Controls.Add(this.chkASCII2DRequestByWebBrowser);
             this.pnlSearchPicture.Controls.Add(this.pnlPictureSearcherCheckPorn);
             this.pnlSearchPicture.Controls.Add(this.chkPictureSearcherCheckPornEnabled);
             this.pnlSearchPicture.Controls.Add(this.chkTraceMoeEnabled);
@@ -2678,6 +2682,16 @@
             this.tabRepeater.Text = "复读设置";
             this.tabRepeater.UseVisualStyleBackColor = true;
             // 
+            // chkReplaceMeToYou
+            // 
+            this.chkReplaceMeToYou.AutoSize = true;
+            this.chkReplaceMeToYou.Location = new System.Drawing.Point(21, 227);
+            this.chkReplaceMeToYou.Name = "chkReplaceMeToYou";
+            this.chkReplaceMeToYou.Size = new System.Drawing.Size(155, 21);
+            this.chkReplaceMeToYou.TabIndex = 4;
+            this.chkReplaceMeToYou.Text = "复读时把\"我\"替换为\"你\"";
+            this.chkReplaceMeToYou.UseVisualStyleBackColor = true;
+            // 
             // chkRewindGif
             // 
             this.chkRewindGif.AutoSize = true;
@@ -3276,15 +3290,25 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
-            // chkReplaceMeToYou
+            // chkHttpRequestByWebBrowser
             // 
-            this.chkReplaceMeToYou.AutoSize = true;
-            this.chkReplaceMeToYou.Location = new System.Drawing.Point(21, 227);
-            this.chkReplaceMeToYou.Name = "chkReplaceMeToYou";
-            this.chkReplaceMeToYou.Size = new System.Drawing.Size(155, 21);
-            this.chkReplaceMeToYou.TabIndex = 4;
-            this.chkReplaceMeToYou.Text = "复读时把\"我\"替换为\"你\"";
-            this.chkReplaceMeToYou.UseVisualStyleBackColor = true;
+            this.chkHttpRequestByWebBrowser.AutoSize = true;
+            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(7, 454);
+            this.chkHttpRequestByWebBrowser.Name = "chkHttpRequestByWebBrowser";
+            this.chkHttpRequestByWebBrowser.Size = new System.Drawing.Size(269, 21);
+            this.chkHttpRequestByWebBrowser.TabIndex = 36;
+            this.chkHttpRequestByWebBrowser.Text = "允许调用浏览器执行Http请求(仅限Windows)";
+            this.chkHttpRequestByWebBrowser.UseVisualStyleBackColor = true;
+            // 
+            // chkASCII2DRequestByWebBrowser
+            // 
+            this.chkASCII2DRequestByWebBrowser.AutoSize = true;
+            this.chkASCII2DRequestByWebBrowser.Location = new System.Drawing.Point(179, 114);
+            this.chkASCII2DRequestByWebBrowser.Name = "chkASCII2DRequestByWebBrowser";
+            this.chkASCII2DRequestByWebBrowser.Size = new System.Drawing.Size(344, 21);
+            this.chkASCII2DRequestByWebBrowser.TabIndex = 41;
+            this.chkASCII2DRequestByWebBrowser.Text = "ASCII2D优先使用浏览器进行Http请求(以应对近期403问题)";
+            this.chkASCII2DRequestByWebBrowser.UseVisualStyleBackColor = true;
             // 
             // FrmAppSetting
             // 
@@ -3627,5 +3651,7 @@
         private System.Windows.Forms.Panel pnlOriginPictureCheckPornMessage;
         private System.Windows.Forms.Panel pnlOriginPicture;
         private System.Windows.Forms.CheckBox chkReplaceMeToYou;
+        private System.Windows.Forms.CheckBox chkHttpRequestByWebBrowser;
+        private System.Windows.Forms.CheckBox chkASCII2DRequestByWebBrowser;
     }
 }

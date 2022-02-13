@@ -38,7 +38,7 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        public async static Task<(string response, string jumpUrl)> GetHttpResponseStringAndJumpUrlAsync(string url, IDictionary<string, string> headers = null)
+        public async static Task<(string document, string jumpUrl)> GetHttpResponseStringAndJumpUrlAsync(string url, IDictionary<string, string> headers = null)
         {
             Stream stream = GetHttpResponseStream(url, out string jumpUrl, headers);
             return (await GetStreamToStringAsync(stream), jumpUrl);

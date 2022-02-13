@@ -192,6 +192,20 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(DebugReplyAdminOnly), value.ToString());
         }
+        
+        /// <summary>
+        /// 允许Windows系统使用浏览器执行Http请求
+        /// </summary>
+        public static bool HttpRequestByWebBrowser
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(HttpRequestByWebBrowser));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(HttpRequestByWebBrowser), value.ToString());
+        }
 
         #endregion -- 公共属性 --
 
@@ -425,6 +439,20 @@ namespace GreenOnions.Utility
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornErrorReply)) ?? "AI鉴黄发生错误，缩略图不予显示。<错误信息>";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornErrorReply), value);
+        }
+
+        /// <summary>
+        /// 在Windows系统下时ASCII2D优先以浏览器进行请求(以应对近期403问题)
+        /// </summary>
+        public static bool ASCII2DRequestByWebBrowser
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(ASCII2DRequestByWebBrowser));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(ASCII2DRequestByWebBrowser), value.ToString());
         }
 
         #region -- 腾讯云相关属性 --

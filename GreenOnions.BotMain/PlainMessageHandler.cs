@@ -13,7 +13,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-
 namespace GreenOnions.BotMain
 {
     public static class PlainMessageHandler
@@ -372,11 +371,11 @@ namespace GreenOnions.BotMain
                                 StringBuilder strTranslateGoogle = new StringBuilder($"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。");
                                 strTranslateGoogle.AppendLine($"发送\"{BotInfo.TranslateToCMD.ReplaceGreenOnionsTags()}翻译内容\"翻译成指定语言。");
                                 strTranslateGoogle.AppendLine($"目前支持的语言有:{string.Join("\r\n", GoogleTranslateHelper.Languages.Keys)}");
-                                strTranslateGoogle.AppendLine("如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"");
+                                strTranslateGoogle.AppendLine("目前接入的翻译引擎为:谷歌翻译");
                                 return strTranslateGoogle.ToString();
                             }
                             else
-                                return $"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文" + "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
+                                return $"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文 \r\n目前接入的翻译引擎为: 有道翻译";
                         }
                         else
                             return $"当前{BotInfo.BotName}没有启用翻译功能";
@@ -411,7 +410,7 @@ namespace GreenOnions.BotMain
                     string beauthPictureHelp()
                     {
                         if (BotInfo.HPictureEnabled && BotInfo.EnabledHPictureSource.Contains(PictureSource.ELF))
-                            return $"发送\"{BotInfo.BeautyPictureCmd.ReplaceGreenOnionsTags()}\"来索要美图" + "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
+                            return $"发送\"{BotInfo.BeautyPictureCmd.ReplaceGreenOnionsTags()}\"来索要美图 \r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
                         else
                             return $"当前{BotInfo.BotName}没有启用美图功能";
                     }

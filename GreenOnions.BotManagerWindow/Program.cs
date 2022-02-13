@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace GreenOnions.BotMainManagerWindow
+namespace GreenOnions.BotManagerWindow
 {
     static class Program
     {

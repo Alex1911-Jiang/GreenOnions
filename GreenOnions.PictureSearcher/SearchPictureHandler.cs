@@ -303,15 +303,33 @@ namespace GreenOnions.PictureSearcher
 
             async Task SearchAscii2D()
             {
-                var response = await HttpHelper.GetHttpResponseStringAndJumpUrlAsync(@$"https://ascii2d.net/search/url/{qqImgUrl}?type=color");
-                string strAscii2dColorResult = response.response;
+                string strAscii2dColorResult = null; 
                 string strAscii2dBovwResult = null;
-                try
+                string url = @$"https://ascii2d.net/search/url/{qqImgUrl}?type=color";
+                if (EventHelper.GetDocumentByBrowserEvent != null && BotInfo.HttpRequestByWebBrowser && BotInfo.ASCII2DRequestByWebBrowser)
                 {
-                    strAscii2dBovwResult = await HttpHelper.GetHttpResponseStringAsync(response.jumpUrl.Replace("/color/", "/bovw/"));
+                    var responseColor = EventHelper.GetDocumentByBrowserEvent(url);
+                    strAscii2dColorResult = responseColor.document;
+                    try
+                    {
+                        var responseBovw = EventHelper.GetDocumentByBrowserEvent(responseColor.jumpUrl.Replace("/color/", "/bovw/"));
+                        strAscii2dBovwResult = responseBovw.document;
+                    }
+                    catch (Exception ex)
+                    {
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
+                    var response = await HttpHelper.GetHttpResponseStringAndJumpUrlAsync(url);
+                    strAscii2dColorResult = response.document;
+                    try
+                    {
+                        strAscii2dBovwResult = await HttpHelper.GetHttpResponseStringAsync(response.jumpUrl.Replace("/color/", "/bovw/"));
+                    }
+                    catch (Exception ex)
+                    {
+                    }
                 }
 
                 bool bColorError = false;
@@ -335,47 +353,61 @@ namespace GreenOnions.PictureSearcher
                     HtmlNode nodeColorUrl = nodeColorItemBox.SelectSingleNode(pathColorUrlA) ?? nodeColorItemBox.SelectSingleNode(pathColorUrlSmall);
                     HtmlNode nodeColorMember = nodeColorItemBox.SelectSingleNode(pathColorMemberA) ?? nodeColorItemBox.SelectSingleNode(pathColorMemberSmall);
                     StringBuilder stringBuilderColor = new StringBuilder();
-                    stringBuilderColor.AppendLine("ASCII2D 颜色搜索");
-                    stringBuilderColor.AppendLine($"标题:{nodeColorUrl.InnerText}");
-                    stringBuilderColor.AppendLine($"地址:{nodeColorUrl.Attributes["href"].Value}");
-                    stringBuilderColor.AppendLine($"作者:{nodeColorMember.InnerText}");
-                    stringBuilderColor.AppendLine($"主页:{nodeColorMember.Attributes["href"].Value}");
 
-                    string[] thuColorImgCacheFiles = Directory.GetFiles(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}*");
-                    IChatMessage imageColorMessage = null;
-                    Stream streamColorImage = null;
-                    if (thuColorImgCacheFiles.Length > 0 && new FileInfo(thuColorImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
+                    if (nodeColorUrl != null)
                     {
-                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                        stringBuilderColor.AppendLine("ASCII2D 颜色搜索");
+                        stringBuilderColor.AppendLine($"标题:{nodeColorUrl.InnerText}");
+                        stringBuilderColor.AppendLine($"地址:{nodeColorUrl.Attributes["href"].Value}");
+                        if (nodeColorMember != null)
                         {
-                            if (thuColorImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
-                                imageColorMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
-                            else if (thuColorImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
-                                streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
-                            else  //曾经没参与鉴黄的
+                            stringBuilderColor.AppendLine($"作者:{nodeColorMember.InnerText}");
+                            stringBuilderColor.AppendLine($"主页:{nodeColorMember.Attributes["href"].Value}");
+                        }
+
+                        string[] thuColorImgCacheFiles = Directory.GetFiles(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}*");
+                        IChatMessage imageColorMessage = null;
+                        Stream streamColorImage = null;
+                        if (thuColorImgCacheFiles.Length > 0 && new FileInfo(thuColorImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
+                        {
+                            if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                             {
-                                byte[] colorImageByte = File.ReadAllBytes(thuColorImgCacheFiles[0]);
-                                imageColorMessage = CheckPornSearch(thuColorImgCacheFiles[0], colorImageByte);
-                                if (imageColorMessage == null)
-                                    streamColorImage = new MemoryStream(colorImageByte);  //上传本地图片
+                                if (thuColorImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
+                                    imageColorMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
+                                else if (thuColorImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
+                                    streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
+                                else  //曾经没参与鉴黄的
+                                {
+                                    byte[] colorImageByte = File.ReadAllBytes(thuColorImgCacheFiles[0]);
+                                    imageColorMessage = CheckPornSearch(thuColorImgCacheFiles[0], colorImageByte);
+                                    if (imageColorMessage == null)
+                                        streamColorImage = new MemoryStream(colorImageByte);  //上传本地图片
+                                }
                             }
+                            else
+                                streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
                         }
                         else
-                            streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
+                        {
+                            string thuColorImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}.png");
+                            streamColorImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value, thuColorImgCache);
+                            if (streamColorImage != null)
+                            {
+                                if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                    imageColorMessage = CheckPornSearch(thuColorImgCache, (streamColorImage as MemoryStream).ToArray());
+                            }
+                        }
+                        if (streamColorImage != null)
+                        {
+                            if (imageColorMessage == null)
+                                imageColorMessage = await UploadPicture(streamColorImage);
+                            streamColorImage?.Close();
+                        }
+                        if (imageColorMessage != null)
+                            SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage });
+                        else
+                            SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()) });
                     }
-                    else
-                    {
-                        string thuColorImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}.png");
-                        streamColorImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value, thuColorImgCache);
-                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
-                            imageColorMessage = CheckPornSearch(thuColorImgCache, (streamColorImage as MemoryStream).ToArray());
-                    }
-
-                    if (imageColorMessage == null)
-                        imageColorMessage = await UploadPicture(streamColorImage);
-                    streamColorImage?.Close();
-
-                    SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage });
                     #endregion -- 颜色搜索 --
                 }
                 catch (Exception ex)
@@ -403,47 +435,61 @@ namespace GreenOnions.PictureSearcher
                         HtmlNode nodeBovwImage = nodeBovwItemBox.SelectSingleNode(pathBovwImage);
                         HtmlNode nodeBovwUrl = nodeBovwItemBox.SelectSingleNode(pathBovwUrlA) ?? nodeBovwItemBox.SelectSingleNode(pathBovwUrlSmall);
                         HtmlNode nodeBovwMember = nodeBovwItemBox.SelectSingleNode(pathBovwMemberA) ?? nodeBovwItemBox.SelectSingleNode(pathBovwMemberSmall);
-                        StringBuilder stringBuilderBovw = new StringBuilder();
-                        stringBuilderBovw.AppendLine("ASCII2D 特征搜索");
-                        stringBuilderBovw.AppendLine($"标题:{nodeBovwUrl.InnerText}");
-                        stringBuilderBovw.AppendLine($"地址:{nodeBovwUrl.Attributes["href"].Value}");
-                        stringBuilderBovw.AppendLine($"作者:{nodeBovwMember.InnerText}");
-                        stringBuilderBovw.AppendLine($"主页:{nodeBovwMember.Attributes["href"].Value}");
-
-                        string[] thuBovwImgCacheFiles = Directory.GetFiles(ImageHelper.ImagePath, $"Thu_{nodeBovwHash.InnerHtml}*");
-                        IChatMessage imageBovwMessage = null;
-                        Stream streamBovwImage = null;
-                        if (thuBovwImgCacheFiles.Length > 0 && new FileInfo(thuBovwImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
+                        if (nodeBovwUrl != null)
                         {
-                            if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                            StringBuilder stringBuilderBovw = new StringBuilder();
+                            stringBuilderBovw.AppendLine("ASCII2D 特征搜索");
+                            stringBuilderBovw.AppendLine($"标题:{nodeBovwUrl.InnerText}");
+                            stringBuilderBovw.AppendLine($"地址:{nodeBovwUrl.Attributes["href"].Value}");
+                            if (nodeBovwMember != null)
                             {
-                                if (thuBovwImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
-                                    imageBovwMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
-                                else if (thuBovwImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
-                                    streamBovwImage = new FileStream(thuBovwImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
-                                else  //曾经没参与鉴黄的
+                                stringBuilderBovw.AppendLine($"作者:{nodeBovwMember.InnerText}");
+                                stringBuilderBovw.AppendLine($"主页:{nodeBovwMember.Attributes["href"].Value}");
+                            }
+
+                            string[] thuBovwImgCacheFiles = Directory.GetFiles(ImageHelper.ImagePath, $"Thu_{nodeBovwHash.InnerHtml}*");
+                            IChatMessage imageBovwMessage = null;
+                            Stream streamBovwImage = null;
+                            if (thuBovwImgCacheFiles.Length > 0 && new FileInfo(thuBovwImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
+                            {
+                                if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                                 {
-                                    byte[] bovwImageByte = File.ReadAllBytes(thuBovwImgCacheFiles[0]);
-                                    imageBovwMessage = CheckPornSearch(thuBovwImgCacheFiles[0], bovwImageByte);
-                                    if (imageBovwMessage == null)
-                                        streamBovwImage = new MemoryStream(bovwImageByte);  //上传本地图片
+                                    if (thuBovwImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
+                                        imageBovwMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
+                                    else if (thuBovwImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
+                                        streamBovwImage = new FileStream(thuBovwImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
+                                    else  //曾经没参与鉴黄的
+                                    {
+                                        byte[] bovwImageByte = File.ReadAllBytes(thuBovwImgCacheFiles[0]);
+                                        imageBovwMessage = CheckPornSearch(thuBovwImgCacheFiles[0], bovwImageByte);
+                                        if (imageBovwMessage == null)
+                                            streamBovwImage = new MemoryStream(bovwImageByte);  //上传本地图片
+                                    }
                                 }
+                                else
+                                    streamBovwImage = new FileStream(thuBovwImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
                             }
                             else
-                                streamBovwImage = new FileStream(thuBovwImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
+                            {
+                                string thuBovwImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeBovwHash.InnerHtml}.png");
+                                streamBovwImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeBovwImage.Attributes["src"].Value, thuBovwImgCache);
+                                if (streamBovwImage != null)
+                                {
+                                    if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                        imageBovwMessage = CheckPornSearch(thuBovwImgCache, (streamBovwImage as MemoryStream).ToArray());
+                                }
+                            }
+                            if (streamBovwImage != null)
+                            {
+                                if (imageBovwMessage == null)
+                                    imageBovwMessage = await UploadPicture(streamBovwImage);
+                                streamBovwImage?.Close();
+                            }
+                            if (imageBovwMessage != null)
+                                SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()), imageBovwMessage });
+                            else
+                                SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()) });
                         }
-                        else
-                        {
-                            string thuBovwImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeBovwHash.InnerHtml}.png");
-                            streamBovwImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeBovwImage.Attributes["src"].Value, thuBovwImgCache);
-                            if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
-                                imageBovwMessage = CheckPornSearch(thuBovwImgCache, (streamBovwImage as MemoryStream).ToArray());
-                        }
-                        if (imageBovwMessage == null)
-                            imageBovwMessage = await UploadPicture(streamBovwImage);
-                        streamBovwImage?.Close();
-
-                        SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()), imageBovwMessage });
                     }
                     #endregion -- 特征搜索 --
                 }

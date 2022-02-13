@@ -7,13 +7,17 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GreenOnions.BotMainManagerWindow
+namespace GreenOnions.BotManagerWindow
 {
     public partial class FrmMain : Form
 	{
 		public FrmMain()
 		{
 			InitializeComponent();
+
+			WebBrowserForm webBrowserForm = new WebBrowserForm();
+			EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocumentAsync;
+
 			#region -- 读取配置 --
 			try
 			{

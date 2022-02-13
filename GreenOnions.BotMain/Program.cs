@@ -32,7 +32,7 @@ namespace GreenOnions.BotMain
                                                                    .AddInvoker<MiraiHttpMessageHandlerInvoker>() // 使用默认的调度器
                                                                    .AddHandler<HttpApiPlugin>() // 可以如此添加更多消息处理器
                                                                    .AddHandler<GroupMessage>() // 群消息
-                                                                   .AddHandler<FriendPlugin>() // 好友消息
+                                                                   .AddHandler<FriendMessage>() // 好友消息
                                                                    .AddClient<MiraiHttpSession>() // 使用默认的客户端
                                                                    .Services
                                                                    // 由于 MiraiHttpSession 使用 IOptions<MiraiHttpSessionOptions>, 其作为 Singleton 被注册
