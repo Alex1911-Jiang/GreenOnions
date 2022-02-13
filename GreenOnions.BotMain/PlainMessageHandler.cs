@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -302,7 +303,7 @@ namespace GreenOnions.BotMain
                 Match match = regexHelp.Matches(firstMessage).FirstOrDefault();
                 if (match.Groups.Count > 0)
                 {
-                    string strFeatures = firstMessage.Substring(match.Groups[0].Length);
+                    string strFeatures = firstMessage.Substring(match.Groups[0].Length).ToUpper();
                     string strHelpResult = strFeatures switch
                     {
                         "--搜图" => pictureSearchHelp(),
@@ -314,6 +315,7 @@ namespace GreenOnions.BotMain
                         "--复读" => repeatHelp(),
                         "--伪造消息" => forgeMessageHelp(),
                         "--RSS订阅转发" => rssHelp(),
+                        "--查手机号" => phoneHelp(),
                         _ => defaultHelp(),
                     };
 
@@ -367,11 +369,11 @@ namespace GreenOnions.BotMain
                         {
                             if (BotInfo.TranslateEngineType == TranslateEngine.Google)
                             {
-                                string strTranslateGoogle = $"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。\r\n" +
-                                    $"发送\"{BotInfo.TranslateToCMD.ReplaceGreenOnionsTags()}翻译内容\"翻译成指定语言。";
-                                strTranslateGoogle += $"\r\n目前支持的语言有:{string.Join("\r\n", GoogleTranslateHelper.Languages.Keys)}";
-                                strTranslateGoogle += "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
-                                return strTranslateGoogle;
+                                StringBuilder strTranslateGoogle = new StringBuilder($"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。");
+                                strTranslateGoogle.AppendLine($"发送\"{BotInfo.TranslateToCMD.ReplaceGreenOnionsTags()}翻译内容\"翻译成指定语言。");
+                                strTranslateGoogle.AppendLine($"目前支持的语言有:{string.Join("\r\n", GoogleTranslateHelper.Languages.Keys)}");
+                                strTranslateGoogle.AppendLine("如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"");
+                                return strTranslateGoogle.ToString();
                             }
                             else
                                 return $"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文" + "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
@@ -383,12 +385,25 @@ namespace GreenOnions.BotMain
                     {
                         if (BotInfo.HPictureEnabled && BotInfo.EnabledHPictureSource.Contains(PictureSource.Lolicon))
                         {
-                            string strHPicture = $"发送\"{BotInfo.HPictureCmd.ReplaceGreenOnionsTags()}\"来索要色图。";
-                            strHPicture += $"\r\n需要注意的是, 关键词中, 如果仅输入一个关键词, 则按模糊匹配查询, 如果用|或&连接多个关键词, 则按标签精确匹配(|代表或, &代表与)";
-                            if (BotInfo.HPictureUserCmd.Count() > 0)
-                                strHPicture += $"\r\n或直接输入\"{string.Join("\",\"", BotInfo.HPictureUserCmd)}\"中的一个来索要一张随机色图。";
-                            strHPicture +=  "\r\n如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"";
-                            return strHPicture;
+                            if (sender is IGroupMemberInfo)  //群消息
+                            {
+                                IGroupMemberInfo senderGroup = sender as IGroupMemberInfo;
+                                if (!BotInfo.HPictureWhiteOnly || (BotInfo.HPictureR18WhiteOnly && BotInfo.HPictureWhiteGroup.Contains(senderGroup.Group.Id)))
+                                    return hpictureHelpMsg();
+                                else
+                                    return $"没有为当前群组启用色图功能";
+                            }
+                            else
+                               return hpictureHelpMsg();
+                            string hpictureHelpMsg()
+                            {
+                                StringBuilder strHPicture = new StringBuilder($"发送\"{BotInfo.HPictureCmd.ReplaceGreenOnionsTags()}\"来索要色图。");
+                                strHPicture.AppendLine( $"需要注意的是, 关键词中, 如果仅输入一个关键词, 则按模糊匹配查询, 如果用|或&连接多个关键词, 则按标签精确匹配(|代表或, &代表与)");
+                                if (BotInfo.HPictureUserCmd.Count() > 0)
+                                    strHPicture.AppendLine($"或直接输入\"{string.Join("\",\"", BotInfo.HPictureUserCmd)}\"中的一个来索要一张随机色图。");
+                                strHPicture.AppendLine("如果不明白命令中符号所代表的的意义, 请在搜索引擎搜\"正则表达式\"");
+                                return strHPicture.ToString();
+                            }
                         }
                         else
                             return $"当前{BotInfo.BotName}没有启用色图功能";
@@ -402,14 +417,20 @@ namespace GreenOnions.BotMain
                     }
                     string repeatHelp()
                     {
-                        string strRepeat = "";
+                        StringBuilder strRepeat = new StringBuilder();
                         if (!BotInfo.RandomRepeatEnabled && !BotInfo.SuccessiveRepeatEnabled)
                            return $"当前{BotInfo.BotName}没有启用复读功能";
                         if (BotInfo.RandomRepeatEnabled)
-                            strRepeat += $"随机复读:当前有{BotInfo.RandomRepeatProbability}%的概率随机复读消息\r\n";
+                            strRepeat.AppendLine($"随机复读:当前有{BotInfo.RandomRepeatProbability}%的概率随机复读消息");
                         if (BotInfo.SuccessiveRepeatEnabled)
-                            strRepeat += $"连续复读:当相同消息连续出现{BotInfo.SuccessiveRepeatCount}次时自动复读";
-                        return strRepeat;
+                            strRepeat.AppendLine($"连续复读:当相同消息连续出现{BotInfo.SuccessiveRepeatCount}次时自动复读");
+                        if (BotInfo.HorizontalMirrorImageEnabled && BotInfo.HorizontalMirrorImageProbability > 0)
+                            strRepeat.AppendLine($"有{BotInfo.HorizontalMirrorImageProbability}%几率水平镜像图片");
+                        if (BotInfo.VerticalMirrorImageEnabled && BotInfo.VerticalMirrorImageProbability > 0)
+                            strRepeat.AppendLine($"有{BotInfo.VerticalMirrorImageProbability}%几率垂直镜像图片");
+                        if (BotInfo.RewindGifEnabled && BotInfo.RewindGifProbability > 0)
+                            strRepeat.AppendLine($"有{BotInfo.RewindGifProbability}%几率倒放Gif");
+                        return strRepeat.ToString();
                     }
                     string forgeMessageHelp()
                     {
@@ -421,6 +442,10 @@ namespace GreenOnions.BotMain
                     string rssHelp()
                     {
                         return $"RSS订阅转发功能暂无命令且仅可通过管理端进行配置, {BotInfo.BotName}将抓取到的订阅源(如B站动态, 推文, Pixiv日榜)发送给指定的群组或好友。";
+                    }
+                    string phoneHelp()
+                    {
+                        return $"发送 \"{BotInfo.BotName}查询手机号:QQ号码\" 可以查询腾讯数据库泄露的对应QQ号的手机号";
                     }
 
                     if (!string.IsNullOrEmpty(strHelpResult))
