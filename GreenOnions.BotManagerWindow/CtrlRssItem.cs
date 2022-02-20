@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GreenOnions.Utility;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -28,9 +30,56 @@ namespace GreenOnions.BotManagerWindow
         }
         public bool RssTranslate
         {
-            get => txbRssTranslate.Checked;
-            set => txbRssTranslate.Checked = value;
+            get => chkRssTranslate.Checked;
+            set => chkRssTranslate.Checked = value;
         }
+
+        public bool RssTranslateFromTo
+        {
+            get => chkTranslateFromTo.Checked;
+            set => chkTranslateFromTo.Checked = value;
+        }
+
+        public string RssTranslateFrom
+        {
+            get => cboTranslateFrom.Text;
+            set => SetComboBoxIndex(cboTranslateFrom, value);
+            
+        }
+
+        public string RssTranslateTo
+        {
+            get => cboTranslateTo.Text;
+            set => SetComboBoxIndex(cboTranslateTo, value);
+        }
+
+        private void SetComboBoxIndex(ComboBox ctrl, string value)
+        {
+            if (ctrl.DataSource == null)
+            {
+                switch (BotInfo.TranslateEngineType)
+                {
+                    case TranslateEngine.Google:
+                        cboTranslateFrom.DataSource = Translate.GoogleTranslateHelper.Languages.Keys.ToList();
+                        cboTranslateTo.DataSource = Translate.GoogleTranslateHelper.Languages.Keys.ToList();
+                        break;
+                    case TranslateEngine.YouDao:
+                        cboTranslateFrom.DataSource = Translate.YouDaoTranslateHelper.Languages.Keys.ToList();
+                        cboTranslateTo.DataSource = Translate.YouDaoTranslateHelper.Languages.Keys.ToList();
+                        break;
+                }
+            }
+            List<string> source = (ctrl.DataSource as List<string>);
+            for (int i = 0; i < source.Count; i++)
+            {
+                if (source[i] == value)
+                {
+                    ctrl.SelectedIndex = i;
+                    break;
+                }
+            }
+        }
+
         public string RssRemark
         {
             get => txbRssRemark.Text;
@@ -66,6 +115,32 @@ namespace GreenOnions.BotManagerWindow
                     {
                         e.Handled = true;
                     }
+                }
+            }
+        }
+
+        private void chkRssTranslate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!chkRssTranslate.Checked)
+                chkTranslateFromTo.Checked = false;
+            chkTranslateFromTo.Enabled = chkRssTranslate.Checked;
+        }
+
+        private void chkTranslateFromTo_CheckedChanged(object sender, EventArgs e)
+        {
+            pnlTranslateFromTo.Enabled = chkTranslateFromTo.Checked;
+            if (chkTranslateFromTo.Checked && BotInfo.TranslateEnabled)
+            {
+                switch (BotInfo.TranslateEngineType)
+                {
+                    case TranslateEngine.Google:
+                        cboTranslateFrom.DataSource = Translate.GoogleTranslateHelper.Languages.Keys.ToList();
+                        cboTranslateTo.DataSource = Translate.GoogleTranslateHelper.Languages.Keys.ToList();
+                        break;
+                    case TranslateEngine.YouDao:
+                        cboTranslateFrom.DataSource = Translate.YouDaoTranslateHelper.Languages.Keys.ToList();
+                        cboTranslateTo.DataSource = Translate.YouDaoTranslateHelper.Languages.Keys.ToList();
+                        break;
                 }
             }
         }

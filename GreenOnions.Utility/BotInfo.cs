@@ -241,10 +241,32 @@ namespace GreenOnions.Utility
         /// <summary>
         /// SauceNao Api-Key
         /// </summary>
-        public static string SauceNAOApiKey
+        public static IEnumerable<string> SauceNAOApiKey
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNAOApiKey));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNAOApiKey), value);
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNAOApiKey));
+                if (string.IsNullOrEmpty(strValue))
+                    return new List<string>();
+                return strValue.Split(';');
+            }
+            set
+            {
+                foreach (var key in value)
+                {
+                    if (!Cache.SauceNaoKeysAndLongRemaining.ContainsKey(key))  //如果添加了新Key, 装进缓存
+                        Cache.SauceNaoKeysAndLongRemaining.Add(key, 200);
+                    if (!Cache.SauceNaoKeysAndShortRemaining.ContainsKey(key))  //如果添加了新Key, 装进缓存
+                        Cache.SauceNaoKeysAndShortRemaining.Add(key, 6);
+                }
+                var removeLong = Cache.SauceNaoKeysAndLongRemaining.Keys.ToList().Except(value);
+                foreach (var item in removeLong)
+                    Cache.SauceNaoKeysAndLongRemaining.Remove(item);
+                var removeShort = Cache.SauceNaoKeysAndShortRemaining.Keys.ToList().Except(value);
+                foreach (var item in removeShort)
+                    Cache.SauceNaoKeysAndShortRemaining.Remove(item);
+                JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNAOApiKey), string.Join(";", value));
+            }
         }
 
         /// <summary>
@@ -454,6 +476,43 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(ASCII2DRequestByWebBrowser), value.ToString());
         }
+        
+        /// <summary>
+        /// 超过鉴黄次数的行为 0:既发送地址也发图 1:只发送地址不发图 2:发送地址且追加回复
+        /// </summary>
+        public static int SearchCheckPornOutOfLimitEvent
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitEvent));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 2;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitEvent), value.ToString());
+        }
+        
+        /// <summary>
+        /// 超过鉴黄次数时追加的回复语
+        /// </summary>
+        public static string SearchCheckPornOutOfLimitReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitReply)) ?? "今日AI鉴黄次数已耗尽，缩略图不予显示。";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitReply), value);
+        }
+        
+        /// <summary>
+        /// 未启用鉴黄时的行为 0:发图 1:不发图
+        /// </summary>
+        public static int SearchNoCheckPorn
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchNoCheckPorn));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 0;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchNoCheckPorn), value.ToString());
+        }
 
         #region -- 腾讯云相关属性 --
         /// <summary>
@@ -500,6 +559,21 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudBucket));
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudBucket), value);
         }
+
+        /// <summary>
+        /// 每日允许的鉴黄次数
+        /// </summary>
+        public static int CheckPornLimitCount
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornLimitCount));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 2000;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornLimitCount), value.ToString());
+        }
+
         #endregion -- 腾讯云相关属性 --
 
         #endregion -- 搜图属性 --
@@ -599,7 +673,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string TranslateToChineseCMD
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateToChineseCMD)) ?? "<机器人名称>翻译[:：]";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateToChineseCMD)) ?? "<机器人名称>翻[译譯][:：]";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateToChineseCMD), value);
         }
 
@@ -608,8 +682,14 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string TranslateToCMD
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateToCMD)) ?? "<机器人名称>翻译[成为到](.+[语文])[:：]";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateToCMD)) ?? "<机器人名称>翻[译譯][成为為到至](.+[语語文])[:：]";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateToCMD), value);
+        }
+
+        public static string TranslateFromToCMD
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateFromToCMD)) ?? "<机器人名称>[把从從自从](?<from>.+[语語文])翻[译譯][成为為到至](?<to>.+[语語文])[:：]";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateFromToCMD), value);
         }
 
         public static IEnumerable<long> AutoTranslateGroupMemoriesQQ

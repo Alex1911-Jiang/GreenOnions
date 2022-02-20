@@ -32,7 +32,7 @@ namespace GreenOnions.Utility.Helper
             Bitmap bmp = new Bitmap(ms);
             ImageFormat format = bmp.RawFormat;
             bmp.AntiShielding();
-            ms.Close();
+            ms.Dispose();
             ms = new MemoryStream();
             bmp.Save(ms, format);
             return ms;
@@ -137,7 +137,7 @@ namespace GreenOnions.Utility.Helper
                     eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.Flush);
                     gif.SaveAdd(eps);
                 }
-                ms.Close();
+                ms.Dispose();
                 ms = new MemoryStream(File.ReadAllBytes(tempGifFileName));
             }
             else
@@ -151,7 +151,7 @@ namespace GreenOnions.Utility.Helper
                         img.VerticalFlip();
                         break;
                 }
-                ms.Close();
+                ms.Dispose();
                 ms = new MemoryStream();
                 img.Save(ms, ImageFormat.Png);
             }

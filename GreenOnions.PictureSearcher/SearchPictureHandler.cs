@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -28,7 +29,7 @@ namespace GreenOnions.PictureSearcher
                 {
                     _ = SearchTraceMoe();
                 }
-                if (BotInfo.SearchEnabledSauceNao && !string.IsNullOrWhiteSpace(BotInfo.SauceNAOApiKey))
+                if (BotInfo.SearchEnabledSauceNao)
                 {
                     _ = SearchSauceNao();
                 }
@@ -76,10 +77,45 @@ namespace GreenOnions.PictureSearcher
                             {
                                 try
                                 {
-                                    if (File.Exists(imgName))
-                                        UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
-                                    else
-                                        UploadPicture(HttpHelper.DownloadImageAsMemoryStream(previewURL, imgName)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
+                                    if (File.Exists(imgName))  //存在本地缓存
+                                    {
+                                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                        {
+                                            string notHealth = Path.Combine(ImageHelper.ImagePath, $"TraceMoe_{id}_{previewSize}notHealth.png");
+                                            string isHealth = Path.Combine(ImageHelper.ImagePath, $"TraceMoe_{id}_{previewSize}_IsHealth.png");
+
+                                            if (File.Exists(notHealth))  //曾经鉴黄不通过的
+                                                SendMessage(new[] { new PlainMessage(BotInfo.SearchCheckPornIllegalReply) }); //直接返回鉴黄不通过
+                                            else if (File.Exists(isHealth))  //曾经鉴黄通过的
+                                                UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
+                                            else  //曾经没参与鉴黄的
+                                            {
+                                                IChatMessage chatMessage = CheckPornSearch(imgName, File.ReadAllBytes(imgName));
+                                                if (chatMessage == null)
+                                                    UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
+                                                else
+                                                    SendMessage(new[] { chatMessage });
+                                            }
+                                        }
+                                        else if (BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图, 直接读取本地图片
+                                            UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
+
+                                    }
+                                    else  //没有本地缓存
+                                    {
+                                        //鉴黄通过或不鉴黄也发图
+                                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                        {
+                                            MemoryStream stream = HttpHelper.DownloadImageAsMemoryStream(previewURL, imgName);
+                                            if (stream != null)
+                                            {
+                                                IChatMessage moeCheckPorn = CheckPornSearch(imgName, stream.ToArray());
+                                                if (moeCheckPorn == null)  //只有鉴黄通过才发图
+                                                    UploadPicture(stream).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
+                                                stream.Dispose();
+                                            }
+                                        }
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
@@ -99,19 +135,69 @@ namespace GreenOnions.PictureSearcher
 
             async Task SearchSauceNao()
             {
-                string SauceNaoUrl = @$"https://saucenao.com/search.php?db=999&output_type=2&api_key={BotInfo.SauceNAOApiKey}&testmode=1&numres=16&url={qqImgUrl}";
+                string apiKeyStr = "";
+                string apiKey = "";
+                if (Cache.SauceNaoKeysAndShortRemaining.Count > 0)
+                {
+                    var source = Cache.SauceNaoKeysAndShortRemaining.OrderByDescending(p => p.Value).ToDictionary(k => k.Key, v => v.Value);
+                    foreach (KeyValuePair<string,int> item in source)
+                    {
+                        if (Cache.SauceNaoKeysAndShortRemaining[item.Key] > 0 && Cache.SauceNaoKeysAndLongRemaining[item.Key] > 0)
+                        {
+                            apiKey = item.Key;
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(apiKey))  //所有key均已耗尽次数
+                    {
+                        string strLowSimilarity = "SauceNao搜索次数已耗尽。";
+                        if (BotInfo.SearchEnabledASCII2D)
+                        {
+                            strLowSimilarity += "\r\n自动使用ASCII2D搜索。";
+                            _ = SearchAscii2D();
+                        }
+                        SendMessage(new[] { new PlainMessage(strLowSimilarity) });
+                        return;
+                    }
+
+                    apiKeyStr = $"&api_key={apiKey}";
+                }
+
+                string SauceNaoUrl = @$"https://saucenao.com/search.php?db=999&output_type=2{apiKeyStr}&testmode=1&numres=16&url={qqImgUrl}";
                 string strSauceNaoResult;
+
                 try
                 {
                     strSauceNaoResult = await HttpHelper.GetHttpResponseStringAsync(SauceNaoUrl);
                 }
                 catch (Exception ex)
                 {
+                    if (ex.Message.Contains("429"))
+                    {
+                        Cache.SauceNaoKeysAndLongRemaining[apiKey] = 0;
+                        Cache.SauceNaoKeysAndShortRemaining[apiKey] = 0;
+                    }
+
+                    string sauceNaoFail = "SauceNao搜图失败，" + ex.Message;
                     ErrorHelper.WriteErrorLogWithUserMessage("SauceNao搜图失败", ex, $"请求地址为：{SauceNaoUrl}");
-                    SendMessage(new[] { new PlainMessage("SauceNao搜图失败，" + ex.Message) });
+                    if (BotInfo.SearchEnabledASCII2D)
+                    {
+                        sauceNaoFail += "\r\n自动使用ASCII2D搜索。";
+                        _ = SearchAscii2D();
+                    }
+                    SendMessage(new[] { new PlainMessage(sauceNaoFail) });
                     return;
                 }
+
                 JToken json = JsonConvert.DeserializeObject<JToken>(strSauceNaoResult);
+
+                JToken jHeader = json["header"];
+                if (jHeader != null)
+                {
+                    Cache.SauceNaoKeysAndLongRemaining[apiKey] = Convert.ToInt32(jHeader["long_remaining"]);
+                    Cache.SauceNaoKeysAndShortRemaining[apiKey] = Convert.ToInt32(jHeader["short_remaining"]);
+                }
+
                 JArray jResults = json["results"] as JArray;
 
                 //jResults = new JArray(jResults.OrderByDescending(x => x["header"]["similarity"]));  //按相似度排序
@@ -125,14 +211,14 @@ namespace GreenOnions.PictureSearcher
 
                 for (int j = 0; j < jResults.Count; j++)
                 {
-                    JToken jHeader = jResults[j]["header"];
+                    JToken jItemHeader = jResults[j]["header"];
                     JToken jData = jResults[j]["data"];
 
                     SauceNaoItem sauceNaoItem = new SauceNaoItem();
 
-                    sauceNaoItem.similarity = Convert.ToSingle(jHeader["similarity"]);
-                    sauceNaoItem.thumbnail = jHeader["thumbnail"].ToString();  //缩略图地址
-                    sauceNaoItem.index_name = jHeader["index_name"].ToString();  //index_name
+                    sauceNaoItem.similarity = Convert.ToSingle(jItemHeader["similarity"]);
+                    sauceNaoItem.thumbnail = jItemHeader["thumbnail"].ToString();  //缩略图地址
+                    sauceNaoItem.index_name = jItemHeader["index_name"].ToString();  //index_name
 
                     if (jData["ext_urls"] != null)
                     {
@@ -209,47 +295,59 @@ namespace GreenOnions.PictureSearcher
                                 else  //曾经没参与鉴黄的
                                     IImageMessage = CheckPornSearch(thuImgCacheFiles[0], File.ReadAllBytes(thuImgCacheFiles[0]));
                             }
-                            else
-                            {
+                            else if (BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图, 直接读取本地图片
                                 stream = new FileStream(thuImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
-                            }
                         }
                         else  //没有本地缓存
                         {
                             string cacheImageName = Path.Combine(ImageHelper.ImagePath, $"Thu_{sauceNaoItem.pixiv_id}.png");
-                            stream = HttpHelper.DownloadImageAsMemoryStream(sauceNaoItem.thumbnail, cacheImageName);
-                            if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
-                                IImageMessage = CheckPornSearch(cacheImageName, (stream as MemoryStream).ToArray());
+                            //鉴黄通过或不鉴黄也发图
+                            if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图的话只需要维持IImageMessage为空
+                            {
+                                stream = HttpHelper.DownloadImageAsMemoryStream(sauceNaoItem.thumbnail, cacheImageName);
+                                if (stream != null)
+                                {
+                                    if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                        IImageMessage = CheckPornSearch(cacheImageName, (stream as MemoryStream).ToArray());
+                                }
+                            }
                         }
 
                         if (IImageMessage == null)
                         {
-                            IImageMessage = await UploadPicture(stream);
-
-                            //如果是pixiv体系尝试下载原图
-                            if (sauceNaoItem.pixiv_id != null)
+                            if (stream != null)
                             {
-                                Match matchBigImg = Regex.Match(sauceNaoItem.index_name, @$".+{sauceNaoItem.pixiv_id}_p([0-9]+)[_\.].+");
-                                if (matchBigImg.Groups.Count > 1)
+                                IImageMessage = await UploadPicture(stream);
+
+                                //如果是pixiv体系尝试下载原图
+                                if (sauceNaoItem.pixiv_id != null)
                                 {
-                                    int p = Convert.ToInt32(matchBigImg.Groups[1].Value);
-                                    string imgUrlHasP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}-{p + 1}.png";
-                                    if (p == 0)  //NAO返回的P为0
+                                    Match matchBigImg = Regex.Match(sauceNaoItem.index_name, @$".+{sauceNaoItem.pixiv_id}_p([0-9]+)[_\.].+");
+                                    if (matchBigImg.Groups.Count > 1)
                                     {
-                                        using (var httpClient = new HttpClient())
+                                        int p = Convert.ToInt32(matchBigImg.Groups[1].Value);
+                                        string imgUrlHasP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}-{p + 1}.png";
+                                        if (p == 0)  //NAO返回的P为0
                                         {
-                                            if (string.IsNullOrEmpty(await CheckCatRoute(Convert.ToInt64(sauceNaoItem.pixiv_id), -1)))
+                                            using (var httpClient = new HttpClient())
                                             {
-                                                string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
-                                                SendOriginImage(imgUrlNoP, sauceNaoItem.pixiv_id, p);
+                                                if (string.IsNullOrEmpty(await CheckCatRoute(Convert.ToInt64(sauceNaoItem.pixiv_id), -1)))
+                                                {
+                                                    string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
+                                                    SendOriginImage(imgUrlNoP, sauceNaoItem.pixiv_id, p);
+                                                }
+                                                else
+                                                    SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id, p);
                                             }
-                                            else
-                                                SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id, p);
                                         }
+                                        else  //地址有P且>0
+                                            SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id, p);
                                     }
-                                    else  //地址有P且>0
-                                        SendOriginImage(imgUrlHasP, sauceNaoItem.pixiv_id, p);
                                 }
+                            }
+                            else
+                            {
+                                IImageMessage = new PlainMessage("");
                             }
                         }
                     }
@@ -287,11 +385,6 @@ namespace GreenOnions.PictureSearcher
                             {
                                 _ = Task.Run(() => HttpHelper.DownloadImageAsMemoryStream(url, imgName));  //仅下载
                             }
-
-                            //if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)  //如果存在本地缓存
-                            //    UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
-                            //else
-                            //    UploadPicture(HttpHelper.DownloadImageAsMemoryStream(url, imgName)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));  //请求不含P的地址
                         }
                         catch (Exception ex)
                         {
@@ -384,24 +477,27 @@ namespace GreenOnions.PictureSearcher
                                         streamColorImage = new MemoryStream(colorImageByte);  //上传本地图片
                                 }
                             }
-                            else
+                            else if (BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图, 直接读取本地图片
                                 streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
                         }
                         else
                         {
                             string thuColorImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}.png");
-                            streamColorImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value, thuColorImgCache);
-                            if (streamColorImage != null)
+                            if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)
                             {
-                                if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
-                                    imageColorMessage = CheckPornSearch(thuColorImgCache, (streamColorImage as MemoryStream).ToArray());
+                                streamColorImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value, thuColorImgCache);
+                                if (streamColorImage != null)
+                                {
+                                    if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                        imageColorMessage = CheckPornSearch(thuColorImgCache, (streamColorImage as MemoryStream).ToArray());
+                                }
                             }
                         }
                         if (streamColorImage != null)
                         {
                             if (imageColorMessage == null)
                                 imageColorMessage = await UploadPicture(streamColorImage);
-                            streamColorImage?.Close();
+                            streamColorImage?.Dispose();
                         }
                         if (imageColorMessage != null)
                             SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage });
@@ -466,24 +562,27 @@ namespace GreenOnions.PictureSearcher
                                             streamBovwImage = new MemoryStream(bovwImageByte);  //上传本地图片
                                     }
                                 }
-                                else
+                                else if (BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图, 直接读取本地图片
                                     streamBovwImage = new FileStream(thuBovwImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
                             }
                             else
                             {
                                 string thuBovwImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeBovwHash.InnerHtml}.png");
-                                streamBovwImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeBovwImage.Attributes["src"].Value, thuBovwImgCache);
-                                if (streamBovwImage != null)
+                                if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)
                                 {
-                                    if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
-                                        imageBovwMessage = CheckPornSearch(thuBovwImgCache, (streamBovwImage as MemoryStream).ToArray());
+                                    streamBovwImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeBovwImage.Attributes["src"].Value, thuBovwImgCache);
+                                    if (streamBovwImage != null)
+                                    {
+                                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                            imageBovwMessage = CheckPornSearch(thuBovwImgCache, (streamBovwImage as MemoryStream).ToArray());
+                                    }
                                 }
                             }
                             if (streamBovwImage != null)
                             {
                                 if (imageBovwMessage == null)
                                     imageBovwMessage = await UploadPicture(streamBovwImage);
-                                streamBovwImage?.Close();
+                                streamBovwImage?.Dispose();
                             }
                             if (imageBovwMessage != null)
                                 SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()), imageBovwMessage });
@@ -540,7 +639,7 @@ namespace GreenOnions.PictureSearcher
                 string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}.png");
                 MemoryStream imageMs = HttpHelper.DownloadImageAsMemoryStream(url, imgName);
                 MemoryStream ms = new MemoryStream(imageMs.ToArray());
-                imageMs.Close();
+                imageMs.Dispose();
                 IImageMessage imgMsg = await UploadPicture(ms);
                 if (BotInfo.CheckPornEnabled && BotInfo.OriginPictureCheckPornEnabled)
                 {
@@ -572,7 +671,7 @@ namespace GreenOnions.PictureSearcher
                             }
                             break;
                     }
-                    ms.Close();
+                    ms.Dispose();
                 }
                 else
                 {
@@ -599,6 +698,18 @@ namespace GreenOnions.PictureSearcher
         private static IChatMessage CheckPornSearch(string cacheImageName, byte[] image)
         {
             IChatMessage IImageMessage = null;
+            if (Cache.CheckPornCounting > BotInfo.CheckPornLimitCount)
+            {
+                switch (BotInfo.SearchCheckPornOutOfLimitEvent)
+                {
+                    case 0:
+                        return null;
+                    case 1:
+                        return new PlainMessage("");
+                    case 2:
+                        return new PlainMessage(BotInfo.SearchCheckPornOutOfLimitReply);
+                }
+            }
             switch (CheckPorn(cacheImageName, image, out string errorMessage))
             {
                 case 1:
@@ -633,6 +744,7 @@ namespace GreenOnions.PictureSearcher
                 if (!File.Exists(cacheImageName))
                     File.WriteAllBytes(cacheImageName, image);
                 bool bHealth = TencentCloudHelper.CheckImageHealth(image);
+                Cache.CheckPornCounting++;
                 if (bHealth)
                 {
                     File.Move(cacheImageName, healthFileName, true);

@@ -95,7 +95,7 @@ namespace GreenOnions.Repeater
                 {
                     ms = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
                     IImageMessage imgMsg = await UploadPicture(ms);
-                    ms.Close();
+                    ms.Dispose();
                     return imgMsg;
                 }
             }

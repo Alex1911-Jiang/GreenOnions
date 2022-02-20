@@ -37,6 +37,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabBot = new System.Windows.Forms.TabPage();
             this.pnlBot = new System.Windows.Forms.Panel();
+            this.chkHttpRequestByWebBrowser = new System.Windows.Forms.CheckBox();
             this.chkCheckPornEnabled = new System.Windows.Forms.CheckBox();
             this.chkImageCache = new System.Windows.Forms.CheckBox();
             this.pnlDebugMode = new System.Windows.Forms.Panel();
@@ -50,6 +51,9 @@
             this.txbAddDebugGroup = new System.Windows.Forms.TextBox();
             this.txbBanUser = new System.Windows.Forms.TextBox();
             this.pnlCheckPorn = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblCheckPornLimitCount = new System.Windows.Forms.Label();
+            this.txbCheckPornLimitCount = new System.Windows.Forms.TextBox();
             this.lblTencentCloudBucket = new System.Windows.Forms.Label();
             this.lblTencentCloudSecretKey = new System.Windows.Forms.Label();
             this.txbTencentCloudBucket = new System.Windows.Forms.TextBox();
@@ -80,7 +84,18 @@
             this.tabSearchPicture = new System.Windows.Forms.TabPage();
             this.chkSearchPictureEnabled = new System.Windows.Forms.CheckBox();
             this.pnlSearchPicture = new System.Windows.Forms.Panel();
+            this.pnlNoCheckPorn = new System.Windows.Forms.Panel();
+            this.lblSearchNoCheckPorn = new System.Windows.Forms.Label();
+            this.rdoNoCheckPornDontSend = new System.Windows.Forms.RadioButton();
+            this.rdoNoCheckPornSend = new System.Windows.Forms.RadioButton();
+            this.chkASCII2DRequestByWebBrowser = new System.Windows.Forms.CheckBox();
             this.pnlPictureSearcherCheckPorn = new System.Windows.Forms.Panel();
+            this.lblSearchCheckPornOutOfLimitReply = new System.Windows.Forms.Label();
+            this.txbSearchCheckPornOutOfLimitReply = new System.Windows.Forms.TextBox();
+            this.rdoSearchCheckPornOutOfLimitAppend = new System.Windows.Forms.RadioButton();
+            this.rdoSearchCheckPornOutOfLimitDontSend = new System.Windows.Forms.RadioButton();
+            this.rdoSearchCheckPornOutOfLimitSend = new System.Windows.Forms.RadioButton();
+            this.lblSearchCheckPornOutOfLimit = new System.Windows.Forms.Label();
             this.txbSearchCheckPornIllegalReply = new System.Windows.Forms.TextBox();
             this.lblSearchCheckPornIllegalReply = new System.Windows.Forms.Label();
             this.lblSearchCheckPornErrorReply = new System.Windows.Forms.Label();
@@ -132,6 +147,8 @@
             this.chkOriginPictureEnabled = new System.Windows.Forms.CheckBox();
             this.tabTranslate = new System.Windows.Forms.TabPage();
             this.pnlTranslate = new System.Windows.Forms.Panel();
+            this.txbTranslateFromToCMD = new System.Windows.Forms.TextBox();
+            this.lblTranslateFromTo = new System.Windows.Forms.Label();
             this.lblTranslateEngineHelp = new System.Windows.Forms.Label();
             this.cboTranslateEngine = new System.Windows.Forms.ComboBox();
             this.lblTranslateEngine = new System.Windows.Forms.Label();
@@ -303,8 +320,7 @@
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.chkHttpRequestByWebBrowser = new System.Windows.Forms.CheckBox();
-            this.chkASCII2DRequestByWebBrowser = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -312,6 +328,7 @@
             this.pnlCheckPorn.SuspendLayout();
             this.tabSearchPicture.SuspendLayout();
             this.pnlSearchPicture.SuspendLayout();
+            this.pnlNoCheckPorn.SuspendLayout();
             this.pnlPictureSearcherCheckPorn.SuspendLayout();
             this.tabOriginPicture.SuspendLayout();
             this.pnlOriginPicture.SuspendLayout();
@@ -453,6 +470,16 @@
             this.pnlBot.Size = new System.Drawing.Size(642, 677);
             this.pnlBot.TabIndex = 36;
             // 
+            // chkHttpRequestByWebBrowser
+            // 
+            this.chkHttpRequestByWebBrowser.AutoSize = true;
+            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(7, 454);
+            this.chkHttpRequestByWebBrowser.Name = "chkHttpRequestByWebBrowser";
+            this.chkHttpRequestByWebBrowser.Size = new System.Drawing.Size(269, 21);
+            this.chkHttpRequestByWebBrowser.TabIndex = 36;
+            this.chkHttpRequestByWebBrowser.Text = "允许调用浏览器执行Http请求(仅限Windows)";
+            this.chkHttpRequestByWebBrowser.UseVisualStyleBackColor = true;
+            // 
             // chkCheckPornEnabled
             // 
             this.chkCheckPornEnabled.AutoSize = true;
@@ -487,9 +514,9 @@
             this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
             this.pnlDebugMode.Controls.Add(this.txbAddDebugGroup);
             this.pnlDebugMode.Enabled = false;
-            this.pnlDebugMode.Location = new System.Drawing.Point(4, 684);
+            this.pnlDebugMode.Location = new System.Drawing.Point(4, 712);
             this.pnlDebugMode.Name = "pnlDebugMode";
-            this.pnlDebugMode.Size = new System.Drawing.Size(584, 153);
+            this.pnlDebugMode.Size = new System.Drawing.Size(533, 153);
             this.pnlDebugMode.TabIndex = 12;
             // 
             // chkOnlyReplyDebugGroup
@@ -589,6 +616,9 @@
             // 
             // pnlCheckPorn
             // 
+            this.pnlCheckPorn.Controls.Add(this.label1);
+            this.pnlCheckPorn.Controls.Add(this.lblCheckPornLimitCount);
+            this.pnlCheckPorn.Controls.Add(this.txbCheckPornLimitCount);
             this.pnlCheckPorn.Controls.Add(this.lblTencentCloudBucket);
             this.pnlCheckPorn.Controls.Add(this.lblTencentCloudSecretKey);
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudBucket);
@@ -602,8 +632,33 @@
             this.pnlCheckPorn.Enabled = false;
             this.pnlCheckPorn.Location = new System.Drawing.Point(4, 508);
             this.pnlCheckPorn.Name = "pnlCheckPorn";
-            this.pnlCheckPorn.Size = new System.Drawing.Size(618, 145);
+            this.pnlCheckPorn.Size = new System.Drawing.Size(618, 174);
             this.pnlCheckPorn.TabIndex = 35;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(239, 151);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(362, 17);
+            this.label1.TabIndex = 49;
+            this.label1.Text = "(建议按自己腾讯云购买次数填 2021-12-28 更新 每日免费2000次)";
+            // 
+            // lblCheckPornLimitCount
+            // 
+            this.lblCheckPornLimitCount.AutoSize = true;
+            this.lblCheckPornLimitCount.Location = new System.Drawing.Point(3, 151);
+            this.lblCheckPornLimitCount.Name = "lblCheckPornLimitCount";
+            this.lblCheckPornLimitCount.Size = new System.Drawing.Size(107, 17);
+            this.lblCheckPornLimitCount.TabIndex = 48;
+            this.lblCheckPornLimitCount.Text = "每日鉴黄次数限制:";
+            // 
+            // txbCheckPornLimitCount
+            // 
+            this.txbCheckPornLimitCount.Location = new System.Drawing.Point(161, 148);
+            this.txbCheckPornLimitCount.Name = "txbCheckPornLimitCount";
+            this.txbCheckPornLimitCount.Size = new System.Drawing.Size(74, 23);
+            this.txbCheckPornLimitCount.TabIndex = 47;
             // 
             // lblTencentCloudBucket
             // 
@@ -699,7 +754,7 @@
             // chkDebugMode
             // 
             this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(7, 660);
+            this.chkDebugMode.Location = new System.Drawing.Point(7, 688);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(75, 21);
             this.chkDebugMode.TabIndex = 9;
@@ -897,6 +952,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlSearchPicture.AutoScroll = true;
+            this.pnlSearchPicture.Controls.Add(this.label3);
+            this.pnlSearchPicture.Controls.Add(this.pnlNoCheckPorn);
             this.pnlSearchPicture.Controls.Add(this.chkASCII2DRequestByWebBrowser);
             this.pnlSearchPicture.Controls.Add(this.pnlPictureSearcherCheckPorn);
             this.pnlSearchPicture.Controls.Add(this.chkPictureSearcherCheckPornEnabled);
@@ -935,22 +992,142 @@
             this.pnlSearchPicture.Size = new System.Drawing.Size(642, 649);
             this.pnlSearchPicture.TabIndex = 14;
             // 
+            // pnlNoCheckPorn
+            // 
+            this.pnlNoCheckPorn.Controls.Add(this.lblSearchNoCheckPorn);
+            this.pnlNoCheckPorn.Controls.Add(this.rdoNoCheckPornDontSend);
+            this.pnlNoCheckPorn.Controls.Add(this.rdoNoCheckPornSend);
+            this.pnlNoCheckPorn.Enabled = false;
+            this.pnlNoCheckPorn.Location = new System.Drawing.Point(3, 664);
+            this.pnlNoCheckPorn.Name = "pnlNoCheckPorn";
+            this.pnlNoCheckPorn.Size = new System.Drawing.Size(616, 29);
+            this.pnlNoCheckPorn.TabIndex = 47;
+            // 
+            // lblSearchNoCheckPorn
+            // 
+            this.lblSearchNoCheckPorn.AutoSize = true;
+            this.lblSearchNoCheckPorn.Location = new System.Drawing.Point(15, 5);
+            this.lblSearchNoCheckPorn.Name = "lblSearchNoCheckPorn";
+            this.lblSearchNoCheckPorn.Size = new System.Drawing.Size(83, 17);
+            this.lblSearchNoCheckPorn.TabIndex = 44;
+            this.lblSearchNoCheckPorn.Text = "不启用鉴黄时:";
+            // 
+            // rdoNoCheckPornDontSend
+            // 
+            this.rdoNoCheckPornDontSend.AutoSize = true;
+            this.rdoNoCheckPornDontSend.Location = new System.Drawing.Point(256, 3);
+            this.rdoNoCheckPornDontSend.Name = "rdoNoCheckPornDontSend";
+            this.rdoNoCheckPornDontSend.Size = new System.Drawing.Size(86, 21);
+            this.rdoNoCheckPornDontSend.TabIndex = 46;
+            this.rdoNoCheckPornDontSend.TabStop = true;
+            this.rdoNoCheckPornDontSend.Tag = "1";
+            this.rdoNoCheckPornDontSend.Text = "不发送图片";
+            this.rdoNoCheckPornDontSend.UseVisualStyleBackColor = true;
+            // 
+            // rdoNoCheckPornSend
+            // 
+            this.rdoNoCheckPornSend.AutoSize = true;
+            this.rdoNoCheckPornSend.Location = new System.Drawing.Point(176, 3);
+            this.rdoNoCheckPornSend.Name = "rdoNoCheckPornSend";
+            this.rdoNoCheckPornSend.Size = new System.Drawing.Size(74, 21);
+            this.rdoNoCheckPornSend.TabIndex = 45;
+            this.rdoNoCheckPornSend.TabStop = true;
+            this.rdoNoCheckPornSend.Tag = "0";
+            this.rdoNoCheckPornSend.Text = "发送图片";
+            this.rdoNoCheckPornSend.UseVisualStyleBackColor = true;
+            // 
+            // chkASCII2DRequestByWebBrowser
+            // 
+            this.chkASCII2DRequestByWebBrowser.AutoSize = true;
+            this.chkASCII2DRequestByWebBrowser.Location = new System.Drawing.Point(179, 169);
+            this.chkASCII2DRequestByWebBrowser.Name = "chkASCII2DRequestByWebBrowser";
+            this.chkASCII2DRequestByWebBrowser.Size = new System.Drawing.Size(344, 21);
+            this.chkASCII2DRequestByWebBrowser.TabIndex = 41;
+            this.chkASCII2DRequestByWebBrowser.Text = "ASCII2D优先使用浏览器进行Http请求(以应对近期403问题)";
+            this.chkASCII2DRequestByWebBrowser.UseVisualStyleBackColor = true;
+            // 
             // pnlPictureSearcherCheckPorn
             // 
+            this.pnlPictureSearcherCheckPorn.Controls.Add(this.lblSearchCheckPornOutOfLimitReply);
+            this.pnlPictureSearcherCheckPorn.Controls.Add(this.txbSearchCheckPornOutOfLimitReply);
+            this.pnlPictureSearcherCheckPorn.Controls.Add(this.rdoSearchCheckPornOutOfLimitAppend);
+            this.pnlPictureSearcherCheckPorn.Controls.Add(this.rdoSearchCheckPornOutOfLimitDontSend);
+            this.pnlPictureSearcherCheckPorn.Controls.Add(this.rdoSearchCheckPornOutOfLimitSend);
+            this.pnlPictureSearcherCheckPorn.Controls.Add(this.lblSearchCheckPornOutOfLimit);
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.txbSearchCheckPornIllegalReply);
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.lblSearchCheckPornIllegalReply);
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.lblSearchCheckPornErrorReply);
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.txbSearchCheckPornErrorReply);
-            this.pnlPictureSearcherCheckPorn.Location = new System.Drawing.Point(3, 487);
+            this.pnlPictureSearcherCheckPorn.Location = new System.Drawing.Point(3, 547);
             this.pnlPictureSearcherCheckPorn.Name = "pnlPictureSearcherCheckPorn";
-            this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(636, 59);
+            this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(616, 114);
             this.pnlPictureSearcherCheckPorn.TabIndex = 40;
+            // 
+            // lblSearchCheckPornOutOfLimitReply
+            // 
+            this.lblSearchCheckPornOutOfLimitReply.AutoSize = true;
+            this.lblSearchCheckPornOutOfLimitReply.Location = new System.Drawing.Point(15, 91);
+            this.lblSearchCheckPornOutOfLimitReply.Name = "lblSearchCheckPornOutOfLimitReply";
+            this.lblSearchCheckPornOutOfLimitReply.Size = new System.Drawing.Size(119, 17);
+            this.lblSearchCheckPornOutOfLimitReply.TabIndex = 43;
+            this.lblSearchCheckPornOutOfLimitReply.Text = "鉴黄次数耗尽时回复:";
+            // 
+            // txbSearchCheckPornOutOfLimitReply
+            // 
+            this.txbSearchCheckPornOutOfLimitReply.Location = new System.Drawing.Point(176, 88);
+            this.txbSearchCheckPornOutOfLimitReply.Name = "txbSearchCheckPornOutOfLimitReply";
+            this.txbSearchCheckPornOutOfLimitReply.Size = new System.Drawing.Size(437, 23);
+            this.txbSearchCheckPornOutOfLimitReply.TabIndex = 42;
+            // 
+            // rdoSearchCheckPornOutOfLimitAppend
+            // 
+            this.rdoSearchCheckPornOutOfLimitAppend.AutoSize = true;
+            this.rdoSearchCheckPornOutOfLimitAppend.Checked = true;
+            this.rdoSearchCheckPornOutOfLimitAppend.Location = new System.Drawing.Point(348, 61);
+            this.rdoSearchCheckPornOutOfLimitAppend.Name = "rdoSearchCheckPornOutOfLimitAppend";
+            this.rdoSearchCheckPornOutOfLimitAppend.Size = new System.Drawing.Size(146, 21);
+            this.rdoSearchCheckPornOutOfLimitAppend.TabIndex = 41;
+            this.rdoSearchCheckPornOutOfLimitAppend.TabStop = true;
+            this.rdoSearchCheckPornOutOfLimitAppend.Tag = "2";
+            this.rdoSearchCheckPornOutOfLimitAppend.Text = "不发送图片且追加回复";
+            this.rdoSearchCheckPornOutOfLimitAppend.UseVisualStyleBackColor = true;
+            // 
+            // rdoSearchCheckPornOutOfLimitDontSend
+            // 
+            this.rdoSearchCheckPornOutOfLimitDontSend.AutoSize = true;
+            this.rdoSearchCheckPornOutOfLimitDontSend.Location = new System.Drawing.Point(256, 61);
+            this.rdoSearchCheckPornOutOfLimitDontSend.Name = "rdoSearchCheckPornOutOfLimitDontSend";
+            this.rdoSearchCheckPornOutOfLimitDontSend.Size = new System.Drawing.Size(86, 21);
+            this.rdoSearchCheckPornOutOfLimitDontSend.TabIndex = 40;
+            this.rdoSearchCheckPornOutOfLimitDontSend.Tag = "1";
+            this.rdoSearchCheckPornOutOfLimitDontSend.Text = "不发送图片";
+            this.rdoSearchCheckPornOutOfLimitDontSend.UseVisualStyleBackColor = true;
+            // 
+            // rdoSearchCheckPornOutOfLimitSend
+            // 
+            this.rdoSearchCheckPornOutOfLimitSend.AutoSize = true;
+            this.rdoSearchCheckPornOutOfLimitSend.Location = new System.Drawing.Point(176, 61);
+            this.rdoSearchCheckPornOutOfLimitSend.Name = "rdoSearchCheckPornOutOfLimitSend";
+            this.rdoSearchCheckPornOutOfLimitSend.Size = new System.Drawing.Size(74, 21);
+            this.rdoSearchCheckPornOutOfLimitSend.TabIndex = 40;
+            this.rdoSearchCheckPornOutOfLimitSend.Tag = "0";
+            this.rdoSearchCheckPornOutOfLimitSend.Text = "发送图片";
+            this.rdoSearchCheckPornOutOfLimitSend.UseVisualStyleBackColor = true;
+            // 
+            // lblSearchCheckPornOutOfLimit
+            // 
+            this.lblSearchCheckPornOutOfLimit.AutoSize = true;
+            this.lblSearchCheckPornOutOfLimit.Location = new System.Drawing.Point(15, 63);
+            this.lblSearchCheckPornOutOfLimit.Name = "lblSearchCheckPornOutOfLimit";
+            this.lblSearchCheckPornOutOfLimit.Size = new System.Drawing.Size(95, 17);
+            this.lblSearchCheckPornOutOfLimit.TabIndex = 39;
+            this.lblSearchCheckPornOutOfLimit.Text = "鉴黄次数耗尽时:";
             // 
             // txbSearchCheckPornIllegalReply
             // 
             this.txbSearchCheckPornIllegalReply.Location = new System.Drawing.Point(176, 3);
             this.txbSearchCheckPornIllegalReply.Name = "txbSearchCheckPornIllegalReply";
-            this.txbSearchCheckPornIllegalReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchCheckPornIllegalReply.Size = new System.Drawing.Size(437, 23);
             this.txbSearchCheckPornIllegalReply.TabIndex = 35;
             // 
             // lblSearchCheckPornIllegalReply
@@ -975,13 +1152,13 @@
             // 
             this.txbSearchCheckPornErrorReply.Location = new System.Drawing.Point(176, 32);
             this.txbSearchCheckPornErrorReply.Name = "txbSearchCheckPornErrorReply";
-            this.txbSearchCheckPornErrorReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchCheckPornErrorReply.Size = new System.Drawing.Size(437, 23);
             this.txbSearchCheckPornErrorReply.TabIndex = 36;
             // 
             // chkPictureSearcherCheckPornEnabled
             // 
             this.chkPictureSearcherCheckPornEnabled.AutoSize = true;
-            this.chkPictureSearcherCheckPornEnabled.Location = new System.Drawing.Point(18, 460);
+            this.chkPictureSearcherCheckPornEnabled.Location = new System.Drawing.Point(18, 520);
             this.chkPictureSearcherCheckPornEnabled.Name = "chkPictureSearcherCheckPornEnabled";
             this.chkPictureSearcherCheckPornEnabled.Size = new System.Drawing.Size(75, 21);
             this.chkPictureSearcherCheckPornEnabled.TabIndex = 39;
@@ -992,7 +1169,7 @@
             // chkTraceMoeEnabled
             // 
             this.chkTraceMoeEnabled.AutoSize = true;
-            this.chkTraceMoeEnabled.Location = new System.Drawing.Point(18, 8);
+            this.chkTraceMoeEnabled.Location = new System.Drawing.Point(18, 3);
             this.chkTraceMoeEnabled.Name = "chkTraceMoeEnabled";
             this.chkTraceMoeEnabled.Size = new System.Drawing.Size(138, 21);
             this.chkTraceMoeEnabled.TabIndex = 34;
@@ -1002,7 +1179,7 @@
             // lblSearchLowSimilarityReply
             // 
             this.lblSearchLowSimilarityReply.AutoSize = true;
-            this.lblSearchLowSimilarityReply.Location = new System.Drawing.Point(18, 434);
+            this.lblSearchLowSimilarityReply.Location = new System.Drawing.Point(18, 489);
             this.lblSearchLowSimilarityReply.Name = "lblSearchLowSimilarityReply";
             this.lblSearchLowSimilarityReply.Size = new System.Drawing.Size(131, 17);
             this.lblSearchLowSimilarityReply.TabIndex = 25;
@@ -1011,7 +1188,7 @@
             // lblSearchLowSimilarity
             // 
             this.lblSearchLowSimilarity.AutoSize = true;
-            this.lblSearchLowSimilarity.Location = new System.Drawing.Point(18, 405);
+            this.lblSearchLowSimilarity.Location = new System.Drawing.Point(18, 460);
             this.lblSearchLowSimilarity.Name = "lblSearchLowSimilarity";
             this.lblSearchLowSimilarity.Size = new System.Drawing.Size(71, 17);
             this.lblSearchLowSimilarity.TabIndex = 24;
@@ -1020,7 +1197,7 @@
             // lblSearchErrorReply
             // 
             this.lblSearchErrorReply.AutoSize = true;
-            this.lblSearchErrorReply.Location = new System.Drawing.Point(18, 376);
+            this.lblSearchErrorReply.Location = new System.Drawing.Point(18, 431);
             this.lblSearchErrorReply.Name = "lblSearchErrorReply";
             this.lblSearchErrorReply.Size = new System.Drawing.Size(95, 17);
             this.lblSearchErrorReply.TabIndex = 23;
@@ -1029,7 +1206,7 @@
             // lblSearchNoResultReply
             // 
             this.lblSearchNoResultReply.AutoSize = true;
-            this.lblSearchNoResultReply.Location = new System.Drawing.Point(18, 347);
+            this.lblSearchNoResultReply.Location = new System.Drawing.Point(18, 402);
             this.lblSearchNoResultReply.Name = "lblSearchNoResultReply";
             this.lblSearchNoResultReply.Size = new System.Drawing.Size(131, 17);
             this.lblSearchNoResultReply.TabIndex = 22;
@@ -1038,7 +1215,7 @@
             // lblSearchModeAlreadyOffReply
             // 
             this.lblSearchModeAlreadyOffReply.AutoSize = true;
-            this.lblSearchModeAlreadyOffReply.Location = new System.Drawing.Point(18, 318);
+            this.lblSearchModeAlreadyOffReply.Location = new System.Drawing.Point(18, 373);
             this.lblSearchModeAlreadyOffReply.Name = "lblSearchModeAlreadyOffReply";
             this.lblSearchModeAlreadyOffReply.Size = new System.Drawing.Size(155, 17);
             this.lblSearchModeAlreadyOffReply.TabIndex = 21;
@@ -1047,7 +1224,7 @@
             // lblSearchModeTimeOutReply
             // 
             this.lblSearchModeTimeOutReply.AutoSize = true;
-            this.lblSearchModeTimeOutReply.Location = new System.Drawing.Point(18, 260);
+            this.lblSearchModeTimeOutReply.Location = new System.Drawing.Point(18, 315);
             this.lblSearchModeTimeOutReply.Name = "lblSearchModeTimeOutReply";
             this.lblSearchModeTimeOutReply.Size = new System.Drawing.Size(143, 17);
             this.lblSearchModeTimeOutReply.TabIndex = 20;
@@ -1056,7 +1233,7 @@
             // lblSearchModeOffCmd
             // 
             this.lblSearchModeOffCmd.AutoSize = true;
-            this.lblSearchModeOffCmd.Location = new System.Drawing.Point(18, 231);
+            this.lblSearchModeOffCmd.Location = new System.Drawing.Point(18, 286);
             this.lblSearchModeOffCmd.Name = "lblSearchModeOffCmd";
             this.lblSearchModeOffCmd.Size = new System.Drawing.Size(131, 17);
             this.lblSearchModeOffCmd.TabIndex = 20;
@@ -1065,7 +1242,7 @@
             // lblSearchModeOffReply
             // 
             this.lblSearchModeOffReply.AutoSize = true;
-            this.lblSearchModeOffReply.Location = new System.Drawing.Point(18, 289);
+            this.lblSearchModeOffReply.Location = new System.Drawing.Point(18, 344);
             this.lblSearchModeOffReply.Name = "lblSearchModeOffReply";
             this.lblSearchModeOffReply.Size = new System.Drawing.Size(143, 17);
             this.lblSearchModeOffReply.TabIndex = 20;
@@ -1074,7 +1251,7 @@
             // lblSearchModeAlreadyOnReply
             // 
             this.lblSearchModeAlreadyOnReply.AutoSize = true;
-            this.lblSearchModeAlreadyOnReply.Location = new System.Drawing.Point(18, 202);
+            this.lblSearchModeAlreadyOnReply.Location = new System.Drawing.Point(18, 257);
             this.lblSearchModeAlreadyOnReply.Name = "lblSearchModeAlreadyOnReply";
             this.lblSearchModeAlreadyOnReply.Size = new System.Drawing.Size(155, 17);
             this.lblSearchModeAlreadyOnReply.TabIndex = 19;
@@ -1083,7 +1260,7 @@
             // lblSearchModeOnReply
             // 
             this.lblSearchModeOnReply.AutoSize = true;
-            this.lblSearchModeOnReply.Location = new System.Drawing.Point(18, 173);
+            this.lblSearchModeOnReply.Location = new System.Drawing.Point(18, 228);
             this.lblSearchModeOnReply.Name = "lblSearchModeOnReply";
             this.lblSearchModeOnReply.Size = new System.Drawing.Size(143, 17);
             this.lblSearchModeOnReply.TabIndex = 18;
@@ -1092,7 +1269,7 @@
             // lblTraceMoeSendThreshold
             // 
             this.lblTraceMoeSendThreshold.AutoSize = true;
-            this.lblTraceMoeSendThreshold.Location = new System.Drawing.Point(18, 32);
+            this.lblTraceMoeSendThreshold.Location = new System.Drawing.Point(18, 27);
             this.lblTraceMoeSendThreshold.Name = "lblTraceMoeSendThreshold";
             this.lblTraceMoeSendThreshold.Size = new System.Drawing.Size(118, 17);
             this.lblTraceMoeSendThreshold.TabIndex = 17;
@@ -1102,7 +1279,7 @@
             // lblSauceNAOApiKey
             // 
             this.lblSauceNAOApiKey.AutoSize = true;
-            this.lblSauceNAOApiKey.Location = new System.Drawing.Point(18, 85);
+            this.lblSauceNAOApiKey.Location = new System.Drawing.Point(18, 80);
             this.lblSauceNAOApiKey.Name = "lblSauceNAOApiKey";
             this.lblSauceNAOApiKey.Size = new System.Drawing.Size(122, 17);
             this.lblSauceNAOApiKey.TabIndex = 17;
@@ -1111,7 +1288,7 @@
             // lblSearchModeOnCmd
             // 
             this.lblSearchModeOnCmd.AutoSize = true;
-            this.lblSearchModeOnCmd.Location = new System.Drawing.Point(18, 144);
+            this.lblSearchModeOnCmd.Location = new System.Drawing.Point(18, 199);
             this.lblSearchModeOnCmd.Name = "lblSearchModeOnCmd";
             this.lblSearchModeOnCmd.Size = new System.Drawing.Size(131, 17);
             this.lblSearchModeOnCmd.TabIndex = 17;
@@ -1119,70 +1296,70 @@
             // 
             // txbSearchLowSimilarityReply
             // 
-            this.txbSearchLowSimilarityReply.Location = new System.Drawing.Point(179, 431);
+            this.txbSearchLowSimilarityReply.Location = new System.Drawing.Point(179, 486);
             this.txbSearchLowSimilarityReply.Name = "txbSearchLowSimilarityReply";
-            this.txbSearchLowSimilarityReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchLowSimilarityReply.Size = new System.Drawing.Size(437, 23);
             this.txbSearchLowSimilarityReply.TabIndex = 16;
             // 
             // txbSearchLowSimilarity
             // 
-            this.txbSearchLowSimilarity.Location = new System.Drawing.Point(179, 402);
+            this.txbSearchLowSimilarity.Location = new System.Drawing.Point(179, 457);
             this.txbSearchLowSimilarity.Name = "txbSearchLowSimilarity";
-            this.txbSearchLowSimilarity.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchLowSimilarity.Size = new System.Drawing.Size(437, 23);
             this.txbSearchLowSimilarity.TabIndex = 16;
             // 
             // txbSearchErrorReply
             // 
-            this.txbSearchErrorReply.Location = new System.Drawing.Point(179, 373);
+            this.txbSearchErrorReply.Location = new System.Drawing.Point(179, 428);
             this.txbSearchErrorReply.Name = "txbSearchErrorReply";
-            this.txbSearchErrorReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchErrorReply.Size = new System.Drawing.Size(437, 23);
             this.txbSearchErrorReply.TabIndex = 16;
             // 
             // txbSearchNoResultReply
             // 
-            this.txbSearchNoResultReply.Location = new System.Drawing.Point(179, 344);
+            this.txbSearchNoResultReply.Location = new System.Drawing.Point(179, 399);
             this.txbSearchNoResultReply.Name = "txbSearchNoResultReply";
-            this.txbSearchNoResultReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchNoResultReply.Size = new System.Drawing.Size(437, 23);
             this.txbSearchNoResultReply.TabIndex = 16;
             // 
             // txbSearchModeTimeOutReply
             // 
-            this.txbSearchModeTimeOutReply.Location = new System.Drawing.Point(179, 257);
+            this.txbSearchModeTimeOutReply.Location = new System.Drawing.Point(179, 312);
             this.txbSearchModeTimeOutReply.Name = "txbSearchModeTimeOutReply";
-            this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(437, 23);
             this.txbSearchModeTimeOutReply.TabIndex = 16;
             // 
             // txbSearchModeOffCmd
             // 
-            this.txbSearchModeOffCmd.Location = new System.Drawing.Point(179, 228);
+            this.txbSearchModeOffCmd.Location = new System.Drawing.Point(179, 283);
             this.txbSearchModeOffCmd.Name = "txbSearchModeOffCmd";
-            this.txbSearchModeOffCmd.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeOffCmd.Size = new System.Drawing.Size(437, 23);
             this.txbSearchModeOffCmd.TabIndex = 16;
             // 
             // txbSearchModeAlreadyOffReply
             // 
-            this.txbSearchModeAlreadyOffReply.Location = new System.Drawing.Point(179, 315);
+            this.txbSearchModeAlreadyOffReply.Location = new System.Drawing.Point(179, 370);
             this.txbSearchModeAlreadyOffReply.Name = "txbSearchModeAlreadyOffReply";
-            this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(437, 23);
             this.txbSearchModeAlreadyOffReply.TabIndex = 16;
             // 
             // txbSearchModeOffReply
             // 
-            this.txbSearchModeOffReply.Location = new System.Drawing.Point(179, 286);
+            this.txbSearchModeOffReply.Location = new System.Drawing.Point(179, 341);
             this.txbSearchModeOffReply.Name = "txbSearchModeOffReply";
-            this.txbSearchModeOffReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeOffReply.Size = new System.Drawing.Size(437, 23);
             this.txbSearchModeOffReply.TabIndex = 16;
             // 
             // txbSearchModeAlreadyOnReply
             // 
-            this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(179, 199);
+            this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(179, 254);
             this.txbSearchModeAlreadyOnReply.Name = "txbSearchModeAlreadyOnReply";
-            this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(437, 23);
             this.txbSearchModeAlreadyOnReply.TabIndex = 16;
             // 
             // txbTraceMoeSendThreshold
             // 
-            this.txbTraceMoeSendThreshold.Location = new System.Drawing.Point(179, 29);
+            this.txbTraceMoeSendThreshold.Location = new System.Drawing.Point(179, 24);
             this.txbTraceMoeSendThreshold.Name = "txbTraceMoeSendThreshold";
             this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(440, 23);
             this.txbTraceMoeSendThreshold.TabIndex = 16;
@@ -1190,29 +1367,30 @@
             // 
             // txbSearchModeOnReply
             // 
-            this.txbSearchModeOnReply.Location = new System.Drawing.Point(179, 170);
+            this.txbSearchModeOnReply.Location = new System.Drawing.Point(179, 225);
             this.txbSearchModeOnReply.Name = "txbSearchModeOnReply";
-            this.txbSearchModeOnReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeOnReply.Size = new System.Drawing.Size(437, 23);
             this.txbSearchModeOnReply.TabIndex = 16;
             // 
             // txbSauceNAOApiKey
             // 
-            this.txbSauceNAOApiKey.Location = new System.Drawing.Point(179, 82);
+            this.txbSauceNAOApiKey.Location = new System.Drawing.Point(179, 77);
+            this.txbSauceNAOApiKey.Multiline = true;
             this.txbSauceNAOApiKey.Name = "txbSauceNAOApiKey";
-            this.txbSauceNAOApiKey.Size = new System.Drawing.Size(440, 23);
+            this.txbSauceNAOApiKey.Size = new System.Drawing.Size(437, 86);
             this.txbSauceNAOApiKey.TabIndex = 16;
             // 
             // txbSearchModeOnCmd
             // 
-            this.txbSearchModeOnCmd.Location = new System.Drawing.Point(179, 141);
+            this.txbSearchModeOnCmd.Location = new System.Drawing.Point(179, 196);
             this.txbSearchModeOnCmd.Name = "txbSearchModeOnCmd";
-            this.txbSearchModeOnCmd.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeOnCmd.Size = new System.Drawing.Size(437, 23);
             this.txbSearchModeOnCmd.TabIndex = 16;
             // 
             // chkSearchASCII2DEnabled
             // 
             this.chkSearchASCII2DEnabled.AutoSize = true;
-            this.chkSearchASCII2DEnabled.Location = new System.Drawing.Point(18, 114);
+            this.chkSearchASCII2DEnabled.Location = new System.Drawing.Point(18, 169);
             this.chkSearchASCII2DEnabled.Name = "chkSearchASCII2DEnabled";
             this.chkSearchASCII2DEnabled.Size = new System.Drawing.Size(122, 21);
             this.chkSearchASCII2DEnabled.TabIndex = 15;
@@ -1222,7 +1400,7 @@
             // chkSearchSauceNAOEnabled
             // 
             this.chkSearchSauceNAOEnabled.AutoSize = true;
-            this.chkSearchSauceNAOEnabled.Location = new System.Drawing.Point(18, 61);
+            this.chkSearchSauceNAOEnabled.Location = new System.Drawing.Point(18, 56);
             this.chkSearchSauceNAOEnabled.Name = "chkSearchSauceNAOEnabled";
             this.chkSearchSauceNAOEnabled.Size = new System.Drawing.Size(137, 21);
             this.chkSearchSauceNAOEnabled.TabIndex = 15;
@@ -1401,6 +1579,8 @@
             this.pnlTranslate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTranslate.Controls.Add(this.txbTranslateFromToCMD);
+            this.pnlTranslate.Controls.Add(this.lblTranslateFromTo);
             this.pnlTranslate.Controls.Add(this.lblTranslateEngineHelp);
             this.pnlTranslate.Controls.Add(this.cboTranslateEngine);
             this.pnlTranslate.Controls.Add(this.lblTranslateEngine);
@@ -1419,6 +1599,22 @@
             this.pnlTranslate.Name = "pnlTranslate";
             this.pnlTranslate.Size = new System.Drawing.Size(646, 277);
             this.pnlTranslate.TabIndex = 1;
+            // 
+            // txbTranslateFromToCMD
+            // 
+            this.txbTranslateFromToCMD.Location = new System.Drawing.Point(197, 124);
+            this.txbTranslateFromToCMD.Name = "txbTranslateFromToCMD";
+            this.txbTranslateFromToCMD.Size = new System.Drawing.Size(425, 23);
+            this.txbTranslateFromToCMD.TabIndex = 15;
+            // 
+            // lblTranslateFromTo
+            // 
+            this.lblTranslateFromTo.AutoSize = true;
+            this.lblTranslateFromTo.Location = new System.Drawing.Point(12, 127);
+            this.lblTranslateFromTo.Name = "lblTranslateFromTo";
+            this.lblTranslateFromTo.Size = new System.Drawing.Size(179, 17);
+            this.lblTranslateFromTo.TabIndex = 14;
+            this.lblTranslateFromTo.Text = "从指定语言翻译为指定语言命令:";
             // 
             // lblTranslateEngineHelp
             // 
@@ -1516,22 +1712,22 @@
             // 
             // txbTranslateTo
             // 
-            this.txbTranslateTo.Location = new System.Drawing.Point(137, 101);
+            this.txbTranslateTo.Location = new System.Drawing.Point(197, 95);
             this.txbTranslateTo.Name = "txbTranslateTo";
-            this.txbTranslateTo.Size = new System.Drawing.Size(485, 23);
+            this.txbTranslateTo.Size = new System.Drawing.Size(425, 23);
             this.txbTranslateTo.TabIndex = 3;
             // 
             // txbTranslateToChinese
             // 
-            this.txbTranslateToChinese.Location = new System.Drawing.Point(137, 66);
+            this.txbTranslateToChinese.Location = new System.Drawing.Point(197, 66);
             this.txbTranslateToChinese.Name = "txbTranslateToChinese";
-            this.txbTranslateToChinese.Size = new System.Drawing.Size(485, 23);
+            this.txbTranslateToChinese.Size = new System.Drawing.Size(425, 23);
             this.txbTranslateToChinese.TabIndex = 2;
             // 
             // lblTranslateTo
             // 
             this.lblTranslateTo.AutoSize = true;
-            this.lblTranslateTo.Location = new System.Drawing.Point(12, 104);
+            this.lblTranslateTo.Location = new System.Drawing.Point(12, 98);
             this.lblTranslateTo.Name = "lblTranslateTo";
             this.lblTranslateTo.Size = new System.Drawing.Size(119, 17);
             this.lblTranslateTo.TabIndex = 1;
@@ -3290,25 +3486,14 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
-            // chkHttpRequestByWebBrowser
+            // label3
             // 
-            this.chkHttpRequestByWebBrowser.AutoSize = true;
-            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(7, 454);
-            this.chkHttpRequestByWebBrowser.Name = "chkHttpRequestByWebBrowser";
-            this.chkHttpRequestByWebBrowser.Size = new System.Drawing.Size(269, 21);
-            this.chkHttpRequestByWebBrowser.TabIndex = 36;
-            this.chkHttpRequestByWebBrowser.Text = "允许调用浏览器执行Http请求(仅限Windows)";
-            this.chkHttpRequestByWebBrowser.UseVisualStyleBackColor = true;
-            // 
-            // chkASCII2DRequestByWebBrowser
-            // 
-            this.chkASCII2DRequestByWebBrowser.AutoSize = true;
-            this.chkASCII2DRequestByWebBrowser.Location = new System.Drawing.Point(179, 114);
-            this.chkASCII2DRequestByWebBrowser.Name = "chkASCII2DRequestByWebBrowser";
-            this.chkASCII2DRequestByWebBrowser.Size = new System.Drawing.Size(344, 21);
-            this.chkASCII2DRequestByWebBrowser.TabIndex = 41;
-            this.chkASCII2DRequestByWebBrowser.Text = "ASCII2D优先使用浏览器进行Http请求(以应对近期403问题)";
-            this.chkASCII2DRequestByWebBrowser.UseVisualStyleBackColor = true;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(19, 106);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(137, 17);
+            this.label3.TabIndex = 48;
+            this.label3.Text = "(一行一个太长塞不下UI)";
             // 
             // FrmAppSetting
             // 
@@ -3335,6 +3520,8 @@
             this.tabSearchPicture.PerformLayout();
             this.pnlSearchPicture.ResumeLayout(false);
             this.pnlSearchPicture.PerformLayout();
+            this.pnlNoCheckPorn.ResumeLayout(false);
+            this.pnlNoCheckPorn.PerformLayout();
             this.pnlPictureSearcherCheckPorn.ResumeLayout(false);
             this.pnlPictureSearcherCheckPorn.PerformLayout();
             this.tabOriginPicture.ResumeLayout(false);
@@ -3653,5 +3840,23 @@
         private System.Windows.Forms.CheckBox chkReplaceMeToYou;
         private System.Windows.Forms.CheckBox chkHttpRequestByWebBrowser;
         private System.Windows.Forms.CheckBox chkASCII2DRequestByWebBrowser;
+        private System.Windows.Forms.RadioButton rdoNoCheckPornDontSend;
+        private System.Windows.Forms.RadioButton rdoNoCheckPornSend;
+        private System.Windows.Forms.Label lblSearchNoCheckPorn;
+        private System.Windows.Forms.Label lblSearchCheckPornOutOfLimitReply;
+        private System.Windows.Forms.TextBox txbSearchCheckPornOutOfLimitReply;
+        private System.Windows.Forms.RadioButton rdoSearchCheckPornOutOfLimitAppend;
+        private System.Windows.Forms.RadioButton rdoSearchCheckPornOutOfLimitDontSend;
+        private System.Windows.Forms.RadioButton rdoSearchCheckPornOutOfLimitSend;
+        private System.Windows.Forms.Label lblSearchCheckPornOutOfLimit;
+        private System.Windows.Forms.Panel pnlNoCheckPorn;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblCheckPornLimitCount;
+        private System.Windows.Forms.TextBox txbCheckPornLimitCount;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txbTranslateFromToCMD;
+        private System.Windows.Forms.Label lblTranslateFromTo;
+        private System.Windows.Forms.Label label3;
     }
 }

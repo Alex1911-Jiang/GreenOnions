@@ -52,7 +52,11 @@ namespace GreenOnions.RSS
                                         PlainMessage translateMsg = null;
                                         if (item.Translate)
                                         {
-                                            string translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(rss.description) : YouDaoTranslateHelper.TranslateToChinese(rss.description));
+                                            string translatedText;
+                                            if (item.TranslateFromTo)
+                                                translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo) : YouDaoTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo));
+                                            else
+                                                translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(rss.description) : YouDaoTranslateHelper.TranslateToChinese(rss.description));
                                             translateMsg = new PlainMessage($"以下为翻译内容:\r\n{ translatedText }");
                                         }
 
@@ -77,7 +81,7 @@ namespace GreenOnions.RSS
                                                 {
                                                     MemoryStream stream = new MemoryStream(imgList[i].ToArray());
                                                     chatGroupMessages.Add(await UploadPicture(UploadTarget.Group, stream));
-                                                    stream.Close();
+                                                    stream.Dispose();
                                                 }
                                             }
 
@@ -123,7 +127,7 @@ namespace GreenOnions.RSS
                                                 {
                                                     MemoryStream stream = new MemoryStream(imgList[i].ToArray());
                                                     chatFriendMessages.Add(await UploadPicture(UploadTarget.Friend, stream));
-                                                    stream.Close();
+                                                    stream.Dispose();
                                                 }
                                             }
 

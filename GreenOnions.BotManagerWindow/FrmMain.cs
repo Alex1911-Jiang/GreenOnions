@@ -1,5 +1,4 @@
-﻿using GreenOnions.RSS;
-using GreenOnions.Utility;
+﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
 using System.Drawing;

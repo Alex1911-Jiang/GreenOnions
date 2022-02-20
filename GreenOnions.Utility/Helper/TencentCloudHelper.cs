@@ -141,7 +141,7 @@ namespace GreenOnions.Utility.Helper
                 //设置进度回调
                 request.SetCosProgressCallback(delegate (long completed, long total)
                 {
-                    Console.WriteLine(String.Format("progress = {0:##.##}%", completed * 100.0 / total));
+                    //Console.WriteLine(String.Format("progress = {0:##.##}%", completed * 100.0 / total));
                 });
                 //执行请求
                 PutObjectResult result = CosXml.PutObject(request);
@@ -152,12 +152,12 @@ namespace GreenOnions.Utility.Helper
             catch (COSXML.CosException.CosClientException clientEx)
             {
                 //请求失败
-                Console.WriteLine("CosClientException: " + clientEx);
+                //Console.WriteLine("CosClientException: " + clientEx);
             }
             catch (COSXML.CosException.CosServerException serverEx)
             {
                 //请求失败
-                Console.WriteLine("CosServerException: " + serverEx.GetInfo());
+                //Console.WriteLine("CosServerException: " + serverEx.GetInfo());
             }
             return false;
         }
@@ -177,7 +177,7 @@ namespace GreenOnions.Utility.Helper
                 //设置进度回调
                 request.SetCosProgressCallback(delegate (long completed, long total)
                 {
-                    Console.WriteLine(String.Format("progress = {0:##.##}%", completed * 100.0 / total));
+                    //Console.WriteLine(String.Format("progress = {0:##.##}%", completed * 100.0 / total));
                 });
                 //执行请求
                 PutObjectResult result = CosXml.PutObject(request);
@@ -188,12 +188,12 @@ namespace GreenOnions.Utility.Helper
             catch (COSXML.CosException.CosClientException clientEx)
             {
                 //请求失败
-                Console.WriteLine("CosClientException: " + clientEx);
+                //Console.WriteLine("CosClientException: " + clientEx);
             }
             catch (COSXML.CosException.CosServerException serverEx)
             {
                 //请求失败
-                Console.WriteLine("CosServerException: " + serverEx.GetInfo());
+                //Console.WriteLine("CosServerException: " + serverEx.GetInfo());
             }
             return false;
         }

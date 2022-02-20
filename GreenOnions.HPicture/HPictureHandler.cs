@@ -230,7 +230,7 @@ namespace GreenOnions.HPicture
                                 ms = ms.StreamAntiShielding();
                             }
                             MemoryStream tempMs = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
-                            ms.Close();
+                            ms.Dispose();
                             ms = tempMs;
                         }
                         else
@@ -239,7 +239,7 @@ namespace GreenOnions.HPicture
                             return;
                         }
                         imageMessage = await UploadPicture(ms);  //上传图片
-                        ms.Close();
+                        ms.Dispose();
                     }
                     SendMessage(new[] { imageMessage }, true);
                     Record(LimitType.Count);  //记录冷却时间
@@ -271,10 +271,10 @@ namespace GreenOnions.HPicture
                             }
 
                             MemoryStream tempMs = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
-                            ms.Close();
+                            ms.Dispose();
                             ms = tempMs;
                             imageMessage = await UploadPicture(ms);  //上传图片
-                            ms.Close();
+                            ms.Dispose();
                         }
 
                         SendMessage(new IChatMessage[] { imageMessage, new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage($"地址:{item.Source}\r\n日文标签:{item.Jp_Tag}\r\n中文标签:{item.Zh_Tags}\r\n作者:{item.Author}") }, true);

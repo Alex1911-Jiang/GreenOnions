@@ -18,6 +18,8 @@ namespace GreenOnions.Utility
         public static IDictionary<long, DateTime> HPicturePMCDDic { get; } = new Dictionary<long, DateTime>();
         public static IDictionary<long, int> LimitDic { get; } = new Dictionary<long, int>();
         public static IDictionary<long, DateTime> SearchingPictures { get; } = new Dictionary<long, DateTime>();
+        public static IDictionary<string, int> SauceNaoKeysAndLongRemaining { get; }  //Nao的key剩余每日可用次数
+        public static IDictionary<string, int> SauceNaoKeysAndShortRemaining { get; }  //Nao的key剩余30秒内可用次数
 
         private static IDictionary<string, DateTime> _LastOneSendRssTime = null;
         public static IDictionary<string, DateTime> LastOneSendRssTime 
@@ -40,6 +42,54 @@ namespace GreenOnions.Utility
             }
         }
 
+        static Cache()
+        {
+            SauceNaoKeysAndLongRemaining = new Dictionary<string, int>();
+            foreach (var key in BotInfo.SauceNAOApiKey)
+                SauceNaoKeysAndLongRemaining.Add(key, 200);
+
+            SauceNaoKeysAndShortRemaining = new Dictionary<string, int>();
+            foreach (var key in BotInfo.SauceNAOApiKey)
+                SauceNaoKeysAndShortRemaining.Add(key, 6);
+
+            Task.Run(() => 
+            {
+                while (true)
+                {
+                    foreach (var item in SauceNaoKeysAndLongRemaining)  //每7.5分钟恢复1次
+                    {
+                        SauceNaoKeysAndLongRemaining[item.Key] += 1;
+                        if (SauceNaoKeysAndLongRemaining[item.Key] > 200)
+                            SauceNaoKeysAndLongRemaining[item.Key] = 200;
+                    }
+                    Task.Delay(1000 * 450).Wait();
+                }
+            });
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    foreach (var item in SauceNaoKeysAndShortRemaining)  //每5秒恢复1次
+                    {
+                        SauceNaoKeysAndShortRemaining[item.Key] += 1;
+                        if (SauceNaoKeysAndShortRemaining[item.Key] > 6)
+                            SauceNaoKeysAndShortRemaining[item.Key] = 6;
+                    }
+                    Task.Delay(1000 * 5).Wait();
+                }
+            });
+        }
+
+        public static int CheckPornCounting
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonCacheFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornCounting));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 0;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonCacheFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornCounting), value.ToString());
+        }
 
         private static Task _TaskCheckSearchPictureTime = null;
         public static void CheckSearchPictureTime(Action<long> Callback)
@@ -83,9 +133,9 @@ namespace GreenOnions.Utility
         private static void DoAt(object state)
         {
             LimitDic.Clear();
+            CheckPornCounting = 0;
             SetTaskAtFixedTime();
         }
-
 
         public static void RecordLimit(long qqId)
         {

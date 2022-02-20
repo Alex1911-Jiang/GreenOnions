@@ -10,6 +10,7 @@ namespace GreenOnions.Translate
         private static readonly GoogleTranslator Translator = new GoogleTranslator();
         public static readonly Dictionary<string, string> Languages = new Dictionary<string, string>()
         {
+            {"自动" , "Auto"},
             {"旁遮普文" , "Punjabi"},
             {"葡萄牙文" , "Portuguese"},
             {"波兰文" , "Polish"},
@@ -145,7 +146,22 @@ namespace GreenOnions.Translate
         {
             languageChineseName = languageChineseName.Replace("语", "文");
             string languageName = Languages[languageChineseName];
+
             TranslationResult result = await Translator.TranslateAsync(text, Language.Auto, GoogleTranslator.GetLanguageByName(languageName));
+            return result.MergedTranslation;
+        }
+
+        public static async Task<string> TranslateFromTo(string text, string fromLanguageChineseName, string toLanguageChineseName)
+        {
+            string fromLanguageName = fromLanguageChineseName.Replace("语", "文");
+            if (Languages.ContainsKey(fromLanguageName))
+                fromLanguageName = Languages[fromLanguageChineseName];
+
+            string toLanguageName = toLanguageChineseName.Replace("语", "文");
+            if (Languages.ContainsKey(toLanguageName))
+                toLanguageName = Languages[toLanguageName];
+
+            TranslationResult result = await Translator.TranslateAsync(text, GoogleTranslator.GetLanguageByName(fromLanguageName), GoogleTranslator.GetLanguageByName(toLanguageName));
             return result.MergedTranslation;
         }
     }

@@ -48,11 +48,11 @@ namespace GreenOnions.Utility.Helper
 
         private static void WriteErrorLogInner(Exception ex) => WriteLogText($"发生异常:\r\n    错误信息:{ex.Message}\r\n    调用堆栈:{ex.StackTrace}\r\n    源:{ex.Source}\r\n");
 
-        private static void WriteLogText(string Text)
+        private static void WriteLogText(string text)
         {
             try
             {
-                File.AppendAllTextAsync(_logName, Text + $"    异常发生时间:{DateTime.Now}\r\n\r\n");
+                File.AppendAllTextAsync(_logName, text + $"    异常发生时间:{DateTime.Now}\r\n\r\n");
             }
             catch
             {

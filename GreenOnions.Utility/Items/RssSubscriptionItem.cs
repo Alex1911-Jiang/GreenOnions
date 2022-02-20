@@ -7,6 +7,9 @@
         public long[] ForwardGroups { get; set; }
         public long[] ForwardQQs { get; set; }
         public bool Translate { get; set; }
+        public bool TranslateFromTo { get; set; }
+        public string TranslateFrom { get; set; }
+        public string TranslateTo { get; set; }
         public bool SendByForward { get; set; }
     }
 }
