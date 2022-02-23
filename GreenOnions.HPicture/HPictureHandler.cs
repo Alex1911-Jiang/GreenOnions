@@ -90,8 +90,8 @@ namespace GreenOnions.HPicture
                     }
                     else if (pictureSource == PictureSource.ELF)
                     {
-                        strHttpRequest = string.IsNullOrEmpty(strKeyword) ? $@"http://img.shab.fun:5000/api/img/{lImgCount},{strR18}" : $@"http://img.shab.fun:5000/api/tag/{strKeyword},{lImgCount},{strR18}";
-                        SendShabHPicture(strHttpRequest);
+                        strHttpRequest = string.IsNullOrEmpty(strKeyword) ? $@"http://159.75.48.23:5000/api/img/{lImgCount},{strR18}" : $@"http://159.75.48.23:5000/api/tag/{strKeyword},{lImgCount},{strR18}";
+                        SendELFHPicture(strHttpRequest);
                     }
                     else if (pictureSource == PictureSource.GreenOnions)
                     {
@@ -154,30 +154,30 @@ namespace GreenOnions.HPicture
                     }
                 }
 
-                async void SendShabHPicture(string strHttpRequestUrl)
+                async void SendELFHPicture(string strHttpRequestUrl)
                 {
                     string resultValue = "";
                     try
                     {
                         resultValue = await HttpHelper.GetHttpResponseStringAsync(strHttpRequestUrl);
+
+                        JArray ja = (JArray)JsonConvert.DeserializeObject(resultValue);
+                        if (ja.Count == 0)
+                        {
+                            SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureNoResultReply) }, false);
+                            return;
+                        }
+                        IEnumerable<ELFHPictureItem> enumImg = ja.Select(i => new ELFHPictureItem(i["id"].ToString(), i["link"].ToString(), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
+                        string addresses = string.Join("\r\n", enumImg.Select(l => l.Source));
+                        SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(addresses) }, false);
+                        //包含twimg.com的图墙内无法访问, 暂时不处理
+                        SendOnceHPicture(() => SendOnceELFHPicture(enumImg));
                     }
                     catch (Exception ex)
                     {
                         SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, false);
                         return;
                     }
-
-                    JArray ja = (JArray)JsonConvert.DeserializeObject(resultValue);
-                    if (ja.Count == 0)
-                    {
-                        SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureNoResultReply) }, false);
-                        return;
-                    }
-                    IEnumerable<ELFHPictureItem> enumImg = ja.Select(i => new ELFHPictureItem(i["id"].ToString(), i["link"].ToString(), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
-                    string addresses = string.Join("\r\n", enumImg.Select(l => l.Source));
-                    SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(addresses) }, false);
-                    //包含twimg.com的图墙内无法访问, 暂时不处理
-                    SendOnceHPicture(() => SendOnceShabHPicture(enumImg));
                 }
 
                 //发送图片
@@ -245,12 +245,12 @@ namespace GreenOnions.HPicture
                     Record(LimitType.Count);  //记录冷却时间
                 }
 
-                async void SendOnceShabHPicture(IEnumerable<ELFHPictureItem> items)
+                async void SendOnceELFHPicture(IEnumerable<ELFHPictureItem> items)
                 {
                     foreach (var item in items)
                     {
                         IImageMessage imageMessage = null;
-                        string imgName = Path.Combine(ImageHelper.ImagePath,$"Shab_{item.ID}.png");
+                        string imgName = Path.Combine(ImageHelper.ImagePath,$"ELF_{item.ID}.png");
                         if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                         {
                             imageMessage = await UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read));  //上传图片

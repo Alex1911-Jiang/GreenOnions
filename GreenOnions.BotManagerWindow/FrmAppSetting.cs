@@ -542,7 +542,7 @@ namespace GreenOnions.BotManagerWindow
 
         private void AddStringToCmd()
         {
-            string Begin, Count, Unit, R18, Keyword, LoliconEnd, ShabEnd;
+            string Begin, Count, Unit, R18, Keyword, LoliconEnd, ELFEnd;
 
             Begin = txbHPictureBegin.Text;
             if (chkHPictureBeginNull.Checked)
@@ -574,14 +574,14 @@ namespace GreenOnions.BotManagerWindow
             {
                 LoliconEnd = $"({LoliconEnd})?";
             }
-            ShabEnd = txbBeautyPictureEnd.Text;
+            ELFEnd = txbBeautyPictureEnd.Text;
             if (chkBeautyPictureEndNull.Checked)
             {
-                ShabEnd = $"({ShabEnd})?";
+                ELFEnd = $"({ELFEnd})?";
             }
 
-            txbHPictureCmd.Text = $"^<机器人名称>{Begin}{Count}{Unit}{R18}{Keyword}{R18}{LoliconEnd}$";
-            txbBeautyPictureCmd.Text = $"^<机器人名称>{Begin}{Count}{Unit}{R18}{Keyword}{R18}{ShabEnd}$";
+            txbHPictureCmd.Text = $"^{Begin}{Count}{Unit}{R18}{Keyword}{R18}{LoliconEnd}$";
+            txbBeautyPictureCmd.Text = $"^{Begin}{Count}{Unit}{R18}{Keyword}{R18}{ELFEnd}$";
 
             txbForgeMessageCmd.Text = $"{txbForgeMessageCmdBegin.Text}<@QQ><伪造内容>";
 
@@ -603,15 +603,9 @@ namespace GreenOnions.BotManagerWindow
             {
                 if (Clipboard.ContainsText())
                 {
-                    try
-                    {
-                        Convert.ToInt64(Clipboard.GetText());  //检查是否数字
-                        ((TextBox)sender).SelectedText = Clipboard.GetText().Trim(); //Ctrl+V 粘贴
-                    }
-                    catch (Exception)
-                    {
-                        e.Handled = true;
-                    }
+                    if (long.TryParse(Clipboard.GetText().Trim(), out long num))  //检查是否数字
+                        ((TextBox)sender).SelectedText = num.ToString();//Ctrl+V 粘贴
+                    e.Handled = true;
                 }
             }
         }
@@ -625,13 +619,13 @@ namespace GreenOnions.BotManagerWindow
             chkHPictureKeywordNull.Checked = true;
             chkHPictureEndNull.Checked = false;
 
-            txbHPictureBegin.Text = "[我再]?[要来來发發给給]";
-            txbHPictureCount.Text = "[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿]+?";
+            txbHPictureBegin.Text = "<机器人名称>[我再]?[要来來发發给給]";
+            txbHPictureCount.Text = "[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+?";
             txbHPictureUnit.Text = "[张張个個幅份]";
             txbHPictureR18.Text = "[Rr]-?18的?";
             txbHPictureKeyword.Text = ".+?";
-            txbHPictureEnd.Text = "的?[色瑟][图圖]";
-            txbBeautyPictureEnd.Text = "的?美[图圖]";
+            txbHPictureEnd.Text = "的?[色瑟][图圖図]";
+            txbBeautyPictureEnd.Text = "的?美[图圖図]";
             chkEnabledLoliconHPicture.Checked = true;
             AddStringToCmd();
         }

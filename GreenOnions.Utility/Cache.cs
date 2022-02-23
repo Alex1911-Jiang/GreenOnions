@@ -58,9 +58,8 @@ namespace GreenOnions.Utility
                 {
                     foreach (var item in SauceNaoKeysAndLongRemaining)  //每7.5分钟恢复1次
                     {
-                        SauceNaoKeysAndLongRemaining[item.Key] += 1;
-                        if (SauceNaoKeysAndLongRemaining[item.Key] > 200)
-                            SauceNaoKeysAndLongRemaining[item.Key] = 200;
+                        if (SauceNaoKeysAndLongRemaining[item.Key] < 200)
+                            SauceNaoKeysAndLongRemaining[item.Key] += 1;
                     }
                     Task.Delay(1000 * 450).Wait();
                 }
@@ -71,9 +70,8 @@ namespace GreenOnions.Utility
                 {
                     foreach (var item in SauceNaoKeysAndShortRemaining)  //每5秒恢复1次
                     {
-                        SauceNaoKeysAndShortRemaining[item.Key] += 1;
-                        if (SauceNaoKeysAndShortRemaining[item.Key] > 6)
-                            SauceNaoKeysAndShortRemaining[item.Key] = 6;
+                        if (SauceNaoKeysAndShortRemaining[item.Key] < 6)
+                            SauceNaoKeysAndShortRemaining[item.Key] += 1;
                     }
                     Task.Delay(1000 * 5).Wait();
                 }
@@ -121,9 +119,7 @@ namespace GreenOnions.Utility
             DateTime now = DateTime.Now;
             DateTime oneOClock = DateTime.Today;
             if (now > oneOClock)
-            {
                 oneOClock = oneOClock.AddDays(1.0);
-            }
             int msUntilFour = (int)(oneOClock - now).TotalMilliseconds;
 
             var t = new Timer(DoAt);
@@ -140,13 +136,9 @@ namespace GreenOnions.Utility
         public static void RecordLimit(long qqId)
         {
             if (LimitDic.ContainsKey(qqId))
-            {
                 LimitDic[qqId] += 1;
-            }
             else
-            {
                 LimitDic.Add(qqId, 1);
-            }
         }
 
         /// <summary>
@@ -162,9 +154,7 @@ namespace GreenOnions.Utility
             if (LimitDic.ContainsKey(qqId))
             {
                 if (LimitDic[qqId] >= BotInfo.HPictureLimit)
-                {
                     return true;  //超过限制
-                }
             }
             return false;
         }
@@ -181,9 +171,7 @@ namespace GreenOnions.Utility
             if (LimitDic.ContainsKey(qqId))
             {
                 if (LimitDic[qqId] >= BotInfo.HPictureLimit)
-                {
                     return true;  //超过限制
-                }
             }
             return false;
         }

@@ -100,6 +100,8 @@ namespace GreenOnions.Translate
                 using (StreamReader sr = new StreamReader(rs, Encoding.UTF8))
                 {
                     string translatedText = await sr.ReadToEndAsync();
+                    if (translatedText.Contains("\"type\":null"))
+                        return "";
                     JToken json = JsonConvert.DeserializeObject<JToken>(translatedText);
                     JArray jResult = json["translateResult"] as JArray;
                     List<string> resultList = new List<string>();

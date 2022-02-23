@@ -51,7 +51,7 @@
             this.txbAddDebugGroup = new System.Windows.Forms.TextBox();
             this.txbBanUser = new System.Windows.Forms.TextBox();
             this.pnlCheckPorn = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblCheckPornLimitCountInfo = new System.Windows.Forms.Label();
             this.lblCheckPornLimitCount = new System.Windows.Forms.Label();
             this.txbCheckPornLimitCount = new System.Windows.Forms.TextBox();
             this.lblTencentCloudBucket = new System.Windows.Forms.Label();
@@ -84,6 +84,7 @@
             this.tabSearchPicture = new System.Windows.Forms.TabPage();
             this.chkSearchPictureEnabled = new System.Windows.Forms.CheckBox();
             this.pnlSearchPicture = new System.Windows.Forms.Panel();
+            this.lblSauceNAOApiKeyInfo = new System.Windows.Forms.Label();
             this.pnlNoCheckPorn = new System.Windows.Forms.Panel();
             this.lblSearchNoCheckPorn = new System.Windows.Forms.Label();
             this.rdoNoCheckPornDontSend = new System.Windows.Forms.RadioButton();
@@ -320,7 +321,6 @@
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label3 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -503,8 +503,6 @@
             // 
             // pnlDebugMode
             // 
-            this.pnlDebugMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlDebugMode.Controls.Add(this.chkOnlyReplyDebugGroup);
             this.pnlDebugMode.Controls.Add(this.lstDebugGroups);
             this.pnlDebugMode.Controls.Add(this.chkDebugReplyAdminOnly);
@@ -516,7 +514,7 @@
             this.pnlDebugMode.Enabled = false;
             this.pnlDebugMode.Location = new System.Drawing.Point(4, 712);
             this.pnlDebugMode.Name = "pnlDebugMode";
-            this.pnlDebugMode.Size = new System.Drawing.Size(533, 153);
+            this.pnlDebugMode.Size = new System.Drawing.Size(618, 153);
             this.pnlDebugMode.TabIndex = 12;
             // 
             // chkOnlyReplyDebugGroup
@@ -616,7 +614,7 @@
             // 
             // pnlCheckPorn
             // 
-            this.pnlCheckPorn.Controls.Add(this.label1);
+            this.pnlCheckPorn.Controls.Add(this.lblCheckPornLimitCountInfo);
             this.pnlCheckPorn.Controls.Add(this.lblCheckPornLimitCount);
             this.pnlCheckPorn.Controls.Add(this.txbCheckPornLimitCount);
             this.pnlCheckPorn.Controls.Add(this.lblTencentCloudBucket);
@@ -635,14 +633,14 @@
             this.pnlCheckPorn.Size = new System.Drawing.Size(618, 174);
             this.pnlCheckPorn.TabIndex = 35;
             // 
-            // label1
+            // lblCheckPornLimitCountInfo
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(239, 151);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(362, 17);
-            this.label1.TabIndex = 49;
-            this.label1.Text = "(建议按自己腾讯云购买次数填 2021-12-28 更新 每日免费2000次)";
+            this.lblCheckPornLimitCountInfo.AutoSize = true;
+            this.lblCheckPornLimitCountInfo.Location = new System.Drawing.Point(239, 151);
+            this.lblCheckPornLimitCountInfo.Name = "lblCheckPornLimitCountInfo";
+            this.lblCheckPornLimitCountInfo.Size = new System.Drawing.Size(362, 17);
+            this.lblCheckPornLimitCountInfo.TabIndex = 49;
+            this.lblCheckPornLimitCountInfo.Text = "(建议按自己腾讯云购买次数填 2021-12-28 更新 每日免费2000次)";
             // 
             // lblCheckPornLimitCount
             // 
@@ -952,7 +950,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlSearchPicture.AutoScroll = true;
-            this.pnlSearchPicture.Controls.Add(this.label3);
+            this.pnlSearchPicture.Controls.Add(this.lblSauceNAOApiKeyInfo);
             this.pnlSearchPicture.Controls.Add(this.pnlNoCheckPorn);
             this.pnlSearchPicture.Controls.Add(this.chkASCII2DRequestByWebBrowser);
             this.pnlSearchPicture.Controls.Add(this.pnlPictureSearcherCheckPorn);
@@ -991,6 +989,15 @@
             this.pnlSearchPicture.Name = "pnlSearchPicture";
             this.pnlSearchPicture.Size = new System.Drawing.Size(642, 649);
             this.pnlSearchPicture.TabIndex = 14;
+            // 
+            // lblSauceNAOApiKeyInfo
+            // 
+            this.lblSauceNAOApiKeyInfo.AutoSize = true;
+            this.lblSauceNAOApiKeyInfo.Location = new System.Drawing.Point(49, 110);
+            this.lblSauceNAOApiKeyInfo.Name = "lblSauceNAOApiKeyInfo";
+            this.lblSauceNAOApiKeyInfo.Size = new System.Drawing.Size(64, 17);
+            this.lblSauceNAOApiKeyInfo.TabIndex = 48;
+            this.lblSauceNAOApiKeyInfo.Text = "(一行一个)";
             // 
             // pnlNoCheckPorn
             // 
@@ -1527,7 +1534,7 @@
             this.rdoOriginPictureCheckPornDoNothing.Size = new System.Drawing.Size(86, 21);
             this.rdoOriginPictureCheckPornDoNothing.TabIndex = 0;
             this.rdoOriginPictureCheckPornDoNothing.Tag = "1";
-            this.rdoOriginPictureCheckPornDoNothing.Text = "不发送消息";
+            this.rdoOriginPictureCheckPornDoNothing.Text = "不发送图片";
             this.rdoOriginPictureCheckPornDoNothing.UseVisualStyleBackColor = true;
             this.rdoOriginPictureCheckPornDoNothing.CheckedChanged += new System.EventHandler(this.rdoOriginPictureCheckPornSendByForward_CheckedChanged);
             // 
@@ -1621,9 +1628,9 @@
             this.lblTranslateEngineHelp.AutoSize = true;
             this.lblTranslateEngineHelp.Location = new System.Drawing.Point(137, 31);
             this.lblTranslateEngineHelp.Name = "lblTranslateEngineHelp";
-            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(483, 17);
+            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(386, 17);
             this.lblTranslateEngineHelp.TabIndex = 13;
-            this.lblTranslateEngineHelp.Text = "提示: 谷歌翻译Api需翻墙, 有道翻译Api仅支持任意译中(其实还支持中译英, 但是我懒得做)";
+            this.lblTranslateEngineHelp.Text = "提示: 谷歌翻译Api需翻墙，有道翻译识别语言经常出错，建议手动指定)";
             // 
             // cboTranslateEngine
             // 
@@ -1948,9 +1955,9 @@
             this.chkEnabledELFBeautyPicture.AutoSize = true;
             this.chkEnabledELFBeautyPicture.Location = new System.Drawing.Point(254, 492);
             this.chkEnabledELFBeautyPicture.Name = "chkEnabledELFBeautyPicture";
-            this.chkEnabledELFBeautyPicture.Size = new System.Drawing.Size(104, 21);
+            this.chkEnabledELFBeautyPicture.Size = new System.Drawing.Size(94, 21);
             this.chkEnabledELFBeautyPicture.TabIndex = 14;
-            this.chkEnabledELFBeautyPicture.Text = "启用Shab图库";
+            this.chkEnabledELFBeautyPicture.Text = "启用ELF图库";
             this.chkEnabledELFBeautyPicture.UseVisualStyleBackColor = true;
             // 
             // chkRevokeBeautyPicture
@@ -3486,15 +3493,6 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 106);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(137, 17);
-            this.label3.TabIndex = 48;
-            this.label3.Text = "(一行一个太长塞不下UI)";
-            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -3850,13 +3848,12 @@
         private System.Windows.Forms.RadioButton rdoSearchCheckPornOutOfLimitSend;
         private System.Windows.Forms.Label lblSearchCheckPornOutOfLimit;
         private System.Windows.Forms.Panel pnlNoCheckPorn;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblCheckPornLimitCountInfo;
         private System.Windows.Forms.Label lblCheckPornLimitCount;
         private System.Windows.Forms.TextBox txbCheckPornLimitCount;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txbTranslateFromToCMD;
         private System.Windows.Forms.Label lblTranslateFromTo;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblSauceNAOApiKeyInfo;
     }
 }

@@ -790,7 +790,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string HPictureBeginCmd
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureBeginCmd)) ?? "[我再]?[要来來发發给給]";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureBeginCmd)) ?? "<机器人名称>[我再]?[要来來发發给給]";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureBeginCmd), value);
         }
 
