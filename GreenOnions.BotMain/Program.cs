@@ -70,6 +70,8 @@ namespace GreenOnions.BotMain
 
                 ConnectedEvent?.Invoke(true, nickname);
 
+                BotInfo.QQId = session.QQNumber.Value;
+
                 BotInfo.IsLogin = true;
 
                 RssHelper.StartRssTask((target, stream) => session.UploadPictureAsync(target, stream), (qqId, msg, type) => 

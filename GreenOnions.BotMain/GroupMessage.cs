@@ -10,6 +10,7 @@ using Mirai.CSharp.HttpApi.Parsers.Attributes;
 using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
 using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace GreenOnions.BotMain
                         if (e.Chain.Length > 2)
                         {
                             AtMessage atMe = e.Chain[1] as AtMessage;
-                            if (atMe.Target == BotInfo.QQId)  //@自己
+                            if (atMe.Target == session.QQNumber)  //@自己
                             {
                                 for (int i = 2; i < e.Chain.Length; i++)
                                 {
