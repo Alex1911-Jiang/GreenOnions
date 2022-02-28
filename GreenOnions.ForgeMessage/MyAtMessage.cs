@@ -1,7 +1,6 @@
 ﻿using Mirai.CSharp.HttpApi.Models.ChatMessages;
-using System.Text.Json;
 
-namespace GreenOnions.BotMain
+namespace GreenOnions.ForgeMessage
 {
     public class MyAtMessage : AtMessage
     {

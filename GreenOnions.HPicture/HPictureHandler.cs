@@ -1,5 +1,6 @@
 ﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
+using Mirai.CSharp.Models;
 using Mirai.CSharp.Models.ChatMessages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,7 +15,28 @@ namespace GreenOnions.HPicture
 {
     public static class HPictureHandler
     {
-        public static void SendHPictures(string message, PictureSource pictureSource, bool isAllowR18, string PictureEndCmd, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[], bool> SendMessage, Action<LimitType> Record)
+        public static void SendHPictures(IBaseInfo sender, PictureSource pictureSource, string pictureEndCmd, bool allowR18, string msg, Action<IChatMessage[], bool> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture)
+        {
+            HPictureHandler.SendHPictureInner(msg, pictureSource, allowR18, pictureEndCmd, UploadPicture, SendMessage, limitType =>
+            {
+                if (limitType == LimitType.Frequency)  //如果本次记录是计次, 说明地址消息已经成功发出, 可以记录CD
+                {
+                    if (sender is IGroupMemberInfo)  //记录CD
+                    {
+                        IGroupMemberInfo senderGroup = sender as IGroupMemberInfo;
+                        Cache.RecordGroupCD(senderGroup.Id, senderGroup.Group.Id);
+                    }
+                    else
+                        Cache.RecordFriendCD(sender.Id);
+                    if (BotInfo.HPictureLimitType == LimitType.Frequency)  //如果设置是计次
+                        Cache.RecordLimit(sender.Id);
+                }
+                else if (limitType == LimitType.Count && BotInfo.HPictureLimitType == LimitType.Count)  //如果本次记录是记张且设置是记张
+                    Cache.RecordLimit(sender.Id);
+            });
+        }
+
+        private static void SendHPictureInner(string message, PictureSource pictureSource, bool isAllowR18, string PictureEndCmd, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[], bool> SendMessage, Action<LimitType> Record)
         {
             try
             {

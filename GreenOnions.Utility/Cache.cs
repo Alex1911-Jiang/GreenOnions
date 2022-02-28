@@ -128,6 +128,7 @@ namespace GreenOnions.Utility
 
         private static void DoAt(object state)
         {
+            File.AppendAllText("测试日志.txt", "重置色图限制和鉴黄次数 " + DateTime.Now + "\r\n");
             LimitDic.Clear();
             CheckPornCounting = 0;
             SetTaskAtFixedTime();

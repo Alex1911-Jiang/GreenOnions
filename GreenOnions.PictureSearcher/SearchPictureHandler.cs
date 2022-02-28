@@ -20,6 +20,65 @@ namespace GreenOnions.PictureSearcher
 {
     public static class SearchPictureHandler
     {
+        public static async Task SendPixivOriginPictureWithIdAndP(string strId, Func<string[], Task<string[]>> SendImage, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage)
+        {
+            string[] idWithIndex = strId.Split("-");
+            if (idWithIndex.Length == 2)
+            {
+                if (int.TryParse(idWithIndex[1], out int index) && long.TryParse(idWithIndex[0], out long id))
+                {
+                    await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, UploadPicture, SendMessage, id, index - 1);
+                }
+                return;
+            }
+            string[] idWithP = strId.ToLower().Split("p");
+            if (idWithP.Length == 2)
+            {
+                if (int.TryParse(idWithP[1], out int p) && long.TryParse(idWithP[0], out long id))
+                {
+                    await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, UploadPicture, SendMessage, id, p);
+                }
+                return;
+            }
+            if (long.TryParse(strId, out long idNoneP))
+            {
+                await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, UploadPicture, SendMessage, idNoneP, -1);
+                return;
+            }
+        }
+
+        public static void SearchOn(long qqId, Action<IChatMessage[], bool> SendMessage)
+        {
+            if (Cache.SearchingPictures.ContainsKey(qqId))
+            {
+                Cache.SearchingPictures[qqId] = DateTime.Now.AddMinutes(1);
+                SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeAlreadyOnReply.ReplaceGreenOnionsTags()) }, false);
+            }
+            else
+            {
+                Cache.SearchingPictures.Add(qqId, DateTime.Now.AddMinutes(1));
+                SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags()) }, false);
+                Cache.CheckSearchPictureTime(_ =>
+                {
+                    Cache.SearchingPictures.Remove(qqId);
+                    SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsTags()) }, false);
+                });
+            }
+        }
+
+        public static void SearchOff(long qqId, Action<IChatMessage[], bool> SendMessage)
+        {
+            if (Cache.SearchingPictures.ContainsKey(qqId))
+            {
+                Cache.SearchingPictures.Remove(qqId);
+                SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeOffReply.ReplaceGreenOnionsTags()) }, false);
+            }
+            else
+            {
+                SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeAlreadyOffReply.ReplaceGreenOnionsTags()) }, false);
+            }
+        }
+
         public static async Task SearchPicture(IImageMessage inImgMsg, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage, Func<string[], Task<string[]>> SendImage)
         {
             string qqImgUrl = inImgMsg.Url.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");

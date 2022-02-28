@@ -1,4 +1,6 @@
-﻿using GreenOnions.HPicture;
+﻿using GreenOnions.ForgeMessage;
+using GreenOnions.Help;
+using GreenOnions.HPicture;
 using GreenOnions.PictureSearcher;
 using GreenOnions.Translate;
 using GreenOnions.Utility;
@@ -64,178 +66,40 @@ namespace GreenOnions.BotMain
             #region -- 伪造消息 --
             if (BotInfo.ForgeMessageEnabled && regexForgeMessage.IsMatch(firstMessage))
             {
-                if (!BotInfo.ForgeMessageAdminOnly || BotInfo.AdminQQ.Contains(sender.Id))
-                {
-                    if (Chain.Length > 3 && (Chain[2] is MyAtMessage))
-                    {
-                        MyAtMessage atMessage = Chain[2] as MyAtMessage;
-                        if (!BotInfo.AdminQQ.Contains(sender.Id) && BotInfo.AdminQQ.Contains(atMessage.Target))
-                        {
-                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.RefuseForgeAdminReply.ReplaceGreenOnionsTags()) }, false);
-                            return;
-                        }
-                        if (!BotInfo.AdminQQ.Contains(sender.Id) && atMessage.Target == BotInfo.QQId)
-                        {
-                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.RefuseForgeBotReply.ReplaceGreenOnionsTags()) }, false);
-                            return;
-                        }
-
-                        List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode> forwardMessageNodes = new List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode>();
-                        for (int i = 3; i < Chain.Length; i++)
-                        {
-                            if (Chain[i] is IPlainMessage)
-                            {
-                                string[] plainMsgs = Chain[i].ToString().Trim().Split(BotInfo.ForgeMessageCmdNewLine);
-                                for (int j = 0; j < plainMsgs.Length; j++)
-                                {
-                                    if (!string.IsNullOrEmpty(plainMsgs[j]))
-                                    {
-                                        forwardMessageNodes.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
-                                        {
-                                            Id = forwardMessageNodes.Count,
-                                            Name = atMessage.Name,
-                                            QQNumber = atMessage.Target,
-                                            Time = DateTime.Now,
-                                            Chain = new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(plainMsgs[j]) },
-                                        });
-                                    }
-                                }
-                            }
-                            else if (Chain[i] is IImageMessage)
-                            {
-                                forwardMessageNodes.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
-                                {
-                                    Id = forwardMessageNodes.Count,
-                                    Name = atMessage.Name,
-                                    QQNumber = atMessage.Target,
-                                    Time = DateTime.Now,
-                                    Chain = new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage((Chain[i] as IImageMessage).ImageId, null, null) },
-                                });
-                            }
-                            else
-                                continue;
-                        }
-
-                        if (BotInfo.ForgeMessageAppendBotMessageEnabled)
-                        {
-                            if (!BotInfo.ForgeMessageAdminDontAppend || !BotInfo.AdminQQ.Contains(sender.Id))
-                            {
-                                forwardMessageNodes.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
-                                {
-                                    Id = forwardMessageNodes.Count,
-                                    Name = BotInfo.BotName,
-                                    QQNumber = BotInfo.QQId,
-                                    Time = DateTime.Now,
-                                    Chain = new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.ForgeMessageAppendMessage.ReplaceGreenOnionsTags()) },
-                                });
-                            }
-                        }
-
-                        Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage forwardMessage = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage(forwardMessageNodes.ToArray());
-                        SendMessage?.Invoke(new[] { forwardMessage }, false);
-                        return;
-                    }
-                }
+                ForgeMessageHandler.SendForgeMessage(Chain, sender.Id, SendMessage);
+                return;
             }
             #endregion -- 伪造消息 --
 
             #region -- 连续搜图 --
             if (regexSearchOn.IsMatch(firstMessage))
             {
-                if (Cache.SearchingPictures.ContainsKey(sender.Id))
-                {
-                    Cache.SearchingPictures[sender.Id] = DateTime.Now.AddMinutes(1);
-                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.SearchModeAlreadyOnReply.ReplaceGreenOnionsTags()) }, false);
-                }
-                else
-                {
-                    Cache.SearchingPictures.Add(sender.Id, DateTime.Now.AddMinutes(1));
-                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags()) }, false);
-                    Cache.CheckSearchPictureTime(_ =>
-                    {
-                        Cache.SearchingPictures.Remove(sender.Id);
-                        SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsTags()) }, false);
-                    });
-                }
+                SearchPictureHandler.SearchOn(sender.Id, SendMessage);
+                return;
             }
             if (regexSearchOff.IsMatch(firstMessage))
             {
-                if (Cache.SearchingPictures.ContainsKey(sender.Id))
-                {
-                    Cache.SearchingPictures.Remove(sender.Id);
-                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.SearchModeOffReply.ReplaceGreenOnionsTags()) }, false);
-                }
-                else
-                {
-                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.SearchModeAlreadyOffReply.ReplaceGreenOnionsTags()) }, false);
-                }
+                SearchPictureHandler.SearchOff(sender.Id, SendMessage);
+                return;
             }
             #endregion -- 连续搜图 --
 
             #region -- 翻译 --
             if (regexTranslateToChinese.IsMatch(firstMessage))  //翻译为中文
             {
-                foreach (Match match in regexTranslateToChinese.Matches(firstMessage))
-                {
-                    try
-                    {
-                        string text = firstMessage.Substring(match.Value.Length);
-                        string translateResult = await (BotInfo.TranslateEngineType == TranslateEngine.Google ?  GoogleTranslateHelper.TranslateToChinese(text) : YouDaoTranslateHelper.TranslateToChinese(text));
-                        SendMessage?.Invoke(new [] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(translateResult) }, false);
-                    }
-                    catch (Exception ex)
-                    {
-                        SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("翻译失败，" + ex.Message) }, false);
-                    }
-                }
+                TranslateHandler.TranslateToChinese(regexTranslateToChinese, firstMessage, SendMessage);
+                return;
             }
             if (BotInfo.TranslateEngineType == TranslateEngine.Google)
             {
                 if (regexTranslateTo.IsMatch(firstMessage))  //翻译为指定语言(仅限谷歌)
-                {
-                    if (BotInfo.TranslateEngineType == TranslateEngine.Google)
-                    {
-                        foreach (Match match in regexTranslateTo.Matches(firstMessage))
-                        {
-                            if (match.Groups.Count > 1)
-                            {
-                                try
-                                {
-                                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(await GoogleTranslateHelper.TranslateTo(firstMessage.Substring(match.Value.Length), match.Groups[1].Value)) }, false);
-                                }
-                                catch (Exception ex)
-                                {
-                                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("翻译失败，" + ex.Message) }, false);
-                                }
-                            }
-                        }
-                    }
-                }
+                    TranslateHandler.TranslateTo(regexTranslateTo, firstMessage, SendMessage);
+                return;
             }
             if (regexTranslateFromTo.IsMatch(firstMessage))  //从指定语言翻译为指定语言
             {
-                foreach (Match match in regexTranslateFromTo.Matches(firstMessage))
-                {
-                    if (match.Groups.Count > 1)
-                    {
-                        try
-                        {
-                            string translateResult = "";
-                            string text = firstMessage.Substring(match.Value.Length);
-                            if (match.Groups.ContainsKey("from") && match.Groups.ContainsKey("to"))
-                            {
-                                string from = match.Groups["from"].Value;
-                                string to = match.Groups["to"].Value;
-                                translateResult = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(text, from, to) : YouDaoTranslateHelper.TranslateFromTo(text, from, to));
-                            }
-                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(translateResult) }, false);
-                        }
-                        catch (Exception ex)
-                        {
-                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("翻译失败，" + ex.Message) }, false);
-                        }
-                    }
-                }
+                TranslateHandler.TranslateFromTo(regexTranslateFromTo, firstMessage, SendMessage);
+                return;
             }
             #endregion -- 翻译 --
 
@@ -267,7 +131,7 @@ namespace GreenOnions.BotMain
                             {
                                 Random r = new Random();
                                 PictureSource pictureSource = BotInfo.EnabledHPictureSource[r.Next(0, BotInfo.EnabledHPictureSource.Count)];
-                                SendPicture(sender, pictureSource, BotInfo.HPictureEndCmd, BotInfo.HPictureAllowR18 && (!BotInfo.HPictureR18WhiteOnly || BotInfo.HPictureWhiteGroup.Contains(senderGroup.Group.Id)));
+                                HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.HPictureEndCmd, BotInfo.HPictureAllowR18 && (!BotInfo.HPictureR18WhiteOnly || BotInfo.HPictureWhiteGroup.Contains(senderGroup.Group.Id)), firstMessage, SendMessage, UploadPicture);
                             }
                         }
                     }
@@ -291,7 +155,7 @@ namespace GreenOnions.BotMain
                             {
                                 Random r = new Random();
                                 PictureSource pictureSource = BotInfo.EnabledHPictureSource[r.Next(0, BotInfo.EnabledHPictureSource.Count)];
-                                SendPicture(sender, pictureSource, BotInfo.HPictureEndCmd, BotInfo.HPictureAllowR18);
+                                HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.HPictureEndCmd, BotInfo.HPictureAllowR18, firstMessage, SendMessage, UploadPicture);
                             }
                         }
                     }
@@ -307,7 +171,7 @@ namespace GreenOnions.BotMain
                 {
                     Random r = new Random();
                     PictureSource pictureSource = BotInfo.EnabledBeautyPictureSource[r.Next(0, BotInfo.EnabledBeautyPictureSource.Count)];
-                    SendPicture(sender, pictureSource, BotInfo.BeautyPictureEndCmd, false);
+                    HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.BeautyPictureEndCmd, false, firstMessage, SendMessage, UploadPicture);
                 }
                 return;
             }
@@ -320,184 +184,17 @@ namespace GreenOnions.BotMain
                 if (match.Groups.Count > 1)
                 {
                     string strId = firstMessage.Substring(match.Groups[0].Length);
-                    await SendPixivOriginPictureWithIdAndP(strId, SendImage, UploadPicture, msg => SendMessage?.Invoke(msg, false));
-                    return;
+                    await SearchPictureHandler.SendPixivOriginPictureWithIdAndP(strId, SendImage, UploadPicture, msg => SendMessage?.Invoke(msg, false));
                 }
+                return;
             }
             #endregion -- 下载Pixiv原图 --
 
             #region -- 帮助 --
             if (regexHelp.IsMatch(firstMessage))
             {
-                Match match = regexHelp.Matches(firstMessage).FirstOrDefault();
-                if (match.Groups.Count > 0)
-                {
-                    string strFeatures = firstMessage.Substring(match.Groups[0].Length).ToUpper();
-                    string strHelpResult = strFeatures switch
-                    {
-                        "--搜图" => pictureSearchHelp(),
-                        "--下载原图" => downloadOriginPictureHelp(),
-                        "--翻译" => translateHelp(),
-                        "--GHS" => hPictureHelp(),
-                        "--色图" => hPictureHelp(),
-                        "--美图" => beauthPictureHelp(),
-                        "--复读" => repeatHelp(),
-                        "--伪造消息" => forgeMessageHelp(),
-                        "--RSS订阅转发" => rssHelp(),
-                        "--查手机号" => phoneHelp(),
-                        "--功能" => helpFailCMD(),
-                        _ => defaultHelp(),
-                    };
-
-                    List<string> getEnabledFunction()
-                    {
-                        List<string> lstEnabledFeatures = new List<string>();
-                        if (BotInfo.SearchEnabled)
-                            lstEnabledFeatures.Add("搜图");
-                        lstEnabledFeatures.Add("下载原图");
-                        if (BotInfo.TranslateEnabled)
-                            lstEnabledFeatures.Add("翻译");
-                        if (BotInfo.HPictureEnabled)
-                        {
-                            if (BotInfo.EnabledHPictureSource.Contains(PictureSource.Lolicon))
-                                lstEnabledFeatures.Add("GHS");
-                            if (BotInfo.EnabledHPictureSource.Contains(PictureSource.ELF))
-                                lstEnabledFeatures.Add("美图");
-                        }
-                        if (BotInfo.RandomRepeatEnabled || BotInfo.SuccessiveRepeatEnabled)
-                            lstEnabledFeatures.Add("复读");
-                        if (BotInfo.ForgeMessageEnabled)
-                            lstEnabledFeatures.Add("伪造消息");
-                        if (BotInfo.RssEnabled)
-                            lstEnabledFeatures.Add("RSS订阅转发");
-                        if (BotInfo.QQId == 3246934384)
-                            lstEnabledFeatures.Add("查手机号");
-                        return lstEnabledFeatures;
-                    }
-
-                    string defaultHelp()
-                    {
-                        if (string.IsNullOrEmpty(strFeatures))
-                        {
-                            return $"现在您可以让我 {string.Join("，", getEnabledFunction())}。\r\n输入\"{BotInfo.BotName}帮助--功能\"以获取具体功能的使用帮助。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。";
-                        }
-                        return null;
-                    }
-                    string pictureSearchHelp()
-                    {
-                        if (BotInfo.SearchEnabled)
-                            return $"发送\"{BotInfo.SearchModeOnCmd.ReplaceGreenOnionsTags()}\"启动搜图模式,\r\n" +
-                                $"随后直接发图即可，完事后发送\"{BotInfo.SearchModeOffCmd.ReplaceGreenOnionsTags()}\"退出搜图,\r\n" +
-                                $"您也可以在一条消息中直接@{BotInfo.BotName}并发送图片来进行单张搜图" + "\r\n如果不明白命令中符号所代表的的意义，请在搜索引擎搜\"正则表达式\"";
-                        else
-                            return $"当前{BotInfo.BotName}没有启用搜图功能";
-                    }
-                    string downloadOriginPictureHelp()
-                    {
-                        return $"发送\"{BotInfo.BotName}下载Pixiv原图:Pixiv作品ID\"(注意中间有个冒号)\r\n" +
-                            $"或直接\"@{BotInfo.BotName} Pixiv作品ID\"(中间没有冒号)来下载原图";
-                    }
-                    string translateHelp()
-                    {
-                        if (BotInfo.TranslateEnabled)
-                        {
-                            if (BotInfo.TranslateEngineType == TranslateEngine.Google)
-                            {
-                                StringBuilder strTranslateGoogle = new StringBuilder($"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。");
-                                strTranslateGoogle.AppendLine($"发送\"{BotInfo.TranslateToCMD.ReplaceGreenOnionsTags()}翻译内容\"自动识别当前语言并翻译成指定语言。");
-                                strTranslateGoogle.AppendLine($"发送\"{BotInfo.TranslateFromToCMD.ReplaceGreenOnionsTags()}翻译内容\"从指定语言翻译成指定语言。");
-                                strTranslateGoogle.AppendLine($"目前支持的语言有:{string.Join("\r\n", GoogleTranslateHelper.Languages.Keys)}");
-                                strTranslateGoogle.AppendLine("目前接入的翻译引擎为:谷歌翻译");
-                                return strTranslateGoogle.ToString();
-                            }
-                            else
-                            {
-                                StringBuilder strTranslateYouDao = new StringBuilder("发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。");
-                                strTranslateYouDao.AppendLine($"发送\"{BotInfo.TranslateFromToCMD.ReplaceGreenOnionsTags()}翻译内容\"从指定语言翻译成指定语言。");
-                                strTranslateYouDao.AppendLine($"目前支持的语言有:{string.Join("\r\n", YouDaoTranslateHelper.Languages.Keys)}");
-                                strTranslateYouDao.AppendLine("目前接入的翻译引擎为:有道翻译");
-                                return strTranslateYouDao.ToString();
-                            }
-                        }
-                        else
-                            return $"当前{BotInfo.BotName}没有启用翻译功能";
-                    }
-                    string hPictureHelp()
-                    {
-                        if (BotInfo.HPictureEnabled && BotInfo.EnabledHPictureSource.Contains(PictureSource.Lolicon))
-                        {
-                            if (sender is IGroupMemberInfo)  //群消息
-                            {
-                                IGroupMemberInfo senderGroup = sender as IGroupMemberInfo;
-                                if (!BotInfo.HPictureWhiteOnly || (BotInfo.HPictureR18WhiteOnly && BotInfo.HPictureWhiteGroup.Contains(senderGroup.Group.Id)))
-                                    return hpictureHelpMsg();
-                                else
-                                    return $"没有为当前群组启用色图功能";
-                            }
-                            else
-                               return hpictureHelpMsg();
-                            string hpictureHelpMsg()
-                            {
-                                StringBuilder strHPicture = new StringBuilder($"发送\"{BotInfo.HPictureCmd.ReplaceGreenOnionsTags()}\"来索要色图。");
-                                strHPicture.AppendLine( $"需要注意的是，关键词中，如果仅输入一个关键词，则按模糊匹配查询，如果用|或&连接多个关键词，则按标签精确匹配(|代表或，&代表与)");
-                                if (BotInfo.HPictureUserCmd.Count() > 0)
-                                    strHPicture.AppendLine($"或直接输入\"{string.Join("\",\"", BotInfo.HPictureUserCmd)}\"中的一个来索要一张随机色图。");
-                                strHPicture.AppendLine("如果不明白命令中符号所代表的的意义，请在搜索引擎搜\"正则表达式\"");
-                                return strHPicture.ToString();
-                            }
-                        }
-                        else
-                            return $"当前{BotInfo.BotName}没有启用色图功能";
-                    }
-                    string beauthPictureHelp()
-                    {
-                        if (BotInfo.HPictureEnabled && BotInfo.EnabledHPictureSource.Contains(PictureSource.ELF))
-                            return $"发送\"{BotInfo.BeautyPictureCmd.ReplaceGreenOnionsTags()}\"来索要美图 \r\n如果不明白命令中符号所代表的的意义，请在搜索引擎搜\"正则表达式\"";
-                        else
-                            return $"当前{BotInfo.BotName}没有启用美图功能";
-                    }
-                    string repeatHelp()
-                    {
-                        StringBuilder strRepeat = new StringBuilder();
-                        if (!BotInfo.RandomRepeatEnabled && !BotInfo.SuccessiveRepeatEnabled)
-                           return $"当前{BotInfo.BotName}没有启用复读功能";
-                        if (BotInfo.RandomRepeatEnabled)
-                            strRepeat.AppendLine($"随机复读:当前有{BotInfo.RandomRepeatProbability}%的概率随机复读消息");
-                        if (BotInfo.SuccessiveRepeatEnabled)
-                            strRepeat.AppendLine($"连续复读:当相同消息连续出现{BotInfo.SuccessiveRepeatCount}次时自动复读");
-                        if (BotInfo.HorizontalMirrorImageEnabled && BotInfo.HorizontalMirrorImageProbability > 0)
-                            strRepeat.AppendLine($"有{BotInfo.HorizontalMirrorImageProbability}%几率水平镜像图片");
-                        if (BotInfo.VerticalMirrorImageEnabled && BotInfo.VerticalMirrorImageProbability > 0)
-                            strRepeat.AppendLine($"有{BotInfo.VerticalMirrorImageProbability}%几率垂直镜像图片");
-                        if (BotInfo.RewindGifEnabled && BotInfo.RewindGifProbability > 0)
-                            strRepeat.AppendLine($"有{BotInfo.RewindGifProbability}%几率倒放Gif");
-                        return strRepeat.ToString();
-                    }
-                    string forgeMessageHelp()
-                    {
-                        if (BotInfo.ForgeMessageEnabled)
-                            return $"发送\"{BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsTags()}@被害者 伪造消息内容\" 以伪造消息，在消息之间添加\"{BotInfo.ForgeMessageCmdNewLine.ReplaceGreenOnionsTags()}\"将消息拆分为两句" + "\r\n如果不明白命令中符号所代表的的意义，请在搜索引擎搜\"正则表达式\"";
-                        else
-                            return $"当前{BotInfo.BotName}没有启用伪造消息功能";
-                    }
-                    string rssHelp()
-                    {
-                        return $"RSS订阅转发功能暂无命令且仅可通过管理端进行配置，{BotInfo.BotName}将抓取到的订阅源(如B站动态，推文，Pixiv日榜)发送给指定的群组或好友。";
-                    }
-                    string phoneHelp()
-                    {
-                        return $"发送 \"{BotInfo.BotName}查询手机号:QQ号码\" 可以查询腾讯数据库泄露的对应QQ号的手机号";
-                    }
-                    string helpFailCMD()
-                    {
-                        StringBuilder strFail = new StringBuilder($"您需要将\"功能\"替换为功能名称，例如：\"{BotInfo.BotName}帮助--搜图\" 以获取搜图功能的帮助。\r\n目前启用的功能有： {string.Join("，", getEnabledFunction())}");
-                        if (BotInfo.QQId == 3246934384)
-                            strFail.AppendLine($"您也可以私聊{BotInfo.BotName}留言，主人看到的时候会进行回复（可能）。");
-                        return strFail.ToString();
-                    }
-                    if (!string.IsNullOrEmpty(strHelpResult))
-                        SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(strHelpResult) }, false);
-                }
+                HelpHandler.Helps(regexHelp, sender, firstMessage, SendMessage);
+                return;
             }
             #endregion -- 帮助 --
 
@@ -547,57 +244,9 @@ namespace GreenOnions.BotMain
                 {
                     ErrorHelper.WriteErrorLogWithUserMessage("自动翻译失败", ex);
                 }
+                return;
             };
             #endregion -- 自动翻译 --
-
-            //色图
-            void SendPicture(IBaseInfo sender, PictureSource pictureSource, string pictureEndCmd, bool allowR18)
-            {
-                HPictureHandler.SendHPictures(firstMessage, pictureSource, allowR18, pictureEndCmd, UploadPicture, SendMessage, limitType =>
-                {
-                    if (limitType == LimitType.Frequency)  //如果本次记录是计次, 说明地址消息已经成功发出, 可以记录CD
-                    {
-                        if (sender is IGroupMemberInfo)  //记录CD
-                        {
-                            IGroupMemberInfo senderGroup = sender as IGroupMemberInfo;
-                            Cache.RecordGroupCD(senderGroup.Id, senderGroup.Group.Id);
-                        }
-                        else
-                            Cache.RecordFriendCD(sender.Id);
-                        if (BotInfo.HPictureLimitType == LimitType.Frequency)  //如果设置是计次
-                            Cache.RecordLimit(sender.Id);
-                    }
-                    else if (limitType == LimitType.Count && BotInfo.HPictureLimitType == LimitType.Count)  //如果本次记录是记张且设置是记张
-                        Cache.RecordLimit(sender.Id);
-                });
-            }
-        }
-
-        public static async Task SendPixivOriginPictureWithIdAndP(string strId, Func<string[], Task<string[]>> SendImage, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage)
-        {
-            string[] idWithIndex = strId.Split("-");
-            if (idWithIndex.Length == 2)
-            {
-                if (int.TryParse(idWithIndex[1], out int index) && long.TryParse(idWithIndex[0], out long id))
-                {
-                    await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, UploadPicture, SendMessage, id, index - 1);
-                }
-                return;
-            }
-            string[] idWithP = strId.ToLower().Split("p");
-            if (idWithP.Length == 2)
-            {
-                if (int.TryParse(idWithP[1], out int p) && long.TryParse(idWithP[0], out long id))
-                {
-                    await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, UploadPicture, SendMessage, id, p);
-                }
-                return;
-            }
-            if (long.TryParse(strId, out long idNoneP))
-            {
-                await SearchPictureHandler.DownloadPixivOriginPicture(SendImage, UploadPicture, SendMessage, idNoneP, -1);
-                return;
-            }
         }
     }
 }

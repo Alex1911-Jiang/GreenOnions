@@ -1,4 +1,5 @@
-﻿using GreenOnions.PictureSearcher;
+﻿using GreenOnions.ForgeMessage;
+using GreenOnions.PictureSearcher;
 using GreenOnions.Repeater;
 using GreenOnions.Utility;
 using Mirai.CSharp.Builders;
@@ -69,7 +70,7 @@ namespace GreenOnions.BotMain
                                     {
                                         if (string.IsNullOrWhiteSpace(e.Chain[i].ToString()))
                                             continue;
-                                        await PlainMessageHandler.SendPixivOriginPictureWithIdAndP(e.Chain[i].ToString(),
+                                        await SearchPictureHandler.SendPixivOriginPictureWithIdAndP(e.Chain[i].ToString(),
                                             urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls),
                                             picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
                                             msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));

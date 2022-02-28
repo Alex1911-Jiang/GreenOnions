@@ -9,3 +9,6 @@ GreenOnions.Utility/obj/
 .vs/
 GreenOnions.Repeater/obj/
 GreenOnions.RSS/obj/
+GreenOnions.ForgeMessage/obj/
+GreenOnions.Help/obj/
+GreenOnions.TicTacToe/obj/

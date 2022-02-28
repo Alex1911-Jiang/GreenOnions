@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>GreenOnions.BotMain</RootNamespace>
     <AssemblyName>GreenOnions.BotMain</AssemblyName>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,6 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Mirai-CSharp\Mirai-CSharp.HttpApi\Mirai-CSharp.HttpApi.csproj" />
+    <ProjectReference Include="..\GreenOnions.ForgeMessage\GreenOnions.ForgeMessage.csproj" />
+    <ProjectReference Include="..\GreenOnions.Help\GreenOnions.Help.csproj" />
     <ProjectReference Include="..\GreenOnions.HPicture\GreenOnions.HPicture.csproj" />
     <ProjectReference Include="..\GreenOnions.PictureSearcher\GreenOnions.PictureSearcher.csproj" />
     <ProjectReference Include="..\GreenOnions.Repeater\GreenOnions.Repeater.csproj" />
