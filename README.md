@@ -13,6 +13,7 @@
 4.搜图功能会尝试自动下载原图发送<br>
 5.支持一句命令多张setu, 支持限制QQ号调用次数和频率, 支持定时撤回, 支持配置返回语等<br>
 6.支持配置以合并转发的方式发送消息，防止不可描述的图片炸号
+7.RSS转发功能有控件配置，可方便添加删除和设置翻译
 
 ### Windows食用方法(傻瓜版):
 
@@ -27,20 +28,62 @@
 
 #### 二、安装机器人框架(注意不能和Go通用)
 
-1.到 [mirai-console-loader/releases](https://github.com/iTXTech/mirai-console-loader/releases) 下载MCL (尽量选择不带beta的最新版, 下载.zip结尾的那个)<br>
+1.到 [mirai-console-loader/releases](https://github.com/iTXTech/mirai-console-loader/releases) 下载MCL (尽量选择不带beta的最新版, .zip结尾的那个)<br>
 2.通过MCL安装 [mirai-api-http](https://github.com/project-mirai/mirai-api-http)<br>
-3.打开MCL目录\config\net.mamoe.mirai-api-http\setting.yml文件, 修改 host: '127.0.0.1' port: 33111 verifyKey: Alex1911<br>
-4.回到MCL窗口, 输入\login 机器人QQ号 密码 登录<br>
+3.在MCL上运行一次 .\mcl 以确保配置文件成功创建, 随后按Ctrl+C退出
+4.拷贝 [mirai-api-http](https://github.com/project-mirai/mirai-api-http) 底下的setting.yml模板到 MCL目录\config\net.mamoe.mirai-api-http\setting.yml 文件中
+5.打开 MCL目录\config\net.mamoe.mirai-api-http\setting.yml 文件, 修改 ws: 下的 host: '127.0.0.1' port: 33111 verifyKey: Alex1911<br>
+6.回到MCL窗口, 重新输入一次.\mcl 再输入\login 机器人QQ号 密码 登录<br>
 
 #### 三、安装本项目
 
-1.到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的net5.0-windows.zip下<br>
-2.解压到任意目录, 运行GreenOnions.BotManagerWindow.exe<br>
-3.输入机器人QQ号和和setting.yml对应的ip(host)、端口(port)和VerifyKey, 点击连接到mirai-api-http<br>
+1.到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的 win-x86x64-windows.zip 下<br>
+2.解压到任意目录, 运行 GreenOnions.BotManagerWindow.exe<br>
+3.输入机器人QQ号和和 setting.yml 对应 的ip(host)、端口(port)和 VerifyKey, 点击连接到 mirai-api-http<br>
 
 #### 大功告成
 
-如果你想部署到其他系统说明你已经不是一个小白了, 那我能告诉你的只有运行命令是"dotnet GreenOnions.BotManagerConsole.dll"<br>
+### Linux食用方法(Ubuntu为例):
+0.(可选)建议先更换服务器所在地区的源并 sudo apt update<br>
+1.输入 sudo apt install openjdk-17-jdk-headless #安装Java依赖<br>
+2.输入 sudo apt install unzip #安装解压zip的库<br>
+3.输入 wget https://packages.microsoft.com/config/ubuntu/00.00/packages-microsoft-prod.deb -O packages-microsoft-prod.deb #下载 .Net 依赖包(00.00替换为自己系统的版本, 详见:[在 Linux 上安装.Net](https://docs.microsoft.com/zh-cn/dotnet/core/install/))<br>
+4.输入 sudo dpkg -i packages-microsoft-prod.deb #安装 .Net 依赖<br>
+　4.1.(可选)输入 rm packages-microsoft-prod.deb #删除已经安装完的依赖包<br>
+5.安装Mono图形库:<br>
+　5.1.输入 sudo apt install gnupg ca-certificates<br>
+　5.2.输入 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF<br>
+　5.3.输入 echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list<br>
+　5.4.输入 sudo apt update (其他Linux发行版详见: [Mono](https://www.mono-project.com/download/stable/#download-lin))<br>
+6.安装 [mirai](https://github.com/mamoe/mirai) (这里的例子为 [Mirai Console Loader](https://github.com/iTXTech/mirai-console-loader))<br>
+　6.1.到 [mcl/Release](https://github.com/iTXTech/mirai-console-loader/releases) 里复制最新的zip包下载地址<br>
+　6.2.输入 wget 地址 #下载mcl 例如: wget https://github.com/iTXTech/mirai-console-loader/releases/download/v1.2.2/mcl-1.2.2.zip<br>
+　6.3.输入 unzip mcl-1.2.2.zip #解压(文件名按下载到的来写)<br>
+　6.4.(可选:如果步骤7提示 Permission denied 请回来执行一次该步骤) 输入 sudo chmod 777 mcl #设置权限再重新执行步骤7<br>
+7.安装 [mirai-api-http](https://github.com/project-mirai/mirai-api-http) 通信插件<br>
+　7.1.输入 ./mcl --update-package net.mamoe:mirai-api-http --channel stable-v2 --type plugin #(地址可能会随着更新改变, 以 [mirai-api-http](https://github.com/project-mirai/mirai-api-http) 中的说明为准)<br>
+　7.2.输入 ./mcl #首次启动 [mirai](https://github.com/mamoe/mirai) 创建配置文件<br>
+　7.3.当配置完成后, 按Ctrl+C停止运行<br>
+　7.5.到 [mirai-api-http](https://github.com/project-mirai/mirai-api-http) 复制setting.yml模板<br>
+　7.4.输入 sudo vim config/net.mamoe.mirai-api-http/setting.yml #使用Vim(或其他工具)编辑配置文件<br>
+　7.5.粘贴复制的模板并修改 ws: 下的 host: '127.0.0.1' port: 33111 verifyKey: Alex1911<br>
+　7.6.按Esc退出编辑模式并输入 :wq! 保存配置文件<br>
+8.登录机器人QQ:<br>
+　8.1.输入 ./mcl 启动 [mirai](https://github.com/mamoe/mirai)<br>
+　8.2.输入 /login QQ号 密码 #登录机器人QQ<br>
+9.下载并安装本项目<br>
+　9.1.到 [GreenOnions/Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) #复制对应自己系统的本项目下载链接<br>
+　9.2 输入 wget 地址 #下载本项目压缩包<br>
+　9.3 输入 unzip linux-x64.zip #解压本项目(文件名按下载到的来写)<br>
+　9.4 输入 cd linux-x64 #进入解压后的目录<br>
+10.启动本项目并连接到 [mirai](https://github.com/mamoe/mirai)<br>
+　10.5 输入 dotnet GreenOnions.BotManagerConsole.dll #启动本项目<br>
+　10.6 输入QQ号<br>
+　10.7 输入IP: 127.0.0.1<br>
+　10.8 输入端口: 33111<br>
+　10.9 输入authKey: Alex1911<br>
+ 
+#### 大功告成
 
 ### 功能介绍
 
