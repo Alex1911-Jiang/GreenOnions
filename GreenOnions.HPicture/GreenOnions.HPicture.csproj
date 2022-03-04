@@ -17,11 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.4" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Mirai-CSharp\Mirai-CSharp.HttpApi\Mirai-CSharp.HttpApi.csproj" />
     <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />
   </ItemGroup>
 

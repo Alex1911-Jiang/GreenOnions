@@ -19,15 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotManagerConso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Repeater", "GreenOnions.Repeater\GreenOnions.Repeater.csproj", "{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mirai-CSharp.HttpApi", "..\Mirai-CSharp\Mirai-CSharp.HttpApi\Mirai-CSharp.HttpApi.csproj", "{1742E594-435A-4D17-A5DC-917C86EC5E73}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mirai-CSharp", "..\Mirai-CSharp\Mirai-CSharp\Mirai-CSharp.csproj", "{F3FF05F2-A74D-4662-807F-AF2DE478352D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.RSS", "GreenOnions.RSS\GreenOnions.RSS.csproj", "{74B0D271-D77D-494E-9DDC-F7E8538C2241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.ForgeMessage", "GreenOnions.ForgeMessage\GreenOnions.ForgeMessage.csproj", "{12EDC794-504E-4795-824E-34C6B5B3E307}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.ForgeMessage", "GreenOnions.ForgeMessage\GreenOnions.ForgeMessage.csproj", "{12EDC794-504E-4795-824E-34C6B5B3E307}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.Help", "GreenOnions.Help\GreenOnions.Help.csproj", "{2B02D7EE-62D1-4770-98DA-34265E3E7B08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Help", "GreenOnions.Help\GreenOnions.Help.csproj", "{2B02D7EE-62D1-4770-98DA-34265E3E7B08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,14 +63,6 @@ Global
 		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1742E594-435A-4D17-A5DC-917C86EC5E73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1742E594-435A-4D17-A5DC-917C86EC5E73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1742E594-435A-4D17-A5DC-917C86EC5E73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1742E594-435A-4D17-A5DC-917C86EC5E73}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3FF05F2-A74D-4662-807F-AF2DE478352D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3FF05F2-A74D-4662-807F-AF2DE478352D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3FF05F2-A74D-4662-807F-AF2DE478352D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3FF05F2-A74D-4662-807F-AF2DE478352D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{74B0D271-D77D-494E-9DDC-F7E8538C2241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{74B0D271-D77D-494E-9DDC-F7E8538C2241}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74B0D271-D77D-494E-9DDC-F7E8538C2241}.Release|Any CPU.ActiveCfg = Release|Any CPU

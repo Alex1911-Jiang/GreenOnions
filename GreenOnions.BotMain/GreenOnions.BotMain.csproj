@@ -18,11 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Mirai-CSharp\Mirai-CSharp.HttpApi\Mirai-CSharp.HttpApi.csproj" />
     <ProjectReference Include="..\GreenOnions.ForgeMessage\GreenOnions.ForgeMessage.csproj" />
     <ProjectReference Include="..\GreenOnions.Help\GreenOnions.Help.csproj" />
     <ProjectReference Include="..\GreenOnions.HPicture\GreenOnions.HPicture.csproj" />

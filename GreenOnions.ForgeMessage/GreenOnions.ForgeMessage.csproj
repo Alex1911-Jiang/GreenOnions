@@ -5,8 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Mirai-CSharp\Mirai-CSharp.HttpApi\Mirai-CSharp.HttpApi.csproj" />
-    <ProjectReference Include="..\..\Mirai-CSharp\Mirai-CSharp\Mirai-CSharp.csproj" />
+    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />
   </ItemGroup>
 
