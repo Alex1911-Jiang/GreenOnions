@@ -22,7 +22,9 @@ namespace GreenOnions.BotManagerConsole
 			if (!File.Exists(JsonHelper.JsonCacheFileName))
 				JsonHelper.CreateCache();
 
-			ILRetry:;
+			Console.WriteLine("有任何疑问，意见或建议欢迎到 https://github.com/Alex1911-Jiang/GreenOnions 提Issue");
+
+		ILRetry:;
 			Console.WriteLine("请输入机器人QQ号:");
 			long qqId = 0;
 			if (!long.TryParse(Console.ReadLine(), out qqId))
