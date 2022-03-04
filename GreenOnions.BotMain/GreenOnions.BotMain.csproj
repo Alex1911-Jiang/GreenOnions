@@ -22,6 +22,15 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x86' or '$(RuntimeIdentifier)' == 'win-x64'">
+    <PackageReference Include="Mirai-CSharp.NativeAssets.Win32" Version="1.0.2"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+    <PackageReference Include="Mirai-CSharp.NativeAssets.Linux" Version="1.0.2"/>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3"/>
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\GreenOnions.ForgeMessage\GreenOnions.ForgeMessage.csproj" />
     <ProjectReference Include="..\GreenOnions.Help\GreenOnions.Help.csproj" />
