@@ -1,5 +1,6 @@
 ﻿using GreenOnions.RSS;
 using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using Microsoft.Extensions.DependencyInjection;
 using Mirai.CSharp.Builders;
 using Mirai.CSharp.HttpApi.Builder;
@@ -98,6 +99,7 @@ namespace GreenOnions.BotMain
             }
             catch (Exception ex)
             {
+                ErrorHelper.WriteErrorLog(ex);
                 ConnectedEvent?.Invoke(false, ex.Message);
             }
         }

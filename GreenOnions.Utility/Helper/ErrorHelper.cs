@@ -46,7 +46,7 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        private static void WriteErrorLogInner(Exception ex) => WriteLogText($"发生异常:\r\n    错误信息:{ex.Message}\r\n    调用堆栈:{ex.StackTrace}\r\n    源:{ex.Source}\r\n");
+        private static void WriteErrorLogInner(Exception ex) => WriteLogText($"发生异常:\r\n    错误信息:{ex.Message}\r\n    调用堆栈:{ex.StackTrace}\r\n    源:{ex.Source}\r\n    异常发生时间为:{DateTime.Now}\r\n    完整异常信息:{ex.ToString()}\r\n");
 
         private static void WriteLogText(string text)
         {
