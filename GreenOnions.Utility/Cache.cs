@@ -17,12 +17,12 @@ namespace GreenOnions.Utility
         public static IDictionary<long, DateTime> HPictureWhiteCDDic { get; } = new Dictionary<long, DateTime>();
         public static IDictionary<long, DateTime> HPicturePMCDDic { get; } = new Dictionary<long, DateTime>();
         public static IDictionary<long, int> LimitDic { get; } = new Dictionary<long, int>();
-        public static IDictionary<long, DateTime> SearchingPictures { get; } = new Dictionary<long, DateTime>();
+        public static IDictionary<long, DateTime> SearchingPicturesUsers { get; } = new Dictionary<long, DateTime>();
         public static IDictionary<string, int> SauceNaoKeysAndLongRemaining { get; }  //Nao的key剩余每日可用次数
         public static IDictionary<string, int> SauceNaoKeysAndShortRemaining { get; }  //Nao的key剩余30秒内可用次数
 
         private static IDictionary<string, DateTime> _LastOneSendRssTime = null;
-        public static IDictionary<string, DateTime> LastOneSendRssTime 
+        public static IDictionary<string, DateTime> LastOneSendRssTime
         {
             get
             {
@@ -36,7 +36,7 @@ namespace GreenOnions.Utility
                 }
                 return _LastOneSendRssTime;
             }
-            set 
+            set
             {
                 JsonHelper.SetSerializationValue(JsonHelper.JsonCacheFileName, JsonHelper.JsonNodeNameRss, nameof(LastOneSendRssTime), JsonConvert.SerializeObject(value));
             }
@@ -52,7 +52,7 @@ namespace GreenOnions.Utility
             foreach (var key in BotInfo.SauceNAOApiKey)
                 SauceNaoKeysAndShortRemaining.Add(key, 6);
 
-            Task.Run(() => 
+            Task.Run(() =>
             {
                 while (true)
                 {
@@ -62,6 +62,14 @@ namespace GreenOnions.Utility
                             SauceNaoKeysAndLongRemaining[item.Key] += 1;
                     }
                     Task.Delay(1000 * 450).Wait();
+
+                    List<long> removeQQ = new List<long>();   //顺便检查正在搜图的人超时没有
+                    foreach (KeyValuePair<long, DateTime> SearchingPicturesUser in SearchingPicturesUsers)
+                        if (DateTime.Now > SearchingPicturesUser.Value.AddMinutes(1))
+                            removeQQ.Add(SearchingPicturesUser.Key);
+                    if (removeQQ.Count > 0)
+                    for (int i = 0; i < removeQQ.Count; i++)
+                        SearchingPicturesUsers.Remove(removeQQ[i]);
                 }
             });
             Task.Run(() =>
@@ -89,29 +97,21 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonCacheFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornCounting), value.ToString());
         }
 
-        private static Task _TaskCheckSearchPictureTime = null;
-        public static void CheckSearchPictureTime(Action<long> Callback)
+        public static void CheckSearchPictureTime(long qqId, Action SendTimeOutMessage)
         {
-            if ((_TaskCheckSearchPictureTime == null || _TaskCheckSearchPictureTime.IsCompleted) && SearchingPictures.Count > 0)
+            Task.Run(() =>
             {
-                _TaskCheckSearchPictureTime = Task.Run(() =>
+                while (SearchingPicturesUsers.ContainsKey(qqId))
                 {
-                ILReforeach:;
-                    while (SearchingPictures.Count > 0)
-                    {
+                    if (SearchingPicturesUsers[qqId] > DateTime.Now)
                         Task.Delay(1000).Wait();
-                        foreach (KeyValuePair<long, DateTime> item in SearchingPictures)
-                        {
-                            if (DateTime.Now >= item.Value)
-                            {
-                                SearchingPictures.Remove(item.Key);
-                                Callback(item.Key);
-                                goto ILReforeach;
-                            }
-                        }
+                    else
+                    {
+                        SearchingPicturesUsers.Remove(qqId);
+                        SendTimeOutMessage();
                     }
-                });
-            }
+                }
+            });
         }
 
         public static void SetTaskAtFixedTime()
@@ -128,7 +128,6 @@ namespace GreenOnions.Utility
 
         private static void DoAt(object state)
         {
-            File.AppendAllText("测试日志.txt", "重置色图限制和鉴黄次数 " + DateTime.Now + "\r\n");
             LimitDic.Clear();
             CheckPornCounting = 0;
             SetTaskAtFixedTime();

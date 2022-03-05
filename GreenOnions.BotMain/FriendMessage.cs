@@ -47,7 +47,7 @@ namespace GreenOnions.BotMain
                             urls => session.SendImageToFriendAsync(e.Sender.Id, urls));  //上传图片
                         break;
                     case "Image":
-                        if (Cache.SearchingPictures.Keys.Contains(e.Sender.Id))
+                        if (Cache.SearchingPicturesUsers.Keys.Contains(e.Sender.Id))
                         {
                             #region -- 连续搜图 --
                             for (int i = 1; i < e.Chain.Length; i++)

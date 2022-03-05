@@ -2,6 +2,7 @@
 using GreenOnions.PictureSearcher;
 using GreenOnions.Repeater;
 using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using Mirai.CSharp.Builders;
 using Mirai.CSharp.HttpApi.Handlers;
 using Mirai.CSharp.HttpApi.Models.ChatMessages;
@@ -74,15 +75,15 @@ namespace GreenOnions.BotMain
                                             urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls),
                                             picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
                                             msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));
-                                        return;
                                     }
                                     #endregion -- @下载原图 --
                                 }
+                                return;
                             }
                         }
                         break;
                     case "Plain":
-                        await PlainMessageHandler.HandleMesage(e.Chain, e.Sender,
+                        bool isHandle = await PlainMessageHandler.HandleMesage(e.Chain, e.Sender,
                             (chatMessages, bRevoke) =>
                             {
                                 session.SendGroupMessageAsync(e.Sender.Group.Id, chatMessages, quoteMessage.Id).ContinueWith(callback => 
@@ -96,13 +97,14 @@ namespace GreenOnions.BotMain
                                         }
                                     }
                                 });  //发送群消息
-                                return;
                             },
                             picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
                             urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));  //上传图片
+                        if (isHandle)
+                            return;
                         break;
                     case "Image":
-                        if (Cache.SearchingPictures.Keys.Contains(e.Sender.Id))
+                        if (Cache.SearchingPicturesUsers.Keys.Contains(e.Sender.Id))
                         {
                             #region -- 连续搜图 --
                             for (int i = 1; i < e.Chain.Length; i++)
@@ -114,6 +116,7 @@ namespace GreenOnions.BotMain
                                     urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));
                             }
                             #endregion -- 连续搜图 --
+                            return;
                         }
                         break;
                 }
@@ -121,7 +124,7 @@ namespace GreenOnions.BotMain
                 #region -- 复读 --
                 if (e.Chain.Length == 2)
                 {
-                    Mirai.CSharp.Models.ChatMessages.IChatMessage repeatingMessage = await Repeat.Repeating(e.Chain[1], e.Sender.Group.Id, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream));
+                    Mirai.CSharp.Models.ChatMessages.IChatMessage repeatingMessage = await RepeatHandler.Repeating(e.Chain[1], e.Sender.Group.Id, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream));
                     if (repeatingMessage != null)
                     {
                         await session.SendGroupMessageAsync(e.Sender.Group.Id, repeatingMessage);

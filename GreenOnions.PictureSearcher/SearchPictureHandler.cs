@@ -49,18 +49,17 @@ namespace GreenOnions.PictureSearcher
 
         public static void SearchOn(long qqId, Action<IChatMessage[], bool> SendMessage)
         {
-            if (Cache.SearchingPictures.ContainsKey(qqId))
+            if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
             {
-                Cache.SearchingPictures[qqId] = DateTime.Now.AddMinutes(1);
+                Cache.SearchingPicturesUsers[qqId] = DateTime.Now.AddMinutes(1);
                 SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeAlreadyOnReply.ReplaceGreenOnionsTags()) }, false);
             }
             else
             {
-                Cache.SearchingPictures.Add(qqId, DateTime.Now.AddMinutes(1));
+                Cache.SearchingPicturesUsers.Add(qqId, DateTime.Now.AddMinutes(1));
                 SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags()) }, false);
-                Cache.CheckSearchPictureTime(_ =>
+                Cache.CheckSearchPictureTime(qqId, () =>
                 {
-                    Cache.SearchingPictures.Remove(qqId);
                     SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsTags()) }, false);
                 });
             }
@@ -68,9 +67,9 @@ namespace GreenOnions.PictureSearcher
 
         public static void SearchOff(long qqId, Action<IChatMessage[], bool> SendMessage)
         {
-            if (Cache.SearchingPictures.ContainsKey(qqId))
+            if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
             {
-                Cache.SearchingPictures.Remove(qqId);
+                Cache.SearchingPicturesUsers.Remove(qqId);
                 SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeOffReply.ReplaceGreenOnionsTags()) }, false);
             }
             else
@@ -824,7 +823,7 @@ namespace GreenOnions.PictureSearcher
 
         public static async Task SuccessiveSearchPicture(IImageMessage imgMsg, long qqId, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage, Func<string[], Task<string[]>> SendImage)
         {
-            Cache.SearchingPictures[qqId] = DateTime.Now.AddMinutes(1);
+            Cache.SearchingPicturesUsers[qqId] = DateTime.Now.AddMinutes(1);
             await SearchPicture(imgMsg, UploadPicture, SendMessage, SendImage);
         }
     }

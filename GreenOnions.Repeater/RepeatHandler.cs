@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GreenOnions.Repeater
 {
-    public static class Repeat
+    public static class RepeatHandler
     {
         private static Dictionary<long, MessageItem> MessageItems = new Dictionary<long, MessageItem>();
 

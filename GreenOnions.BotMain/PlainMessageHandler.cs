@@ -59,7 +59,7 @@ namespace GreenOnions.BotMain
         /// <param name="SendMessage">发送消息的委托(需要发出的消息体, 是否撤回或是否以回复的方式发送消息)</param>
         /// <param name="UploadPicture">上传图片事件(图片流, 返回上传完毕后的图片消息体)</param>
         /// <returns></returns>
-        public static async Task HandleMesage(IChatMessage[] Chain, IBaseInfo sender, Action<IChatMessage[], bool> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture, Func<string[], Task<string[]>> SendImage)
+        public static async Task<bool> HandleMesage(IChatMessage[] Chain, IBaseInfo sender, Action<IChatMessage[], bool> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture, Func<string[], Task<string[]>> SendImage)
         {
             string firstMessage = Chain[1].ToString();
 
@@ -67,7 +67,7 @@ namespace GreenOnions.BotMain
             if (BotInfo.ForgeMessageEnabled && regexForgeMessage.IsMatch(firstMessage))
             {
                 ForgeMessageHandler.SendForgeMessage(Chain, sender.Id, SendMessage);
-                return;
+                return true;
             }
             #endregion -- 伪造消息 --
 
@@ -75,12 +75,12 @@ namespace GreenOnions.BotMain
             if (regexSearchOn.IsMatch(firstMessage))
             {
                 SearchPictureHandler.SearchOn(sender.Id, SendMessage);
-                return;
+                return true;
             }
             if (regexSearchOff.IsMatch(firstMessage))
             {
                 SearchPictureHandler.SearchOff(sender.Id, SendMessage);
-                return;
+                return true;
             }
             #endregion -- 连续搜图 --
 
@@ -88,18 +88,18 @@ namespace GreenOnions.BotMain
             if (regexTranslateToChinese.IsMatch(firstMessage))  //翻译为中文
             {
                 TranslateHandler.TranslateToChinese(regexTranslateToChinese, firstMessage, SendMessage);
-                return;
+                return true;
             }
             if (BotInfo.TranslateEngineType == TranslateEngine.Google)
             {
                 if (regexTranslateTo.IsMatch(firstMessage))  //翻译为指定语言(仅限谷歌)
                     TranslateHandler.TranslateTo(regexTranslateTo, firstMessage, SendMessage);
-                return;
+                return true;
             }
             if (regexTranslateFromTo.IsMatch(firstMessage))  //从指定语言翻译为指定语言
             {
                 TranslateHandler.TranslateFromTo(regexTranslateFromTo, firstMessage, SendMessage);
-                return;
+                return true;
             }
             #endregion -- 翻译 --
 
@@ -118,12 +118,12 @@ namespace GreenOnions.BotMain
                                 if (Cache.CheckGroupLimit(senderGroup.Id, senderGroup.Group.Id))
                                 {
                                     SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureOutOfLimitReply) }, false);
-                                    return;
+                                    return true;
                                 }
                                 if (Cache.CheckGroupCD(senderGroup.Id, senderGroup.Group.Id))
                                 {
                                     SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureCDUnreadyReply) }, false);
-                                    return;
+                                    return true;
                                 }
                             }
 
@@ -143,12 +143,12 @@ namespace GreenOnions.BotMain
                             if (Cache.CheckPMLimit(senderFriend.Id))
                             {
                                 SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureOutOfLimitReply) }, false);
-                                return;
+                                return true;
                             }
                             if (Cache.CheckPMCD(senderFriend.Id))
                             {
                                 SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureCDUnreadyReply) }, false);
-                                return;
+                                return true;
                             }
 
                             if (BotInfo.EnabledHPictureSource.Count > 0)
@@ -160,7 +160,7 @@ namespace GreenOnions.BotMain
                         }
                     }
                 }
-                return;
+                return true;
             }
             #endregion -- 色图 --
 
@@ -173,7 +173,7 @@ namespace GreenOnions.BotMain
                     PictureSource pictureSource = BotInfo.EnabledBeautyPictureSource[r.Next(0, BotInfo.EnabledBeautyPictureSource.Count)];
                     HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.BeautyPictureEndCmd, false, firstMessage, SendMessage, UploadPicture);
                 }
-                return;
+                return true;
             }
             #endregion -- 美图 --
 
@@ -186,7 +186,7 @@ namespace GreenOnions.BotMain
                     string strId = firstMessage.Substring(match.Groups[0].Length);
                     await SearchPictureHandler.SendPixivOriginPictureWithIdAndP(strId, SendImage, UploadPicture, msg => SendMessage?.Invoke(msg, false));
                 }
-                return;
+                return true;
             }
             #endregion -- 下载Pixiv原图 --
 
@@ -194,7 +194,7 @@ namespace GreenOnions.BotMain
             if (regexHelp.IsMatch(firstMessage))
             {
                 HelpHandler.Helps(regexHelp, sender, firstMessage, SendMessage);
-                return;
+                return true;
             }
             #endregion -- 帮助 --
 
@@ -228,7 +228,7 @@ namespace GreenOnions.BotMain
                         }
                     }
                 }
-                return;
+                return true;
             }
             #endregion -- 查询手机号(夹带私货) --
 
@@ -244,9 +244,11 @@ namespace GreenOnions.BotMain
                 {
                     ErrorHelper.WriteErrorLogWithUserMessage("自动翻译失败", ex);
                 }
-                return;
+                return true;
             };
             #endregion -- 自动翻译 --
+
+            return false;
         }
     }
 }
