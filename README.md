@@ -32,7 +32,7 @@
 2.通过MCL安装 [mirai-api-http](https://github.com/project-mirai/mirai-api-http)<br>
 3.在MCL上运行一次 .\mcl 以确保配置文件成功创建, 随后按Ctrl+C退出
 4.拷贝 [mirai-api-http](https://github.com/project-mirai/mirai-api-http) 底下的setting.yml模板到 MCL目录\config\net.mamoe.mirai-api-http\setting.yml 文件中
-5.打开 MCL目录\config\net.mamoe.mirai-api-http\setting.yml 文件, 修改 ws: 下的 host: '127.0.0.1' port: 33111 verifyKey: Alex1911<br>
+5.打开 MCL目录\config\net.mamoe.mirai-api-http\setting.yml 文件, 修改 http和ws: 下的 host: 127.0.0.1 port: 33111 verifyKey: Alex1911<br>
 6.回到MCL窗口, 重新输入一次.\mcl 再输入\login 机器人QQ号 密码 登录<br>
 
 #### 三、安装本项目
