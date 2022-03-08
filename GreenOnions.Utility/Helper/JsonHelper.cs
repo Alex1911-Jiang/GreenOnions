@@ -39,16 +39,22 @@ namespace GreenOnions.Utility.Helper
         public static string GetSerializationValue(string jsonFileName, string group, string key)
         {
             JObject json = null;
-            if (jsonConfig == null || jsonCache == null)
-                if (File.Exists(jsonFileName))
-                    using (StreamReader file = File.OpenText(jsonFileName))
-                    using (JsonTextReader reader = new JsonTextReader(file))
-                    {
-                        if (jsonFileName == JsonConfigFileName)
+
+            if (jsonFileName == JsonConfigFileName)
+                if (jsonConfig == null)
+                    if (File.Exists(jsonFileName))
+                        using (StreamReader file = File.OpenText(jsonFileName))
+                        using (JsonTextReader reader = new JsonTextReader(file))
                             jsonConfig = (JObject)JToken.ReadFrom(reader);
-                        else if (jsonFileName == JsonCacheFileName)
-                             jsonCache = (JObject)JToken.ReadFrom(reader);
-                    }
+
+            if (jsonFileName == JsonCacheFileName)
+                if (jsonCache == null)
+                    if (File.Exists(jsonFileName))
+                        using (StreamReader file = File.OpenText(jsonFileName))
+                        using (JsonTextReader reader = new JsonTextReader(file))
+                            jsonCache = (JObject)JToken.ReadFrom(reader);
+
+
             if (jsonFileName == JsonConfigFileName)
                 json = jsonConfig;
             else if (jsonFileName == JsonCacheFileName)

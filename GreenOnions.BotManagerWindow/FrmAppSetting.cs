@@ -22,7 +22,6 @@ namespace GreenOnions.BotManagerWindow
             #region -- 通用设置 --
 
             txbBotName.Text = BotInfo.BotName;
-            chkImageCache.Checked = BotInfo.ImageCache;
 
             foreach (var item in BotInfo.AdminQQ)
             {
@@ -292,7 +291,6 @@ namespace GreenOnions.BotManagerWindow
         {
             #region -- 通用设置 --
             BotInfo.BotName = txbBotName.Text.Trim();
-            BotInfo.ImageCache = chkImageCache.Checked;
             List<long> tempAdminQQ = new List<long>();
             foreach (ListViewItem item in lstAdmins.Items)
             {
@@ -733,7 +731,11 @@ namespace GreenOnions.BotManagerWindow
         }
         #endregion -- RSS --
 
-        private void cboTranslateEngine_SelectedIndexChanged(object sender, EventArgs e) => txbTranslateTo.Enabled = cboTranslateEngine.SelectedIndex == (int)TranslateEngine.Google;
+        private void cboTranslateEngine_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txbTranslateTo.Enabled = cboTranslateEngine.SelectedIndex == (int)TranslateEngine.Google;
+            BotInfo.TranslateEngineType = (TranslateEngine)cboTranslateEngine.SelectedIndex;
+        } 
         
         private void chkRssEnabled_CheckedChanged(object sender, EventArgs e) => pnlRss.Enabled = chkRssEnabled.Checked;
 

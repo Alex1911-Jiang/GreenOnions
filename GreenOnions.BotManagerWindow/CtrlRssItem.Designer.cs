@@ -40,11 +40,11 @@
             this.lblRssRemark = new System.Windows.Forms.Label();
             this.chkRssSendByForward = new System.Windows.Forms.CheckBox();
             this.pnlTranslateFromTo = new System.Windows.Forms.Panel();
-            this.chkTranslateFromTo = new System.Windows.Forms.CheckBox();
-            this.cboTranslateFrom = new System.Windows.Forms.ComboBox();
-            this.cboTranslateTo = new System.Windows.Forms.ComboBox();
-            this.lblTranslateFrom = new System.Windows.Forms.Label();
             this.lblTranslateTo = new System.Windows.Forms.Label();
+            this.lblTranslateFrom = new System.Windows.Forms.Label();
+            this.cboTranslateTo = new System.Windows.Forms.ComboBox();
+            this.cboTranslateFrom = new System.Windows.Forms.ComboBox();
+            this.chkTranslateFromTo = new System.Windows.Forms.CheckBox();
             this.pnlTranslateFromTo.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -164,34 +164,14 @@
             this.pnlTranslateFromTo.Size = new System.Drawing.Size(389, 30);
             this.pnlTranslateFromTo.TabIndex = 9;
             // 
-            // chkTranslateFromTo
+            // lblTranslateTo
             // 
-            this.chkTranslateFromTo.AutoSize = true;
-            this.chkTranslateFromTo.Location = new System.Drawing.Point(82, 125);
-            this.chkTranslateFromTo.Name = "chkTranslateFromTo";
-            this.chkTranslateFromTo.Size = new System.Drawing.Size(99, 21);
-            this.chkTranslateFromTo.TabIndex = 10;
-            this.chkTranslateFromTo.Text = "指定翻译语言";
-            this.chkTranslateFromTo.UseVisualStyleBackColor = true;
-            this.chkTranslateFromTo.CheckedChanged += new System.EventHandler(this.chkTranslateFromTo_CheckedChanged);
-            // 
-            // cboTranslateFrom
-            // 
-            this.cboTranslateFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboTranslateFrom.FormattingEnabled = true;
-            this.cboTranslateFrom.Location = new System.Drawing.Point(41, 2);
-            this.cboTranslateFrom.Name = "cboTranslateFrom";
-            this.cboTranslateFrom.Size = new System.Drawing.Size(121, 25);
-            this.cboTranslateFrom.TabIndex = 0;
-            // 
-            // cboTranslateTo
-            // 
-            this.cboTranslateTo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboTranslateTo.FormattingEnabled = true;
-            this.cboTranslateTo.Location = new System.Drawing.Point(201, 2);
-            this.cboTranslateTo.Name = "cboTranslateTo";
-            this.cboTranslateTo.Size = new System.Drawing.Size(121, 25);
-            this.cboTranslateTo.TabIndex = 0;
+            this.lblTranslateTo.AutoSize = true;
+            this.lblTranslateTo.Location = new System.Drawing.Point(172, 5);
+            this.lblTranslateTo.Name = "lblTranslateTo";
+            this.lblTranslateTo.Size = new System.Drawing.Size(23, 17);
+            this.lblTranslateTo.TabIndex = 2;
+            this.lblTranslateTo.Text = "到:";
             // 
             // lblTranslateFrom
             // 
@@ -202,14 +182,35 @@
             this.lblTranslateFrom.TabIndex = 1;
             this.lblTranslateFrom.Text = "从:";
             // 
-            // lblTranslateTo
+            // cboTranslateTo
             // 
-            this.lblTranslateTo.AutoSize = true;
-            this.lblTranslateTo.Location = new System.Drawing.Point(172, 5);
-            this.lblTranslateTo.Name = "lblTranslateTo";
-            this.lblTranslateTo.Size = new System.Drawing.Size(23, 17);
-            this.lblTranslateTo.TabIndex = 2;
-            this.lblTranslateTo.Text = "到:";
+            this.cboTranslateTo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboTranslateTo.FormattingEnabled = true;
+            this.cboTranslateTo.Location = new System.Drawing.Point(201, 2);
+            this.cboTranslateTo.Name = "cboTranslateTo";
+            this.cboTranslateTo.Size = new System.Drawing.Size(121, 25);
+            this.cboTranslateTo.TabIndex = 0;
+            // 
+            // cboTranslateFrom
+            // 
+            this.cboTranslateFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboTranslateFrom.FormattingEnabled = true;
+            this.cboTranslateFrom.Location = new System.Drawing.Point(41, 2);
+            this.cboTranslateFrom.Name = "cboTranslateFrom";
+            this.cboTranslateFrom.Size = new System.Drawing.Size(121, 25);
+            this.cboTranslateFrom.TabIndex = 0;
+            // 
+            // chkTranslateFromTo
+            // 
+            this.chkTranslateFromTo.AutoSize = true;
+            this.chkTranslateFromTo.Enabled = false;
+            this.chkTranslateFromTo.Location = new System.Drawing.Point(82, 125);
+            this.chkTranslateFromTo.Name = "chkTranslateFromTo";
+            this.chkTranslateFromTo.Size = new System.Drawing.Size(99, 21);
+            this.chkTranslateFromTo.TabIndex = 10;
+            this.chkTranslateFromTo.Text = "指定翻译语言";
+            this.chkTranslateFromTo.UseVisualStyleBackColor = true;
+            this.chkTranslateFromTo.CheckedChanged += new System.EventHandler(this.chkTranslateFromTo_CheckedChanged);
             // 
             // CtrlRssItem
             // 

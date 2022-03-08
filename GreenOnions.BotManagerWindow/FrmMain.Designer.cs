@@ -87,7 +87,6 @@ namespace GreenOnions.BotManagerWindow
             this.txbQQ.Name = "txbQQ";
             this.txbQQ.Size = new System.Drawing.Size(275, 23);
             this.txbQQ.TabIndex = 1;
-            this.txbQQ.Text = "3246934384";
             // 
             // txbIP
             // 
@@ -111,7 +110,6 @@ namespace GreenOnions.BotManagerWindow
             this.txbVerifyKey.Name = "txbVerifyKey";
             this.txbVerifyKey.Size = new System.Drawing.Size(275, 23);
             this.txbVerifyKey.TabIndex = 1;
-            this.txbVerifyKey.Text = "Alex1911";
             // 
             // btnConnect
             // 

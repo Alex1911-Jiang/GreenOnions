@@ -60,7 +60,7 @@ namespace GreenOnions.Utility.Helper
         {
             try
             {
-                File.AppendAllTextAsync("error.log", text + $"    异常发生时间:{DateTime.Now}\r\n\r\n");
+                File.AppendAllText("error.log", text + $"    异常发生时间:{DateTime.Now}\r\n\r\n");
             }
             catch
             {

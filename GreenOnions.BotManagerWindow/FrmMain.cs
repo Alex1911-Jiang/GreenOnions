@@ -64,6 +64,12 @@ namespace GreenOnions.BotManagerWindow
 						btnConnect.Text = "断开连接";
 						btnConnect.Click -= btnConnect_Click;
 						btnConnect.Click += btnDeconnect_Click;
+
+						BotInfo.QQId = qqId;
+						BotInfo.IP = ip;
+						BotInfo.Port = port.ToString();
+						BotInfo.VerifyKey = verifyKey;
+						JsonHelper.SaveConfigFile();
 					}
 					else if (nickNameOrErrorMessage == null)  //连接失败且没有异常
 					{

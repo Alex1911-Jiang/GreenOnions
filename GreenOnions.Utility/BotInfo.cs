@@ -68,20 +68,6 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否启用图片缓存
-        /// </summary>
-        public static bool ImageCache
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(ImageCache));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(ImageCache), value.ToString());
-        }
-
-        /// <summary>
         /// 黑名单组
         /// </summary>
         public static IEnumerable<long> BannedGroup
@@ -192,7 +178,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(DebugReplyAdminOnly), value.ToString());
         }
-        
+
         /// <summary>
         /// 允许Windows系统使用浏览器执行Http请求
         /// </summary>
@@ -407,7 +393,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold), value.ToString());
         }
-        
+
         /// <summary>
         /// 相似度低于阈值返回消息
         /// </summary>
@@ -476,7 +462,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(ASCII2DRequestByWebBrowser), value.ToString());
         }
-        
+
         /// <summary>
         /// 超过鉴黄次数的行为 0:既发送地址也发图 1:只发送地址不发图 2:发送地址且追加回复
         /// </summary>
@@ -490,7 +476,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitEvent), value.ToString());
         }
-        
+
         /// <summary>
         /// 超过鉴黄次数时追加的回复语
         /// </summary>
@@ -499,7 +485,7 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitReply)) ?? "今日AI鉴黄次数已耗尽，缩略图不予显示。";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitReply), value);
         }
-        
+
         /// <summary>
         /// 未启用鉴黄时的行为 0:发图 1:不发图
         /// </summary>
@@ -738,7 +724,7 @@ namespace GreenOnions.Utility
                 HPictureEnd = $"({HPictureEnd})?";
             }
 
-            return $"^<机器人名称>{GetPictureCmdInner()}{HPictureEnd}$";
+            return $"^{GetPictureCmdInner()}{HPictureEnd}$";
         }
 
         private static string GetBeautyPictureCmd()
@@ -749,7 +735,7 @@ namespace GreenOnions.Utility
                 BeautyPictureEnd = $"({BeautyPictureEnd})?";
             }
 
-            return $"^<机器人名称>{GetPictureCmdInner()}{BeautyPictureEnd}$";
+            return $"^{GetPictureCmdInner()}{BeautyPictureEnd}$";
         }
 
         private static string GetPictureCmdInner()
@@ -1629,7 +1615,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(ForgeMessageAppendBotMessageEnabled), value.ToString());
         }
-        
+
         /// <summary>
         /// 是否只允许机器人管理员使用伪造消息功能
         /// </summary>
@@ -1643,7 +1629,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(ForgeMessageAdminOnly), value.ToString());
         }
-        
+
         /// <summary>
         /// 机器人管理员使用伪造消息功能时是否不在末端追加消息
         /// </summary>
@@ -1756,7 +1742,7 @@ namespace GreenOnions.Utility
                 if (strValue == null) return null;
                 return JsonConvert.DeserializeObject<IEnumerable<RssSubscriptionItem>>(strValue);
             }
-            set 
+            set
             {
                 JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(RssSubscription), JsonConvert.SerializeObject(value));
             }

@@ -58,7 +58,7 @@ namespace GreenOnions.PictureSearcher
             {
                 Cache.SearchingPicturesUsers.Add(qqId, DateTime.Now.AddMinutes(1));
                 SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags()) }, false);
-                Cache.CheckSearchPictureTime(qqId, () =>
+                Cache.SetWorkingTimeout(qqId, Cache.SearchingPicturesUsers, () =>
                 {
                     SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsTags()) }, false);
                 });
@@ -80,7 +80,7 @@ namespace GreenOnions.PictureSearcher
 
         public static async Task SearchPicture(IImageMessage inImgMsg, Func<Stream, Task<IImageMessage>> UploadPicture, Action<IChatMessage[]> SendMessage, Func<string[], Task<string[]>> SendImage)
         {
-            string qqImgUrl = inImgMsg.Url.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
+            string qqImgUrl = ImageHelper.ReplaceGroupUrl(inImgMsg.Url);
             try
             {
                 if (BotInfo.SearchEnabledTraceMoe)
@@ -131,7 +131,7 @@ namespace GreenOnions.PictureSearcher
                             string previewURL = jResults[0]["image"].ToString() + $"&size={previewSize}";
                             string imgName = Path.Combine(ImageHelper.ImagePath, $"TraceMoe_{id}_{previewSize}.png");
 
-                            _ = Task.Run(() =>
+                            _ = Task.Run(async () =>
                             {
                                 try
                                 {
@@ -164,12 +164,12 @@ namespace GreenOnions.PictureSearcher
                                         //鉴黄通过或不鉴黄也发图
                                         if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                                         {
-                                            MemoryStream stream = HttpHelper.DownloadImageAsMemoryStream(previewURL, imgName);
+                                            MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStream(previewURL);
                                             if (stream != null)
                                             {
                                                 IChatMessage moeCheckPorn = CheckPornSearch(imgName, stream.ToArray());
                                                 if (moeCheckPorn == null)  //只有鉴黄通过才发图
-                                                    UploadPicture(stream).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
+                                                    await UploadPicture(stream).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }));
                                                 stream.Dispose();
                                             }
                                         }
@@ -362,7 +362,7 @@ namespace GreenOnions.PictureSearcher
                             //鉴黄通过或不鉴黄也发图
                             if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图的话只需要维持IImageMessage为空
                             {
-                                stream = HttpHelper.DownloadImageAsMemoryStream(sauceNaoItem.thumbnail, cacheImageName);
+                                stream = await HttpHelper.DownloadImageAsMemoryStream(sauceNaoItem.thumbnail);
                                 if (stream != null)
                                 {
                                     if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
@@ -437,11 +437,14 @@ namespace GreenOnions.PictureSearcher
                         try
                         {
                             string[] imgIds = await SendImage(new[] { url });
+
+                            //下载图片并发送
                             //SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imgIds.First(), null, null) });
+
                             string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{pixivID}_p{p}.png");
-                            if (BotInfo.ImageCache && File.Exists(imgName) && new FileInfo(imgName).Length > 0)
+                            if (!File.Exists(imgName) || new FileInfo(imgName).Length == 0)
                             {
-                                _ = Task.Run(() => HttpHelper.DownloadImageAsMemoryStream(url, imgName));  //仅下载
+                                _ = Task.Run(() => HttpHelper.DownloadImageFile(url, imgName));  //仅下载
                             }
                         }
                         catch (Exception ex)
@@ -543,7 +546,7 @@ namespace GreenOnions.PictureSearcher
                             string thuColorImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}.png");
                             if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)
                             {
-                                streamColorImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value, thuColorImgCache);
+                                streamColorImage = await HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value);
                                 if (streamColorImage != null)
                                 {
                                     if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
@@ -628,7 +631,7 @@ namespace GreenOnions.PictureSearcher
                                 string thuBovwImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeBovwHash.InnerHtml}.png");
                                 if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)
                                 {
-                                    streamBovwImage = HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeBovwImage.Attributes["src"].Value, thuBovwImgCache);
+                                    streamBovwImage = await HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeBovwImage.Attributes["src"].Value);
                                     if (streamBovwImage != null)
                                     {
                                         if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
@@ -695,7 +698,7 @@ namespace GreenOnions.PictureSearcher
             {
                 string url = $"https://pixiv.re/{id}{index}.png";
                 string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}.png");
-                MemoryStream imageMs = HttpHelper.DownloadImageAsMemoryStream(url, imgName);
+                MemoryStream imageMs = await HttpHelper.DownloadImageAsMemoryStream(url);
                 MemoryStream ms = new MemoryStream(imageMs.ToArray());
                 imageMs.Dispose();
                 IImageMessage imgMsg = await UploadPicture(ms);

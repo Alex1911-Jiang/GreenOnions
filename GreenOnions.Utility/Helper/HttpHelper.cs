@@ -242,66 +242,78 @@ namespace GreenOnions.Utility.Helper
         }
         #endregion -- Https请求 --
 
-        public static byte[] DownloadImageData(string url)
-        {
-            WebClient webClient = new WebClient();
-            byte[] bytes = webClient.DownloadData(url);
-            return bytes;
-        }
-
-        public static byte[] DownloadImageFile(string url, string cacheImageName)
-        {
-            string cacheDir = Path.GetDirectoryName(cacheImageName);
-            if (!Directory.Exists(cacheDir))
-                Directory.CreateDirectory(cacheDir);
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile(url, cacheImageName);
-            byte[] bytes = File.ReadAllBytes(cacheImageName);
-            if (!BotInfo.ImageCache)
-                File.Delete(cacheImageName);
-            return bytes;
-        }
-
-        public static MemoryStream DownloadImageAsMemoryStream(string url, string cacheImageName = null)
+        public static async Task<byte[]> DownloadImageAsBytes(string url)
         {
             bool retry = true;
-            byte[] imageByte;
-        ILRetry:;
-            try
+        IL_Retry:;
+            using (HttpClient httpClient = new HttpClient())
             {
-                if (string.IsNullOrEmpty(cacheImageName) || !BotInfo.ImageCache)
+                try
                 {
-                    imageByte = DownloadImageData(url);
+                    var t = await httpClient.GetAsync(url);
+                    byte[] bytes = await t.Content.ReadAsByteArrayAsync();
+                    return bytes;
                 }
-                else
+                catch (Exception ex)
                 {
-                    if (BotInfo.EnabledAccelerate)
-                        imageByte = DownloadImageFile(BotInfo.AccelerateUrl + url, cacheImageName);
-                    else
-                        imageByte = DownloadImageFile(url, cacheImageName);
+                    if (retry)
+                    {
+                        retry = false;
+                        goto IL_Retry;
+                    }
+                    return null;
                 }
+            }
+        }
 
-                MemoryStream ms = new MemoryStream(imageByte);
-                return ms;
-            }
-            catch (WebException ex)
+        public static async Task<MemoryStream> DownloadImageAsMemoryStream(string url)
+        {
+            bool retry = true;
+        IL_Retry:;
+            using (HttpClient httpClient = new HttpClient())
             {
-                if (ex.Status == WebExceptionStatus.ProtocolError)  //404
+                try
                 {
-                    retry = false;
+                    var t = await httpClient.GetAsync(url);
+                    byte[] bytes = await t.Content.ReadAsByteArrayAsync();
+                    MemoryStream ms = new MemoryStream(bytes);
+                    if (ms.Length == 0)
+                    {
+                        if (retry)
+                        {
+                            retry = false;
+                            goto IL_Retry;
+                        }
+                        else
+                        {
+                            ms.Dispose();
+                            ms = null;
+                        }
+                    }
+                    return ms;
                 }
-                if (retry)  //ex.Status == WebExceptionStatus.Timeout
+                catch (Exception ex)
                 {
-                    retry = false;
-                    goto ILRetry;
+                    if (retry)
+                    {
+                        retry = false;
+                        goto IL_Retry;
+                    }
+                    return null;
                 }
-                ErrorHelper.WriteErrorLog(ex);
             }
-            catch (Exception ex)  //下载图片失败
+        }
+
+        public static void DownloadImageFile(string url, string fileName)
+        {
+            string cacheDir = Path.GetDirectoryName(fileName);
+            if (!Directory.Exists(cacheDir))
+                Directory.CreateDirectory(cacheDir);
+            using (WebClient webClient = new WebClient())
             {
-                ErrorHelper.WriteErrorLog(ex);
+                webClient.DownloadFile(url, fileName);
+                webClient.Dispose();
             }
-            return null;
         }
     }
 }

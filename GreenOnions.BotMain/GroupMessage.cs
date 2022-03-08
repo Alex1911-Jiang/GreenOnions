@@ -62,6 +62,7 @@ namespace GreenOnions.BotMain
                                     #region -- @搜图 --
                                     if (e.Chain[i].Type == "Image")
                                     {
+                                        ErrorHelper.WriteMessage($"触发了@搜图, 消息原句为:{string.Join(",", e.Chain.Select(c=>c.ToString()))}");
                                         ImageMessage imgMsg = e.Chain[i] as ImageMessage;
                                         await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id), urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));
                                     }

@@ -88,7 +88,7 @@ namespace GreenOnions.Repeater
             {
                 messageItem.IsRepeated = true;
                 IImageMessage imageMessage = message as IImageMessage;
-                MemoryStream ms = MirrorImage(imageMessage.Url, imageMessage.ImageId);
+                MemoryStream ms = await MirrorImage(ImageHelper.ReplaceGroupUrl(imageMessage.Url), imageMessage.ImageId);
                 if (ms == null)
                     return new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(imageMessage.ImageId, null, null);
                 else
@@ -102,7 +102,7 @@ namespace GreenOnions.Repeater
             return null;
         }
 
-        private static MemoryStream MirrorImage(string url, string imageId)
+        private static async Task<MemoryStream> MirrorImage(string url, string imageId)
         {
             bool bRewind = false;
             bool bHorizontalMirror = false;
@@ -119,8 +119,7 @@ namespace GreenOnions.Repeater
             
             if (bRewind || bHorizontalMirror || bVerticalMirror)
             {
-                string imgName = Path.Combine(ImageHelper.ImagePath, $"复读图片{imageId}");
-                MemoryStream ms = HttpHelper.DownloadImageAsMemoryStream(url, imgName);
+                MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStream(url);
 
                 //倒放和镜像不会同时发生且倒放优先级高于镜像, 但水平镜像和垂直镜像可能同时发生
                 if (bRewind)

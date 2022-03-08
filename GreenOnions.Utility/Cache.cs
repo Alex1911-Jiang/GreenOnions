@@ -63,13 +63,7 @@ namespace GreenOnions.Utility
                     }
                     Task.Delay(1000 * 450).Wait();
 
-                    List<long> removeQQ = new List<long>();   //顺便检查正在搜图的人超时没有
-                    foreach (KeyValuePair<long, DateTime> SearchingPicturesUser in SearchingPicturesUsers)
-                        if (DateTime.Now > SearchingPicturesUser.Value.AddMinutes(1))
-                            removeQQ.Add(SearchingPicturesUser.Key);
-                    if (removeQQ.Count > 0)
-                    for (int i = 0; i < removeQQ.Count; i++)
-                        SearchingPicturesUsers.Remove(removeQQ[i]);
+                    CheckWorkingTimeout(SearchingPicturesUsers);   //顺便检查正在搜图的人超时了没有
                 }
             });
             Task.Run(() =>
@@ -86,6 +80,16 @@ namespace GreenOnions.Utility
             });
         }
 
+        private static void CheckWorkingTimeout(IDictionary<long, DateTime> source)
+        {
+            List<long> removeQQ = new List<long>();
+            foreach (KeyValuePair<long, DateTime> SearchingPicturesUser in source)
+                if (DateTime.Now > SearchingPicturesUser.Value.AddMinutes(1))
+                    removeQQ.Add(SearchingPicturesUser.Key);
+            for (int i = 0; i < removeQQ.Count; i++)
+                source.Remove(removeQQ[i]);
+        }
+
         public static int CheckPornCounting
         {
             get
@@ -97,18 +101,19 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonCacheFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornCounting), value.ToString());
         }
 
-        public static void CheckSearchPictureTime(long qqId, Action SendTimeOutMessage)
+        public static void SetWorkingTimeout(long qqId, IDictionary<long, DateTime> source, Action SendTimeOutMessage)
         {
             Task.Run(() =>
             {
-                while (SearchingPicturesUsers.ContainsKey(qqId))
+                while (source.ContainsKey(qqId))
                 {
-                    if (SearchingPicturesUsers[qqId] > DateTime.Now)
+                    if (source[qqId] > DateTime.Now)
                         Task.Delay(1000).Wait();
                     else
                     {
-                        SearchingPicturesUsers.Remove(qqId);
+                        source.Remove(qqId);
                         SendTimeOutMessage();
+                        break;
                     }
                 }
             });

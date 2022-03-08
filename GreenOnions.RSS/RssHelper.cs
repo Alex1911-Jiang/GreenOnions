@@ -65,7 +65,7 @@ namespace GreenOnions.RSS
                                         {
                                             imgList = new List<MemoryStream>();
                                             for (int i = 0; i < rss.imgsSrc.Length; i++)
-                                                imgList.Add(HttpHelper.DownloadImageAsMemoryStream(rss.imgsSrc[i]));
+                                                imgList.Add(await HttpHelper.DownloadImageAsMemoryStream(rss.imgsSrc[i]));
                                         }
 
                                         if (item.ForwardGroups.Length > 0 )

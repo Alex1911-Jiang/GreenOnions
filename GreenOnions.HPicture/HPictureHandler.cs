@@ -243,7 +243,7 @@ namespace GreenOnions.HPicture
                     }
                     else
                     {
-                        MemoryStream ms = HttpHelper.DownloadImageAsMemoryStream(item.URL, imgName);
+                        MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStream(item.URL);
 
                         if (ms != null)
                         {
@@ -279,7 +279,7 @@ namespace GreenOnions.HPicture
                         }
                         else
                         {
-                            MemoryStream ms = HttpHelper.DownloadImageAsMemoryStream(item.Link, imgName);
+                            MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStream(item.Link);
 
                             if (BotInfo.HPictureAntiShielding)
                             {

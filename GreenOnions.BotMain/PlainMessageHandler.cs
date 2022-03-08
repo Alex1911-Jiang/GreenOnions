@@ -8,10 +8,8 @@ using GreenOnions.Utility.Helper;
 using Mirai.CSharp.Models;
 using Mirai.CSharp.Models.ChatMessages;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -35,7 +33,7 @@ namespace GreenOnions.BotMain
         {
             regexDownloadPixivOriginPicture = new Regex($"{BotInfo.BotName}下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]");
             regexHelp = new Regex($"{BotInfo.BotName}帮助");
-            regexSelectPhone = new Regex($"({BotInfo.BotName}查询手机号[:：])");
+            regexSelectPhone = new Regex($"{BotInfo.BotName}查询手机号[:：]");
             UpdateRegexs();
         }
 

@@ -27,6 +27,11 @@ namespace GreenOnions.Utility.Helper
             _imagePath = Path.Combine(Environment.CurrentDirectory, "Image");
         }
 
+        public static string ReplaceGroupUrl(string groupUrl)
+        {
+            return groupUrl.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
+        }
+
         public static MemoryStream StreamAntiShielding(this MemoryStream ms)
         {
             Bitmap bmp = new Bitmap(ms);
@@ -55,107 +60,125 @@ namespace GreenOnions.Utility.Helper
 
         private static MemoryStream MirrorImageStream(this MemoryStream ms, MirrorImageDirection mirrorImageDirection )
         {
-            Image img = Image.FromStream(ms);
-            if (img.RawFormat == ImageFormat.Gif || String.Equals(img.RawFormat.ToString(), "Gif", StringComparison.CurrentCultureIgnoreCase))
+            using (Bitmap img = new Bitmap(ms))
             {
-                string tempGifFileName = ImagePath + "翻转.gif";
-                Bitmap gif = new Bitmap(img.Width, img.Height);
-                Bitmap frame = new Bitmap(img.Width, img.Height);
-                Graphics g = Graphics.FromImage(gif);
-                Rectangle rg = new Rectangle(0, 0, img.Width, img.Height);
-                Graphics gFrame = Graphics.FromImage(frame);
-
-                switch (mirrorImageDirection)
+                if (img.RawFormat == ImageFormat.Gif || String.Equals(img.RawFormat.ToString(), "Gif", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    case MirrorImageDirection.Horizontal:
-                        g.TranslateTransform(img.Width, 0);
-                        g.ScaleTransform(-1, 1);
-                        gFrame.TranslateTransform(img.Width, 0);
-                        gFrame.ScaleTransform(-1, 1);
-                        break;
-                    case MirrorImageDirection.Vertical:
-                        g.TranslateTransform(0, img.Height);
-                        g.ScaleTransform(1, -1);
-                        gFrame.TranslateTransform(0, img.Height);
-                        gFrame.ScaleTransform(1, -1);
-                        break;
-                }
+                    string tempGifFileName = Path.Combine(ImagePath, "倒放.gif");
+                    Bitmap gif = new Bitmap(img.Width, img.Height);
+                    Bitmap frame = new Bitmap(img.Width, img.Height);
+                    Graphics g = Graphics.FromImage(gif);
+                    Rectangle rg = new Rectangle(0, 0, img.Width, img.Height);
+                    Graphics gFrame = Graphics.FromImage(frame);
 
-                foreach (Guid gd in img.FrameDimensionsList)
-                {
-                    int count = img.GetFrameCount(new FrameDimension(gd));
-                    ImageCodecInfo codecInfo = GetEncoder(ImageFormat.Gif);
-                    Encoder encoder = Encoder.SaveFlag;
-                    EncoderParameters eps;
-
-                    bool firstFrame = true;
-
-                    if (mirrorImageDirection == MirrorImageDirection.Time)
+                    switch (mirrorImageDirection)
                     {
-                        for (int i = count - 1; i >= 0; i--)
-                        {
-                            SetFrameToGif(i);
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i < count; i++)
-                        {
-                            SetFrameToGif(i);
-                        }
+                        case MirrorImageDirection.Horizontal:
+                            g.TranslateTransform(img.Width, 0);
+                            g.ScaleTransform(-1, 1);
+                            gFrame.TranslateTransform(img.Width, 0);
+                            gFrame.ScaleTransform(-1, 1);
+                            break;
+                        case MirrorImageDirection.Vertical:
+                            g.TranslateTransform(0, img.Height);
+                            g.ScaleTransform(1, -1);
+                            gFrame.TranslateTransform(0, img.Height);
+                            gFrame.ScaleTransform(1, -1);
+                            break;
                     }
 
-                    void SetFrameToGif(int frameId)
+                    foreach (Guid gd in img.FrameDimensionsList)
                     {
-                        img.SelectActiveFrame(FrameDimension.Time, frameId);
-                        if (firstFrame)
+                        int count = img.GetFrameCount(new FrameDimension(gd));
+                        ImageCodecInfo codecInfo = GetEncoder(ImageFormat.Gif);
+                        Encoder encoder = Encoder.SaveFlag;
+                        EncoderParameters eps;
+
+                        bool firstFrame = true;
+
+                        if (mirrorImageDirection == MirrorImageDirection.Time)
                         {
-                            g.Clear(Color.White);
-
-                            g.DrawImage(img, rg);
-                            eps = new EncoderParameters(1);
-                            eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.MultiFrame);
-                            BindProperty(img, gif);
-                            gif.Save(tempGifFileName, codecInfo, eps);
-
-                            firstFrame = false;
+                            for (int i = count - 1; i >= 0; i--)
+                            {
+                                SetFrameToGif(i);
+                            }
                         }
                         else
                         {
-                            gFrame.Clear(Color.White);
-
-                            gFrame.DrawImage(img, rg);
-
-                            eps = new EncoderParameters(1);
-                            eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.FrameDimensionTime);
-                            BindProperty(img, frame);
-                            gif.SaveAdd(frame, eps);
+                            for (int i = 0; i < count; i++)
+                            {
+                                SetFrameToGif(i);
+                            }
                         }
-                    }
 
-                    eps = new EncoderParameters(1);
-                    eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.Flush);
-                    gif.SaveAdd(eps);
+                        void SetFrameToGif(int frameId)
+                        {
+                            img.SelectActiveFrame(FrameDimension.Time, frameId);
+                            if (firstFrame)
+                            {
+                                g.Clear(Color.White);
+
+                                g.DrawImage(img, rg);
+                                eps = new EncoderParameters(1);
+                                eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.MultiFrame);
+                                BindProperty(img, gif);
+                                gif.Save(tempGifFileName, codecInfo, eps);
+
+                                firstFrame = false;
+                            }
+                            else
+                            {
+                                gFrame.Clear(Color.White);
+
+                                gFrame.DrawImage(img, rg);
+
+                                eps = new EncoderParameters(1);
+                                eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.FrameDimensionTime);
+                                BindProperty(img, frame);
+                                gif.SaveAdd(frame, eps);
+                            }
+                        }
+
+                        eps = new EncoderParameters(1);
+                        eps.Param[0] = new EncoderParameter(encoder, (long)EncoderValue.Flush);
+                        gif.SaveAdd(eps);
+                    }
+                    MemoryStream result = new MemoryStream(File.ReadAllBytes(tempGifFileName));
+                    File.Delete(tempGifFileName);
+                    ms.Dispose();
+                    return result;
                 }
-                ms.Dispose();
-                ms = new MemoryStream(File.ReadAllBytes(tempGifFileName));
-            }
-            else
-            {
-                switch (mirrorImageDirection)
+                else
                 {
-                    case MirrorImageDirection.Horizontal:
-                        img.HorizontalFlip();
-                        break;
-                    case MirrorImageDirection.Vertical:
-                        img.VerticalFlip();
-                        break;
+                    bool bHorizontalMirror = false;
+                    bool bVerticalMirror = false;
+                    if (BotInfo.HorizontalMirrorImageEnabled)
+                        bHorizontalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.HorizontalMirrorImageProbability;
+
+                    if (bHorizontalMirror)
+                        mirrorImageDirection = MirrorImageDirection.Horizontal;
+
+                    if (BotInfo.VerticalMirrorImageEnabled)
+                        bVerticalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.VerticalMirrorImageProbability;
+
+                    if (bVerticalMirror)
+                        mirrorImageDirection = MirrorImageDirection.Vertical;
+
+                    switch (mirrorImageDirection)
+                    {
+                        case MirrorImageDirection.Horizontal:
+                            img.HorizontalFlip();
+                            break;
+                        case MirrorImageDirection.Vertical:
+                            img.VerticalFlip();
+                            break;
+                    }
+                    MemoryStream result = ms = new MemoryStream();
+                    img.Save(ms, ImageFormat.Png);
+                    ms.Dispose();
+                    return result;
                 }
-                ms.Dispose();
-                ms = new MemoryStream();
-                img.Save(ms, ImageFormat.Png);
             }
-            return ms;
         }
 
         private static void BindProperty(Image originImage, Image copyImage)
