@@ -298,7 +298,8 @@ namespace GreenOnions.BotManagerWindow
             txbTicTacToeBotWinReply.Text = BotInfo.TicTacToeBotWinReply;
             txbTicTacToeDrawReply.Text = BotInfo.TicTacToeDrawReply;
             txbTicTacToeNoMoveReply.Text = BotInfo.TicTacToeNoMoveReply;
-            txbTicTacToeIllegalReply.Text = BotInfo.TicTacToeIllegalReply;
+            txbTicTacToeIllegalMoveReply.Text = BotInfo.TicTacToeIllegalMoveReply;
+            txbTicTacToeMoveFailReply.Text = BotInfo.TicTacToeMoveFailReply;
             foreach (CheckBox moveMode in pnlTicTacToeMoveMode.Controls.OfType<CheckBox>())
                 moveMode.Checked = (BotInfo.TicTacToeMoveMode & Convert.ToInt32(moveMode.Tag)) != 0;
             #endregion -- 井字棋 --
@@ -561,7 +562,8 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.TicTacToeDrawReply = txbTicTacToeDrawReply.Text;
 
             BotInfo.TicTacToeNoMoveReply = txbTicTacToeNoMoveReply.Text;
-            BotInfo.TicTacToeIllegalReply = txbTicTacToeIllegalReply.Text;
+            BotInfo.TicTacToeIllegalMoveReply = txbTicTacToeIllegalMoveReply.Text;
+            BotInfo.TicTacToeMoveFailReply = txbTicTacToeMoveFailReply.Text;
             BotInfo.TicTacToeMoveMode = 0;
             foreach (CheckBox moveMode in pnlTicTacToeMoveMode.Controls.OfType<CheckBox>())
             {

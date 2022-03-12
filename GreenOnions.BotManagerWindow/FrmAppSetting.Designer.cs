@@ -144,24 +144,6 @@
             this.rdoOriginPictureCheckPornReply = new System.Windows.Forms.RadioButton();
             this.lblOriginPictureCheckPornEvent = new System.Windows.Forms.Label();
             this.chkOriginPictureEnabled = new System.Windows.Forms.CheckBox();
-            this.pageTranslate = new System.Windows.Forms.TabPage();
-            this.pnlTranslate = new System.Windows.Forms.Panel();
-            this.txbTranslateFromToCMD = new System.Windows.Forms.TextBox();
-            this.lblTranslateFromTo = new System.Windows.Forms.Label();
-            this.lblTranslateEngineHelp = new System.Windows.Forms.Label();
-            this.cboTranslateEngine = new System.Windows.Forms.ComboBox();
-            this.lblTranslateEngine = new System.Windows.Forms.Label();
-            this.txbAddAutoTranslateGroupMemoryQQ = new System.Windows.Forms.TextBox();
-            this.btnRemoveAutoTranslateGroupMemoryQQ = new System.Windows.Forms.Button();
-            this.btnAddAutoTranslateGroupMemoryQQ = new System.Windows.Forms.Button();
-            this.lstAutoTranslateGroupMemoriesQQ = new System.Windows.Forms.ListView();
-            this.lblAddAutoTranslateGroupMemoryQQ = new System.Windows.Forms.Label();
-            this.lblAutoTranslateGroupMemoriesQQ = new System.Windows.Forms.Label();
-            this.txbTranslateTo = new System.Windows.Forms.TextBox();
-            this.txbTranslateToChinese = new System.Windows.Forms.TextBox();
-            this.lblTranslateTo = new System.Windows.Forms.Label();
-            this.lblTranslateToChinese = new System.Windows.Forms.Label();
-            this.chkTranslateEnabled = new System.Windows.Forms.CheckBox();
             this.pageHPicture = new System.Windows.Forms.TabPage();
             this.pnlEnabelHPicture = new System.Windows.Forms.Panel();
             this.lblHPictureOnceMessageMaxImageCountHelp = new System.Windows.Forms.Label();
@@ -258,6 +240,24 @@
             this.txbHPictureR18 = new System.Windows.Forms.TextBox();
             this.txbHPictureUnit = new System.Windows.Forms.TextBox();
             this.chkEnabledHPicture = new System.Windows.Forms.CheckBox();
+            this.pageTranslate = new System.Windows.Forms.TabPage();
+            this.pnlTranslate = new System.Windows.Forms.Panel();
+            this.txbTranslateFromToCMD = new System.Windows.Forms.TextBox();
+            this.lblTranslateFromTo = new System.Windows.Forms.Label();
+            this.lblTranslateEngineHelp = new System.Windows.Forms.Label();
+            this.cboTranslateEngine = new System.Windows.Forms.ComboBox();
+            this.lblTranslateEngine = new System.Windows.Forms.Label();
+            this.txbAddAutoTranslateGroupMemoryQQ = new System.Windows.Forms.TextBox();
+            this.btnRemoveAutoTranslateGroupMemoryQQ = new System.Windows.Forms.Button();
+            this.btnAddAutoTranslateGroupMemoryQQ = new System.Windows.Forms.Button();
+            this.lstAutoTranslateGroupMemoriesQQ = new System.Windows.Forms.ListView();
+            this.lblAddAutoTranslateGroupMemoryQQ = new System.Windows.Forms.Label();
+            this.lblAutoTranslateGroupMemoriesQQ = new System.Windows.Forms.Label();
+            this.txbTranslateTo = new System.Windows.Forms.TextBox();
+            this.txbTranslateToChinese = new System.Windows.Forms.TextBox();
+            this.lblTranslateTo = new System.Windows.Forms.Label();
+            this.lblTranslateToChinese = new System.Windows.Forms.Label();
+            this.chkTranslateEnabled = new System.Windows.Forms.CheckBox();
             this.pageRepeater = new System.Windows.Forms.TabPage();
             this.chkReplaceMeToYou = new System.Windows.Forms.CheckBox();
             this.chkRewindGif = new System.Windows.Forms.CheckBox();
@@ -313,8 +313,8 @@
             this.pnlTicTacToe = new System.Windows.Forms.Panel();
             this.lblChessboard = new System.Windows.Forms.Label();
             this.imgChessboard = new System.Windows.Forms.Panel();
-            this.lblTicTacToeIllegalReply = new System.Windows.Forms.Label();
-            this.txbTicTacToeIllegalReply = new System.Windows.Forms.TextBox();
+            this.lblTicTacToeIllegalMoveReply = new System.Windows.Forms.Label();
+            this.txbTicTacToeIllegalMoveReply = new System.Windows.Forms.TextBox();
             this.lblTicTacToeNoMoveReply = new System.Windows.Forms.Label();
             this.txbTicTacToeNoMoveReply = new System.Windows.Forms.TextBox();
             this.lblTicTacToeDrawReply = new System.Windows.Forms.Label();
@@ -351,6 +351,8 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
+            this.lblTicTacToeMoveFailReply = new System.Windows.Forms.Label();
+            this.txbTicTacToeMoveFailReply = new System.Windows.Forms.TextBox();
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -365,10 +367,10 @@
             this.pnlOriginPictureCheckPorn.SuspendLayout();
             this.pnlOriginPictureCheckPornMessage.SuspendLayout();
             this.pnlOriginPictureCheckPornEvent.SuspendLayout();
-            this.pageTranslate.SuspendLayout();
-            this.pnlTranslate.SuspendLayout();
             this.pageHPicture.SuspendLayout();
             this.pnlEnabelHPicture.SuspendLayout();
+            this.pageTranslate.SuspendLayout();
+            this.pnlTranslate.SuspendLayout();
             this.pageRepeater.SuspendLayout();
             this.pageGroupMemberEvents.SuspendLayout();
             this.pageForgeMessage.SuspendLayout();
@@ -1022,7 +1024,7 @@
             this.pnlNoCheckPorn.Enabled = false;
             this.pnlNoCheckPorn.Location = new System.Drawing.Point(3, 674);
             this.pnlNoCheckPorn.Name = "pnlNoCheckPorn";
-            this.pnlNoCheckPorn.Size = new System.Drawing.Size(480, 29);
+            this.pnlNoCheckPorn.Size = new System.Drawing.Size(463, 29);
             this.pnlNoCheckPorn.TabIndex = 47;
             // 
             // lblSearchNoCheckPorn
@@ -1084,7 +1086,7 @@
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.txbSearchCheckPornErrorReply);
             this.pnlPictureSearcherCheckPorn.Location = new System.Drawing.Point(3, 557);
             this.pnlPictureSearcherCheckPorn.Name = "pnlPictureSearcherCheckPorn";
-            this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(480, 114);
+            this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(463, 114);
             this.pnlPictureSearcherCheckPorn.TabIndex = 40;
             // 
             // lblSearchCheckPornOutOfLimitReply
@@ -1102,7 +1104,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchCheckPornOutOfLimitReply.Location = new System.Drawing.Point(176, 88);
             this.txbSearchCheckPornOutOfLimitReply.Name = "txbSearchCheckPornOutOfLimitReply";
-            this.txbSearchCheckPornOutOfLimitReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchCheckPornOutOfLimitReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchCheckPornOutOfLimitReply.TabIndex = 42;
             // 
             // rdoSearchCheckPornOutOfLimitAppend
@@ -1155,7 +1157,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchCheckPornIllegalReply.Location = new System.Drawing.Point(176, 3);
             this.txbSearchCheckPornIllegalReply.Name = "txbSearchCheckPornIllegalReply";
-            this.txbSearchCheckPornIllegalReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchCheckPornIllegalReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchCheckPornIllegalReply.TabIndex = 35;
             // 
             // lblSearchCheckPornIllegalReply
@@ -1182,7 +1184,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchCheckPornErrorReply.Location = new System.Drawing.Point(176, 32);
             this.txbSearchCheckPornErrorReply.Name = "txbSearchCheckPornErrorReply";
-            this.txbSearchCheckPornErrorReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchCheckPornErrorReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchCheckPornErrorReply.TabIndex = 36;
             // 
             // chkPictureSearcherCheckPornEnabled
@@ -1338,7 +1340,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchLowSimilarityReply.Location = new System.Drawing.Point(179, 496);
             this.txbSearchLowSimilarityReply.Name = "txbSearchLowSimilarityReply";
-            this.txbSearchLowSimilarityReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchLowSimilarityReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchLowSimilarityReply.TabIndex = 16;
             // 
             // txbSearchLowSimilarity
@@ -1347,7 +1349,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchLowSimilarity.Location = new System.Drawing.Point(179, 467);
             this.txbSearchLowSimilarity.Name = "txbSearchLowSimilarity";
-            this.txbSearchLowSimilarity.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchLowSimilarity.Size = new System.Drawing.Size(284, 23);
             this.txbSearchLowSimilarity.TabIndex = 16;
             // 
             // txbSearchErrorReply
@@ -1356,7 +1358,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchErrorReply.Location = new System.Drawing.Point(179, 438);
             this.txbSearchErrorReply.Name = "txbSearchErrorReply";
-            this.txbSearchErrorReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchErrorReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchErrorReply.TabIndex = 16;
             // 
             // txbSearchNoResultReply
@@ -1365,7 +1367,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchNoResultReply.Location = new System.Drawing.Point(179, 409);
             this.txbSearchNoResultReply.Name = "txbSearchNoResultReply";
-            this.txbSearchNoResultReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchNoResultReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchNoResultReply.TabIndex = 16;
             // 
             // txbSearchModeTimeOutReply
@@ -1374,7 +1376,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeTimeOutReply.Location = new System.Drawing.Point(179, 322);
             this.txbSearchModeTimeOutReply.Name = "txbSearchModeTimeOutReply";
-            this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchModeTimeOutReply.TabIndex = 16;
             // 
             // txbSearchModeOffCmd
@@ -1383,7 +1385,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOffCmd.Location = new System.Drawing.Point(179, 293);
             this.txbSearchModeOffCmd.Name = "txbSearchModeOffCmd";
-            this.txbSearchModeOffCmd.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchModeOffCmd.Size = new System.Drawing.Size(284, 23);
             this.txbSearchModeOffCmd.TabIndex = 16;
             // 
             // txbSearchModeAlreadyOffReply
@@ -1392,7 +1394,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeAlreadyOffReply.Location = new System.Drawing.Point(179, 380);
             this.txbSearchModeAlreadyOffReply.Name = "txbSearchModeAlreadyOffReply";
-            this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchModeAlreadyOffReply.TabIndex = 16;
             // 
             // txbSearchModeOffReply
@@ -1401,7 +1403,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOffReply.Location = new System.Drawing.Point(179, 351);
             this.txbSearchModeOffReply.Name = "txbSearchModeOffReply";
-            this.txbSearchModeOffReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchModeOffReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchModeOffReply.TabIndex = 16;
             // 
             // txbSearchModeAlreadyOnReply
@@ -1410,7 +1412,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(179, 264);
             this.txbSearchModeAlreadyOnReply.Name = "txbSearchModeAlreadyOnReply";
-            this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchModeAlreadyOnReply.TabIndex = 16;
             // 
             // txbTraceMoeSendThreshold
@@ -1419,7 +1421,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbTraceMoeSendThreshold.Location = new System.Drawing.Point(179, 24);
             this.txbTraceMoeSendThreshold.Name = "txbTraceMoeSendThreshold";
-            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(304, 23);
+            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(287, 23);
             this.txbTraceMoeSendThreshold.TabIndex = 16;
             // 
             // txbSearchModeOnReply
@@ -1428,7 +1430,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOnReply.Location = new System.Drawing.Point(179, 235);
             this.txbSearchModeOnReply.Name = "txbSearchModeOnReply";
-            this.txbSearchModeOnReply.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchModeOnReply.Size = new System.Drawing.Size(284, 23);
             this.txbSearchModeOnReply.TabIndex = 16;
             // 
             // txbSauceNAOApiKey
@@ -1438,7 +1440,7 @@
             this.txbSauceNAOApiKey.Location = new System.Drawing.Point(179, 87);
             this.txbSauceNAOApiKey.Multiline = true;
             this.txbSauceNAOApiKey.Name = "txbSauceNAOApiKey";
-            this.txbSauceNAOApiKey.Size = new System.Drawing.Size(301, 86);
+            this.txbSauceNAOApiKey.Size = new System.Drawing.Size(284, 86);
             this.txbSauceNAOApiKey.TabIndex = 16;
             // 
             // txbSearchModeOnCmd
@@ -1447,7 +1449,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOnCmd.Location = new System.Drawing.Point(179, 206);
             this.txbSearchModeOnCmd.Name = "txbSearchModeOnCmd";
-            this.txbSearchModeOnCmd.Size = new System.Drawing.Size(301, 23);
+            this.txbSearchModeOnCmd.Size = new System.Drawing.Size(284, 23);
             this.txbSearchModeOnCmd.TabIndex = 16;
             // 
             // chkSearchASCII2DEnabled
@@ -1641,204 +1643,6 @@
             this.chkOriginPictureEnabled.UseVisualStyleBackColor = true;
             this.chkOriginPictureEnabled.CheckedChanged += new System.EventHandler(this.chkOriginPictureEnabled_CheckedChanged);
             // 
-            // pageTranslate
-            // 
-            this.pageTranslate.Controls.Add(this.pnlTranslate);
-            this.pageTranslate.Controls.Add(this.chkTranslateEnabled);
-            this.pageTranslate.Location = new System.Drawing.Point(4, 26);
-            this.pageTranslate.Name = "pageTranslate";
-            this.pageTranslate.Size = new System.Drawing.Size(652, 687);
-            this.pageTranslate.TabIndex = 4;
-            this.pageTranslate.Text = "翻译设置";
-            this.pageTranslate.UseVisualStyleBackColor = true;
-            // 
-            // pnlTranslate
-            // 
-            this.pnlTranslate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlTranslate.Controls.Add(this.txbTranslateFromToCMD);
-            this.pnlTranslate.Controls.Add(this.lblTranslateFromTo);
-            this.pnlTranslate.Controls.Add(this.lblTranslateEngineHelp);
-            this.pnlTranslate.Controls.Add(this.cboTranslateEngine);
-            this.pnlTranslate.Controls.Add(this.lblTranslateEngine);
-            this.pnlTranslate.Controls.Add(this.txbAddAutoTranslateGroupMemoryQQ);
-            this.pnlTranslate.Controls.Add(this.btnRemoveAutoTranslateGroupMemoryQQ);
-            this.pnlTranslate.Controls.Add(this.btnAddAutoTranslateGroupMemoryQQ);
-            this.pnlTranslate.Controls.Add(this.lstAutoTranslateGroupMemoriesQQ);
-            this.pnlTranslate.Controls.Add(this.lblAddAutoTranslateGroupMemoryQQ);
-            this.pnlTranslate.Controls.Add(this.lblAutoTranslateGroupMemoriesQQ);
-            this.pnlTranslate.Controls.Add(this.txbTranslateTo);
-            this.pnlTranslate.Controls.Add(this.txbTranslateToChinese);
-            this.pnlTranslate.Controls.Add(this.lblTranslateTo);
-            this.pnlTranslate.Controls.Add(this.lblTranslateToChinese);
-            this.pnlTranslate.Enabled = false;
-            this.pnlTranslate.Location = new System.Drawing.Point(3, 43);
-            this.pnlTranslate.Name = "pnlTranslate";
-            this.pnlTranslate.Size = new System.Drawing.Size(646, 277);
-            this.pnlTranslate.TabIndex = 1;
-            // 
-            // txbTranslateFromToCMD
-            // 
-            this.txbTranslateFromToCMD.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTranslateFromToCMD.Location = new System.Drawing.Point(197, 124);
-            this.txbTranslateFromToCMD.Name = "txbTranslateFromToCMD";
-            this.txbTranslateFromToCMD.Size = new System.Drawing.Size(425, 23);
-            this.txbTranslateFromToCMD.TabIndex = 15;
-            // 
-            // lblTranslateFromTo
-            // 
-            this.lblTranslateFromTo.AutoSize = true;
-            this.lblTranslateFromTo.Location = new System.Drawing.Point(12, 127);
-            this.lblTranslateFromTo.Name = "lblTranslateFromTo";
-            this.lblTranslateFromTo.Size = new System.Drawing.Size(179, 17);
-            this.lblTranslateFromTo.TabIndex = 14;
-            this.lblTranslateFromTo.Text = "从指定语言翻译为指定语言命令:";
-            // 
-            // lblTranslateEngineHelp
-            // 
-            this.lblTranslateEngineHelp.AutoSize = true;
-            this.lblTranslateEngineHelp.Location = new System.Drawing.Point(137, 31);
-            this.lblTranslateEngineHelp.Name = "lblTranslateEngineHelp";
-            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(386, 17);
-            this.lblTranslateEngineHelp.TabIndex = 13;
-            this.lblTranslateEngineHelp.Text = "提示: 谷歌翻译Api需翻墙，有道翻译识别语言经常出错，建议手动指定)";
-            // 
-            // cboTranslateEngine
-            // 
-            this.cboTranslateEngine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cboTranslateEngine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboTranslateEngine.FormattingEnabled = true;
-            this.cboTranslateEngine.Items.AddRange(new object[] {
-            "Google",
-            "YouDao"});
-            this.cboTranslateEngine.Location = new System.Drawing.Point(137, 3);
-            this.cboTranslateEngine.Name = "cboTranslateEngine";
-            this.cboTranslateEngine.Size = new System.Drawing.Size(485, 25);
-            this.cboTranslateEngine.TabIndex = 12;
-            this.cboTranslateEngine.SelectedIndexChanged += new System.EventHandler(this.cboTranslateEngine_SelectedIndexChanged);
-            // 
-            // lblTranslateEngine
-            // 
-            this.lblTranslateEngine.AutoSize = true;
-            this.lblTranslateEngine.Location = new System.Drawing.Point(12, 6);
-            this.lblTranslateEngine.Name = "lblTranslateEngine";
-            this.lblTranslateEngine.Size = new System.Drawing.Size(59, 17);
-            this.lblTranslateEngine.TabIndex = 11;
-            this.lblTranslateEngine.Text = "翻译引擎:";
-            // 
-            // txbAddAutoTranslateGroupMemoryQQ
-            // 
-            this.txbAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(455, 200);
-            this.txbAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4);
-            this.txbAddAutoTranslateGroupMemoryQQ.Name = "txbAddAutoTranslateGroupMemoryQQ";
-            this.txbAddAutoTranslateGroupMemoryQQ.ShortcutsEnabled = false;
-            this.txbAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(167, 23);
-            this.txbAddAutoTranslateGroupMemoryQQ.TabIndex = 5;
-            // 
-            // btnRemoveAutoTranslateGroupMemoryQQ
-            // 
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(347, 231);
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4);
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Name = "btnRemoveAutoTranslateGroupMemoryQQ";
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(88, 23);
-            this.btnRemoveAutoTranslateGroupMemoryQQ.TabIndex = 9;
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Text = ">>移除>>";
-            this.btnRemoveAutoTranslateGroupMemoryQQ.UseVisualStyleBackColor = true;
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Click += new System.EventHandler(this.btnRemoveAutoTranslateGroupMemoryQQ_Click);
-            // 
-            // btnAddAutoTranslateGroupMemoryQQ
-            // 
-            this.btnAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(347, 200);
-            this.btnAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4);
-            this.btnAddAutoTranslateGroupMemoryQQ.Name = "btnAddAutoTranslateGroupMemoryQQ";
-            this.btnAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(88, 23);
-            this.btnAddAutoTranslateGroupMemoryQQ.TabIndex = 10;
-            this.btnAddAutoTranslateGroupMemoryQQ.Text = "<<添加<<";
-            this.btnAddAutoTranslateGroupMemoryQQ.UseVisualStyleBackColor = true;
-            this.btnAddAutoTranslateGroupMemoryQQ.Click += new System.EventHandler(this.btnAddAutoTranslateGroupMemoryQQ_Click);
-            // 
-            // lstAutoTranslateGroupMemoriesQQ
-            // 
-            this.lstAutoTranslateGroupMemoriesQQ.FullRowSelect = true;
-            this.lstAutoTranslateGroupMemoriesQQ.HideSelection = false;
-            this.lstAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(156, 179);
-            this.lstAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(4);
-            this.lstAutoTranslateGroupMemoriesQQ.Name = "lstAutoTranslateGroupMemoriesQQ";
-            this.lstAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(167, 85);
-            this.lstAutoTranslateGroupMemoriesQQ.TabIndex = 8;
-            this.lstAutoTranslateGroupMemoriesQQ.UseCompatibleStateImageBehavior = false;
-            this.lstAutoTranslateGroupMemoriesQQ.View = System.Windows.Forms.View.List;
-            // 
-            // lblAddAutoTranslateGroupMemoryQQ
-            // 
-            this.lblAddAutoTranslateGroupMemoryQQ.AutoSize = true;
-            this.lblAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(453, 179);
-            this.lblAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblAddAutoTranslateGroupMemoryQQ.Name = "lblAddAutoTranslateGroupMemoryQQ";
-            this.lblAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(160, 17);
-            this.lblAddAutoTranslateGroupMemoryQQ.TabIndex = 6;
-            this.lblAddAutoTranslateGroupMemoryQQ.Text = "添加自动翻译群友消息QQ：";
-            // 
-            // lblAutoTranslateGroupMemoriesQQ
-            // 
-            this.lblAutoTranslateGroupMemoriesQQ.AutoSize = true;
-            this.lblAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(12, 179);
-            this.lblAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblAutoTranslateGroupMemoriesQQ.Name = "lblAutoTranslateGroupMemoriesQQ";
-            this.lblAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(136, 17);
-            this.lblAutoTranslateGroupMemoriesQQ.TabIndex = 7;
-            this.lblAutoTranslateGroupMemoriesQQ.Text = "自动翻译群友消息QQ：";
-            // 
-            // txbTranslateTo
-            // 
-            this.txbTranslateTo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTranslateTo.Location = new System.Drawing.Point(197, 95);
-            this.txbTranslateTo.Name = "txbTranslateTo";
-            this.txbTranslateTo.Size = new System.Drawing.Size(425, 23);
-            this.txbTranslateTo.TabIndex = 3;
-            // 
-            // txbTranslateToChinese
-            // 
-            this.txbTranslateToChinese.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTranslateToChinese.Location = new System.Drawing.Point(197, 66);
-            this.txbTranslateToChinese.Name = "txbTranslateToChinese";
-            this.txbTranslateToChinese.Size = new System.Drawing.Size(425, 23);
-            this.txbTranslateToChinese.TabIndex = 2;
-            // 
-            // lblTranslateTo
-            // 
-            this.lblTranslateTo.AutoSize = true;
-            this.lblTranslateTo.Location = new System.Drawing.Point(12, 98);
-            this.lblTranslateTo.Name = "lblTranslateTo";
-            this.lblTranslateTo.Size = new System.Drawing.Size(119, 17);
-            this.lblTranslateTo.TabIndex = 1;
-            this.lblTranslateTo.Text = "翻译为指定语言命令:";
-            // 
-            // lblTranslateToChinese
-            // 
-            this.lblTranslateToChinese.AutoSize = true;
-            this.lblTranslateToChinese.Location = new System.Drawing.Point(12, 69);
-            this.lblTranslateToChinese.Name = "lblTranslateToChinese";
-            this.lblTranslateToChinese.Size = new System.Drawing.Size(95, 17);
-            this.lblTranslateToChinese.TabIndex = 0;
-            this.lblTranslateToChinese.Text = "翻译为中文命令:";
-            // 
-            // chkTranslateEnabled
-            // 
-            this.chkTranslateEnabled.AutoSize = true;
-            this.chkTranslateEnabled.Location = new System.Drawing.Point(15, 16);
-            this.chkTranslateEnabled.Name = "chkTranslateEnabled";
-            this.chkTranslateEnabled.Size = new System.Drawing.Size(99, 21);
-            this.chkTranslateEnabled.TabIndex = 0;
-            this.chkTranslateEnabled.Text = "启用翻译功能";
-            this.chkTranslateEnabled.UseVisualStyleBackColor = true;
-            this.chkTranslateEnabled.CheckedChanged += new System.EventHandler(this.chkTranslateEnabled_CheckedChanged);
-            // 
             // pageHPicture
             // 
             this.pageHPicture.AutoScroll = true;
@@ -1976,7 +1780,7 @@
             this.txbHPictureOnceMessageMaxImageCount.Location = new System.Drawing.Point(137, 520);
             this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
-            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(230, 23);
+            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(213, 23);
             this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
             // 
             // lblHPictureOnceMessageMaxImageCount
@@ -2045,7 +1849,7 @@
             // 
             this.chkRevokeBeautyPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkRevokeBeautyPicture.AutoSize = true;
-            this.chkRevokeBeautyPicture.Location = new System.Drawing.Point(374, 401);
+            this.chkRevokeBeautyPicture.Location = new System.Drawing.Point(357, 401);
             this.chkRevokeBeautyPicture.Name = "chkRevokeBeautyPicture";
             this.chkRevokeBeautyPicture.Size = new System.Drawing.Size(51, 21);
             this.chkRevokeBeautyPicture.TabIndex = 14;
@@ -2341,7 +2145,7 @@
             this.txbDownloadFailReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbDownloadFailReply.Multiline = true;
             this.txbDownloadFailReply.Name = "txbDownloadFailReply";
-            this.txbDownloadFailReply.Size = new System.Drawing.Size(333, 23);
+            this.txbDownloadFailReply.Size = new System.Drawing.Size(316, 23);
             this.txbDownloadFailReply.TabIndex = 8;
             // 
             // txbHPictureNoResultReply
@@ -2352,7 +2156,7 @@
             this.txbHPictureNoResultReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureNoResultReply.Multiline = true;
             this.txbHPictureNoResultReply.Name = "txbHPictureNoResultReply";
-            this.txbHPictureNoResultReply.Size = new System.Drawing.Size(333, 23);
+            this.txbHPictureNoResultReply.Size = new System.Drawing.Size(316, 23);
             this.txbHPictureNoResultReply.TabIndex = 8;
             // 
             // txbHPictureErrorReplyReply
@@ -2363,7 +2167,7 @@
             this.txbHPictureErrorReplyReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureErrorReplyReply.Multiline = true;
             this.txbHPictureErrorReplyReply.Name = "txbHPictureErrorReplyReply";
-            this.txbHPictureErrorReplyReply.Size = new System.Drawing.Size(333, 23);
+            this.txbHPictureErrorReplyReply.Size = new System.Drawing.Size(316, 23);
             this.txbHPictureErrorReplyReply.TabIndex = 8;
             // 
             // txbOutOfLimitReply
@@ -2374,7 +2178,7 @@
             this.txbOutOfLimitReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbOutOfLimitReply.Multiline = true;
             this.txbOutOfLimitReply.Name = "txbOutOfLimitReply";
-            this.txbOutOfLimitReply.Size = new System.Drawing.Size(333, 23);
+            this.txbOutOfLimitReply.Size = new System.Drawing.Size(316, 23);
             this.txbOutOfLimitReply.TabIndex = 8;
             // 
             // txbDownloadAccelerateUrl
@@ -2394,7 +2198,7 @@
             this.txbCDUnreadyReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbCDUnreadyReply.Multiline = true;
             this.txbCDUnreadyReply.Name = "txbCDUnreadyReply";
-            this.txbCDUnreadyReply.Size = new System.Drawing.Size(333, 23);
+            this.txbCDUnreadyReply.Size = new System.Drawing.Size(316, 23);
             this.txbCDUnreadyReply.TabIndex = 8;
             // 
             // txbCD
@@ -2523,7 +2327,7 @@
             // 
             this.chkSize1200.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkSize1200.AutoSize = true;
-            this.chkSize1200.Location = new System.Drawing.Point(375, 296);
+            this.chkSize1200.Location = new System.Drawing.Point(358, 296);
             this.chkSize1200.Margin = new System.Windows.Forms.Padding(4);
             this.chkSize1200.Name = "chkSize1200";
             this.chkSize1200.Size = new System.Drawing.Size(103, 21);
@@ -2673,7 +2477,7 @@
             this.lnkResetHPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkResetHPicture.AutoSize = true;
             this.lnkResetHPicture.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.lnkResetHPicture.Location = new System.Drawing.Point(415, 348);
+            this.lnkResetHPicture.Location = new System.Drawing.Point(398, 348);
             this.lnkResetHPicture.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lnkResetHPicture.Name = "lnkResetHPicture";
             this.lnkResetHPicture.Size = new System.Drawing.Size(32, 17);
@@ -2697,7 +2501,7 @@
             // 
             this.chkBeautyPictureEndNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkBeautyPictureEndNull.AutoSize = true;
-            this.chkBeautyPictureEndNull.Location = new System.Drawing.Point(375, 225);
+            this.chkBeautyPictureEndNull.Location = new System.Drawing.Point(358, 225);
             this.chkBeautyPictureEndNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkBeautyPictureEndNull.Name = "chkBeautyPictureEndNull";
             this.chkBeautyPictureEndNull.Size = new System.Drawing.Size(63, 21);
@@ -2710,7 +2514,7 @@
             // 
             this.chkHPictureEndNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureEndNull.AutoSize = true;
-            this.chkHPictureEndNull.Location = new System.Drawing.Point(375, 194);
+            this.chkHPictureEndNull.Location = new System.Drawing.Point(358, 194);
             this.chkHPictureEndNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureEndNull.Name = "chkHPictureEndNull";
             this.chkHPictureEndNull.Size = new System.Drawing.Size(63, 21);
@@ -2733,7 +2537,7 @@
             // 
             this.chkHPictureKeywordNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureKeywordNull.AutoSize = true;
-            this.chkHPictureKeywordNull.Location = new System.Drawing.Point(375, 164);
+            this.chkHPictureKeywordNull.Location = new System.Drawing.Point(358, 164);
             this.chkHPictureKeywordNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureKeywordNull.Name = "chkHPictureKeywordNull";
             this.chkHPictureKeywordNull.Size = new System.Drawing.Size(63, 21);
@@ -2756,7 +2560,7 @@
             // 
             this.chkHPictureR18Null.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureR18Null.AutoSize = true;
-            this.chkHPictureR18Null.Location = new System.Drawing.Point(375, 133);
+            this.chkHPictureR18Null.Location = new System.Drawing.Point(358, 133);
             this.chkHPictureR18Null.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureR18Null.Name = "chkHPictureR18Null";
             this.chkHPictureR18Null.Size = new System.Drawing.Size(63, 21);
@@ -2789,7 +2593,7 @@
             // 
             this.chkHPictureUnitNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureUnitNull.AutoSize = true;
-            this.chkHPictureUnitNull.Location = new System.Drawing.Point(375, 102);
+            this.chkHPictureUnitNull.Location = new System.Drawing.Point(358, 102);
             this.chkHPictureUnitNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureUnitNull.Name = "chkHPictureUnitNull";
             this.chkHPictureUnitNull.Size = new System.Drawing.Size(63, 21);
@@ -2812,7 +2616,7 @@
             // 
             this.chkHPictureCountNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureCountNull.AutoSize = true;
-            this.chkHPictureCountNull.Location = new System.Drawing.Point(375, 71);
+            this.chkHPictureCountNull.Location = new System.Drawing.Point(358, 71);
             this.chkHPictureCountNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureCountNull.Name = "chkHPictureCountNull";
             this.chkHPictureCountNull.Size = new System.Drawing.Size(63, 21);
@@ -2845,7 +2649,7 @@
             // 
             this.chkHPictureBeginNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureBeginNull.AutoSize = true;
-            this.chkHPictureBeginNull.Location = new System.Drawing.Point(375, 40);
+            this.chkHPictureBeginNull.Location = new System.Drawing.Point(358, 40);
             this.chkHPictureBeginNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureBeginNull.Name = "chkHPictureBeginNull";
             this.chkHPictureBeginNull.Size = new System.Drawing.Size(63, 21);
@@ -2864,7 +2668,7 @@
             this.txbBeautyPictureCmd.Multiline = true;
             this.txbBeautyPictureCmd.Name = "txbBeautyPictureCmd";
             this.txbBeautyPictureCmd.ReadOnly = true;
-            this.txbBeautyPictureCmd.Size = new System.Drawing.Size(230, 98);
+            this.txbBeautyPictureCmd.Size = new System.Drawing.Size(213, 98);
             this.txbBeautyPictureCmd.TabIndex = 1;
             // 
             // txbHPictureCmd
@@ -2877,7 +2681,7 @@
             this.txbHPictureCmd.Multiline = true;
             this.txbHPictureCmd.Name = "txbHPictureCmd";
             this.txbHPictureCmd.ReadOnly = true;
-            this.txbHPictureCmd.Size = new System.Drawing.Size(230, 98);
+            this.txbHPictureCmd.Size = new System.Drawing.Size(213, 98);
             this.txbHPictureCmd.TabIndex = 1;
             // 
             // txbHPictureApiKey
@@ -2888,7 +2692,7 @@
             this.txbHPictureApiKey.Location = new System.Drawing.Point(137, 6);
             this.txbHPictureApiKey.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureApiKey.Name = "txbHPictureApiKey";
-            this.txbHPictureApiKey.Size = new System.Drawing.Size(230, 23);
+            this.txbHPictureApiKey.Size = new System.Drawing.Size(213, 23);
             this.txbHPictureApiKey.TabIndex = 2;
             this.txbHPictureApiKey.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2899,7 +2703,7 @@
             this.txbBeautyPictureEnd.Location = new System.Drawing.Point(137, 224);
             this.txbBeautyPictureEnd.Margin = new System.Windows.Forms.Padding(4);
             this.txbBeautyPictureEnd.Name = "txbBeautyPictureEnd";
-            this.txbBeautyPictureEnd.Size = new System.Drawing.Size(230, 23);
+            this.txbBeautyPictureEnd.Size = new System.Drawing.Size(213, 23);
             this.txbBeautyPictureEnd.TabIndex = 2;
             this.txbBeautyPictureEnd.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2910,7 +2714,7 @@
             this.txbHPictureEnd.Location = new System.Drawing.Point(137, 193);
             this.txbHPictureEnd.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureEnd.Name = "txbHPictureEnd";
-            this.txbHPictureEnd.Size = new System.Drawing.Size(230, 23);
+            this.txbHPictureEnd.Size = new System.Drawing.Size(213, 23);
             this.txbHPictureEnd.TabIndex = 2;
             this.txbHPictureEnd.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2921,7 +2725,7 @@
             this.txbHPictureBegin.Location = new System.Drawing.Point(137, 37);
             this.txbHPictureBegin.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureBegin.Name = "txbHPictureBegin";
-            this.txbHPictureBegin.Size = new System.Drawing.Size(230, 23);
+            this.txbHPictureBegin.Size = new System.Drawing.Size(213, 23);
             this.txbHPictureBegin.TabIndex = 2;
             this.txbHPictureBegin.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2932,7 +2736,7 @@
             this.txbHPictureKeyword.Location = new System.Drawing.Point(137, 161);
             this.txbHPictureKeyword.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureKeyword.Name = "txbHPictureKeyword";
-            this.txbHPictureKeyword.Size = new System.Drawing.Size(230, 23);
+            this.txbHPictureKeyword.Size = new System.Drawing.Size(213, 23);
             this.txbHPictureKeyword.TabIndex = 2;
             this.txbHPictureKeyword.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2943,7 +2747,7 @@
             this.txbHPictureCount.Location = new System.Drawing.Point(137, 68);
             this.txbHPictureCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureCount.Name = "txbHPictureCount";
-            this.txbHPictureCount.Size = new System.Drawing.Size(230, 23);
+            this.txbHPictureCount.Size = new System.Drawing.Size(213, 23);
             this.txbHPictureCount.TabIndex = 2;
             this.txbHPictureCount.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2954,7 +2758,7 @@
             this.txbHPictureR18.Location = new System.Drawing.Point(137, 130);
             this.txbHPictureR18.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureR18.Name = "txbHPictureR18";
-            this.txbHPictureR18.Size = new System.Drawing.Size(230, 23);
+            this.txbHPictureR18.Size = new System.Drawing.Size(213, 23);
             this.txbHPictureR18.TabIndex = 2;
             this.txbHPictureR18.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2965,7 +2769,7 @@
             this.txbHPictureUnit.Location = new System.Drawing.Point(137, 99);
             this.txbHPictureUnit.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureUnit.Name = "txbHPictureUnit";
-            this.txbHPictureUnit.Size = new System.Drawing.Size(230, 23);
+            this.txbHPictureUnit.Size = new System.Drawing.Size(213, 23);
             this.txbHPictureUnit.TabIndex = 2;
             this.txbHPictureUnit.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2980,6 +2784,204 @@
             this.chkEnabledHPicture.Text = "启用色图功能";
             this.chkEnabledHPicture.UseVisualStyleBackColor = true;
             this.chkEnabledHPicture.CheckedChanged += new System.EventHandler(this.chkEnableHPicture_CheckedChanged);
+            // 
+            // pageTranslate
+            // 
+            this.pageTranslate.Controls.Add(this.pnlTranslate);
+            this.pageTranslate.Controls.Add(this.chkTranslateEnabled);
+            this.pageTranslate.Location = new System.Drawing.Point(4, 26);
+            this.pageTranslate.Name = "pageTranslate";
+            this.pageTranslate.Size = new System.Drawing.Size(652, 687);
+            this.pageTranslate.TabIndex = 4;
+            this.pageTranslate.Text = "翻译设置";
+            this.pageTranslate.UseVisualStyleBackColor = true;
+            // 
+            // pnlTranslate
+            // 
+            this.pnlTranslate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTranslate.Controls.Add(this.txbTranslateFromToCMD);
+            this.pnlTranslate.Controls.Add(this.lblTranslateFromTo);
+            this.pnlTranslate.Controls.Add(this.lblTranslateEngineHelp);
+            this.pnlTranslate.Controls.Add(this.cboTranslateEngine);
+            this.pnlTranslate.Controls.Add(this.lblTranslateEngine);
+            this.pnlTranslate.Controls.Add(this.txbAddAutoTranslateGroupMemoryQQ);
+            this.pnlTranslate.Controls.Add(this.btnRemoveAutoTranslateGroupMemoryQQ);
+            this.pnlTranslate.Controls.Add(this.btnAddAutoTranslateGroupMemoryQQ);
+            this.pnlTranslate.Controls.Add(this.lstAutoTranslateGroupMemoriesQQ);
+            this.pnlTranslate.Controls.Add(this.lblAddAutoTranslateGroupMemoryQQ);
+            this.pnlTranslate.Controls.Add(this.lblAutoTranslateGroupMemoriesQQ);
+            this.pnlTranslate.Controls.Add(this.txbTranslateTo);
+            this.pnlTranslate.Controls.Add(this.txbTranslateToChinese);
+            this.pnlTranslate.Controls.Add(this.lblTranslateTo);
+            this.pnlTranslate.Controls.Add(this.lblTranslateToChinese);
+            this.pnlTranslate.Enabled = false;
+            this.pnlTranslate.Location = new System.Drawing.Point(3, 43);
+            this.pnlTranslate.Name = "pnlTranslate";
+            this.pnlTranslate.Size = new System.Drawing.Size(646, 277);
+            this.pnlTranslate.TabIndex = 1;
+            // 
+            // txbTranslateFromToCMD
+            // 
+            this.txbTranslateFromToCMD.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTranslateFromToCMD.Location = new System.Drawing.Point(197, 124);
+            this.txbTranslateFromToCMD.Name = "txbTranslateFromToCMD";
+            this.txbTranslateFromToCMD.Size = new System.Drawing.Size(425, 23);
+            this.txbTranslateFromToCMD.TabIndex = 15;
+            // 
+            // lblTranslateFromTo
+            // 
+            this.lblTranslateFromTo.AutoSize = true;
+            this.lblTranslateFromTo.Location = new System.Drawing.Point(12, 127);
+            this.lblTranslateFromTo.Name = "lblTranslateFromTo";
+            this.lblTranslateFromTo.Size = new System.Drawing.Size(179, 17);
+            this.lblTranslateFromTo.TabIndex = 14;
+            this.lblTranslateFromTo.Text = "从指定语言翻译为指定语言命令:";
+            // 
+            // lblTranslateEngineHelp
+            // 
+            this.lblTranslateEngineHelp.AutoSize = true;
+            this.lblTranslateEngineHelp.Location = new System.Drawing.Point(137, 31);
+            this.lblTranslateEngineHelp.Name = "lblTranslateEngineHelp";
+            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(386, 17);
+            this.lblTranslateEngineHelp.TabIndex = 13;
+            this.lblTranslateEngineHelp.Text = "提示: 谷歌翻译Api需翻墙，有道翻译识别语言经常出错，建议手动指定)";
+            // 
+            // cboTranslateEngine
+            // 
+            this.cboTranslateEngine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cboTranslateEngine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboTranslateEngine.FormattingEnabled = true;
+            this.cboTranslateEngine.Items.AddRange(new object[] {
+            "Google",
+            "YouDao"});
+            this.cboTranslateEngine.Location = new System.Drawing.Point(137, 3);
+            this.cboTranslateEngine.Name = "cboTranslateEngine";
+            this.cboTranslateEngine.Size = new System.Drawing.Size(485, 25);
+            this.cboTranslateEngine.TabIndex = 12;
+            this.cboTranslateEngine.SelectedIndexChanged += new System.EventHandler(this.cboTranslateEngine_SelectedIndexChanged);
+            // 
+            // lblTranslateEngine
+            // 
+            this.lblTranslateEngine.AutoSize = true;
+            this.lblTranslateEngine.Location = new System.Drawing.Point(12, 6);
+            this.lblTranslateEngine.Name = "lblTranslateEngine";
+            this.lblTranslateEngine.Size = new System.Drawing.Size(59, 17);
+            this.lblTranslateEngine.TabIndex = 11;
+            this.lblTranslateEngine.Text = "翻译引擎:";
+            // 
+            // txbAddAutoTranslateGroupMemoryQQ
+            // 
+            this.txbAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(455, 200);
+            this.txbAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4);
+            this.txbAddAutoTranslateGroupMemoryQQ.Name = "txbAddAutoTranslateGroupMemoryQQ";
+            this.txbAddAutoTranslateGroupMemoryQQ.ShortcutsEnabled = false;
+            this.txbAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(167, 23);
+            this.txbAddAutoTranslateGroupMemoryQQ.TabIndex = 5;
+            // 
+            // btnRemoveAutoTranslateGroupMemoryQQ
+            // 
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(347, 231);
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Name = "btnRemoveAutoTranslateGroupMemoryQQ";
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(88, 23);
+            this.btnRemoveAutoTranslateGroupMemoryQQ.TabIndex = 9;
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Text = ">>移除>>";
+            this.btnRemoveAutoTranslateGroupMemoryQQ.UseVisualStyleBackColor = true;
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Click += new System.EventHandler(this.btnRemoveAutoTranslateGroupMemoryQQ_Click);
+            // 
+            // btnAddAutoTranslateGroupMemoryQQ
+            // 
+            this.btnAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(347, 200);
+            this.btnAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAddAutoTranslateGroupMemoryQQ.Name = "btnAddAutoTranslateGroupMemoryQQ";
+            this.btnAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(88, 23);
+            this.btnAddAutoTranslateGroupMemoryQQ.TabIndex = 10;
+            this.btnAddAutoTranslateGroupMemoryQQ.Text = "<<添加<<";
+            this.btnAddAutoTranslateGroupMemoryQQ.UseVisualStyleBackColor = true;
+            this.btnAddAutoTranslateGroupMemoryQQ.Click += new System.EventHandler(this.btnAddAutoTranslateGroupMemoryQQ_Click);
+            // 
+            // lstAutoTranslateGroupMemoriesQQ
+            // 
+            this.lstAutoTranslateGroupMemoriesQQ.FullRowSelect = true;
+            this.lstAutoTranslateGroupMemoriesQQ.HideSelection = false;
+            this.lstAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(156, 179);
+            this.lstAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(4);
+            this.lstAutoTranslateGroupMemoriesQQ.Name = "lstAutoTranslateGroupMemoriesQQ";
+            this.lstAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(167, 85);
+            this.lstAutoTranslateGroupMemoriesQQ.TabIndex = 8;
+            this.lstAutoTranslateGroupMemoriesQQ.UseCompatibleStateImageBehavior = false;
+            this.lstAutoTranslateGroupMemoriesQQ.View = System.Windows.Forms.View.List;
+            // 
+            // lblAddAutoTranslateGroupMemoryQQ
+            // 
+            this.lblAddAutoTranslateGroupMemoryQQ.AutoSize = true;
+            this.lblAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(453, 179);
+            this.lblAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblAddAutoTranslateGroupMemoryQQ.Name = "lblAddAutoTranslateGroupMemoryQQ";
+            this.lblAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(160, 17);
+            this.lblAddAutoTranslateGroupMemoryQQ.TabIndex = 6;
+            this.lblAddAutoTranslateGroupMemoryQQ.Text = "添加自动翻译群友消息QQ：";
+            // 
+            // lblAutoTranslateGroupMemoriesQQ
+            // 
+            this.lblAutoTranslateGroupMemoriesQQ.AutoSize = true;
+            this.lblAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(12, 179);
+            this.lblAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblAutoTranslateGroupMemoriesQQ.Name = "lblAutoTranslateGroupMemoriesQQ";
+            this.lblAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(136, 17);
+            this.lblAutoTranslateGroupMemoriesQQ.TabIndex = 7;
+            this.lblAutoTranslateGroupMemoriesQQ.Text = "自动翻译群友消息QQ：";
+            // 
+            // txbTranslateTo
+            // 
+            this.txbTranslateTo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTranslateTo.Location = new System.Drawing.Point(197, 95);
+            this.txbTranslateTo.Name = "txbTranslateTo";
+            this.txbTranslateTo.Size = new System.Drawing.Size(425, 23);
+            this.txbTranslateTo.TabIndex = 3;
+            // 
+            // txbTranslateToChinese
+            // 
+            this.txbTranslateToChinese.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTranslateToChinese.Location = new System.Drawing.Point(197, 66);
+            this.txbTranslateToChinese.Name = "txbTranslateToChinese";
+            this.txbTranslateToChinese.Size = new System.Drawing.Size(425, 23);
+            this.txbTranslateToChinese.TabIndex = 2;
+            // 
+            // lblTranslateTo
+            // 
+            this.lblTranslateTo.AutoSize = true;
+            this.lblTranslateTo.Location = new System.Drawing.Point(12, 98);
+            this.lblTranslateTo.Name = "lblTranslateTo";
+            this.lblTranslateTo.Size = new System.Drawing.Size(119, 17);
+            this.lblTranslateTo.TabIndex = 1;
+            this.lblTranslateTo.Text = "翻译为指定语言命令:";
+            // 
+            // lblTranslateToChinese
+            // 
+            this.lblTranslateToChinese.AutoSize = true;
+            this.lblTranslateToChinese.Location = new System.Drawing.Point(12, 69);
+            this.lblTranslateToChinese.Name = "lblTranslateToChinese";
+            this.lblTranslateToChinese.Size = new System.Drawing.Size(95, 17);
+            this.lblTranslateToChinese.TabIndex = 0;
+            this.lblTranslateToChinese.Text = "翻译为中文命令:";
+            // 
+            // chkTranslateEnabled
+            // 
+            this.chkTranslateEnabled.AutoSize = true;
+            this.chkTranslateEnabled.Location = new System.Drawing.Point(15, 16);
+            this.chkTranslateEnabled.Name = "chkTranslateEnabled";
+            this.chkTranslateEnabled.Size = new System.Drawing.Size(99, 21);
+            this.chkTranslateEnabled.TabIndex = 0;
+            this.chkTranslateEnabled.Text = "启用翻译功能";
+            this.chkTranslateEnabled.UseVisualStyleBackColor = true;
+            this.chkTranslateEnabled.CheckedChanged += new System.EventHandler(this.chkTranslateEnabled_CheckedChanged);
             // 
             // pageRepeater
             // 
@@ -3556,10 +3558,12 @@
             this.pnlTicTacToe.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeMoveFailReply);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeMoveFailReply);
             this.pnlTicTacToe.Controls.Add(this.lblChessboard);
             this.pnlTicTacToe.Controls.Add(this.imgChessboard);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeIllegalReply);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeIllegalReply);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeIllegalMoveReply);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeIllegalMoveReply);
             this.pnlTicTacToe.Controls.Add(this.lblTicTacToeNoMoveReply);
             this.pnlTicTacToe.Controls.Add(this.txbTicTacToeNoMoveReply);
             this.pnlTicTacToe.Controls.Add(this.lblTicTacToeDrawReply);
@@ -3593,7 +3597,7 @@
             // lblChessboard
             // 
             this.lblChessboard.AutoSize = true;
-            this.lblChessboard.Location = new System.Drawing.Point(10, 505);
+            this.lblChessboard.Location = new System.Drawing.Point(10, 520);
             this.lblChessboard.Name = "lblChessboard";
             this.lblChessboard.Size = new System.Drawing.Size(107, 17);
             this.lblChessboard.TabIndex = 27;
@@ -3603,28 +3607,28 @@
             // 
             this.imgChessboard.BackgroundImage = global::GreenOnions.BotManagerWindow.Properties.Resources.Chessboard;
             this.imgChessboard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.imgChessboard.Location = new System.Drawing.Point(196, 390);
+            this.imgChessboard.Location = new System.Drawing.Point(220, 422);
             this.imgChessboard.Name = "imgChessboard";
-            this.imgChessboard.Size = new System.Drawing.Size(250, 250);
+            this.imgChessboard.Size = new System.Drawing.Size(220, 220);
             this.imgChessboard.TabIndex = 26;
             // 
-            // lblTicTacToeIllegalReply
+            // lblTicTacToeIllegalMoveReply
             // 
-            this.lblTicTacToeIllegalReply.AutoSize = true;
-            this.lblTicTacToeIllegalReply.Location = new System.Drawing.Point(10, 331);
-            this.lblTicTacToeIllegalReply.Name = "lblTicTacToeIllegalReply";
-            this.lblTicTacToeIllegalReply.Size = new System.Drawing.Size(159, 17);
-            this.lblTicTacToeIllegalReply.TabIndex = 25;
-            this.lblTicTacToeIllegalReply.Text = "识别到下子多于一格回复语: ";
+            this.lblTicTacToeIllegalMoveReply.AutoSize = true;
+            this.lblTicTacToeIllegalMoveReply.Location = new System.Drawing.Point(10, 331);
+            this.lblTicTacToeIllegalMoveReply.Name = "lblTicTacToeIllegalMoveReply";
+            this.lblTicTacToeIllegalMoveReply.Size = new System.Drawing.Size(159, 17);
+            this.lblTicTacToeIllegalMoveReply.TabIndex = 25;
+            this.lblTicTacToeIllegalMoveReply.Text = "识别到下子多于一格回复语: ";
             // 
-            // txbTicTacToeIllegalReply
+            // txbTicTacToeIllegalMoveReply
             // 
-            this.txbTicTacToeIllegalReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txbTicTacToeIllegalMoveReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeIllegalReply.Location = new System.Drawing.Point(178, 328);
-            this.txbTicTacToeIllegalReply.Name = "txbTicTacToeIllegalReply";
-            this.txbTicTacToeIllegalReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeIllegalReply.TabIndex = 24;
+            this.txbTicTacToeIllegalMoveReply.Location = new System.Drawing.Point(178, 328);
+            this.txbTicTacToeIllegalMoveReply.Name = "txbTicTacToeIllegalMoveReply";
+            this.txbTicTacToeIllegalMoveReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeIllegalMoveReply.TabIndex = 24;
             // 
             // lblTicTacToeNoMoveReply
             // 
@@ -3722,7 +3726,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlTicTacToeMoveMode.Controls.Add(this.chkTicTacToeMoveModeOpenCV);
             this.pnlTicTacToeMoveMode.Controls.Add(this.chkTicTacToeMoveModeNomenclature);
-            this.pnlTicTacToeMoveMode.Location = new System.Drawing.Point(178, 357);
+            this.pnlTicTacToeMoveMode.Location = new System.Drawing.Point(178, 386);
             this.pnlTicTacToeMoveMode.Name = "pnlTicTacToeMoveMode";
             this.pnlTicTacToeMoveMode.Size = new System.Drawing.Size(451, 30);
             this.pnlTicTacToeMoveMode.TabIndex = 13;
@@ -3806,7 +3810,7 @@
             // lblTicTacToeMoveMode
             // 
             this.lblTicTacToeMoveMode.AutoSize = true;
-            this.lblTicTacToeMoveMode.Location = new System.Drawing.Point(10, 364);
+            this.lblTicTacToeMoveMode.Location = new System.Drawing.Point(10, 393);
             this.lblTicTacToeMoveMode.Name = "lblTicTacToeMoveMode";
             this.lblTicTacToeMoveMode.Size = new System.Drawing.Size(107, 17);
             this.lblTicTacToeMoveMode.TabIndex = 6;
@@ -3979,6 +3983,24 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
+            // lblTicTacToeMoveFailReply
+            // 
+            this.lblTicTacToeMoveFailReply.AutoSize = true;
+            this.lblTicTacToeMoveFailReply.Location = new System.Drawing.Point(10, 360);
+            this.lblTicTacToeMoveFailReply.Name = "lblTicTacToeMoveFailReply";
+            this.lblTicTacToeMoveFailReply.Size = new System.Drawing.Size(159, 17);
+            this.lblTicTacToeMoveFailReply.TabIndex = 29;
+            this.lblTicTacToeMoveFailReply.Text = "识别到格子已有棋子回复语: ";
+            // 
+            // txbTicTacToeMoveFailReply
+            // 
+            this.txbTicTacToeMoveFailReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToeMoveFailReply.Location = new System.Drawing.Point(178, 357);
+            this.txbTicTacToeMoveFailReply.Name = "txbTicTacToeMoveFailReply";
+            this.txbTicTacToeMoveFailReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeMoveFailReply.TabIndex = 28;
+            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -4018,14 +4040,14 @@
             this.pnlOriginPictureCheckPornMessage.PerformLayout();
             this.pnlOriginPictureCheckPornEvent.ResumeLayout(false);
             this.pnlOriginPictureCheckPornEvent.PerformLayout();
-            this.pageTranslate.ResumeLayout(false);
-            this.pageTranslate.PerformLayout();
-            this.pnlTranslate.ResumeLayout(false);
-            this.pnlTranslate.PerformLayout();
             this.pageHPicture.ResumeLayout(false);
             this.pageHPicture.PerformLayout();
             this.pnlEnabelHPicture.ResumeLayout(false);
             this.pnlEnabelHPicture.PerformLayout();
+            this.pageTranslate.ResumeLayout(false);
+            this.pageTranslate.PerformLayout();
+            this.pnlTranslate.ResumeLayout(false);
+            this.pnlTranslate.PerformLayout();
             this.pageRepeater.ResumeLayout(false);
             this.pageRepeater.PerformLayout();
             this.pageGroupMemberEvents.ResumeLayout(false);
@@ -4370,11 +4392,13 @@
         private System.Windows.Forms.Label lblTicTacToeTimeoutReply;
         private System.Windows.Forms.TextBox txbTicTacToePlayerWinReply;
         private System.Windows.Forms.TextBox txbTicTacToeTimeoutReply;
-        private System.Windows.Forms.Label lblTicTacToeIllegalReply;
-        private System.Windows.Forms.TextBox txbTicTacToeIllegalReply;
+        private System.Windows.Forms.Label lblTicTacToeIllegalMoveReply;
+        private System.Windows.Forms.TextBox txbTicTacToeIllegalMoveReply;
         private System.Windows.Forms.Label lblTicTacToeNoMoveReply;
         private System.Windows.Forms.TextBox txbTicTacToeNoMoveReply;
         private System.Windows.Forms.Panel imgChessboard;
         private System.Windows.Forms.Label lblChessboard;
+        private System.Windows.Forms.Label lblTicTacToeMoveFailReply;
+        private System.Windows.Forms.TextBox txbTicTacToeMoveFailReply;
     }
 }

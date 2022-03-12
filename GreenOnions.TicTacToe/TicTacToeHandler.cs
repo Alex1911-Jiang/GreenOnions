@@ -85,14 +85,14 @@ namespace GreenOnions.TicTacToe
                 if (x > -1 && x < 3 && y > -1 && y < 3)
                 {
                     Bitmap nowStepBmp = PlayingTicTacToeSessions[qqId].PlayerMove(x, y, out int? winOrLostType);
-
-                    SendBitmapAfterMove(qqId, nowStepBmp, SendMessage, UploadPicture, winOrLostType);
+                    if (nowStepBmp == null)  //下子失败
+                        SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeMoveFailReply.ReplaceGreenOnionsTags()) }, true);
+                    else
+                        SendBitmapAfterMove(qqId, nowStepBmp, SendMessage, UploadPicture, winOrLostType);
                 }
             }
             else
-            {
                 ErrorHelper.WriteErrorLogWithUserMessage($"数据异常, 时间表中存在QQ:{qqId}, 但对局表中不存在, 可能是刚刚超时了", null);
-            }
         }
 
         public static async void PlayerMoveByBitmap(long qqId, Stream playerMoveStream, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture)
@@ -111,39 +111,30 @@ namespace GreenOnions.TicTacToe
                     {
                         var weight = PlayingTicTacToeSessions[qqId].PlayerMoveByBitmap(playerMoveBmp);
 
-                        if (weight.Keys.Count == 0)
-                        {
-                            //没有修改
+                        if (weight.Keys.Count == 0)  //没有修改
                             SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeNoMoveReply.ReplaceGreenOnionsTags()) }, true);
-                        }
-                        else if (weight.Keys.Count > 4)
-                        {
-                            //整张图片被改变
-                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeIllegalReply.ReplaceGreenOnionsTags()) }, true);
-                        }
+                        else if (weight.Keys.Count > 1)  //多个格子被修改
+                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeIllegalMoveReply.ReplaceGreenOnionsTags()) }, true);
                         else
                         {
-                            //最多4个区域被改变, 获取权重最大的区域
                             var maxWeight = weight.Where(kv => kv.Value > 11).OrderByDescending(kv => kv.Value);
                             if (maxWeight != null && maxWeight.Count() > 0)
                             {
                                 Point hit = maxWeight.First().Key;
                                 Bitmap nowStepBmp = PlayingTicTacToeSessions[qqId].PlayerMove(hit.X, hit.Y, out int? winOrLostType);
-
-                                SendBitmapAfterMove(qqId, nowStepBmp, SendMessage, UploadPicture, winOrLostType);
+                                if (nowStepBmp == null) 
+                                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeMoveFailReply.ReplaceGreenOnionsTags()) }, true);
+                                else
+                                    SendBitmapAfterMove(qqId, nowStepBmp, SendMessage, UploadPicture, winOrLostType);
                             }
                         }
                     }
                 }
                 else
-                {
                     ErrorHelper.WriteErrorLogWithUserMessage("井字棋图片转换失败", null);
-                }
             }
             else
-            {
                 ErrorHelper.WriteErrorLogWithUserMessage($"数据异常, 时间表中存在QQ:{qqId}, 但对局表中不存在, 可能是刚刚超时了", null);
-            }
         }
 
         public static async void SendBitmapAfterMove(long qqId, Bitmap nowStepBmp, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture, int? winOrLostMsg)

@@ -87,14 +87,12 @@ namespace GreenOnions.TicTacToe
 
         public Dictionary<System.Drawing.Point, int> PlayerMoveByBitmap(Bitmap playerStepBmp)
         {
-
 #if DEBUG
             playerStepBmp.Save("接收到的图片.bmp", playerStepBmp.RawFormat);
 #endif
 
             if (playerStepBmp.PixelFormat == PixelFormat.Format32bppArgb)
             {
-
 #if DEBUG
                 playerStepBmp.Save("转换通道前图片.bmp", playerStepBmp.RawFormat);
 #endif
@@ -234,8 +232,12 @@ namespace GreenOnions.TicTacToe
                         return lastStepBmp; //平局
                     }
                 }
+                return lastStepBmp;
             }
-            return lastStepBmp;
+            else
+            {
+                return null;
+            }
         }
 
         private (int X, int Y) ComputerMove()
@@ -247,6 +249,9 @@ namespace GreenOnions.TicTacToe
             var playerChance = FindChance(false);
             if (playerChance != null)
                 return (playerChance.Value.X, playerChance.Value.Y);  //随后查找阻止玩家获胜的机会
+
+            if (data[1,1] == 0)  //优先抢中间
+                return (1, 1);
 
             while (true)  //都不符合条件的时候随机下子
             {

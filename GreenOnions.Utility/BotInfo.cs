@@ -1863,14 +1863,23 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeNoMoveReply)) ?? "<机器人名称>没看到您下子，请把想要下子的格子涂黑下子。";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeNoMoveReply), value);
         }
-        
+
         /// <summary>
-        /// 非法下子回复语
+        /// 玩家下子在已有棋子的格子上回复语
         /// </summary>
-        public static string TicTacToeIllegalReply
+        public static string TicTacToeMoveFailReply
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeIllegalReply)) ?? "您把整个棋盘都下满了这让<机器人名称>也很难办啊，重新下一次吧。";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeIllegalReply), value);
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeMoveFailReply)) ?? "您不能在已经有棋子的地方下子啦，重新下一次吧。";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeMoveFailReply), value);
+        }
+
+        /// <summary>
+        /// 玩家下子不止一格回复语
+        /// </summary>
+        public static string TicTacToeIllegalMoveReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeIllegalMoveReply)) ?? "您把整个棋盘都下满了这让<机器人名称>也很难办啊，重新下一次吧。";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeIllegalMoveReply), value);
         }
 
         /// <summary>

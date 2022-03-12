@@ -63,6 +63,8 @@ namespace GreenOnions.PictureSearcher
                 SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags()) }, true);
                 Cache.SetWorkingTimeout(qqId, Cache.SearchingPicturesUsers, () =>
                 {
+                    if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
+                        Cache.SearchingPicturesUsers.TryRemove(qqId, out _);
                     SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsTags()) }, true);
                 });
             }
