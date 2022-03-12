@@ -1,6 +1,7 @@
 ﻿using GreenOnions.Utility.Helper;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,16 +14,17 @@ namespace GreenOnions.Utility
     public static class Cache
     {
         public static IDictionary<string, Assembly> Assemblies { get; } = new Dictionary<string, Assembly>();
-        public static IDictionary<long, DateTime> HPictureCDDic { get; } = new Dictionary<long, DateTime>();
-        public static IDictionary<long, DateTime> HPictureWhiteCDDic { get; } = new Dictionary<long, DateTime>();
-        public static IDictionary<long, DateTime> HPicturePMCDDic { get; } = new Dictionary<long, DateTime>();
-        public static IDictionary<long, int> LimitDic { get; } = new Dictionary<long, int>();
-        public static IDictionary<long, DateTime> SearchingPicturesUsers { get; } = new Dictionary<long, DateTime>();
-        public static IDictionary<string, int> SauceNaoKeysAndLongRemaining { get; }  //Nao的key剩余每日可用次数
-        public static IDictionary<string, int> SauceNaoKeysAndShortRemaining { get; }  //Nao的key剩余30秒内可用次数
+        public static ConcurrentDictionary<long, DateTime> HPictureCDDic { get; } = new ConcurrentDictionary<long, DateTime>();
+        public static ConcurrentDictionary<long, DateTime> HPictureWhiteCDDic { get; } = new ConcurrentDictionary<long, DateTime>();
+        public static ConcurrentDictionary<long, DateTime> HPicturePMCDDic { get; } = new ConcurrentDictionary<long, DateTime>();
+        public static ConcurrentDictionary<long, int> LimitDic { get; } = new ConcurrentDictionary<long, int>();
+        public static ConcurrentDictionary<long, DateTime> SearchingPicturesUsers { get; } = new ConcurrentDictionary<long, DateTime>();
+        public static ConcurrentDictionary<long, DateTime> PlayingTicTacToeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
+        public static ConcurrentDictionary<string, int> SauceNaoKeysAndLongRemaining { get; }  //Nao的key剩余每日可用次数
+        public static ConcurrentDictionary<string, int> SauceNaoKeysAndShortRemaining { get; }  //Nao的key剩余30秒内可用次数
 
-        private static IDictionary<string, DateTime> _LastOneSendRssTime = null;
-        public static IDictionary<string, DateTime> LastOneSendRssTime
+        private static ConcurrentDictionary<string, DateTime> _LastOneSendRssTime = null;
+        public static ConcurrentDictionary<string, DateTime> LastOneSendRssTime
         {
             get
             {
@@ -30,9 +32,9 @@ namespace GreenOnions.Utility
                 {
                     string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonCacheFileName, JsonHelper.JsonNodeNameRss, nameof(LastOneSendRssTime));
                     if (string.IsNullOrEmpty(strValue))
-                        _LastOneSendRssTime = new Dictionary<string, DateTime>();
+                        _LastOneSendRssTime = new ConcurrentDictionary<string, DateTime>();
                     else
-                        _LastOneSendRssTime = JsonConvert.DeserializeObject<Dictionary<string, DateTime>>(strValue);
+                        _LastOneSendRssTime = JsonConvert.DeserializeObject<ConcurrentDictionary<string, DateTime>>(strValue);
                 }
                 return _LastOneSendRssTime;
             }
@@ -44,13 +46,13 @@ namespace GreenOnions.Utility
 
         static Cache()
         {
-            SauceNaoKeysAndLongRemaining = new Dictionary<string, int>();
+            SauceNaoKeysAndLongRemaining = new ConcurrentDictionary<string, int>();
             foreach (var key in BotInfo.SauceNAOApiKey)
-                SauceNaoKeysAndLongRemaining.Add(key, 200);
+                SauceNaoKeysAndLongRemaining.TryAdd(key, 200);
 
-            SauceNaoKeysAndShortRemaining = new Dictionary<string, int>();
+            SauceNaoKeysAndShortRemaining = new ConcurrentDictionary<string, int>();
             foreach (var key in BotInfo.SauceNAOApiKey)
-                SauceNaoKeysAndShortRemaining.Add(key, 6);
+                SauceNaoKeysAndShortRemaining.TryAdd(key, 6);
 
             Task.Run(() =>
             {
@@ -64,6 +66,7 @@ namespace GreenOnions.Utility
                     Task.Delay(1000 * 450).Wait();
 
                     CheckWorkingTimeout(SearchingPicturesUsers);   //顺便检查正在搜图的人超时了没有
+                    CheckWorkingTimeout(PlayingTicTacToeUsers);
                 }
             });
             Task.Run(() =>
@@ -86,6 +89,10 @@ namespace GreenOnions.Utility
             foreach (KeyValuePair<long, DateTime> SearchingPicturesUser in source)
                 if (DateTime.Now > SearchingPicturesUser.Value.AddMinutes(1))
                     removeQQ.Add(SearchingPicturesUser.Key);
+#if DEBUG
+            if (removeQQ.Count > 0)
+                    ErrorHelper.WriteMessage($"定时检查发现存在未能成功移除的正在搜图成员{removeQQ.Count}个");
+#endif
             for (int i = 0; i < removeQQ.Count; i++)
                 source.Remove(removeQQ[i]);
         }
@@ -143,7 +150,7 @@ namespace GreenOnions.Utility
             if (LimitDic.ContainsKey(qqId))
                 LimitDic[qqId] += 1;
             else
-                LimitDic.Add(qqId, 1);
+                LimitDic.TryAdd(qqId, 1);
         }
 
         /// <summary>
@@ -217,7 +224,7 @@ namespace GreenOnions.Utility
                     if (HPictureWhiteCDDic.ContainsKey(qqId))
                         HPictureWhiteCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPictureWhiteCD);
                     else
-                        HPictureWhiteCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureWhiteCD));
+                        HPictureWhiteCDDic.TryAdd(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureWhiteCD));
                 }
             }
             else
@@ -227,7 +234,7 @@ namespace GreenOnions.Utility
                     if (HPictureCDDic.ContainsKey(qqId))
                         HPictureCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPictureCD);
                     else
-                        HPictureCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureCD));
+                        HPictureCDDic.TryAdd(qqId, DateTime.Now.AddSeconds(BotInfo.HPictureCD));
                 }
             }
         }
@@ -239,7 +246,7 @@ namespace GreenOnions.Utility
                 if (HPicturePMCDDic.ContainsKey(qqId))
                     HPicturePMCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.HPicturePMCD);
                 else
-                    HPicturePMCDDic.Add(qqId, DateTime.Now.AddSeconds(BotInfo.HPicturePMCD));
+                    HPicturePMCDDic.TryAdd(qqId, DateTime.Now.AddSeconds(BotInfo.HPicturePMCD));
             }
         }
     }

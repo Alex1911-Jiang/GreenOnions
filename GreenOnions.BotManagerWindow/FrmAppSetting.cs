@@ -1,5 +1,4 @@
 ﻿using GreenOnions.BotMain;
-using GreenOnions.BotManagerWindow;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using GreenOnions.Utility.Items;
@@ -285,6 +284,24 @@ namespace GreenOnions.BotManagerWindow
             }
             txbReadRssInterval.Text = BotInfo.ReadRssInterval.ToString();
             #endregion  -- RSS --
+
+            #region -- 井字棋 --
+            chkTicTacToeEnabled.Checked = BotInfo.TicTacToeEnabled;
+            txbStartTicTacToeCmd.Text = BotInfo.StartTicTacToeCmd;
+            txbTicTacToeStartedReply.Text = BotInfo.TicTacToeStartedReply;
+            txbTicTacToeAlreadyStartReply.Text = BotInfo.TicTacToeAlreadyStartReply;
+            txbStopTicTacToeCmd.Text = BotInfo.StopTicTacToeCmd;
+            txbTicTacToeStoppedReply.Text = BotInfo.TicTacToeStoppedReply;
+            txbTicTacToeAlreadStopReply.Text = BotInfo.TicTacToeAlreadStopReply;
+            txbTicTacToeTimeoutReply.Text = BotInfo.TicTacToeTimeoutReply;
+            txbTicTacToePlayerWinReply.Text = BotInfo.TicTacToePlayerWinReply;
+            txbTicTacToeBotWinReply.Text = BotInfo.TicTacToeBotWinReply;
+            txbTicTacToeDrawReply.Text = BotInfo.TicTacToeDrawReply;
+            txbTicTacToeNoMoveReply.Text = BotInfo.TicTacToeNoMoveReply;
+            txbTicTacToeIllegalReply.Text = BotInfo.TicTacToeIllegalReply;
+            foreach (CheckBox moveMode in pnlTicTacToeMoveMode.Controls.OfType<CheckBox>())
+                moveMode.Checked = (BotInfo.TicTacToeMoveMode & Convert.ToInt32(moveMode.Tag)) != 0;
+            #endregion -- 井字棋 --
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -529,6 +546,31 @@ namespace GreenOnions.BotManagerWindow
 
             #endregion -- RSS --
 
+            #region -- 井字棋 --
+
+            BotInfo.TicTacToeEnabled = chkTicTacToeEnabled.Checked;
+            BotInfo.StartTicTacToeCmd = txbStartTicTacToeCmd.Text;
+            BotInfo.TicTacToeStartedReply = txbTicTacToeStartedReply.Text;
+            BotInfo.TicTacToeAlreadyStartReply = txbTicTacToeAlreadyStartReply.Text;
+            BotInfo.StopTicTacToeCmd = txbStopTicTacToeCmd.Text;
+            BotInfo.TicTacToeStoppedReply = txbTicTacToeStoppedReply.Text;
+            BotInfo.TicTacToeAlreadStopReply = txbTicTacToeAlreadStopReply.Text;
+            BotInfo.TicTacToeTimeoutReply = txbTicTacToeTimeoutReply.Text;
+            BotInfo.TicTacToePlayerWinReply = txbTicTacToePlayerWinReply.Text;
+            BotInfo.TicTacToeBotWinReply = txbTicTacToeBotWinReply.Text;
+            BotInfo.TicTacToeDrawReply = txbTicTacToeDrawReply.Text;
+
+            BotInfo.TicTacToeNoMoveReply = txbTicTacToeNoMoveReply.Text;
+            BotInfo.TicTacToeIllegalReply = txbTicTacToeIllegalReply.Text;
+            BotInfo.TicTacToeMoveMode = 0;
+            foreach (CheckBox moveMode in pnlTicTacToeMoveMode.Controls.OfType<CheckBox>())
+            {
+                if (moveMode.Checked)
+                    BotInfo.TicTacToeMoveMode |= Convert.ToInt32(moveMode.Tag);
+            }
+
+            #endregion -- 井字棋 --
+
             JsonHelper.SaveConfigFile();
 
             PlainMessageHandler.UpdateRegexs();
@@ -752,5 +794,7 @@ namespace GreenOnions.BotManagerWindow
         private void rdoOriginPictureCheckPornSendByForward_CheckedChanged(object sender, EventArgs e) => pnlOriginPictureCheckPornMessage.Enabled = rdoOriginPictureCheckPornReply.Checked;
 
         private void chkTranslateEnabled_CheckedChanged(object sender, EventArgs e) => pnlTranslate.Enabled = chkTranslateEnabled.Checked;
+
+        private void chkTicTacToeEnabled_CheckedChanged(object sender, EventArgs e) => pnlTicTacToe.Enabled = chkTicTacToeEnabled.Checked;
     }
 }

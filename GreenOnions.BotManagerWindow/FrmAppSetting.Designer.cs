@@ -33,8 +33,8 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.txbAddAdmin = new System.Windows.Forms.TextBox();
             this.lblAdmin = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabBot = new System.Windows.Forms.TabPage();
+            this.tabSettings = new System.Windows.Forms.TabControl();
+            this.pageBot = new System.Windows.Forms.TabPage();
             this.pnlBot = new System.Windows.Forms.Panel();
             this.chkHttpRequestByWebBrowser = new System.Windows.Forms.CheckBox();
             this.chkCheckPornEnabled = new System.Windows.Forms.CheckBox();
@@ -78,7 +78,7 @@
             this.lblBanUser = new System.Windows.Forms.Label();
             this.lblBanGroup = new System.Windows.Forms.Label();
             this.lstBannedGroup = new System.Windows.Forms.ListView();
-            this.tabSearchPicture = new System.Windows.Forms.TabPage();
+            this.pageSearchPicture = new System.Windows.Forms.TabPage();
             this.chkSearchPictureEnabled = new System.Windows.Forms.CheckBox();
             this.pnlSearchPicture = new System.Windows.Forms.Panel();
             this.lblSauceNAOApiKeyInfo = new System.Windows.Forms.Label();
@@ -129,7 +129,7 @@
             this.txbSearchModeOnCmd = new System.Windows.Forms.TextBox();
             this.chkSearchASCII2DEnabled = new System.Windows.Forms.CheckBox();
             this.chkSearchSauceNAOEnabled = new System.Windows.Forms.CheckBox();
-            this.tabOriginPicture = new System.Windows.Forms.TabPage();
+            this.pageOriginPicture = new System.Windows.Forms.TabPage();
             this.pnlOriginPicture = new System.Windows.Forms.Panel();
             this.chkOriginPictureCheckPornEnabled = new System.Windows.Forms.CheckBox();
             this.pnlOriginPictureCheckPorn = new System.Windows.Forms.Panel();
@@ -144,7 +144,7 @@
             this.rdoOriginPictureCheckPornReply = new System.Windows.Forms.RadioButton();
             this.lblOriginPictureCheckPornEvent = new System.Windows.Forms.Label();
             this.chkOriginPictureEnabled = new System.Windows.Forms.CheckBox();
-            this.tabTranslate = new System.Windows.Forms.TabPage();
+            this.pageTranslate = new System.Windows.Forms.TabPage();
             this.pnlTranslate = new System.Windows.Forms.Panel();
             this.txbTranslateFromToCMD = new System.Windows.Forms.TextBox();
             this.lblTranslateFromTo = new System.Windows.Forms.Label();
@@ -162,7 +162,7 @@
             this.lblTranslateTo = new System.Windows.Forms.Label();
             this.lblTranslateToChinese = new System.Windows.Forms.Label();
             this.chkTranslateEnabled = new System.Windows.Forms.CheckBox();
-            this.tabHPicture = new System.Windows.Forms.TabPage();
+            this.pageHPicture = new System.Windows.Forms.TabPage();
             this.pnlEnabelHPicture = new System.Windows.Forms.Panel();
             this.lblHPictureOnceMessageMaxImageCountHelp = new System.Windows.Forms.Label();
             this.txbHPictureOnceMessageMaxImageCount = new System.Windows.Forms.TextBox();
@@ -258,7 +258,7 @@
             this.txbHPictureR18 = new System.Windows.Forms.TextBox();
             this.txbHPictureUnit = new System.Windows.Forms.TextBox();
             this.chkEnabledHPicture = new System.Windows.Forms.CheckBox();
-            this.tabRepeater = new System.Windows.Forms.TabPage();
+            this.pageRepeater = new System.Windows.Forms.TabPage();
             this.chkReplaceMeToYou = new System.Windows.Forms.CheckBox();
             this.chkRewindGif = new System.Windows.Forms.CheckBox();
             this.lblRewindGifProbability = new System.Windows.Forms.Label();
@@ -275,14 +275,14 @@
             this.chkHorizontalMirrorImage = new System.Windows.Forms.CheckBox();
             this.chkSuccessiveRepeat = new System.Windows.Forms.CheckBox();
             this.chkRandomRepeat = new System.Windows.Forms.CheckBox();
-            this.tabGroupMemberEvents = new System.Windows.Forms.TabPage();
+            this.pageGroupMemberEvents = new System.Windows.Forms.TabPage();
             this.txbMemberBeKickedMessage = new System.Windows.Forms.TextBox();
             this.txbMemberPositiveLeaveMessage = new System.Windows.Forms.TextBox();
             this.txbMemberJoinedMessage = new System.Windows.Forms.TextBox();
             this.chkSendMemberBeKickedMessage = new System.Windows.Forms.CheckBox();
             this.chkSendMemberPositiveLeaveMessage = new System.Windows.Forms.CheckBox();
             this.chkSendMemberJoinedMessage = new System.Windows.Forms.CheckBox();
-            this.tabForgeMessage = new System.Windows.Forms.TabPage();
+            this.pageForgeMessage = new System.Windows.Forms.TabPage();
             this.pnlForgeMessage = new System.Windows.Forms.Panel();
             this.lblForgeMessageCmd = new System.Windows.Forms.Label();
             this.txbForgeMessageCmd = new System.Windows.Forms.TextBox();
@@ -302,14 +302,47 @@
             this.lblForgeMessageCmdBegin = new System.Windows.Forms.Label();
             this.txbForgeMessageCmdBegin = new System.Windows.Forms.TextBox();
             this.chkEnabledForgeMessage = new System.Windows.Forms.CheckBox();
-            this.tabRss = new System.Windows.Forms.TabPage();
+            this.pageRss = new System.Windows.Forms.TabPage();
             this.pnlRss = new System.Windows.Forms.Panel();
             this.pnlRssSubscriptionList = new System.Windows.Forms.FlowLayoutPanel();
             this.btnAddRssSubscription = new System.Windows.Forms.Button();
             this.txbReadRssInterval = new System.Windows.Forms.TextBox();
             this.lblReadRssInterval = new System.Windows.Forms.Label();
             this.chkRssEnabled = new System.Windows.Forms.CheckBox();
-            this.tabAbout = new System.Windows.Forms.TabPage();
+            this.pageTicTacToe = new System.Windows.Forms.TabPage();
+            this.pnlTicTacToe = new System.Windows.Forms.Panel();
+            this.lblChessboard = new System.Windows.Forms.Label();
+            this.imgChessboard = new System.Windows.Forms.Panel();
+            this.lblTicTacToeIllegalReply = new System.Windows.Forms.Label();
+            this.txbTicTacToeIllegalReply = new System.Windows.Forms.TextBox();
+            this.lblTicTacToeNoMoveReply = new System.Windows.Forms.Label();
+            this.txbTicTacToeNoMoveReply = new System.Windows.Forms.TextBox();
+            this.lblTicTacToeDrawReply = new System.Windows.Forms.Label();
+            this.lblTicTacToeBotWinReply = new System.Windows.Forms.Label();
+            this.lblTicTacToePlayerWinReply = new System.Windows.Forms.Label();
+            this.txbTicTacToeDrawReply = new System.Windows.Forms.TextBox();
+            this.txbTicTacToeBotWinReply = new System.Windows.Forms.TextBox();
+            this.lblTicTacToeTimeoutReply = new System.Windows.Forms.Label();
+            this.txbTicTacToePlayerWinReply = new System.Windows.Forms.TextBox();
+            this.txbTicTacToeTimeoutReply = new System.Windows.Forms.TextBox();
+            this.pnlTicTacToeMoveMode = new System.Windows.Forms.Panel();
+            this.chkTicTacToeMoveModeOpenCV = new System.Windows.Forms.CheckBox();
+            this.chkTicTacToeMoveModeNomenclature = new System.Windows.Forms.CheckBox();
+            this.txbTicTacToeAlreadStopReply = new System.Windows.Forms.TextBox();
+            this.txbTicTacToeStoppedReply = new System.Windows.Forms.TextBox();
+            this.txbStopTicTacToeCmd = new System.Windows.Forms.TextBox();
+            this.txbTicTacToeAlreadyStartReply = new System.Windows.Forms.TextBox();
+            this.txbTicTacToeStartedReply = new System.Windows.Forms.TextBox();
+            this.txbStartTicTacToeCmd = new System.Windows.Forms.TextBox();
+            this.lblTicTacToeMoveMode = new System.Windows.Forms.Label();
+            this.lblTicTacToeAlreadStopReply = new System.Windows.Forms.Label();
+            this.lblTicTacToeStartedReply = new System.Windows.Forms.Label();
+            this.lblTicTacToeStoppedReply = new System.Windows.Forms.Label();
+            this.lblTicTacToeAlreadyStartReply = new System.Windows.Forms.Label();
+            this.lblStopTicTacToeCmd = new System.Windows.Forms.Label();
+            this.lblStartTicTacToeCmd = new System.Windows.Forms.Label();
+            this.chkTicTacToeEnabled = new System.Windows.Forms.CheckBox();
+            this.pageAbout = new System.Windows.Forms.TabPage();
             this.txbContributorName = new System.Windows.Forms.TextBox();
             this.txbContributorQQ = new System.Windows.Forms.TextBox();
             this.lnkProjectURL = new System.Windows.Forms.LinkLabel();
@@ -318,32 +351,35 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
-            this.tabControl1.SuspendLayout();
-            this.tabBot.SuspendLayout();
+            this.tabSettings.SuspendLayout();
+            this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
             this.pnlDebugMode.SuspendLayout();
             this.pnlCheckPorn.SuspendLayout();
-            this.tabSearchPicture.SuspendLayout();
+            this.pageSearchPicture.SuspendLayout();
             this.pnlSearchPicture.SuspendLayout();
             this.pnlNoCheckPorn.SuspendLayout();
             this.pnlPictureSearcherCheckPorn.SuspendLayout();
-            this.tabOriginPicture.SuspendLayout();
+            this.pageOriginPicture.SuspendLayout();
             this.pnlOriginPicture.SuspendLayout();
             this.pnlOriginPictureCheckPorn.SuspendLayout();
             this.pnlOriginPictureCheckPornMessage.SuspendLayout();
             this.pnlOriginPictureCheckPornEvent.SuspendLayout();
-            this.tabTranslate.SuspendLayout();
+            this.pageTranslate.SuspendLayout();
             this.pnlTranslate.SuspendLayout();
-            this.tabHPicture.SuspendLayout();
+            this.pageHPicture.SuspendLayout();
             this.pnlEnabelHPicture.SuspendLayout();
-            this.tabRepeater.SuspendLayout();
-            this.tabGroupMemberEvents.SuspendLayout();
-            this.tabForgeMessage.SuspendLayout();
+            this.pageRepeater.SuspendLayout();
+            this.pageGroupMemberEvents.SuspendLayout();
+            this.pageForgeMessage.SuspendLayout();
             this.pnlForgeMessage.SuspendLayout();
-            this.tabRss.SuspendLayout();
+            this.pageRss.SuspendLayout();
             this.pnlRss.SuspendLayout();
             this.pnlRssSubscriptionList.SuspendLayout();
-            this.tabAbout.SuspendLayout();
+            this.pageTicTacToe.SuspendLayout();
+            this.pnlTicTacToe.SuspendLayout();
+            this.pnlTicTacToeMoveMode.SuspendLayout();
+            this.pageAbout.SuspendLayout();
             this.SuspendLayout();
             // 
             // txbBotName
@@ -398,39 +434,40 @@
             this.lblAdmin.TabIndex = 1;
             this.lblAdmin.Text = "机器人管理员QQ：";
             // 
-            // tabControl1
+            // tabSettings
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tabSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabBot);
-            this.tabControl1.Controls.Add(this.tabSearchPicture);
-            this.tabControl1.Controls.Add(this.tabOriginPicture);
-            this.tabControl1.Controls.Add(this.tabTranslate);
-            this.tabControl1.Controls.Add(this.tabHPicture);
-            this.tabControl1.Controls.Add(this.tabRepeater);
-            this.tabControl1.Controls.Add(this.tabGroupMemberEvents);
-            this.tabControl1.Controls.Add(this.tabForgeMessage);
-            this.tabControl1.Controls.Add(this.tabRss);
-            this.tabControl1.Controls.Add(this.tabAbout);
-            this.tabControl1.Location = new System.Drawing.Point(14, 8);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(660, 717);
-            this.tabControl1.TabIndex = 4;
+            this.tabSettings.Controls.Add(this.pageBot);
+            this.tabSettings.Controls.Add(this.pageSearchPicture);
+            this.tabSettings.Controls.Add(this.pageOriginPicture);
+            this.tabSettings.Controls.Add(this.pageHPicture);
+            this.tabSettings.Controls.Add(this.pageTranslate);
+            this.tabSettings.Controls.Add(this.pageRepeater);
+            this.tabSettings.Controls.Add(this.pageGroupMemberEvents);
+            this.tabSettings.Controls.Add(this.pageForgeMessage);
+            this.tabSettings.Controls.Add(this.pageRss);
+            this.tabSettings.Controls.Add(this.pageTicTacToe);
+            this.tabSettings.Controls.Add(this.pageAbout);
+            this.tabSettings.Location = new System.Drawing.Point(14, 8);
+            this.tabSettings.Margin = new System.Windows.Forms.Padding(4);
+            this.tabSettings.Name = "tabSettings";
+            this.tabSettings.SelectedIndex = 0;
+            this.tabSettings.Size = new System.Drawing.Size(660, 717);
+            this.tabSettings.TabIndex = 4;
             // 
-            // tabBot
+            // pageBot
             // 
-            this.tabBot.Controls.Add(this.pnlBot);
-            this.tabBot.Location = new System.Drawing.Point(4, 26);
-            this.tabBot.Margin = new System.Windows.Forms.Padding(4);
-            this.tabBot.Name = "tabBot";
-            this.tabBot.Padding = new System.Windows.Forms.Padding(4);
-            this.tabBot.Size = new System.Drawing.Size(652, 687);
-            this.tabBot.TabIndex = 1;
-            this.tabBot.Text = "机器人设置";
-            this.tabBot.UseVisualStyleBackColor = true;
+            this.pageBot.Controls.Add(this.pnlBot);
+            this.pageBot.Location = new System.Drawing.Point(4, 26);
+            this.pageBot.Margin = new System.Windows.Forms.Padding(4);
+            this.pageBot.Name = "pageBot";
+            this.pageBot.Padding = new System.Windows.Forms.Padding(4);
+            this.pageBot.Size = new System.Drawing.Size(652, 687);
+            this.pageBot.TabIndex = 1;
+            this.pageBot.Text = "机器人设置";
+            this.pageBot.UseVisualStyleBackColor = true;
             // 
             // pnlBot
             // 
@@ -897,16 +934,16 @@
             this.lstBannedGroup.UseCompatibleStateImageBehavior = false;
             this.lstBannedGroup.View = System.Windows.Forms.View.List;
             // 
-            // tabSearchPicture
+            // pageSearchPicture
             // 
-            this.tabSearchPicture.Controls.Add(this.chkSearchPictureEnabled);
-            this.tabSearchPicture.Controls.Add(this.pnlSearchPicture);
-            this.tabSearchPicture.Location = new System.Drawing.Point(4, 26);
-            this.tabSearchPicture.Name = "tabSearchPicture";
-            this.tabSearchPicture.Size = new System.Drawing.Size(652, 687);
-            this.tabSearchPicture.TabIndex = 3;
-            this.tabSearchPicture.Text = "搜图设置";
-            this.tabSearchPicture.UseVisualStyleBackColor = true;
+            this.pageSearchPicture.Controls.Add(this.chkSearchPictureEnabled);
+            this.pageSearchPicture.Controls.Add(this.pnlSearchPicture);
+            this.pageSearchPicture.Location = new System.Drawing.Point(4, 26);
+            this.pageSearchPicture.Name = "pageSearchPicture";
+            this.pageSearchPicture.Size = new System.Drawing.Size(652, 687);
+            this.pageSearchPicture.TabIndex = 3;
+            this.pageSearchPicture.Text = "搜图设置";
+            this.pageSearchPicture.UseVisualStyleBackColor = true;
             // 
             // chkSearchPictureEnabled
             // 
@@ -985,7 +1022,7 @@
             this.pnlNoCheckPorn.Enabled = false;
             this.pnlNoCheckPorn.Location = new System.Drawing.Point(3, 674);
             this.pnlNoCheckPorn.Name = "pnlNoCheckPorn";
-            this.pnlNoCheckPorn.Size = new System.Drawing.Size(599, 29);
+            this.pnlNoCheckPorn.Size = new System.Drawing.Size(480, 29);
             this.pnlNoCheckPorn.TabIndex = 47;
             // 
             // lblSearchNoCheckPorn
@@ -1047,7 +1084,7 @@
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.txbSearchCheckPornErrorReply);
             this.pnlPictureSearcherCheckPorn.Location = new System.Drawing.Point(3, 557);
             this.pnlPictureSearcherCheckPorn.Name = "pnlPictureSearcherCheckPorn";
-            this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(599, 114);
+            this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(480, 114);
             this.pnlPictureSearcherCheckPorn.TabIndex = 40;
             // 
             // lblSearchCheckPornOutOfLimitReply
@@ -1065,7 +1102,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchCheckPornOutOfLimitReply.Location = new System.Drawing.Point(176, 88);
             this.txbSearchCheckPornOutOfLimitReply.Name = "txbSearchCheckPornOutOfLimitReply";
-            this.txbSearchCheckPornOutOfLimitReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchCheckPornOutOfLimitReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchCheckPornOutOfLimitReply.TabIndex = 42;
             // 
             // rdoSearchCheckPornOutOfLimitAppend
@@ -1118,7 +1155,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchCheckPornIllegalReply.Location = new System.Drawing.Point(176, 3);
             this.txbSearchCheckPornIllegalReply.Name = "txbSearchCheckPornIllegalReply";
-            this.txbSearchCheckPornIllegalReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchCheckPornIllegalReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchCheckPornIllegalReply.TabIndex = 35;
             // 
             // lblSearchCheckPornIllegalReply
@@ -1145,7 +1182,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchCheckPornErrorReply.Location = new System.Drawing.Point(176, 32);
             this.txbSearchCheckPornErrorReply.Name = "txbSearchCheckPornErrorReply";
-            this.txbSearchCheckPornErrorReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchCheckPornErrorReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchCheckPornErrorReply.TabIndex = 36;
             // 
             // chkPictureSearcherCheckPornEnabled
@@ -1301,7 +1338,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchLowSimilarityReply.Location = new System.Drawing.Point(179, 496);
             this.txbSearchLowSimilarityReply.Name = "txbSearchLowSimilarityReply";
-            this.txbSearchLowSimilarityReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchLowSimilarityReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchLowSimilarityReply.TabIndex = 16;
             // 
             // txbSearchLowSimilarity
@@ -1310,7 +1347,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchLowSimilarity.Location = new System.Drawing.Point(179, 467);
             this.txbSearchLowSimilarity.Name = "txbSearchLowSimilarity";
-            this.txbSearchLowSimilarity.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchLowSimilarity.Size = new System.Drawing.Size(301, 23);
             this.txbSearchLowSimilarity.TabIndex = 16;
             // 
             // txbSearchErrorReply
@@ -1319,7 +1356,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchErrorReply.Location = new System.Drawing.Point(179, 438);
             this.txbSearchErrorReply.Name = "txbSearchErrorReply";
-            this.txbSearchErrorReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchErrorReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchErrorReply.TabIndex = 16;
             // 
             // txbSearchNoResultReply
@@ -1328,7 +1365,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchNoResultReply.Location = new System.Drawing.Point(179, 409);
             this.txbSearchNoResultReply.Name = "txbSearchNoResultReply";
-            this.txbSearchNoResultReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchNoResultReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchNoResultReply.TabIndex = 16;
             // 
             // txbSearchModeTimeOutReply
@@ -1337,7 +1374,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeTimeOutReply.Location = new System.Drawing.Point(179, 322);
             this.txbSearchModeTimeOutReply.Name = "txbSearchModeTimeOutReply";
-            this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchModeTimeOutReply.TabIndex = 16;
             // 
             // txbSearchModeOffCmd
@@ -1346,7 +1383,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOffCmd.Location = new System.Drawing.Point(179, 293);
             this.txbSearchModeOffCmd.Name = "txbSearchModeOffCmd";
-            this.txbSearchModeOffCmd.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchModeOffCmd.Size = new System.Drawing.Size(301, 23);
             this.txbSearchModeOffCmd.TabIndex = 16;
             // 
             // txbSearchModeAlreadyOffReply
@@ -1355,7 +1392,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeAlreadyOffReply.Location = new System.Drawing.Point(179, 380);
             this.txbSearchModeAlreadyOffReply.Name = "txbSearchModeAlreadyOffReply";
-            this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchModeAlreadyOffReply.TabIndex = 16;
             // 
             // txbSearchModeOffReply
@@ -1364,7 +1401,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOffReply.Location = new System.Drawing.Point(179, 351);
             this.txbSearchModeOffReply.Name = "txbSearchModeOffReply";
-            this.txbSearchModeOffReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchModeOffReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchModeOffReply.TabIndex = 16;
             // 
             // txbSearchModeAlreadyOnReply
@@ -1373,7 +1410,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(179, 264);
             this.txbSearchModeAlreadyOnReply.Name = "txbSearchModeAlreadyOnReply";
-            this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchModeAlreadyOnReply.TabIndex = 16;
             // 
             // txbTraceMoeSendThreshold
@@ -1382,7 +1419,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbTraceMoeSendThreshold.Location = new System.Drawing.Point(179, 24);
             this.txbTraceMoeSendThreshold.Name = "txbTraceMoeSendThreshold";
-            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(423, 23);
+            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(304, 23);
             this.txbTraceMoeSendThreshold.TabIndex = 16;
             // 
             // txbSearchModeOnReply
@@ -1391,7 +1428,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOnReply.Location = new System.Drawing.Point(179, 235);
             this.txbSearchModeOnReply.Name = "txbSearchModeOnReply";
-            this.txbSearchModeOnReply.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchModeOnReply.Size = new System.Drawing.Size(301, 23);
             this.txbSearchModeOnReply.TabIndex = 16;
             // 
             // txbSauceNAOApiKey
@@ -1401,7 +1438,7 @@
             this.txbSauceNAOApiKey.Location = new System.Drawing.Point(179, 87);
             this.txbSauceNAOApiKey.Multiline = true;
             this.txbSauceNAOApiKey.Name = "txbSauceNAOApiKey";
-            this.txbSauceNAOApiKey.Size = new System.Drawing.Size(420, 86);
+            this.txbSauceNAOApiKey.Size = new System.Drawing.Size(301, 86);
             this.txbSauceNAOApiKey.TabIndex = 16;
             // 
             // txbSearchModeOnCmd
@@ -1410,7 +1447,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOnCmd.Location = new System.Drawing.Point(179, 206);
             this.txbSearchModeOnCmd.Name = "txbSearchModeOnCmd";
-            this.txbSearchModeOnCmd.Size = new System.Drawing.Size(420, 23);
+            this.txbSearchModeOnCmd.Size = new System.Drawing.Size(301, 23);
             this.txbSearchModeOnCmd.TabIndex = 16;
             // 
             // chkSearchASCII2DEnabled
@@ -1434,16 +1471,16 @@
             this.chkSearchSauceNAOEnabled.UseVisualStyleBackColor = true;
             this.chkSearchSauceNAOEnabled.CheckedChanged += new System.EventHandler(this.chkSearchSauceNAOEnabled_CheckedChanged);
             // 
-            // tabOriginPicture
+            // pageOriginPicture
             // 
-            this.tabOriginPicture.Controls.Add(this.pnlOriginPicture);
-            this.tabOriginPicture.Controls.Add(this.chkOriginPictureEnabled);
-            this.tabOriginPicture.Location = new System.Drawing.Point(4, 26);
-            this.tabOriginPicture.Name = "tabOriginPicture";
-            this.tabOriginPicture.Size = new System.Drawing.Size(652, 687);
-            this.tabOriginPicture.TabIndex = 9;
-            this.tabOriginPicture.Text = "下载原图";
-            this.tabOriginPicture.UseVisualStyleBackColor = true;
+            this.pageOriginPicture.Controls.Add(this.pnlOriginPicture);
+            this.pageOriginPicture.Controls.Add(this.chkOriginPictureEnabled);
+            this.pageOriginPicture.Location = new System.Drawing.Point(4, 26);
+            this.pageOriginPicture.Name = "pageOriginPicture";
+            this.pageOriginPicture.Size = new System.Drawing.Size(652, 687);
+            this.pageOriginPicture.TabIndex = 9;
+            this.pageOriginPicture.Text = "下载原图";
+            this.pageOriginPicture.UseVisualStyleBackColor = true;
             // 
             // pnlOriginPicture
             // 
@@ -1604,16 +1641,16 @@
             this.chkOriginPictureEnabled.UseVisualStyleBackColor = true;
             this.chkOriginPictureEnabled.CheckedChanged += new System.EventHandler(this.chkOriginPictureEnabled_CheckedChanged);
             // 
-            // tabTranslate
+            // pageTranslate
             // 
-            this.tabTranslate.Controls.Add(this.pnlTranslate);
-            this.tabTranslate.Controls.Add(this.chkTranslateEnabled);
-            this.tabTranslate.Location = new System.Drawing.Point(4, 26);
-            this.tabTranslate.Name = "tabTranslate";
-            this.tabTranslate.Size = new System.Drawing.Size(652, 687);
-            this.tabTranslate.TabIndex = 4;
-            this.tabTranslate.Text = "翻译设置";
-            this.tabTranslate.UseVisualStyleBackColor = true;
+            this.pageTranslate.Controls.Add(this.pnlTranslate);
+            this.pageTranslate.Controls.Add(this.chkTranslateEnabled);
+            this.pageTranslate.Location = new System.Drawing.Point(4, 26);
+            this.pageTranslate.Name = "pageTranslate";
+            this.pageTranslate.Size = new System.Drawing.Size(652, 687);
+            this.pageTranslate.TabIndex = 4;
+            this.pageTranslate.Text = "翻译设置";
+            this.pageTranslate.UseVisualStyleBackColor = true;
             // 
             // pnlTranslate
             // 
@@ -1802,19 +1839,19 @@
             this.chkTranslateEnabled.UseVisualStyleBackColor = true;
             this.chkTranslateEnabled.CheckedChanged += new System.EventHandler(this.chkTranslateEnabled_CheckedChanged);
             // 
-            // tabHPicture
+            // pageHPicture
             // 
-            this.tabHPicture.AutoScroll = true;
-            this.tabHPicture.Controls.Add(this.pnlEnabelHPicture);
-            this.tabHPicture.Controls.Add(this.chkEnabledHPicture);
-            this.tabHPicture.Location = new System.Drawing.Point(4, 26);
-            this.tabHPicture.Margin = new System.Windows.Forms.Padding(4);
-            this.tabHPicture.Name = "tabHPicture";
-            this.tabHPicture.Padding = new System.Windows.Forms.Padding(4);
-            this.tabHPicture.Size = new System.Drawing.Size(652, 687);
-            this.tabHPicture.TabIndex = 0;
-            this.tabHPicture.Text = "色图设置";
-            this.tabHPicture.UseVisualStyleBackColor = true;
+            this.pageHPicture.AutoScroll = true;
+            this.pageHPicture.Controls.Add(this.pnlEnabelHPicture);
+            this.pageHPicture.Controls.Add(this.chkEnabledHPicture);
+            this.pageHPicture.Location = new System.Drawing.Point(4, 26);
+            this.pageHPicture.Margin = new System.Windows.Forms.Padding(4);
+            this.pageHPicture.Name = "pageHPicture";
+            this.pageHPicture.Padding = new System.Windows.Forms.Padding(4);
+            this.pageHPicture.Size = new System.Drawing.Size(652, 687);
+            this.pageHPicture.TabIndex = 0;
+            this.pageHPicture.Text = "色图设置";
+            this.pageHPicture.UseVisualStyleBackColor = true;
             // 
             // pnlEnabelHPicture
             // 
@@ -1939,7 +1976,7 @@
             this.txbHPictureOnceMessageMaxImageCount.Location = new System.Drawing.Point(137, 520);
             this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
-            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(349, 23);
+            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(230, 23);
             this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
             // 
             // lblHPictureOnceMessageMaxImageCount
@@ -2008,7 +2045,7 @@
             // 
             this.chkRevokeBeautyPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkRevokeBeautyPicture.AutoSize = true;
-            this.chkRevokeBeautyPicture.Location = new System.Drawing.Point(493, 401);
+            this.chkRevokeBeautyPicture.Location = new System.Drawing.Point(374, 401);
             this.chkRevokeBeautyPicture.Name = "chkRevokeBeautyPicture";
             this.chkRevokeBeautyPicture.Size = new System.Drawing.Size(51, 21);
             this.chkRevokeBeautyPicture.TabIndex = 14;
@@ -2304,7 +2341,7 @@
             this.txbDownloadFailReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbDownloadFailReply.Multiline = true;
             this.txbDownloadFailReply.Name = "txbDownloadFailReply";
-            this.txbDownloadFailReply.Size = new System.Drawing.Size(452, 23);
+            this.txbDownloadFailReply.Size = new System.Drawing.Size(333, 23);
             this.txbDownloadFailReply.TabIndex = 8;
             // 
             // txbHPictureNoResultReply
@@ -2315,7 +2352,7 @@
             this.txbHPictureNoResultReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureNoResultReply.Multiline = true;
             this.txbHPictureNoResultReply.Name = "txbHPictureNoResultReply";
-            this.txbHPictureNoResultReply.Size = new System.Drawing.Size(452, 23);
+            this.txbHPictureNoResultReply.Size = new System.Drawing.Size(333, 23);
             this.txbHPictureNoResultReply.TabIndex = 8;
             // 
             // txbHPictureErrorReplyReply
@@ -2326,7 +2363,7 @@
             this.txbHPictureErrorReplyReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureErrorReplyReply.Multiline = true;
             this.txbHPictureErrorReplyReply.Name = "txbHPictureErrorReplyReply";
-            this.txbHPictureErrorReplyReply.Size = new System.Drawing.Size(452, 23);
+            this.txbHPictureErrorReplyReply.Size = new System.Drawing.Size(333, 23);
             this.txbHPictureErrorReplyReply.TabIndex = 8;
             // 
             // txbOutOfLimitReply
@@ -2337,7 +2374,7 @@
             this.txbOutOfLimitReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbOutOfLimitReply.Multiline = true;
             this.txbOutOfLimitReply.Name = "txbOutOfLimitReply";
-            this.txbOutOfLimitReply.Size = new System.Drawing.Size(452, 23);
+            this.txbOutOfLimitReply.Size = new System.Drawing.Size(333, 23);
             this.txbOutOfLimitReply.TabIndex = 8;
             // 
             // txbDownloadAccelerateUrl
@@ -2357,7 +2394,7 @@
             this.txbCDUnreadyReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbCDUnreadyReply.Multiline = true;
             this.txbCDUnreadyReply.Name = "txbCDUnreadyReply";
-            this.txbCDUnreadyReply.Size = new System.Drawing.Size(452, 23);
+            this.txbCDUnreadyReply.Size = new System.Drawing.Size(333, 23);
             this.txbCDUnreadyReply.TabIndex = 8;
             // 
             // txbCD
@@ -2486,7 +2523,7 @@
             // 
             this.chkSize1200.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkSize1200.AutoSize = true;
-            this.chkSize1200.Location = new System.Drawing.Point(494, 296);
+            this.chkSize1200.Location = new System.Drawing.Point(375, 296);
             this.chkSize1200.Margin = new System.Windows.Forms.Padding(4);
             this.chkSize1200.Name = "chkSize1200";
             this.chkSize1200.Size = new System.Drawing.Size(103, 21);
@@ -2636,7 +2673,7 @@
             this.lnkResetHPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkResetHPicture.AutoSize = true;
             this.lnkResetHPicture.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.lnkResetHPicture.Location = new System.Drawing.Point(534, 348);
+            this.lnkResetHPicture.Location = new System.Drawing.Point(415, 348);
             this.lnkResetHPicture.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lnkResetHPicture.Name = "lnkResetHPicture";
             this.lnkResetHPicture.Size = new System.Drawing.Size(32, 17);
@@ -2660,7 +2697,7 @@
             // 
             this.chkBeautyPictureEndNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkBeautyPictureEndNull.AutoSize = true;
-            this.chkBeautyPictureEndNull.Location = new System.Drawing.Point(494, 225);
+            this.chkBeautyPictureEndNull.Location = new System.Drawing.Point(375, 225);
             this.chkBeautyPictureEndNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkBeautyPictureEndNull.Name = "chkBeautyPictureEndNull";
             this.chkBeautyPictureEndNull.Size = new System.Drawing.Size(63, 21);
@@ -2673,7 +2710,7 @@
             // 
             this.chkHPictureEndNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureEndNull.AutoSize = true;
-            this.chkHPictureEndNull.Location = new System.Drawing.Point(494, 194);
+            this.chkHPictureEndNull.Location = new System.Drawing.Point(375, 194);
             this.chkHPictureEndNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureEndNull.Name = "chkHPictureEndNull";
             this.chkHPictureEndNull.Size = new System.Drawing.Size(63, 21);
@@ -2696,7 +2733,7 @@
             // 
             this.chkHPictureKeywordNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureKeywordNull.AutoSize = true;
-            this.chkHPictureKeywordNull.Location = new System.Drawing.Point(494, 164);
+            this.chkHPictureKeywordNull.Location = new System.Drawing.Point(375, 164);
             this.chkHPictureKeywordNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureKeywordNull.Name = "chkHPictureKeywordNull";
             this.chkHPictureKeywordNull.Size = new System.Drawing.Size(63, 21);
@@ -2719,7 +2756,7 @@
             // 
             this.chkHPictureR18Null.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureR18Null.AutoSize = true;
-            this.chkHPictureR18Null.Location = new System.Drawing.Point(494, 133);
+            this.chkHPictureR18Null.Location = new System.Drawing.Point(375, 133);
             this.chkHPictureR18Null.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureR18Null.Name = "chkHPictureR18Null";
             this.chkHPictureR18Null.Size = new System.Drawing.Size(63, 21);
@@ -2752,7 +2789,7 @@
             // 
             this.chkHPictureUnitNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureUnitNull.AutoSize = true;
-            this.chkHPictureUnitNull.Location = new System.Drawing.Point(494, 102);
+            this.chkHPictureUnitNull.Location = new System.Drawing.Point(375, 102);
             this.chkHPictureUnitNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureUnitNull.Name = "chkHPictureUnitNull";
             this.chkHPictureUnitNull.Size = new System.Drawing.Size(63, 21);
@@ -2775,7 +2812,7 @@
             // 
             this.chkHPictureCountNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureCountNull.AutoSize = true;
-            this.chkHPictureCountNull.Location = new System.Drawing.Point(494, 71);
+            this.chkHPictureCountNull.Location = new System.Drawing.Point(375, 71);
             this.chkHPictureCountNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureCountNull.Name = "chkHPictureCountNull";
             this.chkHPictureCountNull.Size = new System.Drawing.Size(63, 21);
@@ -2808,7 +2845,7 @@
             // 
             this.chkHPictureBeginNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureBeginNull.AutoSize = true;
-            this.chkHPictureBeginNull.Location = new System.Drawing.Point(494, 40);
+            this.chkHPictureBeginNull.Location = new System.Drawing.Point(375, 40);
             this.chkHPictureBeginNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureBeginNull.Name = "chkHPictureBeginNull";
             this.chkHPictureBeginNull.Size = new System.Drawing.Size(63, 21);
@@ -2827,7 +2864,7 @@
             this.txbBeautyPictureCmd.Multiline = true;
             this.txbBeautyPictureCmd.Name = "txbBeautyPictureCmd";
             this.txbBeautyPictureCmd.ReadOnly = true;
-            this.txbBeautyPictureCmd.Size = new System.Drawing.Size(349, 98);
+            this.txbBeautyPictureCmd.Size = new System.Drawing.Size(230, 98);
             this.txbBeautyPictureCmd.TabIndex = 1;
             // 
             // txbHPictureCmd
@@ -2840,7 +2877,7 @@
             this.txbHPictureCmd.Multiline = true;
             this.txbHPictureCmd.Name = "txbHPictureCmd";
             this.txbHPictureCmd.ReadOnly = true;
-            this.txbHPictureCmd.Size = new System.Drawing.Size(349, 98);
+            this.txbHPictureCmd.Size = new System.Drawing.Size(230, 98);
             this.txbHPictureCmd.TabIndex = 1;
             // 
             // txbHPictureApiKey
@@ -2851,7 +2888,7 @@
             this.txbHPictureApiKey.Location = new System.Drawing.Point(137, 6);
             this.txbHPictureApiKey.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureApiKey.Name = "txbHPictureApiKey";
-            this.txbHPictureApiKey.Size = new System.Drawing.Size(349, 23);
+            this.txbHPictureApiKey.Size = new System.Drawing.Size(230, 23);
             this.txbHPictureApiKey.TabIndex = 2;
             this.txbHPictureApiKey.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2862,7 +2899,7 @@
             this.txbBeautyPictureEnd.Location = new System.Drawing.Point(137, 224);
             this.txbBeautyPictureEnd.Margin = new System.Windows.Forms.Padding(4);
             this.txbBeautyPictureEnd.Name = "txbBeautyPictureEnd";
-            this.txbBeautyPictureEnd.Size = new System.Drawing.Size(349, 23);
+            this.txbBeautyPictureEnd.Size = new System.Drawing.Size(230, 23);
             this.txbBeautyPictureEnd.TabIndex = 2;
             this.txbBeautyPictureEnd.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2873,7 +2910,7 @@
             this.txbHPictureEnd.Location = new System.Drawing.Point(137, 193);
             this.txbHPictureEnd.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureEnd.Name = "txbHPictureEnd";
-            this.txbHPictureEnd.Size = new System.Drawing.Size(349, 23);
+            this.txbHPictureEnd.Size = new System.Drawing.Size(230, 23);
             this.txbHPictureEnd.TabIndex = 2;
             this.txbHPictureEnd.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2884,7 +2921,7 @@
             this.txbHPictureBegin.Location = new System.Drawing.Point(137, 37);
             this.txbHPictureBegin.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureBegin.Name = "txbHPictureBegin";
-            this.txbHPictureBegin.Size = new System.Drawing.Size(349, 23);
+            this.txbHPictureBegin.Size = new System.Drawing.Size(230, 23);
             this.txbHPictureBegin.TabIndex = 2;
             this.txbHPictureBegin.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2895,7 +2932,7 @@
             this.txbHPictureKeyword.Location = new System.Drawing.Point(137, 161);
             this.txbHPictureKeyword.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureKeyword.Name = "txbHPictureKeyword";
-            this.txbHPictureKeyword.Size = new System.Drawing.Size(349, 23);
+            this.txbHPictureKeyword.Size = new System.Drawing.Size(230, 23);
             this.txbHPictureKeyword.TabIndex = 2;
             this.txbHPictureKeyword.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2906,7 +2943,7 @@
             this.txbHPictureCount.Location = new System.Drawing.Point(137, 68);
             this.txbHPictureCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureCount.Name = "txbHPictureCount";
-            this.txbHPictureCount.Size = new System.Drawing.Size(349, 23);
+            this.txbHPictureCount.Size = new System.Drawing.Size(230, 23);
             this.txbHPictureCount.TabIndex = 2;
             this.txbHPictureCount.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2917,7 +2954,7 @@
             this.txbHPictureR18.Location = new System.Drawing.Point(137, 130);
             this.txbHPictureR18.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureR18.Name = "txbHPictureR18";
-            this.txbHPictureR18.Size = new System.Drawing.Size(349, 23);
+            this.txbHPictureR18.Size = new System.Drawing.Size(230, 23);
             this.txbHPictureR18.TabIndex = 2;
             this.txbHPictureR18.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2928,7 +2965,7 @@
             this.txbHPictureUnit.Location = new System.Drawing.Point(137, 99);
             this.txbHPictureUnit.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureUnit.Name = "txbHPictureUnit";
-            this.txbHPictureUnit.Size = new System.Drawing.Size(349, 23);
+            this.txbHPictureUnit.Size = new System.Drawing.Size(230, 23);
             this.txbHPictureUnit.TabIndex = 2;
             this.txbHPictureUnit.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2944,30 +2981,30 @@
             this.chkEnabledHPicture.UseVisualStyleBackColor = true;
             this.chkEnabledHPicture.CheckedChanged += new System.EventHandler(this.chkEnableHPicture_CheckedChanged);
             // 
-            // tabRepeater
+            // pageRepeater
             // 
-            this.tabRepeater.Controls.Add(this.chkReplaceMeToYou);
-            this.tabRepeater.Controls.Add(this.chkRewindGif);
-            this.tabRepeater.Controls.Add(this.lblRewindGifProbability);
-            this.tabRepeater.Controls.Add(this.lblVerticalMirrorImageProbability);
-            this.tabRepeater.Controls.Add(this.lblHorizontalMirrorImageProbability);
-            this.tabRepeater.Controls.Add(this.lblSuccessiveRepeatCount);
-            this.tabRepeater.Controls.Add(this.txbRewindGifProbability);
-            this.tabRepeater.Controls.Add(this.lblRandomRepeatProbability);
-            this.tabRepeater.Controls.Add(this.txbVerticalMirrorImageProbability);
-            this.tabRepeater.Controls.Add(this.txbHorizontalMirrorImageProbability);
-            this.tabRepeater.Controls.Add(this.txbSuccessiveRepeatCount);
-            this.tabRepeater.Controls.Add(this.txbRandomRepeatProbability);
-            this.tabRepeater.Controls.Add(this.chkVerticalMirrorImage);
-            this.tabRepeater.Controls.Add(this.chkHorizontalMirrorImage);
-            this.tabRepeater.Controls.Add(this.chkSuccessiveRepeat);
-            this.tabRepeater.Controls.Add(this.chkRandomRepeat);
-            this.tabRepeater.Location = new System.Drawing.Point(4, 26);
-            this.tabRepeater.Name = "tabRepeater";
-            this.tabRepeater.Size = new System.Drawing.Size(652, 687);
-            this.tabRepeater.TabIndex = 5;
-            this.tabRepeater.Text = "复读设置";
-            this.tabRepeater.UseVisualStyleBackColor = true;
+            this.pageRepeater.Controls.Add(this.chkReplaceMeToYou);
+            this.pageRepeater.Controls.Add(this.chkRewindGif);
+            this.pageRepeater.Controls.Add(this.lblRewindGifProbability);
+            this.pageRepeater.Controls.Add(this.lblVerticalMirrorImageProbability);
+            this.pageRepeater.Controls.Add(this.lblHorizontalMirrorImageProbability);
+            this.pageRepeater.Controls.Add(this.lblSuccessiveRepeatCount);
+            this.pageRepeater.Controls.Add(this.txbRewindGifProbability);
+            this.pageRepeater.Controls.Add(this.lblRandomRepeatProbability);
+            this.pageRepeater.Controls.Add(this.txbVerticalMirrorImageProbability);
+            this.pageRepeater.Controls.Add(this.txbHorizontalMirrorImageProbability);
+            this.pageRepeater.Controls.Add(this.txbSuccessiveRepeatCount);
+            this.pageRepeater.Controls.Add(this.txbRandomRepeatProbability);
+            this.pageRepeater.Controls.Add(this.chkVerticalMirrorImage);
+            this.pageRepeater.Controls.Add(this.chkHorizontalMirrorImage);
+            this.pageRepeater.Controls.Add(this.chkSuccessiveRepeat);
+            this.pageRepeater.Controls.Add(this.chkRandomRepeat);
+            this.pageRepeater.Location = new System.Drawing.Point(4, 26);
+            this.pageRepeater.Name = "pageRepeater";
+            this.pageRepeater.Size = new System.Drawing.Size(652, 687);
+            this.pageRepeater.TabIndex = 5;
+            this.pageRepeater.Text = "复读设置";
+            this.pageRepeater.UseVisualStyleBackColor = true;
             // 
             // chkReplaceMeToYou
             // 
@@ -3129,20 +3166,20 @@
             this.chkRandomRepeat.Text = "启用随机复读";
             this.chkRandomRepeat.UseVisualStyleBackColor = true;
             // 
-            // tabGroupMemberEvents
+            // pageGroupMemberEvents
             // 
-            this.tabGroupMemberEvents.Controls.Add(this.txbMemberBeKickedMessage);
-            this.tabGroupMemberEvents.Controls.Add(this.txbMemberPositiveLeaveMessage);
-            this.tabGroupMemberEvents.Controls.Add(this.txbMemberJoinedMessage);
-            this.tabGroupMemberEvents.Controls.Add(this.chkSendMemberBeKickedMessage);
-            this.tabGroupMemberEvents.Controls.Add(this.chkSendMemberPositiveLeaveMessage);
-            this.tabGroupMemberEvents.Controls.Add(this.chkSendMemberJoinedMessage);
-            this.tabGroupMemberEvents.Location = new System.Drawing.Point(4, 26);
-            this.tabGroupMemberEvents.Name = "tabGroupMemberEvents";
-            this.tabGroupMemberEvents.Size = new System.Drawing.Size(652, 687);
-            this.tabGroupMemberEvents.TabIndex = 6;
-            this.tabGroupMemberEvents.Text = "进/退群提醒";
-            this.tabGroupMemberEvents.UseVisualStyleBackColor = true;
+            this.pageGroupMemberEvents.Controls.Add(this.txbMemberBeKickedMessage);
+            this.pageGroupMemberEvents.Controls.Add(this.txbMemberPositiveLeaveMessage);
+            this.pageGroupMemberEvents.Controls.Add(this.txbMemberJoinedMessage);
+            this.pageGroupMemberEvents.Controls.Add(this.chkSendMemberBeKickedMessage);
+            this.pageGroupMemberEvents.Controls.Add(this.chkSendMemberPositiveLeaveMessage);
+            this.pageGroupMemberEvents.Controls.Add(this.chkSendMemberJoinedMessage);
+            this.pageGroupMemberEvents.Location = new System.Drawing.Point(4, 26);
+            this.pageGroupMemberEvents.Name = "pageGroupMemberEvents";
+            this.pageGroupMemberEvents.Size = new System.Drawing.Size(652, 687);
+            this.pageGroupMemberEvents.TabIndex = 6;
+            this.pageGroupMemberEvents.Text = "进/退群提醒";
+            this.pageGroupMemberEvents.UseVisualStyleBackColor = true;
             // 
             // txbMemberBeKickedMessage
             // 
@@ -3201,16 +3238,16 @@
             this.chkSendMemberJoinedMessage.Text = "发送新人入群消息";
             this.chkSendMemberJoinedMessage.UseVisualStyleBackColor = true;
             // 
-            // tabForgeMessage
+            // pageForgeMessage
             // 
-            this.tabForgeMessage.Controls.Add(this.pnlForgeMessage);
-            this.tabForgeMessage.Controls.Add(this.chkEnabledForgeMessage);
-            this.tabForgeMessage.Location = new System.Drawing.Point(4, 26);
-            this.tabForgeMessage.Name = "tabForgeMessage";
-            this.tabForgeMessage.Size = new System.Drawing.Size(652, 687);
-            this.tabForgeMessage.TabIndex = 7;
-            this.tabForgeMessage.Text = "伪造消息设置";
-            this.tabForgeMessage.UseVisualStyleBackColor = true;
+            this.pageForgeMessage.Controls.Add(this.pnlForgeMessage);
+            this.pageForgeMessage.Controls.Add(this.chkEnabledForgeMessage);
+            this.pageForgeMessage.Location = new System.Drawing.Point(4, 26);
+            this.pageForgeMessage.Name = "pageForgeMessage";
+            this.pageForgeMessage.Size = new System.Drawing.Size(652, 687);
+            this.pageForgeMessage.TabIndex = 7;
+            this.pageForgeMessage.Text = "伪造消息";
+            this.pageForgeMessage.UseVisualStyleBackColor = true;
             // 
             // pnlForgeMessage
             // 
@@ -3421,16 +3458,16 @@
             this.chkEnabledForgeMessage.UseVisualStyleBackColor = true;
             this.chkEnabledForgeMessage.CheckedChanged += new System.EventHandler(this.chkEnabledForgeMessage_CheckedChanged);
             // 
-            // tabRss
+            // pageRss
             // 
-            this.tabRss.Controls.Add(this.pnlRss);
-            this.tabRss.Controls.Add(this.chkRssEnabled);
-            this.tabRss.Location = new System.Drawing.Point(4, 26);
-            this.tabRss.Name = "tabRss";
-            this.tabRss.Size = new System.Drawing.Size(652, 687);
-            this.tabRss.TabIndex = 8;
-            this.tabRss.Text = "RSS转发设置";
-            this.tabRss.UseVisualStyleBackColor = true;
+            this.pageRss.Controls.Add(this.pnlRss);
+            this.pageRss.Controls.Add(this.chkRssEnabled);
+            this.pageRss.Location = new System.Drawing.Point(4, 26);
+            this.pageRss.Name = "pageRss";
+            this.pageRss.Size = new System.Drawing.Size(652, 687);
+            this.pageRss.TabIndex = 8;
+            this.pageRss.Text = "RSS转发";
+            this.pageRss.UseVisualStyleBackColor = true;
             // 
             // pnlRss
             // 
@@ -3503,23 +3540,360 @@
             this.chkRssEnabled.UseVisualStyleBackColor = true;
             this.chkRssEnabled.CheckedChanged += new System.EventHandler(this.chkRssEnabled_CheckedChanged);
             // 
-            // tabAbout
+            // pageTicTacToe
             // 
-            this.tabAbout.Controls.Add(this.txbContributorName);
-            this.tabAbout.Controls.Add(this.txbContributorQQ);
-            this.tabAbout.Controls.Add(this.lnkProjectURL);
-            this.tabAbout.Controls.Add(this.lnkContributorGithub);
-            this.tabAbout.Controls.Add(this.lblProjectURL);
-            this.tabAbout.Controls.Add(this.lblContributorGithub);
-            this.tabAbout.Controls.Add(this.lblContributorQQ);
-            this.tabAbout.Controls.Add(this.lblContributorName);
-            this.tabAbout.Location = new System.Drawing.Point(4, 26);
-            this.tabAbout.Margin = new System.Windows.Forms.Padding(4);
-            this.tabAbout.Name = "tabAbout";
-            this.tabAbout.Size = new System.Drawing.Size(652, 687);
-            this.tabAbout.TabIndex = 2;
-            this.tabAbout.Text = "关于";
-            this.tabAbout.UseVisualStyleBackColor = true;
+            this.pageTicTacToe.Controls.Add(this.pnlTicTacToe);
+            this.pageTicTacToe.Controls.Add(this.chkTicTacToeEnabled);
+            this.pageTicTacToe.Location = new System.Drawing.Point(4, 26);
+            this.pageTicTacToe.Name = "pageTicTacToe";
+            this.pageTicTacToe.Size = new System.Drawing.Size(652, 687);
+            this.pageTicTacToe.TabIndex = 10;
+            this.pageTicTacToe.Text = "井字棋";
+            this.pageTicTacToe.UseVisualStyleBackColor = true;
+            // 
+            // pnlTicTacToe
+            // 
+            this.pnlTicTacToe.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTicTacToe.Controls.Add(this.lblChessboard);
+            this.pnlTicTacToe.Controls.Add(this.imgChessboard);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeIllegalReply);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeIllegalReply);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeNoMoveReply);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeNoMoveReply);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeDrawReply);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeBotWinReply);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToePlayerWinReply);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeDrawReply);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeBotWinReply);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeTimeoutReply);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToePlayerWinReply);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeTimeoutReply);
+            this.pnlTicTacToe.Controls.Add(this.pnlTicTacToeMoveMode);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeAlreadStopReply);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeStoppedReply);
+            this.pnlTicTacToe.Controls.Add(this.txbStopTicTacToeCmd);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeAlreadyStartReply);
+            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeStartedReply);
+            this.pnlTicTacToe.Controls.Add(this.txbStartTicTacToeCmd);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeMoveMode);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeAlreadStopReply);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeStartedReply);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeStoppedReply);
+            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeAlreadyStartReply);
+            this.pnlTicTacToe.Controls.Add(this.lblStopTicTacToeCmd);
+            this.pnlTicTacToe.Controls.Add(this.lblStartTicTacToeCmd);
+            this.pnlTicTacToe.Enabled = false;
+            this.pnlTicTacToe.Location = new System.Drawing.Point(3, 39);
+            this.pnlTicTacToe.Name = "pnlTicTacToe";
+            this.pnlTicTacToe.Size = new System.Drawing.Size(646, 645);
+            this.pnlTicTacToe.TabIndex = 1;
+            // 
+            // lblChessboard
+            // 
+            this.lblChessboard.AutoSize = true;
+            this.lblChessboard.Location = new System.Drawing.Point(10, 505);
+            this.lblChessboard.Name = "lblChessboard";
+            this.lblChessboard.Size = new System.Drawing.Size(107, 17);
+            this.lblChessboard.TabIndex = 27;
+            this.lblChessboard.Text = "棋盘编号命名示例:";
+            // 
+            // imgChessboard
+            // 
+            this.imgChessboard.BackgroundImage = global::GreenOnions.BotManagerWindow.Properties.Resources.Chessboard;
+            this.imgChessboard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.imgChessboard.Location = new System.Drawing.Point(196, 390);
+            this.imgChessboard.Name = "imgChessboard";
+            this.imgChessboard.Size = new System.Drawing.Size(250, 250);
+            this.imgChessboard.TabIndex = 26;
+            // 
+            // lblTicTacToeIllegalReply
+            // 
+            this.lblTicTacToeIllegalReply.AutoSize = true;
+            this.lblTicTacToeIllegalReply.Location = new System.Drawing.Point(10, 331);
+            this.lblTicTacToeIllegalReply.Name = "lblTicTacToeIllegalReply";
+            this.lblTicTacToeIllegalReply.Size = new System.Drawing.Size(159, 17);
+            this.lblTicTacToeIllegalReply.TabIndex = 25;
+            this.lblTicTacToeIllegalReply.Text = "识别到下子多于一格回复语: ";
+            // 
+            // txbTicTacToeIllegalReply
+            // 
+            this.txbTicTacToeIllegalReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToeIllegalReply.Location = new System.Drawing.Point(178, 328);
+            this.txbTicTacToeIllegalReply.Name = "txbTicTacToeIllegalReply";
+            this.txbTicTacToeIllegalReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeIllegalReply.TabIndex = 24;
+            // 
+            // lblTicTacToeNoMoveReply
+            // 
+            this.lblTicTacToeNoMoveReply.AutoSize = true;
+            this.lblTicTacToeNoMoveReply.Location = new System.Drawing.Point(10, 302);
+            this.lblTicTacToeNoMoveReply.Name = "lblTicTacToeNoMoveReply";
+            this.lblTicTacToeNoMoveReply.Size = new System.Drawing.Size(135, 17);
+            this.lblTicTacToeNoMoveReply.TabIndex = 23;
+            this.lblTicTacToeNoMoveReply.Text = "没有识别到下子回复语: ";
+            // 
+            // txbTicTacToeNoMoveReply
+            // 
+            this.txbTicTacToeNoMoveReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToeNoMoveReply.Location = new System.Drawing.Point(178, 299);
+            this.txbTicTacToeNoMoveReply.Name = "txbTicTacToeNoMoveReply";
+            this.txbTicTacToeNoMoveReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeNoMoveReply.TabIndex = 22;
+            // 
+            // lblTicTacToeDrawReply
+            // 
+            this.lblTicTacToeDrawReply.AutoSize = true;
+            this.lblTicTacToeDrawReply.Location = new System.Drawing.Point(10, 273);
+            this.lblTicTacToeDrawReply.Name = "lblTicTacToeDrawReply";
+            this.lblTicTacToeDrawReply.Size = new System.Drawing.Size(75, 17);
+            this.lblTicTacToeDrawReply.TabIndex = 21;
+            this.lblTicTacToeDrawReply.Text = "平局回复语: ";
+            // 
+            // lblTicTacToeBotWinReply
+            // 
+            this.lblTicTacToeBotWinReply.AutoSize = true;
+            this.lblTicTacToeBotWinReply.Location = new System.Drawing.Point(10, 244);
+            this.lblTicTacToeBotWinReply.Name = "lblTicTacToeBotWinReply";
+            this.lblTicTacToeBotWinReply.Size = new System.Drawing.Size(111, 17);
+            this.lblTicTacToeBotWinReply.TabIndex = 20;
+            this.lblTicTacToeBotWinReply.Text = "机器人获胜回复语: ";
+            // 
+            // lblTicTacToePlayerWinReply
+            // 
+            this.lblTicTacToePlayerWinReply.AutoSize = true;
+            this.lblTicTacToePlayerWinReply.Location = new System.Drawing.Point(10, 215);
+            this.lblTicTacToePlayerWinReply.Name = "lblTicTacToePlayerWinReply";
+            this.lblTicTacToePlayerWinReply.Size = new System.Drawing.Size(99, 17);
+            this.lblTicTacToePlayerWinReply.TabIndex = 19;
+            this.lblTicTacToePlayerWinReply.Text = "玩家获胜回复语: ";
+            // 
+            // txbTicTacToeDrawReply
+            // 
+            this.txbTicTacToeDrawReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToeDrawReply.Location = new System.Drawing.Point(178, 270);
+            this.txbTicTacToeDrawReply.Name = "txbTicTacToeDrawReply";
+            this.txbTicTacToeDrawReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeDrawReply.TabIndex = 18;
+            // 
+            // txbTicTacToeBotWinReply
+            // 
+            this.txbTicTacToeBotWinReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToeBotWinReply.Location = new System.Drawing.Point(178, 241);
+            this.txbTicTacToeBotWinReply.Name = "txbTicTacToeBotWinReply";
+            this.txbTicTacToeBotWinReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeBotWinReply.TabIndex = 17;
+            // 
+            // lblTicTacToeTimeoutReply
+            // 
+            this.lblTicTacToeTimeoutReply.AutoSize = true;
+            this.lblTicTacToeTimeoutReply.Location = new System.Drawing.Point(10, 186);
+            this.lblTicTacToeTimeoutReply.Name = "lblTicTacToeTimeoutReply";
+            this.lblTicTacToeTimeoutReply.Size = new System.Drawing.Size(99, 17);
+            this.lblTicTacToeTimeoutReply.TabIndex = 16;
+            this.lblTicTacToeTimeoutReply.Text = "对局超时回复语: ";
+            // 
+            // txbTicTacToePlayerWinReply
+            // 
+            this.txbTicTacToePlayerWinReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToePlayerWinReply.Location = new System.Drawing.Point(178, 212);
+            this.txbTicTacToePlayerWinReply.Name = "txbTicTacToePlayerWinReply";
+            this.txbTicTacToePlayerWinReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToePlayerWinReply.TabIndex = 15;
+            // 
+            // txbTicTacToeTimeoutReply
+            // 
+            this.txbTicTacToeTimeoutReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToeTimeoutReply.Location = new System.Drawing.Point(178, 183);
+            this.txbTicTacToeTimeoutReply.Name = "txbTicTacToeTimeoutReply";
+            this.txbTicTacToeTimeoutReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeTimeoutReply.TabIndex = 14;
+            // 
+            // pnlTicTacToeMoveMode
+            // 
+            this.pnlTicTacToeMoveMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTicTacToeMoveMode.Controls.Add(this.chkTicTacToeMoveModeOpenCV);
+            this.pnlTicTacToeMoveMode.Controls.Add(this.chkTicTacToeMoveModeNomenclature);
+            this.pnlTicTacToeMoveMode.Location = new System.Drawing.Point(178, 357);
+            this.pnlTicTacToeMoveMode.Name = "pnlTicTacToeMoveMode";
+            this.pnlTicTacToeMoveMode.Size = new System.Drawing.Size(451, 30);
+            this.pnlTicTacToeMoveMode.TabIndex = 13;
+            // 
+            // chkTicTacToeMoveModeOpenCV
+            // 
+            this.chkTicTacToeMoveModeOpenCV.AutoSize = true;
+            this.chkTicTacToeMoveModeOpenCV.Location = new System.Drawing.Point(3, 6);
+            this.chkTicTacToeMoveModeOpenCV.Name = "chkTicTacToeMoveModeOpenCV";
+            this.chkTicTacToeMoveModeOpenCV.Size = new System.Drawing.Size(75, 21);
+            this.chkTicTacToeMoveModeOpenCV.TabIndex = 5;
+            this.chkTicTacToeMoveModeOpenCV.Tag = "2";
+            this.chkTicTacToeMoveModeOpenCV.Text = "图像识别";
+            this.chkTicTacToeMoveModeOpenCV.UseVisualStyleBackColor = true;
+            // 
+            // chkTicTacToeMoveModeNomenclature
+            // 
+            this.chkTicTacToeMoveModeNomenclature.AutoSize = true;
+            this.chkTicTacToeMoveModeNomenclature.Location = new System.Drawing.Point(84, 6);
+            this.chkTicTacToeMoveModeNomenclature.Name = "chkTicTacToeMoveModeNomenclature";
+            this.chkTicTacToeMoveModeNomenclature.Size = new System.Drawing.Size(75, 21);
+            this.chkTicTacToeMoveModeNomenclature.TabIndex = 5;
+            this.chkTicTacToeMoveModeNomenclature.Tag = "4";
+            this.chkTicTacToeMoveModeNomenclature.Text = "回复格号";
+            this.chkTicTacToeMoveModeNomenclature.UseVisualStyleBackColor = true;
+            // 
+            // txbTicTacToeAlreadStopReply
+            // 
+            this.txbTicTacToeAlreadStopReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToeAlreadStopReply.Location = new System.Drawing.Point(178, 154);
+            this.txbTicTacToeAlreadStopReply.Name = "txbTicTacToeAlreadStopReply";
+            this.txbTicTacToeAlreadStopReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeAlreadStopReply.TabIndex = 12;
+            // 
+            // txbTicTacToeStoppedReply
+            // 
+            this.txbTicTacToeStoppedReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToeStoppedReply.Location = new System.Drawing.Point(178, 125);
+            this.txbTicTacToeStoppedReply.Name = "txbTicTacToeStoppedReply";
+            this.txbTicTacToeStoppedReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeStoppedReply.TabIndex = 11;
+            // 
+            // txbStopTicTacToeCmd
+            // 
+            this.txbStopTicTacToeCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbStopTicTacToeCmd.Location = new System.Drawing.Point(178, 96);
+            this.txbStopTicTacToeCmd.Name = "txbStopTicTacToeCmd";
+            this.txbStopTicTacToeCmd.Size = new System.Drawing.Size(451, 23);
+            this.txbStopTicTacToeCmd.TabIndex = 10;
+            // 
+            // txbTicTacToeAlreadyStartReply
+            // 
+            this.txbTicTacToeAlreadyStartReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToeAlreadyStartReply.Location = new System.Drawing.Point(178, 67);
+            this.txbTicTacToeAlreadyStartReply.Name = "txbTicTacToeAlreadyStartReply";
+            this.txbTicTacToeAlreadyStartReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeAlreadyStartReply.TabIndex = 9;
+            // 
+            // txbTicTacToeStartedReply
+            // 
+            this.txbTicTacToeStartedReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTicTacToeStartedReply.Location = new System.Drawing.Point(178, 38);
+            this.txbTicTacToeStartedReply.Name = "txbTicTacToeStartedReply";
+            this.txbTicTacToeStartedReply.Size = new System.Drawing.Size(451, 23);
+            this.txbTicTacToeStartedReply.TabIndex = 8;
+            // 
+            // txbStartTicTacToeCmd
+            // 
+            this.txbStartTicTacToeCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbStartTicTacToeCmd.Location = new System.Drawing.Point(178, 9);
+            this.txbStartTicTacToeCmd.Name = "txbStartTicTacToeCmd";
+            this.txbStartTicTacToeCmd.Size = new System.Drawing.Size(451, 23);
+            this.txbStartTicTacToeCmd.TabIndex = 7;
+            // 
+            // lblTicTacToeMoveMode
+            // 
+            this.lblTicTacToeMoveMode.AutoSize = true;
+            this.lblTicTacToeMoveMode.Location = new System.Drawing.Point(10, 364);
+            this.lblTicTacToeMoveMode.Name = "lblTicTacToeMoveMode";
+            this.lblTicTacToeMoveMode.Size = new System.Drawing.Size(107, 17);
+            this.lblTicTacToeMoveMode.TabIndex = 6;
+            this.lblTicTacToeMoveMode.Text = "允许玩家下子方式:";
+            // 
+            // lblTicTacToeAlreadStopReply
+            // 
+            this.lblTicTacToeAlreadStopReply.AutoSize = true;
+            this.lblTicTacToeAlreadStopReply.Location = new System.Drawing.Point(10, 157);
+            this.lblTicTacToeAlreadStopReply.Name = "lblTicTacToeAlreadStopReply";
+            this.lblTicTacToeAlreadStopReply.Size = new System.Drawing.Size(111, 17);
+            this.lblTicTacToeAlreadStopReply.TabIndex = 4;
+            this.lblTicTacToeAlreadStopReply.Text = "未在对局中回复语: ";
+            // 
+            // lblTicTacToeStartedReply
+            // 
+            this.lblTicTacToeStartedReply.AutoSize = true;
+            this.lblTicTacToeStartedReply.Location = new System.Drawing.Point(10, 41);
+            this.lblTicTacToeStartedReply.Name = "lblTicTacToeStartedReply";
+            this.lblTicTacToeStartedReply.Size = new System.Drawing.Size(123, 17);
+            this.lblTicTacToeStartedReply.TabIndex = 3;
+            this.lblTicTacToeStartedReply.Text = "开启对局成功回复语: ";
+            // 
+            // lblTicTacToeStoppedReply
+            // 
+            this.lblTicTacToeStoppedReply.AutoSize = true;
+            this.lblTicTacToeStoppedReply.Location = new System.Drawing.Point(10, 128);
+            this.lblTicTacToeStoppedReply.Name = "lblTicTacToeStoppedReply";
+            this.lblTicTacToeStoppedReply.Size = new System.Drawing.Size(123, 17);
+            this.lblTicTacToeStoppedReply.TabIndex = 2;
+            this.lblTicTacToeStoppedReply.Text = "中止对局成功回复语: ";
+            // 
+            // lblTicTacToeAlreadyStartReply
+            // 
+            this.lblTicTacToeAlreadyStartReply.AutoSize = true;
+            this.lblTicTacToeAlreadyStartReply.Location = new System.Drawing.Point(10, 70);
+            this.lblTicTacToeAlreadyStartReply.Name = "lblTicTacToeAlreadyStartReply";
+            this.lblTicTacToeAlreadyStartReply.Size = new System.Drawing.Size(111, 17);
+            this.lblTicTacToeAlreadyStartReply.TabIndex = 1;
+            this.lblTicTacToeAlreadyStartReply.Text = "已在对局中回复语: ";
+            // 
+            // lblStopTicTacToeCmd
+            // 
+            this.lblStopTicTacToeCmd.AutoSize = true;
+            this.lblStopTicTacToeCmd.Location = new System.Drawing.Point(10, 99);
+            this.lblStopTicTacToeCmd.Name = "lblStopTicTacToeCmd";
+            this.lblStopTicTacToeCmd.Size = new System.Drawing.Size(87, 17);
+            this.lblStopTicTacToeCmd.TabIndex = 0;
+            this.lblStopTicTacToeCmd.Text = "中止对局命令: ";
+            // 
+            // lblStartTicTacToeCmd
+            // 
+            this.lblStartTicTacToeCmd.AutoSize = true;
+            this.lblStartTicTacToeCmd.Location = new System.Drawing.Point(10, 12);
+            this.lblStartTicTacToeCmd.Name = "lblStartTicTacToeCmd";
+            this.lblStartTicTacToeCmd.Size = new System.Drawing.Size(87, 17);
+            this.lblStartTicTacToeCmd.TabIndex = 0;
+            this.lblStartTicTacToeCmd.Text = "开启对局命令: ";
+            // 
+            // chkTicTacToeEnabled
+            // 
+            this.chkTicTacToeEnabled.AutoSize = true;
+            this.chkTicTacToeEnabled.Location = new System.Drawing.Point(13, 12);
+            this.chkTicTacToeEnabled.Name = "chkTicTacToeEnabled";
+            this.chkTicTacToeEnabled.Size = new System.Drawing.Size(111, 21);
+            this.chkTicTacToeEnabled.TabIndex = 0;
+            this.chkTicTacToeEnabled.Text = "启用井字棋功能";
+            this.chkTicTacToeEnabled.UseVisualStyleBackColor = true;
+            this.chkTicTacToeEnabled.CheckedChanged += new System.EventHandler(this.chkTicTacToeEnabled_CheckedChanged);
+            // 
+            // pageAbout
+            // 
+            this.pageAbout.Controls.Add(this.txbContributorName);
+            this.pageAbout.Controls.Add(this.txbContributorQQ);
+            this.pageAbout.Controls.Add(this.lnkProjectURL);
+            this.pageAbout.Controls.Add(this.lnkContributorGithub);
+            this.pageAbout.Controls.Add(this.lblProjectURL);
+            this.pageAbout.Controls.Add(this.lblContributorGithub);
+            this.pageAbout.Controls.Add(this.lblContributorQQ);
+            this.pageAbout.Controls.Add(this.lblContributorName);
+            this.pageAbout.Location = new System.Drawing.Point(4, 26);
+            this.pageAbout.Margin = new System.Windows.Forms.Padding(4);
+            this.pageAbout.Name = "pageAbout";
+            this.pageAbout.Size = new System.Drawing.Size(652, 687);
+            this.pageAbout.TabIndex = 2;
+            this.pageAbout.Text = "关于";
+            this.pageAbout.UseVisualStyleBackColor = true;
             // 
             // txbContributorName
             // 
@@ -3610,7 +3984,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 761);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabSettings);
             this.Controls.Add(this.btnOk);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
@@ -3618,24 +3992,24 @@
             this.Name = "FrmAppSetting";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "应用设置";
-            this.tabControl1.ResumeLayout(false);
-            this.tabBot.ResumeLayout(false);
+            this.tabSettings.ResumeLayout(false);
+            this.pageBot.ResumeLayout(false);
             this.pnlBot.ResumeLayout(false);
             this.pnlBot.PerformLayout();
             this.pnlDebugMode.ResumeLayout(false);
             this.pnlDebugMode.PerformLayout();
             this.pnlCheckPorn.ResumeLayout(false);
             this.pnlCheckPorn.PerformLayout();
-            this.tabSearchPicture.ResumeLayout(false);
-            this.tabSearchPicture.PerformLayout();
+            this.pageSearchPicture.ResumeLayout(false);
+            this.pageSearchPicture.PerformLayout();
             this.pnlSearchPicture.ResumeLayout(false);
             this.pnlSearchPicture.PerformLayout();
             this.pnlNoCheckPorn.ResumeLayout(false);
             this.pnlNoCheckPorn.PerformLayout();
             this.pnlPictureSearcherCheckPorn.ResumeLayout(false);
             this.pnlPictureSearcherCheckPorn.PerformLayout();
-            this.tabOriginPicture.ResumeLayout(false);
-            this.tabOriginPicture.PerformLayout();
+            this.pageOriginPicture.ResumeLayout(false);
+            this.pageOriginPicture.PerformLayout();
             this.pnlOriginPicture.ResumeLayout(false);
             this.pnlOriginPicture.PerformLayout();
             this.pnlOriginPictureCheckPorn.ResumeLayout(false);
@@ -3644,29 +4018,35 @@
             this.pnlOriginPictureCheckPornMessage.PerformLayout();
             this.pnlOriginPictureCheckPornEvent.ResumeLayout(false);
             this.pnlOriginPictureCheckPornEvent.PerformLayout();
-            this.tabTranslate.ResumeLayout(false);
-            this.tabTranslate.PerformLayout();
+            this.pageTranslate.ResumeLayout(false);
+            this.pageTranslate.PerformLayout();
             this.pnlTranslate.ResumeLayout(false);
             this.pnlTranslate.PerformLayout();
-            this.tabHPicture.ResumeLayout(false);
-            this.tabHPicture.PerformLayout();
+            this.pageHPicture.ResumeLayout(false);
+            this.pageHPicture.PerformLayout();
             this.pnlEnabelHPicture.ResumeLayout(false);
             this.pnlEnabelHPicture.PerformLayout();
-            this.tabRepeater.ResumeLayout(false);
-            this.tabRepeater.PerformLayout();
-            this.tabGroupMemberEvents.ResumeLayout(false);
-            this.tabGroupMemberEvents.PerformLayout();
-            this.tabForgeMessage.ResumeLayout(false);
-            this.tabForgeMessage.PerformLayout();
+            this.pageRepeater.ResumeLayout(false);
+            this.pageRepeater.PerformLayout();
+            this.pageGroupMemberEvents.ResumeLayout(false);
+            this.pageGroupMemberEvents.PerformLayout();
+            this.pageForgeMessage.ResumeLayout(false);
+            this.pageForgeMessage.PerformLayout();
             this.pnlForgeMessage.ResumeLayout(false);
             this.pnlForgeMessage.PerformLayout();
-            this.tabRss.ResumeLayout(false);
-            this.tabRss.PerformLayout();
+            this.pageRss.ResumeLayout(false);
+            this.pageRss.PerformLayout();
             this.pnlRss.ResumeLayout(false);
             this.pnlRss.PerformLayout();
             this.pnlRssSubscriptionList.ResumeLayout(false);
-            this.tabAbout.ResumeLayout(false);
-            this.tabAbout.PerformLayout();
+            this.pageTicTacToe.ResumeLayout(false);
+            this.pageTicTacToe.PerformLayout();
+            this.pnlTicTacToe.ResumeLayout(false);
+            this.pnlTicTacToe.PerformLayout();
+            this.pnlTicTacToeMoveMode.ResumeLayout(false);
+            this.pnlTicTacToeMoveMode.PerformLayout();
+            this.pageAbout.ResumeLayout(false);
+            this.pageAbout.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3678,9 +4058,9 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.TextBox txbAddAdmin;
         private System.Windows.Forms.Label lblAdmin;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabBot;
-        private System.Windows.Forms.TabPage tabHPicture;
+        private System.Windows.Forms.TabControl tabSettings;
+        private System.Windows.Forms.TabPage pageBot;
+        private System.Windows.Forms.TabPage pageHPicture;
         private System.Windows.Forms.ListView lstAdmins;
         private System.Windows.Forms.Button btnAddAdmin;
         private System.Windows.Forms.Label lblAddAdmin;
@@ -3759,7 +4139,7 @@
         private System.Windows.Forms.RadioButton rdoHPictureLimitFrequency;
         private System.Windows.Forms.Label lblLimitType;
         private System.Windows.Forms.CheckBox chkWhiteNoLimit;
-        private System.Windows.Forms.TabPage tabAbout;
+        private System.Windows.Forms.TabPage pageAbout;
         private System.Windows.Forms.Label lblContributorQQ;
         private System.Windows.Forms.Label lblContributorName;
         private System.Windows.Forms.TextBox txbBanUser;
@@ -3778,7 +4158,7 @@
         private System.Windows.Forms.TextBox txbHPictureApiKey;
         private System.Windows.Forms.Label lblDownloadFail;
         private System.Windows.Forms.TextBox txbDownloadFailReply;
-        private System.Windows.Forms.TabPage tabSearchPicture;
+        private System.Windows.Forms.TabPage pageSearchPicture;
         private System.Windows.Forms.Panel pnlSearchPicture;
         private System.Windows.Forms.CheckBox chkSearchPictureEnabled;
         private System.Windows.Forms.CheckBox chkSearchASCII2DEnabled;
@@ -3807,7 +4187,7 @@
         private System.Windows.Forms.Label lblSearchModeOffCmd;
         private System.Windows.Forms.TextBox txbSauceNAOApiKey;
         private System.Windows.Forms.Label lblSauceNAOApiKey;
-        private System.Windows.Forms.TabPage tabTranslate;
+        private System.Windows.Forms.TabPage pageTranslate;
         private System.Windows.Forms.Panel pnlTranslate;
         private System.Windows.Forms.TextBox txbTranslateTo;
         private System.Windows.Forms.TextBox txbTranslateToChinese;
@@ -3842,7 +4222,7 @@
         private System.Windows.Forms.CheckBox chkTraceMoeEnabled;
         private System.Windows.Forms.Label lblTraceMoeSendThreshold;
         private System.Windows.Forms.TextBox txbTraceMoeSendThreshold;
-        private System.Windows.Forms.TabPage tabRepeater;
+        private System.Windows.Forms.TabPage pageRepeater;
         private System.Windows.Forms.Label lblVerticalMirrorImageProbability;
         private System.Windows.Forms.Label lblHorizontalMirrorImageProbability;
         private System.Windows.Forms.Label lblSuccessiveRepeatCount;
@@ -3858,7 +4238,7 @@
         private System.Windows.Forms.CheckBox chkRewindGif;
         private System.Windows.Forms.Label lblRewindGifProbability;
         private System.Windows.Forms.TextBox txbRewindGifProbability;
-        private System.Windows.Forms.TabPage tabGroupMemberEvents;
+        private System.Windows.Forms.TabPage pageGroupMemberEvents;
         private System.Windows.Forms.TextBox txbMemberJoinedMessage;
         private System.Windows.Forms.CheckBox chkSendMemberBeKickedMessage;
         private System.Windows.Forms.CheckBox chkSendMemberPositiveLeaveMessage;
@@ -3876,7 +4256,7 @@
         private System.Windows.Forms.ListView lstAutoTranslateGroupMemoriesQQ;
         private System.Windows.Forms.Label lblAddAutoTranslateGroupMemoryQQ;
         private System.Windows.Forms.Label lblAutoTranslateGroupMemoriesQQ;
-        private System.Windows.Forms.TabPage tabForgeMessage;
+        private System.Windows.Forms.TabPage pageForgeMessage;
         private System.Windows.Forms.Panel pnlForgeMessage;
         private System.Windows.Forms.CheckBox chkForgeMessageAdminDontAppend;
         private System.Windows.Forms.CheckBox chkForgeMessageAdminOnly;
@@ -3896,7 +4276,7 @@
         private System.Windows.Forms.CheckBox chkEnabledForgeMessage;
         private System.Windows.Forms.Label lblForgeMessageCmd;
         private System.Windows.Forms.TextBox txbForgeMessageCmd;
-        private System.Windows.Forms.TabPage tabRss;
+        private System.Windows.Forms.TabPage pageRss;
         private System.Windows.Forms.CheckBox chkRssEnabled;
         private System.Windows.Forms.Panel pnlRss;
         private System.Windows.Forms.TextBox txbReadRssInterval;
@@ -3928,7 +4308,7 @@
         private System.Windows.Forms.TextBox txbSearchCheckPornErrorReply;
         private System.Windows.Forms.CheckBox chkCheckPornEnabled;
         private System.Windows.Forms.CheckBox chkPictureSearcherCheckPornEnabled;
-        private System.Windows.Forms.TabPage tabOriginPicture;
+        private System.Windows.Forms.TabPage pageOriginPicture;
         private System.Windows.Forms.CheckBox chkOriginPictureEnabled;
         private System.Windows.Forms.CheckBox chkOriginPictureCheckPornEnabled;
         private System.Windows.Forms.Panel pnlOriginPictureCheckPorn;
@@ -3963,5 +4343,38 @@
         private System.Windows.Forms.Label lblTranslateFromTo;
         private System.Windows.Forms.Label lblSauceNAOApiKeyInfo;
         private System.Windows.Forms.Label lblTraceMoeSendThresholdInfo;
+        private System.Windows.Forms.TabPage pageTicTacToe;
+        private System.Windows.Forms.Panel pnlTicTacToe;
+        private System.Windows.Forms.CheckBox chkTicTacToeEnabled;
+        private System.Windows.Forms.Label lblStartTicTacToeCmd;
+        private System.Windows.Forms.TextBox txbTicTacToeAlreadStopReply;
+        private System.Windows.Forms.TextBox txbTicTacToeStoppedReply;
+        private System.Windows.Forms.TextBox txbStopTicTacToeCmd;
+        private System.Windows.Forms.TextBox txbTicTacToeAlreadyStartReply;
+        private System.Windows.Forms.TextBox txbTicTacToeStartedReply;
+        private System.Windows.Forms.TextBox txbStartTicTacToeCmd;
+        private System.Windows.Forms.Label lblTicTacToeMoveMode;
+        private System.Windows.Forms.CheckBox chkTicTacToeMoveModeNomenclature;
+        private System.Windows.Forms.CheckBox chkTicTacToeMoveModeOpenCV;
+        private System.Windows.Forms.Label lblTicTacToeAlreadStopReply;
+        private System.Windows.Forms.Label lblTicTacToeStartedReply;
+        private System.Windows.Forms.Label lblTicTacToeStoppedReply;
+        private System.Windows.Forms.Label lblTicTacToeAlreadyStartReply;
+        private System.Windows.Forms.Label lblStopTicTacToeCmd;
+        private System.Windows.Forms.Panel pnlTicTacToeMoveMode;
+        private System.Windows.Forms.Label lblTicTacToeDrawReply;
+        private System.Windows.Forms.Label lblTicTacToeBotWinReply;
+        private System.Windows.Forms.Label lblTicTacToePlayerWinReply;
+        private System.Windows.Forms.TextBox txbTicTacToeDrawReply;
+        private System.Windows.Forms.TextBox txbTicTacToeBotWinReply;
+        private System.Windows.Forms.Label lblTicTacToeTimeoutReply;
+        private System.Windows.Forms.TextBox txbTicTacToePlayerWinReply;
+        private System.Windows.Forms.TextBox txbTicTacToeTimeoutReply;
+        private System.Windows.Forms.Label lblTicTacToeIllegalReply;
+        private System.Windows.Forms.TextBox txbTicTacToeIllegalReply;
+        private System.Windows.Forms.Label lblTicTacToeNoMoveReply;
+        private System.Windows.Forms.TextBox txbTicTacToeNoMoveReply;
+        private System.Windows.Forms.Panel imgChessboard;
+        private System.Windows.Forms.Label lblChessboard;
     }
 }

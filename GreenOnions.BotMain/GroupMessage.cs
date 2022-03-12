@@ -1,6 +1,7 @@
 ﻿using GreenOnions.ForgeMessage;
 using GreenOnions.PictureSearcher;
 using GreenOnions.Repeater;
+using GreenOnions.TicTacToe;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Mirai.CSharp.Builders;
@@ -62,9 +63,16 @@ namespace GreenOnions.BotMain
                                     #region -- @搜图 --
                                     if (e.Chain[i].Type == "Image")
                                     {
-                                        ErrorHelper.WriteMessage($"触发了@搜图, 消息原句为:{string.Join(",", e.Chain.Select(c=>c.ToString()))}");
-                                        ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-                                        await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream), msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id), urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));
+                                        if (BotInfo.SearchEnabled)
+                                        {
+#if DEBUG
+                                            ErrorHelper.WriteMessage($"触发了@搜图, 消息原句为:{string.Join(",", e.Chain.Select(c => c.ToString()))}");
+#endif
+                                            ImageMessage imgMsg = e.Chain[i] as ImageMessage;
+                                            await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
+                                                (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null),
+                                                urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));
+                                        }
                                     }
                                     #endregion -- @搜图 --
                                     #region -- @下载原图 --
@@ -75,7 +83,7 @@ namespace GreenOnions.BotMain
                                         await SearchPictureHandler.SendPixivOriginPictureWithIdAndP(e.Chain[i].ToString(),
                                             urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls),
                                             picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
-                                            msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id));
+                                            (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null));
                                     }
                                     #endregion -- @下载原图 --
                                 }
@@ -85,40 +93,57 @@ namespace GreenOnions.BotMain
                         break;
                     case "Plain":
                         bool isHandle = await PlainMessageHandler.HandleMesage(e.Chain, e.Sender,
-                            (chatMessages, bRevoke) =>
+                            (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null),
+                            picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),  //上传图片
+                            urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls),
+                            revokeId =>
                             {
-                                session.SendGroupMessageAsync(e.Sender.Group.Id, chatMessages, quoteMessage.Id).ContinueWith(callback => 
-                                {
-                                    if (bRevoke)
-                                    {
-                                        int revokeTime = BotInfo.HPictureWhiteGroup.Contains(e.Sender.Group.Id) ? BotInfo.HPictureWhiteRevoke : BotInfo.HPictureRevoke;
-                                        if (revokeTime > 0)
-                                        {
-                                            Task.Delay(revokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(callback.Result));
-                                        }
-                                    }
-                                });  //发送群消息
-                            },
-                            picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
-                            urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));  //上传图片
+                                int revokeTime = BotInfo.HPictureWhiteGroup.Contains(e.Sender.Group.Id) ? BotInfo.HPictureWhiteRevoke : BotInfo.HPictureRevoke;
+                                if (revokeTime > 0)
+                                    Task.Delay(revokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(revokeId));
+                            });
                         if (isHandle)
                             return;
                         break;
                     case "Image":
+                        #region -- 连续搜图 --
                         if (Cache.SearchingPicturesUsers.Keys.Contains(e.Sender.Id))
                         {
-                            #region -- 连续搜图 --
+#if DEBUG
+                            ErrorHelper.WriteMessage($"符合连续搜图条件, 搜图被启动, 正在搜图的人有:{string.Join(",", Cache.SearchingPicturesUsers.Keys)}  发起搜图的人为:{e.Sender.Id}");
+#endif
                             for (int i = 1; i < e.Chain.Length; i++)
                             {
                                 ImageMessage imgMsg = e.Chain[i] as ImageMessage;
                                 await SearchPictureHandler.SuccessiveSearchPicture(imgMsg, e.Sender.Id,
                                     picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),  //上传图片
-                                    msg => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, quoteMessage.Id),  //发送群消息
+                                    (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null),  //发送群消息
                                     urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));
                             }
-                            #endregion -- 连续搜图 --
                             return;
                         }
+                        #endregion -- 连续搜图 --
+                        #region -- 井字棋 --
+                        else if (Cache.PlayingTicTacToeUsers.ContainsKey(e.Sender.Id))
+                        {
+                            ImageMessage imgMsg = e.Chain[1] as ImageMessage;
+                            if (imgMsg != null)
+                            {
+                                using (MemoryStream playerMoveStream = await HttpHelper.DownloadImageAsMemoryStream(ImageHelper.ReplaceGroupUrl(imgMsg.Url)))
+                                {
+                                    if (playerMoveStream == null)
+                                    {
+                                        //图片下载失败, 暂时没想好怎么处理
+                                        return;
+                                    }
+
+                                    TicTacToeHandler.PlayerMoveByBitmap(e.Sender.Id, playerMoveStream,
+                                        (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null),
+                                        picStream => session.UploadPictureAsync(UploadTarget.Group, picStream));
+                                }
+                            }
+                        }
+                        #endregion -- 井字棋 --
                         break;
                 }
 

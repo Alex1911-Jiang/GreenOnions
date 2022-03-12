@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Mirai.CSharp.Models.ChatMessages;
@@ -9,7 +10,7 @@ namespace GreenOnions.ForgeMessage
 {
     public static class ForgeMessageHandler
     {
-        public static void SendForgeMessage(IChatMessage[] Chain, long qqId, Action<IChatMessage[], bool> SendMessage)
+        public static void SendForgeMessage(IChatMessage[] Chain, long qqId, Func<IChatMessage[], bool, Task<int>> SendMessage)
         {
             if (!BotInfo.ForgeMessageAdminOnly || BotInfo.AdminQQ.Contains(qqId))
             {

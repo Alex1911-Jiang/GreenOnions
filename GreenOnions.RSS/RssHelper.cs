@@ -39,7 +39,7 @@ namespace GreenOnions.RSS
                                     continue;
                                 if (!Cache.LastOneSendRssTime.ContainsKey(item.Url))  //如果不存在上次发送的日期记录
                                 {
-                                    Cache.LastOneSendRssTime.Add(item.Url, DateTime.Now);  //添加现在作为起始日期(避免把所有历史信息全都抓过来发送)
+                                    Cache.LastOneSendRssTime.TryAdd(item.Url, DateTime.Now);  //添加现在作为起始日期(避免把所有历史信息全都抓过来发送)
                                     Cache.LastOneSendRssTime = Cache.LastOneSendRssTime;
                                     JsonHelper.SaveCacheFile();
                                     continue;
@@ -57,7 +57,7 @@ namespace GreenOnions.RSS
                                                 translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo) : YouDaoTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo));
                                             else
                                                 translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(rss.description) : YouDaoTranslateHelper.TranslateToChinese(rss.description));
-                                            translateMsg = new PlainMessage($"以下为翻译内容:\r\n{ translatedText }");
+                                            translateMsg = new PlainMessage($"\r\n以下为翻译内容:\r\n{ translatedText }");
                                         }
 
                                         List<MemoryStream> imgList = null;
@@ -163,7 +163,7 @@ namespace GreenOnions.RSS
                                         if (Cache.LastOneSendRssTime.ContainsKey(item.Url))
                                             Cache.LastOneSendRssTime[item.Url] = rss.pubDate;
                                         else
-                                            Cache.LastOneSendRssTime.Add(item.Url, rss.pubDate);  //群和好友均推送完毕后记录此地址的最后更新时间
+                                            Cache.LastOneSendRssTime.TryAdd(item.Url, rss.pubDate);  //群和好友均推送完毕后记录此地址的最后更新时间
                                         Cache.LastOneSendRssTime = Cache.LastOneSendRssTime;
                                         JsonHelper.SaveCacheFile();
 

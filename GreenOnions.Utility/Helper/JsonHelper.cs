@@ -17,6 +17,7 @@ namespace GreenOnions.Utility.Helper
         public const string JsonNodeNameGroupMemberEvent = "GroupMemberEvent";
         public const string JsonNodeNameForgeMessage = "ForgeMessage";
         public const string JsonNodeNameRss = "Rss";
+        public const string JsonNodeNameTicTacToe = "TicTacToe";
 
         private static JObject jsonConfig = null;
         private static JObject jsonCache = null;

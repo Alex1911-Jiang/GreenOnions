@@ -143,11 +143,11 @@
             // chkRssSendByForward
             // 
             this.chkRssSendByForward.AutoSize = true;
-            this.chkRssSendByForward.Location = new System.Drawing.Point(515, 81);
+            this.chkRssSendByForward.Location = new System.Drawing.Point(515, 73);
             this.chkRssSendByForward.Name = "chkRssSendByForward";
-            this.chkRssSendByForward.Size = new System.Drawing.Size(51, 21);
+            this.chkRssSendByForward.Size = new System.Drawing.Size(51, 38);
             this.chkRssSendByForward.TabIndex = 8;
-            this.chkRssSendByForward.Text = "转发";
+            this.chkRssSendByForward.Text = "合并\r\n转发";
             this.chkRssSendByForward.UseVisualStyleBackColor = true;
             // 
             // pnlTranslateFromTo

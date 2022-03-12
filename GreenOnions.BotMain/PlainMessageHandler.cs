@@ -2,6 +2,7 @@
 using GreenOnions.Help;
 using GreenOnions.HPicture;
 using GreenOnions.PictureSearcher;
+using GreenOnions.TicTacToe;
 using GreenOnions.Translate;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
@@ -28,6 +29,8 @@ namespace GreenOnions.BotMain
         private static Regex regexDownloadPixivOriginPicture;
         private static Regex regexSelectPhone;
         private static Regex regexHelp;
+        private static Regex regexTicTacToeStart;
+        private static Regex regexTicTacToeStop;
 
         static PlainMessageHandler()
         {
@@ -47,6 +50,8 @@ namespace GreenOnions.BotMain
             regexHPicture = new Regex(BotInfo.HPictureCmd.ReplaceGreenOnionsTags());
             regexBeautyPicture = new Regex(BotInfo.BeautyPictureCmd.ReplaceGreenOnionsTags());
             regexForgeMessage = new Regex(BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsTags());
+            regexTicTacToeStart = new Regex(BotInfo.StartTicTacToeCmd.ReplaceGreenOnionsTags());
+            regexTicTacToeStop = new Regex(BotInfo.StopTicTacToeCmd.ReplaceGreenOnionsTags());
         }
 
         /// <summary>
@@ -57,9 +62,32 @@ namespace GreenOnions.BotMain
         /// <param name="SendMessage">发送消息的委托(需要发出的消息体, 是否撤回或是否以回复的方式发送消息)</param>
         /// <param name="UploadPicture">上传图片事件(图片流, 返回上传完毕后的图片消息体)</param>
         /// <returns></returns>
-        public static async Task<bool> HandleMesage(IChatMessage[] Chain, IBaseInfo sender, Action<IChatMessage[], bool> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture, Func<string[], Task<string[]>> SendImage)
+        public static async Task<bool> HandleMesage(IChatMessage[] Chain, IBaseInfo sender, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture, Func<string[], Task<string[]>> SendImage, Action<int> RevokeMessage)
         {
             string firstMessage = Chain[1].ToString();
+
+            #region -- 井字棋 --
+
+            if (BotInfo.TicTacToeEnabled)
+            {
+                if (regexTicTacToeStart.IsMatch(firstMessage))
+                {
+                    TicTacToeHandler.StartTicTacToeSession(sender.Id, SendMessage, UploadPicture);
+                    return true;
+                }
+                else if (regexTicTacToeStop.IsMatch(firstMessage))
+                {
+                    TicTacToeHandler.StopTicTacToeSession(sender.Id, SendMessage);
+                    return true;
+                }
+                else if ((BotInfo.TicTacToeMoveMode & (int)TicTacToeMoveMode.Nomenclature) != 0 && Cache.PlayingTicTacToeUsers.ContainsKey(sender.Id) && firstMessage.Length == 2)
+                {
+                    TicTacToeHandler.PlayerMoveByNomenclature(firstMessage, sender.Id, SendMessage, UploadPicture);
+                    return true;
+                } 
+            }
+
+            #endregion -- 井字棋 --
 
             #region -- 伪造消息 --
             if (BotInfo.ForgeMessageEnabled && regexForgeMessage.IsMatch(firstMessage))
@@ -70,15 +98,18 @@ namespace GreenOnions.BotMain
             #endregion -- 伪造消息 --
 
             #region -- 连续搜图 --
-            if (regexSearchOn.IsMatch(firstMessage))
+            if (BotInfo.SearchEnabled)
             {
-                SearchPictureHandler.SearchOn(sender.Id, SendMessage);
-                return true;
-            }
-            if (regexSearchOff.IsMatch(firstMessage))
-            {
-                SearchPictureHandler.SearchOff(sender.Id, SendMessage);
-                return true;
+                if (regexSearchOn.IsMatch(firstMessage))
+                {
+                    SearchPictureHandler.SearchOn(sender.Id, SendMessage);
+                    return true;
+                }
+                if (regexSearchOff.IsMatch(firstMessage))
+                {
+                    SearchPictureHandler.SearchOff(sender.Id, SendMessage);
+                    return true;
+                }
             }
             #endregion -- 连续搜图 --
 
@@ -115,12 +146,12 @@ namespace GreenOnions.BotMain
                             {
                                 if (Cache.CheckGroupLimit(senderGroup.Id, senderGroup.Group.Id))
                                 {
-                                    SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureOutOfLimitReply) }, false);
+                                    _ = SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureOutOfLimitReply) }, true);  //次数用尽
                                     return true;
                                 }
                                 if (Cache.CheckGroupCD(senderGroup.Id, senderGroup.Group.Id))
                                 {
-                                    SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureCDUnreadyReply) }, false);
+                                    _ = SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureCDUnreadyReply) }, true);  //冷却中
                                     return true;
                                 }
                             }
@@ -129,7 +160,7 @@ namespace GreenOnions.BotMain
                             {
                                 Random r = new Random();
                                 PictureSource pictureSource = BotInfo.EnabledHPictureSource[r.Next(0, BotInfo.EnabledHPictureSource.Count)];
-                                HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.HPictureEndCmd, BotInfo.HPictureAllowR18 && (!BotInfo.HPictureR18WhiteOnly || BotInfo.HPictureWhiteGroup.Contains(senderGroup.Group.Id)), firstMessage, SendMessage, UploadPicture);
+                                HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.HPictureEndCmd, BotInfo.HPictureAllowR18 && (!BotInfo.HPictureR18WhiteOnly || BotInfo.HPictureWhiteGroup.Contains(senderGroup.Group.Id)), firstMessage, SendMessage, UploadPicture, RevokeMessage);
                             }
                         }
                     }
@@ -140,12 +171,12 @@ namespace GreenOnions.BotMain
                         {
                             if (Cache.CheckPMLimit(senderFriend.Id))
                             {
-                                SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureOutOfLimitReply) }, false);
+                                _ = SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureOutOfLimitReply) }, true);  //次数用尽
                                 return true;
                             }
                             if (Cache.CheckPMCD(senderFriend.Id))
                             {
-                                SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureCDUnreadyReply) }, false);
+                                _ = SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureCDUnreadyReply) }, true);  //冷却中
                                 return true;
                             }
 
@@ -153,7 +184,7 @@ namespace GreenOnions.BotMain
                             {
                                 Random r = new Random();
                                 PictureSource pictureSource = BotInfo.EnabledHPictureSource[r.Next(0, BotInfo.EnabledHPictureSource.Count)];
-                                HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.HPictureEndCmd, BotInfo.HPictureAllowR18, firstMessage, SendMessage, UploadPicture);
+                                HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.HPictureEndCmd, BotInfo.HPictureAllowR18, firstMessage, SendMessage, UploadPicture, RevokeMessage);
                             }
                         }
                     }
@@ -169,7 +200,7 @@ namespace GreenOnions.BotMain
                 {
                     Random r = new Random();
                     PictureSource pictureSource = BotInfo.EnabledBeautyPictureSource[r.Next(0, BotInfo.EnabledBeautyPictureSource.Count)];
-                    HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.BeautyPictureEndCmd, false, firstMessage, SendMessage, UploadPicture);
+                    HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.BeautyPictureEndCmd, false, firstMessage, SendMessage, UploadPicture, RevokeMessage);
                 }
                 return true;
             }
@@ -182,7 +213,7 @@ namespace GreenOnions.BotMain
                 if (match.Groups.Count > 1)
                 {
                     string strId = firstMessage.Substring(match.Groups[0].Length);
-                    await SearchPictureHandler.SendPixivOriginPictureWithIdAndP(strId, SendImage, UploadPicture, msg => SendMessage?.Invoke(msg, false));
+                    await SearchPictureHandler.SendPixivOriginPictureWithIdAndP(strId, SendImage, UploadPicture, SendMessage);
                 }
                 return true;
             }
@@ -191,7 +222,7 @@ namespace GreenOnions.BotMain
             #region -- 帮助 --
             if (regexHelp.IsMatch(firstMessage))
             {
-                HelpHandler.Helps(regexHelp, sender, firstMessage, SendMessage);
+                HelpHandler.Helps(regexHelp, sender, firstMessage, SendMessage, UploadPicture);
                 return true;
             }
             #endregion -- 帮助 --
@@ -212,16 +243,16 @@ namespace GreenOnions.BotMain
                                 try
                                 {
                                     string result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetPhoneByQQ", lQQNumber);
-                                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(result) }, false);
+                                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(result) }, true);
                                 }
                                 catch (Exception ex)
                                 {
-                                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("查询失败" + ex.Message) }, false);
+                                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("查询失败" + ex.Message) }, true);
                                 }
                             }
                             else
                             {
-                                SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("请输入正确的QQ号码(不支持以邮箱查询)") }, false);
+                                SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("请输入正确的QQ号码(不支持以邮箱查询)") }, true);
                             }
                         }
                     }
