@@ -17,6 +17,7 @@
 - [x] 8. 新人入群/退群/被踢提醒(支持定义)<br>
 - [x] 9. RSS订阅转发<br>
 - [x] 10. 下载Pixiv原图(通过[pixiv.cat](https://pixiv.cat/))<br>
+- [x] 11. 使用表情涂鸦游玩的井字棋功能 (其实是自己学习[OpenCVsharp](https://github.com/shimat/opencvsharp)过程中搞出来的, 随手搬上了bot上, 但实际由于涂鸦完还要转发, 步骤太多所以下棋体验极差)<br>
 
 ### 项目优势:
 
