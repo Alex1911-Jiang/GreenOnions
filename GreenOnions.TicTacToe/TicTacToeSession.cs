@@ -214,7 +214,7 @@ namespace GreenOnions.TicTacToe
                     if (playerNextWinX == null && playerNextWinY == null)
                     {
                         winOrLostType = 0; //平局
-                        return lastStepBmp;
+                        data[lastOneX, lastOneY] = 0;
                     }
                     else
                     {
