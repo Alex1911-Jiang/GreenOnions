@@ -190,54 +190,78 @@ namespace GreenOnions.TicTacToe
             {
                 data[x, y] = 1;
 
+                (int? playerWinX, int? playerWinY) = CheckWin();
+                if (playerWinX != null || playerWinY != null)
+                {
+                    winOrLostType = 1;
+                    return DrawWinBitimap(playerWinX, playerWinY);  //玩家已获胜
+                }
+
                 var computerStep = ComputerMove();
                 data[computerStep.X, computerStep.Y] = -1;
 
-                lastStepBmp = CreateChessboard();
-                DrawPiece(lastStepBmp);
-
-                int camp;
-                int resultX = CheckWinX(out camp);
-                if (resultX > -1)
+                (int? computerWinX, int? computerWinY) = CheckWin();
+                if (computerWinX != null || computerWinY != null)
                 {
-                    DrawWinLine(resultX, -1);
-                    if (camp != 0)
-                        winOrLostType = camp;
-                    return lastStepBmp;
+                    winOrLostType = -1;
+                    return DrawWinBitimap(computerWinX, computerWinY);  //电脑获胜
                 }
 
-                int resultY = CheckWinY(out camp);
-                if (resultY > -1)
+                if (OnlyLeftOneGrid(out int lastOneX, out int lastOneY))  //剩最后一个格子
                 {
-                    DrawWinLine(-1, resultY);
-                    if (camp != 0)
-                        winOrLostType = camp;
-                    return lastStepBmp;
-                }
-
-                int resultXY = CheckWinXY(out camp);
-                if (resultXY != 0)
-                {
-                    DrawWinLine(resultXY, resultXY);
-                    if (camp != 0)
-                        winOrLostType = camp;
-                    return lastStepBmp;
-                }
-
-                if (OnlyLeftOneGrid(out int lastOneX, out int lastOneY))
-                {
-                    if (!IsPlayerWin(lastOneX, lastOneY))
+                    data[lastOneX, lastOneY] = 1;
+                    (int? playerNextWinX, int? playerNextWinY) = CheckWin();
+                    if (playerNextWinX == null && playerNextWinY == null)
                     {
-                        winOrLostType = 0;
-                        return lastStepBmp; //平局
+                        winOrLostType = 0; //平局
+                        return lastStepBmp;
+                    }
+                    else
+                    {
+                        winOrLostType = 1;
+                        return DrawWinBitimap(playerWinX, playerWinY);  //玩家获胜
                     }
                 }
+
+                lastStepBmp = CreateChessboard();
+                DrawPiece(lastStepBmp);
                 return lastStepBmp;
             }
             else
             {
                 return null;
             }
+
+            Bitmap DrawWinBitimap(int? overX, int? overY)
+            {
+                lastStepBmp = CreateChessboard();
+                DrawPiece(lastStepBmp);
+
+                if (overY == null)
+                    DrawWinLine(overX.Value, -1);
+                else if (overX == null)
+                    DrawWinLine(-1, overY.Value);
+                else
+                    DrawWinLine(overX.Value, overY.Value);
+
+                return lastStepBmp;
+            }
+        }
+
+        private (int? overX, int? overY) CheckWin()
+        {
+            (int? campX, int resultX) = CheckWinX();  //在横线上
+            if (campX != null)
+                return (resultX, null);
+
+            (int? campY, int resultY) = CheckWinY();  //在竖线上
+            if (campY != null)
+                return (null, resultY);
+
+            (int? campXY, int resultXY) = CheckWinXY();  //在斜线上
+            if (campXY != null)
+                return (resultXY, resultXY);
+            return default;
         }
 
         private (int X, int Y) ComputerMove()
@@ -252,6 +276,21 @@ namespace GreenOnions.TicTacToe
 
             if (data[1,1] == 0)  //优先抢中间
                 return (1, 1);
+            if (data[0, 0] == 0 && data[0, 2] == 0 && data[2, 0] == 0 && data[2, 2] == 0)  //玩家抢了中间, 优先抢四角
+            {
+                int random = new Random(Guid.NewGuid().GetHashCode()).Next(0, 4);
+                switch (random)
+                {
+                    case 0:
+                        return (0, 0);
+                    case 1:
+                        return (0, 2);
+                    case 2:
+                        return (2, 0);
+                    case 3:
+                        return (2, 2);
+                }
+            }
 
             while (true)  //都不符合条件的时候随机下子
             {
@@ -346,29 +385,6 @@ namespace GreenOnions.TicTacToe
             return zeroCount == 1;  //只剩一个位置下子, 可以直接判断是否结束
         }
 
-        private bool IsPlayerWin(int lastOneX, int lastOneY)
-        {
-            data[lastOneX, lastOneY] = 1;
-            int resultX = CheckWinX(out _);
-            if (resultX > -1)
-            {
-                DrawWinLine(resultX, -1);
-            }
-
-            int resultY = CheckWinY(out _);
-            if (resultY > -1)
-            {
-                DrawWinLine(-1, resultY);
-            }
-
-            int resultXY = CheckWinXY(out _);
-            if (resultXY != 0)
-            {
-                DrawWinLine(resultXY, resultXY);
-            }
-            return false;
-        }
-
         private void DrawWinLine(int x, int y)
         {
             using (Graphics g = Graphics.FromImage(lastStepBmp))
@@ -385,9 +401,9 @@ namespace GreenOnions.TicTacToe
             }
         }
 
-        private int CheckWinX(out int camp)
+        private (int? camp, int lineX) CheckWinX()
         {
-            camp = 0;
+            int? camp = null;
             for (int y = 0; y < 3; y++)
             {
                 for (int x = 0; x < 3; x++)
@@ -397,15 +413,15 @@ namespace GreenOnions.TicTacToe
                     else if (data[x, y] == 0 || data[x, y] != camp)
                         goto IL_Next;
                 }
-                return y;
+                return (camp, y);
             IL_Next:;
             }
-            return -1;
+            return (null, -1);
         }
 
-        private int CheckWinY(out int camp)
+        private (int? camp, int lineY) CheckWinY()
         {
-            camp = 0;
+            int? camp = null;
             for (int x = 0; x < 3; x++)
             {
                 for (int y = 0; y < 3; y++)
@@ -415,15 +431,15 @@ namespace GreenOnions.TicTacToe
                     else if (data[x, y] == 0 || data[x, y] != camp)
                         goto IL_Next;
                 }
-                return x;
+                return (camp, x);
             IL_Next:;
             }
-            return -1;
+            return (null, -1);
         }
 
-        private int CheckWinXY(out int camp)
+        private (int? camp, int lineXY) CheckWinXY()
         {
-            camp = 0;
+            int? camp = null;
             for (int i = 0; i < 3; i++)
             {
                 if (i == 0)
@@ -431,7 +447,7 @@ namespace GreenOnions.TicTacToe
                 else if (data[i, i] == 0 || data[i, i] != camp)
                     goto IL_Next;
             }
-            return 1;
+            return (camp, 1);  // \
         IL_Next:;
             for (int i = 0; i < 3; i++)
             {
@@ -441,9 +457,9 @@ namespace GreenOnions.TicTacToe
                 else if (data[x, i] == 0 || data[x, i] != camp)
                     goto IL_0;
             }
-            return -1;
+            return (camp, -1);  // /
         IL_0:;
-            return 0;
+            return (null, 0);
         }
     }
 }
