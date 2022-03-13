@@ -47,7 +47,7 @@ namespace GreenOnions.BotManagerWindow
 			{
 				Hide();
 				ShowInTaskbar = false;
-				notifyIcon1.Visible = true;
+				notifyIcon.Visible = true;
 			}
 		}
 
@@ -64,6 +64,7 @@ namespace GreenOnions.BotManagerWindow
 						btnConnect.Text = "断开连接";
 						btnConnect.Click -= btnConnect_Click;
 						btnConnect.Click += btnDeconnect_Click;
+						notifyIcon.Text = $"葱葱机器人:{nickNameOrErrorMessage}";
 
 						BotInfo.QQId = qqId;
 						BotInfo.IP = ip;
@@ -75,15 +76,14 @@ namespace GreenOnions.BotManagerWindow
 					{
 						MessageBox.Show("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					}
-					else  //发生异常
+					else  //发生异常或主动断开连接
 					{
 						btnConnect.Text = "连接到mirai-api-http";
 						lblState.Text = "连接状态: 未连接到mirai-api-http";
 						lblState.ForeColor = Color.Red;
-                        if (nickNameOrErrorMessage.Length > 0)
-                        {
+						notifyIcon.Text = $"葱葱机器人";
+						if (nickNameOrErrorMessage.Length > 0)  //发生异常
                             MessageBox.Show("连接失败，" + nickNameOrErrorMessage, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
 					}
 				}));
             });
@@ -148,7 +148,7 @@ namespace GreenOnions.BotManagerWindow
 			Visible = true;
 			ShowInTaskbar = true;
 			WindowState = FormWindowState.Normal;
-			notifyIcon1.Visible = false;
+			notifyIcon.Visible = false;
 		}
     }
 }

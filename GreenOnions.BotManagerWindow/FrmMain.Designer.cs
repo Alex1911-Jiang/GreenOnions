@@ -42,7 +42,7 @@ namespace GreenOnions.BotManagerWindow
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnBotSettings = new System.Windows.Forms.Button();
             this.lblState = new System.Windows.Forms.Label();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // lblQQ
@@ -141,11 +141,11 @@ namespace GreenOnions.BotManagerWindow
             this.lblState.TabIndex = 3;
             this.lblState.Text = "连接状态: 未连接到mirai-api-http";
             // 
-            // notifyIcon1
+            // notifyIcon
             // 
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "葱葱机器人";
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "葱葱机器人";
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // FrmMain
             // 
@@ -185,6 +185,6 @@ namespace GreenOnions.BotManagerWindow
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnBotSettings;
         private System.Windows.Forms.Label lblState;
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }
