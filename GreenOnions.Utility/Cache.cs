@@ -89,10 +89,6 @@ namespace GreenOnions.Utility
             foreach (KeyValuePair<long, DateTime> SearchingPicturesUser in source)
                 if (DateTime.Now > SearchingPicturesUser.Value.AddMinutes(1))
                     removeQQ.Add(SearchingPicturesUser.Key);
-#if DEBUG
-            if (removeQQ.Count > 0)
-                    ErrorHelper.WriteMessage($"定时检查发现存在未能成功移除的正在搜图成员{removeQQ.Count}个");
-#endif
             for (int i = 0; i < removeQQ.Count; i++)
                 source.Remove(removeQQ[i]);
         }

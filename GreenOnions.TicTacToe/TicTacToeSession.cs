@@ -87,16 +87,8 @@ namespace GreenOnions.TicTacToe
 
         public Dictionary<System.Drawing.Point, int> PlayerMoveByBitmap(Bitmap playerStepBmp)
         {
-#if DEBUG
-            playerStepBmp.Save("接收到的图片.bmp", playerStepBmp.RawFormat);
-#endif
-
             if (playerStepBmp.PixelFormat == PixelFormat.Format32bppArgb)
             {
-#if DEBUG
-                playerStepBmp.Save("转换通道前图片.bmp", playerStepBmp.RawFormat);
-#endif
-
                 Bitmap bmp24 = new Bitmap(playerStepBmp.Width, playerStepBmp.Height, PixelFormat.Format24bppRgb);
                 Graphics g = Graphics.FromImage(bmp24);
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
@@ -104,10 +96,6 @@ namespace GreenOnions.TicTacToe
                 g.DrawImageUnscaled(playerStepBmp, 0, 0);
                 playerStepBmp.Dispose();
                 playerStepBmp = bmp24;
-
-#if DEBUG
-                playerStepBmp.Save("转换通道后图片.bmp", playerStepBmp.RawFormat);
-#endif
             }
 
             Mat playStep = BitmapConverter.ToMat(playerStepBmp);
@@ -116,16 +104,9 @@ namespace GreenOnions.TicTacToe
             {
                 Bitmap before = BitmapConverter.ToBitmap(playStep, PixelFormat.Format24bppRgb);
 
-#if DEBUG
-                before.Save("缩放前图片.bmp", before.RawFormat);
-#endif
-
                 Mat temp = new Mat();
                 Cv2.Resize(playStep, temp, new OpenCvSharp.Size(300, 300), 0, 0, InterpolationFlags.Lanczos4);
                 Bitmap after = BitmapConverter.ToBitmap(temp, PixelFormat.Format24bppRgb);
-#if DEBUG
-                after.Save($"缩放后图片.bmp", after.RawFormat);
-#endif
 
                 playStep.Dispose();
                 playStep = temp;
@@ -162,10 +143,6 @@ namespace GreenOnions.TicTacToe
                     }
 
                     Bitmap bmpNewStep = BitmapConverter.ToBitmap(nowStepTemp, PixelFormat.Format24bppRgb);
-
-#if DEBUG
-                    bmpNewStep.Save($"相减后图片.bmp", bmpNewStep.RawFormat);
-#endif
 
                     playStep.Dispose();
 

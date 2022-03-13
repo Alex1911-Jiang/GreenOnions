@@ -184,7 +184,7 @@ namespace GreenOnions.Help
                 }
                 IChatMessage[] helpFailCMD()
                 {
-                    StringBuilder strFail = new StringBuilder($"您需要将\"功能\"替换为功能名称，例如：\"{BotInfo.BotName}帮助--搜图\" 以获取搜图功能的帮助。\r\n目前启用的功能有： {string.Join("，", getEnabledFunction())}");
+                    StringBuilder strFail = new StringBuilder($"您需要将\"功能\"替换为功能名称，例如：\"{BotInfo.BotName}帮助--搜图\" 以获取搜图功能的帮助。\r\n目前启用的功能有： {string.Join("，", getEnabledFunction())}。");
                     if (BotInfo.QQId == 3246934384)
                         strFail.AppendLine($"您也可以私聊{BotInfo.BotName}留言，主人看到的时候会进行回复（可能）。");
                     return new[] { new PlainMessage(strFail.ToString()) };

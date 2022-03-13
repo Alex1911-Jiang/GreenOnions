@@ -57,9 +57,6 @@ namespace GreenOnions.PictureSearcher
             else
             {
                 Cache.SearchingPicturesUsers.TryAdd(qqId, DateTime.Now.AddMinutes(1));
-#if DEBUG
-                ErrorHelper.WriteMessage($"添加了一个用户进正在搜图的列表:{qqId}");
-#endif
                 SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags()) }, true);
                 Cache.SetWorkingTimeout(qqId, Cache.SearchingPicturesUsers, () =>
                 {
@@ -75,9 +72,6 @@ namespace GreenOnions.PictureSearcher
             if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
             {
                 Cache.SearchingPicturesUsers.TryRemove(qqId, out _);
-#if DEBUG
-                ErrorHelper.WriteMessage($"把一个用户移除出正在搜图的列表:{qqId}");
-#endif
                 SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeOffReply.ReplaceGreenOnionsTags()) }, true);
             }
             else

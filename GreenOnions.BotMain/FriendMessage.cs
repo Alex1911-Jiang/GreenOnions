@@ -70,9 +70,8 @@ namespace GreenOnions.BotMain
                             for (int i = 1; i < e.Chain.Length; i++)
                             {
                                 ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-                                await SearchPictureHandler.SuccessiveSearchPicture(imgMsg, e.Sender.Id,
-                                    picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream),  //上传图片
-                                    (msg, bQuote) => session.SendFriendMessageAsync(e.Sender.Id, msg, bQuote ? quoteMessage.Id : null),  //发送好友消息
+                                await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream),
+                                    (msg, bQuote) => session.SendFriendMessageAsync(e.Sender.Id, msg),
                                     urls => session.SendImageToFriendAsync(e.Sender.Id, urls));
                             }
                         }

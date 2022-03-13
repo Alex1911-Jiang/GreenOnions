@@ -65,9 +65,6 @@ namespace GreenOnions.BotMain
                                     {
                                         if (BotInfo.SearchEnabled)
                                         {
-#if DEBUG
-                                            ErrorHelper.WriteMessage($"触发了@搜图, 消息原句为:{string.Join(",", e.Chain.Select(c => c.ToString()))}");
-#endif
                                             ImageMessage imgMsg = e.Chain[i] as ImageMessage;
                                             await SearchPictureHandler.SearchPicture(imgMsg, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
                                                 (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null),
@@ -109,9 +106,6 @@ namespace GreenOnions.BotMain
                         #region -- 连续搜图 --
                         if (Cache.SearchingPicturesUsers.Keys.Contains(e.Sender.Id))
                         {
-#if DEBUG
-                            ErrorHelper.WriteMessage($"符合连续搜图条件, 搜图被启动, 正在搜图的人有:{string.Join(",", Cache.SearchingPicturesUsers.Keys)}  发起搜图的人为:{e.Sender.Id}");
-#endif
                             for (int i = 1; i < e.Chain.Length; i++)
                             {
                                 ImageMessage imgMsg = e.Chain[i] as ImageMessage;
