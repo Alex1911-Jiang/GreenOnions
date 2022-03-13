@@ -273,36 +273,43 @@ namespace GreenOnions.HPicture
                 {
                     foreach (var item in items)
                     {
-                        IImageMessage imageMessage = null;
-                        string imgName = Path.Combine(ImageHelper.ImagePath,$"ELF_{item.ID}.png");
-                        if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
+                        IChatMessage imageMessage = null;
+                        try
                         {
-                            imageMessage = await UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read));  //上传图片
+                            string imgName = Path.Combine(ImageHelper.ImagePath, $"ELF_{item.ID}.png");
+                            if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
+                            {
+                                imageMessage = await UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read));  //上传图片
+                            }
+                            else
+                            {
+                                MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStream(item.Link);
+
+                                if (BotInfo.HPictureAntiShielding)
+                                {
+                                    ms = ms.StreamAntiShielding();
+                                }
+
+                                if (ms == null)
+                                {
+                                    _ = SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Link))) }, true);
+                                    return;
+                                }
+
+                                MemoryStream tempMs = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
+                                ms.Dispose();
+                                ms = tempMs;
+                                imageMessage = await UploadPicture(ms);  //上传图片
+                                ms.Dispose();
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStream(item.Link);
-
-                            if (BotInfo.HPictureAntiShielding)
-                            {
-                                ms = ms.StreamAntiShielding();
-                            }
-
-                            if (ms == null)
-                            {
-                                _ = SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Link))) }, true);
-                                return;
-                            }
-
-                            MemoryStream tempMs = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
-                            ms.Dispose();
-                            ms = tempMs;
-                            imageMessage = await UploadPicture(ms);  //上传图片
-                            ms.Dispose();
+                            ErrorHelper.WriteErrorLogWithUserMessage($"ELF美图下载失败, 地址为:{item.Link}", ex);
+                            imageMessage = new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("图片下载失败。\r\n");
                         }
-
                         _ = SendMessage(new IChatMessage[] { imageMessage, new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage($"地址:{item.Source}\r\n日文标签:{item.Jp_Tag}\r\n中文标签:{item.Zh_Tags}\r\n作者:{item.Author}") }, false)
-                            .ContinueWith(_=> Record(LimitType.Count)); //记录冷却时间
+                            .ContinueWith(_ => Record(LimitType.Count)); //记录冷却时间
                     }
                 }
             }
