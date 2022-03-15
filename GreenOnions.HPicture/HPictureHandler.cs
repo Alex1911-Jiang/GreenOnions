@@ -235,38 +235,46 @@ namespace GreenOnions.HPicture
                 async void SendOnceLoliconHPicture(LoliconHPictureItem item)
                 {
                     IImageMessage imageMessage = null;
-                    string imgName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png");
-                    if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
+                    try
                     {
-                        imageMessage = await UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read));  //上传图片
-                    }
-                    else
-                    {
-                        MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStream(item.URL);
-
-                        if (ms != null)
+                        string imgName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png");
+                        if (File.Exists(imgName) && new FileInfo(imgName).Length > 0) //存在本地缓存时优先使用缓存
                         {
-                            if (BotInfo.HPictureAntiShielding)
-                            {
-                                ms = ms.StreamAntiShielding();
-                            }
-                            MemoryStream tempMs = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
-                            ms.Dispose();
-                            ms = tempMs;
+                            imageMessage = await UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read));  //上传图片
                         }
                         else
                         {
-                            _ = SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Address))) }, true);  //下载失败
-                            return;
+                            MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStream(item.URL);
+
+                            if (ms != null)
+                            {
+                                if (BotInfo.HPictureAntiShielding)
+                                {
+                                    ms = ms.StreamAntiShielding();
+                                }
+                                MemoryStream tempMs = new MemoryStream(ms.ToArray());  //不重新new一次的话上传的时候解码会为空
+                                ms.Dispose();
+                                ms = tempMs;
+                            }
+                            else
+                            {
+                                _ = SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("URL", item.Address))) }, true);  //下载失败
+                                return;
+                            }
+                            imageMessage = await UploadPicture(ms);  //上传图片
+                            ms.Dispose();
                         }
-                        imageMessage = await UploadPicture(ms);  //上传图片
-                        ms.Dispose();
+
+                        _ = SendMessage(new[] { imageMessage }, false).ContinueWith(msg =>
+                        {
+                            Record(LimitType.Count);  //记录冷却时间
+                            RevokeMessage(msg.Result);
+                        });
                     }
-                    _ = SendMessage(new[] { imageMessage }, false).ContinueWith(msg =>
+                    catch (Exception ex)
                     {
-                        Record(LimitType.Count);  //记录冷却时间
-                        RevokeMessage(msg.Result);
-                    });
+                        ErrorHelper.WriteErrorLogWithUserMessage($"Lolicon色图下载失败, 地址为:{item.URL}", ex);
+                    }
                 }
 
                 async void SendOnceELFHPicture(IEnumerable<ELFHPictureItem> items)
