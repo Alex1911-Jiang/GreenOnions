@@ -10,12 +10,13 @@ namespace GreenOnions.BotManagerWindow
 {
     public partial class FrmMain : Form
 	{
+		private WebBrowserForm webBrowserForm;
 		public FrmMain()
 		{
 			InitializeComponent();
 
-			WebBrowserForm webBrowserForm = new WebBrowserForm();
-			EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocumentAsync;
+            webBrowserForm = new WebBrowserForm();
+            EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocumentAsync;
 
 			#region -- 读取配置 --
 			try
@@ -71,7 +72,9 @@ namespace GreenOnions.BotManagerWindow
 						BotInfo.Port = port.ToString();
 						BotInfo.VerifyKey = verifyKey;
 						JsonHelper.SaveConfigFile();
-					}
+
+                        webBrowserForm.CreateHandle();
+                    }
 					else if (nickNameOrErrorMessage == null)  //连接失败且没有异常
 					{
 						MessageBox.Show("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);

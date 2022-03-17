@@ -462,30 +462,36 @@ namespace GreenOnions.PictureSearcher
             {
                 string strAscii2dColorResult = null; 
                 string strAscii2dBovwResult = null;
-                string url = @$"https://ascii2d.net/search/url/{qqImgUrl}?type=color";
+                string colorUrl = @$"https://ascii2d.net/search/url/{qqImgUrl}?type=color";
+                string bovwUrl = null;
+
                 if (EventHelper.GetDocumentByBrowserEvent != null && BotInfo.HttpRequestByWebBrowser && BotInfo.ASCII2DRequestByWebBrowser)
                 {
-                    var responseColor = EventHelper.GetDocumentByBrowserEvent(url);
+                    var responseColor = EventHelper.GetDocumentByBrowserEvent(colorUrl);
                     strAscii2dColorResult = responseColor.document;
                     try
                     {
-                        var responseBovw = EventHelper.GetDocumentByBrowserEvent(responseColor.jumpUrl.Replace("/color/", "/bovw/"));
+                        bovwUrl = responseColor.jumpUrl.Replace("/color/", "/bovw/");
+                        var responseBovw = EventHelper.GetDocumentByBrowserEvent(bovwUrl);
                         strAscii2dBovwResult = responseBovw.document;
                     }
                     catch (Exception ex)
                     {
+                        ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D颜色搜索失败", ex, $"请求地址为：{colorUrl}");
                     }
                 }
                 else
                 {
-                    var response = await HttpHelper.GetHttpResponseStringAndJumpUrlAsync(url);
+                    var response = await HttpHelper.GetHttpResponseStringAndJumpUrlAsync(colorUrl);
                     strAscii2dColorResult = response.document;
                     try
                     {
-                        strAscii2dBovwResult = await HttpHelper.GetHttpResponseStringAsync(response.jumpUrl.Replace("/color/", "/bovw/"));
+                        bovwUrl = response.jumpUrl.Replace("/color/", "/bovw/");
+                        strAscii2dBovwResult = await HttpHelper.GetHttpResponseStringAsync(bovwUrl);
                     }
                     catch (Exception ex)
                     {
+                        ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D颜色搜索失败", ex, $"请求地址为：{colorUrl}");
                     }
                 }
 
@@ -495,85 +501,88 @@ namespace GreenOnions.PictureSearcher
                 try
                 {
                     #region -- 颜色搜索 --
-                    HtmlDocument docColor = new HtmlDocument();
-                    docColor.LoadHtml(strAscii2dColorResult);
-                    string pathColorItemBox = "/html/body/div['container']/div['row']/div['col-xs-12 col-lg-8 col-xl-8']/div['row item-box']";
-                    HtmlNode nodeColorItemBox = docColor.DocumentNode.SelectNodes(pathColorItemBox)[2];
-                    string pathColorHash = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['hash']";
-                    string pathColorImage = "div['col-xs-12 col-sm-12 col-md-4 col-xl-4 text-xs-center image-box']/img";
-                    string pathColorUrlA = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/a[1]";
-                    string pathColorMemberA = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/a[2]";
-                    string pathColorUrlSmall = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/small[1]/a";
-                    string pathColorMemberSmall = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/small[2]/a";
-                    HtmlNode nodeColorHash = nodeColorItemBox.SelectSingleNode(pathColorHash);
-                    HtmlNode nodeColorImage = nodeColorItemBox.SelectSingleNode(pathColorImage);
-                    HtmlNode nodeColorUrl = nodeColorItemBox.SelectSingleNode(pathColorUrlA) ?? nodeColorItemBox.SelectSingleNode(pathColorUrlSmall);
-                    HtmlNode nodeColorMember = nodeColorItemBox.SelectSingleNode(pathColorMemberA) ?? nodeColorItemBox.SelectSingleNode(pathColorMemberSmall);
-                    StringBuilder stringBuilderColor = new StringBuilder();
-
-                    if (nodeColorUrl != null)
+                    if (!string.IsNullOrEmpty(strAscii2dColorResult))
                     {
-                        stringBuilderColor.AppendLine("ASCII2D 颜色搜索");
-                        stringBuilderColor.AppendLine($"标题:{nodeColorUrl.InnerText}");
-                        stringBuilderColor.AppendLine($"地址:{nodeColorUrl.Attributes["href"].Value}");
-                        if (nodeColorMember != null)
-                        {
-                            stringBuilderColor.AppendLine($"作者:{nodeColorMember.InnerText}");
-                            stringBuilderColor.AppendLine($"主页:{nodeColorMember.Attributes["href"].Value}");
-                        }
+                        HtmlDocument docColor = new HtmlDocument();
+                        docColor.LoadHtml(strAscii2dColorResult);
+                        string pathColorItemBox = "/html/body/div['container']/div['row']/div['col-xs-12 col-lg-8 col-xl-8']/div['row item-box']";
+                        HtmlNode nodeColorItemBox = docColor.DocumentNode.SelectNodes(pathColorItemBox)[2];
+                        string pathColorHash = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['hash']";
+                        string pathColorImage = "div['col-xs-12 col-sm-12 col-md-4 col-xl-4 text-xs-center image-box']/img";
+                        string pathColorUrlA = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/a[1]";
+                        string pathColorMemberA = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/a[2]";
+                        string pathColorUrlSmall = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/small[1]/a";
+                        string pathColorMemberSmall = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/small[2]/a";
+                        HtmlNode nodeColorHash = nodeColorItemBox.SelectSingleNode(pathColorHash);
+                        HtmlNode nodeColorImage = nodeColorItemBox.SelectSingleNode(pathColorImage);
+                        HtmlNode nodeColorUrl = nodeColorItemBox.SelectSingleNode(pathColorUrlA) ?? nodeColorItemBox.SelectSingleNode(pathColorUrlSmall);
+                        HtmlNode nodeColorMember = nodeColorItemBox.SelectSingleNode(pathColorMemberA) ?? nodeColorItemBox.SelectSingleNode(pathColorMemberSmall);
+                        StringBuilder stringBuilderColor = new StringBuilder();
 
-                        string[] thuColorImgCacheFiles = Directory.GetFiles(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}*");
-                        IChatMessage imageColorMessage = null;
-                        Stream streamColorImage = null;
-                        if (thuColorImgCacheFiles.Length > 0 && new FileInfo(thuColorImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
+                        if (nodeColorUrl != null)
                         {
-                            if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                            stringBuilderColor.AppendLine("ASCII2D 颜色搜索");
+                            stringBuilderColor.AppendLine($"标题:{nodeColorUrl.InnerText}");
+                            stringBuilderColor.AppendLine($"地址:{nodeColorUrl.Attributes["href"].Value}");
+                            if (nodeColorMember != null)
                             {
-                                if (thuColorImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
-                                    imageColorMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
-                                else if (thuColorImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
-                                    streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
-                                else  //曾经没参与鉴黄的
+                                stringBuilderColor.AppendLine($"作者:{nodeColorMember.InnerText}");
+                                stringBuilderColor.AppendLine($"主页:{nodeColorMember.Attributes["href"].Value}");
+                            }
+
+                            string[] thuColorImgCacheFiles = Directory.GetFiles(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}*");
+                            IChatMessage imageColorMessage = null;
+                            Stream streamColorImage = null;
+                            if (thuColorImgCacheFiles.Length > 0 && new FileInfo(thuColorImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
+                            {
+                                if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                                 {
-                                    byte[] colorImageByte = File.ReadAllBytes(thuColorImgCacheFiles[0]);
-                                    imageColorMessage = CheckPornSearch(thuColorImgCacheFiles[0], colorImageByte);
-                                    if (imageColorMessage == null)
-                                        streamColorImage = new MemoryStream(colorImageByte);  //上传本地图片
+                                    if (thuColorImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
+                                        imageColorMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
+                                    else if (thuColorImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
+                                        streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);  //上传本地图片
+                                    else  //曾经没参与鉴黄的
+                                    {
+                                        byte[] colorImageByte = File.ReadAllBytes(thuColorImgCacheFiles[0]);
+                                        imageColorMessage = CheckPornSearch(thuColorImgCacheFiles[0], colorImageByte);
+                                        if (imageColorMessage == null)
+                                            streamColorImage = new MemoryStream(colorImageByte);  //上传本地图片
+                                    }
+                                }
+                                else if (BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图, 直接读取本地图片
+                                    streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
+                            }
+                            else
+                            {
+                                string thuColorImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}.png");
+                                if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)
+                                {
+                                    streamColorImage = await HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value);
+                                    if (streamColorImage != null)
+                                    {
+                                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                            imageColorMessage = CheckPornSearch(thuColorImgCache, (streamColorImage as MemoryStream).ToArray());
+                                    }
                                 }
                             }
-                            else if (BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图, 直接读取本地图片
-                                streamColorImage = new FileStream(thuColorImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
-                        }
-                        else
-                        {
-                            string thuColorImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}.png");
-                            if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)
+                            if (streamColorImage != null)
                             {
-                                streamColorImage = await HttpHelper.DownloadImageAsMemoryStream("https://ascii2d.net" + nodeColorImage.Attributes["src"].Value);
-                                if (streamColorImage != null)
-                                {
-                                    if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
-                                        imageColorMessage = CheckPornSearch(thuColorImgCache, (streamColorImage as MemoryStream).ToArray());
-                                }
+                                if (imageColorMessage == null)
+                                    imageColorMessage = await UploadPicture(streamColorImage);
+                                streamColorImage?.Dispose();
                             }
+                            if (imageColorMessage != null)
+                                await SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage }, true);
+                            else
+                                await SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()) }, true);
                         }
-                        if (streamColorImage != null)
-                        {
-                            if (imageColorMessage == null)
-                                imageColorMessage = await UploadPicture(streamColorImage);
-                            streamColorImage?.Dispose();
-                        }
-                        if (imageColorMessage != null)
-                            await SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage }, true);
-                        else
-                            await SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()) }, true);
                     }
                     #endregion -- 颜色搜索 --
                 }
                 catch (Exception ex)
                 {
                     bColorError = true;
-                    ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D颜色搜索失败", ex, $"请求地址为：{strAscii2dColorResult}");
+                    ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D颜色搜索失败", ex, $"请求地址为:{colorUrl}\r\n请求结果为：{strAscii2dColorResult}");
                 }
 
                 try
@@ -659,7 +668,7 @@ namespace GreenOnions.PictureSearcher
                 catch (Exception ex)
                 {
                     bBovwError = true;
-                    ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D特征搜索失败", ex, $"请求地址为：{strAscii2dBovwResult}");
+                    ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D特征搜索失败", ex, $"请求地址为:{bovwUrl}\r\n结果为：{strAscii2dBovwResult}");
                 }
 
                 if (bColorError && bBovwError)

@@ -72,17 +72,20 @@ namespace GreenOnions.BotMain
                                         }
                                     }
                                     #endregion -- @搜图 --
-                                    #region -- @下载原图 --
                                     if (e.Chain[i].Type == "Plain")
                                     {
-                                        if (string.IsNullOrWhiteSpace(e.Chain[i].ToString()))
-                                            continue;
-                                        await SearchPictureHandler.SendPixivOriginPictureWithIdAndP(e.Chain[i].ToString(),
-                                            urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls),
-                                            picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
-                                            (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null));
+                                        #region -- @下载原图 --
+                                        if (BotInfo.OriginPictureEnabled)
+                                        {
+                                            if (string.IsNullOrWhiteSpace(e.Chain[i].ToString()))
+                                                continue;
+                                            await SearchPictureHandler.SendPixivOriginPictureWithIdAndP(e.Chain[i].ToString(),
+                                                urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls),
+                                                picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),
+                                                (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null));
+                                        }
+                                        #endregion -- @下载原图 --
                                     }
-                                    #endregion -- @下载原图 --
                                 }
                                 return;
                             }

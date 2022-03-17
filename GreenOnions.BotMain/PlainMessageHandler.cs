@@ -114,28 +114,30 @@ namespace GreenOnions.BotMain
             #endregion -- 连续搜图 --
 
             #region -- 翻译 --
-            if (regexTranslateToChinese.IsMatch(firstMessage))  //翻译为中文
+            if (BotInfo.TranslateEnabled)
             {
-                TranslateHandler.TranslateToChinese(regexTranslateToChinese, firstMessage, SendMessage);
-                return true;
-            }
-            if (BotInfo.TranslateEngineType == TranslateEngine.Google)
-            {
-                if (regexTranslateTo.IsMatch(firstMessage))  //翻译为指定语言(仅限谷歌)
+                if (regexTranslateToChinese.IsMatch(firstMessage))  //翻译为中文
+                {
+                    TranslateHandler.TranslateToChinese(regexTranslateToChinese, firstMessage, SendMessage);
+                    return true;
+                }
+                if (BotInfo.TranslateEngineType == TranslateEngine.Google && regexTranslateTo.IsMatch(firstMessage))  //翻译为指定语言(仅限谷歌)
+                {
                     TranslateHandler.TranslateTo(regexTranslateTo, firstMessage, SendMessage);
-                return true;
-            }
-            if (regexTranslateFromTo.IsMatch(firstMessage))  //从指定语言翻译为指定语言
-            {
-                TranslateHandler.TranslateFromTo(regexTranslateFromTo, firstMessage, SendMessage);
-                return true;
+                    return true;
+                }
+                if (regexTranslateFromTo.IsMatch(firstMessage))  //从指定语言翻译为指定语言
+                {
+                    TranslateHandler.TranslateFromTo(regexTranslateFromTo, firstMessage, SendMessage);
+                    return true;
+                }
             }
             #endregion -- 翻译 --
 
             #region -- 色图 --
-            if (regexHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage))
+            if (BotInfo.HPictureEnabled)
             {
-                if (BotInfo.HPictureEnabled)
+                if (regexHPicture.IsMatch(firstMessage) || BotInfo.HPictureUserCmd.Contains(firstMessage))
                 {
                     if (sender is IGroupMemberInfo)  //群消息
                     {
@@ -194,28 +196,28 @@ namespace GreenOnions.BotMain
             #endregion -- 色图 --
 
             #region -- 美图 --
-            if (regexBeautyPicture.IsMatch(firstMessage))
+            if (BotInfo.HPictureEnabled && BotInfo.EnabledBeautyPictureSource.Count > 0 && regexBeautyPicture.IsMatch(firstMessage))
             {
-                if (BotInfo.HPictureEnabled && BotInfo.EnabledBeautyPictureSource.Count > 0)
-                {
-                    Random r = new Random();
-                    PictureSource pictureSource = BotInfo.EnabledBeautyPictureSource[r.Next(0, BotInfo.EnabledBeautyPictureSource.Count)];
-                    HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.BeautyPictureEndCmd, false, firstMessage, SendMessage, UploadPicture, RevokeMessage);
-                }
+                Random r = new Random();
+                PictureSource pictureSource = BotInfo.EnabledBeautyPictureSource[r.Next(0, BotInfo.EnabledBeautyPictureSource.Count)];
+                HPictureHandler.SendHPictures(sender, pictureSource, BotInfo.BeautyPictureEndCmd, false, firstMessage, SendMessage, UploadPicture, RevokeMessage);
                 return true;
             }
             #endregion -- 美图 --
 
             #region -- 下载Pixiv原图 --
-            if (regexDownloadPixivOriginPicture.IsMatch(firstMessage))
+            if (BotInfo.OriginPictureEnabled)
             {
-                Match match = regexDownloadPixivOriginPicture.Matches(firstMessage).FirstOrDefault();
-                if (match.Groups.Count > 1)
+                if (regexDownloadPixivOriginPicture.IsMatch(firstMessage))
                 {
-                    string strId = firstMessage.Substring(match.Groups[0].Length);
-                    await SearchPictureHandler.SendPixivOriginPictureWithIdAndP(strId, SendImage, UploadPicture, SendMessage);
+                    Match match = regexDownloadPixivOriginPicture.Matches(firstMessage).FirstOrDefault();
+                    if (match.Groups.Count > 1)
+                    {
+                        string strId = firstMessage.Substring(match.Groups[0].Length);
+                        await SearchPictureHandler.SendPixivOriginPictureWithIdAndP(strId, SendImage, UploadPicture, SendMessage);
+                        return true;
+                    }
                 }
-                return true;
             }
             #endregion -- 下载Pixiv原图 --
 
