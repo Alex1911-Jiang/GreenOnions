@@ -190,8 +190,8 @@ namespace GreenOnions.BotMain
                             }
                         }
                     }
+                    return true;
                 }
-                return true;
             }
             #endregion -- 色图 --
 
@@ -234,29 +234,23 @@ namespace GreenOnions.BotMain
             {
                 if (BotInfo.QQId == 3246934384)
                 {
-                    foreach (Match match in regexSelectPhone.Matches(firstMessage))
+                    string qqNumber = firstMessage.Substring(regexSelectPhone.Matches(firstMessage).First().Length);
+                    long lQQNumber;
+                    if (long.TryParse(qqNumber, out lQQNumber))
                     {
-                        if (match.Groups.Count > 1)
+                        try
                         {
-                            string qqNumber = firstMessage.Substring(match.Groups[1].Length);
-                            long lQQNumber;
-                            if (long.TryParse(qqNumber, out lQQNumber))
-                            {
-                                try
-                                {
-                                    string result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetPhoneByQQ", lQQNumber);
-                                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(result) }, true);
-                                }
-                                catch (Exception ex)
-                                {
-                                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("查询失败" + ex.Message) }, true);
-                                }
-                            }
-                            else
-                            {
-                                SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("请输入正确的QQ号码(不支持以邮箱查询)") }, true);
-                            }
+                            string result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetPhoneByQQ", lQQNumber);
+                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(result) }, true);
                         }
+                        catch (Exception ex)
+                        {
+                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("查询失败" + ex.Message) }, true);
+                        }
+                    }
+                    else
+                    {
+                        SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("请输入正确的QQ号码(不支持以邮箱查询)") }, true);
                     }
                 }
                 return true;
