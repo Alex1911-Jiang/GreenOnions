@@ -36,7 +36,7 @@ namespace GreenOnions.BotManagerWindow
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("读取配置发生异常，请删除应用目录下的config.json文件后重启应用。" + ex.Message);
+				MessageBox.Show($"读取配置发生异常，{ex.Message}，请删除应用目录下的config.json和cache.json文件后重启应用。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			#endregion -- 读取配置 --
 		}
@@ -134,6 +134,7 @@ namespace GreenOnions.BotManagerWindow
 			}
 			catch (Exception ex)
 			{
+				ErrorHelper.WriteErrorLog(ex);
 				MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}

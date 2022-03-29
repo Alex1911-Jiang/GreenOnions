@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -11,6 +12,9 @@ namespace GreenOnions.BotManagerWindow
 {
     public partial class WebBrowserForm : Form
     {
+        [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern bool InternetSetCookie(string lpszUrlName, string lbszCookieName, string lpszCookieData);
+
         private string _document = "";
         private string _jumpUrl = "";
         private Encoding _encoding = Encoding.UTF8;
@@ -97,6 +101,23 @@ namespace GreenOnions.BotManagerWindow
             CheckCloudflare(document, browser, 6000);
         }
 
+        private void SaveCookie(WebBrowser browser)
+        {
+            string cookieStr = browser.Document.Cookie;
+            if (cookieStr == null)
+            {
+                txbMessage.AppendText($"网站{browser.Url.Host}没有需要保存的Cookie\r\n");
+                return;
+            }
+            string[] cookstr = cookieStr.Split(';');
+            foreach (string str in cookstr)
+            {
+                string[] cookieNameValue = str.Split('=');
+                txbMessage.AppendText($"网站{browser.Url.Host}保存了一个Cookie:{cookieNameValue[0].Trim().ToString()}\r\n");
+                InternetSetCookie(browser.Url.Host, cookieNameValue[0].Trim().ToString(), cookieNameValue[1].Trim().ToString());
+            }
+        }
+
         private void CheckCloudflare(string document, WebBrowser browser, int nowWaitTime)
         {
             if (unlock)
@@ -104,15 +125,14 @@ namespace GreenOnions.BotManagerWindow
                 unlock = false;
 
                 if (browser == null)
-                {
                     throw new ArgumentNullException(nameof(browser));
-                }
 
                 HtmlDocument doc = new HtmlDocument();
                 doc.LoadHtml(document);
                 var cloudflareHtml = doc.DocumentNode.SelectNodes("/html");
                 if (cloudflareHtml != null && (cloudflareHtml[0].InnerText.Contains("Please Wait") || cloudflareHtml[0].InnerText.Contains("Cloudflare")))
                 {
+                    txbMessage.AppendText($"当前请求地址为: {browser.Url.ToString()}\r\n");
                     waitTime += nowWaitTime;
                     if (nowWaitTime > 6000)
                         txbMessage.AppendText($"疑似人机验证, 请在{(nowWaitTime / 1000)}秒内手动通过人机验证...\r\n");
@@ -132,6 +152,7 @@ namespace GreenOnions.BotManagerWindow
                 }
                 else
                 {
+                    SaveCookie(browser);
                     txbMessage.AppendText("成功通过Cloudflare盾。(您现在可以禁用调试模式并关闭此窗口)\r\n");
                     waitTime = 15000;
                     _document = document;

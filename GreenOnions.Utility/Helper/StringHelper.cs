@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -195,27 +196,31 @@ namespace GreenOnions.Utility.Helper
         }
         #endregion -- 中文数字转换 --
 
-        public static string GetRegex(string command, string head, string main, string foot)
+        public static string GetRegex(string command, string[] font, string main, string[] back)
         {
-            string result = "";
-            Regex All = new Regex(head + main + foot);
-            foreach (Match First in All.Matches(command))
+            string result = command;
+            Regex All = new Regex(string.Join("", font) + main + string.Join("", back));
+            if (All.IsMatch(command))
             {
-                result = First.Value;
+                for (int i = 0; i < font?.Length; i++)
+                {
+                    Regex rxFont = new Regex(font[i]);
+                    foreach (Match matchFont in rxFont.Matches(result))
+                    {
+                        if (matchFont != null)
+                            result = result.Substring(result.IndexOf(matchFont.Value.Trim()) + matchFont.Value.Trim().Length);  //去头
+                    }
+                }
 
-                Regex rxBegin = new Regex(head);
-                foreach (Match mchKeyword in rxBegin.Matches(result))
+                for (int i = back.Length - 1; i > 0; i--)
                 {
-                    result = result.Substring(result.IndexOf(mchKeyword.Value.Trim()) + mchKeyword.Value.Trim().Length);  //去头
-                    break;
+                    Regex rxBack = new Regex(back[i]);
+                    foreach (Match matchBack in rxBack.Matches(result))
+                    {
+                        if (matchBack != null)
+                            result = result.Substring(0, result.Length - matchBack.Value.Length);  //去尾
+                    }
                 }
-                Regex rxEnd = new Regex(foot);
-                foreach (Match mchKeyword in rxEnd.Matches(result))
-                {
-                    result = result.Substring(0, result.Length - mchKeyword.Value.Length);  //去尾
-                    break;
-                }
-                break;
             }
             return result;
         }

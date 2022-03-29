@@ -31,7 +31,7 @@ namespace GreenOnions.Utility
                 if (_LastOneSendRssTime == null)
                 {
                     string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonCacheFileName, JsonHelper.JsonNodeNameRss, nameof(LastOneSendRssTime));
-                    if (string.IsNullOrEmpty(strValue))
+                    if (string.IsNullOrEmpty(strValue) || strValue == "-1")
                         _LastOneSendRssTime = new ConcurrentDictionary<string, DateTime>();
                     else
                         _LastOneSendRssTime = JsonConvert.DeserializeObject<ConcurrentDictionary<string, DateTime>>(strValue);

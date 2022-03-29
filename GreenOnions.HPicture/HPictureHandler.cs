@@ -57,32 +57,59 @@ namespace GreenOnions.HPicture
                     string strR18 = "0";
 
                     #region -- R18 --
-                    Regex rxR18 = new Regex(BotInfo.HPictureR18Cmd);
-                    foreach (Match mchR18 in rxR18.Matches(message))
-                    {
+                    string r18Cmd = BotInfo.HPictureR18Cmd.ReplaceGreenOnionsTags();
+                    if (r18Cmd[0] == '(' && r18Cmd[r18Cmd.Length - 2] == ')' && r18Cmd[r18Cmd.Length-1]=='?')
+                        r18Cmd = r18Cmd.Substring(1, r18Cmd.Length - 3);
+
+                    Regex rxR18 = new Regex(r18Cmd);
+                    if (rxR18.IsMatch(message))
                         strR18 = "1";
-                        message = message.Replace(mchR18.Value, "");  //无论是否允许R18都现将命令中的R18移除, 避免和数量混淆
-                    }
+
                     if (!isAllowR18)
                         strR18 = "0";//如果不允许R18
                     #endregion -- R18 --
 
                     #region -- 色图数量 -- 
-                    string strCount = StringHelper.GetRegex(message, BotInfo.HPictureBeginCmd.ReplaceGreenOnionsTags(), BotInfo.HPictureCountCmd.ReplaceGreenOnionsTags(), BotInfo.HPictureUnitCmd.ReplaceGreenOnionsTags());
+                    string strCount = StringHelper.GetRegex(message, new[] 
+                    {
+                        BotInfo.HPictureBeginCmd.ReplaceGreenOnionsTags()
+                    }, 
+                    BotInfo.HPictureCountCmd.ReplaceGreenOnionsTags(), new[] 
+                    { 
+                        BotInfo.HPictureUnitCmd.ReplaceGreenOnionsTags(),
+                        BotInfo.HPictureR18Cmd.ReplaceGreenOnionsTags(),
+                        BotInfo.HPictureKeywordCmd.ReplaceGreenOnionsTags(),
+                        pictureSource == PictureSource.Lolicon ? BotInfo.HPictureEndCmd.ReplaceGreenOnionsTags() : BotInfo.BeautyPictureEndCmd.ReplaceGreenOnionsTags(),
+                    });
 
-                    if (!long.TryParse(strCount, out lImgCount) && !string.IsNullOrEmpty(strCount)) lImgCount = StringHelper.Chinese2Num(strCount);
+                    if (!long.TryParse(strCount, out lImgCount) && !string.IsNullOrEmpty(strCount)) 
+                        lImgCount = StringHelper.Chinese2Num(strCount);
 
-                    if (string.IsNullOrEmpty(strCount)) lImgCount = 1;
+                    if (string.IsNullOrEmpty(strCount)) 
+                        lImgCount = 1;
 
                     if (lImgCount <= 0)   //犯贱呢要0张或以下色图
                         return;
 
-                    if (lImgCount > BotInfo.HPictureOnceMessageMaxImageCount) lImgCount = BotInfo.HPictureOnceMessageMaxImageCount;
+                    if (lImgCount > BotInfo.HPictureOnceMessageMaxImageCount) 
+                        lImgCount = BotInfo.HPictureOnceMessageMaxImageCount;
 
                     #endregion -- 色图数量 -- 
 
                     #region -- 关键词 --
-                    string strKeyword = StringHelper.GetRegex(message, BotInfo.HPictureUnitCmd, BotInfo.HPictureKeywordCmd, PictureEndCmd);
+                    string strKeyword = StringHelper.GetRegex(message, new[] 
+                    { 
+                        BotInfo.HPictureBeginCmd.ReplaceGreenOnionsTags(),
+                        BotInfo.HPictureCountCmd.ReplaceGreenOnionsTags(),
+                        BotInfo.HPictureUnitCmd.ReplaceGreenOnionsTags(), 
+                        BotInfo.HPictureR18Cmd.ReplaceGreenOnionsTags()
+                    },
+                    BotInfo.HPictureKeywordCmd, 
+                    new[] 
+                    { 
+                        BotInfo.HPictureR18Cmd.ReplaceGreenOnionsTags(),
+                        pictureSource == PictureSource.Lolicon ? BotInfo.HPictureEndCmd.ReplaceGreenOnionsTags() : BotInfo.BeautyPictureEndCmd.ReplaceGreenOnionsTags(),
+                    });
                     #endregion -- 关键词 --
                     if (pictureSource == PictureSource.Lolicon)
                     {
@@ -102,10 +129,6 @@ namespace GreenOnions.HPicture
                                 keyword = "&keyword=" + strKeyword;
                             }
                         }
-
-                        //string strApiKey = "";
-                        //if (!string.IsNullOrWhiteSpace(BotInfo.HPictureApiKey))
-                        //    strApiKey = $"apikey={BotInfo.HPictureApiKey}&";
 
                         strHttpRequest = $@"https://api.lolicon.app/setu/v2?num={lImgCount}&proxy=i.pixiv.re&r18={strR18}{keyword}&size={size}";
                         SendLoliconHPhicture(strHttpRequest, size);

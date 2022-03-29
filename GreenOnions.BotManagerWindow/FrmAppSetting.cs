@@ -584,49 +584,87 @@ namespace GreenOnions.BotManagerWindow
 
         private void AddStringToCmd()
         {
-            string Begin, Count, Unit, R18, Keyword, LoliconEnd, ELFEnd;
+            txbForgeMessageCmdBegin.TextChanged -= txbHPictureEnd_TextChanged;
+            txbHPictureApiKey.TextChanged -= txbHPictureEnd_TextChanged;
+            txbBeautyPictureEnd.TextChanged -=txbHPictureEnd_TextChanged;
+            txbHPictureEnd.TextChanged -= txbHPictureEnd_TextChanged;
+            txbHPictureBegin.TextChanged -=txbHPictureEnd_TextChanged;
+            txbHPictureKeyword.TextChanged -= txbHPictureEnd_TextChanged;
+            txbHPictureCount.TextChanged -= txbHPictureEnd_TextChanged;
+            txbHPictureR18.TextChanged -=txbHPictureEnd_TextChanged;
+            txbHPictureUnit.TextChanged -=txbHPictureEnd_TextChanged;
 
-            Begin = txbHPictureBegin.Text;
             if (chkHPictureBeginNull.Checked)
-            {
-                Begin = $"({Begin})?";
-            }
-            Count = txbHPictureCount.Text;
-            if (chkHPictureCountNull.Checked)
-            {
-                Count = $"({Count})?";
-            }
-            Unit = txbHPictureUnit.Text;
-            if (chkHPictureUnitNull.Checked)
-            {
-                Unit = $"({Unit})?";
-            }
-            R18 = txbHPictureR18.Text;
-            if (chkHPictureR18Null.Checked)
-            {
-                R18 = $"({R18})?";
-            }
-            Keyword = txbHPictureKeyword.Text;
-            if (chkHPictureKeywordNull.Checked)
-            {
-                Keyword = $"({Keyword})?";
-            }
-            LoliconEnd = txbHPictureEnd.Text;
-            if (chkHPictureEndNull.Checked)
-            {
-                LoliconEnd = $"({LoliconEnd})?";
-            }
-            ELFEnd = txbBeautyPictureEnd.Text;
-            if (chkBeautyPictureEndNull.Checked)
-            {
-                ELFEnd = $"({ELFEnd})?";
-            }
+                txbHPictureBegin.Text = SetNullRegex(txbHPictureBegin.Text);
+            else
+                txbHPictureBegin.Text = RemoveNullRegex(txbHPictureBegin.Text);
 
-            txbHPictureCmd.Text = $"^{Begin}{Count}{Unit}{R18}{Keyword}{R18}{LoliconEnd}$";
-            txbBeautyPictureCmd.Text = $"^{Begin}{Count}{Unit}{R18}{Keyword}{R18}{ELFEnd}$";
+            if (chkHPictureCountNull.Checked)
+                txbHPictureCount.Text = SetNullRegex(txbHPictureCount.Text);
+            else
+                txbHPictureCount.Text = RemoveNullRegex(txbHPictureCount.Text);
+
+            if (chkHPictureUnitNull.Checked)
+                txbHPictureUnit.Text = SetNullRegex(txbHPictureUnit.Text);
+            else
+                txbHPictureUnit.Text = RemoveNullRegex(txbHPictureUnit.Text);
+
+            if (chkHPictureR18Null.Checked)
+                txbHPictureR18.Text = SetNullRegex(txbHPictureR18.Text);
+            else
+                txbHPictureR18.Text = RemoveNullRegex(txbHPictureR18.Text);
+
+
+            if (chkHPictureKeywordNull.Checked)
+                txbHPictureKeyword.Text = SetNullRegex(txbHPictureKeyword.Text);
+            else
+                txbHPictureKeyword.Text = RemoveNullRegex(txbHPictureKeyword.Text);
+
+            if (chkHPictureEndNull.Checked)
+                txbHPictureEnd.Text = SetNullRegex(txbHPictureEnd.Text);
+            else
+                txbHPictureEnd.Text = RemoveNullRegex(txbHPictureEnd.Text);
+
+
+            if (chkBeautyPictureEndNull.Checked)
+                txbBeautyPictureEnd.Text = SetNullRegex(txbBeautyPictureEnd.Text);
+            else
+                txbBeautyPictureEnd.Text = RemoveNullRegex(txbBeautyPictureEnd.Text);
+
+            txbHPictureCmd.Text = $"^{txbHPictureBegin.Text}{txbHPictureCount.Text}{txbHPictureUnit.Text }{txbHPictureR18.Text}{txbHPictureKeyword.Text}{txbHPictureR18.Text}{txbHPictureEnd.Text}$";
+            txbBeautyPictureCmd.Text = $"^{txbHPictureBegin.Text}{txbHPictureCount.Text}{txbHPictureUnit.Text }{txbHPictureR18.Text}{txbHPictureKeyword.Text }{txbHPictureR18.Text}{txbBeautyPictureEnd.Text}$";
 
             txbForgeMessageCmd.Text = $"{txbForgeMessageCmdBegin.Text}<@QQ><伪造内容>";
 
+            txbForgeMessageCmdBegin.TextChanged += txbHPictureEnd_TextChanged;
+            txbHPictureApiKey.TextChanged += txbHPictureEnd_TextChanged;
+            txbBeautyPictureEnd.TextChanged += txbHPictureEnd_TextChanged;
+            txbHPictureEnd.TextChanged += txbHPictureEnd_TextChanged;
+            txbHPictureBegin.TextChanged += txbHPictureEnd_TextChanged;
+            txbHPictureKeyword.TextChanged += txbHPictureEnd_TextChanged;
+            txbHPictureCount.TextChanged += txbHPictureEnd_TextChanged;
+            txbHPictureR18.TextChanged += txbHPictureEnd_TextChanged;
+            txbHPictureUnit.TextChanged += txbHPictureEnd_TextChanged;
+
+            string SetNullRegex(string str)
+            {
+                if (string.IsNullOrEmpty(str))
+                    return str;
+                if (str[0] == '(' && str[str.Length - 2] == ')' && str[str.Length - 1] == '?')
+                    return str;
+                return $"({str})?";
+            }
+
+            string RemoveNullRegex(string str)
+            {
+                if (string.IsNullOrEmpty(str))
+                    return str;
+                if (str.Length < 3)
+                    return str;
+                if (str[0] == '(' && str[str.Length -2]== ')' && str[str.Length -1] =='?')
+                    return str.Substring(1, str.Length - 3);
+                return str;
+            }
         }
 
         private void chkEnableHPicture_CheckedChanged(object sender, EventArgs e) => pnlEnabelHPicture.Enabled = chkEnabledHPicture.Checked;
