@@ -5,6 +5,11 @@
 #### 这是一个 [mirai](https://github.com/mamoe/mirai) 平台的QQ机器人, 使用 [Mirai-CSharp](https://github.com/Executor-Cheng/Mirai-CSharp) 开发, 实现了搜图, 翻译, setu RSS订阅转发等功能<br>
 #### 搜图和setu功能设计思路参考自 [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot) <br>
 
+### 效果预览
+[到mirai社区查看](https://mirai.mamoe.net/topic/1020/%E7%83%82%E5%A4%A7%E8%A1%97%E7%9A%84%E6%90%9C%E5%9B%BE-rss%E8%BD%AC%E5%8F%91%E7%AD%89%E5%8A%9F%E8%83%BD%E6%8F%92%E4%BB%B6-%E5%B8%A6windows%E7%95%8C%E9%9D%A2)
+
+[![QQ群](https://img.shields.io/badge/QQ群-550398174-blue.svg "QQ群")](https://jq.qq.com/?_wv=1027&k=rJ7RA3SF "QQ群")
+
 ### 功能介绍
 
 - [x] 1. [SauceNao](https://saucenao.com/) 搜图<br>
@@ -124,8 +129,14 @@
 
 ### 短期计划(TODO):
 
-1.通过消息配置属性<br>
-2.为Console端添加命令配置属性和属性中文注释
+1.添加一些日志方便跟踪问题<br>
+2.iqdb搜图<br>
+3.yande.re随机色图<br>
+4.E-Hentai关键词色图<br>
+6.尝试引入Chrome内核用于Http请求(腾讯云轻量被403的问题)<br>
+7.部分功能使用代理(而不需要全局代理?)<br>
+8.通过消息配置属性<br>
+9.为Console端添加命令配置属性和属性中文注释
 
 ### 长期计划(GUDO):
 
