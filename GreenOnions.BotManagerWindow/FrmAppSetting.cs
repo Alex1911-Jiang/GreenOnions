@@ -18,6 +18,8 @@ namespace GreenOnions.BotManagerWindow
         {
             base.OnShown(e);
 
+            cboLogLevel.SelectedIndex = BotInfo.LogLevel;
+
             #region -- 通用设置 --
 
             txbBotName.Text = BotInfo.BotName;
@@ -307,6 +309,8 @@ namespace GreenOnions.BotManagerWindow
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            BotInfo.LogLevel = cboLogLevel.SelectedIndex;
+
             #region -- 通用设置 --
             BotInfo.BotName = txbBotName.Text.Trim();
             List<long> tempAdminQQ = new List<long>();
@@ -543,7 +547,7 @@ namespace GreenOnions.BotManagerWindow
                 TranslateTo = i.RssTranslateTo,
                 SendByForward = i.RssSendByForward,
             });
-            BotInfo.ReadRssInterval = Convert.ToInt32(txbReadRssInterval.Text);
+            BotInfo.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
 
             #endregion -- RSS --
 

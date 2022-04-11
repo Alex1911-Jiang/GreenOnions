@@ -34,7 +34,7 @@ namespace GreenOnions.Utility.Helper
 
         public static string ReplacePropertyChineseNameToValue(string str)
         {
-            PropertyInfo[] PropertyInfos = CreateType("GreenOnions.Utility", "GreenOnions.Utility.BotInfo").GetProperties();
+            PropertyInfo[] PropertyInfos = typeof(BotInfo).GetProperties();
             foreach (PropertyInfo item in PropertyInfos)
             {
                 foreach (var attributes in item.CustomAttributes)
@@ -43,10 +43,7 @@ namespace GreenOnions.Utility.Helper
                     {
                         var attribute = attributes.ConstructorArguments.Select(v => v.Value).FirstOrDefault();
                         if (attribute != null)
-                        {
-                            string strAttribute = attribute.ToString();
-                            str = str.Replace($"<{strAttribute}>", item.GetValue(null).ToString());
-                        }
+                            str = str.Replace($"<{attribute}>", item.GetValue(null).ToString());
                     }
                 }
             }

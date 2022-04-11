@@ -134,7 +134,7 @@ namespace GreenOnions.BotManagerWindow
 			}
 			catch (Exception ex)
 			{
-				ErrorHelper.WriteErrorLog(ex);
+				LogHelper.WriteErrorLog(ex);
 				MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}

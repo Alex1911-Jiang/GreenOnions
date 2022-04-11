@@ -52,7 +52,7 @@ namespace GreenOnions.Utility.Helper
             }
             catch (Exception ex)
             {
-                ErrorHelper.WriteErrorLog(ex);
+                LogHelper.WriteErrorLog(ex);
                 throw;
             }
         }
@@ -102,7 +102,7 @@ namespace GreenOnions.Utility.Helper
             }
             catch (Exception ex)
             {
-                ErrorHelper.WriteErrorLog(ex);
+                LogHelper.WriteErrorLog(ex);
                 throw;
             }
         }
@@ -115,7 +115,7 @@ namespace GreenOnions.Utility.Helper
             }
             catch (Exception ex)
             {
-                ErrorHelper.WriteErrorLog(ex);
+                LogHelper.WriteErrorLog(ex);
                 throw;
             }
         }

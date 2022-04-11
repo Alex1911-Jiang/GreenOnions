@@ -99,7 +99,7 @@ namespace GreenOnions.BotMain
             }
             catch (Exception ex)
             {
-                ErrorHelper.WriteErrorLog(ex);
+                LogHelper.WriteErrorLog(ex);
                 ConnectedEvent?.Invoke(false, ex.Message);
             }
         }

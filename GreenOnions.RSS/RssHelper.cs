@@ -26,19 +26,25 @@ namespace GreenOnions.RSS
                     return;
                 _RssWorker = Task.Run(async () =>
                 {
+                    LogHelper.WriteInfoLog("启动RSS抓取线程");
                     while (BotInfo.RssEnabled && BotInfo.IsLogin)
                     {
                         foreach (RssSubscriptionItem item in BotInfo.RssSubscription)  //若干条订阅地址
                         {
                             //如果在调试模式并且转发的QQ和群组均不在管理员和调试群组集合中时不去请求
                             if (BotInfo.DebugMode && ((BotInfo.DebugReplyAdminOnly && item.ForwardQQs.Intersect(BotInfo.AdminQQ).Count() == 0) || (BotInfo.OnlyReplyDebugGroup && item.ForwardGroups.Intersect(BotInfo.DebugGroups).Count() == 0)))
+                            {
+                                LogHelper.WriteWarningLog("没有为订阅源设置转发目标或当前处于调试模式, 不进行转发");
                                 continue;
+                            }
+                            
                             try
                             {
                                 if (item.ForwardGroups.Length == 0 && item.ForwardQQs.Length == 0)
                                     continue;
                                 if (!Cache.LastOneSendRssTime.ContainsKey(item.Url))  //如果不存在上次发送的日期记录
                                 {
+                                    LogHelper.WriteInfoLog($"首次抓取到{item.Url}内容, 只保存不发送, 防止内容太多刷屏");
                                     Cache.LastOneSendRssTime.TryAdd(item.Url, DateTime.Now);  //添加现在作为起始日期(避免把所有历史信息全都抓过来发送)
                                     Cache.LastOneSendRssTime = Cache.LastOneSendRssTime;
                                     JsonHelper.SaveCacheFile();
@@ -48,26 +54,32 @@ namespace GreenOnions.RSS
                                 {
                                     if (rss.pubDate > Cache.LastOneSendRssTime[item.Url])
                                     {
+                                        LogHelper.WriteInfoLog($"更新时间晚于记录时间, 需要推送消息");
                                         PlainMessage titleMsg = new PlainMessage($"{rss.title}更新啦:\r\n{rss.description}");
                                         PlainMessage translateMsg = null;
                                         if (item.Translate)
                                         {
+                                            LogHelper.WriteInfoLog($"本条RSS订阅启用了翻译");
                                             string translatedText;
                                             if (item.TranslateFromTo)
                                                 translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo) : YouDaoTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo));
                                             else
                                                 translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(rss.description) : YouDaoTranslateHelper.TranslateToChinese(rss.description));
                                             translateMsg = new PlainMessage($"\r\n以下为翻译内容:\r\n{ translatedText }");
+                                            LogHelper.WriteInfoLog($"翻译成功");
                                         }
 
                                         List<MemoryStream> imgList = null;
                                         if (rss.imgsSrc.Length > 0)
                                         {
+                                            LogHelper.WriteInfoLog($"本条RSS内容包含图片");
                                             imgList = new List<MemoryStream>();
                                             for (int i = 0; i < rss.imgsSrc.Length; i++)
                                                 imgList.Add(await HttpHelper.DownloadImageAsMemoryStream(rss.imgsSrc[i]));
+                                            LogHelper.WriteInfoLog($"全部图片下载成功");
                                         }
 
+                                        LogHelper.WriteInfoLog($"需要转发的组:{item.ForwardGroups.Length}个");
                                         if (item.ForwardGroups.Length > 0 )
                                         {
                                             List<IChatMessage> chatGroupMessages = new List<IChatMessage>();
@@ -88,8 +100,11 @@ namespace GreenOnions.RSS
                                             chatGroupMessages.Add(new PlainMessage($"\r\n更新时间:{rss.pubDate}"));
                                             chatGroupMessages.Add(new PlainMessage($"\r\n原文地址:{rss.link}"));
 
+                                            LogHelper.WriteInfoLog($"组合群消息完成");
+
                                             if (item.SendByForward)
                                             {
+                                                LogHelper.WriteInfoLog($"发送模式为合并转发");
                                                 ForwardMessage forwardMessage = new ForwardMessage(new[] { new ForwardMessageNode()
                                                 {
                                                     Id = 0,
@@ -106,14 +121,16 @@ namespace GreenOnions.RSS
                                             }
                                             else
                                             {
+                                                LogHelper.WriteInfoLog($"发送模式为直接发送");
                                                 for (int i = 0; i < item.ForwardGroups.Length; i++)
                                                 {
-
                                                     if (!BotInfo.DebugMode || BotInfo.DebugGroups.Contains(item.ForwardGroups[i]))
                                                         SendMessage?.Invoke(item.ForwardGroups[i], chatGroupMessages.ToArray(), UploadTarget.Group);
                                                 }
                                             }
+                                            LogHelper.WriteInfoLog($"全部群消息发送完毕");
                                         }
+                                        LogHelper.WriteInfoLog($"需要转发的好友:{item.ForwardQQs.Length}个");
                                         if (item.ForwardQQs.Length > 0)
                                         {
                                             List<IChatMessage> chatFriendMessages = new List<IChatMessage>();
@@ -134,8 +151,11 @@ namespace GreenOnions.RSS
                                             chatFriendMessages.Add(new PlainMessage($"\r\n更新时间:{rss.pubDate}"));
                                             chatFriendMessages.Add(new PlainMessage($"\r\n原文地址:{rss.link}"));
 
+                                            LogHelper.WriteInfoLog($"组合好友消息完成");
+
                                             if (item.SendByForward)
                                             {
+                                                LogHelper.WriteInfoLog($"发送模式为合并转发");
                                                 ForwardMessage forwardMessage = new ForwardMessage(new[] { new ForwardMessageNode()
                                                 {
                                                     Id = 0,
@@ -152,12 +172,14 @@ namespace GreenOnions.RSS
                                             }
                                             else
                                             {
+                                                LogHelper.WriteInfoLog($"发送模式为直接发送");
                                                 for (int i = 0; i < item.ForwardQQs.Length; i++)
                                                 {
                                                     if (!BotInfo.DebugMode || BotInfo.AdminQQ.Contains(item.ForwardQQs[i]))
                                                         SendMessage?.Invoke(item.ForwardQQs[i], chatFriendMessages.ToArray(), UploadTarget.Friend);
                                                 }
                                             }
+                                            LogHelper.WriteInfoLog($"全部好友消息发送完毕");
                                         }
 
                                         if (Cache.LastOneSendRssTime.ContainsKey(item.Url))
@@ -166,6 +188,8 @@ namespace GreenOnions.RSS
                                             Cache.LastOneSendRssTime.TryAdd(item.Url, rss.pubDate);  //群和好友均推送完毕后记录此地址的最后更新时间
                                         Cache.LastOneSendRssTime = Cache.LastOneSendRssTime;
                                         JsonHelper.SaveCacheFile();
+
+                                        LogHelper.WriteInfoLog($"记录{item.Url}最后更新时间完毕");
 
                                         //if (rss.iframseSrc.Length > 0)  //视频或内嵌网页没想好怎么处理
                                         //{
@@ -176,10 +200,10 @@ namespace GreenOnions.RSS
                             }
                             catch (Exception ex)
                             {
-                                ErrorHelper.WriteErrorLogWithUserMessage("获取RSS错误",ex, $"请求地址为:{item.Url}");
+                                LogHelper.WriteErrorLogWithUserMessage("获取RSS错误",ex, $"请求地址为:{item.Url}");
                             }
                         }
-                        await Task.Delay(BotInfo.ReadRssInterval * 1000 * 60);
+                        await Task.Delay((int)Math.Round(BotInfo.ReadRssInterval * 1000 * 60));
                     }
                 });
             }
@@ -189,12 +213,14 @@ namespace GreenOnions.RSS
         {
             if (url != string.Empty)
             {
+                LogHelper.WriteInfoLog($"准备请求{url}抓取更新");
                 XmlDocument doc = new XmlDocument();
                 doc.Load(url);
                 string title = doc.GetElementsByTagName("title")[0].InnerText;
                 XmlNodeList nodeList = doc.GetElementsByTagName("item");
                 if (doc.HasChildNodes)
                 {
+                    LogHelper.WriteInfoLog($"抓取成功");
                     foreach (XmlNode node in nodeList)
                     {
                         if (node.HasChildNodes)
@@ -249,6 +275,8 @@ namespace GreenOnions.RSS
                                 if (description != string.Empty && link != string.Empty && pubDate != DateTime.MinValue)
                                     break;
                             }
+
+                            LogHelper.WriteInfoLog($"返回抓取内容");
                             yield return (title, description, imgsSrc, iframesSrc, pubDate, link);
                         }
                     }

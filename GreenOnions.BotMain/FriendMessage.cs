@@ -21,6 +21,7 @@ namespace GreenOnions.BotMain
     {
         public async Task HandleMessageAsync(IMiraiHttpSession session, IFriendMessageEventArgs e)
         {
+            LogHelper.WriteInfoLog($"收到来自{e.Sender.Id}的私聊消息");
             if (!CheckPreconditions(e.Sender))
             {
                 return;
@@ -32,6 +33,7 @@ namespace GreenOnions.BotMain
                 switch (e.Chain[1].Type)
                 {
                     case "Plain":
+                        LogHelper.WriteInfoLog($"{e.Sender.Id}私聊消息为:{string.Join<IChatMessage>("\r\n", e.Chain)}");
                         await PlainMessageHandler.HandleMesage(e.Chain, e.Sender,
                             (chatMessages, bQuote) => session.SendFriendMessageAsync(e.Sender.Id, chatMessages, bQuote ? quoteMessage.Id : null),  //发送好友消息,
                             picStream => session.UploadPictureAsync(UploadTarget.Friend, picStream),   //上传图片
@@ -43,9 +45,11 @@ namespace GreenOnions.BotMain
                             });
                         break;
                     case "Image":
+                        LogHelper.WriteInfoLog($"{e.Sender.Id}私聊为图片消息");
                         #region -- 井字棋 --
                         if (Cache.PlayingTicTacToeUsers.ContainsKey(e.Sender.Id))
                         {
+                            LogHelper.WriteInfoLog($"{e.Sender.Id}正在下井字棋, 按井字棋处理图片消息");
                             ImageMessage imgMsg = e.Chain[1] as ImageMessage;
                             if (imgMsg != null)
                             {
@@ -67,6 +71,7 @@ namespace GreenOnions.BotMain
                         #region -- 连续搜图 --
                         else //if (Cache.SearchingPicturesUsers.Keys.Contains(e.Sender.Id))  //如果不在井字棋模式中就直接搜图
                         {
+                            LogHelper.WriteInfoLog($"{e.Sender.Id}私聊自动搜图");
                             for (int i = 1; i < e.Chain.Length; i++)
                             {
                                 ImageMessage imgMsg = e.Chain[i] as ImageMessage;
@@ -83,8 +88,11 @@ namespace GreenOnions.BotMain
 
         private bool CheckPreconditions(Mirai.CSharp.HttpApi.Models.IFriendInfo e)
         {
-            if (BotInfo.BannedUser.Contains(e.Id)) 
+            if (BotInfo.BannedUser.Contains(e.Id))
+            {
+                LogHelper.WriteInfoLog($"{e.Id}在黑名单中, 不响应私聊消息");
                 return false;
+            }
             if (BotInfo.DebugMode)
                 if (BotInfo.DebugReplyAdminOnly)
                     if (!BotInfo.AdminQQ.Contains(e.Id))

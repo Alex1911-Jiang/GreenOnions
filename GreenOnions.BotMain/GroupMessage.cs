@@ -31,6 +31,7 @@ namespace GreenOnions.BotMain
     {
         public async Task HandleMessageAsync(IMiraiHttpSession session, IGroupMessageEventArgs e)
         {
+            LogHelper.WriteInfoLog($"收到来自{e.Sender.Id}的群消息");
             if (!CheckPreconditions(e.Sender))
             {
                 return;
@@ -39,6 +40,8 @@ namespace GreenOnions.BotMain
             QuoteMessage quoteMessage = new QuoteMessage((e.Chain[0] as SourceMessage).Id, e.Sender.Group.Id, e.Sender.Id, e.Sender.Id);
             if (e.Chain.Length > 1)  //普通消息
             {
+                LogHelper.WriteInfoLog($"{e.Sender.Id}群消息为:{string.Join<IChatMessage>("\r\n", e.Chain)}");
+
                 for (int i = 1; i < e.Chain.Length; i++)
                 {
                     if (e.Chain[i] is IAtMessage)
@@ -58,11 +61,13 @@ namespace GreenOnions.BotMain
                             AtMessage atMe = e.Chain[1] as AtMessage;
                             if (atMe.Target == session.QQNumber)  //@自己
                             {
+                                LogHelper.WriteInfoLog($"{e.Sender.Id}群消息包含@机器人");
                                 for (int i = 2; i < e.Chain.Length; i++)
                                 {
-                                    #region -- @搜图 --
                                     if (e.Chain[i].Type == "Image")
                                     {
+                                        #region -- @搜图 --
+                                        LogHelper.WriteInfoLog($"{e.Sender.Id}群消息为@搜图");
                                         if (BotInfo.SearchEnabled)
                                         {
                                             ImageMessage imgMsg = e.Chain[i] as ImageMessage;
@@ -70,11 +75,12 @@ namespace GreenOnions.BotMain
                                                 (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null),
                                                 urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));
                                         }
+                                        #endregion -- @搜图 --
                                     }
-                                    #endregion -- @搜图 --
                                     if (e.Chain[i].Type == "Plain")
                                     {
                                         #region -- @下载原图 --
+                                        LogHelper.WriteInfoLog($"{e.Sender.Id}群消息为@下载原图");
                                         if (BotInfo.OriginPictureEnabled)
                                         {
                                             if (string.IsNullOrWhiteSpace(e.Chain[i].ToString()))
@@ -92,6 +98,7 @@ namespace GreenOnions.BotMain
                         }
                         break;
                     case "Plain":
+                        LogHelper.WriteInfoLog($"{e.Sender.Id}群消息为文字消息");
                         bool isHandle = await PlainMessageHandler.HandleMesage(e.Chain, e.Sender,
                             (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null),
                             picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),  //上传图片
@@ -107,8 +114,10 @@ namespace GreenOnions.BotMain
                         break;
                     case "Image":
                         #region -- 连续搜图 --
+                        LogHelper.WriteInfoLog($"{e.Sender.Id}群消息图片消息");
                         if (Cache.SearchingPicturesUsers.Keys.Contains(e.Sender.Id))
                         {
+                            LogHelper.WriteInfoLog($"{e.Sender.Id}群消息触发连续搜图");
                             for (int i = 1; i < e.Chain.Length; i++)
                             {
                                 ImageMessage imgMsg = e.Chain[i] as ImageMessage;
@@ -123,6 +132,7 @@ namespace GreenOnions.BotMain
                         #region -- 井字棋 --
                         else if (Cache.PlayingTicTacToeUsers.ContainsKey(e.Sender.Id))
                         {
+                            LogHelper.WriteInfoLog($"{e.Sender.Id}群消息触发井字棋");
                             ImageMessage imgMsg = e.Chain[1] as ImageMessage;
                             if (imgMsg != null)
                             {
@@ -150,6 +160,7 @@ namespace GreenOnions.BotMain
                     Mirai.CSharp.Models.ChatMessages.IChatMessage repeatingMessage = await RepeatHandler.Repeating(e.Chain[1], e.Sender.Group.Id, picStream => session.UploadPictureAsync(UploadTarget.Group, picStream));
                     if (repeatingMessage != null)
                     {
+                        LogHelper.WriteInfoLog($"{e.Sender.Id}群消息触发自动复读");
                         await session.SendGroupMessageAsync(e.Sender.Group.Id, repeatingMessage);
                     }
                 }

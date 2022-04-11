@@ -17,7 +17,7 @@ namespace GreenOnions.HPicture
     {
         public static void SendHPictures(IBaseInfo sender, PictureSource pictureSource, string pictureEndCmd, bool allowR18, string msg, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture, Action<int> RevokeMessage)
         {
-            HPictureHandler.SendHPictureInner(msg, pictureSource, allowR18, pictureEndCmd, UploadPicture, SendMessage, limitType =>
+            HPictureHandler.SendHPictureInner(sender, msg, pictureSource, allowR18, pictureEndCmd, UploadPicture, SendMessage, limitType =>
             {
                 if (limitType == LimitType.Frequency)  //如果本次记录是计次, 说明地址消息已经成功发出, 可以记录CD
                 {
@@ -36,7 +36,7 @@ namespace GreenOnions.HPicture
             }, RevokeMessage);
         }
 
-        private static void SendHPictureInner(string message, PictureSource pictureSource, bool isAllowR18, string PictureEndCmd, Func<Stream, Task<IImageMessage>> UploadPicture, Func<IChatMessage[], bool, Task<int>> SendMessage, Action<LimitType> Record, Action<int> RevokeMessage)
+        private static void SendHPictureInner(IBaseInfo sender, string message, PictureSource pictureSource, bool isAllowR18, string PictureEndCmd, Func<Stream, Task<IImageMessage>> UploadPicture, Func<IChatMessage[], bool, Task<int>> SendMessage, Action<LimitType> Record, Action<int> RevokeMessage)
         {
             try
             {
@@ -63,7 +63,12 @@ namespace GreenOnions.HPicture
 
                     Regex rxR18 = new Regex(r18Cmd);
                     if (rxR18.IsMatch(message))
+                    {
+                        if (sender is IGroupMemberInfo)
+                            if (BotInfo.HPictureR18WhiteOnly && !BotInfo.HPictureWhiteGroup.Contains(((IGroupMemberInfo)sender).Group.Id))
+                                return;
                         strR18 = "1";
+                    }
 
                     if (!isAllowR18)
                         strR18 = "0";//如果不允许R18
@@ -237,7 +242,7 @@ namespace GreenOnions.HPicture
                             }
                             catch (Exception ex)
                             {
-                                ErrorHelper.WriteErrorLog(ex);
+                                LogHelper.WriteErrorLog(ex);
                                 SendMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.HPictureErrorReply + ex.Message) }, false);
                             }
                         });
@@ -296,7 +301,7 @@ namespace GreenOnions.HPicture
                     }
                     catch (Exception ex)
                     {
-                        ErrorHelper.WriteErrorLogWithUserMessage($"Lolicon色图下载失败, 地址为:{item.URL}", ex);
+                        LogHelper.WriteErrorLogWithUserMessage($"Lolicon色图下载失败, 地址为:{item.URL}", ex);
                     }
                 }
 
@@ -333,14 +338,16 @@ namespace GreenOnions.HPicture
                                 imageMessage = await UploadPicture(ms);  //上传图片
                                 ms.Dispose();
                             }
+                            _ = SendMessage(new IChatMessage[] { imageMessage, new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage($"地址:{item.Source}\r\n日文标签:{item.Jp_Tag}\r\n中文标签:{item.Zh_Tags}\r\n作者:{item.Author}") }, false)
+                                .ContinueWith(_ => Record(LimitType.Count)); //记录冷却时间
                         }
                         catch (Exception ex)
                         {
-                            ErrorHelper.WriteErrorLogWithUserMessage($"ELF美图下载失败, 地址为:{item.Link}", ex);
+                            LogHelper.WriteErrorLogWithUserMessage($"ELF美图下载失败, 地址为:{item.Link}", ex);
                             imageMessage = new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage("图片下载失败。\r\n");
+                            _ = SendMessage(new IChatMessage[] { imageMessage }, false);
+
                         }
-                        _ = SendMessage(new IChatMessage[] { imageMessage, new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage($"地址:{item.Source}\r\n日文标签:{item.Jp_Tag}\r\n中文标签:{item.Zh_Tags}\r\n作者:{item.Author}") }, false)
-                            .ContinueWith(_ => Record(LimitType.Count)); //记录冷却时间
                     }
                 }
             }

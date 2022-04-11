@@ -11,6 +11,17 @@ namespace GreenOnions.Utility
     {
         public static bool IsLogin { get; set; } = false;
 
+        public static int LogLevel
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameOther, nameof(LogLevel));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 2;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameOther, nameof(LogLevel), value.ToString());
+        }
+
         #region -- 公共属性 --
         [PropertyChineseName("机器人QQ号")]
         public static long QQId
@@ -1720,13 +1731,13 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 抓取RSS间隔时间(分钟)
         /// </summary>
-        public static int ReadRssInterval
+        public static double ReadRssInterval
         {
             get
             {
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(ReadRssInterval));
-                if (int.TryParse(strValue, out int iValue)) return iValue;
-                return 10;
+                if (double.TryParse(strValue, out double iValue)) return iValue;
+                return 10.0;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(ReadRssInterval), value.ToString());
         }

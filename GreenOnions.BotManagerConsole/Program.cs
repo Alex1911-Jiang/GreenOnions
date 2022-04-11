@@ -10,7 +10,7 @@ namespace GreenOnions.BotManagerConsole
 	{
 		public static async Task Main()
 		{
-			AppDomain.CurrentDomain.UnhandledException += (_, e) => ErrorHelper.WriteErrorLog(e.ExceptionObject);
+			AppDomain.CurrentDomain.UnhandledException += (_, e) => LogHelper.WriteErrorLog(e.ExceptionObject);
 
 			Console.WriteLine("葱葱机器人2.0");
 

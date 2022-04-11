@@ -36,6 +36,8 @@
             this.tabSettings = new System.Windows.Forms.TabControl();
             this.pageBot = new System.Windows.Forms.TabPage();
             this.pnlBot = new System.Windows.Forms.Panel();
+            this.cboLogLevel = new System.Windows.Forms.ComboBox();
+            this.lblLogLevel = new System.Windows.Forms.Label();
             this.chkHttpRequestByWebBrowser = new System.Windows.Forms.CheckBox();
             this.chkCheckPornEnabled = new System.Windows.Forms.CheckBox();
             this.pnlDebugMode = new System.Windows.Forms.Panel();
@@ -474,6 +476,8 @@
             // pnlBot
             // 
             this.pnlBot.AutoScroll = true;
+            this.pnlBot.Controls.Add(this.cboLogLevel);
+            this.pnlBot.Controls.Add(this.lblLogLevel);
             this.pnlBot.Controls.Add(this.chkHttpRequestByWebBrowser);
             this.pnlBot.Controls.Add(this.chkCheckPornEnabled);
             this.pnlBot.Controls.Add(this.pnlDebugMode);
@@ -503,6 +507,29 @@
             this.pnlBot.Name = "pnlBot";
             this.pnlBot.Size = new System.Drawing.Size(642, 677);
             this.pnlBot.TabIndex = 36;
+            // 
+            // cboLogLevel
+            // 
+            this.cboLogLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboLogLevel.FormattingEnabled = true;
+            this.cboLogLevel.Items.AddRange(new object[] {
+            "消息",
+            "警告",
+            "错误"});
+            this.cboLogLevel.Location = new System.Drawing.Point(82, 689);
+            this.cboLogLevel.Name = "cboLogLevel";
+            this.cboLogLevel.Size = new System.Drawing.Size(157, 25);
+            this.cboLogLevel.TabIndex = 38;
+            // 
+            // lblLogLevel
+            // 
+            this.lblLogLevel.AutoSize = true;
+            this.lblLogLevel.Location = new System.Drawing.Point(7, 692);
+            this.lblLogLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLogLevel.Name = "lblLogLevel";
+            this.lblLogLevel.Size = new System.Drawing.Size(68, 17);
+            this.lblLogLevel.TabIndex = 37;
+            this.lblLogLevel.Text = "日志级别：";
             // 
             // chkHttpRequestByWebBrowser
             // 
@@ -536,7 +563,7 @@
             this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
             this.pnlDebugMode.Controls.Add(this.txbAddDebugGroup);
             this.pnlDebugMode.Enabled = false;
-            this.pnlDebugMode.Location = new System.Drawing.Point(4, 712);
+            this.pnlDebugMode.Location = new System.Drawing.Point(4, 746);
             this.pnlDebugMode.Name = "pnlDebugMode";
             this.pnlDebugMode.Size = new System.Drawing.Size(618, 153);
             this.pnlDebugMode.TabIndex = 12;
@@ -776,7 +803,7 @@
             // chkDebugMode
             // 
             this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(7, 688);
+            this.chkDebugMode.Location = new System.Drawing.Point(7, 722);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(75, 21);
             this.chkDebugMode.TabIndex = 9;
@@ -1024,7 +1051,7 @@
             this.pnlNoCheckPorn.Enabled = false;
             this.pnlNoCheckPorn.Location = new System.Drawing.Point(3, 674);
             this.pnlNoCheckPorn.Name = "pnlNoCheckPorn";
-            this.pnlNoCheckPorn.Size = new System.Drawing.Size(616, 29);
+            this.pnlNoCheckPorn.Size = new System.Drawing.Size(565, 29);
             this.pnlNoCheckPorn.TabIndex = 47;
             // 
             // lblSearchNoCheckPorn
@@ -1087,7 +1114,7 @@
             this.pnlPictureSearcherCheckPorn.Enabled = false;
             this.pnlPictureSearcherCheckPorn.Location = new System.Drawing.Point(3, 557);
             this.pnlPictureSearcherCheckPorn.Name = "pnlPictureSearcherCheckPorn";
-            this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(619, 114);
+            this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(568, 114);
             this.pnlPictureSearcherCheckPorn.TabIndex = 40;
             // 
             // lblSearchCheckPornOutOfLimitReply
@@ -1105,7 +1132,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchCheckPornOutOfLimitReply.Location = new System.Drawing.Point(176, 88);
             this.txbSearchCheckPornOutOfLimitReply.Name = "txbSearchCheckPornOutOfLimitReply";
-            this.txbSearchCheckPornOutOfLimitReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchCheckPornOutOfLimitReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchCheckPornOutOfLimitReply.TabIndex = 42;
             // 
             // rdoSearchCheckPornOutOfLimitAppend
@@ -1158,7 +1185,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchCheckPornIllegalReply.Location = new System.Drawing.Point(176, 3);
             this.txbSearchCheckPornIllegalReply.Name = "txbSearchCheckPornIllegalReply";
-            this.txbSearchCheckPornIllegalReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchCheckPornIllegalReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchCheckPornIllegalReply.TabIndex = 35;
             // 
             // lblSearchCheckPornIllegalReply
@@ -1185,7 +1212,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchCheckPornErrorReply.Location = new System.Drawing.Point(176, 32);
             this.txbSearchCheckPornErrorReply.Name = "txbSearchCheckPornErrorReply";
-            this.txbSearchCheckPornErrorReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchCheckPornErrorReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchCheckPornErrorReply.TabIndex = 36;
             // 
             // chkPictureSearcherCheckPornEnabled
@@ -1341,7 +1368,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchLowSimilarityReply.Location = new System.Drawing.Point(179, 496);
             this.txbSearchLowSimilarityReply.Name = "txbSearchLowSimilarityReply";
-            this.txbSearchLowSimilarityReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchLowSimilarityReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchLowSimilarityReply.TabIndex = 16;
             // 
             // txbSearchLowSimilarity
@@ -1350,7 +1377,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchLowSimilarity.Location = new System.Drawing.Point(179, 467);
             this.txbSearchLowSimilarity.Name = "txbSearchLowSimilarity";
-            this.txbSearchLowSimilarity.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchLowSimilarity.Size = new System.Drawing.Size(389, 23);
             this.txbSearchLowSimilarity.TabIndex = 16;
             // 
             // txbSearchErrorReply
@@ -1359,7 +1386,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchErrorReply.Location = new System.Drawing.Point(179, 438);
             this.txbSearchErrorReply.Name = "txbSearchErrorReply";
-            this.txbSearchErrorReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchErrorReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchErrorReply.TabIndex = 16;
             // 
             // txbSearchNoResultReply
@@ -1368,7 +1395,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchNoResultReply.Location = new System.Drawing.Point(179, 409);
             this.txbSearchNoResultReply.Name = "txbSearchNoResultReply";
-            this.txbSearchNoResultReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchNoResultReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchNoResultReply.TabIndex = 16;
             // 
             // txbSearchModeTimeOutReply
@@ -1377,7 +1404,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeTimeOutReply.Location = new System.Drawing.Point(179, 322);
             this.txbSearchModeTimeOutReply.Name = "txbSearchModeTimeOutReply";
-            this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchModeTimeOutReply.TabIndex = 16;
             // 
             // txbSearchModeOffCmd
@@ -1386,7 +1413,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOffCmd.Location = new System.Drawing.Point(179, 293);
             this.txbSearchModeOffCmd.Name = "txbSearchModeOffCmd";
-            this.txbSearchModeOffCmd.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeOffCmd.Size = new System.Drawing.Size(389, 23);
             this.txbSearchModeOffCmd.TabIndex = 16;
             // 
             // txbSearchModeAlreadyOffReply
@@ -1395,7 +1422,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeAlreadyOffReply.Location = new System.Drawing.Point(179, 380);
             this.txbSearchModeAlreadyOffReply.Name = "txbSearchModeAlreadyOffReply";
-            this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchModeAlreadyOffReply.TabIndex = 16;
             // 
             // txbSearchModeOffReply
@@ -1404,7 +1431,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOffReply.Location = new System.Drawing.Point(179, 351);
             this.txbSearchModeOffReply.Name = "txbSearchModeOffReply";
-            this.txbSearchModeOffReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeOffReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchModeOffReply.TabIndex = 16;
             // 
             // txbSearchModeAlreadyOnReply
@@ -1413,7 +1440,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(179, 264);
             this.txbSearchModeAlreadyOnReply.Name = "txbSearchModeAlreadyOnReply";
-            this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchModeAlreadyOnReply.TabIndex = 16;
             // 
             // txbTraceMoeSendThreshold
@@ -1422,7 +1449,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbTraceMoeSendThreshold.Location = new System.Drawing.Point(179, 24);
             this.txbTraceMoeSendThreshold.Name = "txbTraceMoeSendThreshold";
-            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(440, 23);
+            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(389, 23);
             this.txbTraceMoeSendThreshold.TabIndex = 16;
             // 
             // txbSearchModeOnReply
@@ -1431,7 +1458,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOnReply.Location = new System.Drawing.Point(179, 235);
             this.txbSearchModeOnReply.Name = "txbSearchModeOnReply";
-            this.txbSearchModeOnReply.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeOnReply.Size = new System.Drawing.Size(389, 23);
             this.txbSearchModeOnReply.TabIndex = 16;
             // 
             // txbSauceNAOApiKey
@@ -1441,7 +1468,7 @@
             this.txbSauceNAOApiKey.Location = new System.Drawing.Point(179, 87);
             this.txbSauceNAOApiKey.Multiline = true;
             this.txbSauceNAOApiKey.Name = "txbSauceNAOApiKey";
-            this.txbSauceNAOApiKey.Size = new System.Drawing.Size(440, 86);
+            this.txbSauceNAOApiKey.Size = new System.Drawing.Size(389, 86);
             this.txbSauceNAOApiKey.TabIndex = 16;
             // 
             // txbSearchModeOnCmd
@@ -1450,7 +1477,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbSearchModeOnCmd.Location = new System.Drawing.Point(179, 206);
             this.txbSearchModeOnCmd.Name = "txbSearchModeOnCmd";
-            this.txbSearchModeOnCmd.Size = new System.Drawing.Size(440, 23);
+            this.txbSearchModeOnCmd.Size = new System.Drawing.Size(389, 23);
             this.txbSearchModeOnCmd.TabIndex = 16;
             // 
             // chkSearchASCII2DEnabled
@@ -1493,7 +1520,7 @@
             this.pnlOriginPicture.Controls.Add(this.chkOriginPictureCheckPornEnabled);
             this.pnlOriginPicture.Controls.Add(this.pnlOriginPictureCheckPorn);
             this.pnlOriginPicture.Enabled = false;
-            this.pnlOriginPicture.Location = new System.Drawing.Point(3, 43);
+            this.pnlOriginPicture.Location = new System.Drawing.Point(3, 35);
             this.pnlOriginPicture.Name = "pnlOriginPicture";
             this.pnlOriginPicture.Size = new System.Drawing.Size(646, 139);
             this.pnlOriginPicture.TabIndex = 3;
@@ -1636,7 +1663,7 @@
             // chkOriginPictureEnabled
             // 
             this.chkOriginPictureEnabled.AutoSize = true;
-            this.chkOriginPictureEnabled.Location = new System.Drawing.Point(15, 16);
+            this.chkOriginPictureEnabled.Location = new System.Drawing.Point(9, 8);
             this.chkOriginPictureEnabled.Name = "chkOriginPictureEnabled";
             this.chkOriginPictureEnabled.Size = new System.Drawing.Size(124, 21);
             this.chkOriginPictureEnabled.TabIndex = 0;
@@ -1758,7 +1785,7 @@
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureR18);
             this.pnlEnabelHPicture.Controls.Add(this.txbHPictureUnit);
             this.pnlEnabelHPicture.Enabled = false;
-            this.pnlEnabelHPicture.Location = new System.Drawing.Point(4, 41);
+            this.pnlEnabelHPicture.Location = new System.Drawing.Point(4, 37);
             this.pnlEnabelHPicture.Margin = new System.Windows.Forms.Padding(4);
             this.pnlEnabelHPicture.Name = "pnlEnabelHPicture";
             this.pnlEnabelHPicture.Size = new System.Drawing.Size(644, 642);
@@ -1781,7 +1808,7 @@
             this.txbHPictureOnceMessageMaxImageCount.Location = new System.Drawing.Point(137, 520);
             this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
-            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(474, 23);
+            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(423, 23);
             this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
             // 
             // lblHPictureOnceMessageMaxImageCount
@@ -1850,7 +1877,7 @@
             // 
             this.chkRevokeBeautyPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkRevokeBeautyPicture.AutoSize = true;
-            this.chkRevokeBeautyPicture.Location = new System.Drawing.Point(521, 400);
+            this.chkRevokeBeautyPicture.Location = new System.Drawing.Point(470, 400);
             this.chkRevokeBeautyPicture.Name = "chkRevokeBeautyPicture";
             this.chkRevokeBeautyPicture.Size = new System.Drawing.Size(51, 21);
             this.chkRevokeBeautyPicture.TabIndex = 14;
@@ -2146,7 +2173,7 @@
             this.txbDownloadFailReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbDownloadFailReply.Multiline = true;
             this.txbDownloadFailReply.Name = "txbDownloadFailReply";
-            this.txbDownloadFailReply.Size = new System.Drawing.Size(299, 23);
+            this.txbDownloadFailReply.Size = new System.Drawing.Size(248, 23);
             this.txbDownloadFailReply.TabIndex = 8;
             // 
             // txbHPictureNoResultReply
@@ -2157,7 +2184,7 @@
             this.txbHPictureNoResultReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureNoResultReply.Multiline = true;
             this.txbHPictureNoResultReply.Name = "txbHPictureNoResultReply";
-            this.txbHPictureNoResultReply.Size = new System.Drawing.Size(299, 23);
+            this.txbHPictureNoResultReply.Size = new System.Drawing.Size(248, 23);
             this.txbHPictureNoResultReply.TabIndex = 8;
             // 
             // txbHPictureErrorReplyReply
@@ -2168,7 +2195,7 @@
             this.txbHPictureErrorReplyReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureErrorReplyReply.Multiline = true;
             this.txbHPictureErrorReplyReply.Name = "txbHPictureErrorReplyReply";
-            this.txbHPictureErrorReplyReply.Size = new System.Drawing.Size(299, 23);
+            this.txbHPictureErrorReplyReply.Size = new System.Drawing.Size(248, 23);
             this.txbHPictureErrorReplyReply.TabIndex = 8;
             // 
             // txbOutOfLimitReply
@@ -2179,7 +2206,7 @@
             this.txbOutOfLimitReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbOutOfLimitReply.Multiline = true;
             this.txbOutOfLimitReply.Name = "txbOutOfLimitReply";
-            this.txbOutOfLimitReply.Size = new System.Drawing.Size(299, 23);
+            this.txbOutOfLimitReply.Size = new System.Drawing.Size(248, 23);
             this.txbOutOfLimitReply.TabIndex = 8;
             // 
             // txbDownloadAccelerateUrl
@@ -2199,7 +2226,7 @@
             this.txbCDUnreadyReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbCDUnreadyReply.Multiline = true;
             this.txbCDUnreadyReply.Name = "txbCDUnreadyReply";
-            this.txbCDUnreadyReply.Size = new System.Drawing.Size(299, 23);
+            this.txbCDUnreadyReply.Size = new System.Drawing.Size(248, 23);
             this.txbCDUnreadyReply.TabIndex = 8;
             // 
             // txbCD
@@ -2328,7 +2355,7 @@
             // 
             this.chkSize1200.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkSize1200.AutoSize = true;
-            this.chkSize1200.Location = new System.Drawing.Point(522, 295);
+            this.chkSize1200.Location = new System.Drawing.Point(471, 295);
             this.chkSize1200.Margin = new System.Windows.Forms.Padding(4);
             this.chkSize1200.Name = "chkSize1200";
             this.chkSize1200.Size = new System.Drawing.Size(103, 21);
@@ -2478,7 +2505,7 @@
             this.lnkResetHPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkResetHPicture.AutoSize = true;
             this.lnkResetHPicture.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.lnkResetHPicture.Location = new System.Drawing.Point(562, 347);
+            this.lnkResetHPicture.Location = new System.Drawing.Point(511, 347);
             this.lnkResetHPicture.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lnkResetHPicture.Name = "lnkResetHPicture";
             this.lnkResetHPicture.Size = new System.Drawing.Size(32, 17);
@@ -2502,7 +2529,7 @@
             // 
             this.chkBeautyPictureEndNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkBeautyPictureEndNull.AutoSize = true;
-            this.chkBeautyPictureEndNull.Location = new System.Drawing.Point(522, 224);
+            this.chkBeautyPictureEndNull.Location = new System.Drawing.Point(471, 224);
             this.chkBeautyPictureEndNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkBeautyPictureEndNull.Name = "chkBeautyPictureEndNull";
             this.chkBeautyPictureEndNull.Size = new System.Drawing.Size(63, 21);
@@ -2515,7 +2542,7 @@
             // 
             this.chkHPictureEndNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureEndNull.AutoSize = true;
-            this.chkHPictureEndNull.Location = new System.Drawing.Point(522, 193);
+            this.chkHPictureEndNull.Location = new System.Drawing.Point(471, 193);
             this.chkHPictureEndNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureEndNull.Name = "chkHPictureEndNull";
             this.chkHPictureEndNull.Size = new System.Drawing.Size(63, 21);
@@ -2538,7 +2565,7 @@
             // 
             this.chkHPictureKeywordNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureKeywordNull.AutoSize = true;
-            this.chkHPictureKeywordNull.Location = new System.Drawing.Point(522, 163);
+            this.chkHPictureKeywordNull.Location = new System.Drawing.Point(471, 163);
             this.chkHPictureKeywordNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureKeywordNull.Name = "chkHPictureKeywordNull";
             this.chkHPictureKeywordNull.Size = new System.Drawing.Size(63, 21);
@@ -2561,7 +2588,7 @@
             // 
             this.chkHPictureR18Null.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureR18Null.AutoSize = true;
-            this.chkHPictureR18Null.Location = new System.Drawing.Point(522, 132);
+            this.chkHPictureR18Null.Location = new System.Drawing.Point(471, 132);
             this.chkHPictureR18Null.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureR18Null.Name = "chkHPictureR18Null";
             this.chkHPictureR18Null.Size = new System.Drawing.Size(63, 21);
@@ -2594,7 +2621,7 @@
             // 
             this.chkHPictureUnitNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureUnitNull.AutoSize = true;
-            this.chkHPictureUnitNull.Location = new System.Drawing.Point(522, 101);
+            this.chkHPictureUnitNull.Location = new System.Drawing.Point(471, 101);
             this.chkHPictureUnitNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureUnitNull.Name = "chkHPictureUnitNull";
             this.chkHPictureUnitNull.Size = new System.Drawing.Size(63, 21);
@@ -2617,7 +2644,7 @@
             // 
             this.chkHPictureCountNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureCountNull.AutoSize = true;
-            this.chkHPictureCountNull.Location = new System.Drawing.Point(522, 70);
+            this.chkHPictureCountNull.Location = new System.Drawing.Point(471, 70);
             this.chkHPictureCountNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureCountNull.Name = "chkHPictureCountNull";
             this.chkHPictureCountNull.Size = new System.Drawing.Size(63, 21);
@@ -2650,7 +2677,7 @@
             // 
             this.chkHPictureBeginNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkHPictureBeginNull.AutoSize = true;
-            this.chkHPictureBeginNull.Location = new System.Drawing.Point(522, 39);
+            this.chkHPictureBeginNull.Location = new System.Drawing.Point(471, 39);
             this.chkHPictureBeginNull.Margin = new System.Windows.Forms.Padding(4);
             this.chkHPictureBeginNull.Name = "chkHPictureBeginNull";
             this.chkHPictureBeginNull.Size = new System.Drawing.Size(63, 21);
@@ -2669,7 +2696,7 @@
             this.txbBeautyPictureCmd.Multiline = true;
             this.txbBeautyPictureCmd.Name = "txbBeautyPictureCmd";
             this.txbBeautyPictureCmd.ReadOnly = true;
-            this.txbBeautyPictureCmd.Size = new System.Drawing.Size(377, 98);
+            this.txbBeautyPictureCmd.Size = new System.Drawing.Size(326, 98);
             this.txbBeautyPictureCmd.TabIndex = 1;
             // 
             // txbHPictureCmd
@@ -2682,7 +2709,7 @@
             this.txbHPictureCmd.Multiline = true;
             this.txbHPictureCmd.Name = "txbHPictureCmd";
             this.txbHPictureCmd.ReadOnly = true;
-            this.txbHPictureCmd.Size = new System.Drawing.Size(377, 98);
+            this.txbHPictureCmd.Size = new System.Drawing.Size(326, 98);
             this.txbHPictureCmd.TabIndex = 1;
             // 
             // txbHPictureApiKey
@@ -2693,7 +2720,7 @@
             this.txbHPictureApiKey.Location = new System.Drawing.Point(137, 6);
             this.txbHPictureApiKey.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureApiKey.Name = "txbHPictureApiKey";
-            this.txbHPictureApiKey.Size = new System.Drawing.Size(377, 23);
+            this.txbHPictureApiKey.Size = new System.Drawing.Size(326, 23);
             this.txbHPictureApiKey.TabIndex = 2;
             this.txbHPictureApiKey.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2704,7 +2731,7 @@
             this.txbBeautyPictureEnd.Location = new System.Drawing.Point(137, 224);
             this.txbBeautyPictureEnd.Margin = new System.Windows.Forms.Padding(4);
             this.txbBeautyPictureEnd.Name = "txbBeautyPictureEnd";
-            this.txbBeautyPictureEnd.Size = new System.Drawing.Size(377, 23);
+            this.txbBeautyPictureEnd.Size = new System.Drawing.Size(326, 23);
             this.txbBeautyPictureEnd.TabIndex = 2;
             this.txbBeautyPictureEnd.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2715,7 +2742,7 @@
             this.txbHPictureEnd.Location = new System.Drawing.Point(137, 193);
             this.txbHPictureEnd.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureEnd.Name = "txbHPictureEnd";
-            this.txbHPictureEnd.Size = new System.Drawing.Size(377, 23);
+            this.txbHPictureEnd.Size = new System.Drawing.Size(326, 23);
             this.txbHPictureEnd.TabIndex = 2;
             this.txbHPictureEnd.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2726,7 +2753,7 @@
             this.txbHPictureBegin.Location = new System.Drawing.Point(137, 37);
             this.txbHPictureBegin.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureBegin.Name = "txbHPictureBegin";
-            this.txbHPictureBegin.Size = new System.Drawing.Size(377, 23);
+            this.txbHPictureBegin.Size = new System.Drawing.Size(326, 23);
             this.txbHPictureBegin.TabIndex = 2;
             this.txbHPictureBegin.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2737,7 +2764,7 @@
             this.txbHPictureKeyword.Location = new System.Drawing.Point(137, 161);
             this.txbHPictureKeyword.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureKeyword.Name = "txbHPictureKeyword";
-            this.txbHPictureKeyword.Size = new System.Drawing.Size(377, 23);
+            this.txbHPictureKeyword.Size = new System.Drawing.Size(326, 23);
             this.txbHPictureKeyword.TabIndex = 2;
             this.txbHPictureKeyword.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2748,7 +2775,7 @@
             this.txbHPictureCount.Location = new System.Drawing.Point(137, 68);
             this.txbHPictureCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureCount.Name = "txbHPictureCount";
-            this.txbHPictureCount.Size = new System.Drawing.Size(377, 23);
+            this.txbHPictureCount.Size = new System.Drawing.Size(326, 23);
             this.txbHPictureCount.TabIndex = 2;
             this.txbHPictureCount.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2759,7 +2786,7 @@
             this.txbHPictureR18.Location = new System.Drawing.Point(137, 130);
             this.txbHPictureR18.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureR18.Name = "txbHPictureR18";
-            this.txbHPictureR18.Size = new System.Drawing.Size(377, 23);
+            this.txbHPictureR18.Size = new System.Drawing.Size(326, 23);
             this.txbHPictureR18.TabIndex = 2;
             this.txbHPictureR18.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
@@ -2770,14 +2797,14 @@
             this.txbHPictureUnit.Location = new System.Drawing.Point(137, 99);
             this.txbHPictureUnit.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureUnit.Name = "txbHPictureUnit";
-            this.txbHPictureUnit.Size = new System.Drawing.Size(377, 23);
+            this.txbHPictureUnit.Size = new System.Drawing.Size(326, 23);
             this.txbHPictureUnit.TabIndex = 2;
             this.txbHPictureUnit.TextChanged += new System.EventHandler(this.txbHPictureEnd_TextChanged);
             // 
             // chkEnabledHPicture
             // 
             this.chkEnabledHPicture.AutoSize = true;
-            this.chkEnabledHPicture.Location = new System.Drawing.Point(13, 12);
+            this.chkEnabledHPicture.Location = new System.Drawing.Point(9, 8);
             this.chkEnabledHPicture.Margin = new System.Windows.Forms.Padding(4);
             this.chkEnabledHPicture.Name = "chkEnabledHPicture";
             this.chkEnabledHPicture.Size = new System.Drawing.Size(99, 21);
@@ -2818,7 +2845,7 @@
             this.pnlTranslate.Controls.Add(this.lblTranslateTo);
             this.pnlTranslate.Controls.Add(this.lblTranslateToChinese);
             this.pnlTranslate.Enabled = false;
-            this.pnlTranslate.Location = new System.Drawing.Point(3, 43);
+            this.pnlTranslate.Location = new System.Drawing.Point(3, 35);
             this.pnlTranslate.Name = "pnlTranslate";
             this.pnlTranslate.Size = new System.Drawing.Size(646, 277);
             this.pnlTranslate.TabIndex = 1;
@@ -2976,7 +3003,7 @@
             // chkTranslateEnabled
             // 
             this.chkTranslateEnabled.AutoSize = true;
-            this.chkTranslateEnabled.Location = new System.Drawing.Point(15, 16);
+            this.chkTranslateEnabled.Location = new System.Drawing.Point(9, 8);
             this.chkTranslateEnabled.Name = "chkTranslateEnabled";
             this.chkTranslateEnabled.Size = new System.Drawing.Size(99, 21);
             this.chkTranslateEnabled.TabIndex = 0;
@@ -3275,7 +3302,7 @@
             this.pnlForgeMessage.Controls.Add(this.lblForgeMessageCmdBegin);
             this.pnlForgeMessage.Controls.Add(this.txbForgeMessageCmdBegin);
             this.pnlForgeMessage.Enabled = false;
-            this.pnlForgeMessage.Location = new System.Drawing.Point(3, 40);
+            this.pnlForgeMessage.Location = new System.Drawing.Point(3, 36);
             this.pnlForgeMessage.Name = "pnlForgeMessage";
             this.pnlForgeMessage.Size = new System.Drawing.Size(646, 644);
             this.pnlForgeMessage.TabIndex = 11;
@@ -3452,7 +3479,7 @@
             // chkEnabledForgeMessage
             // 
             this.chkEnabledForgeMessage.AutoSize = true;
-            this.chkEnabledForgeMessage.Location = new System.Drawing.Point(13, 12);
+            this.chkEnabledForgeMessage.Location = new System.Drawing.Point(9, 8);
             this.chkEnabledForgeMessage.Margin = new System.Windows.Forms.Padding(4);
             this.chkEnabledForgeMessage.Name = "chkEnabledForgeMessage";
             this.chkEnabledForgeMessage.Size = new System.Drawing.Size(123, 21);
@@ -3481,7 +3508,7 @@
             this.pnlRss.Controls.Add(this.txbReadRssInterval);
             this.pnlRss.Controls.Add(this.lblReadRssInterval);
             this.pnlRss.Enabled = false;
-            this.pnlRss.Location = new System.Drawing.Point(3, 40);
+            this.pnlRss.Location = new System.Drawing.Point(3, 35);
             this.pnlRss.Name = "pnlRss";
             this.pnlRss.Size = new System.Drawing.Size(646, 644);
             this.pnlRss.TabIndex = 1;
@@ -3535,7 +3562,7 @@
             // chkRssEnabled
             // 
             this.chkRssEnabled.AutoSize = true;
-            this.chkRssEnabled.Location = new System.Drawing.Point(13, 12);
+            this.chkRssEnabled.Location = new System.Drawing.Point(9, 8);
             this.chkRssEnabled.Name = "chkRssEnabled";
             this.chkRssEnabled.Size = new System.Drawing.Size(121, 21);
             this.chkRssEnabled.TabIndex = 0;
@@ -3590,7 +3617,7 @@
             this.pnlTicTacToe.Controls.Add(this.lblStopTicTacToeCmd);
             this.pnlTicTacToe.Controls.Add(this.lblStartTicTacToeCmd);
             this.pnlTicTacToe.Enabled = false;
-            this.pnlTicTacToe.Location = new System.Drawing.Point(3, 39);
+            this.pnlTicTacToe.Location = new System.Drawing.Point(3, 35);
             this.pnlTicTacToe.Name = "pnlTicTacToe";
             this.pnlTicTacToe.Size = new System.Drawing.Size(646, 645);
             this.pnlTicTacToe.TabIndex = 1;
@@ -3892,7 +3919,7 @@
             // chkTicTacToeEnabled
             // 
             this.chkTicTacToeEnabled.AutoSize = true;
-            this.chkTicTacToeEnabled.Location = new System.Drawing.Point(13, 12);
+            this.chkTicTacToeEnabled.Location = new System.Drawing.Point(9, 8);
             this.chkTicTacToeEnabled.Name = "chkTicTacToeEnabled";
             this.chkTicTacToeEnabled.Size = new System.Drawing.Size(111, 21);
             this.chkTicTacToeEnabled.TabIndex = 0;
@@ -4401,5 +4428,7 @@
         private System.Windows.Forms.Label lblChessboard;
         private System.Windows.Forms.Label lblTicTacToeMoveFailReply;
         private System.Windows.Forms.TextBox txbTicTacToeMoveFailReply;
+        private System.Windows.Forms.Label lblLogLevel;
+        private System.Windows.Forms.ComboBox cboLogLevel;
     }
 }

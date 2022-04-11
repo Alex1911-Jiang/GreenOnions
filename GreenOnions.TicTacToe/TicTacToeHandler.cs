@@ -92,7 +92,7 @@ namespace GreenOnions.TicTacToe
                 }
             }
             else
-                ErrorHelper.WriteErrorLogWithUserMessage($"数据异常, 时间表中存在QQ:{qqId}, 但对局表中不存在, 可能是刚刚超时了", null);
+                LogHelper.WriteErrorLogWithUserMessage($"数据异常, 时间表中存在QQ:{qqId}, 但对局表中不存在, 可能是刚刚超时了", null);
         }
 
         public static async void PlayerMoveByBitmap(long qqId, Stream playerMoveStream, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture)
@@ -131,10 +131,10 @@ namespace GreenOnions.TicTacToe
                     }
                 }
                 else
-                    ErrorHelper.WriteErrorLogWithUserMessage("井字棋图片转换失败", null);
+                    LogHelper.WriteErrorLogWithUserMessage("井字棋图片转换失败", null);
             }
             else
-                ErrorHelper.WriteErrorLogWithUserMessage($"数据异常, 时间表中存在QQ:{qqId}, 但对局表中不存在, 可能是刚刚超时了", null);
+                LogHelper.WriteErrorLogWithUserMessage($"数据异常, 时间表中存在QQ:{qqId}, 但对局表中不存在, 可能是刚刚超时了", null);
         }
 
         public static async void SendBitmapAfterMove(long qqId, Bitmap nowStepBmp, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture, int? winOrLostMsg)

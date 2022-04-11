@@ -1,4 +1,5 @@
 ﻿using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -59,6 +60,12 @@ namespace GreenOnions.BotManagerWindow
             Invoke(new Action(() =>
             {
                 webBrowser = new WebBrowser();
+                webBrowser.NewWindow += (o, e) =>
+                {
+                    LogHelper.WriteWarningLog("浏览器组件异常触发了打开新窗口。" + webBrowser.StatusText);
+                    e.Cancel = true;
+                    webBrowser.Navigate(webBrowser.StatusText);
+                };
                 webBrowser.ScriptErrorsSuppressed = true;
                 webBrowser.Dock = DockStyle.Fill;
                 pnlBrowser.Controls.Add(webBrowser);

@@ -82,7 +82,9 @@ namespace GreenOnions.PictureSearcher
 
         public static async Task SearchPicture(IImageMessage inImgMsg, Func<Stream, Task<IImageMessage>> UploadPicture, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<string[], Task<string[]>> SendImage)
         {
+            LogHelper.WriteInfoLog("进入搜图处理事件");
             string qqImgUrl = ImageHelper.ReplaceGroupUrl(inImgMsg.Url);
+            LogHelper.WriteInfoLog($"需要搜图的地址为:{qqImgUrl}");
             try
             {
                 if (BotInfo.SearchEnabledTraceMoe)
@@ -95,28 +97,34 @@ namespace GreenOnions.PictureSearcher
                 }
                 else if (BotInfo.SearchEnabledASCII2D)  //不启用SauceNao只启用ASCII2D
                 {
+                    LogHelper.WriteInfoLog("没有启用SauceNao");
                     await SearchAscii2D();
                 }
             }
             catch (Exception ex)
             {
-                ErrorHelper.WriteErrorLog(ex);
+                LogHelper.WriteErrorLog(ex);
                 _ = SendMessage(new [] { new PlainMessage(BotInfo.SearchErrorReply + ex.Message) }, true);
             }
 
             async Task SearchTraceMoe()
             {
+                LogHelper.WriteInfoLog("进入TraceMoe搜图逻辑");
                 string TraceMoeUrl = @$"https://api.trace.moe/search?anilistInfo&url={qqImgUrl}";  //https://trace.moe/?url=  //https://trace.moe/api/search?url=
                 try
                 {
+                    LogHelper.WriteInfoLog($"请求TraceMoe, 地址为:{TraceMoeUrl}");
                     string strSauceTraceMoe = await HttpHelper.GetHttpResponseStringAsync(TraceMoeUrl);
+                    LogHelper.WriteInfoLog($"请求TraceMoe成功");
                     JToken json = JsonConvert.DeserializeObject<JToken>(strSauceTraceMoe);
                     JArray jResults = json["result"] as JArray;
                     if (jResults.Count > 0)
                     {
+                        LogHelper.WriteInfoLog($"成功解析TraceMoe响应文");
                         double similarity = Math.Round(Convert.ToDouble(jResults[0]["similarity"]), 4) * 100; //相似度
                         if (similarity >= BotInfo.TraceMoeSendThreshold)
                         {
+                            LogHelper.WriteInfoLog($"相似度大于设定值, 读取番剧信息");
                             string id = jResults[0]["anilist"]["id"].ToString();
                             string anime = jResults[0]["anilist"]["title"]["native"].ToString();  //动画名称
                             string synonyms = jResults[0]["anilist"]["synonyms"].ToString();  //别名
@@ -140,6 +148,7 @@ namespace GreenOnions.PictureSearcher
                                 {
                                     if (File.Exists(imgName))  //存在本地缓存
                                     {
+                                        LogHelper.WriteInfoLog($"存在TraceMoe缩略图本地缓存");
                                         if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                                         {
                                             string notHealth = Path.Combine(ImageHelper.ImagePath, $"TraceMoe_{id}_{previewSize}notHealth.png");
@@ -164,9 +173,11 @@ namespace GreenOnions.PictureSearcher
                                     }
                                     else  //没有本地缓存
                                     {
+                                        LogHelper.WriteInfoLog($"不存在TraceMoe缩略图本地缓存");
                                         //鉴黄通过或不鉴黄也发图
                                         if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                                         {
+                                            LogHelper.WriteInfoLog($"下载TraceMoe缩略图");
                                             MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStream(previewURL);
                                             if (stream != null)
                                             {
@@ -180,22 +191,26 @@ namespace GreenOnions.PictureSearcher
                                 }
                                 catch (Exception ex)
                                 {
-                                    ErrorHelper.WriteErrorLog(ex);  //异常只是不发送缩略图, 不需要返回消息
+                                    LogHelper.WriteErrorLog(ex);  //异常只是不发送缩略图, 不需要返回消息
                                 }
                             });
+
+                            LogHelper.WriteInfoLog($"发送TraceMoe搜番结果");
                             await SendMessage(new[] { new PlainMessage($"动画名称:{anime}\r\n其他名称:{synonyms}\r\n相似度:{similarity}% (trace.moe)\r\n里:{(isAdult ? "是" : "否")}\r\n第{episode}集 {time}处") }, true);
+                            LogHelper.WriteInfoLog($"TraceMoe搜番完成");
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    ErrorHelper.WriteErrorLogWithUserMessage("TraceMoe搜番失败", ex, $"请求地址为：{TraceMoeUrl}");
+                    LogHelper.WriteErrorLogWithUserMessage("TraceMoe搜番失败", ex, $"请求地址为：{TraceMoeUrl}");
                     _ = SendMessage(new[] { new PlainMessage("TraceMoe搜番失败，" + ex.Message) }, true);
                 }
             }
 
             async Task SearchSauceNao()
             {
+                LogHelper.WriteInfoLog("进入SauceNao搜图逻辑");
                 string apiKeyStr = "";
                 string apiKey = "";
                 if (Cache.SauceNaoKeysAndShortRemaining.Count > 0)
@@ -211,6 +226,7 @@ namespace GreenOnions.PictureSearcher
 
                     if (string.IsNullOrEmpty(apiKey))  //所有key均已耗尽次数
                     {
+                        LogHelper.WriteInfoLog("SauceNao所有Key搜图次数均耗尽");
                         string strLowSimilarity = "SauceNao搜索次数已耗尽。";
                         if (BotInfo.SearchEnabledASCII2D)
                         {
@@ -229,18 +245,21 @@ namespace GreenOnions.PictureSearcher
 
                 try
                 {
+                    LogHelper.WriteInfoLog($"请求SauceNao, 地址未:{SauceNaoUrl}");
                     strSauceNaoResult = await HttpHelper.GetHttpResponseStringAsync(SauceNaoUrl);
+                    LogHelper.WriteInfoLog($"请求SauceNao成功");
                 }
                 catch (Exception ex)
                 {
                     if (ex.Message.Contains("429"))
                     {
+                        LogHelper.WriteWarningLog($"当前Key:{apiKey}的搜索次数已耗尽");
                         Cache.SauceNaoKeysAndLongRemaining[apiKey] = 0;
                         Cache.SauceNaoKeysAndShortRemaining[apiKey] = 0;
                     }
 
                     string sauceNaoFail = "SauceNao搜图失败，" + ex.Message;
-                    ErrorHelper.WriteErrorLogWithUserMessage("SauceNao搜图失败", ex, $"请求地址为：{SauceNaoUrl}");
+                    LogHelper.WriteErrorLogWithUserMessage("SauceNao搜图失败", ex, $"请求地址为：{SauceNaoUrl}");
                     if (BotInfo.SearchEnabledASCII2D)
                     {
                         sauceNaoFail += "\r\n自动使用ASCII2D搜索。";
@@ -265,10 +284,12 @@ namespace GreenOnions.PictureSearcher
 
                 if (jResults == null)
                 {
-                    ErrorHelper.WriteErrorLogWithUserMessage("SauceNao没有搜索到结果", null, $"请求地址为：{SauceNaoUrl}");
+                    LogHelper.WriteWarningLog($"SauceNao没有搜索到结果, 请求地址为：{SauceNaoUrl}");
                     _ = SendMessage(new[] { new PlainMessage(BotInfo.SearchNoResultReply.Replace("<搜索类型>", "SauceNao")) }, true);
                     return;
                 }
+
+                LogHelper.WriteInfoLog($"成功解析SauceNao响应文");
 
                 for (int j = 0; j < jResults.Count; j++)
                 {
@@ -306,6 +327,7 @@ namespace GreenOnions.PictureSearcher
                     //如果优先度高的没有地址
                     if (sauceNaoItem.ext_urls == null && string.IsNullOrEmpty(sauceNaoItem.source))
                     {
+                        LogHelper.WriteInfoLog($"搜图结果不含来源地址, 查找相似度低一级的结果");
                         continue;
                     }
 
@@ -327,6 +349,9 @@ namespace GreenOnions.PictureSearcher
                         }
                         stringBuilder.AppendLine(sauceNaoUrl);
                     }
+
+                    LogHelper.WriteInfoLog($"搜索到包含{sauceNaoItem.ext_urls.Count}条地址");
+
                     if (!string.IsNullOrEmpty(sauceNaoItem.source)) stringBuilder.AppendLine("图片来源:" + HttpUtility.UrlDecode(sauceNaoItem.source));
                     stringBuilder.AppendLine($"相似度:{sauceNaoItem.similarity}%(SauceNAO)");  //一定有相似度
                     if (!string.IsNullOrEmpty(sauceNaoItem.title)) stringBuilder.AppendLine("标题:" + HttpUtility.UrlDecode(sauceNaoItem.title));
@@ -343,12 +368,15 @@ namespace GreenOnions.PictureSearcher
                     //相似度大于设定的阈值
                     if (sauceNaoItem.similarity > BotInfo.SearchLowSimilarity)
                     {
+                        LogHelper.WriteInfoLog($"相似度大于发图设定值");
                         string[] thuImgCacheFiles = sauceNaoItem.pixiv_id == null ? Directory.GetFiles(ImageHelper.ImagePath, $"Thu_Other_{sauceNaoItem.thumbnail.Substring(sauceNaoItem.thumbnail.LastIndexOf("=") + 1)}*") : Directory.GetFiles(ImageHelper.ImagePath, $"Thu_{sauceNaoItem.pixiv_id}*");
                         Stream stream = null;
                         if (thuImgCacheFiles.Length > 0 && new FileInfo(thuImgCacheFiles[0]).Length > 0)  //存在本地缓存
                         {
+                            LogHelper.WriteInfoLog($"存在本地缓存");
                             if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                             {
+                                LogHelper.WriteInfoLog($"启用了鉴黄");
                                 if (thuImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
                                     IImageMessage = new PlainMessage(BotInfo.SearchCheckPornIllegalReply); //直接返回鉴黄不通过
                                 else if (thuImgCacheFiles[0].Contains("_IsHealth"))  //曾经鉴黄通过的
@@ -357,17 +385,23 @@ namespace GreenOnions.PictureSearcher
                                     IImageMessage = CheckPornSearch(thuImgCacheFiles[0], File.ReadAllBytes(thuImgCacheFiles[0]));
                             }
                             else if (BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图, 直接读取本地图片
+                            {
+                                LogHelper.WriteInfoLog($"没有启用鉴黄");
                                 stream = new FileStream(thuImgCacheFiles[0], FileMode.Open, FileAccess.Read, FileShare.Read);
+                            }
                         }
                         else  //没有本地缓存
                         {
+                            LogHelper.WriteInfoLog($"没有本地缓存");
                             string cacheImageName = Path.Combine(ImageHelper.ImagePath, $"Thu_{sauceNaoItem.pixiv_id}.png");
                             //鉴黄通过或不鉴黄也发图
                             if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图的话只需要维持IImageMessage为空
                             {
+                                LogHelper.WriteInfoLog($"下载缩略图:{sauceNaoItem.thumbnail}");
                                 stream = await HttpHelper.DownloadImageAsMemoryStream(sauceNaoItem.thumbnail);
                                 if (stream != null)
                                 {
+                                    LogHelper.WriteInfoLog($"下载缩略图成功");
                                     if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                                         IImageMessage = CheckPornSearch(cacheImageName, (stream as MemoryStream).ToArray());
                                 }
@@ -376,8 +410,10 @@ namespace GreenOnions.PictureSearcher
 
                         if (IImageMessage == null)
                         {
+                            LogHelper.WriteInfoLog($"鉴黄通过或不需要鉴黄");
                             if (stream != null)
                             {
+                                LogHelper.WriteInfoLog($"上传缩略图");
                                 IImageMessage = await UploadPicture(stream);
 
                                 //如果是pixiv体系尝试下载原图
@@ -386,6 +422,7 @@ namespace GreenOnions.PictureSearcher
                                     Match matchBigImg = Regex.Match(sauceNaoItem.index_name, @$".+{sauceNaoItem.pixiv_id}_p([0-9]+)[_\.].+");
                                     if (matchBigImg.Groups.Count > 1)
                                     {
+                                        LogHelper.WriteInfoLog($"图片来自Pixiv, 尝试下载原图");
                                         int p = Convert.ToInt32(matchBigImg.Groups[1].Value);
                                         string imgUrlHasP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}-{p + 1}.png";
                                         if (p == 0)  //NAO返回的P为0
@@ -411,12 +448,14 @@ namespace GreenOnions.PictureSearcher
                             }
                             else
                             {
+                                LogHelper.WriteWarningLog($"下载缩略图失败:{sauceNaoItem.thumbnail}");
                                 IImageMessage = new PlainMessage("");
                             }
                         }
                     }
                     else
                     {
+                        LogHelper.WriteInfoLog($"相似度低于发图设定值");
                         string strLowSimilarity = BotInfo.SearchLowSimilarityReply.ReplaceGreenOnionsTags();
                         if (BotInfo.SearchEnabledASCII2D)
                         {
@@ -425,7 +464,9 @@ namespace GreenOnions.PictureSearcher
                         }
                         IImageMessage = new PlainMessage(strLowSimilarity);
                     }
+                    LogHelper.WriteInfoLog($"发送SauceNao搜图结果");
                     await SendMessage(new[] { sauceNaoMsg, IImageMessage }, false);
+                    LogHelper.WriteInfoLog($"SauceNao搜图完成");
                     return;
                 }
                 string strNoResult = BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("<搜索类型>", "SauceNao"));
@@ -440,6 +481,7 @@ namespace GreenOnions.PictureSearcher
                 {
                     try
                     {
+                        LogHelper.WriteInfoLog($"发送原图:{url}");
                         string[] imgIds = await SendImage(new[] { url });
 
                         //下载图片并发送
@@ -453,13 +495,14 @@ namespace GreenOnions.PictureSearcher
                     }
                     catch (Exception ex)
                     {
-                        ErrorHelper.WriteErrorLog(ex);  //异常只是不发送原图, 不需要返回消息
+                        LogHelper.WriteErrorLog(ex);  //异常只是不发送原图, 不需要返回消息
                     }
                 }
             }
 
             async Task SearchAscii2D()
             {
+                LogHelper.WriteInfoLog("进入Ascii2D搜图逻辑");
                 string strAscii2dColorResult = null; 
                 string strAscii2dBovwResult = null;
                 string colorUrl = @$"https://ascii2d.net/search/url/{qqImgUrl}?type=color";
@@ -467,31 +510,37 @@ namespace GreenOnions.PictureSearcher
 
                 if (EventHelper.GetDocumentByBrowserEvent != null && BotInfo.HttpRequestByWebBrowser && BotInfo.ASCII2DRequestByWebBrowser)
                 {
+                    LogHelper.WriteInfoLog($"调用浏览器请求Ascii2D颜色识别, 地址为:{colorUrl}");
                     var responseColor = EventHelper.GetDocumentByBrowserEvent(colorUrl);
                     strAscii2dColorResult = responseColor.document;
+                    LogHelper.WriteInfoLog($"Ascii2D颜色识别请求成功, 跳转地址到特征识别");
                     try
                     {
                         bovwUrl = responseColor.jumpUrl.Replace("/color/", "/bovw/");
                         var responseBovw = EventHelper.GetDocumentByBrowserEvent(bovwUrl);
                         strAscii2dBovwResult = responseBovw.document;
+                        LogHelper.WriteInfoLog($"Ascii2D特征识别请求成功");
                     }
                     catch (Exception ex)
                     {
-                        ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D颜色搜索失败", ex, $"请求地址为：{colorUrl}");
+                        LogHelper.WriteErrorLogWithUserMessage("Ascii2D特征搜索失败", ex, $"请求地址为：{colorUrl}");
                     }
                 }
                 else
                 {
+                    LogHelper.WriteInfoLog($"请求Ascii2D颜色识别, 地址为:{colorUrl}");
                     var response = await HttpHelper.GetHttpResponseStringAndJumpUrlAsync(colorUrl);
                     strAscii2dColorResult = response.document;
+                    LogHelper.WriteInfoLog($"Ascii2D颜色识别请求成功, 跳转地址到特征识别");
                     try
                     {
                         bovwUrl = response.jumpUrl.Replace("/color/", "/bovw/");
                         strAscii2dBovwResult = await HttpHelper.GetHttpResponseStringAsync(bovwUrl);
+                        LogHelper.WriteInfoLog($"Ascii2D特征识别请求成功");
                     }
                     catch (Exception ex)
                     {
-                        ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D颜色搜索失败", ex, $"请求地址为：{colorUrl}");
+                        LogHelper.WriteErrorLogWithUserMessage("Ascii2D特征搜索失败", ex, $"请求地址为：{colorUrl}");
                     }
                 }
 
@@ -503,6 +552,7 @@ namespace GreenOnions.PictureSearcher
                     #region -- 颜色搜索 --
                     if (!string.IsNullOrEmpty(strAscii2dColorResult))
                     {
+                        LogHelper.WriteInfoLog($"开始解析颜色搜索响应文");
                         HtmlDocument docColor = new HtmlDocument();
                         docColor.LoadHtml(strAscii2dColorResult);
                         string pathColorItemBox = "/html/body/div['container']/div['row']/div['col-xs-12 col-lg-8 col-xl-8']/div['row item-box']";
@@ -521,6 +571,7 @@ namespace GreenOnions.PictureSearcher
 
                         if (nodeColorUrl != null)
                         {
+                            LogHelper.WriteInfoLog($"成功解析颜色搜索响应文");
                             stringBuilderColor.AppendLine("ASCII2D 颜色搜索");
                             stringBuilderColor.AppendLine($"标题:{nodeColorUrl.InnerText}");
                             stringBuilderColor.AppendLine($"地址:{nodeColorUrl.Attributes["href"].Value}");
@@ -535,6 +586,7 @@ namespace GreenOnions.PictureSearcher
                             Stream streamColorImage = null;
                             if (thuColorImgCacheFiles.Length > 0 && new FileInfo(thuColorImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
                             {
+                                LogHelper.WriteInfoLog($"缩略图存在本地缓存");
                                 if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                                 {
                                     if (thuColorImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
@@ -554,6 +606,7 @@ namespace GreenOnions.PictureSearcher
                             }
                             else
                             {
+                                LogHelper.WriteInfoLog($"缩略图不存在本地缓存, 开始下载缩略图");
                                 string thuColorImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeColorHash.InnerHtml}.png");
                                 if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)
                                 {
@@ -567,14 +620,17 @@ namespace GreenOnions.PictureSearcher
                             }
                             if (streamColorImage != null)
                             {
+                                LogHelper.WriteInfoLog($"缩略图下载成功, 开始上传");
                                 if (imageColorMessage == null)
                                     imageColorMessage = await UploadPicture(streamColorImage);
                                 streamColorImage?.Dispose();
                             }
+                            LogHelper.WriteInfoLog($"发送Ascii2D颜色搜索结果");
                             if (imageColorMessage != null)
                                 await SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage }, true);
                             else
                                 await SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()) }, true);
+                            LogHelper.WriteInfoLog($"Ascii2d颜色搜索完成");
                         }
                     }
                     #endregion -- 颜色搜索 --
@@ -582,7 +638,7 @@ namespace GreenOnions.PictureSearcher
                 catch (Exception ex)
                 {
                     bColorError = true;
-                    ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D颜色搜索失败", ex, $"请求地址为:{colorUrl}\r\n请求结果为：{strAscii2dColorResult}");
+                    LogHelper.WriteErrorLogWithUserMessage("Ascii2D颜色搜索失败", ex, $"请求地址为:{colorUrl}\r\n请求结果为：{strAscii2dColorResult}");
                 }
 
                 try
@@ -590,6 +646,7 @@ namespace GreenOnions.PictureSearcher
                     #region -- 特征搜索 --
                     if (!string.IsNullOrEmpty(strAscii2dBovwResult))
                     {
+                        LogHelper.WriteInfoLog($"开始解析颜色搜索响应文");
                         HtmlDocument docBovw = new HtmlDocument();
                         docBovw.LoadHtml(strAscii2dBovwResult);
                         string pathBovwItemBox = "/html/body/div['container']/div['row']/div['col-xs-12 col-lg-8 col-xl-8']/div['row item-box']";
@@ -606,6 +663,7 @@ namespace GreenOnions.PictureSearcher
                         HtmlNode nodeBovwMember = nodeBovwItemBox.SelectSingleNode(pathBovwMemberA) ?? nodeBovwItemBox.SelectSingleNode(pathBovwMemberSmall);
                         if (nodeBovwUrl != null)
                         {
+                            LogHelper.WriteInfoLog($"成功解析颜色搜索响应文");
                             StringBuilder stringBuilderBovw = new StringBuilder();
                             stringBuilderBovw.AppendLine("ASCII2D 特征搜索");
                             stringBuilderBovw.AppendLine($"标题:{nodeBovwUrl.InnerText}");
@@ -621,6 +679,7 @@ namespace GreenOnions.PictureSearcher
                             Stream streamBovwImage = null;
                             if (thuBovwImgCacheFiles.Length > 0 && new FileInfo(thuBovwImgCacheFiles[0]).Length > 0)  //如果存在本地缓存
                             {
+                                LogHelper.WriteInfoLog($"缩略图存在本地缓存");
                                 if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
                                 {
                                     if (thuBovwImgCacheFiles[0].Contains("_NotHealth"))  //曾经鉴黄不通过的
@@ -640,6 +699,7 @@ namespace GreenOnions.PictureSearcher
                             }
                             else
                             {
+                                LogHelper.WriteInfoLog($"缩略图不存在本地缓存, 开始下载缩略图");
                                 string thuBovwImgCache = Path.Combine(ImageHelper.ImagePath, $"Thu_{nodeBovwHash.InnerHtml}.png");
                                 if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled) || BotInfo.SearchNoCheckPorn == 0)
                                 {
@@ -653,14 +713,17 @@ namespace GreenOnions.PictureSearcher
                             }
                             if (streamBovwImage != null)
                             {
+                                LogHelper.WriteInfoLog($"缩略图下载成功, 开始上传");
                                 if (imageBovwMessage == null)
                                     imageBovwMessage = await UploadPicture(streamBovwImage);
                                 streamBovwImage?.Dispose();
                             }
+                            LogHelper.WriteInfoLog($"发送Ascii2D特征搜索结果");
                             if (imageBovwMessage != null)
                                 await SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()), imageBovwMessage }, true);
                             else
                                 await SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()) }, true);
+                            LogHelper.WriteInfoLog($"Ascii2d特征搜索完成");
                         }
                     }
                     #endregion -- 特征搜索 --
@@ -668,7 +731,7 @@ namespace GreenOnions.PictureSearcher
                 catch (Exception ex)
                 {
                     bBovwError = true;
-                    ErrorHelper.WriteErrorLogWithUserMessage("Ascii2D特征搜索失败", ex, $"请求地址为:{bovwUrl}\r\n结果为：{strAscii2dBovwResult}");
+                    LogHelper.WriteErrorLogWithUserMessage("Ascii2D特征搜索失败", ex, $"请求地址为:{bovwUrl}\r\n结果为：{strAscii2dBovwResult}");
                 }
 
                 if (bColorError && bBovwError)
