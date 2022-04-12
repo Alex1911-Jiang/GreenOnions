@@ -1,5 +1,5 @@
-﻿using GreenOnions.Utility;
-using GreenOnions.Utility.Helper;
+﻿using CefSharp.WinForms;
+using GreenOnions.Utility;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
+using System.Linq;
+using CefSharp;
+using CefSharp.Handler;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GreenOnions.BotManagerWindow
 {
@@ -16,27 +20,33 @@ namespace GreenOnions.BotManagerWindow
         [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool InternetSetCookie(string lpszUrlName, string lbszCookieName, string lpszCookieData);
 
+        private ChromiumWebBrowser _webBrowser = null;
         private string _document = "";
         private string _jumpUrl = "";
         private Encoding _encoding = Encoding.UTF8;
-        private int waitTime = 15000;
+        private int waitTime = 60000;
         private bool unlock = true;
 
         public WebBrowserForm()
         {
             InitializeComponent();
+
+            _webBrowser = new ChromiumWebBrowser();
+            _webBrowser.Dock = DockStyle.Fill;
+            pnlBrowser.Controls.Add(_webBrowser);
+            _webBrowser.FrameLoadEnd += WebBrowser_FrameLoadEnd;
         }
 
-        public new void CreateHandle()
+        protected override void CreateHandle()
         {
-            if (BotInfo.DebugMode)
-                Show();
-            else
-            {
-                if (!IsHandleCreated)
-                    base.CreateHandle();
-                Hide();
-            }
+        }
+
+        public new void Show()
+        {
+            if (BotInfo.DebugMode && !IsHandleCreated)
+                base.CreateHandle();
+            if (!Visible)
+                base.Show();
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -56,23 +66,8 @@ namespace GreenOnions.BotManagerWindow
             _encoding = encode;
             _jumpUrl = "";
             _document = "";
-            WebBrowser webBrowser = null;
-            Invoke(new Action(() =>
-            {
-                webBrowser = new WebBrowser();
-                webBrowser.NewWindow += (o, e) =>
-                {
-                    LogHelper.WriteWarningLog("浏览器组件异常触发了打开新窗口。" + webBrowser.StatusText);
-                    e.Cancel = true;
-                    webBrowser.Navigate(webBrowser.StatusText);
-                };
-                webBrowser.ScriptErrorsSuppressed = true;
-                webBrowser.Dock = DockStyle.Fill;
-                pnlBrowser.Controls.Add(webBrowser);
-                webBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(web_DocumentCompleted);
-                webBrowser.ProgressChanged += WebBrowser1_ProgressChanged;
-                webBrowser.Navigate(url.ToString());
-            }));
+
+            _webBrowser.Load(url);
 
             int waitedTime = 0;
             while (string.IsNullOrEmpty(_document) || string.IsNullOrEmpty(_jumpUrl))
@@ -82,30 +77,16 @@ namespace GreenOnions.BotManagerWindow
                 if (waitedTime > waitTime)
                     break;
             }
-            if (!BotInfo.DebugMode)
-            {
-                Invoke(new Action(() =>
-                {
-                    pnlBrowser.Controls.Remove(webBrowser);
-                    webBrowser.Dispose();
-                }));
-            }
             return (_document, _jumpUrl);
         }
 
-        private void WebBrowser1_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
+        private async void WebBrowser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
-            WebBrowser browser = (WebBrowser)sender;
-            if (browser.ReadyState == WebBrowserReadyState.Complete || browser.ReadyState == WebBrowserReadyState.Interactive)
-                GetDocumentByIE(browser);
-        }
-
-        private void GetDocumentByIE(WebBrowser browser)
-        {
-            _jumpUrl = browser.Url.ToString();
-            StreamReader getReader = new StreamReader(browser.DocumentStream, _encoding);
-            string document = getReader.ReadToEnd();
-            CheckCloudflare(document, browser, 6000);
+            if (IsHandleCreated)
+                Invoke(new Action(() => txbMessage.AppendText($"Chrome浏览器网页加载完毕, Url={e.Url}\r\n")));
+            
+            _jumpUrl = e.Url;
+            _document = await e.Frame.GetSourceAsync();
         }
 
         private void SaveCookie(WebBrowser browser)
@@ -148,13 +129,16 @@ namespace GreenOnions.BotManagerWindow
 
                     Task.Delay(nowWaitTime).ContinueWith(_ =>
                     {
-                        Invoke(new Action(() =>
+                        if (IsHandleCreated)
                         {
-                            StreamReader getReader = new StreamReader(browser.DocumentStream, _encoding);
-                            string document = getReader.ReadToEnd();
-                            unlock = true;
-                            CheckCloudflare(document, browser, 120000);
-                        }));
+                            Invoke(new Action(() =>
+                            {
+                                StreamReader getReader = new StreamReader(browser.DocumentStream, _encoding);
+                                string document = getReader.ReadToEnd();
+                                unlock = true;
+                                CheckCloudflare(document, browser, 120000);
+                            }));
+                        }
                     });
                 }
                 else
@@ -168,9 +152,19 @@ namespace GreenOnions.BotManagerWindow
             }
         }
 
-        private void web_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void btnLoadUrl_Click(object sender, EventArgs e)
         {
-            GetDocumentByIE((WebBrowser)sender);
+            foreach (ChromiumWebBrowser item in pnlBrowser.Controls.OfType<ChromiumWebBrowser>())
+            {
+                pnlBrowser.Controls.Remove(item);
+                item.Dispose();
+            }
+
+            ChromiumWebBrowser webBrowser = new ChromiumWebBrowser();
+            webBrowser.Dock = DockStyle.Fill;
+            pnlBrowser.Controls.Add(webBrowser);
+            webBrowser.FrameLoadEnd += WebBrowser_FrameLoadEnd;
+            webBrowser.Load(txbUrl.Text);
         }
     }
 }

@@ -54,42 +54,49 @@ namespace GreenOnions.BotManagerWindow
 
         public async Task Main(long qqId, string ip, int port, string verifyKey)
 		{
-			await BotMain.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) =>
-			{
-				Invoke(new Action(() =>
+            try
+            {
+				await BotMain.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) =>
 				{
-					if (bConnect)
+					Invoke(new Action(() =>
 					{
-						lblState.Text = $"连接状态: 已连接到mirai-api-http, 登录昵称:{nickNameOrErrorMessage}";
-						lblState.ForeColor = Color.Black;
-						btnConnect.Text = "断开连接";
-						btnConnect.Click -= btnConnect_Click;
-						btnConnect.Click += btnDeconnect_Click;
-						notifyIcon.Text = $"葱葱机器人:{nickNameOrErrorMessage}";
+						if (bConnect)
+						{
+							lblState.Text = $"连接状态: 已连接到mirai-api-http, 登录昵称:{nickNameOrErrorMessage}";
+							lblState.ForeColor = Color.Black;
+							btnConnect.Text = "断开连接";
+							btnConnect.Click -= btnConnect_Click;
+							btnConnect.Click += btnDeconnect_Click;
+							notifyIcon.Text = $"葱葱机器人:{nickNameOrErrorMessage}";
 
-						BotInfo.QQId = qqId;
-						BotInfo.IP = ip;
-						BotInfo.Port = port.ToString();
-						BotInfo.VerifyKey = verifyKey;
-						JsonHelper.SaveConfigFile();
+							BotInfo.QQId = qqId;
+							BotInfo.IP = ip;
+							BotInfo.Port = port.ToString();
+							BotInfo.VerifyKey = verifyKey;
+							JsonHelper.SaveConfigFile();
 
-                        webBrowserForm.CreateHandle();
-                    }
-					else if (nickNameOrErrorMessage == null)  //连接失败且没有异常
-					{
-						MessageBox.Show("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-					}
-					else  //发生异常或主动断开连接
-					{
-						btnConnect.Text = "连接到mirai-api-http";
-						lblState.Text = "连接状态: 未连接到mirai-api-http";
-						lblState.ForeColor = Color.Red;
-						notifyIcon.Text = $"葱葱机器人";
-						if (nickNameOrErrorMessage.Length > 0)  //发生异常
-                            MessageBox.Show("连接失败，" + nickNameOrErrorMessage, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
-				}));
-            });
+							webBrowserForm.Show();
+						}
+						else if (nickNameOrErrorMessage == null)  //连接失败且没有异常
+						{
+							MessageBox.Show("连接失败，请检查Mirai是否已经正常启动并已配置mirai-api-http相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						}
+						else  //发生异常或主动断开连接
+						{
+							btnConnect.Text = "连接到mirai-api-http";
+							lblState.Text = "连接状态: 未连接到mirai-api-http";
+							lblState.ForeColor = Color.Red;
+							notifyIcon.Text = $"葱葱机器人";
+							if (nickNameOrErrorMessage.Length > 0)  //发生异常
+								MessageBox.Show("连接失败，" + nickNameOrErrorMessage, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						}
+					}));
+				});
+			}
+            catch (Exception ex)
+            {
+
+            }
 		}
 
 		private void btnDeconnect_Click(object sender, EventArgs e)
