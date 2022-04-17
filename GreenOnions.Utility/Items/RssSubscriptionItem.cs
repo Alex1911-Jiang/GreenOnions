@@ -11,5 +11,6 @@
         public string TranslateFrom { get; set; }
         public string TranslateTo { get; set; }
         public bool SendByForward { get; set; }
+        public bool AtAll { get; set; }
     }
 }

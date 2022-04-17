@@ -90,7 +90,13 @@ namespace GreenOnions.BotManagerWindow
             get => chkRssSendByForward.Checked;
             set => chkRssSendByForward.Checked = value;
         }
-        
+
+        public bool RssAtAll
+        {
+            get => chkRssAtAll.Checked;
+            set => chkRssAtAll.Checked = value;
+        }
+
         private void btnRssRemoveItem_Click(object sender, EventArgs e) => RemoveClick?.Invoke(sender, e);
 
         private void checkNumber_KeyPress(object sender, KeyPressEventArgs e)

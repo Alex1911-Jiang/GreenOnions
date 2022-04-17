@@ -45,6 +45,7 @@
             this.cboTranslateTo = new System.Windows.Forms.ComboBox();
             this.cboTranslateFrom = new System.Windows.Forms.ComboBox();
             this.chkTranslateFromTo = new System.Windows.Forms.CheckBox();
+            this.chkRssAtAll = new System.Windows.Forms.CheckBox();
             this.pnlTranslateFromTo.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -143,11 +144,11 @@
             // chkRssSendByForward
             // 
             this.chkRssSendByForward.AutoSize = true;
-            this.chkRssSendByForward.Location = new System.Drawing.Point(515, 73);
+            this.chkRssSendByForward.Location = new System.Drawing.Point(515, 54);
             this.chkRssSendByForward.Name = "chkRssSendByForward";
-            this.chkRssSendByForward.Size = new System.Drawing.Size(51, 38);
+            this.chkRssSendByForward.Size = new System.Drawing.Size(55, 38);
             this.chkRssSendByForward.TabIndex = 8;
-            this.chkRssSendByForward.Text = "合并\r\n转发";
+            this.chkRssSendByForward.Text = " 合并\r\n 转发";
             this.chkRssSendByForward.UseVisualStyleBackColor = true;
             // 
             // pnlTranslateFromTo
@@ -212,11 +213,22 @@
             this.chkTranslateFromTo.UseVisualStyleBackColor = true;
             this.chkTranslateFromTo.CheckedChanged += new System.EventHandler(this.chkTranslateFromTo_CheckedChanged);
             // 
+            // chkRssAtAll
+            // 
+            this.chkRssAtAll.AutoSize = true;
+            this.chkRssAtAll.Location = new System.Drawing.Point(515, 98);
+            this.chkRssAtAll.Name = "chkRssAtAll";
+            this.chkRssAtAll.Size = new System.Drawing.Size(63, 21);
+            this.chkRssAtAll.TabIndex = 11;
+            this.chkRssAtAll.Text = "@全员";
+            this.chkRssAtAll.UseVisualStyleBackColor = true;
+            // 
             // CtrlRssItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.chkRssAtAll);
             this.Controls.Add(this.chkTranslateFromTo);
             this.Controls.Add(this.pnlTranslateFromTo);
             this.Controls.Add(this.chkRssSendByForward);
@@ -258,5 +270,6 @@
         private System.Windows.Forms.ComboBox cboTranslateTo;
         private System.Windows.Forms.ComboBox cboTranslateFrom;
         private System.Windows.Forms.CheckBox chkTranslateFromTo;
+        private System.Windows.Forms.CheckBox chkRssAtAll;
     }
 }

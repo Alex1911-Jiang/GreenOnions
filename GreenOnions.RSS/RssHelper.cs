@@ -83,6 +83,13 @@ namespace GreenOnions.RSS
                                         if (item.ForwardGroups.Length > 0 )
                                         {
                                             List<IChatMessage> chatGroupMessages = new List<IChatMessage>();
+
+                                            if (item.AtAll)
+                                            {
+                                                chatGroupMessages.Add(new AtAllMessage());
+                                                chatGroupMessages.Add(new PlainMessage("\r\n"));
+                                            }
+
                                             chatGroupMessages.Add(titleMsg);
                                             if (translateMsg != null)
                                                 chatGroupMessages.Add(translateMsg);

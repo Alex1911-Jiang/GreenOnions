@@ -279,6 +279,7 @@ namespace GreenOnions.BotManagerWindow
                     ctrlRssItem.RssTranslateFrom = item.TranslateFrom;
                     ctrlRssItem.RssTranslateTo = item.TranslateTo;
                     ctrlRssItem.RssSendByForward = item.SendByForward;
+                    ctrlRssItem.RssAtAll = item.AtAll;
                     ctrlRssItem.RemoveClick += (_, _) => pnlRssSubscriptionList.Controls.Remove(ctrlRssItem);
                     pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
                 }
@@ -545,6 +546,7 @@ namespace GreenOnions.BotManagerWindow
                 TranslateFromTo = i.RssTranslateFromTo,
                 TranslateFrom = i.RssTranslateFrom,
                 TranslateTo = i.RssTranslateTo,
+                AtAll = i.RssAtAll,
                 SendByForward = i.RssSendByForward,
             });
             BotInfo.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
