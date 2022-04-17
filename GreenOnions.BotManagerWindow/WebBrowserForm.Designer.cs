@@ -31,8 +31,8 @@
             this.pnlBrowser = new System.Windows.Forms.Panel();
             this.pnlText = new System.Windows.Forms.Panel();
             this.txbMessage = new System.Windows.Forms.TextBox();
-            this.txbUrl = new System.Windows.Forms.TextBox();
             this.btnLoadUrl = new System.Windows.Forms.Button();
+            this.txbUrl = new System.Windows.Forms.TextBox();
             this.pnlBrowser.SuspendLayout();
             this.pnlText.SuspendLayout();
             this.SuspendLayout();
@@ -65,13 +65,6 @@
             this.txbMessage.Size = new System.Drawing.Size(800, 100);
             this.txbMessage.TabIndex = 0;
             // 
-            // txbUrl
-            // 
-            this.txbUrl.Location = new System.Drawing.Point(3, 321);
-            this.txbUrl.Name = "txbUrl";
-            this.txbUrl.Size = new System.Drawing.Size(713, 23);
-            this.txbUrl.TabIndex = 0;
-            // 
             // btnLoadUrl
             // 
             this.btnLoadUrl.Location = new System.Drawing.Point(722, 321);
@@ -80,7 +73,16 @@
             this.btnLoadUrl.TabIndex = 1;
             this.btnLoadUrl.Text = "转到";
             this.btnLoadUrl.UseVisualStyleBackColor = true;
+            this.btnLoadUrl.Visible = false;
             this.btnLoadUrl.Click += new System.EventHandler(this.btnLoadUrl_Click);
+            // 
+            // txbUrl
+            // 
+            this.txbUrl.Location = new System.Drawing.Point(3, 321);
+            this.txbUrl.Name = "txbUrl";
+            this.txbUrl.Size = new System.Drawing.Size(713, 23);
+            this.txbUrl.TabIndex = 0;
+            this.txbUrl.Visible = false;
             // 
             // WebBrowserForm
             // 

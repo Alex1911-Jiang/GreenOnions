@@ -38,7 +38,6 @@ namespace GreenOnions.BotManagerWindow
             _webBrowser = new ChromiumWebBrowser();
             _webBrowser.Dock = DockStyle.Fill;
             pnlBrowser.Controls.Add(_webBrowser);
-            _webBrowser.FrameLoadEnd += WebBrowser_FrameLoadEnd;
         }
 
         protected override void CreateHandle()
@@ -60,37 +59,43 @@ namespace GreenOnions.BotManagerWindow
             Hide();
         }
 
-        public (string Document, string JumpUrl) GetDocumentAsync(string url)
+        public (string Document, string JumpUrl) GetDocument(string url)
         {
-            return GetDocumentAsync(url, Encoding.UTF8);
+            return GetDocumentAsync(url, Encoding.UTF8).GetAwaiter().GetResult();
         }
 
-        public (string Document, string JumpUrl) GetDocumentAsync(string url, Encoding encode)
+        public async Task<(string Document, string JumpUrl)> GetDocumentAsync(string url, Encoding encode)
         {
             _encoding = encode;
             _jumpUrl = "";
             _document = "";
 
-            _webBrowser.Load(url);
+            LoadUrlAsyncResponse loading = await _webBrowser.LoadUrlAsync(url);
 
             int waitedTime = 0;
-            while (string.IsNullOrEmpty(_document) || string.IsNullOrEmpty(_jumpUrl))
+            while (_webBrowser.IsLoading && !loading.Success)
             {
                 Task.Delay(100).Wait();
                 waitedTime += 100;
+                if (IsHandleCreated)
+                    Invoke(new Action(() => txbMessage.AppendText($"网站未加载完, 等待1秒, Url={url}\r\n")));
                 if (waitedTime > waitTime)
+                {
+                    if (IsHandleCreated)
+                        Invoke(new Action(() => txbMessage.AppendText($"等待时间超过{waitTime}, 强制返回\r\n")));
                     break;
+                }
             }
-            return (_document, _jumpUrl);
-        }
 
-        private async void WebBrowser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
-        {
+            IFrame frame = _webBrowser.GetMainFrame();
+
             if (IsHandleCreated)
-                Invoke(new Action(() => txbMessage.AppendText($"Chrome浏览器网页加载完毕, Url={e.Url}\r\n")));
-            
-            _jumpUrl = e.Url;
-            _document = await e.Frame.GetSourceAsync();
+                Invoke(new Action(() => txbMessage.AppendText($"Chrome浏览器网页加载完毕, 跳转Url={frame.Url}\r\n")));
+
+            _jumpUrl = frame.Url;
+            _document = await frame.GetSourceAsync();
+
+            return (_document, _jumpUrl);
         }
 
         private void SaveCookie(WebBrowser browser)
@@ -167,7 +172,6 @@ namespace GreenOnions.BotManagerWindow
             ChromiumWebBrowser webBrowser = new ChromiumWebBrowser();
             webBrowser.Dock = DockStyle.Fill;
             pnlBrowser.Controls.Add(webBrowser);
-            webBrowser.FrameLoadEnd += WebBrowser_FrameLoadEnd;
             webBrowser.Load(txbUrl.Text);
         }
     }

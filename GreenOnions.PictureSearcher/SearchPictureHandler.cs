@@ -260,8 +260,15 @@ namespace GreenOnions.PictureSearcher
                         string resultXPath = "/html/body/div[@id='mainarea']/div[@id='middle']/div[@class='result']/table[@class='resulttable']/tbody/tr/td[@class='resulttablecontent']/div[@class='resultcontent']/div[@class='resultcontentcolumn']";
                         string resultSimilarity = "/html/body/div[@id='mainarea']/div[@id='middle']/div[@class='result']/table[@class='resulttable']/tbody/tr/td[@class='resulttablecontent']/div[@class='resultmatchinfo']/div[@class='resultsimilarityinfo']";
                         HtmlNode imgNode = docSauceNao.DocumentNode.SelectSingleNode(imgXPath);
-                        if (imgNode != null)
+
+                        if (imgNode == null)
                         {
+                            LogHelper.WriteInfoLog("SauceNao没有搜索到结果");
+                            File.WriteAllText("html.html", strSauceNaoResult);
+                        }
+                        else
+                        {
+                            LogHelper.WriteInfoLog("SauceNao存在结果");
                             string imgUrl = imgNode.Attributes["src"].Value.Replace("amp;", "");
                             string title = docSauceNao.DocumentNode.SelectSingleNode(titleXPath).InnerText;
                             float similarity = Convert.ToSingle(docSauceNao.DocumentNode.SelectSingleNode(resultSimilarity).InnerText.Replace("%", ""));
@@ -384,7 +391,7 @@ namespace GreenOnions.PictureSearcher
                         if (jResults == null)
                         {
                             LogHelper.WriteWarningLog($"SauceNao没有搜索到结果, 请求地址为：{SauceNaoUrl}");
-                            _ = SendMessage(new[] { new PlainMessage(BotInfo.SearchNoResultReply.Replace("<搜索类型>", "SauceNao")) }, true);
+                            _ = SendMessage(new[] { new PlainMessage(BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", "SauceNao"))) }, true);
                             return;
                         }
 
@@ -601,7 +608,7 @@ namespace GreenOnions.PictureSearcher
                 }
 
                 //没有结果
-                string strNoResult = BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("<搜索类型>", "SauceNao"));
+                string strNoResult = BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", "SauceNao"));
                 if (BotInfo.SearchEnabledASCII2D)
                 {
                     strNoResult += "\r\n自动使用ASCII2D搜索。";

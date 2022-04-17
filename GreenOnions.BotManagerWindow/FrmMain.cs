@@ -16,7 +16,7 @@ namespace GreenOnions.BotManagerWindow
 			InitializeComponent();
 
             webBrowserForm = new WebBrowserForm();
-            EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocumentAsync;
+            EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocument;
 
 			#region -- 读取配置 --
 			try
