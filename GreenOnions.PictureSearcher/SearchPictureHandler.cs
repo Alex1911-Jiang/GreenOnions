@@ -391,7 +391,7 @@ namespace GreenOnions.PictureSearcher
                         if (jResults == null)
                         {
                             LogHelper.WriteWarningLog($"SauceNao没有搜索到结果, 请求地址为：{SauceNaoUrl}");
-                            _ = SendMessage(new[] { new PlainMessage(BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", "SauceNao"))) }, true);
+                            _ = SendMessage(new[] { new PlainMessage(BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", "SauceNao"))) }, false);
                             return;
                         }
 
@@ -614,7 +614,7 @@ namespace GreenOnions.PictureSearcher
                     strNoResult += "\r\n自动使用ASCII2D搜索。";
                     _ = SearchAscii2D();
                 }
-                _ = SendMessage(new[] { new PlainMessage(strNoResult) }, true);
+                _ = SendMessage(new[] { new PlainMessage(strNoResult) }, false);
 
                 async void SendOriginImage(string url, string pixivID, int p)
                 {
@@ -708,7 +708,11 @@ namespace GreenOnions.PictureSearcher
                         HtmlNode nodeColorMember = nodeColorItemBox.SelectSingleNode(pathColorMemberA) ?? nodeColorItemBox.SelectSingleNode(pathColorMemberSmall);
                         StringBuilder stringBuilderColor = new StringBuilder();
 
-                        if (nodeColorUrl != null)
+                        if (nodeColorUrl == null)
+                        {
+                            _ = SendMessage(new[] { new PlainMessage(BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", "Ascii2D颜色"))) }, false);
+                        }
+                        else
                         {
                             LogHelper.WriteInfoLog($"成功解析颜色搜索响应文");
                             stringBuilderColor.AppendLine("ASCII2D 颜色搜索");
@@ -800,7 +804,12 @@ namespace GreenOnions.PictureSearcher
                         HtmlNode nodeBovwImage = nodeBovwItemBox.SelectSingleNode(pathBovwImage);
                         HtmlNode nodeBovwUrl = nodeBovwItemBox.SelectSingleNode(pathBovwUrlA) ?? nodeBovwItemBox.SelectSingleNode(pathBovwUrlSmall);
                         HtmlNode nodeBovwMember = nodeBovwItemBox.SelectSingleNode(pathBovwMemberA) ?? nodeBovwItemBox.SelectSingleNode(pathBovwMemberSmall);
-                        if (nodeBovwUrl != null)
+
+                        if (nodeBovwUrl == null)
+                        {
+                            _ = SendMessage(new[] { new PlainMessage(BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", "Ascii2D特征"))) }, false);
+                        }
+                        else
                         {
                             LogHelper.WriteInfoLog($"成功解析颜色搜索响应文");
                             StringBuilder stringBuilderBovw = new StringBuilder();
