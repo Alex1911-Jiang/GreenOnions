@@ -423,7 +423,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornEnabled));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
+                return false;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornEnabled), value.ToString());
         }
@@ -472,6 +472,20 @@ namespace GreenOnions.Utility
                 return true;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(ASCII2DRequestByWebBrowser), value.ToString());
+        }
+
+        /// <summary>
+        /// 在Windows系统下时SauceNao优先以浏览器进行请求(腾讯云轻量403问题)
+        /// </summary>
+        public static bool SauceNaoRequestByWebBrowser
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNaoRequestByWebBrowser));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNaoRequestByWebBrowser), value.ToString());
         }
 
         /// <summary>

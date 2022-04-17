@@ -1,17 +1,15 @@
-﻿using CefSharp.WinForms;
+﻿using CefSharp;
+using CefSharp.WinForms;
 using GreenOnions.Utility;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
-using System.Linq;
-using CefSharp;
-using CefSharp.Handler;
-using System.Security.Cryptography.X509Certificates;
 
 namespace GreenOnions.BotManagerWindow
 {
@@ -30,6 +28,12 @@ namespace GreenOnions.BotManagerWindow
         public WebBrowserForm()
         {
             InitializeComponent();
+
+            CefSettings settings = new CefSettings();
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            settings.RemoteDebuggingPort = 8080;
+            settings.CachePath = path;
+            Cef.Initialize(settings);
 
             _webBrowser = new ChromiumWebBrowser();
             _webBrowser.Dock = DockStyle.Fill;

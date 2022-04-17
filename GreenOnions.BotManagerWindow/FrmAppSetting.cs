@@ -114,6 +114,7 @@ namespace GreenOnions.BotManagerWindow
             txbOriginPictureCheckPornIllegalReply.Text = BotInfo.OriginPictureCheckPornIllegalReply;
             txbOriginPictureCheckPornErrorReply.Text = BotInfo.OriginPictureCheckPornErrorReply;
             chkASCII2DRequestByWebBrowser.Checked = BotInfo.ASCII2DRequestByWebBrowser;
+            chkSauceNaoRequestByWebBrowser.Checked = BotInfo.SauceNaoRequestByWebBrowser;
 
             #region -- 腾讯云相关设置 --
             txbTencentCloudAPPID.Text = BotInfo.TencentCloudAPPID;
@@ -377,6 +378,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.SearchCheckPornIllegalReply = txbSearchCheckPornIllegalReply.Text;
             BotInfo.SearchCheckPornErrorReply = txbSearchCheckPornErrorReply.Text;
             BotInfo.ASCII2DRequestByWebBrowser = chkASCII2DRequestByWebBrowser.Checked;
+            BotInfo.SauceNaoRequestByWebBrowser = chkSauceNaoRequestByWebBrowser.Checked;
 
             int iCheckPornLimitCount;
             if (!int.TryParse(txbCheckPornLimitCount.Text, out iCheckPornLimitCount))
