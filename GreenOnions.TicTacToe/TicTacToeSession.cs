@@ -174,7 +174,7 @@ namespace GreenOnions.TicTacToe
                     return DrawWinBitimap(playerWinX, playerWinY);  //玩家已获胜
                 }
 
-                var computerStep = ComputerMove();
+                var computerStep = ComputerMove(x,y);
                 data[computerStep.X, computerStep.Y] = -1;
 
                 (int? computerWinX, int? computerWinY) = CheckWin();
@@ -241,7 +241,7 @@ namespace GreenOnions.TicTacToe
             return default;
         }
 
-        private (int X, int Y) ComputerMove()
+        private (int X, int Y) ComputerMove(int playerMoveX, int playerMoveY)
         {
             var computerChance = FindChance(true);
             if (computerChance != null)
@@ -251,22 +251,33 @@ namespace GreenOnions.TicTacToe
             if (playerChance != null)
                 return (playerChance.Value.X, playerChance.Value.Y);  //随后查找阻止玩家获胜的机会
 
-            if (data[1,1] == 0)  //优先抢中间
-                return (1, 1);
-            if (data[0, 0] == 0 && data[0, 2] == 0 && data[2, 0] == 0 && data[2, 2] == 0)  //玩家抢了中间, 优先抢四角
+            if (data[0, 0] == 0 && data[0, 2] == 0 && data[2, 0] == 0 && data[2, 2] == 0)  //优先抢四角
             {
-                int random = new Random(Guid.NewGuid().GetHashCode()).Next(0, 4);
-                switch (random)
+                return new Random(Guid.NewGuid().GetHashCode()).Next(0, 4) switch
                 {
-                    case 0:
-                        return (0, 0);
-                    case 1:
-                        return (0, 2);
-                    case 2:
-                        return (2, 0);
-                    case 3:
-                        return (2, 2);
-                }
+                    0 => (0, 0),
+                    1 => (0, 2),
+                    2 => (2, 0),
+                    _ => (2, 2),
+                };
+            }
+            if (data[1, 1] == 0)  //抢中间
+                return (1, 1);
+            var diagonal = (playerMoveX, playerMoveY) switch  //玩家抢了中间并且占据了一个角落, 优先抢对角反制位
+            {
+                (0, 0) => ((0, 2), (2, 0)),
+                (0, 2) => ((0, 0), (2, 2)),
+                (2, 0) => ((0, 0), (2, 2)),
+                (2, 2) => ((0, 2), (2, 0)),
+                _ => default,
+            };
+            if (diagonal != default && data[diagonal.Item1.Item1, diagonal.Item1.Item2] == 0 && data[diagonal.Item2.Item1, diagonal.Item2.Item2] == 0)
+            {
+                return new Random(Guid.NewGuid().GetHashCode()).Next(0, 2) switch
+                {
+                    0 => diagonal.Item1,
+                    _ => diagonal.Item2,
+                };
             }
 
             while (true)  //都不符合条件的时候随机下子
