@@ -134,8 +134,8 @@
 3.E-Hentai关键词色图<br>
 4.部分功能使用代理(而不需要全局代理?)<br>
 5.通过消息配置属性<br>
-6.为Console端添加命令配置属性和属性中文注释
+6.为Console端添加命令配置属性和属性中文注释<br>
 
 ### 长期计划(GUDO):
-1.把System.Drawing替换为其他更轻量的跨平台图形库, 取消Linux系统下对Mono的依赖
-2.适配Mirai-Go平台
+1.把System.Drawing替换为其他更轻量的跨平台图形库, 取消Linux系统下对Mono的依赖<br>
+2.适配Mirai-Go平台<br>
