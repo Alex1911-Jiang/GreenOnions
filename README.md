@@ -17,7 +17,7 @@
 - [x] 3. [trace.moe](https://trace.moe/) 搜番<br>
 - [x] 4. [lolicon](https://api.lolicon.app/#/setu) setu<br>
 - [x] 5. 群友 [Quan](https://github.com/Quan666) 的 [ELF图库](http://img.shab.fun:5000/) 美图<br>
-- [x] 6. [GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi) 翻译<br>
+- [x] 6. 有道网页翻译和[GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi) 翻译<br>
 - [x] 7. 随机复读, 连续复读, 镜像复读图片和倒带gif(可配置触发几率)<br>
 - [x] 8. 新人入群/退群/被踢提醒(支持定义)<br>
 - [x] 9. RSS订阅转发<br>
@@ -56,7 +56,7 @@
 
 #### 三、安装本项目
 
-1.到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的 win-x86x64-windows.zip 下<br>
+1.到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的 win-x86x64arm-windows.zip 下<br>
 2.解压到任意目录, 运行 GreenOnions.BotManagerWindow.exe<br>
 3.输入机器人QQ号和和 setting.yml 对应 的ip(host)、端口(port)和 VerifyKey, 点击连接到 mirai-api-http<br>
 
@@ -86,7 +86,7 @@
 4.4. 输入 sudo apt update<br>
 4.5. 输入 sudo apt install mono-complete<br>
 #其他Linux发行版详见: [Mono](https://www.mono-project.com/download/stable/#download-lin)<br>
-5. 安装libgdiplus图形增强库:
+5. 安装libgdiplus图形增强库:<br>
 5.1. 输入 sudo apt update<br>
 5.2. 输入 sudo apt install -y libgdiplus<br>
 5.3. 输入 cd /usr/lib<br>
@@ -120,7 +120,7 @@
 10.6. 输入QQ号<br>
 10.7. 输入IP: 127.0.0.1<br>
 10.8. 输入端口: 33111<br>
-10.9. 输入authKey: Alex1911<br>
+10.9. 输入verifyKey: Alex1911<br>
  
 #### 大功告成
  </details>
@@ -129,15 +129,13 @@
 
 ### 短期计划(TODO):
 
-1.添加一些日志方便跟踪问题<br>
-2.iqdb搜图<br>
-3.yande.re随机色图<br>
-4.E-Hentai关键词色图<br>
-6.尝试引入Chrome内核用于Http请求(腾讯云轻量被403的问题)<br>
-7.部分功能使用代理(而不需要全局代理?)<br>
-8.通过消息配置属性<br>
-9.为Console端添加命令配置属性和属性中文注释
+1.iqdb搜图<br>
+2.yande.re随机色图<br>
+3.E-Hentai关键词色图<br>
+4.部分功能使用代理(而不需要全局代理?)<br>
+5.通过消息配置属性<br>
+6.为Console端添加命令配置属性和属性中文注释
 
 ### 长期计划(GUDO):
-
-1.适配Mirai-Go平台
+1.把System.Drawing替换为其他更轻量的跨平台图形库, 取消Linux系统下对Mono的依赖
+2.适配Mirai-Go平台
