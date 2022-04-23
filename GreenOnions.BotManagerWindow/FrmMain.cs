@@ -46,9 +46,12 @@ namespace GreenOnions.BotManagerWindow
             base.OnSizeChanged(e);
 			if (WindowState == FormWindowState.Minimized)
 			{
-				Hide();
-				ShowInTaskbar = false;
-				notifyIcon.Visible = true;
+				if (chkMinimizeToTray.Checked)
+				{
+					Hide();
+					ShowInTaskbar = false;
+					notifyIcon.Visible = true;
+				}
 			}
 		}
 

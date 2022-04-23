@@ -212,7 +212,7 @@ namespace GreenOnions.Utility.Helper
                     }
                 }
 
-                for (int i = back.Length - 1; i > 0; i--)
+                for (int i = back.Length - 1; i >= 0; i--)
                 {
                     Regex rxBack = new Regex(back[i]);
                     foreach (Match matchBack in rxBack.Matches(result))

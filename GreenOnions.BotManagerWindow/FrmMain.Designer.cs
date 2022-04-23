@@ -43,6 +43,7 @@ namespace GreenOnions.BotManagerWindow
             this.btnBotSettings = new System.Windows.Forms.Button();
             this.lblState = new System.Windows.Forms.Label();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.chkMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblQQ
@@ -147,11 +148,24 @@ namespace GreenOnions.BotManagerWindow
             this.notifyIcon.Text = "葱葱机器人";
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
+            // chkMinimizeToTray
+            // 
+            this.chkMinimizeToTray.AutoSize = true;
+            this.chkMinimizeToTray.Checked = true;
+            this.chkMinimizeToTray.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkMinimizeToTray.Location = new System.Drawing.Point(334, 0);
+            this.chkMinimizeToTray.Name = "chkMinimizeToTray";
+            this.chkMinimizeToTray.Size = new System.Drawing.Size(99, 21);
+            this.chkMinimizeToTray.TabIndex = 4;
+            this.chkMinimizeToTray.Text = "最小化到托盘";
+            this.chkMinimizeToTray.UseVisualStyleBackColor = true;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(435, 212);
+            this.Controls.Add(this.chkMinimizeToTray);
             this.Controls.Add(this.lblState);
             this.Controls.Add(this.btnBotSettings);
             this.Controls.Add(this.btnConnect);
@@ -186,5 +200,6 @@ namespace GreenOnions.BotManagerWindow
         private System.Windows.Forms.Button btnBotSettings;
         private System.Windows.Forms.Label lblState;
         private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.CheckBox chkMinimizeToTray;
     }
 }

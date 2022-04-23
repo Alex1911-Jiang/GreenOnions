@@ -75,15 +75,11 @@ namespace GreenOnions.HPicture
                     #endregion -- R18 --
 
                     #region -- 色图数量 -- 
-                    string strCount = StringHelper.GetRegex(message, new[] 
-                    {
-                        BotInfo.HPictureBeginCmd.ReplaceGreenOnionsTags()
-                    }, 
+                    string strCount = StringHelper.GetRegex(message, new[]{ BotInfo.HPictureBeginCmd.ReplaceGreenOnionsTags() }, 
                     BotInfo.HPictureCountCmd.ReplaceGreenOnionsTags(), new[] 
                     { 
                         BotInfo.HPictureUnitCmd.ReplaceGreenOnionsTags(),
                         BotInfo.HPictureR18Cmd.ReplaceGreenOnionsTags(),
-                        BotInfo.HPictureKeywordCmd.ReplaceGreenOnionsTags(),
                         pictureSource == PictureSource.Lolicon ? BotInfo.HPictureEndCmd.ReplaceGreenOnionsTags() : BotInfo.BeautyPictureEndCmd.ReplaceGreenOnionsTags(),
                     });
 

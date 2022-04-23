@@ -155,7 +155,7 @@ namespace GreenOnions.BotManagerWindow
                     chkEnabledGreenOnionsBeautyPicture.Checked = true;
             }
             txbHPictureOnceMessageMaxImageCount.Text = BotInfo.HPictureOnceMessageMaxImageCount.ToString();
-            chkEnabledHPicture.Checked = BotInfo.HPictureEnabled;
+            chkHPictureEnabled.Checked = BotInfo.HPictureEnabled;
             txbHPictureApiKey.Text = BotInfo.HPictureApiKey;
             txbHPictureCmd.Text = BotInfo.HPictureCmd;
             txbHPictureBegin.Text = BotInfo.HPictureBeginCmd;
@@ -439,7 +439,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.EnabledHPictureSource = EnabledHPictureSource;
             BotInfo.EnabledBeautyPictureSource = EnabledBeautyPictureSource;
             BotInfo.HPictureOnceMessageMaxImageCount = string.IsNullOrEmpty(txbHPictureOnceMessageMaxImageCount.Text) ? 10 : Convert.ToInt32(txbHPictureOnceMessageMaxImageCount.Text);
-            BotInfo.HPictureEnabled = chkEnabledHPicture.Checked;
+            BotInfo.HPictureEnabled = chkHPictureEnabled.Checked;
             BotInfo.HPictureApiKey = txbHPictureApiKey.Text;
             BotInfo.HPictureBeginCmd = txbHPictureBegin.Text;
             BotInfo.HPictureCountCmd = txbHPictureCount.Text;
@@ -675,7 +675,7 @@ namespace GreenOnions.BotManagerWindow
             }
         }
 
-        private void chkEnableHPicture_CheckedChanged(object sender, EventArgs e) => pnlEnabelHPicture.Enabled = chkEnabledHPicture.Checked;
+        private void chkEnableHPicture_CheckedChanged(object sender, EventArgs e) => pnlHPictureEnabeled.Enabled = chkHPictureEnabled.Checked;
 
         private void checkNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
