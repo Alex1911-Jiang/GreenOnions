@@ -196,7 +196,24 @@ namespace GreenOnions.Utility.Helper
         }
         #endregion -- 中文数字转换 --
 
-        public static string GetRegex(string command, string[] font, string main, string[] back)
+        public static string GetRegex(string command, string font, string main, string back)
+        {
+            string result = command;
+            Regex All = new Regex(string.Join("", font) + main + string.Join("", back));
+            if (All.IsMatch(command))
+            {
+                Regex rxMain = new Regex(main);
+                if (rxMain.IsMatch(result))
+                {
+                    var match = rxMain.Matches(result).Where(m => m.Value.Length > 0).FirstOrDefault();
+                    if (match != null)
+                        return match.Value;
+                }
+            }
+            return result;
+        }
+
+        public static string GetRegexBySub(string command, string[] font, string main, string[] back)
         {
             string result = command;
             Regex All = new Regex(string.Join("", font) + main + string.Join("", back));
@@ -224,6 +241,7 @@ namespace GreenOnions.Utility.Helper
             }
             return result;
         }
+
 
         public static string ReplaceGreenOnionsTags(this string OriginString, params KeyValuePair<string, string>[] CustomTags)
         {

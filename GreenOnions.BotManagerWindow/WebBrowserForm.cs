@@ -29,11 +29,13 @@ namespace GreenOnions.BotManagerWindow
         {
             InitializeComponent();
 
-            CefSettings settings = new CefSettings();
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            CefSettings settings = new CefSettings{CefCommandLineArgs = { ["disable-gpu-shader-disk-cache"] = "1" }};
             settings.RemoteDebuggingPort = 8080;
-            settings.CachePath = path;
-            Cef.Initialize(settings);
+            string cefCachePath = Path.Combine(Application.StartupPath, "Cef");
+            if (!Directory.Exists(cefCachePath))
+                Directory.CreateDirectory(cefCachePath);
+            settings.CachePath = cefCachePath;
+            Cef.Initialize(settings, false, browserProcessHandler: null);
 
             _webBrowser = new ChromiumWebBrowser();
             _webBrowser.Dock = DockStyle.Fill;

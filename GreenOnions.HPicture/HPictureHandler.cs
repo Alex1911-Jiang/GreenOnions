@@ -75,13 +75,11 @@ namespace GreenOnions.HPicture
                     #endregion -- R18 --
 
                     #region -- 色图数量 -- 
-                    string strCount = StringHelper.GetRegex(message, new[]{ BotInfo.HPictureBeginCmd.ReplaceGreenOnionsTags() }, 
-                    BotInfo.HPictureCountCmd.ReplaceGreenOnionsTags(), new[] 
-                    { 
-                        BotInfo.HPictureUnitCmd.ReplaceGreenOnionsTags(),
-                        BotInfo.HPictureR18Cmd.ReplaceGreenOnionsTags(),
-                        pictureSource == PictureSource.Lolicon ? BotInfo.HPictureEndCmd.ReplaceGreenOnionsTags() : BotInfo.BeautyPictureEndCmd.ReplaceGreenOnionsTags(),
-                    });
+                    string strCount = StringHelper.GetRegex(message, 
+                        BotInfo.HPictureBeginCmd.ReplaceGreenOnionsTags(), 
+                        BotInfo.HPictureCountCmd.ReplaceGreenOnionsTags(),
+                        BotInfo.HPictureUnitCmd.ReplaceGreenOnionsTags()
+                    );
 
                     if (!long.TryParse(strCount, out lImgCount) && !string.IsNullOrEmpty(strCount)) 
                         lImgCount = StringHelper.Chinese2Num(strCount);
@@ -98,7 +96,7 @@ namespace GreenOnions.HPicture
                     #endregion -- 色图数量 -- 
 
                     #region -- 关键词 --
-                    string strKeyword = StringHelper.GetRegex(message, new[] 
+                    string strKeyword = StringHelper.GetRegexBySub(message, new[] 
                     { 
                         BotInfo.HPictureBeginCmd.ReplaceGreenOnionsTags(),
                         BotInfo.HPictureCountCmd.ReplaceGreenOnionsTags(),

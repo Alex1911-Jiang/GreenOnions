@@ -487,6 +487,20 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNaoRequestByWebBrowser), value.ToString());
         }
+        
+        /// <summary>
+        /// 以合并转发的方式发送
+        /// </summary>
+        public static bool SearchSendByForward
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSendByForward));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSendByForward), value.ToString());
+        }
 
         /// <summary>
         /// 超过鉴黄次数的行为 0:既发送地址也发图 1:只发送地址不发图 2:发送地址且追加回复

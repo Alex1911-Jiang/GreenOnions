@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Web;
 using PlainMessage = Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage;
 
+
 namespace GreenOnions.PictureSearcher
 {
     public static class SearchPictureHandler
@@ -77,6 +78,26 @@ namespace GreenOnions.PictureSearcher
             else
             {
                 SendMessage?.Invoke(new[] { new PlainMessage(BotInfo.SearchModeAlreadyOffReply.ReplaceGreenOnionsTags()) }, true);
+            }
+        }
+
+        private static Task<int> SendMessageIfNeedForward(Func<IChatMessage[], bool, Task<int>> SendMessage, IChatMessage[] messages)
+        {
+            if (BotInfo.SearchSendByForward)
+            {
+                Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage forwardMessage = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
+                {
+                    Id = 0,
+                    Name = BotInfo.BotName,
+                    QQNumber = BotInfo.QQId,
+                    Time = DateTime.Now,
+                    Chain =messages.Select(msg => msg as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage ).ToArray() ,
+                }});
+                return SendMessage(new[] { forwardMessage }, false);
+            }
+            else
+            {
+                return SendMessage(messages, true);
             }
         }
 
@@ -157,25 +178,25 @@ namespace GreenOnions.PictureSearcher
                                             if (File.Exists(notHealth))  //曾经鉴黄不通过的
                                                 _ = SendMessage(new[] { new PlainMessage(BotInfo.SearchCheckPornIllegalReply) }, true); //直接返回鉴黄不通过
                                             else if (File.Exists(isHealth))  //曾经鉴黄通过的
-                                                _ = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }, false));
+                                                _ = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessageIfNeedForward(SendMessage, new[] { await uploaded }));
                                             else  //曾经没参与鉴黄的
                                             {
                                                 IChatMessage chatMessage = CheckPornSearch(imgName, File.ReadAllBytes(imgName));
                                                 if (chatMessage == null)
-                                                    _ = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }, false));
+                                                    _ = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessageIfNeedForward(SendMessage, new[] { await uploaded }));
                                                 else
                                                     _ = SendMessage(new[] { chatMessage }, true);
                                             }
                                         }
                                         else if (BotInfo.SearchNoCheckPorn == 0)  //不鉴黄也发图, 直接读取本地图片
-                                            _ = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }, false));
+                                            _ = UploadPicture(new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read)).ContinueWith(async uploaded => SendMessageIfNeedForward(SendMessage, new[] { await uploaded }));
 
                                     }
                                     else  //没有本地缓存
                                     {
                                         LogHelper.WriteInfoLog($"不存在TraceMoe缩略图本地缓存");
                                         //鉴黄通过或不鉴黄也发图
-                                        if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                        if ((BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)|| BotInfo.SearchNoCheckPorn == 0)
                                         {
                                             LogHelper.WriteInfoLog($"下载TraceMoe缩略图");
                                             MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStream(previewURL);
@@ -183,7 +204,7 @@ namespace GreenOnions.PictureSearcher
                                             {
                                                 IChatMessage moeCheckPorn = CheckPornSearch(imgName, stream.ToArray());
                                                 if (moeCheckPorn == null)  //只有鉴黄通过才发图
-                                                    await UploadPicture(stream).ContinueWith(async uploaded => SendMessage(new[] { await uploaded }, false));
+                                                    await UploadPicture(stream).ContinueWith(async uploaded => SendMessageIfNeedForward(SendMessage, new[] { await uploaded }));
                                                 stream.Dispose();
                                             }
                                         }
@@ -362,7 +383,7 @@ namespace GreenOnions.PictureSearcher
                             #endregion -- 相似度过滤和鉴黄 --
 
                             LogHelper.WriteInfoLog($"发送SauceNao搜图结果");
-                            await SendMessage(new[] { sauceNaoMsg, imageMessage }, false);
+                            await SendMessageIfNeedForward(SendMessage, new[] { sauceNaoMsg, imageMessage });
                             LogHelper.WriteInfoLog($"SauceNao搜图完成");
                             return;
                         }
@@ -581,7 +602,7 @@ namespace GreenOnions.PictureSearcher
                             #endregion -- 相似度过滤和鉴黄 --
 
                             LogHelper.WriteInfoLog($"发送SauceNao搜图结果");
-                            await SendMessage(new[] { sauceNaoMsg, imageMessage }, false);
+                            await SendMessageIfNeedForward(SendMessage, new[] { sauceNaoMsg, imageMessage });
                             LogHelper.WriteInfoLog($"SauceNao搜图完成");
                             return;
                         }
@@ -770,9 +791,12 @@ namespace GreenOnions.PictureSearcher
                             }
                             LogHelper.WriteInfoLog($"发送Ascii2D颜色搜索结果");
                             if (imageColorMessage != null)
-                                await SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage }, true);
+                            {
+                                var msg = new[] { new PlainMessage(stringBuilderColor.ToString()), imageColorMessage };
+                                _ = SendMessageIfNeedForward(SendMessage, msg);
+                            }
                             else
-                                await SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()) }, true);
+                                _ = SendMessage(new[] { new PlainMessage(stringBuilderColor.ToString()) }, true);
                             LogHelper.WriteInfoLog($"Ascii2d颜色搜索完成");
                         }
                     }
@@ -868,9 +892,12 @@ namespace GreenOnions.PictureSearcher
                             }
                             LogHelper.WriteInfoLog($"发送Ascii2D特征搜索结果");
                             if (imageBovwMessage != null)
-                                await SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()), imageBovwMessage }, true);
+                            {
+                                var msg = new[] { new PlainMessage(stringBuilderBovw.ToString()), imageBovwMessage };
+                                _ = SendMessageIfNeedForward(SendMessage, msg);
+                            }
                             else
-                                await SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()) }, true);
+                                _ = SendMessage(new[] { new PlainMessage(stringBuilderBovw.ToString()) }, true);
                             LogHelper.WriteInfoLog($"Ascii2d特征搜索完成");
                         }
                     }
