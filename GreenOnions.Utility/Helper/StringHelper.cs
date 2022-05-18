@@ -210,7 +210,7 @@ namespace GreenOnions.Utility.Helper
                         return match.Value;
                 }
             }
-            return result;
+            return "";
         }
 
         public static string GetRegexBySub(string command, string[] font, string main, string[] back)
