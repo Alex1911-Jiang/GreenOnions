@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>GreenOnions.BotManagerWindow</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>GreenOnions.BotManagerWindow</AssemblyName>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CefSharp.WinForms.NETCore" Version="100.0.140" />
+    <PackageReference Include="CefSharp.WinForms.NETCore" Version="101.0.180" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>GreenOnions.BotMain</RootNamespace>
     <AssemblyName>GreenOnions.BotMain</AssemblyName>
     <DebugType>portable</DebugType>
@@ -18,8 +18,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x86' or '$(RuntimeIdentifier)' == 'win-x64'">
