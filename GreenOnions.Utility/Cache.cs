@@ -83,6 +83,14 @@ namespace GreenOnions.Utility
             });
         }
 
+        public static void SetSauceNaoKey(string key)
+        {
+            if (!SauceNaoKeysAndLongRemaining.ContainsKey(key))
+                SauceNaoKeysAndLongRemaining.TryAdd(key, 200);
+            if (!SauceNaoKeysAndShortRemaining.ContainsKey(key))
+                SauceNaoKeysAndShortRemaining.TryAdd(key, 6);
+        }
+
         private static void CheckWorkingTimeout(IDictionary<long, DateTime> source)
         {
             List<long> removeQQ = new List<long>();

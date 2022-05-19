@@ -585,6 +585,9 @@ namespace GreenOnions.BotManagerWindow
 
             JsonHelper.SaveConfigFile();
 
+            foreach (string sauceNaoKey in txbSauceNAOApiKey.Text.Split("\r\n"))
+                Cache.SetSauceNaoKey(sauceNaoKey);
+
             PlainMessageHandler.UpdateRegexs();
 
             Close();
