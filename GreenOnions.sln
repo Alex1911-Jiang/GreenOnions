@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotMain", "GreenOnions.BotMain\GreenOnions.BotMain.csproj", "{2D7B2824-CF77-474F-B46A-955FEB3A0F7A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotManagerWindow", "GreenOnions.BotManagerWindow\GreenOnions.BotManagerWindow.csproj", "{E0052559-EDA4-45F3-BE28-FC4D84889B44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.HPicture", "GreenOnions.HPicture\GreenOnions.HPicture.csproj", "{382A8DF6-645A-409C-9EDE-2350E164ACAC}"
@@ -27,16 +25,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Help", "GreenOn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.TicTacToe", "GreenOnions.TicTacToe\GreenOnions.TicTacToe.csproj", "{77A346C6-91C9-4F3C-964C-BAD196A7959D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotMain.CqHttp", "GreenOnions.BotMain.CqHttp\GreenOnions.BotMain.CqHttp.csproj", "{B17A99DF-D4B4-4599-9839-3FFB597A9ECB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotMain.MiraiApiHttp", "GreenOnions.BotMain.MiraiApiHttp\GreenOnions.BotMain.MiraiApiHttp.csproj", "{E1900A9D-9D2D-4429-8D07-73A328D1595B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Model", "GreenOnions.Model\GreenOnions.Model.csproj", "{54584F63-25C8-401E-A2AD-EE1A86707380}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2D7B2824-CF77-474F-B46A-955FEB3A0F7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D7B2824-CF77-474F-B46A-955FEB3A0F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D7B2824-CF77-474F-B46A-955FEB3A0F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D7B2824-CF77-474F-B46A-955FEB3A0F7A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E0052559-EDA4-45F3-BE28-FC4D84889B44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E0052559-EDA4-45F3-BE28-FC4D84889B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0052559-EDA4-45F3-BE28-FC4D84889B44}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +81,18 @@ Global
 		{77A346C6-91C9-4F3C-964C-BAD196A7959D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77A346C6-91C9-4F3C-964C-BAD196A7959D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77A346C6-91C9-4F3C-964C-BAD196A7959D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B17A99DF-D4B4-4599-9839-3FFB597A9ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B17A99DF-D4B4-4599-9839-3FFB597A9ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B17A99DF-D4B4-4599-9839-3FFB597A9ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B17A99DF-D4B4-4599-9839-3FFB597A9ECB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1900A9D-9D2D-4429-8D07-73A328D1595B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1900A9D-9D2D-4429-8D07-73A328D1595B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1900A9D-9D2D-4429-8D07-73A328D1595B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1900A9D-9D2D-4429-8D07-73A328D1595B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54584F63-25C8-401E-A2AD-EE1A86707380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54584F63-25C8-401E-A2AD-EE1A86707380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54584F63-25C8-401E-A2AD-EE1A86707380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54584F63-25C8-401E-A2AD-EE1A86707380}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

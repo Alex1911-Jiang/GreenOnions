@@ -1,0 +1,11 @@
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net6.0\GreenOnions.BotMain.csproj.AssemblyReference.cache
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net6.0\GreenOnions.BotMain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net6.0\GreenOnions.BotMain.AssemblyInfoInputs.cache
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net6.0\GreenOnions.BotMain.AssemblyInfo.cs
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net6.0\GreenOnions.BotMain.csproj.CoreCompileInputs.cache
+D:\Project\Github\GreenOnions\bin\release\net6.0\GreenOnions.BotMain.deps.json
+D:\Project\Github\GreenOnions\bin\release\net6.0\GreenOnions.BotMain.dll
+D:\Project\Github\GreenOnions\bin\release\net6.0\ref\GreenOnions.BotMain.dll
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net6.0\GreenOnions.BotMain.csproj.CopyComplete
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net6.0\GreenOnions.BotMain.dll
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net6.0\ref\GreenOnions.BotMain.dll

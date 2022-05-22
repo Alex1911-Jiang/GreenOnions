@@ -1,0 +1,15 @@
+D:\Project\Github\GreenOnions\bin\release\net5.0\GreenOnions.BotMain.deps.json
+D:\Project\Github\GreenOnions\bin\release\net5.0\GreenOnions.BotMain.dll
+D:\Project\Github\GreenOnions\bin\release\net5.0\ref\GreenOnions.BotMain.dll
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net5.0\GreenOnions.BotMain.csproj.AssemblyReference.cache
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net5.0\GreenOnions.BotMain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net5.0\GreenOnions.BotMain.AssemblyInfoInputs.cache
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net5.0\GreenOnions.BotMain.AssemblyInfo.cs
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net5.0\GreenOnions.BotMain.csproj.CoreCompileInputs.cache
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net5.0\GreenOnions.BotMain.csproj.CopyComplete
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net5.0\GreenOnions.BotMain.dll
+D:\Project\Github\GreenOnions\GreenOnions.BotMain\obj\Release\net5.0\ref\GreenOnions.BotMain.dll
+D:\Project\Github\GreenOnions\bin\release\net5.0\dll\x86\OpenCvSharpExtern.dll
+D:\Project\Github\GreenOnions\bin\release\net5.0\dll\x86\opencv_ffmpeg400.dll
+D:\Project\Github\GreenOnions\bin\release\net5.0\dll\x64\OpenCvSharpExtern.dll
+D:\Project\Github\GreenOnions\bin\release\net5.0\dll\x64\opencv_ffmpeg400_64.dll

@@ -1,0 +1,441 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Project\\Github\\GreenOnions\\GreenOnions.BotMain.CqHttp\\GreenOnions.BotMain.CqHttp.csproj": {}
+  },
+  "projects": {
+    "D:\\Project\\Github\\GreenOnions\\GreenOnions.BotMain.CqHttp\\GreenOnions.BotMain.CqHttp.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Project\\Github\\GreenOnions\\GreenOnions.BotMain.CqHttp\\GreenOnions.BotMain.CqHttp.csproj",
+        "projectName": "GreenOnions.BotMain.CqHttp",
+        "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.BotMain.CqHttp\\GreenOnions.BotMain.CqHttp.csproj",
+        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.BotMain.CqHttp\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Soft\\Visual Studio\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.ForgeMessage\\GreenOnions.ForgeMessage.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.ForgeMessage\\GreenOnions.ForgeMessage.csproj"
+              },
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Help\\GreenOnions.Help.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Help\\GreenOnions.Help.csproj"
+              },
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Sora": {
+              "target": "Package",
+              "version": "[1.0.0-rc.51, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Project\\Github\\GreenOnions\\GreenOnions.ForgeMessage\\GreenOnions.ForgeMessage.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Project\\Github\\GreenOnions\\GreenOnions.ForgeMessage\\GreenOnions.ForgeMessage.csproj",
+        "projectName": "GreenOnions.ForgeMessage",
+        "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.ForgeMessage\\GreenOnions.ForgeMessage.csproj",
+        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.ForgeMessage\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Soft\\Visual Studio\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj"
+              },
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Project\\Github\\GreenOnions\\GreenOnions.Help\\GreenOnions.Help.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Help\\GreenOnions.Help.csproj",
+        "projectName": "GreenOnions.Help",
+        "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Help\\GreenOnions.Help.csproj",
+        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Help\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Soft\\Visual Studio\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj"
+              },
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Translate\\GreenOnions.Translate.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Translate\\GreenOnions.Translate.csproj"
+              },
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "System.Resources.Extensions": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj",
+        "projectName": "GreenOnions.Model",
+        "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj",
+        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Soft\\Visual Studio\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Mirai-CSharp.HttpApi": {
+              "target": "Package",
+              "version": "[2.1.6, )"
+            },
+            "Sora": {
+              "target": "Package",
+              "version": "[1.0.0-rc.51, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Project\\Github\\GreenOnions\\GreenOnions.Translate\\GreenOnions.Translate.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Translate\\GreenOnions.Translate.csproj",
+        "projectName": "GreenOnions.Translate",
+        "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Translate\\GreenOnions.Translate.csproj",
+        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Translate\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Soft\\Visual Studio\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Mirai-CSharp.HttpApi": {
+              "target": "Package",
+              "version": "[2.1.6, )"
+            },
+            "Wadereye.GoogleTranslateFreeApi": {
+              "target": "Package",
+              "version": "[1.3.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj",
+        "projectName": "GreenOnions.Utility",
+        "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj",
+        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Soft\\Visual Studio\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Tencent.QCloud.Cos.Sdk": {
+              "target": "Package",
+              "version": "[5.4.29, )"
+            },
+            "TencentCloudSDK": {
+              "target": "Package",
+              "version": "[3.0.518, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

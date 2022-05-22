@@ -1,0 +1,12 @@
+D:\Project\Github\GreenOnions\GreenOnions.Interface\bin\Debug\net6.0\GreenOnions.Interface.deps.json
+D:\Project\Github\GreenOnions\GreenOnions.Interface\bin\Debug\net6.0\GreenOnions.Interface.dll
+D:\Project\Github\GreenOnions\GreenOnions.Interface\bin\Debug\net6.0\ref\GreenOnions.Interface.dll
+D:\Project\Github\GreenOnions\GreenOnions.Interface\bin\Debug\net6.0\GreenOnions.Interface.pdb
+D:\Project\Github\GreenOnions\GreenOnions.Interface\obj\Debug\net6.0\GreenOnions.Interface.csproj.AssemblyReference.cache
+D:\Project\Github\GreenOnions\GreenOnions.Interface\obj\Debug\net6.0\GreenOnions.Interface.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\Github\GreenOnions\GreenOnions.Interface\obj\Debug\net6.0\GreenOnions.Interface.AssemblyInfoInputs.cache
+D:\Project\Github\GreenOnions\GreenOnions.Interface\obj\Debug\net6.0\GreenOnions.Interface.AssemblyInfo.cs
+D:\Project\Github\GreenOnions\GreenOnions.Interface\obj\Debug\net6.0\GreenOnions.Interface.csproj.CoreCompileInputs.cache
+D:\Project\Github\GreenOnions\GreenOnions.Interface\obj\Debug\net6.0\GreenOnions.Interface.dll
+D:\Project\Github\GreenOnions\GreenOnions.Interface\obj\Debug\net6.0\ref\GreenOnions.Interface.dll
+D:\Project\Github\GreenOnions\GreenOnions.Interface\obj\Debug\net6.0\GreenOnions.Interface.pdb

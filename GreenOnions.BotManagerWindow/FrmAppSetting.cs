@@ -1,4 +1,4 @@
-﻿using GreenOnions.BotMain;
+﻿using GreenOnions.BotMain.MiraiApiHttp;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using GreenOnions.Utility.Items;
