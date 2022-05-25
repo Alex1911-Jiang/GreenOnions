@@ -1,6 +1,6 @@
 ﻿namespace GreenOnions.Model
 {
-    public class GreenOnionsAtMessage : GreenOnionsBaseMessage
+    public record GreenOnionsAtMessage : GreenOnionsBaseMessage
     {
         public long AtId { get; set; }
         public string NickName { get; set; }

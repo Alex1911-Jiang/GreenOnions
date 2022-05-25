@@ -279,6 +279,9 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj"
+              },
               "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj": {
                 "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj"
               }
@@ -295,10 +298,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Mirai-CSharp.HttpApi": {
-              "target": "Package",
-              "version": "[2.1.6, )"
-            },
             "System.Drawing.Common": {
               "target": "Package",
               "version": "[6.0.0, )"
@@ -363,10 +362,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Mirai-CSharp.HttpApi": {
-              "target": "Package",
-              "version": "[2.1.6, )"
-            },
             "Sora": {
               "target": "Package",
               "version": "[1.0.0-rc.51, )"
@@ -419,6 +414,9 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj"
+              },
               "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj": {
                 "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj"
               }
@@ -438,10 +436,6 @@
             "HtmlAgilityPack": {
               "target": "Package",
               "version": "[1.11.42, )"
-            },
-            "Mirai-CSharp.HttpApi": {
-              "target": "Package",
-              "version": "[2.1.6, )"
             }
           },
           "imports": [
@@ -491,6 +485,9 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj"
+              },
               "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj": {
                 "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj"
               }
@@ -506,12 +503,6 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "dependencies": {
-            "Mirai-CSharp.HttpApi": {
-              "target": "Package",
-              "version": "[2.1.6, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -559,6 +550,9 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj"
+              },
               "D:\\Project\\Github\\GreenOnions\\GreenOnions.Translate\\GreenOnions.Translate.csproj": {
                 "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Translate\\GreenOnions.Translate.csproj"
               },
@@ -581,10 +575,6 @@
             "HtmlAgilityPack": {
               "target": "Package",
               "version": "[1.11.42, )"
-            },
-            "Mirai-CSharp.HttpApi": {
-              "target": "Package",
-              "version": "[2.1.6, )"
             }
           },
           "imports": [
@@ -634,6 +624,9 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj"
+              },
               "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj": {
                 "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj"
               }
@@ -650,10 +643,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Mirai-CSharp.HttpApi": {
-              "target": "Package",
-              "version": "[2.1.6, )"
-            },
             "OpenCvSharp3-AnyCPU": {
               "target": "Package",
               "version": "[4.0.0.20181129, )"
@@ -710,6 +699,9 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
+              "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj": {
+                "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Model\\GreenOnions.Model.csproj"
+              },
               "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj": {
                 "projectPath": "D:\\Project\\Github\\GreenOnions\\GreenOnions.Utility\\GreenOnions.Utility.csproj"
               }
@@ -726,10 +718,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Mirai-CSharp.HttpApi": {
-              "target": "Package",
-              "version": "[2.1.6, )"
-            },
             "Wadereye.GoogleTranslateFreeApi": {
               "target": "Package",
               "version": "[1.3.0, )"

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.6" />
     <PackageReference Include="Sora" Version="1.0.0-rc.51" />
   </ItemGroup>
 

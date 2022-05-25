@@ -376,23 +376,38 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string SearchErrorReply
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchErrorReply)) ?? "搜图服务器爆炸惹_(:3」∠)_";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchErrorReply)) ?? "<搜索类型>搜索失败_(:3」∠)_";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchErrorReply), value);
         }
 
         /// <summary>
-        /// 相似度阈值
+        /// SauceNAO低相似度阈值
         /// </summary>
-        [PropertyChineseName("相似度阈值")]
-        public static int SearchLowSimilarity
+        [PropertyChineseName("SauceNAO低相似度阈值")]
+        public static int SearchSauceNAOLowSimilarity
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarity));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOLowSimilarity));
                 if (int.TryParse(strValue, out int iValue)) return iValue;
                 return 60;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarity), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOLowSimilarity), value.ToString());
+        }
+        
+        /// <summary>
+        /// SauceNAO高相似度阈值
+        /// </summary>
+        [PropertyChineseName("SauceNAO高相似度阈值")]
+        public static int SearchSauceNAOHighSimilarity
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOHighSimilarity));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 90;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOHighSimilarity), value.ToString());
         }
 
         /// <summary>
@@ -417,6 +432,15 @@ namespace GreenOnions.Utility
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply)) ?? "相似度低于<相似度阈值>%，缩略图不予显示。";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply), value);
+        }
+        
+        /// <summary>
+        /// 下载缩略图失败时追加回复
+        /// </summary>
+        public static string SearchDownloadThuImageFailReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchDownloadThuImageFailReply)) ?? "缩略图下载失败。";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchDownloadThuImageFailReply), value);
         }
 
         /// <summary>
@@ -508,40 +532,12 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 超过鉴黄次数的行为 0:既发送地址也发图 1:只发送地址不发图 2:发送地址且追加回复
-        /// </summary>
-        public static int SearchCheckPornOutOfLimitEvent
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitEvent));
-                if (int.TryParse(strValue, out int iValue)) return iValue;
-                return 2;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitEvent), value.ToString());
-        }
-
-        /// <summary>
-        /// 超过鉴黄次数时追加的回复语
+        /// 超过鉴黄次数时回复语
         /// </summary>
         public static string SearchCheckPornOutOfLimitReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitReply)) ?? "今日AI鉴黄次数已耗尽，缩略图不予显示。";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitReply), value);
-        }
-
-        /// <summary>
-        /// 未启用鉴黄时的行为 0:发图 1:不发图
-        /// </summary>
-        public static int SearchNoCheckPorn
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchNoCheckPorn));
-                if (int.TryParse(strValue, out int iValue)) return iValue;
-                return 0;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchNoCheckPorn), value.ToString());
         }
 
         #region -- 腾讯云相关属性 --
@@ -1030,7 +1026,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureUserCmd));
                 if (string.IsNullOrEmpty(strValue))
-                    return new List<string>();
+                    return new List<string>() { "--setu" };
                 return strValue.Split(';');
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureUserCmd), string.Join(";", value));
@@ -1249,20 +1245,6 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 群主和群管理无冷却时间/次数限制
-        /// </summary>
-        public static bool HPictureManageNoLimit
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureManageNoLimit));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureManageNoLimit), value.ToString());
-        }
-
-        /// <summary>
         /// 私聊无冷却时间/次数限制
         /// </summary>
         public static bool HPicturePMNoLimit
@@ -1349,20 +1331,6 @@ namespace GreenOnions.Utility
                 return LimitType.Frequency;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureLimitType), value.ToString());
-        }
-
-        /// <summary>
-        /// 是否启用多线程下载色图
-        /// </summary>
-        public static bool HPictureMultithreading
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureMultithreading));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureMultithreading), value.ToString());
         }
 
         /// <summary>

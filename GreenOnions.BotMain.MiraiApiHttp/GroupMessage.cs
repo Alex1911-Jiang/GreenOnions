@@ -99,7 +99,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                         break;
                     case "Plain":
                         LogHelper.WriteInfoLog($"{e.Sender.Id}群消息为文字消息");
-                        bool isHandle = await PlainMessageHandler.HandleMesage(e.Chain, e.Sender,
+                        bool isHandle = await MessageHandler.HandleMesage(e.Chain, e.Sender,
                             (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null),
                             picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),  //上传图片
                             urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls),
@@ -118,10 +118,11 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                         if (Cache.SearchingPicturesUsers.Keys.Contains(e.Sender.Id))
                         {
                             LogHelper.WriteInfoLog($"{e.Sender.Id}群消息触发连续搜图");
+                            Cache.SearchingPicturesUsers[e.Sender.Id] = DateTime.Now.AddMinutes(1);
                             for (int i = 1; i < e.Chain.Length; i++)
                             {
                                 ImageMessage imgMsg = e.Chain[i] as ImageMessage;
-                                await SearchPictureHandler.SuccessiveSearchPicture(imgMsg, e.Sender.Id,
+                                await SearchPictureHandler.SearchPicture(imgMsg, e.Sender.Id,
                                     picStream => session.UploadPictureAsync(UploadTarget.Group, picStream),  //上传图片
                                     (msg, bQuote) => session.SendGroupMessageAsync(e.Sender.Group.Id, msg, bQuote ? quoteMessage.Id : null),  //发送群消息
                                     urls => session.SendImageToGroupAsync(e.Sender.Group.Id, urls));

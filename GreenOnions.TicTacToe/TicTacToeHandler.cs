@@ -1,6 +1,6 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.Model;
+using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using Mirai.CSharp.Models.ChatMessages;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,12 +15,16 @@ namespace GreenOnions.TicTacToe
     {
         public static IDictionary<long, TicTacToeSession> PlayingTicTacToeSessions { get; } = new Dictionary<long, TicTacToeSession>();
 
-        public static async void StartTicTacToeSession(long qqId, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture)
+        /// <summary>
+        /// 开始棋局
+        /// </summary>
+        /// <param name="qqId">玩家QQ</param>
+        public static async void StartTicTacToeSession(long qqId, Action<GreenOnionsMessageGroup> SendMessage)
         {
             if (Cache.PlayingTicTacToeUsers.ContainsKey(qqId))
             {
                 Cache.PlayingTicTacToeUsers[qqId] = DateTime.Now.AddMinutes(2);
-                SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeAlreadyStartReply.ReplaceGreenOnionsTags()) }, true);
+                SendMessage(BotInfo.TicTacToeAlreadyStartReply.ReplaceGreenOnionsTags());
             }
             else
             {
@@ -31,7 +35,7 @@ namespace GreenOnions.TicTacToe
                         PlayingTicTacToeSessions.Remove(qqId);
                     if (Cache.PlayingTicTacToeUsers.ContainsKey(qqId))
                         Cache.PlayingTicTacToeUsers.TryRemove(qqId, out _);
-                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeTimeoutReply.ReplaceGreenOnionsTags()) }, true);
+                    SendMessage(BotInfo.TicTacToeTimeoutReply.ReplaceGreenOnionsTags());  //超时退出棋局
                 });
                 TicTacToeSession session = new TicTacToeSession();
                 Bitmap chessboard = session.StartNewSession();  //不能using, 要保留在棋局对象里
@@ -40,30 +44,38 @@ namespace GreenOnions.TicTacToe
                     chessboard.Save(tempMs, ImageFormat.Jpeg);
                     using (MemoryStream ms = new MemoryStream(tempMs.ToArray()))
                     {
-                        IImageMessage image = await UploadPicture(ms);
-                        SendMessage?.Invoke(new IChatMessage[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeStartedReply.ReplaceGreenOnionsTags()), image }, true);
                         PlayingTicTacToeSessions.Add(qqId, session);
+                        SendMessage(new GreenOnionsBaseMessage[] { BotInfo.TicTacToeStartedReply.ReplaceGreenOnionsTags(), ms });
                     }
                 }
             }
         }
 
-        public static void StopTicTacToeSession(long qqId, Func<IChatMessage[], bool, Task<int>> SendMessage)
+        /// <summary>
+        /// 中止棋局
+        /// </summary>
+        /// <param name="qqId">玩家QQ</param>
+        public static void StopTicTacToeSession(long qqId, Action<GreenOnionsMessageGroup> SendMessage)
         {
             if (Cache.PlayingTicTacToeUsers.ContainsKey(qqId))
             {
                 Cache.PlayingTicTacToeUsers.TryRemove(qqId, out _);
-                SendMessage?.Invoke(new IChatMessage[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeStoppedReply.ReplaceGreenOnionsTags()) }, true);
+                SendMessage(BotInfo.TicTacToeStoppedReply.ReplaceGreenOnionsTags());
             }
             else
             {
-                SendMessage?.Invoke(new IChatMessage[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeAlreadStopReply.ReplaceGreenOnionsTags()) }, true);
+                SendMessage(BotInfo.TicTacToeAlreadStopReply.ReplaceGreenOnionsTags());
             }
             if (PlayingTicTacToeSessions.ContainsKey(qqId))
                 PlayingTicTacToeSessions.Remove(qqId);
         }
 
-        public static void PlayerMoveByNomenclature(string moveMsg, long qqId, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture)
+        /// <summary>
+        /// 使用坐标下子
+        /// </summary>
+        /// <param name="moveMsg">坐标命令</param>
+        /// <param name="qqId">玩家QQ</param>
+        public static void PlayerMoveByNomenclature(string moveMsg, long qqId, Action<GreenOnionsMessageGroup> SendMessage)
         {
             if (PlayingTicTacToeSessions.ContainsKey(qqId))
             {
@@ -86,16 +98,21 @@ namespace GreenOnions.TicTacToe
                 {
                     Bitmap nowStepBmp = PlayingTicTacToeSessions[qqId].PlayerMove(x, y, out int? winOrLostType);
                     if (nowStepBmp == null)  //下子失败
-                        SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeMoveFailReply.ReplaceGreenOnionsTags()) }, true);
+                        SendMessage(BotInfo.TicTacToeMoveFailReply.ReplaceGreenOnionsTags());
                     else
-                        SendBitmapAfterMove(qqId, nowStepBmp, SendMessage, UploadPicture, winOrLostType);
+                        SendMessage(SendBitmapAfterMove(qqId, nowStepBmp, winOrLostType));
                 }
             }
             else
                 LogHelper.WriteErrorLogWithUserMessage($"数据异常, 时间表中存在QQ:{qqId}, 但对局表中不存在, 可能是刚刚超时了", null);
         }
 
-        public static async void PlayerMoveByBitmap(long qqId, Stream playerMoveStream, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture)
+        /// <summary>
+        /// 使用涂鸦下子
+        /// </summary>
+        /// <param name="qqId">玩家QQ</param>
+        /// <param name="playerMoveStream">玩家下子图片</param>
+        public static GreenOnionsMessageGroup PlayerMoveByBitmap(long qqId, Stream playerMoveStream)
         {
             if (PlayingTicTacToeSessions.ContainsKey(qqId))
             {
@@ -112,9 +129,9 @@ namespace GreenOnions.TicTacToe
                         var weight = PlayingTicTacToeSessions[qqId].PlayerMoveByBitmap(playerMoveBmp);
 
                         if (weight.Keys.Count == 0)  //没有修改
-                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeNoMoveReply.ReplaceGreenOnionsTags()) }, true);
+                            return BotInfo.TicTacToeNoMoveReply.ReplaceGreenOnionsTags();
                         else if (weight.Keys.Count > 1)  //多个格子被修改
-                            SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeIllegalMoveReply.ReplaceGreenOnionsTags()) }, true);
+                            return BotInfo.TicTacToeIllegalMoveReply.ReplaceGreenOnionsTags();
                         else
                         {
                             var maxWeight = weight.Where(kv => kv.Value > 11).OrderByDescending(kv => kv.Value);
@@ -122,49 +139,56 @@ namespace GreenOnions.TicTacToe
                             {
                                 Point hit = maxWeight.First().Key;
                                 Bitmap nowStepBmp = PlayingTicTacToeSessions[qqId].PlayerMove(hit.X, hit.Y, out int? winOrLostType);
-                                if (nowStepBmp == null) 
-                                    SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeMoveFailReply.ReplaceGreenOnionsTags()) }, true);
+                                if (nowStepBmp == null)
+                                    return BotInfo.TicTacToeMoveFailReply.ReplaceGreenOnionsTags();
                                 else
-                                    SendBitmapAfterMove(qqId, nowStepBmp, SendMessage, UploadPicture, winOrLostType);
+                                    return SendBitmapAfterMove(qqId, nowStepBmp, winOrLostType);
                             }
                         }
                     }
+                    return null;
                 }
                 else
+                {
                     LogHelper.WriteErrorLogWithUserMessage("井字棋图片转换失败", null);
+                    return "图裂了o(╥﹏╥)o".ReplaceGreenOnionsTags();
+                }
             }
             else
+            {
                 LogHelper.WriteErrorLogWithUserMessage($"数据异常, 时间表中存在QQ:{qqId}, 但对局表中不存在, 可能是刚刚超时了", null);
+                return "<机器人名称>把图弄丢了, 这局就当您赢了吧, 请向<机器人名称>反馈Bug o(╥﹏╥)o".ReplaceGreenOnionsTags();
+            }
         }
 
-        public static async void SendBitmapAfterMove(long qqId, Bitmap nowStepBmp, Func<IChatMessage[], bool, Task<int>> SendMessage, Func<Stream, Task<IImageMessage>> UploadPicture, int? winOrLostMsg)
+        public static GreenOnionsMessageGroup SendBitmapAfterMove(long qqId, Bitmap nowStepBmp, int? winOrLostMsg)
         {
             using (MemoryStream tempMs = new MemoryStream())
             {
                 nowStepBmp.Save(tempMs, ImageFormat.Jpeg);
                 using (MemoryStream ms = new MemoryStream(tempMs.ToArray()))
                 {
-                    IImageMessage image = await UploadPicture(ms);
-                    SendMessage?.Invoke(new[] { image }, false);
-                    ms.Dispose();
+                    GreenOnionsMessageGroup outMsg = new GreenOnionsMessageGroup();
+                    outMsg.Add(ms);
 
                     if (winOrLostMsg != null)
                     {
                         switch (winOrLostMsg)
                         {
-                            case -1:
-                                SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeBotWinReply.ReplaceGreenOnionsTags()) }, true);
+                            case -1: //bot获胜
+                                outMsg.Add(BotInfo.TicTacToeBotWinReply.ReplaceGreenOnionsTags());
                                 break;
-                            case 0:
-                                SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToeDrawReply.ReplaceGreenOnionsTags()) }, true);
+                            case 0:  //平局
+                                outMsg.Add(BotInfo.TicTacToeDrawReply.ReplaceGreenOnionsTags());
                                 break;
-                            case 1:
-                                SendMessage?.Invoke(new[] { new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(BotInfo.TicTacToePlayerWinReply.ReplaceGreenOnionsTags()) }, true);
+                            case 1:  //玩家获胜
+                                outMsg.Add(BotInfo.TicTacToePlayerWinReply.ReplaceGreenOnionsTags());
                                 break;
                         }
                         PlayingTicTacToeSessions.Remove(qqId);
                         Cache.PlayingTicTacToeUsers.TryRemove(qqId, out _);
                     }
+                    return outMsg;
                 }
             }
         }

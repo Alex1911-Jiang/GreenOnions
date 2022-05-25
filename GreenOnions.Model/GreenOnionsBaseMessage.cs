@@ -2,7 +2,7 @@
 
 namespace GreenOnions.Model
 {
-    public abstract class GreenOnionsBaseMessage
+    public abstract record GreenOnionsBaseMessage
     {
         public static implicit operator GreenOnionsBaseMessage(string text)
         {
@@ -16,5 +16,9 @@ namespace GreenOnions.Model
         {
             return new GreenOnionsImageMessage(image);
         }
+
+        public bool Reply { get; set; } = true;
+
+        public int RevokeTime { get; set; } = 0;
     }
 }

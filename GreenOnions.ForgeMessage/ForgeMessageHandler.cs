@@ -8,19 +8,19 @@ namespace GreenOnions.ForgeMessage
 {
     public static class ForgeMessageHandler
     {
-        public static GreenOnionsBaseMessage SendForgeMessage(GreenOnionsBaseMessage[] originMsg, long qqId)
+        public static void SendForgeMessage(GreenOnionsMessageGroup originMsg, long qqId, Action<GreenOnionsMessageGroup> SendMessage)
         {
             if (!BotInfo.ForgeMessageAdminOnly || BotInfo.AdminQQ.Contains(qqId))
             {
-                if (originMsg.Length > 2 && (originMsg[1] is GreenOnionsAtMessage atMsg))
+                if (originMsg.Count > 2 && (originMsg[1] is GreenOnionsAtMessage atMsg))
                 {
                     if (!BotInfo.AdminQQ.Contains(qqId) && BotInfo.AdminQQ.Contains(atMsg.AtId))
-                        return BotInfo.RefuseForgeAdminReply.ReplaceGreenOnionsTags();
+                        SendMessage(BotInfo.RefuseForgeAdminReply.ReplaceGreenOnionsTags());
                     if (!BotInfo.AdminQQ.Contains(qqId) && atMsg.AtId == BotInfo.QQId)
-                        return BotInfo.RefuseForgeBotReply.ReplaceGreenOnionsTags();
+                        SendMessage(BotInfo.RefuseForgeBotReply.ReplaceGreenOnionsTags());
 
                     GreenOnionsForwardMessage forwardMessage = new GreenOnionsForwardMessage();
-                    for (int i = 2; i < originMsg.Length; i++)
+                    for (int i = 2; i < originMsg.Count; i++)
                     {
                         if (originMsg[i] is GreenOnionsTextMessage textMsg)
                         {
@@ -44,10 +44,9 @@ namespace GreenOnions.ForgeMessage
                         if (!BotInfo.ForgeMessageAdminDontAppend || !BotInfo.AdminQQ.Contains(qqId))
                             forwardMessage.Add(BotInfo.QQId, BotInfo.BotName, BotInfo.ForgeMessageAppendMessage.ReplaceGreenOnionsTags());
                     }
-                    return forwardMessage;
+                    SendMessage(forwardMessage);
                 }
             }
-            return null;
         }
     }
 }

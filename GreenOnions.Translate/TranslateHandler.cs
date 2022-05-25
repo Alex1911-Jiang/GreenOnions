@@ -1,5 +1,5 @@
-﻿using GreenOnions.Utility;
-using Mirai.CSharp.HttpApi.Models.ChatMessages;
+﻿using GreenOnions.Model;
+using GreenOnions.Utility;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,37 +9,37 @@ namespace GreenOnions.Translate
 {
     public static class TranslateHandler
     {
-        public async static void TranslateToChinese(Regex regexTranslateToChinese, string msg, Func<IChatMessage[], bool, Task<int>> SendMessage)
+        public async static void TranslateToChinese(Regex regexTranslateToChinese, string msg, Action<GreenOnionsMessageGroup> SendMessage)
         {
             try
             {
                 string text = msg.Substring(regexTranslateToChinese.Matches(msg).First().Value.Length);
                 string translateResult = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(text) : YouDaoTranslateHelper.TranslateToChinese(text));
-                SendMessage?.Invoke(new[] { new PlainMessage(translateResult) }, true);
+                SendMessage(translateResult);
             }
             catch (Exception ex)
             {
-                SendMessage?.Invoke(new[] { new PlainMessage("翻译失败，" + ex.Message) }, true);
+                SendMessage("翻译失败，" + ex.Message);
             }
         }
 
-        public async static void TranslateTo(Regex regexTranslateTo, string msg, Func<IChatMessage[], bool, Task<int>> SendMessage)
+        public async static void TranslateTo(Regex regexTranslateTo, string msg, Action<GreenOnionsMessageGroup> SendMessage)
         {
             Match match = regexTranslateTo.Matches(msg).First();
             if (match.Groups.Count > 1)
             {
                 try
                 {
-                    SendMessage?.Invoke(new[] { new PlainMessage(await GoogleTranslateHelper.TranslateTo(msg.Substring(match.Value.Length), match.Groups[1].Value)) }, true);
+                    SendMessage(await GoogleTranslateHelper.TranslateTo(msg.Substring(match.Value.Length), match.Groups[1].Value));
                 }
                 catch (Exception ex)
                 {
-                    SendMessage?.Invoke(new[] { new PlainMessage("翻译失败，" + ex.Message) }, true);
+                    SendMessage("翻译失败，" + ex.Message);
                 }
             }
         }
 
-        public async static void TranslateFromTo(Regex regexTranslateFromTo, string msg, Func<IChatMessage[], bool, Task<int>> SendMessage)
+        public async static void TranslateFromTo(Regex regexTranslateFromTo, string msg, Action<GreenOnionsMessageGroup> SendMessage)
         {
             Match match = regexTranslateFromTo.Matches(msg).First();
             if (match.Groups.Count > 1)
@@ -54,11 +54,11 @@ namespace GreenOnions.Translate
                         string to = match.Groups["to"].Value;
                         translateResult = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(text, from, to) : YouDaoTranslateHelper.TranslateFromTo(text, from, to));
                     }
-                    SendMessage?.Invoke(new[] { new PlainMessage(translateResult) }, true);
+                    SendMessage(translateResult);
                 }
                 catch (Exception ex)
                 {
-                    SendMessage?.Invoke(new[] { new PlainMessage("翻译失败，" + ex.Message) }, true);
+                    SendMessage("翻译失败，" + ex.Message);
                 }
             }
         }

@@ -46,37 +46,82 @@ namespace GreenOnions.Utility.Helper
             return HttpHelper.GetHttpResponseStream(requestSignURL, out _);
         }
 
-        public static bool CheckImageHealth(byte[] file)
+        public enum CheckedPornStatus
         {
-            string strScore = CheckImagePornScore(file);
-            int Score;
-            if (int.TryParse(strScore, out Score))
-            {
-                if (Score > 90)
-                {
-                    //鉴黄不通过删除图片(腾讯云竟然会因为留存色图而封号...)
-                    DeleteObjectRequest request = new DeleteObjectRequest(BotInfo.TencentCloudBucket, "CheckPorn.png");
-                    CosXml.DeleteObject(request);
-                    return false;  //非法
-                }
-                return true;  //合法
-            }
-            return false;
+            Healthed = 0,
+            NotHealth = 1,
+            Error = 2,
+            OutOfLimit = 3,
         }
 
-        public static bool CheckImageHealth(string localFileName)
+        public static CheckedPornStatus CheckImageHealth(byte[] file, out string errorMessage)
         {
-            string strScore = CheckImagePornScore(localFileName);
-            int Score;
-            if (int.TryParse(strScore, out Score))
+            errorMessage = "";
+            if (Cache.CheckPornCounting > BotInfo.CheckPornLimitCount)
             {
-                if (Score > 90)
-                {
-                    return false;
-                }
-                return true;
+                return CheckedPornStatus.OutOfLimit;
             }
-            return false;
+            try
+            {
+                string strScore = CheckImagePornScore(file);
+                if (int.TryParse(strScore, out int Score))
+                {
+                    Cache.CheckPornCounting++;
+                    if (Score > 90)
+                    {
+                        //鉴黄不通过删除图片(腾讯云竟然会因为留存色图而封号...)
+                        DeleteObjectRequest request = new DeleteObjectRequest(BotInfo.TencentCloudBucket, "CheckPorn.png");
+                        CosXml.DeleteObject(request);
+                        return CheckedPornStatus.NotHealth;  //非法
+                    }
+                    return CheckedPornStatus.Healthed;  //合法
+                }
+                else
+                {
+                    LogHelper.WriteErrorLog("腾讯云鉴黄的分值非数字");
+                    return CheckedPornStatus.Error;  //非法
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return CheckedPornStatus.Error;
+            }
+        }
+
+        public static CheckedPornStatus CheckImageHealth(string localFileName, out string errorMessage)
+        {
+            errorMessage = "";
+            if (Cache.CheckPornCounting > BotInfo.CheckPornLimitCount)
+            {
+                return CheckedPornStatus.OutOfLimit;
+            }
+            try
+            {
+                string strScore = CheckImagePornScore(localFileName);
+                if (int.TryParse(strScore, out int Score))
+                {
+                    Cache.CheckPornCounting++;
+                    if (Score > 90)
+                    {
+                        //鉴黄不通过删除图片(腾讯云竟然会因为留存色图而封号...)
+                        DeleteObjectRequest request = new DeleteObjectRequest(BotInfo.TencentCloudBucket, "CheckPorn.png");
+                        CosXml.DeleteObject(request);
+                        return CheckedPornStatus.NotHealth;  //非法
+                    }
+                    else
+                    {
+                        LogHelper.WriteErrorLog("腾讯云鉴黄的分值非数字");
+                        return CheckedPornStatus.Error;  //非法
+                    }
+                }
+                return CheckedPornStatus.Healthed;  //合法
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return CheckedPornStatus.Error;
+            }
         }
 
         public static string CheckImagePornScore(byte[] file)

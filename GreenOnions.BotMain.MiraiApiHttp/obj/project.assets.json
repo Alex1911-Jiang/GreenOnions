@@ -588,8 +588,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "GreenOnions.Model": "1.0.0",
           "GreenOnions.Utility": "1.0.0",
-          "Mirai-CSharp.HttpApi": "2.1.6",
           "System.Drawing.Common": "6.0.0"
         },
         "compile": {
@@ -603,7 +603,6 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "Mirai-CSharp.HttpApi": "2.1.6",
           "Sora": "1.0.0-rc.51"
         },
         "compile": {
@@ -617,9 +616,9 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "GreenOnions.Model": "1.0.0",
           "GreenOnions.Utility": "1.0.0",
-          "HtmlAgilityPack": "1.11.42",
-          "Mirai-CSharp.HttpApi": "2.1.6"
+          "HtmlAgilityPack": "1.11.42"
         },
         "compile": {
           "bin/placeholder/GreenOnions.PictureSearcher.dll": {}
@@ -632,8 +631,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "GreenOnions.Utility": "1.0.0",
-          "Mirai-CSharp.HttpApi": "2.1.6"
+          "GreenOnions.Model": "1.0.0",
+          "GreenOnions.Utility": "1.0.0"
         },
         "compile": {
           "bin/placeholder/GreenOnions.Repeater.dll": {}
@@ -646,10 +645,10 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "GreenOnions.Model": "1.0.0",
           "GreenOnions.Translate": "1.0.0",
           "GreenOnions.Utility": "1.0.0",
-          "HtmlAgilityPack": "1.11.42",
-          "Mirai-CSharp.HttpApi": "2.1.6"
+          "HtmlAgilityPack": "1.11.42"
         },
         "compile": {
           "bin/placeholder/GreenOnions.RSS.dll": {}
@@ -662,8 +661,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "GreenOnions.Model": "1.0.0",
           "GreenOnions.Utility": "1.0.0",
-          "Mirai-CSharp.HttpApi": "2.1.6",
           "OpenCvSharp3-AnyCPU": "4.0.0.20181129",
           "System.Drawing.Common": "6.0.0"
         },
@@ -678,8 +677,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "GreenOnions.Model": "1.0.0",
           "GreenOnions.Utility": "1.0.0",
-          "Mirai-CSharp.HttpApi": "2.1.6",
           "Wadereye.GoogleTranslateFreeApi": "1.3.0"
         },
         "compile": {

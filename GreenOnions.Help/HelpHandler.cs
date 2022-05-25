@@ -14,7 +14,7 @@ namespace GreenOnions.Help
 {
     public static class HelpHandler
     {
-        public static GreenOnionsBaseMessage[] Helps(Regex regexHelp, string msg, long groupId = -1)
+        public static GreenOnionsMessageGroup Helps(Regex regexHelp, string msg, long? groupId)
         {
             Match match = regexHelp.Matches(msg).FirstOrDefault();
             if (match?.Groups.Count > 0)
@@ -116,13 +116,13 @@ namespace GreenOnions.Help
             else
                 return new[] { $"当前{BotInfo.BotName}没有启用翻译功能" }.ToTextMessageArray();
         }
-        private static GreenOnionsBaseMessage[] hPictureHelp(long groupId)
+        private static GreenOnionsBaseMessage[] hPictureHelp(long? groupId)
         {
             if (BotInfo.HPictureEnabled && BotInfo.EnabledHPictureSource.Contains(PictureSource.Lolicon))
             {
-                if (groupId > -1)  //群消息
+                if (groupId != null)  //群消息
                 {
-                    if (!BotInfo.HPictureWhiteOnly || (BotInfo.HPictureR18WhiteOnly && BotInfo.HPictureWhiteGroup.Contains(groupId)))
+                    if (!BotInfo.HPictureWhiteOnly || (BotInfo.HPictureR18WhiteOnly && BotInfo.HPictureWhiteGroup.Contains(groupId.Value)))
                         return new[] { hpictureHelpMsg() }.ToTextMessageArray();
                     else
                         return new[] { $"没有为当前群组启用色图功能" }.ToTextMessageArray();

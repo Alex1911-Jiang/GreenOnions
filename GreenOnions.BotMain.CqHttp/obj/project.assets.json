@@ -11,90 +11,6 @@
           "lib/netcoreapp2.0/Fleck.dll": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection/6.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/Microsoft.Extensions.DependencyInjection.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.Extensions.DependencyInjection.dll": {}
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
-      "Microsoft.Extensions.Logging/6.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "6.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "6.0.0",
-          "Microsoft.Extensions.Options": "6.0.0",
-          "System.Diagnostics.DiagnosticSource": "6.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.1/Microsoft.Extensions.Logging.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.1/Microsoft.Extensions.Logging.dll": {}
-        }
-      },
-      "Microsoft.Extensions.Logging.Abstractions/6.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll": {}
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
-      "Microsoft.Extensions.Options/6.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "Microsoft.Extensions.Primitives": "6.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.1/Microsoft.Extensions.Options.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.1/Microsoft.Extensions.Options.dll": {}
-        }
-      },
-      "Microsoft.Extensions.Primitives/6.0.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/Microsoft.Extensions.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.Extensions.Primitives.dll": {}
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
       "Microsoft.Win32.SystemEvents/6.0.0": {
         "type": "package",
         "compile": {
@@ -113,52 +29,6 @@
           }
         }
       },
-      "Mirai-CSharp/2.1.6": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "6.0.0",
-          "Microsoft.Extensions.Logging": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/Mirai-CSharp.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Mirai-CSharp.dll": {}
-        }
-      },
-      "Mirai-CSharp.HttpApi/2.1.6": {
-        "type": "package",
-        "dependencies": {
-          "Mirai-CSharp": "2.1.6",
-          "Mirai-CSharp.NativeAssets.Win32": "1.0.2",
-          "SkiaSharp": "2.80.3"
-        },
-        "compile": {
-          "lib/net6.0/Mirai-CSharp.HttpApi.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Mirai-CSharp.HttpApi.dll": {}
-        }
-      },
-      "Mirai-CSharp.NativeAssets.Win32/1.0.2": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/_._": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/_._": {}
-        },
-        "runtimeTargets": {
-          "runtimes/win-x64/native/libsilklame.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          },
-          "runtimes/win-x86/native/libsilklame.dll": {
-            "assetType": "native",
-            "rid": "win-x86"
-          }
-        }
-      },
       "Newtonsoft.Json/13.0.1": {
         "type": "package",
         "compile": {
@@ -166,36 +36,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
-        }
-      },
-      "SkiaSharp/2.80.3": {
-        "type": "package",
-        "dependencies": {
-          "System.Memory": "4.5.3"
-        },
-        "compile": {
-          "lib/netstandard2.0/SkiaSharp.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/SkiaSharp.dll": {}
-        },
-        "runtimeTargets": {
-          "runtimes/osx/native/libSkiaSharp.dylib": {
-            "assetType": "native",
-            "rid": "osx"
-          },
-          "runtimes/win-arm64/native/libSkiaSharp.dll": {
-            "assetType": "native",
-            "rid": "win-arm64"
-          },
-          "runtimes/win-x64/native/libSkiaSharp.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          },
-          "runtimes/win-x86/native/libSkiaSharp.dll": {
-            "assetType": "native",
-            "rid": "win-x86"
-          }
         }
       },
       "Sora/1.0.0-rc.51": {
@@ -231,21 +71,6 @@
           "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
-      "System.Diagnostics.DiagnosticSource/6.0.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/System.Diagnostics.DiagnosticSource.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/System.Diagnostics.DiagnosticSource.dll": {}
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
       "System.Drawing.Common/6.0.0": {
         "type": "package",
         "dependencies": {
@@ -271,15 +96,6 @@
           }
         }
       },
-      "System.Memory/4.5.3": {
-        "type": "package",
-        "compile": {
-          "ref/netcoreapp2.1/_._": {}
-        },
-        "runtime": {
-          "lib/netcoreapp2.1/_._": {}
-        }
-      },
       "System.Reactive/5.0.0": {
         "type": "package",
         "compile": {
@@ -299,18 +115,6 @@
         },
         "runtime": {
           "lib/net6.0/System.Resources.Extensions.dll": {}
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
-      "System.Runtime.CompilerServices.Unsafe/6.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {}
         },
         "build": {
           "buildTransitive/netcoreapp3.1/_._": {}
@@ -497,7 +301,6 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "Mirai-CSharp.HttpApi": "2.1.6",
           "Sora": "1.0.0-rc.51"
         },
         "compile": {
@@ -511,8 +314,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "GreenOnions.Model": "1.0.0",
           "GreenOnions.Utility": "1.0.0",
-          "Mirai-CSharp.HttpApi": "2.1.6",
           "Wadereye.GoogleTranslateFreeApi": "1.3.0"
         },
         "compile": {
@@ -557,175 +360,6 @@
         "lib/netstandard2.0/Fleck.dll"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection/6.0.0": {
-      "sha512": "k6PWQMuoBDGGHOQTtyois2u4AwyVcIwL2LaSLlTZQm2CYcJ1pxbt6jfAnpWmzENA/wfrYRI/X9DTLoUkE4AsLw==",
-      "type": "package",
-      "path": "microsoft.extensions.dependencyinjection/6.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/Microsoft.Extensions.DependencyInjection.dll",
-        "lib/net461/Microsoft.Extensions.DependencyInjection.xml",
-        "lib/net6.0/Microsoft.Extensions.DependencyInjection.dll",
-        "lib/net6.0/Microsoft.Extensions.DependencyInjection.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.xml",
-        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll",
-        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.xml",
-        "microsoft.extensions.dependencyinjection.6.0.0.nupkg.sha512",
-        "microsoft.extensions.dependencyinjection.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
-      "sha512": "xlzi2IYREJH3/m6+lUrQlujzX8wDitm4QGnUu6kUXTQAWPuZY8i+ticFJbzfqaetLA6KR/rO6Ew/HuYD+bxifg==",
-      "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/6.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/net461/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
-        "microsoft.extensions.dependencyinjection.abstractions.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "Microsoft.Extensions.Logging/6.0.0": {
-      "sha512": "eIbyj40QDg1NDz0HBW0S5f3wrLVnKWnDJ/JtZ+yJDFnDj90VoPuoPmFkeaXrtu+0cKm5GRAwoDf+dBWXK0TUdg==",
-      "type": "package",
-      "path": "microsoft.extensions.logging/6.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/Microsoft.Extensions.Logging.dll",
-        "lib/net461/Microsoft.Extensions.Logging.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Logging.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Logging.xml",
-        "lib/netstandard2.1/Microsoft.Extensions.Logging.dll",
-        "lib/netstandard2.1/Microsoft.Extensions.Logging.xml",
-        "microsoft.extensions.logging.6.0.0.nupkg.sha512",
-        "microsoft.extensions.logging.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "Microsoft.Extensions.Logging.Abstractions/6.0.0": {
-      "sha512": "/HggWBbTwy8TgebGSX5DBZ24ndhzi93sHUBDvP1IxbZD7FDokYzdAr6+vbWGjw2XAfR2EJ1sfKUotpjHnFWPxA==",
-      "type": "package",
-      "path": "microsoft.extensions.logging.abstractions/6.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "analyzers/dotnet/roslyn3.11/cs/Microsoft.Extensions.Logging.Generators.dll",
-        "analyzers/dotnet/roslyn3.11/cs/cs/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/de/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/es/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/fr/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/it/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/ja/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/ko/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/pl/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/pt-BR/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/ru/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/tr/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/zh-Hans/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn3.11/cs/zh-Hant/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/Microsoft.Extensions.Logging.Generators.dll",
-        "analyzers/dotnet/roslyn4.0/cs/cs/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/de/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/es/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/fr/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/it/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/ja/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/ko/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/pl/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/pt-BR/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/ru/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/tr/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/zh-Hans/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.0/cs/zh-Hant/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "build/Microsoft.Extensions.Logging.Abstractions.targets",
-        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.Logging.Abstractions.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/Microsoft.Extensions.Logging.Abstractions.dll",
-        "lib/net461/Microsoft.Extensions.Logging.Abstractions.xml",
-        "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll",
-        "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
-        "microsoft.extensions.logging.abstractions.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "Microsoft.Extensions.Options/6.0.0": {
-      "sha512": "dzXN0+V1AyjOe2xcJ86Qbo233KHuLEY0njf/P2Kw8SfJU+d45HNS2ctJdnEnrWbM9Ye2eFgaC5Mj9otRMU6IsQ==",
-      "type": "package",
-      "path": "microsoft.extensions.options/6.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/Microsoft.Extensions.Options.dll",
-        "lib/net461/Microsoft.Extensions.Options.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Options.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Options.xml",
-        "lib/netstandard2.1/Microsoft.Extensions.Options.dll",
-        "lib/netstandard2.1/Microsoft.Extensions.Options.xml",
-        "microsoft.extensions.options.6.0.0.nupkg.sha512",
-        "microsoft.extensions.options.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "Microsoft.Extensions.Primitives/6.0.0": {
-      "sha512": "9+PnzmQFfEFNR9J2aDTfJGGupShHjOuGw4VUv+JB044biSHrnmCIMD+mJHmb2H7YryrfBEXDurxQ47gJZdCKNQ==",
-      "type": "package",
-      "path": "microsoft.extensions.primitives/6.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.Primitives.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/Microsoft.Extensions.Primitives.dll",
-        "lib/net461/Microsoft.Extensions.Primitives.xml",
-        "lib/net6.0/Microsoft.Extensions.Primitives.dll",
-        "lib/net6.0/Microsoft.Extensions.Primitives.xml",
-        "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll",
-        "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Primitives.xml",
-        "microsoft.extensions.primitives.6.0.0.nupkg.sha512",
-        "microsoft.extensions.primitives.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
     "Microsoft.Win32.SystemEvents/6.0.0": {
       "sha512": "hqTM5628jSsQiv+HGpiq3WKBl2c8v1KZfby2J6Pr7pEPlK9waPdgEO6b8A/+/xn/yZ9ulv8HuqK71ONy2tg67A==",
       "type": "package",
@@ -755,90 +389,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Mirai-CSharp/2.1.6": {
-      "sha512": "XQHtYwgGxrKInIpzXLVXPAHNqH6/I7AGz2f8ojwUPMu2Xb/KNO4gM7mRc18STxD4HZ5YT6hmLFbU7xPP4rlJyA==",
-      "type": "package",
-      "path": "mirai-csharp/2.1.6",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net5.0/Mirai-CSharp.dll",
-        "lib/net5.0/Mirai-CSharp.pdb",
-        "lib/net5.0/Mirai-CSharp.xml",
-        "lib/net6.0/Mirai-CSharp.dll",
-        "lib/net6.0/Mirai-CSharp.pdb",
-        "lib/net6.0/Mirai-CSharp.xml",
-        "lib/net7.0/Mirai-CSharp.dll",
-        "lib/net7.0/Mirai-CSharp.pdb",
-        "lib/net7.0/Mirai-CSharp.xml",
-        "lib/netcoreapp3.0/Mirai-CSharp.dll",
-        "lib/netcoreapp3.0/Mirai-CSharp.pdb",
-        "lib/netcoreapp3.0/Mirai-CSharp.xml",
-        "lib/netcoreapp3.1/Mirai-CSharp.dll",
-        "lib/netcoreapp3.1/Mirai-CSharp.pdb",
-        "lib/netcoreapp3.1/Mirai-CSharp.xml",
-        "lib/netstandard2.0/Mirai-CSharp.dll",
-        "lib/netstandard2.0/Mirai-CSharp.pdb",
-        "lib/netstandard2.0/Mirai-CSharp.xml",
-        "lib/netstandard2.1/Mirai-CSharp.dll",
-        "lib/netstandard2.1/Mirai-CSharp.pdb",
-        "lib/netstandard2.1/Mirai-CSharp.xml",
-        "mirai-csharp.2.1.6.nupkg.sha512",
-        "mirai-csharp.nuspec"
-      ]
-    },
-    "Mirai-CSharp.HttpApi/2.1.6": {
-      "sha512": "m0DiCLrS/qx0IO5qMF7q7BzU4NZp8BmgpND1d1kX/d6GjHOG1zCunr0MMECid4qyJ9XFMs5IUb3uHulJslDchA==",
-      "type": "package",
-      "path": "mirai-csharp.httpapi/2.1.6",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net5.0/Mirai-CSharp.HttpApi.dll",
-        "lib/net5.0/Mirai-CSharp.HttpApi.pdb",
-        "lib/net5.0/Mirai-CSharp.HttpApi.xml",
-        "lib/net6.0/Mirai-CSharp.HttpApi.dll",
-        "lib/net6.0/Mirai-CSharp.HttpApi.pdb",
-        "lib/net6.0/Mirai-CSharp.HttpApi.xml",
-        "lib/net7.0/Mirai-CSharp.HttpApi.dll",
-        "lib/net7.0/Mirai-CSharp.HttpApi.pdb",
-        "lib/net7.0/Mirai-CSharp.HttpApi.xml",
-        "lib/netcoreapp3.0/Mirai-CSharp.HttpApi.dll",
-        "lib/netcoreapp3.0/Mirai-CSharp.HttpApi.pdb",
-        "lib/netcoreapp3.0/Mirai-CSharp.HttpApi.xml",
-        "lib/netcoreapp3.1/Mirai-CSharp.HttpApi.dll",
-        "lib/netcoreapp3.1/Mirai-CSharp.HttpApi.pdb",
-        "lib/netcoreapp3.1/Mirai-CSharp.HttpApi.xml",
-        "lib/netstandard2.0/Mirai-CSharp.HttpApi.dll",
-        "lib/netstandard2.0/Mirai-CSharp.HttpApi.pdb",
-        "lib/netstandard2.0/Mirai-CSharp.HttpApi.xml",
-        "lib/netstandard2.1/Mirai-CSharp.HttpApi.dll",
-        "lib/netstandard2.1/Mirai-CSharp.HttpApi.pdb",
-        "lib/netstandard2.1/Mirai-CSharp.HttpApi.xml",
-        "mirai-csharp.httpapi.2.1.6.nupkg.sha512",
-        "mirai-csharp.httpapi.nuspec"
-      ]
-    },
-    "Mirai-CSharp.NativeAssets.Win32/1.0.2": {
-      "sha512": "yfOFX7F6gwRWcQA5yM/hLcNV+lMdsbKB5fbvVcS4WAMHSe3Vpfrhfs6Zasp+fr0bCpnCJdZho+lIfOtx5JRpyA==",
-      "type": "package",
-      "path": "mirai-csharp.nativeassets.win32/1.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "build/net461/Mirai-CSharp.NativeAssets.Win32.props",
-        "build/net462/Mirai-CSharp.NativeAssets.Win32.props",
-        "buildTransitive/net461/Mirai-CSharp.NativeAssets.Win32.props",
-        "buildTransitive/net462/Mirai-CSharp.NativeAssets.Win32.props",
-        "lib/net461/_._",
-        "lib/net462/_._",
-        "lib/netstandard2.0/_._",
-        "mirai-csharp.nativeassets.win32.1.0.2.nupkg.sha512",
-        "mirai-csharp.nativeassets.win32.nuspec",
-        "runtimes/win-x64/native/libsilklame.dll",
-        "runtimes/win-x86/native/libsilklame.dll"
-      ]
-    },
     "Newtonsoft.Json/13.0.1": {
       "sha512": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
       "type": "package",
@@ -864,90 +414,6 @@
         "newtonsoft.json.13.0.1.nupkg.sha512",
         "newtonsoft.json.nuspec",
         "packageIcon.png"
-      ]
-    },
-    "SkiaSharp/2.80.3": {
-      "sha512": "qX6tGNP3+MXNYe2pKm0PCRiJ/cx+LTeLaggwZifB7sUMXhECfKKKHJq45VqZKt37xQegnCCdf1jHXwmHeJQs5Q==",
-      "type": "package",
-      "path": "skiasharp/2.80.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.txt",
-        "THIRD-PARTY-NOTICES.txt",
-        "build/monoandroid1.0/SkiaSharp.targets",
-        "build/monoandroid1.0/arm/libSkiaSharp.so",
-        "build/monoandroid1.0/arm64/libSkiaSharp.so",
-        "build/monoandroid1.0/x64/libSkiaSharp.so",
-        "build/monoandroid1.0/x86/libSkiaSharp.so",
-        "build/net462/SkiaSharp.targets",
-        "build/tizen40/SkiaSharp.targets",
-        "build/tizen40/arm/libSkiaSharp.so",
-        "build/tizen40/x86/libSkiaSharp.so",
-        "build/xamarinios1.0/SkiaSharp.targets",
-        "build/xamarinios1.0/libSkiaSharp.framework/Info.plist",
-        "build/xamarinios1.0/libSkiaSharp.framework/Modules/module.modulemap",
-        "build/xamarinios1.0/libSkiaSharp.framework/_CodeSignature/CodeResources",
-        "build/xamarinios1.0/libSkiaSharp.framework/libSkiaSharp",
-        "build/xamarinmac2.0/SkiaSharp.targets",
-        "build/xamarintvos1.0/SkiaSharp.targets",
-        "build/xamarintvos1.0/libSkiaSharp.framework/Info.plist",
-        "build/xamarintvos1.0/libSkiaSharp.framework/Modules/module.modulemap",
-        "build/xamarintvos1.0/libSkiaSharp.framework/_CodeSignature/CodeResources",
-        "build/xamarintvos1.0/libSkiaSharp.framework/libSkiaSharp",
-        "build/xamarinwatchos1.0/SkiaSharp.targets",
-        "build/xamarinwatchos1.0/libSkiaSharp.framework/Info.plist",
-        "build/xamarinwatchos1.0/libSkiaSharp.framework/Modules/module.modulemap",
-        "build/xamarinwatchos1.0/libSkiaSharp.framework/_CodeSignature/CodeResources",
-        "build/xamarinwatchos1.0/libSkiaSharp.framework/libSkiaSharp",
-        "buildTransitive/monoandroid1.0/SkiaSharp.targets",
-        "buildTransitive/net462/SkiaSharp.targets",
-        "buildTransitive/tizen40/SkiaSharp.targets",
-        "buildTransitive/xamarinios1.0/SkiaSharp.targets",
-        "buildTransitive/xamarinmac2.0/SkiaSharp.targets",
-        "buildTransitive/xamarintvos1.0/SkiaSharp.targets",
-        "buildTransitive/xamarinwatchos1.0/SkiaSharp.targets",
-        "interactive-extensions/dotnet/SkiaSharp.DotNet.Interactive.dll",
-        "lib/monoandroid1.0/SkiaSharp.dll",
-        "lib/monoandroid1.0/SkiaSharp.xml",
-        "lib/net462/SkiaSharp.dll",
-        "lib/net462/SkiaSharp.xml",
-        "lib/netstandard1.3/SkiaSharp.dll",
-        "lib/netstandard1.3/SkiaSharp.xml",
-        "lib/netstandard2.0/SkiaSharp.dll",
-        "lib/netstandard2.0/SkiaSharp.xml",
-        "lib/tizen40/SkiaSharp.dll",
-        "lib/tizen40/SkiaSharp.xml",
-        "lib/uap10.0.10240/SkiaSharp.dll",
-        "lib/uap10.0.10240/SkiaSharp.xml",
-        "lib/uap10.0.16299/SkiaSharp.dll",
-        "lib/uap10.0.16299/SkiaSharp.xml",
-        "lib/xamarinios1.0/SkiaSharp.dll",
-        "lib/xamarinios1.0/SkiaSharp.xml",
-        "lib/xamarinmac2.0/SkiaSharp.dll",
-        "lib/xamarinmac2.0/SkiaSharp.xml",
-        "lib/xamarintvos1.0/SkiaSharp.dll",
-        "lib/xamarintvos1.0/SkiaSharp.xml",
-        "lib/xamarinwatchos1.0/SkiaSharp.dll",
-        "lib/xamarinwatchos1.0/SkiaSharp.xml",
-        "runtimes/osx/native/libSkiaSharp.dylib",
-        "runtimes/win-arm64/native/libSkiaSharp.dll",
-        "runtimes/win-x64/native/libSkiaSharp.dll",
-        "runtimes/win-x86/native/libSkiaSharp.dll",
-        "runtimes/win10-arm/nativeassets/uap10.0/libEGL.dll",
-        "runtimes/win10-arm/nativeassets/uap10.0/libGLESv2.dll",
-        "runtimes/win10-arm/nativeassets/uap10.0/libSkiaSharp.dll",
-        "runtimes/win10-arm64/nativeassets/uap10.0/libEGL.dll",
-        "runtimes/win10-arm64/nativeassets/uap10.0/libGLESv2.dll",
-        "runtimes/win10-arm64/nativeassets/uap10.0/libSkiaSharp.dll",
-        "runtimes/win10-x64/nativeassets/uap10.0/libEGL.dll",
-        "runtimes/win10-x64/nativeassets/uap10.0/libGLESv2.dll",
-        "runtimes/win10-x64/nativeassets/uap10.0/libSkiaSharp.dll",
-        "runtimes/win10-x86/nativeassets/uap10.0/libEGL.dll",
-        "runtimes/win10-x86/nativeassets/uap10.0/libGLESv2.dll",
-        "runtimes/win10-x86/nativeassets/uap10.0/libSkiaSharp.dll",
-        "skiasharp.2.80.3.nupkg.sha512",
-        "skiasharp.nuspec"
       ]
     },
     "Sora/1.0.0-rc.51": {
@@ -989,31 +455,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Diagnostics.DiagnosticSource/6.0.0": {
-      "sha512": "frQDfv0rl209cKm1lnwTgFPzNigy2EKk1BS3uAvHvlBVKe5cymGyHO+Sj+NLv5VF/AhHsqPIUUwya5oV4CHMUw==",
-      "type": "package",
-      "path": "system.diagnostics.diagnosticsource/6.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/netcoreapp2.0/System.Diagnostics.DiagnosticSource.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/System.Diagnostics.DiagnosticSource.dll",
-        "lib/net461/System.Diagnostics.DiagnosticSource.xml",
-        "lib/net5.0/System.Diagnostics.DiagnosticSource.dll",
-        "lib/net5.0/System.Diagnostics.DiagnosticSource.xml",
-        "lib/net6.0/System.Diagnostics.DiagnosticSource.dll",
-        "lib/net6.0/System.Diagnostics.DiagnosticSource.xml",
-        "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
-        "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.xml",
-        "system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
-        "system.diagnostics.diagnosticsource.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
     "System.Drawing.Common/6.0.0": {
       "sha512": "NfuoKUiP2nUWwKZN6twGqXioIe1zVD0RIj2t976A+czLHr2nY454RwwXs6JU9Htc6mwqL6Dn/nEL3dpVf2jOhg==",
       "type": "package",
@@ -1051,27 +492,6 @@
         "system.drawing.common.6.0.0.nupkg.sha512",
         "system.drawing.common.nuspec",
         "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.Memory/4.5.3": {
-      "sha512": "3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA==",
-      "type": "package",
-      "path": "system.memory/4.5.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/netcoreapp2.1/_._",
-        "lib/netstandard1.1/System.Memory.dll",
-        "lib/netstandard1.1/System.Memory.xml",
-        "lib/netstandard2.0/System.Memory.dll",
-        "lib/netstandard2.0/System.Memory.xml",
-        "ref/netcoreapp2.1/_._",
-        "system.memory.4.5.3.nupkg.sha512",
-        "system.memory.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
       ]
     },
     "System.Reactive/5.0.0": {
@@ -1124,31 +544,6 @@
         "lib/netstandard2.0/System.Resources.Extensions.xml",
         "system.resources.extensions.6.0.0.nupkg.sha512",
         "system.resources.extensions.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.Runtime.CompilerServices.Unsafe/6.0.0": {
-      "sha512": "/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
-      "type": "package",
-      "path": "system.runtime.compilerservices.unsafe/6.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
-        "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
-        "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "lib/net6.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll",
-        "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.xml",
-        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
-        "system.runtime.compilerservices.unsafe.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },

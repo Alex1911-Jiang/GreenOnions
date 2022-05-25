@@ -2,23 +2,21 @@
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using GreenOnions.Utility.Items;
-using Mirai.CSharp.HttpApi.Models.ChatMessages;
-using Mirai.CSharp.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
-using IChatMessage = Mirai.CSharp.Models.ChatMessages.IChatMessage;
 using System.Linq;
+using GreenOnions.Model;
 
 namespace GreenOnions.RSS
 {
     public static class RssHelper
     {
         private static Task _RssWorker = null;
-        public static void StartRssTask(Func<UploadTarget, Stream, Task<Mirai.CSharp.Models.ChatMessages.IImageMessage>> UploadPicture, Action<long, IChatMessage[], UploadTarget> SendMessage)
+        public static void StartRssTask(Action<GreenOnionsMessageGroup, long, long> SendMessage)
         {
             if (BotInfo.RssEnabled && BotInfo.IsLogin)
             {
@@ -55,8 +53,9 @@ namespace GreenOnions.RSS
                                     if (rss.pubDate > Cache.LastOneSendRssTime[item.Url])
                                     {
                                         LogHelper.WriteInfoLog($"更新时间晚于记录时间, 需要推送消息");
-                                        PlainMessage titleMsg = new PlainMessage($"{rss.title}更新啦:\r\n{rss.description}");
-                                        PlainMessage translateMsg = null;
+
+                                        string titleMsg = $"{rss.title}更新啦:\r\n{rss.description}";
+                                        string translateMsg = null;
                                         if (item.Translate)
                                         {
                                             LogHelper.WriteInfoLog($"本条RSS订阅启用了翻译");
@@ -65,65 +64,64 @@ namespace GreenOnions.RSS
                                                 translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo) : YouDaoTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo));
                                             else
                                                 translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(rss.description) : YouDaoTranslateHelper.TranslateToChinese(rss.description));
-                                            translateMsg = new PlainMessage($"\r\n以下为翻译内容:\r\n{ translatedText }");
+                                            translateMsg = $"\r\n以下为翻译内容:\r\n{ translatedText }";
                                             LogHelper.WriteInfoLog($"翻译成功");
                                         }
 
-                                        List<MemoryStream> imgList = null;
-                                        if (rss.imgsSrc.Length > 0)
-                                        {
-                                            LogHelper.WriteInfoLog($"本条RSS内容包含图片");
-                                            imgList = new List<MemoryStream>();
-                                            for (int i = 0; i < rss.imgsSrc.Length; i++)
-                                                imgList.Add(await HttpHelper.DownloadImageAsMemoryStream(rss.imgsSrc[i]));
-                                            LogHelper.WriteInfoLog($"全部图片下载成功");
-                                        }
+                                        //List<MemoryStream> imgList = null;
+                                        //if (rss.imgsSrc.Length > 0)
+                                        //{
+                                        //    LogHelper.WriteInfoLog($"本条RSS内容包含图片");
+                                        //    imgList = new List<MemoryStream>();
+                                        //    for (int i = 0; i < rss.imgsSrc.Length; i++)
+                                        //        imgList.Add(await HttpHelper.DownloadImageAsMemoryStream(rss.imgsSrc[i]));
+                                        //    LogHelper.WriteInfoLog($"全部图片下载成功");
+                                        //}
 
                                         LogHelper.WriteInfoLog($"需要转发的组:{item.ForwardGroups.Length}个");
                                         if (item.ForwardGroups.Length > 0 )
                                         {
-                                            List<IChatMessage> chatGroupMessages = new List<IChatMessage>();
+                                            GreenOnionsMessageGroup groupResultMsg = new GreenOnionsMessageGroup();
 
                                             if (item.AtAll)
                                             {
-                                                chatGroupMessages.Add(new AtAllMessage());
-                                                chatGroupMessages.Add(new PlainMessage("\r\n"));
+                                                groupResultMsg.Add(new GreenOnionsAtMessage(-1, "全体成员"));
+                                                groupResultMsg.Add("\r\n");
                                             }
 
-                                            chatGroupMessages.Add(titleMsg);
+                                            groupResultMsg.Add(titleMsg);
                                             if (translateMsg != null)
-                                                chatGroupMessages.Add(translateMsg);
+                                                groupResultMsg.Add(translateMsg);
 
-                                            if (imgList != null)
+                                            for (int i = 0; i < rss.imgsSrc.Length; i++)
                                             {
-                                                for (int i = 0; i < imgList.Count; i++)
-                                                {
-                                                    MemoryStream stream = new MemoryStream(imgList[i].ToArray());
-                                                    chatGroupMessages.Add(await UploadPicture(UploadTarget.Group, stream));
-                                                    stream.Dispose();
-                                                }
+                                                //MemoryStream stream = new MemoryStream(imgList[i].ToArray());
+                                                groupResultMsg.Add(new GreenOnionsImageMessage(rss.imgsSrc[i]));
+                                                //stream.Dispose();
                                             }
 
-                                            chatGroupMessages.Add(new PlainMessage($"\r\n更新时间:{rss.pubDate}"));
-                                            chatGroupMessages.Add(new PlainMessage($"\r\n原文地址:{rss.link}"));
+                                            groupResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
+                                            groupResultMsg.Add($"\r\n原文地址:{rss.link}");
 
                                             LogHelper.WriteInfoLog($"组合群消息完成");
 
                                             if (item.SendByForward)
                                             {
                                                 LogHelper.WriteInfoLog($"发送模式为合并转发");
-                                                ForwardMessage forwardMessage = new ForwardMessage(new[] { new ForwardMessageNode()
-                                                {
-                                                    Id = 0,
-                                                    Name = BotInfo.BotName,
-                                                    QQNumber = BotInfo.QQId,
-                                                    Time = DateTime.Now,
-                                                    Chain = chatGroupMessages.Select( c => c as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
-                                                }});
+                                                //ForwardMessage forwardMessage = new ForwardMessage(new[] { new ForwardMessageNode()
+                                                //{
+                                                //    Id = 0,
+                                                //    Name = BotInfo.BotName,
+                                                //    QQNumber = BotInfo.QQId,
+                                                //    Time = DateTime.Now,
+                                                //    Chain = chatGroupMessages.Select( c => c as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
+                                                //}});
+
+                                                GreenOnionsForwardMessage greenOnionsForwardMessage = new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, groupResultMsg);
+
                                                 for (int i = 0; i < item.ForwardGroups.Length; i++)
                                                 {
-                                                    if (!BotInfo.DebugMode || BotInfo.DebugGroups.Contains(item.ForwardGroups[i]))
-                                                        SendMessage?.Invoke(item.ForwardGroups[i], new[] { forwardMessage }, UploadTarget.Group);
+                                                    SendMessage(greenOnionsForwardMessage, -1, item.ForwardGroups[i]);
                                                 }
                                             }
                                             else
@@ -131,8 +129,7 @@ namespace GreenOnions.RSS
                                                 LogHelper.WriteInfoLog($"发送模式为直接发送");
                                                 for (int i = 0; i < item.ForwardGroups.Length; i++)
                                                 {
-                                                    if (!BotInfo.DebugMode || BotInfo.DebugGroups.Contains(item.ForwardGroups[i]))
-                                                        SendMessage?.Invoke(item.ForwardGroups[i], chatGroupMessages.ToArray(), UploadTarget.Group);
+                                                    SendMessage(groupResultMsg, -1, item.ForwardGroups[i]);
                                                 }
                                             }
                                             LogHelper.WriteInfoLog($"全部群消息发送完毕");
@@ -140,41 +137,40 @@ namespace GreenOnions.RSS
                                         LogHelper.WriteInfoLog($"需要转发的好友:{item.ForwardQQs.Length}个");
                                         if (item.ForwardQQs.Length > 0)
                                         {
-                                            List<IChatMessage> chatFriendMessages = new List<IChatMessage>();
-                                            chatFriendMessages.Add(titleMsg);
-                                            if (translateMsg != null)
-                                                chatFriendMessages.Add(translateMsg);
+                                            GreenOnionsMessageGroup friendResultMsg = new GreenOnionsMessageGroup();
 
-                                            if (imgList != null)
+                                            friendResultMsg.Add(titleMsg);
+                                            if (translateMsg != null)
+                                                friendResultMsg.Add(translateMsg);
+
+                                            for (int i = 0; i < rss.imgsSrc.Length; i++)
                                             {
-                                                for (int i = 0; i < imgList.Count; i++)
-                                                {
-                                                    MemoryStream stream = new MemoryStream(imgList[i].ToArray());
-                                                    chatFriendMessages.Add(await UploadPicture(UploadTarget.Friend, stream));
-                                                    stream.Dispose();
-                                                }
+                                                //MemoryStream stream = new MemoryStream(imgList[i].ToArray());
+                                                friendResultMsg.Add(new GreenOnionsImageMessage(rss.imgsSrc[i]));
+                                                //stream.Dispose();
                                             }
 
-                                            chatFriendMessages.Add(new PlainMessage($"\r\n更新时间:{rss.pubDate}"));
-                                            chatFriendMessages.Add(new PlainMessage($"\r\n原文地址:{rss.link}"));
+                                            friendResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
+                                            friendResultMsg.Add($"\r\n原文地址:{rss.link}");
 
                                             LogHelper.WriteInfoLog($"组合好友消息完成");
 
                                             if (item.SendByForward)
                                             {
                                                 LogHelper.WriteInfoLog($"发送模式为合并转发");
-                                                ForwardMessage forwardMessage = new ForwardMessage(new[] { new ForwardMessageNode()
-                                                {
-                                                    Id = 0,
-                                                    Name = BotInfo.BotName,
-                                                    QQNumber = BotInfo.QQId,
-                                                    Time = DateTime.Now,
-                                                    Chain = chatFriendMessages.Select( c => c as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
-                                                }});
+                                                //ForwardMessage forwardMessage = new ForwardMessage(new[] { new ForwardMessageNode()
+                                                //{
+                                                //    Id = 0,
+                                                //    Name = BotInfo.BotName,
+                                                //    QQNumber = BotInfo.QQId,
+                                                //    Time = DateTime.Now,
+                                                //    Chain = chatFriendMessages.Select( c => c as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
+                                                //}});
+                                                GreenOnionsForwardMessage greenOnionsForwardMessage = new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, friendResultMsg);
+
                                                 for (int i = 0; i < item.ForwardQQs.Length; i++)
                                                 {
-                                                    if (!BotInfo.DebugMode || BotInfo.AdminQQ.Contains(item.ForwardQQs[i]))
-                                                        SendMessage?.Invoke(item.ForwardQQs[i], new[] { forwardMessage }, UploadTarget.Friend);
+                                                    SendMessage(friendResultMsg, item.ForwardQQs[i], -1);
                                                 }
                                             }
                                             else
@@ -182,8 +178,7 @@ namespace GreenOnions.RSS
                                                 LogHelper.WriteInfoLog($"发送模式为直接发送");
                                                 for (int i = 0; i < item.ForwardQQs.Length; i++)
                                                 {
-                                                    if (!BotInfo.DebugMode || BotInfo.AdminQQ.Contains(item.ForwardQQs[i]))
-                                                        SendMessage?.Invoke(item.ForwardQQs[i], chatFriendMessages.ToArray(), UploadTarget.Friend);
+                                                    SendMessage(friendResultMsg, item.ForwardQQs[i], -1);
                                                 }
                                             }
                                             LogHelper.WriteInfoLog($"全部好友消息发送完毕");

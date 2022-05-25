@@ -57,67 +57,66 @@ namespace GreenOnions.BotMain.CqHttp
         public static ValueTask Event_OnGroupMessage(string eventType, Sora.EventArgs.SoraEvent.GroupMessageEventArgs eventArgs)
         {
             var msg = eventArgs.Message.MessageBody.FirstOrDefault();
-            GreenOnionsBaseMessage[] greenOnionsMsgs = null;
+            GreenOnionsMessageGroup greenOnionsMsgs = null;
 
-            if (msg != null)
-            {
-                if (msg.Data is AtSegment)
-                {
+            //if (msg != null)
+            //{
+            //    if (msg.Data is AtSegment)
+            //    {
 
-                }
-                else if (msg.Data is TextSegment textMsg)
-                {
-                    string firstText = textMsg.Content;
+            //    }
+            //    else if (msg.Data is TextSegment textMsg)
+            //    {
+            //        string firstText = textMsg.Content;
 
-                    #region -- 伪造消息 --
-                    if (BotInfo.ForgeMessageEnabled && regexForgeMessage.IsMatch(firstText))
-                    {
-                        LogHelper.WriteInfoLog($"{eventArgs.Sender.Id}消息触发伪造消息");
-                        GreenOnionsBaseMessage forgeMsg = ForgeMessageHandler.SendForgeMessage(eventArgs.Message.MessageBody.ToOnionsMessages(), eventArgs.Sender.Id);
-                        greenOnionsMsgs = new GreenOnionsBaseMessage[] { forgeMsg };
+            //        #region -- 伪造消息 --
+            //        if (BotInfo.ForgeMessageEnabled && regexForgeMessage.IsMatch(firstText))
+            //        {
+            //            LogHelper.WriteInfoLog($"{eventArgs.Sender.Id}消息触发伪造消息");
+            //            greenOnionsMsgs = ForgeMessageHandler.SendForgeMessage(eventArgs.Message.MessageBody.ToOnionsMessages(), eventArgs.Sender.Id);
                         
-                        return ValueTask.CompletedTask;
-                    }
-                    #endregion -- 伪造消息 --
+            //            return ValueTask.CompletedTask;
+            //        }
+            //        #endregion -- 伪造消息 --
 
-                    #region -- 帮助 --
-                    greenOnionsMsgs = HelpHandler.Helps(regexHelp, firstText, eventArgs.SourceGroup.Id);
-                    #endregion -- 帮助 --
-                }
-                else if (msg.Data is ImageSegment)
-                {
+            //        #region -- 帮助 --
+            //        greenOnionsMsgs = HelpHandler.Helps(regexHelp, firstText, eventArgs.SourceGroup.Id);
+            //        #endregion -- 帮助 --
+            //    }
+            //    else if (msg.Data is ImageSegment)
+            //    {
 
-                }
-            }
+            //    }
+            //}
 
-            if (greenOnionsMsgs != null && greenOnionsMsgs.Length > 0)
-            {
-                if (greenOnionsMsgs.FirstOrDefault() is GreenOnionsForwardMessage forwardMsg)
-                {
-                    List<CustomNode> customNodes = new();
-                    for (int i = 0; i < forwardMsg.ItemMessages.Count; i++)
-                    {
-                        customNodes.Add(new(forwardMsg.ItemMessages[i].NickName, forwardMsg.ItemMessages[i].QQid, CreateCqMessages(new[] { forwardMsg.ItemMessages[i].itemMessage })));
-                    }
-                    eventArgs.SourceGroup.SendGroupForwardMsg(customNodes);
-                }
-                else
-                {
-                    var valueTask = eventArgs.SourceGroup.SendGroupMessage(CreateCqMessages(greenOnionsMsgs));
-                    if (valueTask.Result.apiStatus.RetCode == ApiStatusType.Ok)
-                    {
-                        //eventArgs.SoraApi.RecallMessage(valueTask.Result.messageId);
-                    }
-                }
-            }
+            //if (greenOnionsMsgs != null && greenOnionsMsgs.Count > 0)
+            //{
+            //    if (greenOnionsMsgs.FirstOrDefault() is GreenOnionsForwardMessage forwardMsg)
+            //    {
+            //        List<CustomNode> customNodes = new();
+            //        for (int i = 0; i < forwardMsg.ItemMessages.Count; i++)
+            //        {
+            //            customNodes.Add(new(forwardMsg.ItemMessages[i].NickName, forwardMsg.ItemMessages[i].QQid, CreateCqMessages(new[] { forwardMsg.ItemMessages[i].itemMessage })));
+            //        }
+            //        eventArgs.SourceGroup.SendGroupForwardMsg(customNodes);
+            //    }
+            //    else
+            //    {
+            //        var valueTask = eventArgs.SourceGroup.SendGroupMessage(CreateCqMessages(greenOnionsMsgs));
+            //        if (valueTask.Result.apiStatus.RetCode == ApiStatusType.Ok)
+            //        {
+            //            //eventArgs.SoraApi.RecallMessage(valueTask.Result.messageId);
+            //        }
+            //    }
+            //}
 
             return ValueTask.CompletedTask;
         }
 
-        private static MessageBody CreateCqMessages(GreenOnionsBaseMessage[] greenOnionsMsgs)
+        private static MessageBody CreateCqMessages(GreenOnionsMessageGroup greenOnionsMsgs)
         {
             MessageBody msg = new();
-            for (int i = 0; i < greenOnionsMsgs.Length; i++)
+            for (int i = 0; i < greenOnionsMsgs.Count; i++)
             {
                 if (greenOnionsMsgs[i] is GreenOnionsAtMessage atMsg)
                     msg.Add(SoraSegment.At(atMsg.AtId));
@@ -126,30 +125,12 @@ namespace GreenOnions.BotMain.CqHttp
                     if (imageMsg.MemoryStream == null)
                         msg.Add(SoraSegment.Image(imageMsg.Url));
                     else
-                        msg.Add(SoraSegment.Image(MemoryStreamToBase64(imageMsg.MemoryStream)));
+                        msg.Add(SoraSegment.Image(imageMsg.MemoryStream.ToBase64()));
                 }
                 else if (greenOnionsMsgs[i] is GreenOnionsTextMessage textMsg)
                     msg.Add(SoraSegment.Text(textMsg.Text));
             }
             return msg;
-        }
-
-        private static string MemoryStreamToBase64(MemoryStream ms)
-        {
-            try
-            {
-                byte[] arr = new byte[ms.Length];
-                ms.Position = 0;
-                ms.Read(arr, 0, (int)ms.Length);
-                ms.Close();
-                string base64Img = Convert.ToBase64String(arr);
-                ms.Dispose();
-                return base64Img;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
         }
     }
 }

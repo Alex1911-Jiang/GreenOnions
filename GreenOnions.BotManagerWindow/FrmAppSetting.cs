@@ -66,36 +66,15 @@ namespace GreenOnions.BotManagerWindow
             txbSearchModeAlreadyOffReply.Text = BotInfo.SearchModeAlreadyOffReply;
             txbSearchNoResultReply.Text = BotInfo.SearchNoResultReply;
             txbSearchErrorReply.Text = BotInfo.SearchErrorReply;
-            txbSearchLowSimilarity.Text = BotInfo.SearchLowSimilarity.ToString();
+            txbSauceNAOSearchLowSimilarity.Text = BotInfo.SearchSauceNAOLowSimilarity.ToString();
             txbSearchLowSimilarityReply.Text = BotInfo.SearchLowSimilarityReply;
+            txbSearchDownloadThuImageFailReply.Text = BotInfo.SearchDownloadThuImageFailReply;
 
             chkCheckPornEnabled.Checked = BotInfo.CheckPornEnabled; //是否启用腾讯云鉴黄
             chkPictureSearcherCheckPornEnabled.Checked = BotInfo.SearchCheckPornEnabled;  //是否在搜图启用鉴黄
             txbSearchCheckPornIllegalReply.Text = BotInfo.SearchCheckPornIllegalReply;
             txbSearchCheckPornErrorReply.Text = BotInfo.SearchCheckPornErrorReply;
             txbCheckPornLimitCount.Text = BotInfo.CheckPornLimitCount.ToString();
-            switch (BotInfo.SearchCheckPornOutOfLimitEvent)
-            {
-                case 0:
-                    rdoSearchCheckPornOutOfLimitSend.Checked = true;
-                    break;
-                case 1:
-                    rdoSearchCheckPornOutOfLimitDontSend.Checked = true;
-                    break;
-                case 2:
-                    rdoSearchCheckPornOutOfLimitAppend.Checked = true;
-                    break;
-            }
-            txbSearchCheckPornOutOfLimitReply.Text = BotInfo.SearchCheckPornOutOfLimitReply;
-            switch (BotInfo.SearchNoCheckPorn)
-            {
-                case 0:
-                    rdoNoCheckPornSend.Checked = true;
-                    break;
-                case 1:
-                    rdoNoCheckPornDontSend.Checked = true;
-                    break;
-            }
 
             chkOriginPictureEnabled.Checked = BotInfo.OriginPictureEnabled;
             chkOriginPictureCheckPornEnabled.Checked = BotInfo.OriginPictureCheckPornEnabled;  //是否在下载原图启用鉴黄
@@ -194,12 +173,9 @@ namespace GreenOnions.BotManagerWindow
             chkPM.Checked = BotInfo.HPictureAllowPM;
             chkAntiShielding.Checked = BotInfo.HPictureAntiShielding;
             chkSize1200.Checked = BotInfo.HPictureSize1200;
-            chkDownloadAccelerate.Checked = BotInfo.EnabledAccelerate;
-            txbDownloadAccelerateUrl.Text = BotInfo.AccelerateUrl;
             txbLimit.Text = BotInfo.HPictureLimit.ToString();
             chkPMNoLimit.Checked = BotInfo.HPicturePMNoLimit;
             chkAdminNoLimit.Checked = BotInfo.HPictureAdminNoLimit;
-            chkManageNoLimit.Checked = BotInfo.HPictureManageNoLimit;
             chkWhiteNoLimit.Checked = BotInfo.HPictureWhiteNoLimit;
             txbCD.Text = BotInfo.HPictureCD.ToString();
             txbRevoke.Text = BotInfo.HPictureRevoke.ToString();
@@ -220,7 +196,6 @@ namespace GreenOnions.BotManagerWindow
             {
                 rdoHPictureLimitFrequency.Checked = true;
             }
-            chkMultithreading.Checked = BotInfo.HPictureMultithreading;
 
             #endregion -- 色图设置 --
 
@@ -334,8 +309,6 @@ namespace GreenOnions.BotManagerWindow
                 tempBannedUser.Add(Convert.ToInt64(item.SubItems[0].Text));
             }
             BotInfo.BannedUser = tempBannedUser;
-            BotInfo.EnabledAccelerate = chkDownloadAccelerate.Checked;
-            BotInfo.AccelerateUrl = txbDownloadAccelerateUrl.Text;
 
             BotInfo.DebugMode = chkDebugMode.Checked;
             List<long> tempDebugGroups = new List<long>();
@@ -369,11 +342,16 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.SearchModeAlreadyOffReply = txbSearchModeAlreadyOffReply.Text;
             BotInfo.SearchNoResultReply = txbSearchNoResultReply.Text;
             BotInfo.SearchErrorReply = txbSearchErrorReply.Text;
-            int iLowSimilarity;
-            if (!int.TryParse(txbSearchLowSimilarity.Text, out iLowSimilarity))
-                iLowSimilarity = 60;
-            BotInfo.SearchLowSimilarity = iLowSimilarity;  //相似度阈值
+            int iLowSauceNAOSimilarity;
+            if (!int.TryParse(txbSauceNAOSearchLowSimilarity.Text, out iLowSauceNAOSimilarity))
+                iLowSauceNAOSimilarity = 60;
+            BotInfo.SearchSauceNAOLowSimilarity = iLowSauceNAOSimilarity;  //低相似度阈值
             BotInfo.SearchLowSimilarityReply = txbSearchLowSimilarityReply.Text;
+            int iHighSauceNAOSimilarity;
+            if (!int.TryParse(txbSearchSauceNAOHighSimilarity.Text, out iHighSauceNAOSimilarity))
+                iHighSauceNAOSimilarity = 90;
+            BotInfo.SearchSauceNAOHighSimilarity = iHighSauceNAOSimilarity;  //高相似度阈值
+            BotInfo.SearchDownloadThuImageFailReply = txbSearchDownloadThuImageFailReply.Text;
             BotInfo.CheckPornEnabled = chkCheckPornEnabled.Checked;  //是否启用腾讯云鉴黄
             BotInfo.SearchCheckPornEnabled = chkPictureSearcherCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
             BotInfo.SearchCheckPornIllegalReply = txbSearchCheckPornIllegalReply.Text;
@@ -386,9 +364,7 @@ namespace GreenOnions.BotManagerWindow
             if (!int.TryParse(txbCheckPornLimitCount.Text, out iCheckPornLimitCount))
                 iCheckPornLimitCount = 2000;
             BotInfo.CheckPornLimitCount = iCheckPornLimitCount;
-            BotInfo.SearchCheckPornOutOfLimitEvent = Convert.ToInt32(pnlPictureSearcherCheckPorn.Controls.OfType<RadioButton>().Where(x => x.Checked).First().Tag);
             BotInfo.SearchCheckPornOutOfLimitReply = txbSearchCheckPornOutOfLimitReply.Text;
-            BotInfo.SearchNoCheckPorn = Convert.ToInt32(pnlNoCheckPorn.Controls.OfType<RadioButton>().Where(x => x.Checked).First().Tag); 
 
             #region -- 腾讯云相关设置 --
             BotInfo.TencentCloudAPPID = txbTencentCloudAPPID.Text;
@@ -479,7 +455,6 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.HPictureLimit = string.IsNullOrEmpty(txbLimit.Text) ? 0 : Convert.ToInt32(txbLimit.Text);
             BotInfo.HPicturePMNoLimit = chkPMNoLimit.Checked;
             BotInfo.HPictureAdminNoLimit = chkAdminNoLimit.Checked;
-            BotInfo.HPictureManageNoLimit = chkManageNoLimit.Checked;
             BotInfo.HPictureCD = string.IsNullOrEmpty(txbCD.Text) ? 0 : Convert.ToInt32(txbCD.Text);
             BotInfo.HPictureRevoke = string.IsNullOrEmpty(txbRevoke.Text) ? 0 : Convert.ToInt32(txbRevoke.Text);
             BotInfo.HPictureWhiteCD = string.IsNullOrEmpty(txbWhiteCD.Text) ? 0 : Convert.ToInt32(txbWhiteCD.Text);
@@ -493,7 +468,6 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.HPictureDownloadFailReply = txbDownloadFailReply.Text;
             BotInfo.HPictureLimitType = rdoHPictureLimitFrequency.Checked ? LimitType.Frequency : LimitType.Count;
             BotInfo.HPictureWhiteNoLimit = chkWhiteNoLimit.Checked;
-            BotInfo.HPictureMultithreading = chkMultithreading.Checked;
             #endregion -- 色图设置 --
 
             #region -- 复读设置 --
@@ -588,7 +562,7 @@ namespace GreenOnions.BotManagerWindow
             foreach (string sauceNaoKey in txbSauceNAOApiKey.Text.Split("\r\n"))
                 Cache.SetSauceNaoKey(sauceNaoKey);
 
-            PlainMessageHandler.UpdateRegexs();
+            MessageHandler.UpdateRegexs();
 
             Close();
         }
@@ -723,8 +697,6 @@ namespace GreenOnions.BotManagerWindow
             AddStringToCmd();
         }
 
-        private void chkDownloadAccelerate_CheckedChanged(object sender, EventArgs e) => txbDownloadAccelerateUrl.Enabled = chkDownloadAccelerate.Checked;
-
         private void chkHPictureBeginNull_CheckedChanged(object sender, EventArgs e) => AddStringToCmd();
 
         private void chkSearchPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchPicture.Enabled = chkSearchPictureEnabled.Checked;
@@ -834,11 +806,7 @@ namespace GreenOnions.BotManagerWindow
         
         private void chkRssEnabled_CheckedChanged(object sender, EventArgs e) => pnlRss.Enabled = chkRssEnabled.Checked;
 
-        private void chkPictureSearcherCheckPornEnabled_CheckedChanged(object sender, EventArgs e)
-        {
-            pnlPictureSearcherCheckPorn.Enabled = chkPictureSearcherCheckPornEnabled.Checked;
-            pnlNoCheckPorn.Enabled = !chkPictureSearcherCheckPornEnabled.Checked;
-        } 
+        private void chkPictureSearcherCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlPictureSearcherCheckPorn.Enabled = chkPictureSearcherCheckPornEnabled.Checked;
 
         private void chkOriginPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlOriginPicture.Enabled = chkOriginPictureEnabled.Checked;
 

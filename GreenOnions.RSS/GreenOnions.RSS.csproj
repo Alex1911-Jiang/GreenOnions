@@ -16,10 +16,10 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
-    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GreenOnions.Model\GreenOnions.Model.csproj" />
     <ProjectReference Include="..\GreenOnions.Translate\GreenOnions.Translate.csproj" />
     <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />
   </ItemGroup>
