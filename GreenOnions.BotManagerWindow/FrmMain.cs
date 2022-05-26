@@ -125,7 +125,7 @@ namespace GreenOnions.BotManagerWindow
         {
 			if (bConnect)
 			{
-				lblState.Text = $"连接状态: 已连接到cqhttp, 登录昵称:{nickNameOrErrorMessage}";
+				lblState.Text = $"连接状态: 已连接到{protocol}, 登录昵称:{nickNameOrErrorMessage}";
 				lblState.ForeColor = Color.Black;
 
 				btnConnectToMiraiApiHttp.Text = "断开连接";

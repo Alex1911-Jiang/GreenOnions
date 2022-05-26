@@ -68,12 +68,12 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 BotInfo.IsLogin = true;
 
-                RssHelper.StartRssTask((target, stream) => session.UploadPictureAsync(target, stream), (qqId, msg, type) => 
+                RssHelper.StartRssTask(async (msg, targetId, targetGroup) =>
                 {
-                    if (type == UploadTarget.Group)
-                        session.SendGroupMessageAsync(qqId, msg);
-                    else if (type == UploadTarget.Friend)
-                        session.SendFriendMessageAsync(qqId, msg);
+                    if (targetId == -1)
+                        _ = session.SendGroupMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Group));
+                    else if (targetGroup == -1)
+                        _ = session.SendFriendMessageAsync(targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend));
                 });
 
                 while (true)

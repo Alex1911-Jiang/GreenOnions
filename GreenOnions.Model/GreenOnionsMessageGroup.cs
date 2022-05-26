@@ -29,5 +29,9 @@
         {
             AddRange(messages);
         }
+
+        public bool Reply { get; set; } = true;
+
+        public int RevokeTime { get; set; } = 0;
     }
 }

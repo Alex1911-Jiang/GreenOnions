@@ -111,10 +111,10 @@ namespace GreenOnions.PictureSearcher
                         sauceNaoTask.ContinueWith(callback =>
                         {
                             var sauceNaoSearchResult = callback.Result;
-                            if (BotInfo.SearchEnabledASCII2D)
+                            if (BotInfo.SearchEnabledASCII2D && sauceNaoSearchResult.DoAscii2dSearch)
                             {
-                                sauceNaoSearchResult.OutMessages += "\r\n自动使用ASCII2D搜索。";
-                                SearchAscii2D(qqImgUrl).ContinueWith(callback => SendMessage(callback.Result));  //直接发送
+                                sauceNaoSearchResult.OutMessages.Add("\r\n自动使用ASCII2D搜索。");
+                                _ = SearchAscii2D(qqImgUrl).ContinueWith(callback => SendMessage(callback.Result));  //直接发送
                             }
                             SendMessage(sauceNaoSearchResult.OutMessages);
                         });
@@ -133,10 +133,13 @@ namespace GreenOnions.PictureSearcher
                         SearchAscii2D(qqImgUrl).ContinueWith(callback => SendMessage(callback.Result));
                 }
 
-                Task.Factory.ContinueWhenAll(searchTasks.ToArray(), callback => 
+                if (BotInfo.SearchSendByForward)
                 {
-                    SendMessage(new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, outMessage));  //合并转发
-                });
+                    Task.Factory.ContinueWhenAll(searchTasks.ToArray(), callback =>
+                    {
+                        SendMessage(new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, outMessage));  //合并转发
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -148,6 +151,10 @@ namespace GreenOnions.PictureSearcher
         private static async Task<GreenOnionsMessageGroup> SearchTraceMoe(string qqImgUrl)
         {
             LogHelper.WriteInfoLog("进入TraceMoe搜图逻辑");
+            if (!qqImgUrl.StartsWith(@"http://"))
+            {
+                qqImgUrl = "http://" + qqImgUrl;
+            }
             string TraceMoeUrl = @$"https://api.trace.moe/search?anilistInfo&url={qqImgUrl}";  //https://trace.moe/?url=  //https://trace.moe/api/search?url=
             try
             {
@@ -498,7 +505,7 @@ namespace GreenOnions.PictureSearcher
                         #endregion -- 其他体系 --
 
                         //如果优先度高的没有地址
-                        if (sauceNaoItem.ext_urls == null && string.IsNullOrEmpty(sauceNaoItem.source))
+                        if (sauceNaoItem.ext_urls == null)
                         {
                             LogHelper.WriteInfoLog($"搜图结果不含来源地址, 查找相似度低一级的结果");
                             continue;
@@ -525,15 +532,19 @@ namespace GreenOnions.PictureSearcher
 
                         LogHelper.WriteInfoLog($"搜索到包含{sauceNaoItem.ext_urls.Count}条地址");
 
-                        if (!string.IsNullOrEmpty(sauceNaoItem.source)) stringBuilder.AppendLine("图片来源：" + HttpUtility.UrlDecode(sauceNaoItem.source));
+                        if (!string.IsNullOrEmpty(sauceNaoItem.source)) 
+                            stringBuilder.AppendLine("图片来源：" + HttpUtility.UrlDecode(sauceNaoItem.source));
                         stringBuilder.AppendLine($"相似度：{sauceNaoItem.similarity}%(SauceNAO)");  //一定有相似度
-                        if (!string.IsNullOrEmpty(sauceNaoItem.title)) stringBuilder.AppendLine("标题：" + HttpUtility.UrlDecode(sauceNaoItem.title));
+                        if (!string.IsNullOrEmpty(sauceNaoItem.title)) 
+                            stringBuilder.AppendLine("标题：" + HttpUtility.UrlDecode(sauceNaoItem.title));
                         if (!string.IsNullOrEmpty(sauceNaoItem.member_name))
                             stringBuilder.AppendLine("作者：" + HttpUtility.UrlDecode(sauceNaoItem.member_name));
                         else if (!string.IsNullOrEmpty(sauceNaoItem.creator))
                             stringBuilder.AppendLine("作者：" + HttpUtility.UrlDecode(sauceNaoItem.creator));
-                        if (!string.IsNullOrEmpty(sauceNaoItem.characters)) stringBuilder.AppendLine("角色：" + HttpUtility.UrlDecode(sauceNaoItem.characters));
-                        if (!string.IsNullOrEmpty(sauceNaoItem.material)) stringBuilder.AppendLine("所属：" + HttpUtility.UrlDecode(sauceNaoItem.material));
+                        if (!string.IsNullOrEmpty(sauceNaoItem.characters)) 
+                            stringBuilder.AppendLine("角色：" + HttpUtility.UrlDecode(sauceNaoItem.characters));
+                        if (!string.IsNullOrEmpty(sauceNaoItem.material))
+                            stringBuilder.AppendLine("所属：" + HttpUtility.UrlDecode(sauceNaoItem.material));
 
                         GreenOnionsMessageGroup outMessage = new GreenOnionsMessageGroup(stringBuilder);
 

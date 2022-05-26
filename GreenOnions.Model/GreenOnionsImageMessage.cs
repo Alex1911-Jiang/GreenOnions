@@ -21,7 +21,7 @@
             }
         }
 
-        public string Base64Str { get; }
+        public string Base64Str => _base64Str;
         public string? Url { get; set; }
     }
 }

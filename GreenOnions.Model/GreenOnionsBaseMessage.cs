@@ -16,9 +16,5 @@ namespace GreenOnions.Model
         {
             return new GreenOnionsImageMessage(image);
         }
-
-        public bool Reply { get; set; } = true;
-
-        public int RevokeTime { get; set; } = 0;
     }
 }

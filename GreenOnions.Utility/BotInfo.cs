@@ -235,9 +235,23 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledSauceNao));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
+                return true;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledSauceNao), value.ToString());
+        }
+        
+        /// <summary>
+        /// 是否SauceNao搜图发送Pixiv原图
+        /// </summary>
+        public static bool SearchSauceNAOSendPixivOriginPicture
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginPicture));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginPicture), value.ToString());
         }
 
         /// <summary>
@@ -430,7 +444,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string SearchLowSimilarityReply
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply)) ?? "相似度低于<相似度阈值>%，缩略图不予显示。";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply)) ?? "相似度低于<SauceNAO低相似度阈值>%，缩略图不予显示。";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply), value);
         }
         
@@ -1313,7 +1327,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string HPictureDownloadFailReply
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureDownloadFailReply)) ?? "地址为:<URL>的色图不见了，可能是色图服务器下载失败或图真的没了o(╥﹏╥)o (如连续出现时请检查<机器人名称>网络/代理/加速链/墙问题。)";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureDownloadFailReply)) ?? "地址为:<URL>的色图不见了，可能是色图服务器下载失败或图真的没了o(╥﹏╥)o (如连续出现时请检查<机器人名称>网络/代理/墙问题。)";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureDownloadFailReply), value);
         }
 

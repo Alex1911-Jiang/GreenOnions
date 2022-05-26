@@ -365,7 +365,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
 
             #region -- 复读 --
-            if (senderGroup != null)
+            if (senderGroup != null && (BotInfo.SuccessiveRepeatEnabled || BotInfo.RandomRepeatEnabled))
             {
                 if (inMsg.Count == 1)
                 {

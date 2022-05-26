@@ -213,13 +213,13 @@ namespace GreenOnions.HPicture
             {
                 GreenOnionsImageMessage imgMsg = CreateOnceLoliconHPicture(imgItem);
                 if (senderGroup == null)
-                    imgMsg.RevokeTime = BotInfo.HPicturePMRevoke;
+                    outMessage.RevokeTime = BotInfo.HPicturePMRevoke;
                 else
                 {
                     if (BotInfo.HPictureWhiteGroup.Contains(senderGroup.Value))
-                        imgMsg.RevokeTime = BotInfo.HPictureWhiteRevoke;
+                        outMessage.RevokeTime = BotInfo.HPictureWhiteRevoke;
                     else
-                        imgMsg.RevokeTime = BotInfo.HPictureRevoke;
+                        outMessage.RevokeTime = BotInfo.HPictureRevoke;
                 }
                 outMessage.Add(imgMsg);
                 RecordLimit(senderId, senderGroup, LimitType.Count);
@@ -263,13 +263,13 @@ namespace GreenOnions.HPicture
                     if (BotInfo.RevokeBeautyPicture)
                     {
                         if (senderGroup == null)
-                            imgMsg.RevokeTime = BotInfo.HPicturePMRevoke;
+                            outMessage.RevokeTime = BotInfo.HPicturePMRevoke;
                         else
                         {
                             if (BotInfo.HPictureWhiteGroup.Contains(senderGroup.Value))
-                                imgMsg.RevokeTime = BotInfo.HPictureWhiteRevoke;
+                                outMessage.RevokeTime = BotInfo.HPictureWhiteRevoke;
                             else
-                                imgMsg.RevokeTime = BotInfo.HPictureRevoke;
+                                outMessage.RevokeTime = BotInfo.HPictureRevoke;
                         }
                     }
                     outMessage.Add(imgMsg);

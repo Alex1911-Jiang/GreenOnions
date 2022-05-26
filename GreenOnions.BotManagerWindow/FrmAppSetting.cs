@@ -18,6 +18,9 @@ namespace GreenOnions.BotManagerWindow
         {
             base.OnShown(e);
 
+            if (pnlHPictureCheckBoxes.Left < 519)  //狗屎设计器整天有Bug自动移动位置
+                pnlHPictureCheckBoxes.Left = 519;
+
             cboLogLevel.SelectedIndex = BotInfo.LogLevel;
 
             #region -- 通用设置 --
@@ -47,16 +50,27 @@ namespace GreenOnions.BotManagerWindow
             chkOnlyReplyDebugGroup.Checked = BotInfo.OnlyReplyDebugGroup;
             chkDebugReplyAdminOnly.Checked = BotInfo.DebugReplyAdminOnly;
             chkHttpRequestByWebBrowser.Checked = BotInfo.HttpRequestByWebBrowser;
+            chkCheckPornEnabled.Checked = BotInfo.CheckPornEnabled; //是否启用腾讯云鉴黄
+            txbCheckPornLimitCount.Text = BotInfo.CheckPornLimitCount.ToString();
+
+            #region -- 腾讯云相关设置 --
+            txbTencentCloudAPPID.Text = BotInfo.TencentCloudAPPID;
+            txbTencentCloudRegion.Text = BotInfo.TencentCloudRegion;
+            txbTencentCloudSecretId.Text = BotInfo.TencentCloudSecretId;
+            txbTencentCloudSecretKey.Text = BotInfo.TencentCloudSecretKey;
+            txbTencentCloudBucket.Text = BotInfo.TencentCloudBucket;
+            #endregion -- 腾讯云相关设置 --
+
             #endregion -- 通用设置 --
 
             #region -- 搜图设置 --
             txbTraceMoeSendThreshold.Text = BotInfo.TraceMoeSendThreshold.ToString();
-            //txbTraceMoeStopThreshold.Text = BotInfo.TraceMoeStopThreshold.ToString();
             chkSearchPictureEnabled.Checked = BotInfo.SearchEnabled;  //是否启用搜图功能
             chkSearchSauceNAOEnabled.Checked = BotInfo.SearchEnabledSauceNao;  //SauceNao Api-Key
-            txbSauceNAOApiKey.Text = string.Join("\r\n", BotInfo.SauceNAOApiKey);
+            chkSearchSauceNAOSendPixivOriginPicture.Checked = BotInfo.SearchSauceNAOSendPixivOriginPicture;
+            txbSearchSauceNAOApiKey.Text = string.Join("\r\n", BotInfo.SauceNAOApiKey);
             chkSearchASCII2DEnabled.Checked = BotInfo.SearchEnabledASCII2D;  //是否启用ASCII2D搜图
-            chkTraceMoeEnabled.Checked = BotInfo.SearchEnabledTraceMoe;  //是否启用TraceMoe搜番
+            chkSearchTraceMoeEnabled.Checked = BotInfo.SearchEnabledTraceMoe;  //是否启用TraceMoe搜番
             txbSearchModeOnCmd.Text = BotInfo.SearchModeOnCmd;
             txbSearchModeOffCmd.Text = BotInfo.SearchModeOffCmd;
             txbSearchModeTimeOutReply.Text = BotInfo.SearchModeTimeOutReply;
@@ -66,15 +80,14 @@ namespace GreenOnions.BotManagerWindow
             txbSearchModeAlreadyOffReply.Text = BotInfo.SearchModeAlreadyOffReply;
             txbSearchNoResultReply.Text = BotInfo.SearchNoResultReply;
             txbSearchErrorReply.Text = BotInfo.SearchErrorReply;
-            txbSauceNAOSearchLowSimilarity.Text = BotInfo.SearchSauceNAOLowSimilarity.ToString();
+            txbSearchSauceNAOLowSimilarity.Text = BotInfo.SearchSauceNAOLowSimilarity.ToString();
+            txbSearchSauceNAOHighSimilarity.Text = BotInfo.SearchSauceNAOHighSimilarity.ToString();
             txbSearchLowSimilarityReply.Text = BotInfo.SearchLowSimilarityReply;
             txbSearchDownloadThuImageFailReply.Text = BotInfo.SearchDownloadThuImageFailReply;
 
-            chkCheckPornEnabled.Checked = BotInfo.CheckPornEnabled; //是否启用腾讯云鉴黄
-            chkPictureSearcherCheckPornEnabled.Checked = BotInfo.SearchCheckPornEnabled;  //是否在搜图启用鉴黄
+            chkSearchCheckPornEnabled.Checked = BotInfo.SearchCheckPornEnabled;  //是否在搜图启用鉴黄
             txbSearchCheckPornIllegalReply.Text = BotInfo.SearchCheckPornIllegalReply;
             txbSearchCheckPornErrorReply.Text = BotInfo.SearchCheckPornErrorReply;
-            txbCheckPornLimitCount.Text = BotInfo.CheckPornLimitCount.ToString();
 
             chkOriginPictureEnabled.Checked = BotInfo.OriginPictureEnabled;
             chkOriginPictureCheckPornEnabled.Checked = BotInfo.OriginPictureCheckPornEnabled;  //是否在下载原图启用鉴黄
@@ -96,13 +109,6 @@ namespace GreenOnions.BotManagerWindow
             chkSauceNaoRequestByWebBrowser.Checked = BotInfo.SauceNaoRequestByWebBrowser;
             chkSearchSendByForward.Checked = BotInfo.SearchSendByForward;
 
-            #region -- 腾讯云相关设置 --
-            txbTencentCloudAPPID.Text = BotInfo.TencentCloudAPPID;
-            txbTencentCloudRegion.Text = BotInfo.TencentCloudRegion;
-            txbTencentCloudSecretId.Text = BotInfo.TencentCloudSecretId;
-            txbTencentCloudSecretKey.Text = BotInfo.TencentCloudSecretKey;
-            txbTencentCloudBucket.Text = BotInfo.TencentCloudBucket;
-            #endregion -- 腾讯云相关设置 --
             #endregion -- 搜图设置 --
 
             #region -- 翻译设置 --
@@ -330,9 +336,10 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.TraceMoeSendThreshold = iTraceMoeSendThreshold;
             BotInfo.SearchEnabled = chkSearchPictureEnabled.Checked;  //是否启用搜图功能
             BotInfo.SearchEnabledSauceNao = chkSearchSauceNAOEnabled.Checked;  //是否启用SauceNao搜图
-            BotInfo.SauceNAOApiKey = txbSauceNAOApiKey.Text.Split("\r\n");
+            BotInfo.SearchSauceNAOSendPixivOriginPicture = chkSearchSauceNAOSendPixivOriginPicture.Checked;
+            BotInfo.SauceNAOApiKey = txbSearchSauceNAOApiKey.Text.Split("\r\n");
             BotInfo.SearchEnabledASCII2D = chkSearchASCII2DEnabled.Checked;  //是否启用ASCII2D搜图
-            BotInfo.SearchEnabledTraceMoe = chkTraceMoeEnabled.Checked;  //是否启用TraceMoe搜番
+            BotInfo.SearchEnabledTraceMoe = chkSearchTraceMoeEnabled.Checked;  //是否启用TraceMoe搜番
             BotInfo.SearchModeOnCmd = txbSearchModeOnCmd.Text;
             BotInfo.SearchModeOffCmd = txbSearchModeOffCmd.Text;
             BotInfo.SearchModeTimeOutReply = txbSearchModeTimeOutReply.Text;
@@ -343,7 +350,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.SearchNoResultReply = txbSearchNoResultReply.Text;
             BotInfo.SearchErrorReply = txbSearchErrorReply.Text;
             int iLowSauceNAOSimilarity;
-            if (!int.TryParse(txbSauceNAOSearchLowSimilarity.Text, out iLowSauceNAOSimilarity))
+            if (!int.TryParse(txbSearchSauceNAOLowSimilarity.Text, out iLowSauceNAOSimilarity))
                 iLowSauceNAOSimilarity = 60;
             BotInfo.SearchSauceNAOLowSimilarity = iLowSauceNAOSimilarity;  //低相似度阈值
             BotInfo.SearchLowSimilarityReply = txbSearchLowSimilarityReply.Text;
@@ -353,7 +360,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.SearchSauceNAOHighSimilarity = iHighSauceNAOSimilarity;  //高相似度阈值
             BotInfo.SearchDownloadThuImageFailReply = txbSearchDownloadThuImageFailReply.Text;
             BotInfo.CheckPornEnabled = chkCheckPornEnabled.Checked;  //是否启用腾讯云鉴黄
-            BotInfo.SearchCheckPornEnabled = chkPictureSearcherCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
+            BotInfo.SearchCheckPornEnabled = chkSearchCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
             BotInfo.SearchCheckPornIllegalReply = txbSearchCheckPornIllegalReply.Text;
             BotInfo.SearchCheckPornErrorReply = txbSearchCheckPornErrorReply.Text;
             BotInfo.ASCII2DRequestByWebBrowser = chkASCII2DRequestByWebBrowser.Checked;
@@ -559,7 +566,7 @@ namespace GreenOnions.BotManagerWindow
 
             JsonHelper.SaveConfigFile();
 
-            foreach (string sauceNaoKey in txbSauceNAOApiKey.Text.Split("\r\n"))
+            foreach (string sauceNaoKey in txbSearchSauceNAOApiKey.Text.Split("\r\n"))
                 Cache.SetSauceNaoKey(sauceNaoKey);
 
             MessageHandler.UpdateRegexs();
@@ -708,7 +715,7 @@ namespace GreenOnions.BotManagerWindow
             Process.Start("explorer.exe", (sender as Control).Text);
         }
 
-        private void chkSearchSauceNAOEnabled_CheckedChanged(object sender, EventArgs e) => txbSauceNAOApiKey.Enabled = chkSearchSauceNAOEnabled.Checked;
+        private void chkSearchSauceNAOEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchSauceNAO.Enabled = chkSearchSauceNAOEnabled.Checked;
 
         #region -- 添加或移除ListView --
 
@@ -806,7 +813,7 @@ namespace GreenOnions.BotManagerWindow
         
         private void chkRssEnabled_CheckedChanged(object sender, EventArgs e) => pnlRss.Enabled = chkRssEnabled.Checked;
 
-        private void chkPictureSearcherCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlPictureSearcherCheckPorn.Enabled = chkPictureSearcherCheckPornEnabled.Checked;
+        private void chkPictureSearcherCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlPictureSearcherCheckPorn.Enabled = chkSearchCheckPornEnabled.Checked;
 
         private void chkOriginPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlOriginPicture.Enabled = chkOriginPictureEnabled.Checked;
 
