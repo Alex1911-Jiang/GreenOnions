@@ -20,11 +20,12 @@
 
   <ItemGroup>
     <PackageReference Include="CefSharp.WinForms.NETCore" Version="101.0.180" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GreenOnions.BotMain.CqHttp\GreenOnions.BotMain.CqHttp.csproj" />
-    <ProjectReference Include="..\GreenOnions.BotMain.MiraiApiHttp\GreenOnions.BotMain.MiraiApiHttp.csproj" />
+    <ProjectReference Include="..\GreenOnions.CqHttp\GreenOnions.CqHttp.csproj" />
+    <ProjectReference Include="..\GreenOnions.MiraiApiHttp\GreenOnions.MiraiApiHttp.csproj" />
     <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />
   </ItemGroup>
 

@@ -152,6 +152,8 @@
             this.chkOriginPictureEnabled = new System.Windows.Forms.CheckBox();
             this.pageHPicture = new System.Windows.Forms.TabPage();
             this.pnlHPictureEnabeled = new System.Windows.Forms.Panel();
+            this.chkHPictureSendTags = new System.Windows.Forms.CheckBox();
+            this.chkHPictureSendUrl = new System.Windows.Forms.CheckBox();
             this.pnlHPictureCheckBoxes = new System.Windows.Forms.Panel();
             this.chkHPictureBeginNull = new System.Windows.Forms.CheckBox();
             this.chkHPictureCountNull = new System.Windows.Forms.CheckBox();
@@ -161,7 +163,7 @@
             this.chkHPictureEndNull = new System.Windows.Forms.CheckBox();
             this.chkBeautyPictureEndNull = new System.Windows.Forms.CheckBox();
             this.lnkResetHPicture = new System.Windows.Forms.LinkLabel();
-            this.chkSize1200 = new System.Windows.Forms.CheckBox();
+            this.chkHPictureSize1200 = new System.Windows.Forms.CheckBox();
             this.chkRevokeBeautyPicture = new System.Windows.Forms.CheckBox();
             this.lblHPictureOnceMessageMaxImageCountHelp = new System.Windows.Forms.Label();
             this.txbHPictureOnceMessageMaxImageCount = new System.Windows.Forms.TextBox();
@@ -169,17 +171,17 @@
             this.lblBeautyPictureSource = new System.Windows.Forms.Label();
             this.lblHPictureSource = new System.Windows.Forms.Label();
             this.chkEnabledGreenOnionsBeautyPicture = new System.Windows.Forms.CheckBox();
-            this.chkEnabledGreenOnionsHPicture = new System.Windows.Forms.CheckBox();
+            this.chkHPictureEnabledGreenOnionsSource = new System.Windows.Forms.CheckBox();
             this.chkEnabledELFBeautyPicture = new System.Windows.Forms.CheckBox();
-            this.chkEnabledLoliconHPicture = new System.Windows.Forms.CheckBox();
+            this.chkHPictureEnabledLoliconSource = new System.Windows.Forms.CheckBox();
             this.rodHPictureLimitCount = new System.Windows.Forms.RadioButton();
             this.rdoHPictureLimitFrequency = new System.Windows.Forms.RadioButton();
             this.txbAddToWhiteGroup = new System.Windows.Forms.TextBox();
             this.txbUserHPictureCmd = new System.Windows.Forms.TextBox();
-            this.txbPMCD = new System.Windows.Forms.TextBox();
-            this.txbWhiteCD = new System.Windows.Forms.TextBox();
-            this.txbPMRevoke = new System.Windows.Forms.TextBox();
-            this.txbWhiteRevoke = new System.Windows.Forms.TextBox();
+            this.txbHPicturePMCD = new System.Windows.Forms.TextBox();
+            this.txbHPictureWhiteCD = new System.Windows.Forms.TextBox();
+            this.txbHPicturePMRevoke = new System.Windows.Forms.TextBox();
+            this.txbHPictureWhiteRevoke = new System.Windows.Forms.TextBox();
             this.lstHPictureUserCmd = new System.Windows.Forms.ListView();
             this.lstHPictureWhiteGroup = new System.Windows.Forms.ListView();
             this.lblPMRevoke = new System.Windows.Forms.Label();
@@ -198,19 +200,19 @@
             this.txbDownloadFailReply = new System.Windows.Forms.TextBox();
             this.txbHPictureNoResultReply = new System.Windows.Forms.TextBox();
             this.txbHPictureErrorReplyReply = new System.Windows.Forms.TextBox();
-            this.txbOutOfLimitReply = new System.Windows.Forms.TextBox();
-            this.txbCDUnreadyReply = new System.Windows.Forms.TextBox();
-            this.txbCD = new System.Windows.Forms.TextBox();
-            this.txbLimit = new System.Windows.Forms.TextBox();
-            this.txbRevoke = new System.Windows.Forms.TextBox();
-            this.chkAllowR18 = new System.Windows.Forms.CheckBox();
-            this.chkAdminNoLimit = new System.Windows.Forms.CheckBox();
-            this.chkWhiteNoLimit = new System.Windows.Forms.CheckBox();
-            this.chkPMNoLimit = new System.Windows.Forms.CheckBox();
-            this.chkR18WhiteOnly = new System.Windows.Forms.CheckBox();
-            this.chkWhiteOnly = new System.Windows.Forms.CheckBox();
-            this.chkPM = new System.Windows.Forms.CheckBox();
-            this.chkAntiShielding = new System.Windows.Forms.CheckBox();
+            this.txbHPictureOutOfLimitReply = new System.Windows.Forms.TextBox();
+            this.txbHPictureCDUnreadyReply = new System.Windows.Forms.TextBox();
+            this.txbHPictureCD = new System.Windows.Forms.TextBox();
+            this.txbHPictureLimit = new System.Windows.Forms.TextBox();
+            this.txbHPictureRevoke = new System.Windows.Forms.TextBox();
+            this.chkHPictureAllowR18 = new System.Windows.Forms.CheckBox();
+            this.chkHPictureAdminNoLimit = new System.Windows.Forms.CheckBox();
+            this.chkHPictureWhiteNoLimit = new System.Windows.Forms.CheckBox();
+            this.chkHPicturePMNoLimit = new System.Windows.Forms.CheckBox();
+            this.chkHPictureR18WhiteOnly = new System.Windows.Forms.CheckBox();
+            this.chkHPictureWhiteOnly = new System.Windows.Forms.CheckBox();
+            this.chkHPictureAllowPM = new System.Windows.Forms.CheckBox();
+            this.chkHPictureAntiShielding = new System.Windows.Forms.CheckBox();
             this.lblUserCmdInformation = new System.Windows.Forms.Label();
             this.lblAddToWhiteGroupInformation = new System.Windows.Forms.Label();
             this.lblApiKey = new System.Windows.Forms.Label();
@@ -1764,6 +1766,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlHPictureEnabeled.AutoScroll = true;
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureSendTags);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureSendUrl);
             this.pnlHPictureEnabeled.Controls.Add(this.pnlHPictureCheckBoxes);
             this.pnlHPictureEnabeled.Controls.Add(this.lblHPictureOnceMessageMaxImageCountHelp);
             this.pnlHPictureEnabeled.Controls.Add(this.txbHPictureOnceMessageMaxImageCount);
@@ -1771,17 +1775,17 @@
             this.pnlHPictureEnabeled.Controls.Add(this.lblBeautyPictureSource);
             this.pnlHPictureEnabeled.Controls.Add(this.lblHPictureSource);
             this.pnlHPictureEnabeled.Controls.Add(this.chkEnabledGreenOnionsBeautyPicture);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkEnabledGreenOnionsHPicture);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureEnabledGreenOnionsSource);
             this.pnlHPictureEnabeled.Controls.Add(this.chkEnabledELFBeautyPicture);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkEnabledLoliconHPicture);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureEnabledLoliconSource);
             this.pnlHPictureEnabeled.Controls.Add(this.rodHPictureLimitCount);
             this.pnlHPictureEnabeled.Controls.Add(this.rdoHPictureLimitFrequency);
             this.pnlHPictureEnabeled.Controls.Add(this.txbAddToWhiteGroup);
             this.pnlHPictureEnabeled.Controls.Add(this.txbUserHPictureCmd);
-            this.pnlHPictureEnabeled.Controls.Add(this.txbPMCD);
-            this.pnlHPictureEnabeled.Controls.Add(this.txbWhiteCD);
-            this.pnlHPictureEnabeled.Controls.Add(this.txbPMRevoke);
-            this.pnlHPictureEnabeled.Controls.Add(this.txbWhiteRevoke);
+            this.pnlHPictureEnabeled.Controls.Add(this.txbHPicturePMCD);
+            this.pnlHPictureEnabeled.Controls.Add(this.txbHPictureWhiteCD);
+            this.pnlHPictureEnabeled.Controls.Add(this.txbHPicturePMRevoke);
+            this.pnlHPictureEnabeled.Controls.Add(this.txbHPictureWhiteRevoke);
             this.pnlHPictureEnabeled.Controls.Add(this.lstHPictureUserCmd);
             this.pnlHPictureEnabeled.Controls.Add(this.lstHPictureWhiteGroup);
             this.pnlHPictureEnabeled.Controls.Add(this.lblPMRevoke);
@@ -1800,19 +1804,19 @@
             this.pnlHPictureEnabeled.Controls.Add(this.txbDownloadFailReply);
             this.pnlHPictureEnabeled.Controls.Add(this.txbHPictureNoResultReply);
             this.pnlHPictureEnabeled.Controls.Add(this.txbHPictureErrorReplyReply);
-            this.pnlHPictureEnabeled.Controls.Add(this.txbOutOfLimitReply);
-            this.pnlHPictureEnabeled.Controls.Add(this.txbCDUnreadyReply);
-            this.pnlHPictureEnabeled.Controls.Add(this.txbCD);
-            this.pnlHPictureEnabeled.Controls.Add(this.txbLimit);
-            this.pnlHPictureEnabeled.Controls.Add(this.txbRevoke);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkAllowR18);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkAdminNoLimit);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkWhiteNoLimit);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkPMNoLimit);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkR18WhiteOnly);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkWhiteOnly);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkPM);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkAntiShielding);
+            this.pnlHPictureEnabeled.Controls.Add(this.txbHPictureOutOfLimitReply);
+            this.pnlHPictureEnabeled.Controls.Add(this.txbHPictureCDUnreadyReply);
+            this.pnlHPictureEnabeled.Controls.Add(this.txbHPictureCD);
+            this.pnlHPictureEnabeled.Controls.Add(this.txbHPictureLimit);
+            this.pnlHPictureEnabeled.Controls.Add(this.txbHPictureRevoke);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureAllowR18);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureAdminNoLimit);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureWhiteNoLimit);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPicturePMNoLimit);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureR18WhiteOnly);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureWhiteOnly);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureAllowPM);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureAntiShielding);
             this.pnlHPictureEnabeled.Controls.Add(this.lblUserCmdInformation);
             this.pnlHPictureEnabeled.Controls.Add(this.lblAddToWhiteGroupInformation);
             this.pnlHPictureEnabeled.Controls.Add(this.lblApiKey);
@@ -1849,6 +1853,34 @@
             this.pnlHPictureEnabeled.Size = new System.Drawing.Size(644, 642);
             this.pnlHPictureEnabeled.TabIndex = 8;
             // 
+            // chkHPictureSendTags
+            // 
+            this.chkHPictureSendTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkHPictureSendTags.AutoSize = true;
+            this.chkHPictureSendTags.Enabled = false;
+            this.chkHPictureSendTags.Location = new System.Drawing.Point(483, 952);
+            this.chkHPictureSendTags.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPictureSendTags.Name = "chkHPictureSendTags";
+            this.chkHPictureSendTags.Size = new System.Drawing.Size(75, 21);
+            this.chkHPictureSendTags.TabIndex = 21;
+            this.chkHPictureSendTags.Text = "发送标签";
+            this.chkHPictureSendTags.UseVisualStyleBackColor = true;
+            // 
+            // chkHPictureSendUrl
+            // 
+            this.chkHPictureSendUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkHPictureSendUrl.AutoSize = true;
+            this.chkHPictureSendUrl.Location = new System.Drawing.Point(400, 952);
+            this.chkHPictureSendUrl.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPictureSendUrl.Name = "chkHPictureSendUrl";
+            this.chkHPictureSendUrl.Size = new System.Drawing.Size(75, 21);
+            this.chkHPictureSendUrl.TabIndex = 20;
+            this.chkHPictureSendUrl.Text = "发送地址";
+            this.chkHPictureSendUrl.UseVisualStyleBackColor = true;
+            this.chkHPictureSendUrl.CheckedChanged += new System.EventHandler(this.chkHPictureSendUrl_CheckedChanged);
+            // 
             // pnlHPictureCheckBoxes
             // 
             this.pnlHPictureCheckBoxes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1861,7 +1893,7 @@
             this.pnlHPictureCheckBoxes.Controls.Add(this.chkHPictureEndNull);
             this.pnlHPictureCheckBoxes.Controls.Add(this.chkBeautyPictureEndNull);
             this.pnlHPictureCheckBoxes.Controls.Add(this.lnkResetHPicture);
-            this.pnlHPictureCheckBoxes.Controls.Add(this.chkSize1200);
+            this.pnlHPictureCheckBoxes.Controls.Add(this.chkHPictureSize1200);
             this.pnlHPictureCheckBoxes.Controls.Add(this.chkRevokeBeautyPicture);
             this.pnlHPictureCheckBoxes.Location = new System.Drawing.Point(519, 3);
             this.pnlHPictureCheckBoxes.MinimumSize = new System.Drawing.Size(105, 0);
@@ -1967,16 +1999,16 @@
             this.lnkResetHPicture.VisitedLinkColor = System.Drawing.Color.Blue;
             this.lnkResetHPicture.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkResetHPicture_LinkClicked);
             // 
-            // chkSize1200
+            // chkHPictureSize1200
             // 
-            this.chkSize1200.AutoSize = true;
-            this.chkSize1200.Location = new System.Drawing.Point(4, 295);
-            this.chkSize1200.Margin = new System.Windows.Forms.Padding(4);
-            this.chkSize1200.Name = "chkSize1200";
-            this.chkSize1200.Size = new System.Drawing.Size(103, 21);
-            this.chkSize1200.TabIndex = 7;
-            this.chkSize1200.Text = "1200像素模式";
-            this.chkSize1200.UseVisualStyleBackColor = true;
+            this.chkHPictureSize1200.AutoSize = true;
+            this.chkHPictureSize1200.Location = new System.Drawing.Point(4, 295);
+            this.chkHPictureSize1200.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPictureSize1200.Name = "chkHPictureSize1200";
+            this.chkHPictureSize1200.Size = new System.Drawing.Size(103, 21);
+            this.chkHPictureSize1200.TabIndex = 7;
+            this.chkHPictureSize1200.Text = "1200像素模式";
+            this.chkHPictureSize1200.UseVisualStyleBackColor = true;
             // 
             // chkRevokeBeautyPicture
             // 
@@ -2005,7 +2037,7 @@
             this.txbHPictureOnceMessageMaxImageCount.Location = new System.Drawing.Point(139, 520);
             this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
-            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(88, 23);
+            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(54, 23);
             this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
             // 
             // lblHPictureOnceMessageMaxImageCount
@@ -2049,16 +2081,16 @@
             this.chkEnabledGreenOnionsBeautyPicture.UseVisualStyleBackColor = true;
             this.chkEnabledGreenOnionsBeautyPicture.Visible = false;
             // 
-            // chkEnabledGreenOnionsHPicture
+            // chkHPictureEnabledGreenOnionsSource
             // 
-            this.chkEnabledGreenOnionsHPicture.AutoSize = true;
-            this.chkEnabledGreenOnionsHPicture.Location = new System.Drawing.Point(364, 465);
-            this.chkEnabledGreenOnionsHPicture.Name = "chkEnabledGreenOnionsHPicture";
-            this.chkEnabledGreenOnionsHPicture.Size = new System.Drawing.Size(99, 21);
-            this.chkEnabledGreenOnionsHPicture.TabIndex = 14;
-            this.chkEnabledGreenOnionsHPicture.Text = "启用葱葱图库";
-            this.chkEnabledGreenOnionsHPicture.UseVisualStyleBackColor = true;
-            this.chkEnabledGreenOnionsHPicture.Visible = false;
+            this.chkHPictureEnabledGreenOnionsSource.AutoSize = true;
+            this.chkHPictureEnabledGreenOnionsSource.Location = new System.Drawing.Point(364, 465);
+            this.chkHPictureEnabledGreenOnionsSource.Name = "chkHPictureEnabledGreenOnionsSource";
+            this.chkHPictureEnabledGreenOnionsSource.Size = new System.Drawing.Size(99, 21);
+            this.chkHPictureEnabledGreenOnionsSource.TabIndex = 14;
+            this.chkHPictureEnabledGreenOnionsSource.Text = "启用葱葱图库";
+            this.chkHPictureEnabledGreenOnionsSource.UseVisualStyleBackColor = true;
+            this.chkHPictureEnabledGreenOnionsSource.Visible = false;
             // 
             // chkEnabledELFBeautyPicture
             // 
@@ -2070,15 +2102,15 @@
             this.chkEnabledELFBeautyPicture.Text = "启用ELF图库";
             this.chkEnabledELFBeautyPicture.UseVisualStyleBackColor = true;
             // 
-            // chkEnabledLoliconHPicture
+            // chkHPictureEnabledLoliconSource
             // 
-            this.chkEnabledLoliconHPicture.AutoSize = true;
-            this.chkEnabledLoliconHPicture.Location = new System.Drawing.Point(137, 465);
-            this.chkEnabledLoliconHPicture.Name = "chkEnabledLoliconHPicture";
-            this.chkEnabledLoliconHPicture.Size = new System.Drawing.Size(116, 21);
-            this.chkEnabledLoliconHPicture.TabIndex = 14;
-            this.chkEnabledLoliconHPicture.Text = "启用Lolicon图库";
-            this.chkEnabledLoliconHPicture.UseVisualStyleBackColor = true;
+            this.chkHPictureEnabledLoliconSource.AutoSize = true;
+            this.chkHPictureEnabledLoliconSource.Location = new System.Drawing.Point(137, 465);
+            this.chkHPictureEnabledLoliconSource.Name = "chkHPictureEnabledLoliconSource";
+            this.chkHPictureEnabledLoliconSource.Size = new System.Drawing.Size(116, 21);
+            this.chkHPictureEnabledLoliconSource.TabIndex = 14;
+            this.chkHPictureEnabledLoliconSource.Text = "启用Lolicon图库";
+            this.chkHPictureEnabledLoliconSource.UseVisualStyleBackColor = true;
             // 
             // rodHPictureLimitCount
             // 
@@ -2123,49 +2155,49 @@
             this.txbUserHPictureCmd.Size = new System.Drawing.Size(186, 23);
             this.txbUserHPictureCmd.TabIndex = 2;
             // 
-            // txbPMCD
+            // txbHPicturePMCD
             // 
-            this.txbPMCD.Location = new System.Drawing.Point(517, 837);
-            this.txbPMCD.Margin = new System.Windows.Forms.Padding(4);
-            this.txbPMCD.Name = "txbPMCD";
-            this.txbPMCD.ShortcutsEnabled = false;
-            this.txbPMCD.Size = new System.Drawing.Size(93, 23);
-            this.txbPMCD.TabIndex = 8;
-            this.txbPMCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
-            this.txbPMCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            this.txbHPicturePMCD.Location = new System.Drawing.Point(517, 837);
+            this.txbHPicturePMCD.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPicturePMCD.Name = "txbHPicturePMCD";
+            this.txbHPicturePMCD.ShortcutsEnabled = false;
+            this.txbHPicturePMCD.Size = new System.Drawing.Size(93, 23);
+            this.txbHPicturePMCD.TabIndex = 8;
+            this.txbHPicturePMCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbHPicturePMCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
-            // txbWhiteCD
+            // txbHPictureWhiteCD
             // 
-            this.txbWhiteCD.Location = new System.Drawing.Point(308, 837);
-            this.txbWhiteCD.Margin = new System.Windows.Forms.Padding(4);
-            this.txbWhiteCD.Name = "txbWhiteCD";
-            this.txbWhiteCD.ShortcutsEnabled = false;
-            this.txbWhiteCD.Size = new System.Drawing.Size(93, 23);
-            this.txbWhiteCD.TabIndex = 8;
-            this.txbWhiteCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
-            this.txbWhiteCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            this.txbHPictureWhiteCD.Location = new System.Drawing.Point(308, 837);
+            this.txbHPictureWhiteCD.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureWhiteCD.Name = "txbHPictureWhiteCD";
+            this.txbHPictureWhiteCD.ShortcutsEnabled = false;
+            this.txbHPictureWhiteCD.Size = new System.Drawing.Size(93, 23);
+            this.txbHPictureWhiteCD.TabIndex = 8;
+            this.txbHPictureWhiteCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbHPictureWhiteCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
-            // txbPMRevoke
+            // txbHPicturePMRevoke
             // 
-            this.txbPMRevoke.Location = new System.Drawing.Point(517, 875);
-            this.txbPMRevoke.Margin = new System.Windows.Forms.Padding(4);
-            this.txbPMRevoke.Name = "txbPMRevoke";
-            this.txbPMRevoke.ShortcutsEnabled = false;
-            this.txbPMRevoke.Size = new System.Drawing.Size(93, 23);
-            this.txbPMRevoke.TabIndex = 8;
-            this.txbPMRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
-            this.txbPMRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            this.txbHPicturePMRevoke.Location = new System.Drawing.Point(517, 875);
+            this.txbHPicturePMRevoke.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPicturePMRevoke.Name = "txbHPicturePMRevoke";
+            this.txbHPicturePMRevoke.ShortcutsEnabled = false;
+            this.txbHPicturePMRevoke.Size = new System.Drawing.Size(93, 23);
+            this.txbHPicturePMRevoke.TabIndex = 8;
+            this.txbHPicturePMRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbHPicturePMRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
-            // txbWhiteRevoke
+            // txbHPictureWhiteRevoke
             // 
-            this.txbWhiteRevoke.Location = new System.Drawing.Point(308, 875);
-            this.txbWhiteRevoke.Margin = new System.Windows.Forms.Padding(4);
-            this.txbWhiteRevoke.Name = "txbWhiteRevoke";
-            this.txbWhiteRevoke.ShortcutsEnabled = false;
-            this.txbWhiteRevoke.Size = new System.Drawing.Size(93, 23);
-            this.txbWhiteRevoke.TabIndex = 8;
-            this.txbWhiteRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
-            this.txbWhiteRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            this.txbHPictureWhiteRevoke.Location = new System.Drawing.Point(308, 875);
+            this.txbHPictureWhiteRevoke.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureWhiteRevoke.Name = "txbHPictureWhiteRevoke";
+            this.txbHPictureWhiteRevoke.ShortcutsEnabled = false;
+            this.txbHPictureWhiteRevoke.Size = new System.Drawing.Size(93, 23);
+            this.txbHPictureWhiteRevoke.TabIndex = 8;
+            this.txbHPictureWhiteRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbHPictureWhiteRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // lstHPictureUserCmd
             // 
@@ -2355,152 +2387,152 @@
             this.txbHPictureErrorReplyReply.Size = new System.Drawing.Size(473, 23);
             this.txbHPictureErrorReplyReply.TabIndex = 8;
             // 
-            // txbOutOfLimitReply
+            // txbHPictureOutOfLimitReply
             // 
-            this.txbOutOfLimitReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txbHPictureOutOfLimitReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbOutOfLimitReply.Location = new System.Drawing.Point(140, 1016);
-            this.txbOutOfLimitReply.Margin = new System.Windows.Forms.Padding(4);
-            this.txbOutOfLimitReply.MinimumSize = new System.Drawing.Size(473, 0);
-            this.txbOutOfLimitReply.Multiline = true;
-            this.txbOutOfLimitReply.Name = "txbOutOfLimitReply";
-            this.txbOutOfLimitReply.Size = new System.Drawing.Size(473, 23);
-            this.txbOutOfLimitReply.TabIndex = 8;
+            this.txbHPictureOutOfLimitReply.Location = new System.Drawing.Point(140, 1016);
+            this.txbHPictureOutOfLimitReply.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureOutOfLimitReply.MinimumSize = new System.Drawing.Size(473, 0);
+            this.txbHPictureOutOfLimitReply.Multiline = true;
+            this.txbHPictureOutOfLimitReply.Name = "txbHPictureOutOfLimitReply";
+            this.txbHPictureOutOfLimitReply.Size = new System.Drawing.Size(473, 23);
+            this.txbHPictureOutOfLimitReply.TabIndex = 8;
             // 
-            // txbCDUnreadyReply
+            // txbHPictureCDUnreadyReply
             // 
-            this.txbCDUnreadyReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txbHPictureCDUnreadyReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbCDUnreadyReply.Location = new System.Drawing.Point(140, 986);
-            this.txbCDUnreadyReply.Margin = new System.Windows.Forms.Padding(4);
-            this.txbCDUnreadyReply.MinimumSize = new System.Drawing.Size(473, 0);
-            this.txbCDUnreadyReply.Multiline = true;
-            this.txbCDUnreadyReply.Name = "txbCDUnreadyReply";
-            this.txbCDUnreadyReply.Size = new System.Drawing.Size(473, 23);
-            this.txbCDUnreadyReply.TabIndex = 8;
+            this.txbHPictureCDUnreadyReply.Location = new System.Drawing.Point(140, 986);
+            this.txbHPictureCDUnreadyReply.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureCDUnreadyReply.MinimumSize = new System.Drawing.Size(473, 0);
+            this.txbHPictureCDUnreadyReply.Multiline = true;
+            this.txbHPictureCDUnreadyReply.Name = "txbHPictureCDUnreadyReply";
+            this.txbHPictureCDUnreadyReply.Size = new System.Drawing.Size(473, 23);
+            this.txbHPictureCDUnreadyReply.TabIndex = 8;
             // 
-            // txbCD
+            // txbHPictureCD
             // 
-            this.txbCD.Location = new System.Drawing.Point(81, 837);
-            this.txbCD.Margin = new System.Windows.Forms.Padding(4);
-            this.txbCD.Name = "txbCD";
-            this.txbCD.ShortcutsEnabled = false;
-            this.txbCD.Size = new System.Drawing.Size(93, 23);
-            this.txbCD.TabIndex = 8;
-            this.txbCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
-            this.txbCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            this.txbHPictureCD.Location = new System.Drawing.Point(81, 837);
+            this.txbHPictureCD.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureCD.Name = "txbHPictureCD";
+            this.txbHPictureCD.ShortcutsEnabled = false;
+            this.txbHPictureCD.Size = new System.Drawing.Size(93, 23);
+            this.txbHPictureCD.TabIndex = 8;
+            this.txbHPictureCD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbHPictureCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
-            // txbLimit
+            // txbHPictureLimit
             // 
-            this.txbLimit.Location = new System.Drawing.Point(81, 913);
-            this.txbLimit.Margin = new System.Windows.Forms.Padding(4);
-            this.txbLimit.Name = "txbLimit";
-            this.txbLimit.ShortcutsEnabled = false;
-            this.txbLimit.Size = new System.Drawing.Size(93, 23);
-            this.txbLimit.TabIndex = 8;
-            this.txbLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
-            this.txbLimit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            this.txbHPictureLimit.Location = new System.Drawing.Point(81, 913);
+            this.txbHPictureLimit.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureLimit.Name = "txbHPictureLimit";
+            this.txbHPictureLimit.ShortcutsEnabled = false;
+            this.txbHPictureLimit.Size = new System.Drawing.Size(93, 23);
+            this.txbHPictureLimit.TabIndex = 8;
+            this.txbHPictureLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbHPictureLimit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
-            // txbRevoke
+            // txbHPictureRevoke
             // 
-            this.txbRevoke.Location = new System.Drawing.Point(81, 875);
-            this.txbRevoke.Margin = new System.Windows.Forms.Padding(4);
-            this.txbRevoke.Name = "txbRevoke";
-            this.txbRevoke.ShortcutsEnabled = false;
-            this.txbRevoke.Size = new System.Drawing.Size(93, 23);
-            this.txbRevoke.TabIndex = 8;
-            this.txbRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
-            this.txbRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
+            this.txbHPictureRevoke.Location = new System.Drawing.Point(81, 875);
+            this.txbHPictureRevoke.Margin = new System.Windows.Forms.Padding(4);
+            this.txbHPictureRevoke.Name = "txbHPictureRevoke";
+            this.txbHPictureRevoke.ShortcutsEnabled = false;
+            this.txbHPictureRevoke.Size = new System.Drawing.Size(93, 23);
+            this.txbHPictureRevoke.TabIndex = 8;
+            this.txbHPictureRevoke.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbHPictureRevoke.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
-            // chkAllowR18
+            // chkHPictureAllowR18
             // 
-            this.chkAllowR18.AutoSize = true;
-            this.chkAllowR18.Location = new System.Drawing.Point(112, 808);
-            this.chkAllowR18.Margin = new System.Windows.Forms.Padding(4);
-            this.chkAllowR18.Name = "chkAllowR18";
-            this.chkAllowR18.Size = new System.Drawing.Size(78, 21);
-            this.chkAllowR18.TabIndex = 7;
-            this.chkAllowR18.Text = "允许R-18";
-            this.chkAllowR18.UseVisualStyleBackColor = true;
+            this.chkHPictureAllowR18.AutoSize = true;
+            this.chkHPictureAllowR18.Location = new System.Drawing.Point(112, 808);
+            this.chkHPictureAllowR18.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPictureAllowR18.Name = "chkHPictureAllowR18";
+            this.chkHPictureAllowR18.Size = new System.Drawing.Size(78, 21);
+            this.chkHPictureAllowR18.TabIndex = 7;
+            this.chkHPictureAllowR18.Text = "允许R-18";
+            this.chkHPictureAllowR18.UseVisualStyleBackColor = true;
             // 
-            // chkAdminNoLimit
+            // chkHPictureAdminNoLimit
             // 
-            this.chkAdminNoLimit.AutoSize = true;
-            this.chkAdminNoLimit.Location = new System.Drawing.Point(114, 952);
-            this.chkAdminNoLimit.Margin = new System.Windows.Forms.Padding(4);
-            this.chkAdminNoLimit.Name = "chkAdminNoLimit";
-            this.chkAdminNoLimit.Size = new System.Drawing.Size(135, 21);
-            this.chkAdminNoLimit.TabIndex = 7;
-            this.chkAdminNoLimit.Text = "机器人管理员无限制";
-            this.chkAdminNoLimit.UseVisualStyleBackColor = true;
+            this.chkHPictureAdminNoLimit.AutoSize = true;
+            this.chkHPictureAdminNoLimit.Location = new System.Drawing.Point(114, 952);
+            this.chkHPictureAdminNoLimit.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPictureAdminNoLimit.Name = "chkHPictureAdminNoLimit";
+            this.chkHPictureAdminNoLimit.Size = new System.Drawing.Size(135, 21);
+            this.chkHPictureAdminNoLimit.TabIndex = 7;
+            this.chkHPictureAdminNoLimit.Text = "机器人管理员无限制";
+            this.chkHPictureAdminNoLimit.UseVisualStyleBackColor = true;
             // 
-            // chkWhiteNoLimit
+            // chkHPictureWhiteNoLimit
             // 
-            this.chkWhiteNoLimit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.chkHPictureWhiteNoLimit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkWhiteNoLimit.AutoSize = true;
-            this.chkWhiteNoLimit.Location = new System.Drawing.Point(257, 952);
-            this.chkWhiteNoLimit.Margin = new System.Windows.Forms.Padding(4);
-            this.chkWhiteNoLimit.Name = "chkWhiteNoLimit";
-            this.chkWhiteNoLimit.Size = new System.Drawing.Size(135, 21);
-            this.chkWhiteNoLimit.TabIndex = 7;
-            this.chkWhiteNoLimit.Text = "白名单群无次数限制";
-            this.chkWhiteNoLimit.UseVisualStyleBackColor = true;
+            this.chkHPictureWhiteNoLimit.AutoSize = true;
+            this.chkHPictureWhiteNoLimit.Location = new System.Drawing.Point(257, 952);
+            this.chkHPictureWhiteNoLimit.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPictureWhiteNoLimit.Name = "chkHPictureWhiteNoLimit";
+            this.chkHPictureWhiteNoLimit.Size = new System.Drawing.Size(135, 21);
+            this.chkHPictureWhiteNoLimit.TabIndex = 7;
+            this.chkHPictureWhiteNoLimit.Text = "白名单群无次数限制";
+            this.chkHPictureWhiteNoLimit.UseVisualStyleBackColor = true;
             // 
-            // chkPMNoLimit
+            // chkHPicturePMNoLimit
             // 
-            this.chkPMNoLimit.AutoSize = true;
-            this.chkPMNoLimit.Location = new System.Drawing.Point(7, 952);
-            this.chkPMNoLimit.Margin = new System.Windows.Forms.Padding(4);
-            this.chkPMNoLimit.Name = "chkPMNoLimit";
-            this.chkPMNoLimit.Size = new System.Drawing.Size(87, 21);
-            this.chkPMNoLimit.TabIndex = 7;
-            this.chkPMNoLimit.Text = "私聊无限制";
-            this.chkPMNoLimit.UseVisualStyleBackColor = true;
+            this.chkHPicturePMNoLimit.AutoSize = true;
+            this.chkHPicturePMNoLimit.Location = new System.Drawing.Point(7, 952);
+            this.chkHPicturePMNoLimit.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPicturePMNoLimit.Name = "chkHPicturePMNoLimit";
+            this.chkHPicturePMNoLimit.Size = new System.Drawing.Size(87, 21);
+            this.chkHPicturePMNoLimit.TabIndex = 7;
+            this.chkHPicturePMNoLimit.Text = "私聊无限制";
+            this.chkHPicturePMNoLimit.UseVisualStyleBackColor = true;
             // 
-            // chkR18WhiteOnly
+            // chkHPictureR18WhiteOnly
             // 
-            this.chkR18WhiteOnly.AutoSize = true;
-            this.chkR18WhiteOnly.Location = new System.Drawing.Point(207, 808);
-            this.chkR18WhiteOnly.Margin = new System.Windows.Forms.Padding(4);
-            this.chkR18WhiteOnly.Name = "chkR18WhiteOnly";
-            this.chkR18WhiteOnly.Size = new System.Drawing.Size(114, 21);
-            this.chkR18WhiteOnly.TabIndex = 7;
-            this.chkR18WhiteOnly.Text = "R-18仅限白名单";
-            this.chkR18WhiteOnly.UseVisualStyleBackColor = true;
+            this.chkHPictureR18WhiteOnly.AutoSize = true;
+            this.chkHPictureR18WhiteOnly.Location = new System.Drawing.Point(207, 808);
+            this.chkHPictureR18WhiteOnly.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPictureR18WhiteOnly.Name = "chkHPictureR18WhiteOnly";
+            this.chkHPictureR18WhiteOnly.Size = new System.Drawing.Size(114, 21);
+            this.chkHPictureR18WhiteOnly.TabIndex = 7;
+            this.chkHPictureR18WhiteOnly.Text = "R-18仅限白名单";
+            this.chkHPictureR18WhiteOnly.UseVisualStyleBackColor = true;
             // 
-            // chkWhiteOnly
+            // chkHPictureWhiteOnly
             // 
-            this.chkWhiteOnly.AutoSize = true;
-            this.chkWhiteOnly.Location = new System.Drawing.Point(8, 808);
-            this.chkWhiteOnly.Margin = new System.Windows.Forms.Padding(4);
-            this.chkWhiteOnly.Name = "chkWhiteOnly";
-            this.chkWhiteOnly.Size = new System.Drawing.Size(87, 21);
-            this.chkWhiteOnly.TabIndex = 7;
-            this.chkWhiteOnly.Text = "仅限白名单";
-            this.chkWhiteOnly.UseVisualStyleBackColor = true;
+            this.chkHPictureWhiteOnly.AutoSize = true;
+            this.chkHPictureWhiteOnly.Location = new System.Drawing.Point(8, 808);
+            this.chkHPictureWhiteOnly.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPictureWhiteOnly.Name = "chkHPictureWhiteOnly";
+            this.chkHPictureWhiteOnly.Size = new System.Drawing.Size(87, 21);
+            this.chkHPictureWhiteOnly.TabIndex = 7;
+            this.chkHPictureWhiteOnly.Text = "仅限白名单";
+            this.chkHPictureWhiteOnly.UseVisualStyleBackColor = true;
             // 
-            // chkPM
+            // chkHPictureAllowPM
             // 
-            this.chkPM.AutoSize = true;
-            this.chkPM.Location = new System.Drawing.Point(338, 808);
-            this.chkPM.Margin = new System.Windows.Forms.Padding(4);
-            this.chkPM.Name = "chkPM";
-            this.chkPM.Size = new System.Drawing.Size(75, 21);
-            this.chkPM.TabIndex = 7;
-            this.chkPM.Text = "允许私聊";
-            this.chkPM.UseVisualStyleBackColor = true;
+            this.chkHPictureAllowPM.AutoSize = true;
+            this.chkHPictureAllowPM.Location = new System.Drawing.Point(338, 808);
+            this.chkHPictureAllowPM.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPictureAllowPM.Name = "chkHPictureAllowPM";
+            this.chkHPictureAllowPM.Size = new System.Drawing.Size(75, 21);
+            this.chkHPictureAllowPM.TabIndex = 7;
+            this.chkHPictureAllowPM.Text = "允许私聊";
+            this.chkHPictureAllowPM.UseVisualStyleBackColor = true;
             // 
-            // chkAntiShielding
+            // chkHPictureAntiShielding
             // 
-            this.chkAntiShielding.AutoSize = true;
-            this.chkAntiShielding.Location = new System.Drawing.Point(430, 808);
-            this.chkAntiShielding.Margin = new System.Windows.Forms.Padding(4);
-            this.chkAntiShielding.Name = "chkAntiShielding";
-            this.chkAntiShielding.Size = new System.Drawing.Size(63, 21);
-            this.chkAntiShielding.TabIndex = 7;
-            this.chkAntiShielding.Text = "反和谐";
-            this.chkAntiShielding.UseVisualStyleBackColor = true;
+            this.chkHPictureAntiShielding.AutoSize = true;
+            this.chkHPictureAntiShielding.Location = new System.Drawing.Point(430, 808);
+            this.chkHPictureAntiShielding.Margin = new System.Windows.Forms.Padding(4);
+            this.chkHPictureAntiShielding.Name = "chkHPictureAntiShielding";
+            this.chkHPictureAntiShielding.Size = new System.Drawing.Size(63, 21);
+            this.chkHPictureAntiShielding.TabIndex = 7;
+            this.chkHPictureAntiShielding.Text = "反和谐";
+            this.chkHPictureAntiShielding.UseVisualStyleBackColor = true;
             // 
             // lblUserCmdInformation
             // 
@@ -4189,38 +4221,38 @@
         private System.Windows.Forms.Label lblRevoke;
         private System.Windows.Forms.Label lblWhiteGroup;
         private System.Windows.Forms.TextBox txbAddToWhiteGroup;
-        private System.Windows.Forms.TextBox txbRevoke;
-        private System.Windows.Forms.CheckBox chkWhiteOnly;
-        private System.Windows.Forms.CheckBox chkSize1200;
-        private System.Windows.Forms.CheckBox chkPM;
-        private System.Windows.Forms.CheckBox chkAntiShielding;
+        private System.Windows.Forms.TextBox txbHPictureRevoke;
+        private System.Windows.Forms.CheckBox chkHPictureWhiteOnly;
+        private System.Windows.Forms.CheckBox chkHPictureSize1200;
+        private System.Windows.Forms.CheckBox chkHPictureAllowPM;
+        private System.Windows.Forms.CheckBox chkHPictureAntiShielding;
         private System.Windows.Forms.ListView lstHPictureWhiteGroup;
         private System.Windows.Forms.Label lblAddToWhiteGroupInformation;
         private System.Windows.Forms.Button btnAddToWhiteGroup;
-        private System.Windows.Forms.CheckBox chkR18WhiteOnly;
+        private System.Windows.Forms.CheckBox chkHPictureR18WhiteOnly;
         private System.Windows.Forms.Label lblWhiteRevoke;
         private System.Windows.Forms.Label lblCD;
-        private System.Windows.Forms.TextBox txbWhiteRevoke;
-        private System.Windows.Forms.TextBox txbCD;
-        private System.Windows.Forms.TextBox txbWhiteCD;
+        private System.Windows.Forms.TextBox txbHPictureWhiteRevoke;
+        private System.Windows.Forms.TextBox txbHPictureCD;
+        private System.Windows.Forms.TextBox txbHPictureWhiteCD;
         private System.Windows.Forms.Label lblWhiteCD;
         private System.Windows.Forms.Label lblLimit;
-        private System.Windows.Forms.TextBox txbLimit;
+        private System.Windows.Forms.TextBox txbHPictureLimit;
         private System.Windows.Forms.ListView lstHPictureUserCmd;
         private System.Windows.Forms.Label lblErrorReply;
         private System.Windows.Forms.Label lblOutOfLimitReply;
         private System.Windows.Forms.Label lblCDUnreadyReply;
         private System.Windows.Forms.TextBox txbHPictureErrorReplyReply;
-        private System.Windows.Forms.TextBox txbOutOfLimitReply;
-        private System.Windows.Forms.TextBox txbCDUnreadyReply;
+        private System.Windows.Forms.TextBox txbHPictureOutOfLimitReply;
+        private System.Windows.Forms.TextBox txbHPictureCDUnreadyReply;
         private System.Windows.Forms.Label lblUserCmdInformation;
-        private System.Windows.Forms.CheckBox chkAllowR18;
-        private System.Windows.Forms.TextBox txbPMCD;
-        private System.Windows.Forms.TextBox txbPMRevoke;
+        private System.Windows.Forms.CheckBox chkHPictureAllowR18;
+        private System.Windows.Forms.TextBox txbHPicturePMCD;
+        private System.Windows.Forms.TextBox txbHPicturePMRevoke;
         private System.Windows.Forms.Label lblPMRevoke;
         private System.Windows.Forms.Label lblPMCD;
-        private System.Windows.Forms.CheckBox chkAdminNoLimit;
-        private System.Windows.Forms.CheckBox chkPMNoLimit;
+        private System.Windows.Forms.CheckBox chkHPictureAdminNoLimit;
+        private System.Windows.Forms.CheckBox chkHPicturePMNoLimit;
         private System.Windows.Forms.Button btnRemoveAdmin;
         private System.Windows.Forms.Button btnRemoveWhiteGroup;
         private System.Windows.Forms.Button btnRemoveUserHPictureCmd;
@@ -4229,7 +4261,7 @@
         private System.Windows.Forms.RadioButton rodHPictureLimitCount;
         private System.Windows.Forms.RadioButton rdoHPictureLimitFrequency;
         private System.Windows.Forms.Label lblLimitType;
-        private System.Windows.Forms.CheckBox chkWhiteNoLimit;
+        private System.Windows.Forms.CheckBox chkHPictureWhiteNoLimit;
         private System.Windows.Forms.TabPage pageAbout;
         private System.Windows.Forms.Label lblContributorQQ;
         private System.Windows.Forms.Label lblContributorName;
@@ -4294,7 +4326,7 @@
         private System.Windows.Forms.Label lblShabHPictureEnd;
         private System.Windows.Forms.TextBox txbBeautyPictureCmd;
         private System.Windows.Forms.TextBox txbBeautyPictureEnd;
-        private System.Windows.Forms.CheckBox chkEnabledLoliconHPicture;
+        private System.Windows.Forms.CheckBox chkHPictureEnabledLoliconSource;
         private System.Windows.Forms.CheckBox chkRevokeBeautyPicture;
         private System.Windows.Forms.Panel pnlDebugMode;
         private System.Windows.Forms.ListView lstDebugGroups;
@@ -4334,7 +4366,7 @@
         private System.Windows.Forms.Label lblBeautyPictureSource;
         private System.Windows.Forms.Label lblHPictureSource;
         private System.Windows.Forms.CheckBox chkEnabledGreenOnionsBeautyPicture;
-        private System.Windows.Forms.CheckBox chkEnabledGreenOnionsHPicture;
+        private System.Windows.Forms.CheckBox chkHPictureEnabledGreenOnionsSource;
         private System.Windows.Forms.CheckBox chkEnabledELFBeautyPicture;
         private System.Windows.Forms.TextBox txbAddAutoTranslateGroupMemoryQQ;
         private System.Windows.Forms.Button btnRemoveAutoTranslateGroupMemoryQQ;
@@ -4476,5 +4508,7 @@
         private System.Windows.Forms.CheckBox chkSearchSauceNAOSendPixivOriginPicture;
         private System.Windows.Forms.Panel pnlSearchSauceNAO;
         private System.Windows.Forms.Panel pnlHPictureCheckBoxes;
+        private System.Windows.Forms.CheckBox chkHPictureSendTags;
+        private System.Windows.Forms.CheckBox chkHPictureSendUrl;
     }
 }

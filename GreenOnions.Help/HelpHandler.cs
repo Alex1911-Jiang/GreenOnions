@@ -100,7 +100,7 @@ namespace GreenOnions.Help
                     StringBuilder strTranslateGoogle = new StringBuilder($"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。");
                     strTranslateGoogle.AppendLine($"发送\"{BotInfo.TranslateToCMD.ReplaceGreenOnionsTags()}翻译内容\"自动识别当前语言并翻译成指定语言。");
                     strTranslateGoogle.AppendLine($"发送\"{BotInfo.TranslateFromToCMD.ReplaceGreenOnionsTags()}翻译内容\"从指定语言翻译成指定语言。");
-                    strTranslateGoogle.AppendLine($"目前支持的语言有:{string.Join("\r\n", GoogleTranslateHelper.Languages.Keys)}");
+                    strTranslateGoogle.AppendLine($"目前支持的语言有:{string.Join("\r\n", Constants.GoogleLanguages.Keys)}");
                     strTranslateGoogle.AppendLine("目前接入的翻译引擎为:谷歌翻译");
                     return new[] { strTranslateGoogle.ToString() }.ToTextMessageArray();
                 }
@@ -108,7 +108,7 @@ namespace GreenOnions.Help
                 {
                     StringBuilder strTranslateYouDao = new StringBuilder("发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。");
                     strTranslateYouDao.AppendLine($"发送\"{BotInfo.TranslateFromToCMD.ReplaceGreenOnionsTags()}翻译内容\"从指定语言翻译成指定语言。");
-                    strTranslateYouDao.AppendLine($"目前支持的语言有:{string.Join("\r\n", YouDaoTranslateHelper.Languages.Keys)}");
+                    strTranslateYouDao.AppendLine($"目前支持的语言有:{string.Join("\r\n", Constants.YouDaoLanguages.Keys)}");
                     strTranslateYouDao.AppendLine("目前接入的翻译引擎为:有道翻译");
                     return new[] { strTranslateYouDao.ToString() }.ToTextMessageArray();
                 }

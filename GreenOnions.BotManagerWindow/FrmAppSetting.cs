@@ -1,5 +1,4 @@
-﻿using GreenOnions.BotMain.MiraiApiHttp;
-using GreenOnions.Utility;
+﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using GreenOnions.Utility.Items;
 using System;
@@ -129,9 +128,9 @@ namespace GreenOnions.BotManagerWindow
             foreach (var hSource in BotInfo.EnabledHPictureSource)
             {
                 if (hSource == PictureSource.Lolicon)
-                    chkEnabledLoliconHPicture.Checked = true;
+                    chkHPictureEnabledLoliconSource.Checked = true;
                 if (hSource == PictureSource.GreenOnions)
-                    chkEnabledGreenOnionsHPicture.Checked = true;
+                    chkHPictureEnabledGreenOnionsSource.Checked = true;
             }
             foreach (var beautySource in BotInfo.EnabledBeautyPictureSource)
             {
@@ -173,24 +172,26 @@ namespace GreenOnions.BotManagerWindow
                     lstHPictureWhiteGroup.Items.Add(item.ToString());
                 }
             }
-            chkWhiteOnly.Checked = BotInfo.HPictureWhiteOnly;
-            chkAllowR18.Checked = BotInfo.HPictureAllowR18;
-            chkR18WhiteOnly.Checked = BotInfo.HPictureR18WhiteOnly;
-            chkPM.Checked = BotInfo.HPictureAllowPM;
-            chkAntiShielding.Checked = BotInfo.HPictureAntiShielding;
-            chkSize1200.Checked = BotInfo.HPictureSize1200;
-            txbLimit.Text = BotInfo.HPictureLimit.ToString();
-            chkPMNoLimit.Checked = BotInfo.HPicturePMNoLimit;
-            chkAdminNoLimit.Checked = BotInfo.HPictureAdminNoLimit;
-            chkWhiteNoLimit.Checked = BotInfo.HPictureWhiteNoLimit;
-            txbCD.Text = BotInfo.HPictureCD.ToString();
-            txbRevoke.Text = BotInfo.HPictureRevoke.ToString();
-            txbWhiteCD.Text = BotInfo.HPictureWhiteCD.ToString();
-            txbWhiteRevoke.Text = BotInfo.HPictureWhiteRevoke.ToString();
-            txbPMCD.Text = BotInfo.HPicturePMCD.ToString();
-            txbPMRevoke.Text = BotInfo.HPicturePMRevoke.ToString();
-            txbCDUnreadyReply.Text = BotInfo.HPictureCDUnreadyReply;
-            txbOutOfLimitReply.Text = BotInfo.HPictureOutOfLimitReply;
+            chkHPictureWhiteOnly.Checked = BotInfo.HPictureWhiteOnly;
+            chkHPictureAllowR18.Checked = BotInfo.HPictureAllowR18;
+            chkHPictureR18WhiteOnly.Checked = BotInfo.HPictureR18WhiteOnly;
+            chkHPictureAllowPM.Checked = BotInfo.HPictureAllowPM;
+            chkHPictureAntiShielding.Checked = BotInfo.HPictureAntiShielding;
+            chkHPictureSize1200.Checked = BotInfo.HPictureSize1200;
+            txbHPictureLimit.Text = BotInfo.HPictureLimit.ToString();
+            chkHPicturePMNoLimit.Checked = BotInfo.HPicturePMNoLimit;
+            chkHPictureAdminNoLimit.Checked = BotInfo.HPictureAdminNoLimit;
+            chkHPictureWhiteNoLimit.Checked = BotInfo.HPictureWhiteNoLimit;
+            chkHPictureSendUrl.Checked = BotInfo.HPictureSendUrl;
+            chkHPictureSendTags.Checked = BotInfo.HPictureSendTags;
+            txbHPictureCD.Text = BotInfo.HPictureCD.ToString();
+            txbHPictureRevoke.Text = BotInfo.HPictureRevoke.ToString();
+            txbHPictureWhiteCD.Text = BotInfo.HPictureWhiteCD.ToString();
+            txbHPictureWhiteRevoke.Text = BotInfo.HPictureWhiteRevoke.ToString();
+            txbHPicturePMCD.Text = BotInfo.HPicturePMCD.ToString();
+            txbHPicturePMRevoke.Text = BotInfo.HPicturePMRevoke.ToString();
+            txbHPictureCDUnreadyReply.Text = BotInfo.HPictureCDUnreadyReply;
+            txbHPictureOutOfLimitReply.Text = BotInfo.HPictureOutOfLimitReply;
             txbHPictureErrorReplyReply.Text = BotInfo.HPictureErrorReply;
             txbHPictureNoResultReply.Text = BotInfo.HPictureNoResultReply;
             txbDownloadFailReply.Text = BotInfo.HPictureDownloadFailReply;
@@ -413,9 +414,9 @@ namespace GreenOnions.BotManagerWindow
 
             List<PictureSource> EnabledHPictureSource = new List<PictureSource>();
             List<PictureSource> EnabledBeautyPictureSource = new List<PictureSource>();
-            if (chkEnabledLoliconHPicture.Checked)
+            if (chkHPictureEnabledLoliconSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.Lolicon);
-            if (chkEnabledGreenOnionsHPicture.Checked)
+            if (chkHPictureEnabledGreenOnionsSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.GreenOnions);
             if (chkEnabledELFBeautyPicture.Checked)
                 EnabledBeautyPictureSource.Add(PictureSource.ELF);
@@ -453,28 +454,30 @@ namespace GreenOnions.BotManagerWindow
                 tempHPictureWhiteGroup.Add(Convert.ToInt64(item.SubItems[0].Text));
             }
             BotInfo.HPictureWhiteGroup = tempHPictureWhiteGroup;
-            BotInfo.HPictureWhiteOnly = chkWhiteOnly.Checked;
-            BotInfo.HPictureAllowR18 = chkAllowR18.Checked;
-            BotInfo.HPictureR18WhiteOnly = chkR18WhiteOnly.Checked;
-            BotInfo.HPictureAllowPM = chkPM.Checked;
-            BotInfo.HPictureAntiShielding = chkAntiShielding.Checked;
-            BotInfo.HPictureSize1200 = chkSize1200.Checked;
-            BotInfo.HPictureLimit = string.IsNullOrEmpty(txbLimit.Text) ? 0 : Convert.ToInt32(txbLimit.Text);
-            BotInfo.HPicturePMNoLimit = chkPMNoLimit.Checked;
-            BotInfo.HPictureAdminNoLimit = chkAdminNoLimit.Checked;
-            BotInfo.HPictureCD = string.IsNullOrEmpty(txbCD.Text) ? 0 : Convert.ToInt32(txbCD.Text);
-            BotInfo.HPictureRevoke = string.IsNullOrEmpty(txbRevoke.Text) ? 0 : Convert.ToInt32(txbRevoke.Text);
-            BotInfo.HPictureWhiteCD = string.IsNullOrEmpty(txbWhiteCD.Text) ? 0 : Convert.ToInt32(txbWhiteCD.Text);
-            BotInfo.HPictureWhiteRevoke = string.IsNullOrEmpty(txbWhiteRevoke.Text) ? 0 : Convert.ToInt32(txbWhiteRevoke.Text);
-            BotInfo.HPicturePMCD = string.IsNullOrEmpty(txbPMCD.Text) ? 0 : Convert.ToInt32(txbPMCD.Text);
-            BotInfo.HPicturePMRevoke = string.IsNullOrEmpty(txbPMRevoke.Text) ? 0 : Convert.ToInt32(txbPMRevoke.Text);
-            BotInfo.HPictureCDUnreadyReply = txbCDUnreadyReply.Text;
-            BotInfo.HPictureOutOfLimitReply = txbOutOfLimitReply.Text;
+            BotInfo.HPictureWhiteOnly = chkHPictureWhiteOnly.Checked;
+            BotInfo.HPictureAllowR18 = chkHPictureAllowR18.Checked;
+            BotInfo.HPictureR18WhiteOnly = chkHPictureR18WhiteOnly.Checked;
+            BotInfo.HPictureAllowPM = chkHPictureAllowPM.Checked;
+            BotInfo.HPictureAntiShielding = chkHPictureAntiShielding.Checked;
+            BotInfo.HPictureSize1200 = chkHPictureSize1200.Checked;
+            BotInfo.HPictureLimit = string.IsNullOrEmpty(txbHPictureLimit.Text) ? 0 : Convert.ToInt32(txbHPictureLimit.Text);
+            BotInfo.HPicturePMNoLimit = chkHPicturePMNoLimit.Checked;
+            BotInfo.HPictureAdminNoLimit = chkHPictureAdminNoLimit.Checked;
+            BotInfo.HPictureCD = string.IsNullOrEmpty(txbHPictureCD.Text) ? 0 : Convert.ToInt32(txbHPictureCD.Text);
+            BotInfo.HPictureRevoke = string.IsNullOrEmpty(txbHPictureRevoke.Text) ? 0 : Convert.ToInt32(txbHPictureRevoke.Text);
+            BotInfo.HPictureWhiteCD = string.IsNullOrEmpty(txbHPictureWhiteCD.Text) ? 0 : Convert.ToInt32(txbHPictureWhiteCD.Text);
+            BotInfo.HPictureWhiteRevoke = string.IsNullOrEmpty(txbHPictureWhiteRevoke.Text) ? 0 : Convert.ToInt32(txbHPictureWhiteRevoke.Text);
+            BotInfo.HPicturePMCD = string.IsNullOrEmpty(txbHPicturePMCD.Text) ? 0 : Convert.ToInt32(txbHPicturePMCD.Text);
+            BotInfo.HPicturePMRevoke = string.IsNullOrEmpty(txbHPicturePMRevoke.Text) ? 0 : Convert.ToInt32(txbHPicturePMRevoke.Text);
+            BotInfo.HPictureCDUnreadyReply = txbHPictureCDUnreadyReply.Text;
+            BotInfo.HPictureOutOfLimitReply = txbHPictureOutOfLimitReply.Text;
             BotInfo.HPictureErrorReply = txbHPictureErrorReplyReply.Text;
             BotInfo.HPictureNoResultReply = txbHPictureNoResultReply.Text;
             BotInfo.HPictureDownloadFailReply = txbDownloadFailReply.Text;
             BotInfo.HPictureLimitType = rdoHPictureLimitFrequency.Checked ? LimitType.Frequency : LimitType.Count;
-            BotInfo.HPictureWhiteNoLimit = chkWhiteNoLimit.Checked;
+            BotInfo.HPictureWhiteNoLimit = chkHPictureWhiteNoLimit.Checked;
+            BotInfo.HPictureSendUrl = chkHPictureSendUrl.Checked;
+            BotInfo.HPictureSendTags = chkHPictureSendTags.Checked;
             #endregion -- 色图设置 --
 
             #region -- 复读设置 --
@@ -569,7 +572,8 @@ namespace GreenOnions.BotManagerWindow
             foreach (string sauceNaoKey in txbSearchSauceNAOApiKey.Text.Split("\r\n"))
                 Cache.SetSauceNaoKey(sauceNaoKey);
 
-            MessageHandler.UpdateRegexs();
+            MiraiApiHttp.Main.UpdateRegexs();
+            CqHttp.Main.UpdateRegexs();
 
             Close();
         }
@@ -700,7 +704,7 @@ namespace GreenOnions.BotManagerWindow
             txbHPictureKeyword.Text = ".+?";
             txbHPictureEnd.Text = "的?[色瑟][图圖図]";
             txbBeautyPictureEnd.Text = "的?美[图圖図]";
-            chkEnabledLoliconHPicture.Checked = true;
+            chkHPictureEnabledLoliconSource.Checked = true;
             AddStringToCmd();
         }
 
@@ -824,5 +828,7 @@ namespace GreenOnions.BotManagerWindow
         private void chkTranslateEnabled_CheckedChanged(object sender, EventArgs e) => pnlTranslate.Enabled = chkTranslateEnabled.Checked;
 
         private void chkTicTacToeEnabled_CheckedChanged(object sender, EventArgs e) => pnlTicTacToe.Enabled = chkTicTacToeEnabled.Checked;
+
+        private void chkHPictureSendUrl_CheckedChanged(object sender, EventArgs e) => chkHPictureSendTags.Enabled = chkHPictureSendUrl.Checked;
     }
 }

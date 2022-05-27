@@ -55,13 +55,13 @@ namespace GreenOnions.BotManagerConsole
 			{
 				Console.WriteLine("请输入mirai-api-http verifyKey:");
 				string verifyKey = Console.ReadLine();
-                await BotMain.MiraiApiHttp.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
+                //await MiraiApiHttp.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
             }
 			else
 			{
 				Console.WriteLine("请输入cqhttp access-token:");
 				string accessToken = Console.ReadLine();
-				await BotMain.CqHttp.Program.Main(qqId, ip, port, accessToken, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
+				//await CqHttp.Program.Main(qqId, ip, port, accessToken, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
             }
 		}
 

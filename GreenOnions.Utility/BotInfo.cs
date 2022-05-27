@@ -1285,6 +1285,34 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureWhiteNoLimit), value.ToString());
         }
+        
+        /// <summary>
+        /// 色图是否发送地址
+        /// </summary>
+        public static bool HPictureSendUrl
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendUrl));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendUrl), value.ToString());
+        } 
+        
+        /// <summary>
+        /// 色图是否发送标签
+        /// </summary>
+        public static bool HPictureSendTags
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendTags));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendTags), value.ToString());
+        }
 
         /// <summary>
         /// 冷却中回复

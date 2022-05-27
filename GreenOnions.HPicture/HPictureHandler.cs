@@ -14,7 +14,7 @@ namespace GreenOnions.HPicture
 {
     public static class HPictureHandler
     {
-        private static async Task<GreenOnionsMessageGroup> SendOnlyOneHPictures(long senderId, long? senderGroup)
+        public static async Task<GreenOnionsMessageGroup> SendOnlyOneHPictures(long senderId, long? senderGroup)
         {
             string size = "original";
             if (BotInfo.HPictureSize1200)
@@ -194,17 +194,13 @@ namespace GreenOnions.HPicture
 
             GreenOnionsMessageGroup outMessage = new GreenOnionsMessageGroup();
 
-            if (true)  //TODO: 发送地址设置
+            if (BotInfo.HPictureSendUrl)
             {
                 string addresses;
-                if (true)  //TODO: 是否发送标签设置
-                {
+                if (BotInfo.HPictureSendTags)
                     addresses = string.Join("\r\n", enumImg.Select(i => $@"https://www.pixiv.net/artworks/{i.ID} (p{i.P})\r\n标题:{i.Title}\r\n作者:{i.Author}\r\n标签:{i.Tags}"));
-                }
                 else
-                {
                     addresses = string.Join("\r\n", enumImg.Select(i => $@"https://www.pixiv.net/artworks/{i.ID} (p{i.P})"));
-                }
                 outMessage.Add(addresses);
                 RecordLimit(senderId, senderGroup, LimitType.Frequency);
             }
@@ -242,17 +238,13 @@ namespace GreenOnions.HPicture
                 }
 
                 IEnumerable<ELFHPictureItem> enumImg = ja.Select(i => new ELFHPictureItem(i["id"].ToString(), i["link"].ToString(), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
-                if (true)  //TODO: 发送地址设置
+                if (BotInfo.HPictureSendUrl)
                 {
                     string addresses;
-                    if (true)  //TODO: 是否发送标签设置
-                    {
+                    if (BotInfo.HPictureSendTags)
                         addresses = string.Join("\r\n", enumImg.Select(l => $@"{l.Source}\r\n中文标签:{l.Zh_Tags}\r\n日文标签:{l.Jp_Tag}\r\n作者:{l.Author}"));
-                    }
                     else
-                    {
                         addresses = string.Join("\r\n", enumImg.Select(l => l.Source));
-                    }
                     outMessage.Add(addresses);
                     RecordLimit(senderId, senderGroup, LimitType.Frequency);
                 }
@@ -331,6 +323,5 @@ namespace GreenOnions.HPicture
             else if (limitType == LimitType.Count && BotInfo.HPictureLimitType == LimitType.Count)  //如果本次记录是记张且设置是记张
                 Cache.RecordLimit(senderId);
         }
-
     }
 }

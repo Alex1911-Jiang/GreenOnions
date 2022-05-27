@@ -59,8 +59,8 @@ namespace GreenOnions.BotManagerWindow
 		{
             try
             {
-				await BotMain.MiraiApiHttp.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "mirai-api-http"))));
-			}
+                await MiraiApiHttp.Main.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "mirai-api-http"))));
+            }
             catch (Exception ex)
             {
 				LogHelper.WriteErrorLog(ex);
@@ -72,8 +72,8 @@ namespace GreenOnions.BotManagerWindow
 		{
 			try
 			{
-				await BotMain.CqHttp.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "cqhttp"))));
-			}
+                await CqHttp.Main.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "cqhttp"))));
+            }
 			catch (Exception ex)
 			{
 				LogHelper.WriteErrorLog(ex);

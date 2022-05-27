@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GreenOnions.Utility;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -11,24 +12,6 @@ namespace GreenOnions.Translate
 {
     public static class YouDaoTranslateHelper
     {
-        public static readonly Dictionary<string, string> Languages = new Dictionary<string, string>()
-        {
-            {"中文" , "ZH_CN"},
-            {"英文" , "EN"},
-            {"日文" , "JA"},
-            {"韩文" , "KO"},
-            {"法文" , "FR"},
-            {"德文" , "DE"},
-            {"西班牙文" , "ES"},
-            {"葡萄牙文" , "PT"},
-            {"意大利文" , "IT"},
-            {"越南文" , "VI"},
-            {"印尼文" , "ID"},
-            {"阿拉伯文" , "AR"},
-            {"荷兰文" , "NL"},
-            {"泰文" , "TH"},
-        };
-
         public static async Task<string> TranslateToChinese(string text)
         {
             return await Translate(text, "AUTO");
@@ -37,12 +20,12 @@ namespace GreenOnions.Translate
         public static async Task<string> TranslateFromTo(string text, string fromLanguageChineseName, string toLanguageChineseName)
         {
             string fromLanguageName = fromLanguageChineseName.Replace("语", "文");
-            if (Languages.ContainsKey(fromLanguageName))
-                fromLanguageName = Languages[fromLanguageChineseName];
+            if (Constants.YouDaoLanguages.ContainsKey(fromLanguageName))
+                fromLanguageName = Constants.YouDaoLanguages[fromLanguageChineseName];
 
             string toLanguageName = toLanguageChineseName.Replace("语", "文");
-            if (Languages.ContainsKey(toLanguageName))
-                toLanguageName = Languages[toLanguageName];
+            if (Constants.YouDaoLanguages.ContainsKey(toLanguageName))
+                toLanguageName = Constants.YouDaoLanguages[toLanguageName];
 
             return await Translate(text, $"{fromLanguageName}2{toLanguageName}");
         }

@@ -60,12 +60,12 @@ namespace GreenOnions.BotManagerWindow
                 switch (BotInfo.TranslateEngineType)
                 {
                     case TranslateEngine.Google:
-                        cboTranslateFrom.DataSource = Translate.GoogleTranslateHelper.Languages.Keys.ToList();
-                        cboTranslateTo.DataSource = Translate.GoogleTranslateHelper.Languages.Keys.ToList();
+                        cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();
+                        cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
                         break;
                     case TranslateEngine.YouDao:
-                        cboTranslateFrom.DataSource = Translate.YouDaoTranslateHelper.Languages.Keys.ToList();
-                        cboTranslateTo.DataSource = Translate.YouDaoTranslateHelper.Languages.Keys.ToList();
+                        cboTranslateFrom.DataSource = Constants.YouDaoLanguages.Keys.ToList();
+                        cboTranslateTo.DataSource = Constants.YouDaoLanguages.Keys.ToList();
                         break;
                 }
             }
@@ -140,12 +140,12 @@ namespace GreenOnions.BotManagerWindow
                 switch (BotInfo.TranslateEngineType)
                 {
                     case TranslateEngine.Google:
-                        cboTranslateFrom.DataSource = Translate.GoogleTranslateHelper.Languages.Keys.ToList();
-                        cboTranslateTo.DataSource = Translate.GoogleTranslateHelper.Languages.Keys.ToList();
+                        cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();
+                        cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
                         break;
                     case TranslateEngine.YouDao:
-                        cboTranslateFrom.DataSource = Translate.YouDaoTranslateHelper.Languages.Keys.ToList();
-                        cboTranslateTo.DataSource = Translate.YouDaoTranslateHelper.Languages.Keys.ToList();
+                        cboTranslateFrom.DataSource = Constants.YouDaoLanguages.Keys.ToList();
+                        cboTranslateTo.DataSource = Constants.YouDaoLanguages.Keys.ToList();
                         break;
                 }
             }

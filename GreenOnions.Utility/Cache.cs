@@ -165,6 +165,9 @@ namespace GreenOnions.Utility
         /// <returns></returns>
         public static bool CheckGroupLimit(long qqId, long groupId)
         {
+            if (BotInfo.HPictureLimit == 0)
+                return false;
+
             if (BotInfo.AdminQQ.Contains(qqId) && BotInfo.HPictureAdminNoLimit) return false;
             if (BotInfo.HPictureWhiteGroup.Contains(groupId) && BotInfo.HPictureWhiteNoLimit) return false;
             if (LimitDic.ContainsKey(qqId))

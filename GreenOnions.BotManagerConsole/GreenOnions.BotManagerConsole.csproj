@@ -16,8 +16,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GreenOnions.BotMain.CqHttp\GreenOnions.BotMain.CqHttp.csproj" />
-    <ProjectReference Include="..\GreenOnions.BotMain.MiraiApiHttp\GreenOnions.BotMain.MiraiApiHttp.csproj" />
+    <ProjectReference Include="..\GreenOnions.CqHttp\GreenOnions.CqHttp.csproj" />
+    <ProjectReference Include="..\GreenOnions.MiraiApiHttp\GreenOnions.MiraiApiHttp.csproj" />
+    <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />
   </ItemGroup>
 
 </Project>
