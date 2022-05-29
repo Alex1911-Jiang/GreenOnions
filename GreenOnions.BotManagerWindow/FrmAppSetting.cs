@@ -1,4 +1,5 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.BotMain;
+using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using GreenOnions.Utility.Items;
 using System;
@@ -63,8 +64,9 @@ namespace GreenOnions.BotManagerWindow
             #endregion -- 通用设置 --
 
             #region -- 搜图设置 --
-            txbTraceMoeSendThreshold.Text = BotInfo.TraceMoeSendThreshold.ToString();
             chkSearchPictureEnabled.Checked = BotInfo.SearchEnabled;  //是否启用搜图功能
+            chkPmAutoSearch.Checked = BotInfo.PmAutoSearch;
+            txbTraceMoeSendThreshold.Text = BotInfo.TraceMoeSendThreshold.ToString();
             chkSearchSauceNAOEnabled.Checked = BotInfo.SearchEnabledSauceNao;  //SauceNao Api-Key
             chkSearchSauceNAOSendPixivOriginPicture.Checked = BotInfo.SearchSauceNAOSendPixivOriginPicture;
             txbSearchSauceNAOApiKey.Text = string.Join("\r\n", BotInfo.SauceNAOApiKey);
@@ -107,6 +109,7 @@ namespace GreenOnions.BotManagerWindow
             chkASCII2DRequestByWebBrowser.Checked = BotInfo.ASCII2DRequestByWebBrowser;
             chkSauceNaoRequestByWebBrowser.Checked = BotInfo.SauceNaoRequestByWebBrowser;
             chkSearchSendByForward.Checked = BotInfo.SearchSendByForward;
+            txbSearchCheckPornOutOfLimitReply.Text = BotInfo.SearchCheckPornOutOfLimitReply;
 
             #endregion -- 搜图设置 --
 
@@ -143,20 +146,6 @@ namespace GreenOnions.BotManagerWindow
             chkHPictureEnabled.Checked = BotInfo.HPictureEnabled;
             txbHPictureApiKey.Text = BotInfo.HPictureApiKey;
             txbHPictureCmd.Text = BotInfo.HPictureCmd;
-            txbHPictureBegin.Text = BotInfo.HPictureBeginCmd;
-            txbHPictureCount.Text = BotInfo.HPictureCountCmd;
-            txbHPictureUnit.Text = BotInfo.HPictureUnitCmd;
-            txbHPictureR18.Text = BotInfo.HPictureR18Cmd;
-            txbHPictureKeyword.Text = BotInfo.HPictureKeywordCmd;
-            txbHPictureEnd.Text = BotInfo.HPictureEndCmd;
-            txbBeautyPictureEnd.Text = BotInfo.BeautyPictureEndCmd;
-            chkHPictureBeginNull.Checked = BotInfo.HPictureBeginCmdNull;
-            chkHPictureCountNull.Checked = BotInfo.HPictureCountCmdNull;
-            chkHPictureUnitNull.Checked = BotInfo.HPictureUnitCmdNull;
-            chkHPictureR18Null.Checked = BotInfo.HPictureR18CmdNull;
-            chkHPictureKeywordNull.Checked = BotInfo.HPictureKeywordCmdNull;
-            chkHPictureEndNull.Checked = BotInfo.HPictureEndCmdNull;
-            chkBeautyPictureEndNull.Checked = BotInfo.BeautyPictureEndCmdNull;
             chkRevokeBeautyPicture.Checked = BotInfo.RevokeBeautyPicture;
             if (BotInfo.HPictureUserCmd != null)
             {
@@ -176,14 +165,11 @@ namespace GreenOnions.BotManagerWindow
             chkHPictureAllowR18.Checked = BotInfo.HPictureAllowR18;
             chkHPictureR18WhiteOnly.Checked = BotInfo.HPictureR18WhiteOnly;
             chkHPictureAllowPM.Checked = BotInfo.HPictureAllowPM;
-            chkHPictureAntiShielding.Checked = BotInfo.HPictureAntiShielding;
             chkHPictureSize1200.Checked = BotInfo.HPictureSize1200;
             txbHPictureLimit.Text = BotInfo.HPictureLimit.ToString();
             chkHPicturePMNoLimit.Checked = BotInfo.HPicturePMNoLimit;
             chkHPictureAdminNoLimit.Checked = BotInfo.HPictureAdminNoLimit;
             chkHPictureWhiteNoLimit.Checked = BotInfo.HPictureWhiteNoLimit;
-            chkHPictureSendUrl.Checked = BotInfo.HPictureSendUrl;
-            chkHPictureSendTags.Checked = BotInfo.HPictureSendTags;
             txbHPictureCD.Text = BotInfo.HPictureCD.ToString();
             txbHPictureRevoke.Text = BotInfo.HPictureRevoke.ToString();
             txbHPictureWhiteCD.Text = BotInfo.HPictureWhiteCD.ToString();
@@ -196,13 +182,12 @@ namespace GreenOnions.BotManagerWindow
             txbHPictureNoResultReply.Text = BotInfo.HPictureNoResultReply;
             txbDownloadFailReply.Text = BotInfo.HPictureDownloadFailReply;
             if (BotInfo.HPictureLimitType == LimitType.Count)
-            {
                 rodHPictureLimitCount.Checked = true;
-            }
             else
-            {
                 rdoHPictureLimitFrequency.Checked = true;
-            }
+            chkHPictureSendUrl.Checked = BotInfo.HPictureSendUrl;
+            chkHPictureSendTags.Checked = BotInfo.HPictureSendTags;
+            chkHPictureSendByForward.Checked = BotInfo.HPictureSendByForward;
 
             #endregion -- 色图设置 --
 
@@ -331,11 +316,12 @@ namespace GreenOnions.BotManagerWindow
             #endregion -- 通用设置 --
 
             #region -- 搜图设置 --
+            BotInfo.SearchEnabled = chkSearchPictureEnabled.Checked;  //是否启用搜图功能
+            BotInfo.PmAutoSearch = chkPmAutoSearch.Checked;
             int iTraceMoeSendThreshold;
             if (!int.TryParse(txbTraceMoeSendThreshold.Text, out iTraceMoeSendThreshold))
                 iTraceMoeSendThreshold = 87;
             BotInfo.TraceMoeSendThreshold = iTraceMoeSendThreshold;
-            BotInfo.SearchEnabled = chkSearchPictureEnabled.Checked;  //是否启用搜图功能
             BotInfo.SearchEnabledSauceNao = chkSearchSauceNAOEnabled.Checked;  //是否启用SauceNao搜图
             BotInfo.SearchSauceNAOSendPixivOriginPicture = chkSearchSauceNAOSendPixivOriginPicture.Checked;
             BotInfo.SauceNAOApiKey = txbSearchSauceNAOApiKey.Text.Split("\r\n");
@@ -424,23 +410,10 @@ namespace GreenOnions.BotManagerWindow
                 EnabledBeautyPictureSource.Add(PictureSource.GreenOnions);
             BotInfo.EnabledHPictureSource = EnabledHPictureSource;
             BotInfo.EnabledBeautyPictureSource = EnabledBeautyPictureSource;
+            BotInfo.HPictureCmd = txbHPictureCmd.Text;
             BotInfo.HPictureOnceMessageMaxImageCount = string.IsNullOrEmpty(txbHPictureOnceMessageMaxImageCount.Text) ? 10 : Convert.ToInt32(txbHPictureOnceMessageMaxImageCount.Text);
             BotInfo.HPictureEnabled = chkHPictureEnabled.Checked;
             BotInfo.HPictureApiKey = txbHPictureApiKey.Text;
-            BotInfo.HPictureBeginCmd = txbHPictureBegin.Text;
-            BotInfo.HPictureCountCmd = txbHPictureCount.Text;
-            BotInfo.HPictureUnitCmd = txbHPictureUnit.Text;
-            BotInfo.HPictureR18Cmd = txbHPictureR18.Text;
-            BotInfo.HPictureKeywordCmd = txbHPictureKeyword.Text;
-            BotInfo.HPictureEndCmd = txbHPictureEnd.Text;
-            BotInfo.BeautyPictureEndCmd = txbBeautyPictureEnd.Text;
-            BotInfo.HPictureBeginCmdNull = chkHPictureBeginNull.Checked;
-            BotInfo.HPictureCountCmdNull = chkHPictureCountNull.Checked;
-            BotInfo.HPictureUnitCmdNull = chkHPictureUnitNull.Checked;
-            BotInfo.HPictureR18CmdNull = chkHPictureR18Null.Checked;
-            BotInfo.HPictureKeywordCmdNull = chkHPictureKeywordNull.Checked;
-            BotInfo.HPictureEndCmdNull = chkHPictureEndNull.Checked;
-            BotInfo.BeautyPictureEndCmdNull = chkBeautyPictureEndNull.Checked;
             BotInfo.RevokeBeautyPicture = chkRevokeBeautyPicture.Checked;
             List<string> tempHPictureUserCmd = new List<string>();
             foreach (ListViewItem item in lstHPictureUserCmd.Items)
@@ -458,7 +431,6 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.HPictureAllowR18 = chkHPictureAllowR18.Checked;
             BotInfo.HPictureR18WhiteOnly = chkHPictureR18WhiteOnly.Checked;
             BotInfo.HPictureAllowPM = chkHPictureAllowPM.Checked;
-            BotInfo.HPictureAntiShielding = chkHPictureAntiShielding.Checked;
             BotInfo.HPictureSize1200 = chkHPictureSize1200.Checked;
             BotInfo.HPictureLimit = string.IsNullOrEmpty(txbHPictureLimit.Text) ? 0 : Convert.ToInt32(txbHPictureLimit.Text);
             BotInfo.HPicturePMNoLimit = chkHPicturePMNoLimit.Checked;
@@ -478,6 +450,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.HPictureWhiteNoLimit = chkHPictureWhiteNoLimit.Checked;
             BotInfo.HPictureSendUrl = chkHPictureSendUrl.Checked;
             BotInfo.HPictureSendTags = chkHPictureSendTags.Checked;
+            BotInfo.HPictureSendByForward = chkHPictureSendByForward.Checked;
             #endregion -- 色图设置 --
 
             #region -- 复读设置 --
@@ -572,97 +545,18 @@ namespace GreenOnions.BotManagerWindow
             foreach (string sauceNaoKey in txbSearchSauceNAOApiKey.Text.Split("\r\n"))
                 Cache.SetSauceNaoKey(sauceNaoKey);
 
-            MiraiApiHttp.Main.UpdateRegexs();
-            CqHttp.Main.UpdateRegexs();
+            MessageHandler.UpdateRegexs();
 
             Close();
         }
 
-        private void txbHPictureEnd_TextChanged(object sender, EventArgs e) => AddStringToCmd();
+        private void txbForgeMessageCmd_TextChanged(object sender, EventArgs e) => AddStringToCmd();
 
         private void AddStringToCmd()
         {
-            txbForgeMessageCmdBegin.TextChanged -= txbHPictureEnd_TextChanged;
-            txbHPictureApiKey.TextChanged -= txbHPictureEnd_TextChanged;
-            txbBeautyPictureEnd.TextChanged -=txbHPictureEnd_TextChanged;
-            txbHPictureEnd.TextChanged -= txbHPictureEnd_TextChanged;
-            txbHPictureBegin.TextChanged -=txbHPictureEnd_TextChanged;
-            txbHPictureKeyword.TextChanged -= txbHPictureEnd_TextChanged;
-            txbHPictureCount.TextChanged -= txbHPictureEnd_TextChanged;
-            txbHPictureR18.TextChanged -=txbHPictureEnd_TextChanged;
-            txbHPictureUnit.TextChanged -=txbHPictureEnd_TextChanged;
-
-            if (chkHPictureBeginNull.Checked)
-                txbHPictureBegin.Text = SetNullRegex(txbHPictureBegin.Text);
-            else
-                txbHPictureBegin.Text = RemoveNullRegex(txbHPictureBegin.Text);
-
-            if (chkHPictureCountNull.Checked)
-                txbHPictureCount.Text = SetNullRegex(txbHPictureCount.Text);
-            else
-                txbHPictureCount.Text = RemoveNullRegex(txbHPictureCount.Text);
-
-            if (chkHPictureUnitNull.Checked)
-                txbHPictureUnit.Text = SetNullRegex(txbHPictureUnit.Text);
-            else
-                txbHPictureUnit.Text = RemoveNullRegex(txbHPictureUnit.Text);
-
-            if (chkHPictureR18Null.Checked)
-                txbHPictureR18.Text = SetNullRegex(txbHPictureR18.Text);
-            else
-                txbHPictureR18.Text = RemoveNullRegex(txbHPictureR18.Text);
-
-
-            if (chkHPictureKeywordNull.Checked)
-                txbHPictureKeyword.Text = SetNullRegex(txbHPictureKeyword.Text);
-            else
-                txbHPictureKeyword.Text = RemoveNullRegex(txbHPictureKeyword.Text);
-
-            if (chkHPictureEndNull.Checked)
-                txbHPictureEnd.Text = SetNullRegex(txbHPictureEnd.Text);
-            else
-                txbHPictureEnd.Text = RemoveNullRegex(txbHPictureEnd.Text);
-
-
-            if (chkBeautyPictureEndNull.Checked)
-                txbBeautyPictureEnd.Text = SetNullRegex(txbBeautyPictureEnd.Text);
-            else
-                txbBeautyPictureEnd.Text = RemoveNullRegex(txbBeautyPictureEnd.Text);
-
-            txbHPictureCmd.Text = $"^{txbHPictureBegin.Text}{txbHPictureCount.Text}{txbHPictureUnit.Text }{txbHPictureR18.Text}{txbHPictureKeyword.Text}{txbHPictureR18.Text}{txbHPictureEnd.Text}$";
-            txbBeautyPictureCmd.Text = $"^{txbHPictureBegin.Text}{txbHPictureCount.Text}{txbHPictureUnit.Text }{txbHPictureR18.Text}{txbHPictureKeyword.Text }{txbHPictureR18.Text}{txbBeautyPictureEnd.Text}$";
-
+            txbForgeMessageCmdBegin.TextChanged -= txbForgeMessageCmd_TextChanged;
             txbForgeMessageCmd.Text = $"{txbForgeMessageCmdBegin.Text}<@QQ><伪造内容>";
-
-            txbForgeMessageCmdBegin.TextChanged += txbHPictureEnd_TextChanged;
-            txbHPictureApiKey.TextChanged += txbHPictureEnd_TextChanged;
-            txbBeautyPictureEnd.TextChanged += txbHPictureEnd_TextChanged;
-            txbHPictureEnd.TextChanged += txbHPictureEnd_TextChanged;
-            txbHPictureBegin.TextChanged += txbHPictureEnd_TextChanged;
-            txbHPictureKeyword.TextChanged += txbHPictureEnd_TextChanged;
-            txbHPictureCount.TextChanged += txbHPictureEnd_TextChanged;
-            txbHPictureR18.TextChanged += txbHPictureEnd_TextChanged;
-            txbHPictureUnit.TextChanged += txbHPictureEnd_TextChanged;
-
-            string SetNullRegex(string str)
-            {
-                if (string.IsNullOrEmpty(str))
-                    return str;
-                if (str[0] == '(' && str[str.Length - 2] == ')' && str[str.Length - 1] == '?')
-                    return str;
-                return $"({str})?";
-            }
-
-            string RemoveNullRegex(string str)
-            {
-                if (string.IsNullOrEmpty(str))
-                    return str;
-                if (str.Length < 3)
-                    return str;
-                if (str[0] == '(' && str[str.Length -2]== ')' && str[str.Length -1] =='?')
-                    return str.Substring(1, str.Length - 3);
-                return str;
-            }
+            txbForgeMessageCmdBegin.TextChanged += txbForgeMessageCmd_TextChanged;
         }
 
         private void chkEnableHPicture_CheckedChanged(object sender, EventArgs e) => pnlHPictureEnabeled.Enabled = chkHPictureEnabled.Checked;
@@ -690,25 +584,10 @@ namespace GreenOnions.BotManagerWindow
 
         private void lnkResetHPicture_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            chkHPictureBeginNull.Checked = false;
-            chkHPictureCountNull.Checked = true;
-            chkHPictureUnitNull.Checked = false;
-            chkHPictureR18Null.Checked = true;
-            chkHPictureKeywordNull.Checked = true;
-            chkHPictureEndNull.Checked = false;
-
-            txbHPictureBegin.Text = "<机器人名称>[我再]?[要来來发發给給]";
-            txbHPictureCount.Text = "[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+?";
-            txbHPictureUnit.Text = "[张張个個幅份]";
-            txbHPictureR18.Text = "[Rr]-?18的?";
-            txbHPictureKeyword.Text = ".+?";
-            txbHPictureEnd.Text = "的?[色瑟][图圖図]";
-            txbBeautyPictureEnd.Text = "的?美[图圖図]";
+            txbHPictureCmd.Text = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟][图圖図])|(?<美图后缀>[美][图圖図]))";
             chkHPictureEnabledLoliconSource.Checked = true;
             AddStringToCmd();
         }
-
-        private void chkHPictureBeginNull_CheckedChanged(object sender, EventArgs e) => AddStringToCmd();
 
         private void chkSearchPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchPicture.Enabled = chkSearchPictureEnabled.Checked;
 

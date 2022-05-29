@@ -27,11 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.TicTacToe", "Gr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Model", "GreenOnions.Model\GreenOnions.Model.csproj", "{54584F63-25C8-401E-A2AD-EE1A86707380}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.CqHttp", "GreenOnions.CqHttp\GreenOnions.CqHttp.csproj", "{55935914-2149-4D57-9B22-110218E283BC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.MiraiApiHttp", "GreenOnions.MiraiApiHttp\GreenOnions.MiraiApiHttp.csproj", "{48FEFE23-923E-4A30-8D61-52E9ED357FBB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.BotMain", "GreenOnions.BotMain\GreenOnions.BotMain.csproj", "{B343C30B-4176-479D-8AA5-7DE2AE921320}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotMain", "GreenOnions.BotMain\GreenOnions.BotMain.csproj", "{B343C30B-4176-479D-8AA5-7DE2AE921320}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,14 +83,6 @@ Global
 		{54584F63-25C8-401E-A2AD-EE1A86707380}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54584F63-25C8-401E-A2AD-EE1A86707380}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54584F63-25C8-401E-A2AD-EE1A86707380}.Release|Any CPU.Build.0 = Release|Any CPU
-		{55935914-2149-4D57-9B22-110218E283BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55935914-2149-4D57-9B22-110218E283BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55935914-2149-4D57-9B22-110218E283BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55935914-2149-4D57-9B22-110218E283BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48FEFE23-923E-4A30-8D61-52E9ED357FBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48FEFE23-923E-4A30-8D61-52E9ED357FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48FEFE23-923E-4A30-8D61-52E9ED357FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48FEFE23-923E-4A30-8D61-52E9ED357FBB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B343C30B-4176-479D-8AA5-7DE2AE921320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B343C30B-4176-479D-8AA5-7DE2AE921320}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B343C30B-4176-479D-8AA5-7DE2AE921320}.Release|Any CPU.ActiveCfg = Release|Any CPU

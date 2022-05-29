@@ -2,19 +2,14 @@
 using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
 using Mirai.CSharp.Models.ChatMessages;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace GreenOnions.MiraiApiHttp
+namespace GreenOnions.BotMain.MiraiApiHttp
 {
-    public static class MessageConvertHelper
+    public static class MiraiApiHttpMessageConvert
     {
-        public static GreenOnionsMessageGroup ToOnionsMessages(this IChatMessage[] miraiMessage)
+        public static GreenOnionsMessages ToOnionsMessages(this IChatMessage[] miraiMessage)
         {
-            GreenOnionsMessageGroup greenOnionsMessages = new GreenOnionsMessageGroup();
+            GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
             for (int i = 0; i < miraiMessage.Length; i++)
             {
                 if (miraiMessage[i] is IAtMessage atMsg)
@@ -81,9 +76,10 @@ namespace GreenOnions.MiraiApiHttp
             return null;
         }
 
-        public static async Task<IChatMessage[]> ToMiraiApiHttpMessages(this GreenOnionsMessageGroup greenOnionsMessage, IMiraiHttpSession session, UploadTarget uploadTarget)
+        public static async Task<IChatMessage[]> ToMiraiApiHttpMessages(this GreenOnionsMessages greenOnionsMessage, IMiraiHttpSession session, UploadTarget uploadTarget)
         {
             List<IChatMessage> miraiApiHttpMessages = new List<IChatMessage>();
+            List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode> nodes = new List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode>();
             for (int i = 0; i < greenOnionsMessage.Count; i++)
             {
                 if (greenOnionsMessage[i] is GreenOnionsTextMessage txtMsg)
@@ -119,12 +115,11 @@ namespace GreenOnions.MiraiApiHttp
                 }
                 else if (greenOnionsMessage[i] is GreenOnionsForwardMessage forwardMsg)
                 {
-                    List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode> nodes = new List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode>();
                     for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                     {
                         Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode node = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
                         {
-                            Id = j,
+                            Id = i * j + j,
                             Name = forwardMsg.ItemMessages[j].NickName,
                             QQNumber = forwardMsg.ItemMessages[j].QQid,
                             Time = DateTime.Now,
@@ -132,9 +127,12 @@ namespace GreenOnions.MiraiApiHttp
                         };
                         nodes.Add(node);
                     }
-                    Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage forwardMessage = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage(nodes.ToArray());
-                    miraiApiHttpMessages.Add(forwardMessage);
                 }
+            }
+            if (nodes.Count > 0)
+            {
+                Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage forwardMessage = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage(nodes.ToArray());
+                miraiApiHttpMessages.Add(forwardMessage);
             }
             return miraiApiHttpMessages.ToArray();
         }

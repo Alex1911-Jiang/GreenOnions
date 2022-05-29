@@ -14,7 +14,7 @@ namespace GreenOnions.Help
 {
     public static class HelpHandler
     {
-        public static GreenOnionsMessageGroup Helps(Regex regexHelp, string msg, long? groupId)
+        public static GreenOnionsMessages Helps(Regex regexHelp, string msg, long? groupId)
         {
             Match match = regexHelp.Matches(msg).FirstOrDefault();
             if (match?.Groups.Count > 0)
@@ -27,7 +27,7 @@ namespace GreenOnions.Help
                     "--翻译" => translateHelp(),
                     "--GHS" => hPictureHelp(groupId),
                     "--色图" => hPictureHelp(groupId),
-                    "--美图" => beauthPictureHelp(),
+                    "--美图" => hPictureHelp(groupId),
                     "--复读" => repeatHelp(),
                     "--伪造消息" => forgeMessageHelp(),
                     "--RSS订阅转发" => rssHelp(),
@@ -132,8 +132,8 @@ namespace GreenOnions.Help
 
                 string hpictureHelpMsg()
                 {
-                    StringBuilder strHPicture = new StringBuilder($"发送\"{BotInfo.HPictureCmd.ReplaceGreenOnionsTags()}\"来索要色图。");
-                    strHPicture.AppendLine($"需要注意的是，关键词中，如果仅输入一个关键词，则按模糊匹配查询，如果用|或&连接多个关键词，则按标签精确匹配(|代表或，&代表与)");
+                    StringBuilder strHPicture = new StringBuilder($"发送\"{BotInfo.HPictureCmd.ReplaceGreenOnionsTags()}\"来索要色图/美图。");
+                    strHPicture.AppendLine($"需要注意的是，色图关键词中，如果仅输入一个关键词，则按模糊匹配查询，如果用|或&连接多个关键词，则按标签精确匹配 |代表或，&代表与(美图仅支持一个关键词)");
                     if (BotInfo.HPictureUserCmd.Count() > 0)
                         strHPicture.AppendLine($"或直接输入\"{string.Join("\",\"", BotInfo.HPictureUserCmd)}\"中的一个来索要一张随机色图。");
                     strHPicture.AppendLine("如果不明白命令中符号所代表的的意义，请在搜索引擎搜\"正则表达式\"");
@@ -142,13 +142,6 @@ namespace GreenOnions.Help
             }
             else
                 return new[] { $"当前{BotInfo.BotName}没有启用色图功能" }.ToTextMessageArray();
-        }
-        private static GreenOnionsBaseMessage[] beauthPictureHelp()
-        {
-            if (BotInfo.HPictureEnabled && BotInfo.EnabledHPictureSource.Contains(PictureSource.ELF))
-                return new[] { $"发送\"{BotInfo.BeautyPictureCmd.ReplaceGreenOnionsTags()}\"来索要美图 \r\n如果不明白命令中符号所代表的的意义，请在搜索引擎搜\"正则表达式\"" }.ToTextMessageArray();
-            else
-                return new[] { $"当前{BotInfo.BotName}没有启用美图功能" }.ToTextMessageArray();
         }
         private static GreenOnionsBaseMessage[] repeatHelp()
         {

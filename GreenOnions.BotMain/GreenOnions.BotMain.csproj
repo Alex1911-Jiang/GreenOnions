@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.6" />
+    <PackageReference Include="Sora" Version="1.0.0-rc.51" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GreenOnions.ForgeMessage\GreenOnions.ForgeMessage.csproj" />
     <ProjectReference Include="..\GreenOnions.Help\GreenOnions.Help.csproj" />
     <ProjectReference Include="..\GreenOnions.HPicture\GreenOnions.HPicture.csproj" />

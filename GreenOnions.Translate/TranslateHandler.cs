@@ -9,7 +9,7 @@ namespace GreenOnions.Translate
 {
     public static class TranslateHandler
     {
-        public async static void TranslateToChinese(Regex regexTranslateToChinese, string msg, Action<GreenOnionsMessageGroup> SendMessage)
+        public async static void TranslateToChinese(Regex regexTranslateToChinese, string msg, Action<GreenOnionsMessages> SendMessage)
         {
             try
             {
@@ -23,7 +23,7 @@ namespace GreenOnions.Translate
             }
         }
 
-        public async static void TranslateTo(Regex regexTranslateTo, string msg, Action<GreenOnionsMessageGroup> SendMessage)
+        public async static void TranslateTo(Regex regexTranslateTo, string msg, Action<GreenOnionsMessages> SendMessage)
         {
             Match match = regexTranslateTo.Matches(msg).First();
             if (match.Groups.Count > 1)
@@ -39,7 +39,7 @@ namespace GreenOnions.Translate
             }
         }
 
-        public async static void TranslateFromTo(Regex regexTranslateFromTo, string msg, Action<GreenOnionsMessageGroup> SendMessage)
+        public async static void TranslateFromTo(Regex regexTranslateFromTo, string msg, Action<GreenOnionsMessages> SendMessage)
         {
             Match match = regexTranslateFromTo.Matches(msg).First();
             if (match.Groups.Count > 1)
@@ -48,7 +48,7 @@ namespace GreenOnions.Translate
                 {
                     string translateResult = "";
                     string text = msg.Substring(match.Value.Length);
-                    if (match.Groups.ContainsKey("from") && match.Groups.ContainsKey("to"))
+                    if (match.Groups["from"].Success && match.Groups["to"].Success)
                     {
                         string from = match.Groups["from"].Value;
                         string to = match.Groups["to"].Value;

@@ -16,7 +16,7 @@ namespace GreenOnions.RSS
     public static class RssHelper
     {
         private static Task _RssWorker = null;
-        public static void StartRssTask(Action<GreenOnionsMessageGroup, long, long> SendMessage)
+        public static void StartRssTask(Action<GreenOnionsMessages, long, long> SendMessage)
         {
             if (BotInfo.RssEnabled && BotInfo.IsLogin)
             {
@@ -81,7 +81,7 @@ namespace GreenOnions.RSS
                                         LogHelper.WriteInfoLog($"需要转发的组:{item.ForwardGroups.Length}个");
                                         if (item.ForwardGroups.Length > 0 )
                                         {
-                                            GreenOnionsMessageGroup groupResultMsg = new GreenOnionsMessageGroup();
+                                            GreenOnionsMessages groupResultMsg = new GreenOnionsMessages();
 
                                             if (item.AtAll)
                                             {
@@ -137,7 +137,7 @@ namespace GreenOnions.RSS
                                         LogHelper.WriteInfoLog($"需要转发的好友:{item.ForwardQQs.Length}个");
                                         if (item.ForwardQQs.Length > 0)
                                         {
-                                            GreenOnionsMessageGroup friendResultMsg = new GreenOnionsMessageGroup();
+                                            GreenOnionsMessages friendResultMsg = new GreenOnionsMessages();
 
                                             friendResultMsg.Add(titleMsg);
                                             if (translateMsg != null)

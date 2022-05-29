@@ -11,10 +11,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-
-namespace GreenOnions.MiraiApiHttp
+namespace GreenOnions.BotMain.MiraiApiHttp
 {
-    public static class Main
+    public static class MiraiApiHttpMain
     {
         public static async Task Connect(long qqId, string ip, ushort port, string authKey, Action<bool, string> ConnectedEvent)
         {
@@ -94,7 +93,5 @@ namespace GreenOnions.MiraiApiHttp
                 ConnectedEvent?.Invoke(false, ex.Message);
             }
         }
-
-        public static void UpdateRegexs() => BotMain.MessageHandler.UpdateRegexs();
     }
 }

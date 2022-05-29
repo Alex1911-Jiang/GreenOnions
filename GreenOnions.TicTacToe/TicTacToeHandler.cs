@@ -19,7 +19,7 @@ namespace GreenOnions.TicTacToe
         /// 开始棋局
         /// </summary>
         /// <param name="qqId">玩家QQ</param>
-        public static async void StartTicTacToeSession(long qqId, Action<GreenOnionsMessageGroup> SendMessage)
+        public static async void StartTicTacToeSession(long qqId, Action<GreenOnionsMessages> SendMessage)
         {
             if (Cache.PlayingTicTacToeUsers.ContainsKey(qqId))
             {
@@ -55,7 +55,7 @@ namespace GreenOnions.TicTacToe
         /// 中止棋局
         /// </summary>
         /// <param name="qqId">玩家QQ</param>
-        public static void StopTicTacToeSession(long qqId, Action<GreenOnionsMessageGroup> SendMessage)
+        public static void StopTicTacToeSession(long qqId, Action<GreenOnionsMessages> SendMessage)
         {
             if (Cache.PlayingTicTacToeUsers.ContainsKey(qqId))
             {
@@ -75,7 +75,7 @@ namespace GreenOnions.TicTacToe
         /// </summary>
         /// <param name="moveMsg">坐标命令</param>
         /// <param name="qqId">玩家QQ</param>
-        public static void PlayerMoveByNomenclature(string moveMsg, long qqId, Action<GreenOnionsMessageGroup> SendMessage)
+        public static void PlayerMoveByNomenclature(string moveMsg, long qqId, Action<GreenOnionsMessages> SendMessage)
         {
             if (PlayingTicTacToeSessions.ContainsKey(qqId))
             {
@@ -112,7 +112,7 @@ namespace GreenOnions.TicTacToe
         /// </summary>
         /// <param name="qqId">玩家QQ</param>
         /// <param name="playerMoveStream">玩家下子图片</param>
-        public static GreenOnionsMessageGroup PlayerMoveByBitmap(long qqId, Stream playerMoveStream)
+        public static GreenOnionsMessages PlayerMoveByBitmap(long qqId, Stream playerMoveStream)
         {
             if (PlayingTicTacToeSessions.ContainsKey(qqId))
             {
@@ -161,14 +161,14 @@ namespace GreenOnions.TicTacToe
             }
         }
 
-        public static GreenOnionsMessageGroup SendBitmapAfterMove(long qqId, Bitmap nowStepBmp, int? winOrLostMsg)
+        public static GreenOnionsMessages SendBitmapAfterMove(long qqId, Bitmap nowStepBmp, int? winOrLostMsg)
         {
             using (MemoryStream tempMs = new MemoryStream())
             {
                 nowStepBmp.Save(tempMs, ImageFormat.Jpeg);
                 using (MemoryStream ms = new MemoryStream(tempMs.ToArray()))
                 {
-                    GreenOnionsMessageGroup outMsg = new GreenOnionsMessageGroup();
+                    GreenOnionsMessages outMsg = new GreenOnionsMessages();
                     outMsg.Add(ms);
 
                     if (winOrLostMsg != null)

@@ -225,6 +225,20 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabled), value.ToString());
         }
+        
+        /// <summary>
+        /// 私聊时是否自动搜图
+        /// </summary>
+        public static bool PmAutoSearch
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(PmAutoSearch));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(PmAutoSearch), value.ToString());
+        }
 
         /// <summary>
         /// 是否启用SauceNao搜图
@@ -249,7 +263,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginPicture));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
+                return true;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginPicture), value.ToString());
         }
@@ -759,232 +773,8 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string HPictureCmd
         {
-            get => GetLoliconHPictureCmd();
-        }
-
-        /// <summary>
-        /// 美图完整命令(正则表达式)
-        /// </summary>
-        public static string BeautyPictureCmd
-        {
-            get => GetBeautyPictureCmd();
-        }
-
-        private static string GetLoliconHPictureCmd()
-        {
-            string HPictureEnd = HPictureEndCmd;
-            if (HPictureEndCmdNull)
-            {
-                HPictureEnd = $"({HPictureEnd})?";
-            }
-
-            return $"^{GetPictureCmdInner()}{HPictureEnd}$";
-        }
-
-        private static string GetBeautyPictureCmd()
-        {
-            string BeautyPictureEnd = BeautyPictureEndCmd;
-            if (BeautyPictureEndCmdNull)
-            {
-                BeautyPictureEnd = $"({BeautyPictureEnd})?";
-            }
-
-            return $"^{GetPictureCmdInner()}{BeautyPictureEnd}$";
-        }
-
-        private static string GetPictureCmdInner()
-        {
-            string Begin, Count, Unit, R18, Keyword;
-
-            Begin = HPictureBeginCmd;
-            if (HPictureBeginCmdNull)
-            {
-                Begin = $"({Begin})?";
-            }
-            Count = HPictureCountCmd;
-            if (HPictureCountCmdNull)
-            {
-                Count = $"({Count})?";
-            }
-            Unit = HPictureUnitCmd;
-            if (HPictureUnitCmdNull)
-            {
-                Unit = $"({Unit})?";
-            }
-            R18 = HPictureR18Cmd;
-            if (HPictureR18CmdNull)
-            {
-                R18 = $"({R18})?";
-            }
-            Keyword = HPictureKeywordCmd;
-            if (HPictureKeywordCmdNull)
-            {
-                Keyword = $"({Keyword})?";
-            }
-            return $"{Begin}{Count}{Unit}{R18}{Keyword}{R18}";
-        }
-
-
-        /// <summary>
-        /// 色图命令前缀(正则表达式)
-        /// </summary>
-        public static string HPictureBeginCmd
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureBeginCmd)) ?? "<机器人名称>[我再]?[要来來发發给給]";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureBeginCmd), value);
-        }
-
-        /// <summary>
-        /// 色图数量命令(正则表达式)
-        /// </summary>
-        public static string HPictureCountCmd
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCountCmd)) ?? "[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+?";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCountCmd), value);
-        }
-
-        /// <summary>
-        /// 色图单位命令(正则表达式)
-        /// </summary>
-        public static string HPictureUnitCmd
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureUnitCmd)) ?? "[张張个個幅份]";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureUnitCmd), value);
-        }
-
-        /// <summary>
-        /// 色图R-18命令(正则表达式)
-        /// </summary>
-        public static string HPictureR18Cmd
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureR18Cmd)) ?? "[Rr]-?18的?";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureR18Cmd), value);
-        }
-
-        /// <summary>
-        /// 色图关键词命令(正则表达式)
-        /// </summary>
-        public static string HPictureKeywordCmd
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureKeywordCmd)) ?? ".+?";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureKeywordCmd), value);
-        }
-
-        /// <summary>
-        /// 色图结束命令后缀(正则表达式)
-        /// </summary>
-        public static string HPictureEndCmd
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureEndCmd)) ?? "的?[色瑟][图圖図]";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureEndCmd), value);
-        }
-
-        /// <summary>
-        /// 美图结束命令后缀(正则表达式)
-        /// </summary>
-        public static string BeautyPictureEndCmd
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(BeautyPictureEndCmd)) ?? "的?美[图圖図]";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(BeautyPictureEndCmd), value);
-        }
-
-        /// <summary>
-        /// 是否允许色图命令前缀为空
-        /// </summary>
-        public static bool HPictureBeginCmdNull
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureBeginCmdNull));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureBeginCmdNull), value.ToString());
-        }
-
-        /// <summary>
-        /// 是否允许色图数量命令为空
-        /// </summary>
-        public static bool HPictureCountCmdNull
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCountCmdNull));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCountCmdNull), value.ToString());
-        }
-
-        /// <summary>
-        /// 是否允许色图单位命令为空
-        /// </summary>
-        public static bool HPictureUnitCmdNull
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureUnitCmdNull));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureUnitCmdNull), value.ToString());
-        }
-
-        /// <summary>
-        /// 是否允许R-18命令为空
-        /// </summary>
-        public static bool HPictureR18CmdNull
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureR18CmdNull));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureR18CmdNull), value.ToString());
-
-        }
-
-        /// <summary>
-        /// 是否允许关键词命令为空
-        /// </summary>
-        public static bool HPictureKeywordCmdNull
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureKeywordCmdNull));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureKeywordCmdNull), value.ToString());
-        }
-
-        /// <summary>
-        /// 是否允许色图命令后缀为空
-        /// </summary>
-        public static bool HPictureEndCmdNull
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureEndCmdNull));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureEndCmdNull), value.ToString());
-        }
-
-        /// <summary>
-        /// 是否允许美图命令后缀为空
-        /// </summary>
-        public static bool BeautyPictureEndCmdNull
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(BeautyPictureEndCmdNull));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(BeautyPictureEndCmdNull), value.ToString());
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCmd)) ?? "(?<前缀>葱葱[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟][图圖図])|(?<美图后缀>[美][图圖図]))";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCmd), value);
         }
 
         /// <summary>
@@ -1116,21 +906,6 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureAllowPM), value.ToString());
         }
-
-        /// <summary>
-        /// 反和谐
-        /// </summary>
-        public static bool HPictureAntiShielding
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureAntiShielding));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureAntiShielding), value.ToString());
-        }
-
 
         /// <summary>
         /// 1200像素模式
@@ -1312,6 +1087,20 @@ namespace GreenOnions.Utility
                 return true;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendTags), value.ToString());
+        }
+        
+        /// <summary>
+        /// 是否以合并转发的方式发送色图
+        /// </summary>
+        public static bool HPictureSendByForward
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendByForward));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendByForward), value.ToString());
         }
 
         /// <summary>

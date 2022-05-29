@@ -3,7 +3,7 @@ using Sora.Entities;
 using Sora.Entities.Segment;
 using Sora.Entities.Segment.DataModel;
 
-namespace GreenOnions.CqHttp
+namespace GreenOnions.BotMain.CqHttp
 {
     public static class MessageConvertHelper
     {
@@ -46,9 +46,12 @@ namespace GreenOnions.CqHttp
             return null;
         }
 
-        public static MessageBody ToCqHttpMessages(this GreenOnionsMessageGroup greenOnionsMessage)
+        public static MessageBody ToCqHttpMessages(this GreenOnionsMessages greenOnionsMessage, int? RelpyId)
         {
             MessageBody cqHttpMessages = new MessageBody();
+            if (RelpyId != null)
+                cqHttpMessages.Add(SoraSegment.Reply(RelpyId.Value));
+
             for (int i = 0; i < greenOnionsMessage.Count; i++)
             {
                 if (greenOnionsMessage[i] is GreenOnionsTextMessage txtMsg)
@@ -67,6 +70,13 @@ namespace GreenOnions.CqHttp
                     else
                         cqHttpMessages.Add(SoraSegment.At(atMsg.AtId));
                 }
+                else if (greenOnionsMessage[i] is GreenOnionsForwardMessage forwardMsg)
+                {
+                    for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
+                    {
+                        cqHttpMessages.AddRange(ToCqHttpMessages(forwardMsg.ItemMessages[i].itemMessage, RelpyId));
+                    }
+                }
             }
             return cqHttpMessages;
         }
@@ -76,7 +86,7 @@ namespace GreenOnions.CqHttp
             List<CustomNode> nodes = new List<CustomNode>();
             for (int i = 0; i < forwardMsg.ItemMessages.Count; i++)
             {
-                nodes.Add(new CustomNode(forwardMsg.ItemMessages[i].NickName, forwardMsg.ItemMessages[i].QQid, forwardMsg.ItemMessages[i].itemMessage.ToCqHttpMessages()));
+                nodes.Add(new CustomNode(forwardMsg.ItemMessages[i].NickName, forwardMsg.ItemMessages[i].QQid, forwardMsg.ItemMessages[i].itemMessage.ToCqHttpMessages(null)));
             }
             return nodes;
         }

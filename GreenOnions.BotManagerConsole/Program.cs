@@ -1,4 +1,6 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.BotMain.CqHttp;
+using GreenOnions.BotMain.MiraiApiHttp;
+using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
 using System.IO;
@@ -55,13 +57,13 @@ namespace GreenOnions.BotManagerConsole
 			{
 				Console.WriteLine("请输入mirai-api-http verifyKey:");
 				string verifyKey = Console.ReadLine();
-                //await MiraiApiHttp.Program.Main(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
+                await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
             }
 			else
 			{
 				Console.WriteLine("请输入cqhttp access-token:");
 				string accessToken = Console.ReadLine();
-				//await CqHttp.Program.Main(qqId, ip, port, accessToken, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
+                await CqHttpMain.Connect(qqId, ip, port, accessToken, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
             }
 		}
 

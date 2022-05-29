@@ -14,9 +14,9 @@ using GreenOnions.Utility.Helper;
 using Sora.Entities.Base;
 using Sora.Entities.Info;
 
-namespace GreenOnions.CqHttp
+namespace GreenOnions.BotMain.CqHttp
 {
-    public class Main
+    public class CqHttpMain
     {
         public static async Task Connect(long qqId, string ip, ushort port, string authKey, Action<bool, string> ConnectedEvent)
         {
@@ -51,10 +51,9 @@ namespace GreenOnions.CqHttp
                     ConnectedEvent?.Invoke(true, nickname);
                 };
 
-                BotMain.RssWorker.StartRssTask((msgs, targetId, groupId) =>
+                RssWorker.StartRssTask((msgs, targetId, groupId) =>
                 {
                     SoraApi api = service.GetApi(service.ServiceId);
-
                     if (msgs != null && msgs.Count > 0)
                     {
                         if (msgs.First() is GreenOnionsForwardMessage forwardMessage)
@@ -64,9 +63,9 @@ namespace GreenOnions.CqHttp
                         else
                         {
                             if (targetId != -1)
-                                _ = api.SendGroupMessage(targetId, msgs.ToCqHttpMessages());
+                                _ = api.SendGroupMessage(targetId, msgs.ToCqHttpMessages(null));
                             else if (groupId != -1)
-                                _ = api.SendGroupMessage(groupId, msgs.ToCqHttpMessages());
+                                _ = api.SendGroupMessage(groupId, msgs.ToCqHttpMessages(null));
                         }
                     }
                 });

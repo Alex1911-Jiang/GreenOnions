@@ -1,4 +1,6 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.BotMain.CqHttp;
+using GreenOnions.BotMain.MiraiApiHttp;
+using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
 using System.Drawing;
@@ -59,7 +61,7 @@ namespace GreenOnions.BotManagerWindow
 		{
             try
             {
-                await MiraiApiHttp.Main.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "mirai-api-http"))));
+                await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "mirai-api-http"))));
             }
             catch (Exception ex)
             {
@@ -72,7 +74,7 @@ namespace GreenOnions.BotManagerWindow
 		{
 			try
 			{
-                await CqHttp.Main.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "cqhttp"))));
+                await CqHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "cqhttp"))));
             }
 			catch (Exception ex)
 			{

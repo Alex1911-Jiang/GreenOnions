@@ -8,7 +8,7 @@ namespace GreenOnions.ForgeMessage
 {
     public static class ForgeMessageHandler
     {
-        public static void SendForgeMessage(GreenOnionsMessageGroup originMsg, long qqId, Action<GreenOnionsMessageGroup> SendMessage)
+        public static void SendForgeMessage(GreenOnionsMessages originMsg, long qqId, Action<GreenOnionsMessages> SendMessage)
         {
             if (!BotInfo.ForgeMessageAdminOnly || BotInfo.AdminQQ.Contains(qqId))
             {

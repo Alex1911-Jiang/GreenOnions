@@ -1,5 +1,4 @@
-﻿using GreenOnions.BotMain;
-using GreenOnions.Utility;
+﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Mirai.CSharp.Builders;
 using Mirai.CSharp.HttpApi.Handlers;
@@ -9,12 +8,9 @@ using Mirai.CSharp.HttpApi.Parsers;
 using Mirai.CSharp.HttpApi.Parsers.Attributes;
 using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
-using System;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace GreenOnions.MiraiApiHttp
+namespace GreenOnions.BotMain.MiraiApiHttp
 {
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMessageEventArgs, GroupMessageEventArgs>))]
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMemberJoinedEventArgs, GroupMemberJoinedEventArgs>))]
@@ -36,11 +32,32 @@ namespace GreenOnions.MiraiApiHttp
             int quoteId = (e.Chain[0] as SourceMessage).Id;
             //QuoteMessage quoteMessage = new QuoteMessage((e.Chain[0] as SourceMessage).Id, e.Sender.Group.Id, e.Sender.Id, e.Sender.Id);
 
+            for (int i = 0; i < e.Chain.Length; i++)
+            {
+                //获取@群名片
+                if (e.Chain[i] is IAtMessage atMsg)
+                {
+                    IGroupMemberInfo[] groupMemberInfos = await session.GetGroupMemberListAsync(e.Sender.Group.Id);
+                    IGroupMemberInfo targetQQ = groupMemberInfos.Where(m => m.Id == atMsg.Target).FirstOrDefault();
+                    string nickName = targetQQ?.Name;
+                    e.Chain[i] = new AtMessage(atMsg.Target, nickName);
+                }
+            }
+
             bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(), e.Sender.Id, e.Sender.Group.Id, async outMsg =>
             {
                 if (outMsg != null)
                 {
-                    _ = session.SendGroupMessageAsync(e.Sender.Group.Id, await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Group), outMsg.Reply ? quoteId : null);
+                    int iRevokeTime = outMsg.RevokeTime;
+                    var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Group);
+                    _ = session.SendGroupMessageAsync(e.Sender.Group.Id, msg, outMsg.Reply ? quoteId : null).ContinueWith(async sendedCallBack =>
+                    {
+                        if (iRevokeTime > 0)
+                        {
+                            await Task.Delay(1000 * iRevokeTime);
+                            _ = session.RevokeMessageAsync(sendedCallBack.Result);
+                        }
+                    });
                 }
             });
         }
