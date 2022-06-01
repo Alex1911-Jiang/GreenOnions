@@ -1,6 +1,5 @@
 ﻿using GreenOnions.BotMain.CqHttp;
 using GreenOnions.BotMain.MiraiApiHttp;
-using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
 using System.IO;
@@ -14,7 +13,7 @@ namespace GreenOnions.BotManagerConsole
 		{
 			AppDomain.CurrentDomain.UnhandledException += (_, e) => LogHelper.WriteErrorLog(e.ExceptionObject);
 
-			Console.WriteLine("葱葱机器人2.0");
+			Console.WriteLine("葱葱机器人3.0-rc");
 
 			if (!File.Exists(JsonHelper.JsonConfigFileName))
 			{

@@ -253,7 +253,21 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledSauceNao), value.ToString());
         }
-        
+
+        /// <summary>
+        /// 是否SauceNao搜图按相似度倒序排序
+        /// </summary>
+        public static bool SearchSauceNAOSortByDesc
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSortByDesc));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSortByDesc), value.ToString());
+        }
+
         /// <summary>
         /// 是否SauceNao搜图发送Pixiv原图
         /// </summary>
@@ -370,6 +384,15 @@ namespace GreenOnions.Utility
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeAlreadyOnReply)) ?? "您已经在搜图模式下啦！\r\n如想退出搜索模式请发送“谢谢<机器人名称>”";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeAlreadyOnReply), value);
+        } 
+        
+        /// <summary>
+        /// 发起搜索时的回复语(正在搜索但未搜索完毕)
+        /// </summary>
+        public static string SearchingReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchingReply)) ?? "";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchingReply), value);
         }
 
         /// <summary>

@@ -10,23 +10,29 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Linq;
 using GreenOnions.Model;
+using System.Threading;
 
 namespace GreenOnions.RSS
 {
     public static class RssHelper
     {
         private static Task _RssWorker = null;
+        private static CancellationTokenSource _source = null;
         public static void StartRssTask(Action<GreenOnionsMessages, long, long> SendMessage)
         {
             if (BotInfo.RssEnabled && BotInfo.IsLogin)
             {
                 if (_RssWorker != null && !_RssWorker.IsCompleted && !_RssWorker.IsCanceled && !_RssWorker.IsFaulted)
                     return;
+                _source = new CancellationTokenSource();
                 _RssWorker = Task.Run(async () =>
                 {
                     LogHelper.WriteInfoLog("启动RSS抓取线程");
                     while (BotInfo.RssEnabled && BotInfo.IsLogin)
                     {
+                        if (_source.IsCancellationRequested)
+                            return;
+
                         foreach (RssSubscriptionItem item in BotInfo.RssSubscription)  //若干条订阅地址
                         {
                             //如果在调试模式并且转发的QQ和群组均不在管理员和调试群组集合中时不去请求
@@ -68,16 +74,6 @@ namespace GreenOnions.RSS
                                             LogHelper.WriteInfoLog($"翻译成功");
                                         }
 
-                                        //List<MemoryStream> imgList = null;
-                                        //if (rss.imgsSrc.Length > 0)
-                                        //{
-                                        //    LogHelper.WriteInfoLog($"本条RSS内容包含图片");
-                                        //    imgList = new List<MemoryStream>();
-                                        //    for (int i = 0; i < rss.imgsSrc.Length; i++)
-                                        //        imgList.Add(await HttpHelper.DownloadImageAsMemoryStream(rss.imgsSrc[i]));
-                                        //    LogHelper.WriteInfoLog($"全部图片下载成功");
-                                        //}
-
                                         LogHelper.WriteInfoLog($"需要转发的组:{item.ForwardGroups.Length}个");
                                         if (item.ForwardGroups.Length > 0 )
                                         {
@@ -95,9 +91,7 @@ namespace GreenOnions.RSS
 
                                             for (int i = 0; i < rss.imgsSrc.Length; i++)
                                             {
-                                                //MemoryStream stream = new MemoryStream(imgList[i].ToArray());
                                                 groupResultMsg.Add(new GreenOnionsImageMessage(rss.imgsSrc[i]));
-                                                //stream.Dispose();
                                             }
 
                                             groupResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
@@ -108,19 +102,12 @@ namespace GreenOnions.RSS
                                             if (item.SendByForward)
                                             {
                                                 LogHelper.WriteInfoLog($"发送模式为合并转发");
-                                                //ForwardMessage forwardMessage = new ForwardMessage(new[] { new ForwardMessageNode()
-                                                //{
-                                                //    Id = 0,
-                                                //    Name = BotInfo.BotName,
-                                                //    QQNumber = BotInfo.QQId,
-                                                //    Time = DateTime.Now,
-                                                //    Chain = chatGroupMessages.Select( c => c as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
-                                                //}});
-
                                                 GreenOnionsForwardMessage greenOnionsForwardMessage = new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, groupResultMsg);
 
                                                 for (int i = 0; i < item.ForwardGroups.Length; i++)
                                                 {
+                                                    if (_source.IsCancellationRequested)
+                                                        return;
                                                     SendMessage(greenOnionsForwardMessage, -1, item.ForwardGroups[i]);
                                                 }
                                             }
@@ -129,6 +116,8 @@ namespace GreenOnions.RSS
                                                 LogHelper.WriteInfoLog($"发送模式为直接发送");
                                                 for (int i = 0; i < item.ForwardGroups.Length; i++)
                                                 {
+                                                    if (_source.IsCancellationRequested)
+                                                        return;
                                                     SendMessage(groupResultMsg, -1, item.ForwardGroups[i]);
                                                 }
                                             }
@@ -145,9 +134,7 @@ namespace GreenOnions.RSS
 
                                             for (int i = 0; i < rss.imgsSrc.Length; i++)
                                             {
-                                                //MemoryStream stream = new MemoryStream(imgList[i].ToArray());
                                                 friendResultMsg.Add(new GreenOnionsImageMessage(rss.imgsSrc[i]));
-                                                //stream.Dispose();
                                             }
 
                                             friendResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
@@ -158,18 +145,12 @@ namespace GreenOnions.RSS
                                             if (item.SendByForward)
                                             {
                                                 LogHelper.WriteInfoLog($"发送模式为合并转发");
-                                                //ForwardMessage forwardMessage = new ForwardMessage(new[] { new ForwardMessageNode()
-                                                //{
-                                                //    Id = 0,
-                                                //    Name = BotInfo.BotName,
-                                                //    QQNumber = BotInfo.QQId,
-                                                //    Time = DateTime.Now,
-                                                //    Chain = chatFriendMessages.Select( c => c as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
-                                                //}});
                                                 GreenOnionsForwardMessage greenOnionsForwardMessage = new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, friendResultMsg);
 
                                                 for (int i = 0; i < item.ForwardQQs.Length; i++)
                                                 {
+                                                    if (_source.IsCancellationRequested)
+                                                        return;
                                                     SendMessage(friendResultMsg, item.ForwardQQs[i], -1);
                                                 }
                                             }
@@ -178,6 +159,8 @@ namespace GreenOnions.RSS
                                                 LogHelper.WriteInfoLog($"发送模式为直接发送");
                                                 for (int i = 0; i < item.ForwardQQs.Length; i++)
                                                 {
+                                                    if (_source.IsCancellationRequested)
+                                                        return;
                                                     SendMessage(friendResultMsg, item.ForwardQQs[i], -1);
                                                 }
                                             }
@@ -207,7 +190,7 @@ namespace GreenOnions.RSS
                         }
                         await Task.Delay((int)Math.Round(BotInfo.ReadRssInterval * 1000 * 60));
                     }
-                });
+                }, _source.Token);
             }
         }
 
@@ -284,6 +267,11 @@ namespace GreenOnions.RSS
                     }
                 }
             }
+        }
+
+        public static void StopRssTask()
+        {
+            _source?.Cancel();
         }
     }
 }

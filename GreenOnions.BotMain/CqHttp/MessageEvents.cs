@@ -23,19 +23,6 @@ namespace GreenOnions.BotMain.CqHttp
             LogHelper.WriteInfoLog($"收到来自{eventArgs.Sender.Id}的群消息");
 
             int quoteId = eventArgs.Message.MessageId;
-
-            //for (int i = 0; i < eventArgs.Message.MessageBody.Count; i++)
-            //{
-            //    //获取@群名片
-            //    if (eventArgs.Message.MessageBody[i] is AtSegment atMsg)
-            //    {
-            //        IGroupMemberInfo[] groupMemberInfos = await session.GetGroupMemberListAsync(e.Sender.Group.Id);
-            //        IGroupMemberInfo targetQQ = groupMemberInfos.Where(m => m.Id == atMsg.Target).FirstOrDefault();
-            //        string nickName = targetQQ?.Name;
-            //        e.Chain[i] = new AtMessage(atMsg.Target, nickName);
-            //    }
-            //}
-
             bool isHandle = await MessageHandler.HandleMesage(eventArgs.Message.MessageBody.ToOnionsMessages(), eventArgs.Sender.Id, eventArgs.SourceGroup.Id, async outMsg =>
             {
                 if (outMsg != null)
@@ -72,7 +59,6 @@ namespace GreenOnions.BotMain.CqHttp
             LogHelper.WriteInfoLog($"收到来自{eventArgs.Sender.Id}的私聊消息");
 
             int quoteId = eventArgs.Message.MessageId;
-
             bool isHandle = await MessageHandler.HandleMesage(eventArgs.Message.MessageBody.ToOnionsMessages(), eventArgs.Sender.Id, null, outMsg =>
             {
                 if (outMsg != null)

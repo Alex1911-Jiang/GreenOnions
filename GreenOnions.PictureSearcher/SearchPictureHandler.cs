@@ -55,6 +55,11 @@ namespace GreenOnions.PictureSearcher
         public static void SearchPicture(GreenOnionsImageMessage inImgMsg, Action<GreenOnionsMessages> SendMessage)
         {
             LogHelper.WriteInfoLog("进入搜图处理事件");
+
+            if (!string.IsNullOrWhiteSpace(BotInfo.SearchingReply))
+                if (BotInfo.SearchEnabledTraceMoe || BotInfo.SearchEnabledSauceNao || BotInfo.SearchEnabledASCII2D)  //至少启用了一种搜图引擎
+                    SendMessage(BotInfo.SearchingReply);  //正在搜索中
+            
             string qqImgUrl = ImageHelper.ReplaceGroupUrl(inImgMsg.Url);
             LogHelper.WriteInfoLog($"需要搜图的地址为:{qqImgUrl}");
             try
@@ -84,7 +89,7 @@ namespace GreenOnions.PictureSearcher
                 }
                 if (BotInfo.SearchEnabledSauceNao)
                 {
-                    Task<(GreenOnionsMessages OutMessages, bool DoAscii2dSearch)> sauceNaoTask = SearchSauceNao(qqImgUrl);
+                    Task<(GreenOnionsMessages OutMessages, bool DoAscii2dSearch)> sauceNaoTask = SearchSauceNao(qqImgUrl, SendMessage);
                     if (BotInfo.SearchSendByForward)
                     { 
                         searchTasks.Add(sauceNaoTask);
@@ -300,7 +305,7 @@ namespace GreenOnions.PictureSearcher
         /// </summary>
         /// <param name="qqImgUrl"></param>
         /// <returns>搜图结果, 是否使用Ascii2D搜索</returns>
-        private static async Task<(GreenOnionsMessages OutMessages, bool DoAscii2dSearch)> SearchSauceNao(string qqImgUrl)
+        private static async Task<(GreenOnionsMessages OutMessages, bool DoAscii2dSearch)> SearchSauceNao(string qqImgUrl, Action<GreenOnionsMessages> SendMessage)
         {
             LogHelper.WriteInfoLog("进入SauceNao搜图逻辑");
             string apiKeyStr = "";
@@ -458,7 +463,8 @@ namespace GreenOnions.PictureSearcher
 
                     JArray jResults = json["results"] as JArray;
 
-                    jResults = new JArray(jResults.OrderByDescending(x => x["header"]["similarity"]));  //按相似度排序
+                    if (BotInfo.SearchSauceNAOSortByDesc)
+                        jResults = new JArray(jResults.OrderByDescending(x => x["header"]["similarity"]));  //按相似度排序
 
                     if (jResults == null)
                     {
@@ -591,9 +597,11 @@ namespace GreenOnions.PictureSearcher
                                     {
                                         using (var httpClient = new HttpClient())
                                         {
-                                            _ = CheckCatRoute(Convert.ToInt64(sauceNaoItem.pixiv_id), -1).ContinueWith(c =>
+                                            var catRouteTask = CheckCatRoute(Convert.ToInt64(sauceNaoItem.pixiv_id), -1);
+                                            if (BotInfo.SearchSendByForward)
                                             {
-                                                if (string.IsNullOrEmpty(c.Result))
+                                                string catRoute = await catRouteTask;
+                                                if (string.IsNullOrEmpty(catRoute))
                                                 {
                                                     string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
                                                     outMessage.Add(new GreenOnionsImageMessage(imgUrlNoP));
@@ -604,12 +612,32 @@ namespace GreenOnions.PictureSearcher
                                                     outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
                                                     DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
                                                 }
-                                            });
+                                            }
+                                            else
+                                            {
+                                                _ = catRouteTask.ContinueWith(t => 
+                                                {
+                                                    if (string.IsNullOrEmpty(t.Result))
+                                                    {
+                                                        string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
+                                                        SendMessage(new GreenOnionsImageMessage(imgUrlNoP));
+                                                        DownloadImageArchive(imgUrlNoP, sauceNaoItem.pixiv_id, p);
+                                                    }
+                                                    else
+                                                    {
+                                                        SendMessage(new GreenOnionsImageMessage(imgUrlHasP));
+                                                        DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
+                                                    }
+                                                });
+                                            }
                                         }
                                     }
                                     else  //地址有P且>0
                                     {
-                                        outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
+                                        if (BotInfo.SearchSendByForward)
+                                            outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
+                                        else
+                                            _ = Task.Run(() => SendMessage(new GreenOnionsImageMessage(imgUrlHasP)));
                                         DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
                                     }
 

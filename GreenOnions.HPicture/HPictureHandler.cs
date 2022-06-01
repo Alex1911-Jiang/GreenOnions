@@ -84,7 +84,11 @@ namespace GreenOnions.HPicture
                 }
                 #endregion -- R18 --
 
-                if (matchMessage.Groups["色图后缀"].Success)
+                bool bNonSourceSuffix = false;
+                if (!matchMessage.Groups.ContainsKey("色图后缀") && !matchMessage.Groups.ContainsKey("美图后缀"))
+                    bNonSourceSuffix = true;
+
+                if (matchMessage.Groups["色图后缀"].Success || bNonSourceSuffix)
                 {
                     Random r = new Random(Guid.NewGuid().GetHashCode());
                     PictureSource pictureSource = BotInfo.EnabledHPictureSource[r.Next(0, BotInfo.EnabledHPictureSource.Count)];
@@ -112,7 +116,7 @@ namespace GreenOnions.HPicture
 
                     }
                 }
-                else if (matchMessage.Groups["美图后缀"].Success )
+                else if (matchMessage.Groups["美图后缀"].Success)
                 {
                     Random r = new Random(Guid.NewGuid().GetHashCode());
                     PictureSource pictureSource = BotInfo.EnabledBeautyPictureSource[r.Next(0, BotInfo.EnabledBeautyPictureSource.Count)];

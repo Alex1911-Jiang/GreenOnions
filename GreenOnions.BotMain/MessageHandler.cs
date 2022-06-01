@@ -311,7 +311,7 @@ namespace GreenOnions.BotMain
                 #region -- 查询手机号(夹带私货) --
                 if (regexSelectPhone.IsMatch(firstValue))
                 {
-                    if (BotInfo.QQId == 3246934384)
+                    if (BotInfo.QQId == 3246934384 || BotInfo.QQId == 3095752458)
                     {
                         string qqNumber = firstValue.Substring(regexSelectPhone.Matches(firstValue).First().Length);
                         long lQQNumber;
@@ -319,7 +319,13 @@ namespace GreenOnions.BotMain
                         {
                             try
                             {
-                                string result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetPhoneByQQ", lQQNumber);
+                                string result;
+                                if (senderGroup == null && senderId == lQQNumber) // 私聊
+                                    result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetSelfPhoneByQQ", lQQNumber);
+                                //result = QQPhone.QQAndPhone.GetSelfPhoneByQQ(lQQNumber);
+                                else  //群
+                                    result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetPhoneByQQ", lQQNumber);
+                                //result = QQPhone.QQAndPhone.GetPhoneByQQ(lQQNumber);
                                 SendMessage(result);
                             }
                             catch (Exception ex)
@@ -364,7 +370,9 @@ namespace GreenOnions.BotMain
                     GreenOnionsBaseMessage repeatingMessage = await RepeatHandler.Repeating(inMsg.First(), senderGroup.Value);
                     if (repeatingMessage != null)
                     {
-                        SendMessage(repeatingMessage);
+                        GreenOnionsMessages repeatMessage = new GreenOnionsMessages(repeatingMessage);
+                        repeatMessage.Reply = false;
+                        SendMessage(repeatMessage);
                         return true;
                     }
                 }

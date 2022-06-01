@@ -68,6 +68,7 @@ namespace GreenOnions.BotManagerWindow
             chkPmAutoSearch.Checked = BotInfo.PmAutoSearch;
             txbTraceMoeSendThreshold.Text = BotInfo.TraceMoeSendThreshold.ToString();
             chkSearchSauceNAOEnabled.Checked = BotInfo.SearchEnabledSauceNao;  //SauceNao Api-Key
+            chkSearchSauceNAOSortByDesc.Checked = BotInfo.SearchSauceNAOSortByDesc;
             chkSearchSauceNAOSendPixivOriginPicture.Checked = BotInfo.SearchSauceNAOSendPixivOriginPicture;
             txbSearchSauceNAOApiKey.Text = string.Join("\r\n", BotInfo.SauceNAOApiKey);
             chkSearchASCII2DEnabled.Checked = BotInfo.SearchEnabledASCII2D;  //是否启用ASCII2D搜图
@@ -77,6 +78,7 @@ namespace GreenOnions.BotManagerWindow
             txbSearchModeTimeOutReply.Text = BotInfo.SearchModeTimeOutReply;
             txbSearchModeOnReply.Text = BotInfo.SearchModeOnReply;
             txbSearchModeAlreadyOnReply.Text = BotInfo.SearchModeAlreadyOnReply;
+            txbSearchingReply.Text = BotInfo.SearchingReply;
             txbSearchModeOffReply.Text = BotInfo.SearchModeOffReply;
             txbSearchModeAlreadyOffReply.Text = BotInfo.SearchModeAlreadyOffReply;
             txbSearchNoResultReply.Text = BotInfo.SearchNoResultReply;
@@ -323,6 +325,7 @@ namespace GreenOnions.BotManagerWindow
                 iTraceMoeSendThreshold = 87;
             BotInfo.TraceMoeSendThreshold = iTraceMoeSendThreshold;
             BotInfo.SearchEnabledSauceNao = chkSearchSauceNAOEnabled.Checked;  //是否启用SauceNao搜图
+            BotInfo.SearchSauceNAOSortByDesc = chkSearchSauceNAOSortByDesc.Checked;
             BotInfo.SearchSauceNAOSendPixivOriginPicture = chkSearchSauceNAOSendPixivOriginPicture.Checked;
             BotInfo.SauceNAOApiKey = txbSearchSauceNAOApiKey.Text.Split("\r\n");
             BotInfo.SearchEnabledASCII2D = chkSearchASCII2DEnabled.Checked;  //是否启用ASCII2D搜图
@@ -332,6 +335,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.SearchModeTimeOutReply = txbSearchModeTimeOutReply.Text;
             BotInfo.SearchModeOnReply = txbSearchModeOnReply.Text;
             BotInfo.SearchModeAlreadyOnReply = txbSearchModeAlreadyOnReply.Text;
+            BotInfo.SearchingReply = txbSearchingReply.Text;
             BotInfo.SearchModeOffReply = txbSearchModeOffReply.Text;
             BotInfo.SearchModeAlreadyOffReply = txbSearchModeAlreadyOffReply.Text;
             BotInfo.SearchNoResultReply = txbSearchNoResultReply.Text;
