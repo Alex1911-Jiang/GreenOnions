@@ -2,7 +2,7 @@
 
 ### 关于本项目
 
-#### 这是一个 [mirai](https://github.com/mamoe/mirai) 平台的QQ机器人, 使用 [Mirai-CSharp](https://github.com/Executor-Cheng/Mirai-CSharp) 开发, 实现了搜图, 翻译, setu RSS订阅转发等功能<br>
+#### 这是一个 [mirai](https://github.com/mamoe/mirai) 平台的QQ机器人, 支持OneBot(使用[Sora](https://github.com/DeepOceanSoft/Sora))和Mirai-Api-Http(使用[Mirai-CSharp](https://github.com/Executor-Cheng/Mirai-CSharp))双协议, 实现了搜图, 翻译, setu RSS订阅转发等功能<br>
 #### 搜图和setu功能设计思路参考自 [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot) <br>
 
 ### 效果预览
@@ -22,47 +22,83 @@
 - [x] 8. 新人入群/退群/被踢提醒(支持定义)<br>
 - [x] 9. RSS订阅转发<br>
 - [x] 10. 下载Pixiv原图(通过[pixiv.cat](https://pixiv.cat/))<br>
-- [x] 11. 使用表情涂鸦游玩的井字棋功能 (其实是自己学习[OpenCVsharp](https://github.com/shimat/opencvsharp)过程中搞出来的, 随手搬上了bot上, 但实际由于涂鸦完还要转发, 步骤太多所以下棋体验极差)<br>
+- [x] 11. 使用表情涂鸦游玩的井字棋功能 (其实是自己学习[OpenCVsharp](https://github.com/shimat/opencvsharp)过程中搞出来的, 随手搬上了bot上, 但实际由于涂鸦完还要转发, 步骤太多所以下棋体验极差, 而且仅限64位系统可用)<br>
 
 ### 项目优势:
 
 1. 带Windows图形界面, 没有开发基础也可以傻瓜式配置<br>
-2. 多平台兼容, .Net5能装的平台都能运行(当然非Windows就没有图形界面了)<br>
+2. 多平台兼容, .Net6能装的平台都能运行(当然非Windows就没有图形界面了)<br>
 3. 搜图功能可配置接入腾讯云鉴黄, 可以有效避免被内鬼炸号炸群, 尤其是Ascii2D乱开车的时候<br>
 4. 搜图功能会尝试自动下载原图发送<br>
 5. 支持一句命令多张setu, 支持限制QQ号调用次数和频率, 支持定时撤回, 支持配置返回语等<br>
 6. 支持配置以合并转发的方式发送消息，防止不可描述的图片炸号<br>
 7. RSS转发功能有控件配置，可方便添加删除和设置翻译
 
-### Windows食用方法(傻瓜版):
+## Windows食用方法(傻瓜版):
+
+#### 首先, 这里有两个平台, 先选择一个顺眼的, 别两个都弄
+
+### OneBot(Cq-Http)平台：
 
 #### 一、环境配置:
 
-1. 首先确保你的系统是 Windows 10 1607或更高版本/Windows 8.1/Windows7 Sp1并安装了KB2533623补丁<br>
-2. (如果你的系统是Win11或者Win10 21H1以上可以跳过这步)到 [.Net5官网](https://dotnet.microsoft.com/download/dotnet/5.0) 找到.NET Desktop Runtime下载对应自己系统架构的Installers版本安装<br>
+1. 首先确保你的系统是 Windows 10 1607 或更高版本/Windows 8.1/Windows7 Sp1 并安装了 KB2533623 补丁<br>
+2. 到 [.Net6官网](https://dotnet.microsoft.com/download/dotnet/6.0) 找到.NET Desktop Runtime下载对应自己系统架构的 Installers 版本安装<br>
+3. 下载并安装 Microsoft Visual C++ 2015-2019 Redistributable (没找到官方的下载地址, 哪都能下到, 或者加群, 群文件里有)<br>
+
+#### 二、安装机器人框架([go-cqhttp](https://github.com/Mrs4s/go-cqhttp))
+
+1. 到 [go-cqhttp/Release](https://github.com/Mrs4s/go-cqhttp/releases) 下载 go-cqhttp (注意选对系统)<br>
+2. 双击运行 go-cqhttp.exe 点击"是", 创建启动脚本<br>
+3. 双击运行 go-cqhttp.bat<br>
+4. 选择 2 正向 Websocket 通信 并回车, 随后关闭 cmd 窗口<br>
+5. 打开生成的 config.yml 文件, 修改以下内容:<br>
+  uin: QQ号<br>
+  password: QQ密码<br>
+  post-format: array<br>
+  access-token: 'Alex1911'<br>
+  port: 33111<br>
+6. 保存并关闭 config.yml , 随后重新双击运行 go-cqhttp.bat<br>
+
+#### 三、安装本项目
+
+1. 到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的 win-x86x64arm-windows.zip 下<br>
+2. 解压到任意目录, 运行 GreenOnions.BotManagerWindow.exe<br>
+3. 输入机器人QQ号和 config.yml 对应的 ip(host)、端口 (port) 和 access-token, 点击连接到 cq-http<br>
+
+#### 大功告成
+
+
+### Mirai-Api-Http平台：
+
+#### 一、环境配置:
+
+1. 首先确保你的系统是 Windows 10 1607 或更高版本/Windows 8.1/Windows7 Sp1 并安装了 KB2533623 补丁<br>
+2. 到 [.Net6官网](https://dotnet.microsoft.com/download/dotnet/6.0) 找到.NET Desktop Runtime下载对应自己系统架构的Installers版本安装<br>
 3. 到 [OpenJDK官网](http://jdk.java.net/) 下载 OpenJDK 尽量选择高版本的下<br>
 4. 将OpenJDK解压到C:\Program Files\Java文件夹下, 呈C:\Program Files\Java\jdk-xx.x路径形式(x为版本号)<br>
 5. 打开 算机属性-高级系统设置-高级-环境变量 在下方系统变量栏中新建一项 变量"JAVA_HOME" 值"C:\Program Files\Java\jdk-xx.x" (不包括引号,x为版本号)<br>
 6. 编辑系统变量Path, 添加一项"%JAVA_HOME%\bin"<br>
+7. 下载并安装 Microsoft Visual C++ 2015-2019 Redistributable (没找到官方的下载地址, 哪都能下到, 或者加群, 群文件里有)
 
-#### 二、安装机器人框架(注意不能和Go通用)
+#### 二、安装机器人框架([mirai-console-loader](https://github.com/iTXTech/mirai-console-loader))
 
 1. 到 [mirai-console-loader/releases](https://github.com/iTXTech/mirai-console-loader/releases) 下载MCL (尽量选择不带beta的最新版, .zip结尾的那个)<br>
 2. 通过MCL安装 [mirai-api-http](https://github.com/project-mirai/mirai-api-http)<br>
 3. 在MCL上运行一次 .\mcl 以确保配置文件成功创建, 随后按Ctrl+C退出
 4. 拷贝 [mirai-api-http](https://github.com/project-mirai/mirai-api-http) 底下的setting.yml模板到 MCL目录\config\net.mamoe.mirai-api-http\setting.yml 文件中
 5. 打开 MCL目录\config\net.mamoe.mirai-api-http\setting.yml 文件, 修改 http 和 ws 下的 host: 127.0.0.1 port: 33111 verifyKey: Alex1911<br>
-6. 回到MCL窗口, 重新输入一次.\mcl 再输入\login 机器人QQ号 密码 登录<br>
+6. 回到MCL窗口, 重新输入一次.\mcl 再输入/login 机器人QQ号 密码 登录<br>
 
 #### 三、安装本项目
 
-1.到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的 win-x86x64arm-windows.zip 下<br>
-2.解压到任意目录, 运行 GreenOnions.BotManagerWindow.exe<br>
-3.输入机器人QQ号和和 setting.yml 对应 的ip(host)、端口(port)和 VerifyKey, 点击连接到 mirai-api-http<br>
+1. 到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的 win-x86x64arm-windows.zip 下<br>
+2. 解压到任意目录, 运行 GreenOnions.BotManagerWindow.exe<br>
+3. 输入机器人QQ号和 setting.yml 对应的 ip(host)、端口 (port) 和 VerifyKey, 点击连接到 mirai-api-http<br>
 
 #### 大功告成
 
-### Linux食用方法
+### Linux食用方法(仅提供mirai-api-http教程)
 <details>
 <summary>(点击查看)</summary>
 
@@ -70,15 +106,15 @@
 1. 输入 sudo apt install unzip #安装解压zip的库<br>
 2. 输入 sudo apt install openjdk-17-jdk-headless #安装Java依赖<br>
 3. 安装 .Net 依赖<br>
-3.1. 输入 wget https://packages.microsoft.com/config/ubuntu/00.00/packages-microsoft-prod.deb -O packages-microsoft-prod.deb #下载 .Net 依赖包(00.00替换为自己系统的版本)<br>
-3.2. 输入 sudo dpkg -i packages-microsoft-prod.deb <br>  #解压安装包<br>
+3.1. 输入 wget https://packages.microsoft.com/config/ubuntu/00.00/packages-microsoft-prod.deb -O packages-microsoft-prod.deb #下载 .Net 包目录(00.00替换为自己系统的版本)<br>
+3.2. 输入 sudo dpkg -i packages-microsoft-prod.deb <br>  #解压包目录<br>
 3.3. (可选)输入 rm packages-microsoft-prod.deb #删除压缩包<br>
 3.4. 输入 sudo apt-get update; \\ <br>
  sudo apt-get install -y apt-transport-https && \\ <br>
  sudo apt-get update && \\ <br>
- sudo apt-get install -y aspnetcore-runtime-5.0  #安装 <br>
+ sudo apt-get install -y aspnetcore-runtime-6.0  #安装 <br>
 #其他发行版详见: [在 Linux 上安装.Net](https://docs.microsoft.com/zh-cn/dotnet/core/install/)<br>
-#### 如果你不使用图片镜像, Gif倒放, setu反和谐功能, 可以跳过步骤4、5
+#### 如果你不使用图片镜像, Gif倒放, 可以跳过步骤4、5(建议直接跳过, 准备砍掉了)
 4. 安装Mono图形库:<br>
 4.1. 输入 sudo apt install gnupg ca-certificates<br>
 4.2. 输入 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF<br>
@@ -96,7 +132,7 @@
 5.7. 输入 sudo apt install -y --no-install-recommends libgdiplus libc6-dev<br>
 6. 安装 [mirai](https://github.com/mamoe/mirai) (这里的例子为 [Mirai Console Loader](https://github.com/iTXTech/mirai-console-loader))<br>
 6.1. 到 [mcl/Release](https://github.com/iTXTech/mirai-console-loader/releases) 里复制最新的zip包下载地址<br>
-6.2. 输入 wget 地址 #下载mcl 例如: wget https://github.com/iTXTech/mirai-console-loader/releases/download/v1.2.2/mcl-1.2.2.zip<br>
+6.2. 输入 wget 地址 #下载mcl 例如: wget https://github.com/iTXTech/mirai-console-loader/releases/download/v2.1.0/mcl-2.1.0.zip<br>
 6.3. 输入 unzip mcl-1.2.2.zip #解压(文件名按下载到的来写)<br>
 6.4. (可选:如果步骤7提示 Permission denied 请回来执行一次该步骤) 输入 sudo chmod 777 mcl #设置权限再重新执行步骤7<br>
 7. 安装 [mirai-api-http](https://github.com/project-mirai/mirai-api-http) 通信插件<br>
@@ -129,13 +165,16 @@
 
 ### 短期计划(TODO):
 
-1.iqdb搜图<br>
-2.yande.re随机色图<br>
-3.E-Hentai关键词色图<br>
-4.部分功能使用代理(而不需要全局代理?)<br>
-5.通过消息配置属性<br>
-6.为Console端添加命令配置属性和属性中文注释<br>
+1.设置搜图时一个引擎显示多少个结果的功能
+2.iqdb搜图<br>
+3.yande.re随机色图<br>
+4.E-Hentai关键词色图<br>
 
 ### 长期计划(GUDO):
-1.把System.Drawing替换为其他更轻量的跨平台图形库, 取消Linux系统下对Mono的依赖<br>
-2.适配Mirai-Go平台<br>
+1.把System.Drawing替换为其他--更轻量--的跨平台图形库(准备暂时先用CV), 取消Linux系统下对Mono的依赖<br>
+2.把内嵌浏览器([CefSharp](https://github.com/cefsharp/CefSharp))和井字棋([OpenCVsharp](https://github.com/shimat/opencvsharp))分别搬出到独立的仓库里, 改为插件式加载, 取消强制依赖(毕竟没什么人用的功能占了500MB大小我自己也是多少带点...)<br>
+3.添加一个RSS监控功能(沙雕群友自己网络有问题整天怪在我头上)<br>
+4.为Console端添加命令配置属性和属性中文注释<br>
+5.通过消息配置属性<br>
+6.部分功能使用代理(而不需要全局代理?)<br>
+7.添加一个网站管理端?
