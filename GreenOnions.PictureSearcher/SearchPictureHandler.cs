@@ -152,7 +152,7 @@ namespace GreenOnions.PictureSearcher
         private static async Task<GreenOnionsMessages> SearchTraceMoe(string qqImgUrl)
         {
             LogHelper.WriteInfoLog("进入TraceMoe搜图逻辑");
-            if (!qqImgUrl.StartsWith(@"http://"))
+            if (!qqImgUrl.StartsWith(@"http://") && !qqImgUrl.StartsWith(@"https://"))
             {
                 qqImgUrl = "http://" + qqImgUrl;
             }
@@ -415,20 +415,20 @@ namespace GreenOnions.PictureSearcher
                                                 outMessage.Add(new GreenOnionsImageMessage(stream));
                                                 break;
                                             case TencentCloudHelper.CheckedPornStatus.NotHealth:  //不健康
-                                                outMessage.Add(BotInfo.SearchCheckPornIllegalReply);
+                                                outMessage.Add(BotInfo.SearchCheckPornIllegalReply.ReplaceGreenOnionsTags());
                                                 break;
                                             case TencentCloudHelper.CheckedPornStatus.Error:  //错误
-                                                outMessage.Add(BotInfo.SearchCheckPornErrorReply);
+                                                outMessage.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags());
                                                 break;
                                             case TencentCloudHelper.CheckedPornStatus.OutOfLimit:  //超过限制
-                                                outMessage.Add(BotInfo.SearchCheckPornOutOfLimitReply);
+                                                outMessage.Add(BotInfo.SearchCheckPornOutOfLimitReply.ReplaceGreenOnionsTags());
                                                 break;
                                         }
                                     }
                                     catch (Exception ex)
                                     {
                                         LogHelper.WriteErrorLog(ex);
-                                        outMessage.Add(BotInfo.SearchDownloadThuImageFailReply);  //下载缩略图失败
+                                        outMessage.Add(BotInfo.SearchDownloadThuImageFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", ex.Message)));  //下载缩略图失败
                                     }
                                 }
                                 LogHelper.WriteInfoLog($"SauceNao(浏览器)搜图完成, 相似度高于发图设定值");

@@ -21,7 +21,7 @@ namespace GreenOnions.MiraiApiHttp
             LogHelper.WriteInfoLog($"收到来自{e.Sender.Id}的私聊消息");
 
             int quoteId = (e.Chain[0] as SourceMessage).Id;
-            bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(), e.Sender.Id, e.Sender.Group.Id, async outMsg =>  //临时消息按群设置记撤回时间
+            bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(e.Sender.Id, e.Sender.Name), e.Sender.Group.Id, async outMsg =>  //临时消息按群设置记撤回时间
             {
                 if (outMsg != null)
                 {

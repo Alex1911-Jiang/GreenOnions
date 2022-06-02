@@ -87,6 +87,7 @@
             this.txbSearchingReply = new System.Windows.Forms.TextBox();
             this.chkPmAutoSearch = new System.Windows.Forms.CheckBox();
             this.pnlSearchSauceNAO = new System.Windows.Forms.Panel();
+            this.chkSearchSauceNAOSortByDesc = new System.Windows.Forms.CheckBox();
             this.lblSauceNAOApiKey = new System.Windows.Forms.Label();
             this.chkSearchSauceNAOSendPixivOriginPicture = new System.Windows.Forms.CheckBox();
             this.txbSearchSauceNAOApiKey = new System.Windows.Forms.TextBox();
@@ -338,7 +339,6 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
-            this.chkSearchSauceNAOSortByDesc = new System.Windows.Forms.CheckBox();
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -1085,6 +1085,16 @@
             this.pnlSearchSauceNAO.Name = "pnlSearchSauceNAO";
             this.pnlSearchSauceNAO.Size = new System.Drawing.Size(548, 275);
             this.pnlSearchSauceNAO.TabIndex = 57;
+            // 
+            // chkSearchSauceNAOSortByDesc
+            // 
+            this.chkSearchSauceNAOSortByDesc.AutoSize = true;
+            this.chkSearchSauceNAOSortByDesc.Location = new System.Drawing.Point(13, 95);
+            this.chkSearchSauceNAOSortByDesc.Name = "chkSearchSauceNAOSortByDesc";
+            this.chkSearchSauceNAOSortByDesc.Size = new System.Drawing.Size(327, 21);
+            this.chkSearchSauceNAOSortByDesc.TabIndex = 57;
+            this.chkSearchSauceNAOSortByDesc.Text = "按相似度排序 (相似度最高的结果有时候反而会没有大图)";
+            this.chkSearchSauceNAOSortByDesc.UseVisualStyleBackColor = true;
             // 
             // lblSauceNAOApiKey
             // 
@@ -1956,7 +1966,7 @@
             this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureOnceMessageMaxImageCount.MinimumSize = new System.Drawing.Size(60, 0);
             this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
-            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(167, 23);
+            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(150, 23);
             this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
             // 
             // lblHPictureOnceMessageMaxImageCount
@@ -3831,16 +3841,6 @@
             this.lblContributorName.Size = new System.Drawing.Size(35, 17);
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
-            // 
-            // chkSearchSauceNAOSortByDesc
-            // 
-            this.chkSearchSauceNAOSortByDesc.AutoSize = true;
-            this.chkSearchSauceNAOSortByDesc.Location = new System.Drawing.Point(13, 95);
-            this.chkSearchSauceNAOSortByDesc.Name = "chkSearchSauceNAOSortByDesc";
-            this.chkSearchSauceNAOSortByDesc.Size = new System.Drawing.Size(327, 21);
-            this.chkSearchSauceNAOSortByDesc.TabIndex = 57;
-            this.chkSearchSauceNAOSortByDesc.Text = "按相似度排序 (相似度最高的结果有时候反而会没有大图)";
-            this.chkSearchSauceNAOSortByDesc.UseVisualStyleBackColor = true;
             // 
             // FrmAppSetting
             // 

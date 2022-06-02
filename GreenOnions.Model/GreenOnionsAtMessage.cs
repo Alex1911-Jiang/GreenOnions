@@ -1,6 +1,8 @@
-﻿namespace GreenOnions.Model
+﻿using GreenOnions.Interface;
+
+namespace GreenOnions.Model
 {
-    public record GreenOnionsAtMessage : GreenOnionsBaseMessage
+    public record GreenOnionsAtMessage : GreenOnionsBaseMessage, IGreenOnionsAtMessage
     {
         public long AtId { get; set; }
         public string NickName { get; set; }

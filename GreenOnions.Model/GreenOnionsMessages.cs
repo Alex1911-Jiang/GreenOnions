@@ -1,6 +1,8 @@
-﻿namespace GreenOnions.Model
+﻿using GreenOnions.Interface;
+
+namespace GreenOnions.Model
 {
-    public class GreenOnionsMessages : List<GreenOnionsBaseMessage>
+    public class GreenOnionsMessages : List<GreenOnionsBaseMessage>, IGreenOnionsMessages
     {
         public static implicit operator GreenOnionsMessages(GreenOnionsBaseMessage onceMsg)
         {
@@ -33,5 +35,8 @@
         public bool Reply { get; set; } = true;
 
         public int RevokeTime { get; set; } = 0;
+
+        public long SenderId { get; set; }
+        public string SenderName { get; set; }
     }
 }

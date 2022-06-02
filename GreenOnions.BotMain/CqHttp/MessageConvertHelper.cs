@@ -1,5 +1,7 @@
-﻿using GreenOnions.Model;
+﻿using GreenOnions.Interface;
+using GreenOnions.Model;
 using Sora.Entities;
+using Sora.Entities.Info;
 using Sora.Entities.Segment;
 using Sora.Entities.Segment.DataModel;
 
@@ -7,9 +9,9 @@ namespace GreenOnions.BotMain.CqHttp
 {
     public static class MessageConvertHelper
     {
-        public static GreenOnionsBaseMessage[] ToOnionsMessages(this MessageBody miraiMessage)
+        public static GreenOnionsMessages ToOnionsMessages(this MessageBody miraiMessage, long senderId, string senderName)
         {
-            List<GreenOnionsBaseMessage> greenOnionsMessages = new List<GreenOnionsBaseMessage>();
+            GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
             for (int i = 0; i < miraiMessage.Count; i++)
             {
                 if (miraiMessage[i].Data is AtSegment atMsg)
@@ -22,31 +24,13 @@ namespace GreenOnions.BotMain.CqHttp
                 else if (miraiMessage[i].Data is ImageSegment imageMsg)
                     greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url));
             }
-            return greenOnionsMessages.ToArray();
+
+            greenOnionsMessages.SenderId = senderId;
+            greenOnionsMessages.SenderName = senderName;
+            return greenOnionsMessages;
         }
 
-        public static SoraSegment ToCqHttpMessage(this GreenOnionsBaseMessage greenOnionsMessage)
-        {
-            if (greenOnionsMessage is GreenOnionsTextMessage txtMsg)
-            {
-                return SoraSegment.Text(txtMsg.Text);
-            }
-            else if (greenOnionsMessage is GreenOnionsImageMessage imgMsg)
-            {
-                string data = string.IsNullOrEmpty(imgMsg.Url) ? imgMsg.Base64Str : imgMsg.Url;
-                return SoraSegment.Image(data);
-            }
-            else if (greenOnionsMessage is GreenOnionsAtMessage atMsg)
-            {
-                if (atMsg.AtId == -1)
-                    return SoraSegment.AtAll();
-                else
-                    return SoraSegment.At(atMsg.AtId);
-            }
-            return null;
-        }
-
-        public static MessageBody ToCqHttpMessages(this GreenOnionsMessages greenOnionsMessage, int? RelpyId)
+        public static MessageBody ToCqHttpMessages(this IGreenOnionsMessages greenOnionsMessage, int? RelpyId)
         {
             MessageBody cqHttpMessages = new MessageBody();
             if (RelpyId != null)
@@ -54,23 +38,23 @@ namespace GreenOnions.BotMain.CqHttp
 
             for (int i = 0; i < greenOnionsMessage.Count; i++)
             {
-                if (greenOnionsMessage[i] is GreenOnionsTextMessage txtMsg)
+                if (greenOnionsMessage[i] is IGreenOnionsTextMessage txtMsg)
                 {
                     cqHttpMessages.Add(SoraSegment.Text(txtMsg.Text));
                 }
-                else if (greenOnionsMessage[i] is GreenOnionsImageMessage imgMsg)
+                else if (greenOnionsMessage[i] is IGreenOnionsImageMessage imgMsg)
                 {
                     string data = string.IsNullOrEmpty(imgMsg.Url) ? imgMsg.Base64Str : imgMsg.Url;
                     cqHttpMessages.Add(SoraSegment.Image(data));
                 }
-                else if (greenOnionsMessage[i] is GreenOnionsAtMessage atMsg)
+                else if (greenOnionsMessage[i] is IGreenOnionsAtMessage atMsg)
                 {
                     if (atMsg.AtId == -1)
                         cqHttpMessages.Add(SoraSegment.AtAll());
                     else
                         cqHttpMessages.Add(SoraSegment.At(atMsg.AtId));
                 }
-                else if (greenOnionsMessage[i] is GreenOnionsForwardMessage forwardMsg)
+                else if (greenOnionsMessage[i] is IGreenOnionsForwardMessage forwardMsg)
                 {
                     for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                     {
@@ -81,7 +65,7 @@ namespace GreenOnions.BotMain.CqHttp
             return cqHttpMessages;
         }
 
-        public static List<CustomNode> ToCqHttpForwardMessage(this GreenOnionsForwardMessage forwardMsg)
+        public static List<CustomNode> ToCqHttpForwardMessage(this IGreenOnionsForwardMessage forwardMsg)
         {
             List<CustomNode> nodes = new List<CustomNode>();
             for (int i = 0; i < forwardMsg.ItemMessages.Count; i++)

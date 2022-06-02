@@ -1,4 +1,5 @@
-﻿using GreenOnions.Model;
+﻿using GreenOnions.Interface;
+using GreenOnions.Model;
 using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
 using Mirai.CSharp.Models.ChatMessages;
@@ -7,7 +8,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 {
     public static class MiraiApiHttpMessageConvert
     {
-        public static GreenOnionsMessages ToOnionsMessages(this IChatMessage[] miraiMessage)
+        public static GreenOnionsMessages ToOnionsMessages(this IChatMessage[] miraiMessage, long senderId, string senderName)
         {
             GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
             for (int i = 0; i < miraiMessage.Length; i++)
@@ -19,64 +20,13 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 else if (miraiMessage[i] is IImageMessage imageMsg)
                     greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url));
             }
+
+            greenOnionsMessages.SenderId = senderId;
+            greenOnionsMessages.SenderName = senderName;
             return greenOnionsMessages;
         }
 
-        public static async Task<IChatMessage> ToMiraiApiHttpMessage(this GreenOnionsBaseMessage greenOnionsMessage, IMiraiHttpSession session, UploadTarget uploadTarget)
-        {
-            if (greenOnionsMessage is GreenOnionsTextMessage txtMsg)
-            {
-                return new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(txtMsg.Text);
-            }
-            else if (greenOnionsMessage is GreenOnionsImageMessage imgMsg)
-            {
-                if (!string.IsNullOrEmpty(imgMsg.Url))
-                {
-                    string url = null;
-                    string path = null;
-                    if (File.Exists(imgMsg.Url))
-                        path = imgMsg.Url;
-                    else
-                        url = imgMsg.Url;
-                    return new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(null, url, path);
-                }
-                else if (!string.IsNullOrEmpty(imgMsg.Base64Str))
-                {
-                    using (MemoryStream ms = imgMsg.MemoryStream)
-                    {
-                        return await session.UploadPictureAsync(uploadTarget, ms);
-                    }
-                }
-            }
-            else if (greenOnionsMessage is GreenOnionsAtMessage atMsg)
-            {
-                if (atMsg.AtId == -1)
-                    return new Mirai.CSharp.HttpApi.Models.ChatMessages.AtAllMessage();
-                else
-                    return new Mirai.CSharp.HttpApi.Models.ChatMessages.AtMessage(atMsg.AtId);
-            }
-            else if (greenOnionsMessage is GreenOnionsForwardMessage forwardMsg)
-            {
-                List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode> nodes = new List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode>();
-                for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
-                {
-                    Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode node = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
-                    {
-                        Id = j,
-                        Name = forwardMsg.ItemMessages[j].NickName,
-                        QQNumber = forwardMsg.ItemMessages[j].QQid,
-                        Time = DateTime.Now,
-                        Chain = (await ToMiraiApiHttpMessages(forwardMsg.ItemMessages[j].itemMessage, session, uploadTarget)).Select(msg => msg as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
-                    };
-                    nodes.Add(node);
-                }
-                Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage forwardMessage = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessage(nodes.ToArray());
-                return forwardMessage;
-            }
-            return null;
-        }
-
-        public static async Task<IChatMessage[]> ToMiraiApiHttpMessages(this GreenOnionsMessages greenOnionsMessage, IMiraiHttpSession session, UploadTarget uploadTarget)
+        public static async Task<IChatMessage[]> ToMiraiApiHttpMessages(this IGreenOnionsMessages greenOnionsMessage, IMiraiHttpSession session, UploadTarget uploadTarget)
         {
             List<IChatMessage> miraiApiHttpMessages = new List<IChatMessage>();
             List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode> nodes = new List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode>();

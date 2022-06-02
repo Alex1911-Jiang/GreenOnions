@@ -434,7 +434,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// SauceNAO低相似度阈值
         /// </summary>
-        [PropertyChineseName("SauceNAO低相似度阈值")]
+        [PropertyChineseName("低相似度阈值")]
         public static int SearchSauceNAOLowSimilarity
         {
             get
@@ -449,7 +449,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// SauceNAO高相似度阈值
         /// </summary>
-        [PropertyChineseName("SauceNAO高相似度阈值")]
+        [PropertyChineseName("高相似度阈值")]
         public static int SearchSauceNAOHighSimilarity
         {
             get
@@ -481,7 +481,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string SearchLowSimilarityReply
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply)) ?? "相似度低于<SauceNAO低相似度阈值>%，缩略图不予显示。";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply)) ?? "相似度低于<低相似度阈值>%，缩略图不予显示。";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply), value);
         }
         

@@ -44,7 +44,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 }
             }
 
-            bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(), e.Sender.Id, e.Sender.Group.Id, async outMsg =>
+            bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(e.Sender.Id, e.Sender.Name), e.Sender.Group.Id, async outMsg =>
             {
                 if (outMsg != null)
                 {

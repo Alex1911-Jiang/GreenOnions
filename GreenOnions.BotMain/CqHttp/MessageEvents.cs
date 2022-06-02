@@ -23,7 +23,7 @@ namespace GreenOnions.BotMain.CqHttp
             LogHelper.WriteInfoLog($"收到来自{eventArgs.Sender.Id}的群消息");
 
             int quoteId = eventArgs.Message.MessageId;
-            bool isHandle = await MessageHandler.HandleMesage(eventArgs.Message.MessageBody.ToOnionsMessages(), eventArgs.Sender.Id, eventArgs.SourceGroup.Id, async outMsg =>
+            bool isHandle = await MessageHandler.HandleMesage(eventArgs.Message.MessageBody.ToOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick), eventArgs.SourceGroup.Id, outMsg =>
             {
                 if (outMsg != null)
                 {
@@ -59,7 +59,7 @@ namespace GreenOnions.BotMain.CqHttp
             LogHelper.WriteInfoLog($"收到来自{eventArgs.Sender.Id}的私聊消息");
 
             int quoteId = eventArgs.Message.MessageId;
-            bool isHandle = await MessageHandler.HandleMesage(eventArgs.Message.MessageBody.ToOnionsMessages(), eventArgs.Sender.Id, null, outMsg =>
+            bool isHandle = await MessageHandler.HandleMesage(eventArgs.Message.MessageBody.ToOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick), null, outMsg =>
             {
                 if (outMsg != null)
                 {

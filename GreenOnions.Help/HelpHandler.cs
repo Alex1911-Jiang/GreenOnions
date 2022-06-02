@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GreenOnions.Model;
+using System.Reflection;
 
 namespace GreenOnions.Help
 {
@@ -194,18 +195,20 @@ namespace GreenOnions.Help
                 messages.Add($"发送\"{BotInfo.StartTicTacToeCmd.ReplaceGreenOnionsTags()}\"来开启一局井字棋游戏。\r\n");
                 messages.Add($"{BotInfo.BotName}会发送一个空棋盘图片，\r\n");
 
+                string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
                 if ((BotInfo.TicTacToeMoveMode & (int)TicTacToeMoveMode.OpenCV) != 0)
                 {
                     messages.Add("您可以对棋盘进行表情涂鸦来进行下子。\r\n");
                     messages.Add("手机端操作方式：\r\n");
 
-                    string mobieGraffitiFile = Path.Combine("Icon", "MobieGraffiti");
+                    string mobieGraffitiFile = Path.Combine(path, "Icon", "MobieGraffiti.jpg");
                     Resource.MobieGraffiti.Save(mobieGraffitiFile, System.Drawing.Imaging.ImageFormat.Jpeg);
                     messages.Add(new GreenOnionsImageMessage(mobieGraffitiFile));
 
                     messages.Add("电脑端操作方式：\r\n");
 
-                    string pcGraffitiFile = Path.Combine("Icon", "PcGraffiti");
+                    string pcGraffitiFile = Path.Combine(path, "Icon", "PcGraffiti.jpg");
                     Resource.PcGraffiti.Save(pcGraffitiFile, System.Drawing.Imaging.ImageFormat.Jpeg);
                     messages.Add(new GreenOnionsImageMessage(pcGraffitiFile));
                 }
@@ -218,7 +221,7 @@ namespace GreenOnions.Help
                     messages.Add("您可以通过输入格号来下子，如\"C2\"。\r\n");
                     messages.Add("棋盘编号命名示例为：\r\n");
 
-                    string chessboardFile = Path.Combine("Icon", "Chessboard");
+                    string chessboardFile = Path.Combine(path, "Icon", "Chessboard.jpg");
                     Resource.Chessboard.Save(chessboardFile, System.Drawing.Imaging.ImageFormat.Jpeg);
                     messages.Add(new GreenOnionsImageMessage(chessboardFile));
                 }

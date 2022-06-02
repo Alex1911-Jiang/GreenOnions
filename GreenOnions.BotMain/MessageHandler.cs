@@ -52,12 +52,11 @@ namespace GreenOnions.BotMain
         /// <summary>
         /// 处理消息
         /// </summary>
-        /// <param name="Chain">传入的消息体</param>
-        /// <param name="sender">传入消息的QQ或群的属性</param>
-        /// <param name="SendMessage">发送消息的委托(需要发出的消息体, 是否撤回或是否以回复的方式发送消息)</param>
-        /// <param name="UploadPicture">上传图片事件(图片流, 返回上传完毕后的图片消息体)</param>
+        /// <param name="inMsg">传入的消息体</param>
+        /// <param name="senderGroup">消息来自的群号(私聊时为空)</param>
+        /// <param name="SendMessage">回发消息方法</param>
         /// <returns></returns>
-        public static async Task<bool> HandleMesage(GreenOnionsMessages inMsg, long senderId, long? senderGroup, Action<GreenOnionsMessages> SendMessage)
+        public static async Task<bool> HandleMesage(GreenOnionsMessages inMsg, long? senderGroup, Action<GreenOnionsMessages> SendMessage)
         {
             if (inMsg == null || inMsg.Count == 0)
             {
@@ -93,7 +92,7 @@ namespace GreenOnions.BotMain
                 }
             }
 
-            if (Cache.SearchingPicturesUsers.Keys.Contains(senderId))  //连续搜图
+            if (Cache.SearchingPicturesUsers.Keys.Contains(inMsg.SenderId))  //连续搜图
             {
                 var imgMsgs = inMsg.OfType<GreenOnionsImageMessage>();
                 if (inMsg.Count == imgMsgs.Count())
@@ -104,7 +103,7 @@ namespace GreenOnions.BotMain
                     }
                 }
             }
-            else if (Cache.PlayingTicTacToeUsers.ContainsKey(senderId))  //井字棋
+            else if (Cache.PlayingTicTacToeUsers.ContainsKey(inMsg.SenderId))  //井字棋
             {
                 if (inMsg.Count == 1 && firstMessage is GreenOnionsImageMessage imgMsg)
                 {
@@ -113,7 +112,7 @@ namespace GreenOnions.BotMain
                         if (playerMoveStream == null)
                             return true;  //图片下载失败, 暂时没想好怎么处理
 
-                        SendMessage(TicTacToeHandler.PlayerMoveByBitmap(senderId, playerMoveStream));
+                        SendMessage(TicTacToeHandler.PlayerMoveByBitmap(inMsg.SenderId, playerMoveStream));
                     }
                 }
             }
@@ -122,28 +121,26 @@ namespace GreenOnions.BotMain
             {
                 string firstValue = textMsg.ToString();
 
-                GreenOnionsMessages greenOnionsMsgs = null;
-
                 #region -- 井字棋 --
 
                 if (BotInfo.TicTacToeEnabled)
                 {
                     if (regexTicTacToeStart.IsMatch(firstValue))
                     {
-                        LogHelper.WriteInfoLog($"{senderId}消息触发开始井字棋");
-                        TicTacToeHandler.StartTicTacToeSession(senderId, SendMessage);
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发开始井字棋");
+                        TicTacToeHandler.StartTicTacToeSession(inMsg.SenderId, SendMessage);
                         return true;
                     }
                     else if (regexTicTacToeStop.IsMatch(firstValue))
                     {
-                        LogHelper.WriteInfoLog($"{senderId}消息触发结束井字棋");
-                        TicTacToeHandler.StopTicTacToeSession(senderId, SendMessage);
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发结束井字棋");
+                        TicTacToeHandler.StopTicTacToeSession(inMsg.SenderId, SendMessage);
                         return true;
                     }
-                    else if ((BotInfo.TicTacToeMoveMode & (int)TicTacToeMoveMode.Nomenclature) != 0 && Cache.PlayingTicTacToeUsers.ContainsKey(senderId) && firstValue.Length == 2)
+                    else if ((BotInfo.TicTacToeMoveMode & (int)TicTacToeMoveMode.Nomenclature) != 0 && Cache.PlayingTicTacToeUsers.ContainsKey(inMsg.SenderId) && firstValue.Length == 2)
                     {
-                        LogHelper.WriteInfoLog($"{senderId}消息触发井字棋移动");
-                        TicTacToeHandler.PlayerMoveByNomenclature(firstValue, senderId, SendMessage);
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发井字棋移动");
+                        TicTacToeHandler.PlayerMoveByNomenclature(firstValue, inMsg.SenderId, SendMessage);
                         return true;
                     }
                 }
@@ -153,8 +150,8 @@ namespace GreenOnions.BotMain
                 #region -- 伪造消息 --
                 if (BotInfo.ForgeMessageEnabled && regexForgeMessage.IsMatch(firstValue))
                 {
-                    LogHelper.WriteInfoLog($"{senderId}消息触发伪造消息");
-                    ForgeMessageHandler.SendForgeMessage(inMsg, senderId, SendMessage);
+                    LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发伪造消息");
+                    ForgeMessageHandler.SendForgeMessage(inMsg, inMsg.SenderId, SendMessage);
                     return true;
                 }
                 #endregion -- 伪造消息 --
@@ -164,14 +161,14 @@ namespace GreenOnions.BotMain
                 {
                     if (regexSearchOn.IsMatch(firstValue))
                     {
-                        LogHelper.WriteInfoLog($"{senderId}消息触发开始连续搜图");
-                        SearchPictureHandler.SearchOn(senderId, SendMessage);
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发开始连续搜图");
+                        SearchPictureHandler.SearchOn(inMsg.SenderId, SendMessage);
                         return true;
                     }
                     if (regexSearchOff.IsMatch(firstValue))
                     {
-                        LogHelper.WriteInfoLog($"{senderId}消息触发结束连续搜图");
-                        SearchPictureHandler.SearchOff(senderId, SendMessage);
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发结束连续搜图");
+                        SearchPictureHandler.SearchOff(inMsg.SenderId, SendMessage);
                         return true;
                     }
                 }
@@ -182,19 +179,19 @@ namespace GreenOnions.BotMain
                 {
                     if (regexTranslateToChinese.IsMatch(firstValue))  //翻译为中文
                     {
-                        LogHelper.WriteInfoLog($"{senderId}消息触发自动识别语言并翻译为中文");
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发自动识别语言并翻译为中文");
                         TranslateHandler.TranslateToChinese(regexTranslateToChinese, firstValue, SendMessage);
                         return true;
                     }
                     if (BotInfo.TranslateEngineType == TranslateEngine.Google && regexTranslateTo.IsMatch(firstValue))  //翻译为指定语言(仅限谷歌)
                     {
-                        LogHelper.WriteInfoLog($"{senderId}消息触发自动识别语言并翻译为指定语言");
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发自动识别语言并翻译为指定语言");
                         TranslateHandler.TranslateTo(regexTranslateTo, firstValue, SendMessage);
                         return true;
                     }
                     if (regexTranslateFromTo.IsMatch(firstValue))  //从指定语言翻译为指定语言
                     {
-                        LogHelper.WriteInfoLog($"{senderId}消息触发从指定语言翻译为指定语言");
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发从指定语言翻译为指定语言");
                         TranslateHandler.TranslateFromTo(regexTranslateFromTo, firstValue, SendMessage);
                         return true;
                     }
@@ -206,22 +203,22 @@ namespace GreenOnions.BotMain
                 {
                     if (regexHPicture.IsMatch(firstValue) || BotInfo.HPictureUserCmd.Contains(firstValue))
                     {
-                        LogHelper.WriteInfoLog($"{senderId}消息命中色图命令");
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息命中色图命令");
                         if (senderGroup != null)  //群消息
                         {
                             if (!BotInfo.HPictureWhiteOnly || BotInfo.HPictureWhiteGroup.Contains(senderGroup.Value))
                             {
-                                LogHelper.WriteInfoLog($"{senderId}有权限使用群色图");
+                                LogHelper.WriteInfoLog($"{inMsg.SenderId}有权限使用群色图");
 
-                                if (Cache.CheckGroupLimit(senderId, senderGroup.Value))
+                                if (Cache.CheckGroupLimit(inMsg.SenderId, senderGroup.Value))
                                 {
-                                    LogHelper.WriteInfoLog($"{senderId}群色图次数耗尽");
+                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}群色图次数耗尽");
                                     SendMessage(BotInfo.HPictureOutOfLimitReply);  //次数用尽
                                     return true;
                                 }
-                                if (Cache.CheckGroupCD(senderId, senderGroup.Value))
+                                if (Cache.CheckGroupCD(inMsg.SenderId, senderGroup.Value))
                                 {
-                                    LogHelper.WriteInfoLog($"{senderId}群色图冷却中");
+                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}群色图冷却中");
                                     SendMessage(BotInfo.HPictureCDUnreadyReply);  //冷却中
                                     return true;
                                 }
@@ -230,12 +227,12 @@ namespace GreenOnions.BotMain
                                 {
                                     if (BotInfo.HPictureUserCmd.Contains(firstValue))
                                     {
-                                        _ = HPictureHandler.SendOnlyOneHPictures(senderId, senderGroup, SendMessage);
+                                        _ = HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
                                     }
                                     else
                                     {
-                                        LogHelper.WriteInfoLog($"{senderId}消息进入群色图处理事件");
-                                        _ = HPictureHandler.SendHPictures(senderId, senderGroup, regexHPicture.Match(firstValue), SendMessage);
+                                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入群色图处理事件");
+                                        _ = HPictureHandler.SendHPictures(inMsg.SenderId, senderGroup, regexHPicture.Match(firstValue), SendMessage);
                                     }
                                 }
                             }
@@ -244,16 +241,16 @@ namespace GreenOnions.BotMain
                         {
                             if (BotInfo.HPictureAllowPM)
                             {
-                                LogHelper.WriteInfoLog($"{senderId}有权限使用私聊色图");
-                                if (Cache.CheckPMLimit(senderId))
+                                LogHelper.WriteInfoLog($"{inMsg.SenderId}有权限使用私聊色图");
+                                if (Cache.CheckPMLimit(inMsg.SenderId))
                                 {
-                                    LogHelper.WriteInfoLog($"{senderId}私聊色图次数耗尽");
+                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}私聊色图次数耗尽");
                                     SendMessage(BotInfo.HPictureOutOfLimitReply);  //次数用尽
                                     return true;
                                 }
-                                if (Cache.CheckPMCD(senderId))
+                                if (Cache.CheckPMCD(inMsg.SenderId))
                                 {
-                                    LogHelper.WriteInfoLog($"{senderId}私聊色图冷却中");
+                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}私聊色图冷却中");
                                     SendMessage(BotInfo.HPictureCDUnreadyReply);  //冷却中
                                     return true;
                                 }
@@ -262,12 +259,12 @@ namespace GreenOnions.BotMain
                                 {
                                     if (BotInfo.HPictureUserCmd.Contains(firstValue))
                                     {
-                                        _ = HPictureHandler.SendOnlyOneHPictures(senderId, senderGroup, SendMessage);
+                                        _ = HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
                                     }
                                     else
                                     {
-                                        LogHelper.WriteInfoLog($"{senderId}消息进入私聊色图处理事件");
-                                        _ = HPictureHandler.SendHPictures(senderId, null, regexHPicture.Match(firstValue), SendMessage);
+                                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入私聊色图处理事件");
+                                        _ = HPictureHandler.SendHPictures(inMsg.SenderId, null, regexHPicture.Match(firstValue), SendMessage);
                                     }
                                 }
                                 else
@@ -286,12 +283,12 @@ namespace GreenOnions.BotMain
                 {
                     if (regexDownloadPixivOriginPicture.IsMatch(firstValue))
                     {
-                        LogHelper.WriteInfoLog($"{senderId}消息命中下载Pixiv原图命令");
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息命中下载Pixiv原图命令");
                         Match match = regexDownloadPixivOriginPicture.Matches(firstValue).FirstOrDefault();
                         if (match.Groups.Count > 1)
                         {
                             string strId = firstValue.Substring(match.Groups[0].Length);
-                            LogHelper.WriteInfoLog($"{senderId}下载id={strId}的原图");
+                            LogHelper.WriteInfoLog($"{inMsg.SenderId}下载id={strId}的原图");
                             SearchPictureHandler.SendPixivOriginPictureWithIdAndP(strId);
                         }
                         return true;
@@ -302,8 +299,8 @@ namespace GreenOnions.BotMain
                 #region -- 帮助 --
                 if (regexHelp.IsMatch(firstValue))
                 {
-                    LogHelper.WriteInfoLog($"{senderId}消息命中帮助命令");
-                    greenOnionsMsgs = HelpHandler.Helps(regexHelp, firstValue, senderGroup);
+                    LogHelper.WriteInfoLog($"{inMsg.SenderId}消息命中帮助命令");
+                    SendMessage(HelpHandler.Helps(regexHelp, firstValue, senderGroup));
                     return true;
                 }
                 #endregion -- 帮助 --
@@ -320,7 +317,7 @@ namespace GreenOnions.BotMain
                             try
                             {
                                 string result;
-                                if (senderGroup == null && senderId == lQQNumber) // 私聊
+                                if (senderGroup == null && inMsg.SenderId == lQQNumber) // 私聊
                                     result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetSelfPhoneByQQ", lQQNumber);
                                 //result = QQPhone.QQAndPhone.GetSelfPhoneByQQ(lQQNumber);
                                 else  //群
@@ -343,7 +340,7 @@ namespace GreenOnions.BotMain
                 #endregion -- 查询手机号(夹带私货) --
 
                 #region -- 自动翻译 --
-                if (BotInfo.AutoTranslateGroupMemoriesQQ.Contains(senderId))
+                if (BotInfo.AutoTranslateGroupMemoriesQQ.Contains(inMsg.SenderId))
                 {
                     string tranStr = await GoogleTranslateHelper.TranslateToChinese(string.Join('\n', inMsg.OfType<GreenOnionsTextMessage>().Select(m => m.Text)));
                     try
@@ -358,7 +355,7 @@ namespace GreenOnions.BotMain
                 };
                 #endregion -- 自动翻译 --
 
-                LogHelper.WriteInfoLog($"{senderId}消息没有命中任何逻辑命令");
+                LogHelper.WriteInfoLog($"{inMsg.SenderId}消息没有命中任何逻辑命令");
             }
 
 
