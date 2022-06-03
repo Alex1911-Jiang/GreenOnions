@@ -1,6 +1,7 @@
 ﻿using GreenOnions.ForgeMessage;
 using GreenOnions.Help;
 using GreenOnions.HPicture;
+using GreenOnions.Interface;
 using GreenOnions.Model;
 using GreenOnions.PictureSearcher;
 using GreenOnions.Repeater;
@@ -56,7 +57,7 @@ namespace GreenOnions.BotMain
         /// <param name="senderGroup">消息来自的群号(私聊时为空)</param>
         /// <param name="SendMessage">回发消息方法</param>
         /// <returns></returns>
-        public static async Task<bool> HandleMesage(GreenOnionsMessages inMsg, long? senderGroup, Action<GreenOnionsMessages> SendMessage)
+        public static async Task<bool> HandleMesage(GreenOnionsMessages inMsg, long? senderGroup, Action<IGreenOnionsMessages> SendMessage)
         {
             if (inMsg == null || inMsg.Count == 0)
             {
@@ -213,13 +214,13 @@ namespace GreenOnions.BotMain
                                 if (Cache.CheckGroupLimit(inMsg.SenderId, senderGroup.Value))
                                 {
                                     LogHelper.WriteInfoLog($"{inMsg.SenderId}群色图次数耗尽");
-                                    SendMessage(BotInfo.HPictureOutOfLimitReply);  //次数用尽
+                                    SendMessage(new GreenOnionsMessages(BotInfo.HPictureOutOfLimitReply));  //次数用尽
                                     return true;
                                 }
                                 if (Cache.CheckGroupCD(inMsg.SenderId, senderGroup.Value))
                                 {
                                     LogHelper.WriteInfoLog($"{inMsg.SenderId}群色图冷却中");
-                                    SendMessage(BotInfo.HPictureCDUnreadyReply);  //冷却中
+                                    SendMessage(new GreenOnionsMessages(BotInfo.HPictureCDUnreadyReply));  //冷却中
                                     return true;
                                 }
 
@@ -245,13 +246,13 @@ namespace GreenOnions.BotMain
                                 if (Cache.CheckPMLimit(inMsg.SenderId))
                                 {
                                     LogHelper.WriteInfoLog($"{inMsg.SenderId}私聊色图次数耗尽");
-                                    SendMessage(BotInfo.HPictureOutOfLimitReply);  //次数用尽
+                                    SendMessage(new GreenOnionsMessages(BotInfo.HPictureOutOfLimitReply));  //次数用尽
                                     return true;
                                 }
                                 if (Cache.CheckPMCD(inMsg.SenderId))
                                 {
                                     LogHelper.WriteInfoLog($"{inMsg.SenderId}私聊色图冷却中");
-                                    SendMessage(BotInfo.HPictureCDUnreadyReply);  //冷却中
+                                    SendMessage(new GreenOnionsMessages(BotInfo.HPictureCDUnreadyReply));  //冷却中
                                     return true;
                                 }
 
@@ -289,7 +290,7 @@ namespace GreenOnions.BotMain
                         {
                             string strId = firstValue.Substring(match.Groups[0].Length);
                             LogHelper.WriteInfoLog($"{inMsg.SenderId}下载id={strId}的原图");
-                            SearchPictureHandler.SendPixivOriginPictureWithIdAndP(strId);
+                            _ = SearchPictureHandler.SendPixivOriginPictureWithIdAndP(strId).ContinueWith(callback => SendMessage(callback.Result));
                         }
                         return true;
                     }
@@ -323,16 +324,16 @@ namespace GreenOnions.BotMain
                                 else  //群
                                     result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetPhoneByQQ", lQQNumber);
                                 //result = QQPhone.QQAndPhone.GetPhoneByQQ(lQQNumber);
-                                SendMessage(result);
+                                SendMessage(new GreenOnionsMessages(result));
                             }
                             catch (Exception ex)
                             {
-                                SendMessage("查询失败" + ex.Message);
+                                SendMessage(new GreenOnionsMessages("查询失败" + ex.Message));
                             }
                         }
                         else
                         {
-                            SendMessage("请输入正确的QQ号码(不支持以邮箱查询)");
+                            SendMessage(new GreenOnionsMessages("请输入正确的QQ号码(不支持以邮箱查询)"));
                         }
                     }
                     return true;
@@ -345,7 +346,7 @@ namespace GreenOnions.BotMain
                     string tranStr = await GoogleTranslateHelper.TranslateToChinese(string.Join('\n', inMsg.OfType<GreenOnionsTextMessage>().Select(m => m.Text)));
                     try
                     {
-                        SendMessage(tranStr);
+                        SendMessage(new GreenOnionsMessages(tranStr));
                     }
                     catch (Exception ex)
                     {
@@ -358,6 +359,7 @@ namespace GreenOnions.BotMain
                 LogHelper.WriteInfoLog($"{inMsg.SenderId}消息没有命中任何逻辑命令");
             }
 
+            PluginManager.Message(inMsg, senderGroup, SendMessage);
 
             #region -- 复读 --
             if (senderGroup != null && (BotInfo.SuccessiveRepeatEnabled || BotInfo.RandomRepeatEnabled))

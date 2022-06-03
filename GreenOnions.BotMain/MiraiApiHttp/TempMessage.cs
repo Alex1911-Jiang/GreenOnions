@@ -1,16 +1,17 @@
-﻿using GreenOnions.BotMain;
-using GreenOnions.BotMain.MiraiApiHttp;
-using GreenOnions.Utility;
+﻿using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Mirai.CSharp.HttpApi.Handlers;
 using Mirai.CSharp.HttpApi.Models.ChatMessages;
 using Mirai.CSharp.HttpApi.Models.EventArgs;
+using Mirai.CSharp.HttpApi.Parsers;
+using Mirai.CSharp.HttpApi.Parsers.Attributes;
 using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
 
-namespace GreenOnions.MiraiApiHttp
+namespace GreenOnions.BotMain.MiraiApiHttp
 {
-    public class TempMessage : IMiraiHttpMessageHandler<ITempMessageEventArgs>
+    [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<ITempMessageEventArgs, TempMessageEventArgs>))]
+    public partial class TempMessage : IMiraiHttpMessageHandler<ITempMessageEventArgs>
     {
         public async Task HandleMessageAsync(IMiraiHttpSession session, ITempMessageEventArgs e)
         {
@@ -18,7 +19,7 @@ namespace GreenOnions.MiraiApiHttp
             {
                 return;
             }
-            LogHelper.WriteInfoLog($"收到来自{e.Sender.Id}的私聊消息");
+            LogHelper.WriteInfoLog($"收到来自{e.Sender.Id}的临时消息");
 
             int quoteId = (e.Chain[0] as SourceMessage).Id;
             bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(e.Sender.Id, e.Sender.Name), e.Sender.Group.Id, async outMsg =>  //临时消息按群设置记撤回时间

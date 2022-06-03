@@ -45,6 +45,8 @@ namespace GreenOnions.BotManagerWindow
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.chkMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.btnConnectToCqHttp = new System.Windows.Forms.Button();
+            this.btnPlugins = new System.Windows.Forms.Button();
+            this.lblPluginMessage = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblQQ
@@ -95,7 +97,7 @@ namespace GreenOnions.BotManagerWindow
             this.txbIP.Location = new System.Drawing.Point(115, 56);
             this.txbIP.Name = "txbIP";
             this.txbIP.Size = new System.Drawing.Size(275, 23);
-            this.txbIP.TabIndex = 1;
+            this.txbIP.TabIndex = 2;
             this.txbIP.Text = "127.0.0.1";
             // 
             // txbPort
@@ -103,7 +105,7 @@ namespace GreenOnions.BotManagerWindow
             this.txbPort.Location = new System.Drawing.Point(115, 85);
             this.txbPort.Name = "txbPort";
             this.txbPort.Size = new System.Drawing.Size(275, 23);
-            this.txbPort.TabIndex = 1;
+            this.txbPort.TabIndex = 3;
             this.txbPort.Text = "33111";
             // 
             // txbVerifyKey
@@ -111,14 +113,14 @@ namespace GreenOnions.BotManagerWindow
             this.txbVerifyKey.Location = new System.Drawing.Point(204, 114);
             this.txbVerifyKey.Name = "txbVerifyKey";
             this.txbVerifyKey.Size = new System.Drawing.Size(186, 23);
-            this.txbVerifyKey.TabIndex = 1;
+            this.txbVerifyKey.TabIndex = 4;
             // 
             // btnConnectToMiraiApiHttp
             // 
             this.btnConnectToMiraiApiHttp.Location = new System.Drawing.Point(44, 170);
             this.btnConnectToMiraiApiHttp.Name = "btnConnectToMiraiApiHttp";
             this.btnConnectToMiraiApiHttp.Size = new System.Drawing.Size(170, 25);
-            this.btnConnectToMiraiApiHttp.TabIndex = 2;
+            this.btnConnectToMiraiApiHttp.TabIndex = 5;
             this.btnConnectToMiraiApiHttp.Text = "连接到mirai-api-http";
             this.btnConnectToMiraiApiHttp.UseVisualStyleBackColor = true;
             this.btnConnectToMiraiApiHttp.Click += new System.EventHandler(this.btnConnectToMiraiApiHttp_Click);
@@ -127,8 +129,8 @@ namespace GreenOnions.BotManagerWindow
             // 
             this.btnBotSettings.Location = new System.Drawing.Point(44, 201);
             this.btnBotSettings.Name = "btnBotSettings";
-            this.btnBotSettings.Size = new System.Drawing.Size(346, 25);
-            this.btnBotSettings.TabIndex = 2;
+            this.btnBotSettings.Size = new System.Drawing.Size(170, 25);
+            this.btnBotSettings.TabIndex = 7;
             this.btnBotSettings.Text = "机器人设置";
             this.btnBotSettings.UseVisualStyleBackColor = true;
             this.btnBotSettings.Click += new System.EventHandler(this.btnBotSettings_Click);
@@ -158,7 +160,7 @@ namespace GreenOnions.BotManagerWindow
             this.chkMinimizeToTray.Location = new System.Drawing.Point(334, 0);
             this.chkMinimizeToTray.Name = "chkMinimizeToTray";
             this.chkMinimizeToTray.Size = new System.Drawing.Size(99, 21);
-            this.chkMinimizeToTray.TabIndex = 4;
+            this.chkMinimizeToTray.TabIndex = 0;
             this.chkMinimizeToTray.Text = "最小化到托盘";
             this.chkMinimizeToTray.UseVisualStyleBackColor = true;
             // 
@@ -167,16 +169,36 @@ namespace GreenOnions.BotManagerWindow
             this.btnConnectToCqHttp.Location = new System.Drawing.Point(220, 170);
             this.btnConnectToCqHttp.Name = "btnConnectToCqHttp";
             this.btnConnectToCqHttp.Size = new System.Drawing.Size(170, 25);
-            this.btnConnectToCqHttp.TabIndex = 5;
+            this.btnConnectToCqHttp.TabIndex = 6;
             this.btnConnectToCqHttp.Text = "连接到cqhttp";
             this.btnConnectToCqHttp.UseVisualStyleBackColor = true;
             this.btnConnectToCqHttp.Click += new System.EventHandler(this.btnConnectToCqHttp_Click);
+            // 
+            // btnPlugins
+            // 
+            this.btnPlugins.Location = new System.Drawing.Point(220, 201);
+            this.btnPlugins.Name = "btnPlugins";
+            this.btnPlugins.Size = new System.Drawing.Size(170, 25);
+            this.btnPlugins.TabIndex = 8;
+            this.btnPlugins.Text = "插件列表(0)";
+            this.btnPlugins.UseVisualStyleBackColor = true;
+            this.btnPlugins.Click += new System.EventHandler(this.btnPlugins_Click);
+            // 
+            // lblPluginMessage
+            // 
+            this.lblPluginMessage.AutoSize = true;
+            this.lblPluginMessage.Location = new System.Drawing.Point(220, 229);
+            this.lblPluginMessage.Name = "lblPluginMessage";
+            this.lblPluginMessage.Size = new System.Drawing.Size(0, 17);
+            this.lblPluginMessage.TabIndex = 7;
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(435, 240);
+            this.ClientSize = new System.Drawing.Size(435, 249);
+            this.Controls.Add(this.lblPluginMessage);
+            this.Controls.Add(this.btnPlugins);
             this.Controls.Add(this.btnConnectToCqHttp);
             this.Controls.Add(this.chkMinimizeToTray);
             this.Controls.Add(this.lblState);
@@ -215,5 +237,7 @@ namespace GreenOnions.BotManagerWindow
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.CheckBox chkMinimizeToTray;
         private System.Windows.Forms.Button btnConnectToCqHttp;
+        private System.Windows.Forms.Button btnPlugins;
+        private System.Windows.Forms.Label lblPluginMessage;
     }
 }

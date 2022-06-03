@@ -7,9 +7,6 @@ using Mirai.CSharp.HttpApi.Invoking;
 using Mirai.CSharp.HttpApi.Options;
 using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GreenOnions.BotMain.MiraiApiHttp
 {
@@ -29,6 +26,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                                                                    .AddInvoker<MiraiHttpMessageHandlerInvoker>() // 使用默认的调度器
                                                                    .AddHandler<GroupMessage>() // 群消息
                                                                    .AddHandler<FriendMessage>() // 好友消息
+                                                                   .AddHandler<TempMessage>() // 临时消息
                                                                    .AddClient<MiraiHttpSession>() // 使用默认的客户端
                                                                    .Services
                                                                    // 由于 MiraiHttpSession 使用 IOptions<MiraiHttpSessionOptions>, 其作为 Singleton 被注册
@@ -66,7 +64,14 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 BotInfo.IsLogin = true;
 
-                BotMain.RssWorker.StartRssTask(async (msgs, targetId, groupId) =>
+                PluginManager.Connected(
+                    BotInfo.QQId,
+                    async (targetId, msg) => await session.SendFriendMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend)),
+                    async (targetId, msg) => await session.SendGroupMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Group)),
+                    async (targetId, targetGroup, msg) => await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp))
+                    );
+
+                RssWorker.StartRssTask(async (msgs, targetId, groupId) =>
                 {
                     if (targetId != -1)
                         _ = session.SendFriendMessageAsync(targetId, await msgs.ToMiraiApiHttpMessages(session, UploadTarget.Friend));
@@ -80,6 +85,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     if (Console.ReadLine() == "exit")
                     {
                         BotInfo.IsLogin = false;
+                        PluginManager.Disconnected();
                         session.Dispose();
                         ConnectedEvent?.Invoke(false, "");
                         break;

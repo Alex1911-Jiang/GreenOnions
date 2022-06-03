@@ -1,4 +1,5 @@
-﻿using GreenOnions.BotMain.CqHttp;
+﻿using GreenOnions.BotMain;
+using GreenOnions.BotMain.CqHttp;
 using GreenOnions.BotMain.MiraiApiHttp;
 using GreenOnions.Utility.Helper;
 using System;
@@ -25,7 +26,16 @@ namespace GreenOnions.BotManagerConsole
 
 			Console.WriteLine("有任何疑问，意见或建议欢迎到 https://github.com/Alex1911-Jiang/GreenOnions 提Issue");
 
-			Console.WriteLine("请选择连接平台: 0 = mirai-api-http,  1 = cqhttp");
+            int iLoadCount = 0;
+            foreach ((bool load, string msg) loadPluginMsg in PluginManager.Load())
+            {
+                if (loadPluginMsg.load)
+                    iLoadCount++;
+                Console.WriteLine(loadPluginMsg.msg);
+            }
+            Console.WriteLine($"成功加载{iLoadCount}个插件");
+
+            Console.WriteLine("请选择连接平台: 0 = mirai-api-http,  1 = cqhttp");
 		ILRetryProtocol:;
 			if (!int.TryParse(Console.ReadLine(), out int protocol) || protocol < 0 || protocol > 1)
 			{

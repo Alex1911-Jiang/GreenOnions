@@ -32,11 +32,11 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode> nodes = new List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode>();
             for (int i = 0; i < greenOnionsMessage.Count; i++)
             {
-                if (greenOnionsMessage[i] is GreenOnionsTextMessage txtMsg)
+                if (greenOnionsMessage[i] is IGreenOnionsTextMessage txtMsg)
                 {
                     miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(txtMsg.Text));
                 }
-                else if (greenOnionsMessage[i] is GreenOnionsImageMessage imgMsg)
+                else if (greenOnionsMessage[i] is IGreenOnionsImageMessage imgMsg)
                 {
                     if (!string.IsNullOrEmpty(imgMsg.Url))
                     {
@@ -56,14 +56,14 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                         }
                     }
                 }
-                else if (greenOnionsMessage[i] is GreenOnionsAtMessage atMsg)
+                else if (greenOnionsMessage[i] is IGreenOnionsAtMessage atMsg)
                 {
                     if (atMsg.AtId == -1)
                         miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.AtAllMessage());
                     else
                         miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.AtMessage(atMsg.AtId));
                 }
-                else if (greenOnionsMessage[i] is GreenOnionsForwardMessage forwardMsg)
+                else if (greenOnionsMessage[i] is IGreenOnionsForwardMessage forwardMsg)
                 {
                     for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                     {

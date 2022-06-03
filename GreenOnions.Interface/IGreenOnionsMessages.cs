@@ -2,7 +2,7 @@
 
 namespace GreenOnions.Interface
 {
-    public interface IGreenOnionsMessages : IList
+    public interface IGreenOnionsMessages :IList
     {
         public bool Reply { get; set; }
 

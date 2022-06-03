@@ -29,7 +29,7 @@ namespace GreenOnions.BotMain.CqHttp
                 {
                     if (outMsg != null && outMsg.Count > 0)
                     {
-                        if (outMsg.First() is GreenOnionsForwardMessage forwardMessage)
+                        if (outMsg[0] is GreenOnionsForwardMessage forwardMessage)
                         {
                             _ = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.SourceGroup.Id, forwardMessage.ToCqHttpForwardMessage());
                         }

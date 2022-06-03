@@ -13,6 +13,9 @@
     <Compile Update="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FrmPlugins.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="WebBrowserForm.cs">
       <SubType>Form</SubType>
     </Compile>

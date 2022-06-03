@@ -796,7 +796,7 @@ namespace GreenOnions.Utility
         /// </summary>
         public static string HPictureCmd
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCmd)) ?? "(?<前缀>葱葱[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟][图圖図])|(?<美图后缀>[美][图圖図]))";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCmd)) ?? "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟][图圖図])|(?<美图后缀>[美][图圖図]))";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCmd), value);
         }
 
@@ -838,7 +838,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(EnabledHPictureSource));
                 if (string.IsNullOrEmpty(strValue))
-                    return new List<PictureSource>();
+                    return new List<PictureSource>() { 0 };
                 return strValue.Split(';').Select(s => (PictureSource)Enum.Parse(typeof(PictureSource), s)).ToList();
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(EnabledHPictureSource), string.Join(";", value));

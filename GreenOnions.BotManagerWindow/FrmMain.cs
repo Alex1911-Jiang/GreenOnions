@@ -1,4 +1,5 @@
-﻿using GreenOnions.BotMain.CqHttp;
+﻿using GreenOnions.BotMain;
+using GreenOnions.BotMain.CqHttp;
 using GreenOnions.BotMain.MiraiApiHttp;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
@@ -41,6 +42,26 @@ namespace GreenOnions.BotManagerWindow
 				MessageBox.Show($"读取配置发生异常，{ex.Message}，请删除应用目录下的config.json和cache.json文件后重启应用。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			#endregion -- 读取配置 --
+		}
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+
+			lblPluginMessage.Text = $"";
+			Task.Run(() =>
+			{
+				int iLoadCount = 0;
+				foreach ((bool load, string msg) loadPluginMsg in PluginManager.Load())
+				{
+					if (loadPluginMsg.load)
+						iLoadCount++;
+					Invoke(new Action(() => lblPluginMessage.Text = loadPluginMsg.msg));
+				}
+				if (iLoadCount > 0)
+                    Invoke(new Action(() => btnPlugins.Text = $"插件列表({iLoadCount})"));
+				Invoke(new Action(() => lblPluginMessage.Text = $""));
+			});
 		}
 
         protected override void OnSizeChanged(EventArgs e)
@@ -192,5 +213,10 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.VerifyKey = txbVerifyKey.Text;
 			return true;
 		}
-	}
+
+        private void btnPlugins_Click(object sender, EventArgs e)
+        {
+			new FrmPlugins().ShowDialog();
+		}
+    }
 }

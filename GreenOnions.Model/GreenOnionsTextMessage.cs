@@ -1,8 +1,9 @@
-﻿using System.Text;
+﻿using GreenOnions.Interface;
+using System.Text;
 
 namespace GreenOnions.Model
 {
-    public record GreenOnionsTextMessage : GreenOnionsBaseMessage
+    public record GreenOnionsTextMessage : GreenOnionsBaseMessage, IGreenOnionsTextMessage
     {
         public string Text { get; set; }
         public GreenOnionsTextMessage(string text)

@@ -1,18 +1,13 @@
-﻿using GreenOnions.Help;
-using GreenOnions.Model;
+﻿using GreenOnions.Model;
 using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using Sora;
-using Sora.Entities;
-using Sora.Entities.Segment;
-using Sora.Entities.Segment.DataModel;
+using Sora.Entities.Base;
+using Sora.Entities.Info;
 using Sora.Interfaces;
 using Sora.Net.Config;
 using Sora.Util;
-using System.Text.RegularExpressions;
 using YukariToolBox.LightLog;
-using GreenOnions.Utility.Helper;
-using Sora.Entities.Base;
-using Sora.Entities.Info;
 
 namespace GreenOnions.BotMain.CqHttp
 {
@@ -51,6 +46,8 @@ namespace GreenOnions.BotMain.CqHttp
                     ConnectedEvent?.Invoke(true, nickname);
                 };
 
+                BotInfo.IsLogin = true;
+
                 RssWorker.StartRssTask((msgs, targetId, groupId) =>
                 {
                     SoraApi api = service.GetApi(service.ServiceId);
@@ -77,6 +74,7 @@ namespace GreenOnions.BotMain.CqHttp
                     if (Console.ReadLine() == "exit")
                     {
                         BotInfo.IsLogin = false;
+                        PluginManager.Disconnected();
                         ConnectedEvent?.Invoke(false, "");
                         break;
                     }
