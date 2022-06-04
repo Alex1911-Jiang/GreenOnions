@@ -1,6 +1,7 @@
 ﻿using GreenOnions.Interface;
 using GreenOnions.Model;
 using Sora.Entities;
+using Sora.Entities.Base;
 using Sora.Entities.Info;
 using Sora.Entities.Segment;
 using Sora.Entities.Segment.DataModel;
@@ -9,20 +10,31 @@ namespace GreenOnions.BotMain.CqHttp
 {
     public static class MessageConvertHelper
     {
-        public static GreenOnionsMessages ToOnionsMessages(this MessageBody miraiMessage, long senderId, string senderName)
+        public static GreenOnionsMessages ToOnionsMessages(this MessageBody miraiMessage, long senderId, string senderName, long? senderGroup, SoraApi api)
         {
             GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
             for (int i = 0; i < miraiMessage.Count; i++)
             {
                 if (miraiMessage[i].Data is AtSegment atMsg)
                 {
+                    //获取@群名片
                     if (long.TryParse(atMsg.Target, out long atId))
+                    {
+                        var apiResult = api.GetGroupMemberList(senderGroup.Value).GetAwaiter().GetResult();
+                        List<GroupMemberInfo> groupMemberInfos = apiResult.groupMemberList;
+                        GroupMemberInfo targetQQ = groupMemberInfos.Where(m => m.UserId == atId).FirstOrDefault();
+                        string nickName = targetQQ?.Nick;
+                        greenOnionsMessages.Add(new GreenOnionsAtMessage(atId, nickName));
+                    }
+                    else
+                    {
                         greenOnionsMessages.Add(new GreenOnionsAtMessage(atId, atMsg.Name));
+                    }
                 }
                 else if (miraiMessage[i].Data is TextSegment textMsg)
                     greenOnionsMessages.Add(textMsg.Content);
                 else if (miraiMessage[i].Data is ImageSegment imageMsg)
-                    greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url));
+                    greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url, imageMsg.ImgFile));
             }
 
             greenOnionsMessages.SenderId = senderId;
@@ -33,7 +45,7 @@ namespace GreenOnions.BotMain.CqHttp
         public static MessageBody ToCqHttpMessages(this IGreenOnionsMessages greenOnionsMessage, int? RelpyId)
         {
             MessageBody cqHttpMessages = new MessageBody();
-            if (RelpyId != null)
+            if (greenOnionsMessage.Reply && RelpyId != null)
                 cqHttpMessages.Add(SoraSegment.Reply(RelpyId.Value));
 
             for (int i = 0; i < greenOnionsMessage.Count; i++)

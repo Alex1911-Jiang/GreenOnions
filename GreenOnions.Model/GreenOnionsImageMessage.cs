@@ -15,6 +15,12 @@ namespace GreenOnions.Model
             Url = url;
         }
 
+        public GreenOnionsImageMessage(string url, string imgFile)
+        {
+            Url = url;
+            ImgFile = imgFile;
+        }
+
         public MemoryStream? MemoryStream
         {
             get
@@ -25,5 +31,6 @@ namespace GreenOnions.Model
 
         public string Base64Str => _base64Str;
         public string? Url { get; set; }
+        public string? ImgFile { get; set; }
     }
 }

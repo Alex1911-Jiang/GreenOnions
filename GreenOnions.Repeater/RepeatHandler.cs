@@ -16,7 +16,7 @@ namespace GreenOnions.Repeater
         {
             MessageItem tempMessageItem;
             if (message is GreenOnionsImageMessage imgMsg)
-                tempMessageItem = new MessageItem(imgMsg.GetType(), imgMsg.Url);
+                tempMessageItem = new MessageItem(imgMsg.GetType(), imgMsg.ImgFile != null ? imgMsg.ImgFile : imgMsg.Url);
             else if (message is GreenOnionsTextMessage txtMsg)
                 tempMessageItem = new MessageItem(txtMsg.GetType(), txtMsg.Text);
             else
@@ -94,7 +94,7 @@ namespace GreenOnions.Repeater
             {
                 messageItem.IsRepeated = true;
                 MemoryStream ms = await MirrorImage(ImageHelper.ReplaceGroupUrl(imageMessage.Url));
-                if (ms == null)
+                if (ms != null)
                     return new GreenOnionsImageMessage(ms);
                 else
                     return new GreenOnionsImageMessage(imageMessage.Url);

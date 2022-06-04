@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.6" />
-    <PackageReference Include="Sora" Version="1.0.0-rc.54" />
+    <PackageReference Include="Sora" Version="1.0.0-rc.55" />
   </ItemGroup>
 
   <ItemGroup>

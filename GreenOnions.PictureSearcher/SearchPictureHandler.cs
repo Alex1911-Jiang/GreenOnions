@@ -584,75 +584,79 @@ namespace GreenOnions.PictureSearcher
 
                             LogHelper.WriteInfoLog($"鉴黄通过或不需要鉴黄");
 
-                            //如果是pixiv体系尝试下载原图
-                            if (sauceNaoItem.pixiv_id != null)
+                            if (BotInfo.SearchSauceNAOSendPixivOriginPicture)
                             {
-                                Match matchBigImg = Regex.Match(sauceNaoItem.index_name, @$".+{sauceNaoItem.pixiv_id}_p([0-9]+)[_\.].+");
-                                if (matchBigImg.Groups.Count > 1)
+                                //如果是pixiv体系尝试下载原图
+                                if (sauceNaoItem.pixiv_id != null)
                                 {
-                                    LogHelper.WriteInfoLog($"图片来自Pixiv, 尝试下载原图");
-                                    int p = Convert.ToInt32(matchBigImg.Groups[1].Value);
-                                    string imgUrlHasP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}-{p + 1}.png";
-                                    if (p == 0)  //NAO返回的P为0
+                                    Match matchBigImg = Regex.Match(sauceNaoItem.index_name, @$".+{sauceNaoItem.pixiv_id}_p([0-9]+)[_\.].+");
+                                    if (matchBigImg.Groups.Count > 1)
                                     {
-                                        using (var httpClient = new HttpClient())
+                                        LogHelper.WriteInfoLog($"图片来自Pixiv, 尝试下载原图");
+                                        int p = Convert.ToInt32(matchBigImg.Groups[1].Value);
+                                        string imgUrlHasP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}-{p + 1}.png";
+                                        if (p == 0)  //NAO返回的P为0
                                         {
-                                            var catRouteTask = CheckCatRoute(Convert.ToInt64(sauceNaoItem.pixiv_id), -1);
-                                            if (BotInfo.SearchSendByForward)
+                                            using (var httpClient = new HttpClient())
                                             {
-                                                string catRoute = await catRouteTask;
-                                                if (string.IsNullOrEmpty(catRoute))
+                                                var catRouteTask = CheckCatRoute(Convert.ToInt64(sauceNaoItem.pixiv_id), -1);
+                                                if (BotInfo.SearchSendByForward)
                                                 {
-                                                    string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
-                                                    outMessage.Add(new GreenOnionsImageMessage(imgUrlNoP));
-                                                    DownloadImageArchive(imgUrlNoP, sauceNaoItem.pixiv_id, p);
-                                                }
-                                                else
-                                                {
-                                                    outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
-                                                    DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                _ = catRouteTask.ContinueWith(t => 
-                                                {
-                                                    if (string.IsNullOrEmpty(t.Result))
+                                                    string catRoute = await catRouteTask;
+                                                    if (string.IsNullOrEmpty(catRoute))
                                                     {
                                                         string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
-                                                        SendMessage(new GreenOnionsImageMessage(imgUrlNoP));
+                                                        outMessage.Add(new GreenOnionsImageMessage(imgUrlNoP));
                                                         DownloadImageArchive(imgUrlNoP, sauceNaoItem.pixiv_id, p);
                                                     }
                                                     else
                                                     {
-                                                        SendMessage(new GreenOnionsImageMessage(imgUrlHasP));
+                                                        outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
                                                         DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
                                                     }
-                                                });
+                                                }
+                                                else
+                                                {
+                                                    _ = catRouteTask.ContinueWith(t =>
+                                                    {
+                                                        if (string.IsNullOrEmpty(t.Result))
+                                                        {
+                                                            string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
+                                                            SendMessage(new GreenOnionsImageMessage(imgUrlNoP));
+                                                            DownloadImageArchive(imgUrlNoP, sauceNaoItem.pixiv_id, p);
+                                                        }
+                                                        else
+                                                        {
+                                                            SendMessage(new GreenOnionsImageMessage(imgUrlHasP));
+                                                            DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
+                                                        }
+                                                    });
+                                                }
                                             }
                                         }
-                                    }
-                                    else  //地址有P且>0
-                                    {
-                                        if (BotInfo.SearchSendByForward)
-                                            outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
-                                        else
-                                            _ = Task.Run(() => SendMessage(new GreenOnionsImageMessage(imgUrlHasP)));
-                                        DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
-                                    }
-
-                                    //下载原图并存储
-                                    void DownloadImageArchive(string url, string pixivID, int p)
-                                    {
-                                        Task.Run(() =>
+                                        else  //地址有P且>0
                                         {
-                                            string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{pixivID}_p{p}.png");
-                                            if (!File.Exists(imgName) || new FileInfo(imgName).Length == 0)
-                                                HttpHelper.DownloadImageFile(url, imgName);  //仅下载
-                                        });
+                                            if (BotInfo.SearchSendByForward)
+                                                outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
+                                            else
+                                                _ = Task.Run(() => SendMessage(new GreenOnionsImageMessage(imgUrlHasP)));
+                                            DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
+                                        }
+
+                                        //下载原图并存储
+                                        void DownloadImageArchive(string url, string pixivID, int p)
+                                        {
+                                            Task.Run(() =>
+                                            {
+                                                string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{pixivID}_p{p}.png");
+                                                if (!File.Exists(imgName) || new FileInfo(imgName).Length == 0)
+                                                    HttpHelper.DownloadImageFile(url, imgName);  //仅下载
+                                            });
+                                        }
                                     }
                                 }
                             }
+
                             LogHelper.WriteInfoLog($"SauceNao(后端)搜图完成, 相似度高于发图设定值");
                             return (outMessage, sauceNaoItem.similarity < BotInfo.SearchSauceNAOHighSimilarity);
                         }

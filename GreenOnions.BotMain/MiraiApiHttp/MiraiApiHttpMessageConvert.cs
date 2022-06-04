@@ -18,7 +18,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 else if (miraiMessage[i] is IPlainMessage plainMsg)
                     greenOnionsMessages.Add(plainMsg.ToString());
                 else if (miraiMessage[i] is IImageMessage imageMsg)
-                    greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url));
+                    greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url, imageMsg.ImageId));
             }
 
             greenOnionsMessages.SenderId = senderId;

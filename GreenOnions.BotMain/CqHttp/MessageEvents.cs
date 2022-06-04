@@ -2,6 +2,8 @@
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Sora.Entities;
+using Sora.Entities.Info;
+using Sora.Entities.Segment;
 using Sora.Entities.Segment.DataModel;
 using Sora.EventArgs.SoraEvent;
 using System;
@@ -21,9 +23,8 @@ namespace GreenOnions.BotMain.CqHttp
                 return;
             }
             LogHelper.WriteInfoLog($"收到来自{eventArgs.Sender.Id}的群消息");
-
             int quoteId = eventArgs.Message.MessageId;
-            bool isHandle = await MessageHandler.HandleMesage(eventArgs.Message.MessageBody.ToOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick), eventArgs.SourceGroup.Id, outMsg =>
+            bool isHandle = await MessageHandler.HandleMesage(eventArgs.Message.MessageBody.ToOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick, eventArgs.SourceGroup, eventArgs.SoraApi), eventArgs.SourceGroup.Id, outMsg =>
             {
                 if (outMsg != null)
                 {
@@ -59,7 +60,7 @@ namespace GreenOnions.BotMain.CqHttp
             LogHelper.WriteInfoLog($"收到来自{eventArgs.Sender.Id}的私聊消息");
 
             int quoteId = eventArgs.Message.MessageId;
-            bool isHandle = await MessageHandler.HandleMesage(eventArgs.Message.MessageBody.ToOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick), null, outMsg =>
+            bool isHandle = await MessageHandler.HandleMesage(eventArgs.Message.MessageBody.ToOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick, null, eventArgs.SoraApi), null, outMsg =>
             {
                 if (outMsg != null)
                 {

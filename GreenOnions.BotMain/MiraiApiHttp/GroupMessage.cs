@@ -30,7 +30,6 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             LogHelper.WriteInfoLog($"收到来自{e.Sender.Id}的群消息");
 
             int quoteId = (e.Chain[0] as SourceMessage).Id;
-            //QuoteMessage quoteMessage = new QuoteMessage((e.Chain[0] as SourceMessage).Id, e.Sender.Group.Id, e.Sender.Id, e.Sender.Id);
 
             for (int i = 0; i < e.Chain.Length; i++)
             {
