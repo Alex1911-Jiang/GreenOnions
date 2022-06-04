@@ -44,7 +44,7 @@ namespace GreenOnions.BotMain.CqHttp
                 }
                 else if (greenOnionsMessage[i] is IGreenOnionsImageMessage imgMsg)
                 {
-                    string data = string.IsNullOrEmpty(imgMsg.Url) ? imgMsg.Base64Str : imgMsg.Url;
+                    string data = string.IsNullOrEmpty(imgMsg.Url) ? ("base64://" + imgMsg.Base64Str) : imgMsg.Url;
                     cqHttpMessages.Add(SoraSegment.Image(data));
                 }
                 else if (greenOnionsMessage[i] is IGreenOnionsAtMessage atMsg)
