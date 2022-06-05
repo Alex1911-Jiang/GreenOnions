@@ -73,9 +73,7 @@ namespace GreenOnions.BotMain
                         #region -- @搜图 --
                         LogHelper.WriteInfoLog($"群消息为@搜图");
                         if (BotInfo.SearchEnabled)
-                        {
                             SearchPictureHandler.SearchPicture(imgMsg, SendMessage);
-                        }
                         #endregion -- @搜图 --
                     }
                     else if (inMsg[i] is GreenOnionsTextMessage txtMsg)
@@ -359,7 +357,17 @@ namespace GreenOnions.BotMain
                 LogHelper.WriteInfoLog($"{inMsg.SenderId}消息没有命中任何逻辑命令");
             }
 
-            PluginManager.Message(inMsg, senderGroup, SendMessage);
+            if (PluginManager.Message(inMsg, senderGroup, SendMessage))
+                return true;
+
+            if (BotInfo.PmAutoSearch && senderGroup is null && BotInfo.SearchEnabled)  //私聊自动搜图
+            {
+                for (int i = 0; i < inMsg.Count; i++)
+                {
+                    if (inMsg[i] is GreenOnionsImageMessage imgMsg)
+                        SearchPictureHandler.SearchPicture(imgMsg, SendMessage);
+                }
+            }
 
             #region -- 复读 --
             if (senderGroup != null && (BotInfo.SuccessiveRepeatEnabled || BotInfo.RandomRepeatEnabled))

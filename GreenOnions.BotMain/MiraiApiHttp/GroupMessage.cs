@@ -59,6 +59,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     });
                 }
             });
+            e.BlockRemainingHandlers = isHandle;
         }
 
         public Task HandleMessageAsync(IMiraiHttpSession session, IGroupMemberJoinedEventArgs e)

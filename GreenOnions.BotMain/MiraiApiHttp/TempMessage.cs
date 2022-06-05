@@ -38,6 +38,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     });
                 }
             });
+            e.BlockRemainingHandlers = isHandle;
         }
 
         private bool CheckPreconditions(Mirai.CSharp.HttpApi.Models.IGroupMemberInfo e)

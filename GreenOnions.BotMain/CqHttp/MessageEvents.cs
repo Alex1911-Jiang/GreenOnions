@@ -49,6 +49,7 @@ namespace GreenOnions.BotMain.CqHttp
                     }
                 }
             });
+            eventArgs.IsContinueEventChain = !isHandle;
         }
 
         public static async ValueTask Event_OnPrivateMessage(string eventType, PrivateMessageEventArgs eventArgs)
@@ -86,6 +87,7 @@ namespace GreenOnions.BotMain.CqHttp
                     }
                 }
             });
+            eventArgs.IsContinueEventChain = !isHandle;
         }
 
         private static bool CheckPreconditionsGroup(GroupMessageEventArgs e)

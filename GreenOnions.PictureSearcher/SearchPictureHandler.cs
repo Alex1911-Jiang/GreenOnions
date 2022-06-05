@@ -757,7 +757,6 @@ namespace GreenOnions.PictureSearcher
                     LogHelper.WriteErrorLogWithUserMessage("ASCII2D颜色(后端)搜索失败", ex, $"请求地址为：{colorUrl}");
                     outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", "ASCII2D颜色")) + ex.Message);
                 }
-                
             }
 
             try
