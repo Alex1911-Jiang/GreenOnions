@@ -171,10 +171,10 @@
 4.E-Hentai关键词色图<br>
 
 ### 长期计划(GUDO):
-1.把System.Drawing替换为其他--更轻量--的跨平台图形库(准备暂时先用CV), 取消Linux系统下对Mono的依赖<br>
+1.把System.Drawing替换为其他~~更轻量~~的跨平台图形库(准备暂时先用CV), 取消Linux系统下对Mono的依赖<br>
 2.把内嵌浏览器([CefSharp](https://github.com/cefsharp/CefSharp))和井字棋([OpenCVsharp](https://github.com/shimat/opencvsharp))分别搬出到独立的仓库里, 改为插件式加载, 取消强制依赖(毕竟没什么人用的功能占了500MB大小我自己也是多少带点...)<br>
 3.添加一个RSS监控功能(沙雕群友自己网络有问题整天怪在我头上)<br>
 4.为Console端添加命令配置属性和属性中文注释<br>
 5.通过消息配置属性<br>
 6.部分功能使用代理(而不需要全局代理?)<br>
-7.添加一个网站管理端?
+7.添加一个网站管理端?<br>
