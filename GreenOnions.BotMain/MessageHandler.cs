@@ -96,10 +96,10 @@ namespace GreenOnions.BotMain
                 var imgMsgs = inMsg.OfType<GreenOnionsImageMessage>();
                 if (inMsg.Count == imgMsgs.Count())
                 {
+                    SearchPictureHandler.UpdateSearchTime(inMsg.SenderId);  //刷新搜图超时时间到1分钟
                     foreach (GreenOnionsImageMessage imgMsg in imgMsgs)
-                    {
                         SearchPictureHandler.SearchPicture(imgMsg, SendMessage);
-                    }
+                    return true;
                 }
             }
             else if (Cache.PlayingTicTacToeUsers.ContainsKey(inMsg.SenderId))  //井字棋
@@ -113,6 +113,7 @@ namespace GreenOnions.BotMain
 
                         SendMessage(TicTacToeHandler.PlayerMoveByBitmap(inMsg.SenderId, playerMoveStream));
                     }
+                    return true;
                 }
             }
 

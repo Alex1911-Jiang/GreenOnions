@@ -23,7 +23,7 @@ namespace GreenOnions.Utility
         }
 
         #region -- 公共属性 --
-        [PropertyChineseName("机器人QQ号")]
+        [PropertyChineseName("机器人QQ")]
         public static long QQId
         {
             get
@@ -71,6 +71,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 机器人管理员QQ
         /// </summary>
+        [PropertyChineseName("机器人管理员QQ")]
         public static IEnumerable<long> AdminQQ
         {
             get
@@ -86,6 +87,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 黑名单组
         /// </summary>
+        [PropertyChineseName("群黑名单")]
         public static IEnumerable<long> BannedGroup
         {
             get
@@ -102,6 +104,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 黑名单用户
         /// </summary>
+        [PropertyChineseName("用户黑名单")]
         public static IEnumerable<long> BannedUser
         {
             get
@@ -115,31 +118,9 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否启用加速链
-        /// </summary>
-        public static bool EnabledAccelerate
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(EnabledAccelerate));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(EnabledAccelerate), value.ToString());
-        }
-
-        /// <summary>
-        /// 加速链地址
-        /// </summary>
-        public static string AccelerateUrl
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AccelerateUrl));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AccelerateUrl), value);
-        }
-
-        /// <summary>
         /// 是否启用调试模式
         /// </summary>
+        [PropertyChineseName("调试模式")]
         public static bool DebugMode
         {
             get
@@ -152,8 +133,9 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 调试组
+        /// 调试群组
         /// </summary>
+        [PropertyChineseName("调试群组")]
         public static IEnumerable<long> DebugGroups
         {
             get
@@ -170,6 +152,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 调试模式下是否只响应指定群组的消息
         /// </summary>
+        [PropertyChineseName("只响应调试群组的消息")]
         public static bool OnlyReplyDebugGroup
         {
             get
@@ -184,6 +167,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 调试模式下是否只响应机器人管理员的消息
         /// </summary>
+        [PropertyChineseName("只响应来自机器人管理员的消息")]
         public static bool DebugReplyAdminOnly
         {
             get
@@ -198,6 +182,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 允许Windows系统使用浏览器执行Http请求
         /// </summary>
+        [PropertyChineseName("允许调用浏览器执行Http请求")]
         public static bool HttpRequestByWebBrowser
         {
             get
@@ -209,12 +194,97 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(HttpRequestByWebBrowser), value.ToString());
         }
 
+        #region -- 腾讯云相关属性 --
+        /// <summary>
+        /// 是否接入腾讯云AI鉴黄
+        /// </summary>
+        [PropertyChineseName("接入腾讯云鉴黄")]
+        public static bool CheckPornEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornEnabled), value.ToString());
+        }
+
+        /// <summary>
+        /// 腾讯云APPID
+        /// </summary>
+        [PropertyChineseName("腾讯云APPID")]
+        public static string TencentCloudAPPID
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudAPPID));
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudAPPID), value);
+        }
+
+        /// <summary>
+        /// 腾讯云CloudRegion
+        /// </summary>
+        [PropertyChineseName("腾讯云Region")]
+        public static string TencentCloudRegion
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudRegion));
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudRegion), value);
+        }
+
+        /// <summary>
+        /// 腾讯云SecretId
+        /// </summary>
+        [PropertyChineseName("腾讯云SecretId")]
+        public static string TencentCloudSecretId
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretId));
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretId), value);
+        }
+
+        /// <summary>
+        /// 腾讯云SecretKey
+        /// </summary>
+        [PropertyChineseName("腾讯云SecretKey")]
+        public static string TencentCloudSecretKey
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretKey));
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretKey), value);
+        }
+
+        /// <summary>
+        /// 腾讯云桶名称
+        /// </summary>
+        [PropertyChineseName("腾讯云Bucket")]
+        public static string TencentCloudBucket
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudBucket));
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudBucket), value);
+        }
+
+        /// <summary>
+        /// 每日允许的鉴黄次数
+        /// </summary>
+        [PropertyChineseName("每日鉴黄次数限制")]
+        public static int CheckPornLimitCount
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornLimitCount));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 2000;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornLimitCount), value.ToString());
+        }
+
+        #endregion -- 腾讯云相关属性 --
+
+
         #endregion -- 公共属性 --
 
         #region -- 搜图属性 --
         /// <summary>
         /// 是否启用搜图功能
         /// </summary>
+        [PropertyChineseName("启用搜图功能")]
         public static bool SearchEnabled
         {
             get
@@ -229,6 +299,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 私聊时是否自动搜图
         /// </summary>
+        [PropertyChineseName("私聊时自动搜图")]
         public static bool PmAutoSearch
         {
             get
@@ -241,7 +312,38 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
+        /// 是否启用TraceMoe搜番
+        /// </summary>
+        [PropertyChineseName("启用 TraceMoe 搜番")]
+        public static bool SearchEnabledTraceMoe
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledTraceMoe));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledTraceMoe), value.ToString());
+        }
+
+        /// <summary>
+        /// TraceMoe搜图相似度大于此数值时发送搜番结果
+        /// </summary>
+        [PropertyChineseName("TraceMoe 发送阈值")]
+        public static int TraceMoeSendThreshold
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 87;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold), value.ToString());
+        }
+
+        /// <summary>
         /// 是否启用SauceNao搜图
+        [PropertyChineseName("启用 SauceNAO 搜图")]
         /// </summary>
         public static bool SearchEnabledSauceNao
         {
@@ -255,36 +357,24 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否SauceNao搜图按相似度倒序排序
+        /// 在Windows系统下时SauceNao优先以浏览器进行请求(腾讯云轻量403问题)
         /// </summary>
-        public static bool SearchSauceNAOSortByDesc
+        [PropertyChineseName("SauceNAO 使用爬虫而非API")]
+        public static bool SauceNaoRequestByWebBrowser
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSortByDesc));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNaoRequestByWebBrowser));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return false;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSortByDesc), value.ToString());
-        }
-
-        /// <summary>
-        /// 是否SauceNao搜图发送Pixiv原图
-        /// </summary>
-        public static bool SearchSauceNAOSendPixivOriginPicture
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginPicture));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginPicture), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNaoRequestByWebBrowser), value.ToString());
         }
 
         /// <summary>
         /// SauceNao Api-Key
         /// </summary>
+        [PropertyChineseName("SauceNAO Api-Key")]
         public static IEnumerable<string> SauceNAOApiKey
         {
             get
@@ -314,121 +404,18 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否启用ASCII2D搜图
+        /// 是否SauceNao搜图按相似度倒序排序
         /// </summary>
-        public static bool SearchEnabledASCII2D
+        [PropertyChineseName("按相似度排序")]
+        public static bool SearchSauceNAOSortByDesc
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledASCII2D));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSortByDesc));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
+                return false;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledASCII2D), value.ToString());
-        }
-
-        /// <summary>
-        /// 是否启用TraceMoe搜番
-        /// </summary>
-        public static bool SearchEnabledTraceMoe
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledTraceMoe));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledTraceMoe), value.ToString());
-        }
-
-        /// <summary>
-        /// 开启连续搜图命令(正则表达式)
-        /// </summary>
-        public static string SearchModeOnCmd
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnCmd)) ?? "<机器人名称>搜[图圖図]";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnCmd), value);
-        }
-
-        /// <summary>
-        /// 关闭连续搜图命令(正则表达式)
-        /// </summary>
-        public static string SearchModeOffCmd
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOffCmd)) ?? "[谢謝][谢謝]<机器人名称>";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOffCmd), value);
-        }
-
-        /// <summary>
-        /// 连续搜图超时返回消息
-        /// </summary>
-        public static string SearchModeTimeOutReply
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeTimeOutReply)) ?? "由于超时，已为您自动退出搜图模式，以后要记得说“谢谢<机器人名称>”来退出搜图模式噢";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeTimeOutReply), value);
-        }
-
-        /// <summary>
-        /// 开启连续搜图功能返回消息
-        /// </summary>
-        public static string SearchModeOnReply
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnReply)) ?? "了解～请发送图片吧！支持批量噢！\r\n如想退出搜索模式请发送“谢谢<机器人名称>”";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnReply), value);
-        }
-
-        /// <summary>
-        /// 已在连续搜图模式下返回消息
-        /// </summary>
-        public static string SearchModeAlreadyOnReply
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeAlreadyOnReply)) ?? "您已经在搜图模式下啦！\r\n如想退出搜索模式请发送“谢谢<机器人名称>”";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeAlreadyOnReply), value);
-        } 
-        
-        /// <summary>
-        /// 发起搜索时的回复语(正在搜索但未搜索完毕)
-        /// </summary>
-        public static string SearchingReply
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchingReply)) ?? "";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchingReply), value);
-        }
-
-        /// <summary>
-        /// 关闭连续搜图功能返回消息
-        /// </summary>
-        public static string SearchModeOffReply
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOffReply)) ?? "不用谢!(<ゝω・)☆";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOffReply), value);
-        }
-
-        /// <summary>
-        /// 已经关闭连续搜图功能返回消息
-        /// </summary>
-        public static string SearchModeAlreadyOffReply
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeAlreadyOffReply)) ?? "虽然不知道为什么谢我, 但是还请注意补充营养呢(｀・ω・´)";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeAlreadyOffReply), value);
-        }
-
-        /// <summary>
-        /// 没有搜索到结果返回消息
-        /// </summary>
-        public static string SearchNoResultReply
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchNoResultReply)) ?? "<搜索类型>没有搜到该图片o(╥﹏╥)o";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchNoResultReply), value);
-        }
-
-        /// <summary>
-        /// 搜索过程中发生异常返回消息
-        /// </summary>
-        public static string SearchErrorReply
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchErrorReply)) ?? "<搜索类型>搜索失败_(:3」∠)_";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchErrorReply), value);
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSortByDesc), value.ToString());
         }
 
         /// <summary>
@@ -445,7 +432,32 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOLowSimilarity), value.ToString());
         }
-        
+
+        /// <summary>
+        /// 是否SauceNao搜图发送Pixiv原图
+        /// </summary>
+        [PropertyChineseName("SauceNAO 搜图结果为 Pixiv 地址时发送原图")]
+        public static bool SearchSauceNAOSendPixivOriginPicture
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginPicture));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginPicture), value.ToString());
+        }
+
+        /// <summary>
+        /// 相似度低于阈值返回消息
+        /// </summary>
+        [PropertyChineseName("低于相似度阈值回复语")]
+        public static string SearchLowSimilarityReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply)) ?? "相似度低于<低相似度阈值>%，缩略图不予显示。";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply), value);
+        }
+
         /// <summary>
         /// SauceNAO高相似度阈值
         /// </summary>
@@ -462,32 +474,154 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// TraceMoe搜图相似度大于此数值时发送搜番结果
+        /// 是否启用ASCII2D搜图
         /// </summary>
-        [PropertyChineseName("TraceMoe发送阈值")]
-        public static int TraceMoeSendThreshold
+        [PropertyChineseName("启用 ASCII2D 搜索")]
+        public static bool SearchEnabledASCII2D
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold));
-                if (int.TryParse(strValue, out int iValue)) return iValue;
-                return 87;
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledASCII2D));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledASCII2D), value.ToString());
         }
 
         /// <summary>
-        /// 相似度低于阈值返回消息
+        /// 在Windows系统下时ASCII2D优先以浏览器进行请求(以应对近期403问题)
         /// </summary>
-        public static string SearchLowSimilarityReply
+        [PropertyChineseName("ASCII2D 优先使用浏览器进行 Http 请求")]
+        public static bool ASCII2DRequestByWebBrowser
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply)) ?? "相似度低于<低相似度阈值>%，缩略图不予显示。";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply), value);
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(ASCII2DRequestByWebBrowser));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(ASCII2DRequestByWebBrowser), value.ToString());
         }
-        
+
+        /// <summary>
+        /// ASCII2D显示结果数量
+        /// </summary>
+        [PropertyChineseName("ASCII2D 显示结果数量")]
+        public static int SearchShowAscii2dCount
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchShowAscii2dCount));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 1;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchShowAscii2dCount), value.ToString());
+        }
+
+        /// <summary>
+        /// 开启连续搜图命令(正则表达式)
+        /// </summary>
+        [PropertyChineseName("开启连续搜图模式命令")]
+        public static string SearchModeOnCmd
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnCmd)) ?? "<机器人名称>搜[图圖図]";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnCmd), value);
+        }
+
+        /// <summary>
+        /// 开启连续搜图功能返回消息
+        /// </summary>
+        [PropertyChineseName("进入连续搜图模式回复语")]
+        public static string SearchModeOnReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnReply)) ?? "了解～请发送图片吧！支持批量噢！\r\n如想退出搜索模式请发送“谢谢<机器人名称>”";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnReply), value);
+        }
+
+        /// <summary>
+        /// 已在连续搜图模式下返回消息
+        /// </summary>
+        [PropertyChineseName("已进入连续搜图模式回复语")]
+        public static string SearchModeAlreadyOnReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeAlreadyOnReply)) ?? "您已经在搜图模式下啦！\r\n如想退出搜索模式请发送“谢谢<机器人名称>”";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeAlreadyOnReply), value);
+        }
+
+        /// <summary>
+        /// 发起搜索时的回复语(正在搜索但未搜索完毕)
+        /// </summary>
+        [PropertyChineseName("正在搜索回复语")]
+        public static string SearchingReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchingReply)) ?? "";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchingReply), value);
+        }
+
+        /// <summary>
+        /// 关闭连续搜图命令(正则表达式)
+        /// </summary>
+        [PropertyChineseName("退出连续搜图模式命令")]
+        public static string SearchModeOffCmd
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOffCmd)) ?? "[谢謝][谢謝]<机器人名称>";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOffCmd), value);
+        }
+
+        /// <summary>
+        /// 连续搜图超时返回消息
+        /// </summary>
+        [PropertyChineseName("连续搜图模式超时回复语")]
+        public static string SearchModeTimeOutReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeTimeOutReply)) ?? "由于超时，已为您自动退出搜图模式，以后要记得说“谢谢<机器人名称>”来退出搜图模式噢";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeTimeOutReply), value);
+        }
+
+        /// <summary>
+        /// 退出连续搜图功能返回消息
+        /// </summary>
+        [PropertyChineseName("退出连续搜图模式回复语")]
+        public static string SearchModeOffReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOffReply)) ?? "不用谢!(<ゝω・)☆";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOffReply), value);
+        }
+
+        /// <summary>
+        /// 已经退出连续搜图功能返回消息
+        /// </summary>
+        [PropertyChineseName("已退出连续搜图模式回复语")]
+        public static string SearchModeAlreadyOffReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeAlreadyOffReply)) ?? "虽然不知道为什么谢我, 但是还请注意补充营养呢(｀・ω・´)";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeAlreadyOffReply), value);
+        }
+
+        /// <summary>
+        /// 没有搜索到结果返回消息
+        /// </summary>
+        [PropertyChineseName("没有搜索到地址回复语")]
+        public static string SearchNoResultReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchNoResultReply)) ?? "<搜索类型>没有搜到该图片的地址o(╥﹏╥)o";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchNoResultReply), value);
+        }
+
+        /// <summary>
+        /// 搜索过程中发生异常返回消息
+        /// </summary>
+        [PropertyChineseName("搜索错误回复语")]
+        public static string SearchErrorReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchErrorReply)) ?? "<搜索类型>搜索失败_(:3」∠)_";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchErrorReply), value);
+        }
+
         /// <summary>
         /// 下载缩略图失败时追加回复
         /// </summary>
+        [PropertyChineseName("下载缩略图失败时追加回复")]
         public static string SearchDownloadThuImageFailReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchDownloadThuImageFailReply)) ?? "缩略图下载失败。";
@@ -495,17 +629,18 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否接入腾讯云AI鉴黄
+        /// 搜图结果以合并转发的方式发送
         /// </summary>
-        public static bool CheckPornEnabled
+        [PropertyChineseName("搜图结果以合并转发的方式发送")]
+        public static bool SearchSendByForward
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornEnabled));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSendByForward));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return false;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornEnabled), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSendByForward), value.ToString());
         }
 
         /// <summary>
@@ -541,48 +676,6 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 在Windows系统下时ASCII2D优先以浏览器进行请求(以应对近期403问题)
-        /// </summary>
-        public static bool ASCII2DRequestByWebBrowser
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(ASCII2DRequestByWebBrowser));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(ASCII2DRequestByWebBrowser), value.ToString());
-        }
-
-        /// <summary>
-        /// 在Windows系统下时SauceNao优先以浏览器进行请求(腾讯云轻量403问题)
-        /// </summary>
-        public static bool SauceNaoRequestByWebBrowser
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNaoRequestByWebBrowser));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNaoRequestByWebBrowser), value.ToString());
-        }
-        
-        /// <summary>
-        /// 以合并转发的方式发送
-        /// </summary>
-        public static bool SearchSendByForward
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSendByForward));
-                if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return false;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSendByForward), value.ToString());
-        }
-
-        /// <summary>
         /// 超过鉴黄次数时回复语
         /// </summary>
         public static string SearchCheckPornOutOfLimitReply
@@ -590,68 +683,6 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitReply)) ?? "今日AI鉴黄次数已耗尽，缩略图不予显示。";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitReply), value);
         }
-
-        #region -- 腾讯云相关属性 --
-        /// <summary>
-        /// 腾讯云APPID
-        /// </summary>
-        public static string TencentCloudAPPID
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudAPPID));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudAPPID), value);
-        }
-
-        /// <summary>
-        /// 腾讯云CloudRegion
-        /// </summary>
-        public static string TencentCloudRegion
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudRegion));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudRegion), value);
-        }
-
-        /// <summary>
-        /// 腾讯云SecretId
-        /// </summary>
-        public static string TencentCloudSecretId
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretId));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretId), value);
-        }
-
-        /// <summary>
-        /// 腾讯云SecretKey
-        /// </summary>
-        public static string TencentCloudSecretKey
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretKey));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretKey), value);
-        }
-
-        /// <summary>
-        /// 腾讯云桶名称
-        /// </summary>
-        public static string TencentCloudBucket
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudBucket));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudBucket), value);
-        }
-
-        /// <summary>
-        /// 每日允许的鉴黄次数
-        /// </summary>
-        public static int CheckPornLimitCount
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornLimitCount));
-                if (int.TryParse(strValue, out int iValue)) return iValue;
-                return 2000;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornLimitCount), value.ToString());
-        }
-
-        #endregion -- 腾讯云相关属性 --
 
         #endregion -- 搜图属性 --
 

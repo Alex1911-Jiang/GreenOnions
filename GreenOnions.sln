@@ -31,8 +31,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotMain", "Gree
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Interface", "GreenOnions.Interface\GreenOnions.Interface.csproj", "{5DCDA0CA-F97D-43D2-A4D6-2CFFAD529A16}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.QQPhone", "..\..\Local\GreenOnions.QQPhone\GreenOnions.QQPhone.csproj", "{CFFB7355-3D65-49A1-9D77-27068894AB24}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,10 +93,6 @@ Global
 		{5DCDA0CA-F97D-43D2-A4D6-2CFFAD529A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DCDA0CA-F97D-43D2-A4D6-2CFFAD529A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DCDA0CA-F97D-43D2-A4D6-2CFFAD529A16}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CFFB7355-3D65-49A1-9D77-27068894AB24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CFFB7355-3D65-49A1-9D77-27068894AB24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CFFB7355-3D65-49A1-9D77-27068894AB24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CFFB7355-3D65-49A1-9D77-27068894AB24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

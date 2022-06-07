@@ -73,6 +73,7 @@ namespace GreenOnions.BotManagerWindow
             txbSearchSauceNAOApiKey.Text = string.Join("\r\n", BotInfo.SauceNAOApiKey);
             chkSearchASCII2DEnabled.Checked = BotInfo.SearchEnabledASCII2D;  //是否启用ASCII2D搜图
             chkSearchTraceMoeEnabled.Checked = BotInfo.SearchEnabledTraceMoe;  //是否启用TraceMoe搜番
+            cboSearchShowAscii2dCount.SelectedIndex = BotInfo.SearchShowAscii2dCount - 1;
             txbSearchModeOnCmd.Text = BotInfo.SearchModeOnCmd;
             txbSearchModeOffCmd.Text = BotInfo.SearchModeOffCmd;
             txbSearchModeTimeOutReply.Text = BotInfo.SearchModeTimeOutReply;
@@ -330,6 +331,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.SauceNAOApiKey = txbSearchSauceNAOApiKey.Text.Split("\r\n");
             BotInfo.SearchEnabledASCII2D = chkSearchASCII2DEnabled.Checked;  //是否启用ASCII2D搜图
             BotInfo.SearchEnabledTraceMoe = chkSearchTraceMoeEnabled.Checked;  //是否启用TraceMoe搜番
+            BotInfo.SearchShowAscii2dCount = cboSearchShowAscii2dCount.SelectedIndex + 1;
             BotInfo.SearchModeOnCmd = txbSearchModeOnCmd.Text;
             BotInfo.SearchModeOffCmd = txbSearchModeOffCmd.Text;
             BotInfo.SearchModeTimeOutReply = txbSearchModeTimeOutReply.Text;

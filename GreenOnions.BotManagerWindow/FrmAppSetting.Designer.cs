@@ -83,6 +83,8 @@
             this.pageSearchPicture = new System.Windows.Forms.TabPage();
             this.chkSearchPictureEnabled = new System.Windows.Forms.CheckBox();
             this.pnlSearchPicture = new System.Windows.Forms.Panel();
+            this.cboSearchShowAscii2dCount = new System.Windows.Forms.ComboBox();
+            this.lblSearchShowAscii2dCount = new System.Windows.Forms.Label();
             this.lblSearchingReply = new System.Windows.Forms.Label();
             this.txbSearchingReply = new System.Windows.Forms.TextBox();
             this.chkPmAutoSearch = new System.Windows.Forms.CheckBox();
@@ -992,6 +994,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlSearchPicture.AutoScroll = true;
+            this.pnlSearchPicture.Controls.Add(this.cboSearchShowAscii2dCount);
+            this.pnlSearchPicture.Controls.Add(this.lblSearchShowAscii2dCount);
             this.pnlSearchPicture.Controls.Add(this.lblSearchingReply);
             this.pnlSearchPicture.Controls.Add(this.txbSearchingReply);
             this.pnlSearchPicture.Controls.Add(this.chkPmAutoSearch);
@@ -1033,10 +1037,50 @@
             this.pnlSearchPicture.Size = new System.Drawing.Size(642, 649);
             this.pnlSearchPicture.TabIndex = 14;
             // 
+            // cboSearchShowAscii2dCount
+            // 
+            this.cboSearchShowAscii2dCount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSearchShowAscii2dCount.FormattingEnabled = true;
+            this.cboSearchShowAscii2dCount.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20"});
+            this.cboSearchShowAscii2dCount.Location = new System.Drawing.Point(196, 438);
+            this.cboSearchShowAscii2dCount.MaximumSize = new System.Drawing.Size(357, 0);
+            this.cboSearchShowAscii2dCount.Name = "cboSearchShowAscii2dCount";
+            this.cboSearchShowAscii2dCount.Size = new System.Drawing.Size(357, 25);
+            this.cboSearchShowAscii2dCount.TabIndex = 63;
+            // 
+            // lblSearchShowAscii2dCount
+            // 
+            this.lblSearchShowAscii2dCount.AutoSize = true;
+            this.lblSearchShowAscii2dCount.Location = new System.Drawing.Point(25, 441);
+            this.lblSearchShowAscii2dCount.Name = "lblSearchShowAscii2dCount";
+            this.lblSearchShowAscii2dCount.Size = new System.Drawing.Size(134, 17);
+            this.lblSearchShowAscii2dCount.TabIndex = 62;
+            this.lblSearchShowAscii2dCount.Text = "ASCII2D 显示结果数量:";
+            // 
             // lblSearchingReply
             // 
             this.lblSearchingReply.AutoSize = true;
-            this.lblSearchingReply.Location = new System.Drawing.Point(18, 528);
+            this.lblSearchingReply.Location = new System.Drawing.Point(24, 559);
             this.lblSearchingReply.Name = "lblSearchingReply";
             this.lblSearchingReply.Size = new System.Drawing.Size(95, 17);
             this.lblSearchingReply.TabIndex = 60;
@@ -1046,7 +1090,7 @@
             // 
             this.txbSearchingReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchingReply.Location = new System.Drawing.Point(190, 525);
+            this.txbSearchingReply.Location = new System.Drawing.Point(196, 556);
             this.txbSearchingReply.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchingReply.Name = "txbSearchingReply";
             this.txbSearchingReply.Size = new System.Drawing.Size(357, 23);
@@ -1089,7 +1133,7 @@
             // chkSearchSauceNAOSortByDesc
             // 
             this.chkSearchSauceNAOSortByDesc.AutoSize = true;
-            this.chkSearchSauceNAOSortByDesc.Location = new System.Drawing.Point(13, 95);
+            this.chkSearchSauceNAOSortByDesc.Location = new System.Drawing.Point(16, 95);
             this.chkSearchSauceNAOSortByDesc.Name = "chkSearchSauceNAOSortByDesc";
             this.chkSearchSauceNAOSortByDesc.Size = new System.Drawing.Size(327, 21);
             this.chkSearchSauceNAOSortByDesc.TabIndex = 57;
@@ -1108,7 +1152,7 @@
             // chkSearchSauceNAOSendPixivOriginPicture
             // 
             this.chkSearchSauceNAOSendPixivOriginPicture.AutoSize = true;
-            this.chkSearchSauceNAOSendPixivOriginPicture.Location = new System.Drawing.Point(13, 168);
+            this.chkSearchSauceNAOSendPixivOriginPicture.Location = new System.Drawing.Point(16, 168);
             this.chkSearchSauceNAOSendPixivOriginPicture.Name = "chkSearchSauceNAOSendPixivOriginPicture";
             this.chkSearchSauceNAOSendPixivOriginPicture.Size = new System.Drawing.Size(270, 21);
             this.chkSearchSauceNAOSendPixivOriginPicture.TabIndex = 56;
@@ -1139,7 +1183,7 @@
             // 
             this.txbSearchSauceNAOLowSimilarity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchSauceNAOLowSimilarity.Location = new System.Drawing.Point(185, 122);
+            this.txbSearchSauceNAOLowSimilarity.Location = new System.Drawing.Point(188, 122);
             this.txbSearchSauceNAOLowSimilarity.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchSauceNAOLowSimilarity.Name = "txbSearchSauceNAOLowSimilarity";
             this.txbSearchSauceNAOLowSimilarity.Size = new System.Drawing.Size(357, 23);
@@ -1149,7 +1193,7 @@
             // 
             this.txbSearchSauceNAOHighSimilarity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchSauceNAOHighSimilarity.Location = new System.Drawing.Point(185, 224);
+            this.txbSearchSauceNAOHighSimilarity.Location = new System.Drawing.Point(188, 224);
             this.txbSearchSauceNAOHighSimilarity.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchSauceNAOHighSimilarity.Name = "txbSearchSauceNAOHighSimilarity";
             this.txbSearchSauceNAOHighSimilarity.Size = new System.Drawing.Size(357, 23);
@@ -1159,7 +1203,7 @@
             // 
             this.txbSearchLowSimilarityReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchLowSimilarityReply.Location = new System.Drawing.Point(185, 195);
+            this.txbSearchLowSimilarityReply.Location = new System.Drawing.Point(188, 195);
             this.txbSearchLowSimilarityReply.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchLowSimilarityReply.Name = "txbSearchLowSimilarityReply";
             this.txbSearchLowSimilarityReply.Size = new System.Drawing.Size(357, 23);
@@ -1213,7 +1257,7 @@
             // lblSearchDownloadThuImageFailReply
             // 
             this.lblSearchDownloadThuImageFailReply.AutoSize = true;
-            this.lblSearchDownloadThuImageFailReply.Location = new System.Drawing.Point(18, 731);
+            this.lblSearchDownloadThuImageFailReply.Location = new System.Drawing.Point(24, 762);
             this.lblSearchDownloadThuImageFailReply.Name = "lblSearchDownloadThuImageFailReply";
             this.lblSearchDownloadThuImageFailReply.Size = new System.Drawing.Size(155, 17);
             this.lblSearchDownloadThuImageFailReply.TabIndex = 52;
@@ -1223,7 +1267,7 @@
             // 
             this.txbSearchDownloadThuImageFailReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchDownloadThuImageFailReply.Location = new System.Drawing.Point(190, 728);
+            this.txbSearchDownloadThuImageFailReply.Location = new System.Drawing.Point(196, 759);
             this.txbSearchDownloadThuImageFailReply.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchDownloadThuImageFailReply.Name = "txbSearchDownloadThuImageFailReply";
             this.txbSearchDownloadThuImageFailReply.Size = new System.Drawing.Size(357, 23);
@@ -1232,11 +1276,11 @@
             // chkSearchSendByForward
             // 
             this.chkSearchSendByForward.AutoSize = true;
-            this.chkSearchSendByForward.Location = new System.Drawing.Point(18, 757);
+            this.chkSearchSendByForward.Location = new System.Drawing.Point(24, 788);
             this.chkSearchSendByForward.Name = "chkSearchSendByForward";
-            this.chkSearchSendByForward.Size = new System.Drawing.Size(147, 21);
+            this.chkSearchSendByForward.Size = new System.Drawing.Size(195, 21);
             this.chkSearchSendByForward.TabIndex = 50;
-            this.chkSearchSendByForward.Text = "以合并转发的方式发送";
+            this.chkSearchSendByForward.Text = "搜图结果以合并转发的方式发送";
             this.chkSearchSendByForward.UseVisualStyleBackColor = true;
             // 
             // chkSauceNaoRequestByWebBrowser
@@ -1252,7 +1296,7 @@
             // chkASCII2DRequestByWebBrowser
             // 
             this.chkASCII2DRequestByWebBrowser.AutoSize = true;
-            this.chkASCII2DRequestByWebBrowser.Location = new System.Drawing.Point(190, 411);
+            this.chkASCII2DRequestByWebBrowser.Location = new System.Drawing.Point(196, 411);
             this.chkASCII2DRequestByWebBrowser.Name = "chkASCII2DRequestByWebBrowser";
             this.chkASCII2DRequestByWebBrowser.Size = new System.Drawing.Size(360, 21);
             this.chkASCII2DRequestByWebBrowser.TabIndex = 41;
@@ -1270,7 +1314,7 @@
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.lblSearchCheckPornErrorReply);
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.txbSearchCheckPornErrorReply);
             this.pnlPictureSearcherCheckPorn.Enabled = false;
-            this.pnlPictureSearcherCheckPorn.Location = new System.Drawing.Point(-1, 811);
+            this.pnlPictureSearcherCheckPorn.Location = new System.Drawing.Point(5, 842);
             this.pnlPictureSearcherCheckPorn.MinimumSize = new System.Drawing.Size(551, 89);
             this.pnlPictureSearcherCheckPorn.Name = "pnlPictureSearcherCheckPorn";
             this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(551, 89);
@@ -1336,11 +1380,11 @@
             // chkSearchCheckPornEnabled
             // 
             this.chkSearchCheckPornEnabled.AutoSize = true;
-            this.chkSearchCheckPornEnabled.Location = new System.Drawing.Point(18, 784);
+            this.chkSearchCheckPornEnabled.Location = new System.Drawing.Point(24, 815);
             this.chkSearchCheckPornEnabled.Name = "chkSearchCheckPornEnabled";
-            this.chkSearchCheckPornEnabled.Size = new System.Drawing.Size(75, 21);
+            this.chkSearchCheckPornEnabled.Size = new System.Drawing.Size(99, 21);
             this.chkSearchCheckPornEnabled.TabIndex = 39;
-            this.chkSearchCheckPornEnabled.Text = "启用鉴黄";
+            this.chkSearchCheckPornEnabled.Text = "搜图启用鉴黄";
             this.chkSearchCheckPornEnabled.UseVisualStyleBackColor = true;
             this.chkSearchCheckPornEnabled.CheckedChanged += new System.EventHandler(this.chkPictureSearcherCheckPornEnabled_CheckedChanged);
             // 
@@ -1349,15 +1393,15 @@
             this.chkSearchTraceMoeEnabled.AutoSize = true;
             this.chkSearchTraceMoeEnabled.Location = new System.Drawing.Point(24, 30);
             this.chkSearchTraceMoeEnabled.Name = "chkSearchTraceMoeEnabled";
-            this.chkSearchTraceMoeEnabled.Size = new System.Drawing.Size(146, 21);
+            this.chkSearchTraceMoeEnabled.Size = new System.Drawing.Size(142, 21);
             this.chkSearchTraceMoeEnabled.TabIndex = 34;
-            this.chkSearchTraceMoeEnabled.Text = "启用 Trace Moe 搜番";
+            this.chkSearchTraceMoeEnabled.Text = "启用 TraceMoe 搜番";
             this.chkSearchTraceMoeEnabled.UseVisualStyleBackColor = true;
             // 
             // lblSearchErrorReply
             // 
             this.lblSearchErrorReply.AutoSize = true;
-            this.lblSearchErrorReply.Location = new System.Drawing.Point(18, 702);
+            this.lblSearchErrorReply.Location = new System.Drawing.Point(24, 733);
             this.lblSearchErrorReply.Name = "lblSearchErrorReply";
             this.lblSearchErrorReply.Size = new System.Drawing.Size(95, 17);
             this.lblSearchErrorReply.TabIndex = 23;
@@ -1366,7 +1410,7 @@
             // lblSearchNoResultReply
             // 
             this.lblSearchNoResultReply.AutoSize = true;
-            this.lblSearchNoResultReply.Location = new System.Drawing.Point(18, 673);
+            this.lblSearchNoResultReply.Location = new System.Drawing.Point(24, 704);
             this.lblSearchNoResultReply.Name = "lblSearchNoResultReply";
             this.lblSearchNoResultReply.Size = new System.Drawing.Size(131, 17);
             this.lblSearchNoResultReply.TabIndex = 22;
@@ -1375,7 +1419,7 @@
             // lblSearchModeAlreadyOffReply
             // 
             this.lblSearchModeAlreadyOffReply.AutoSize = true;
-            this.lblSearchModeAlreadyOffReply.Location = new System.Drawing.Point(18, 644);
+            this.lblSearchModeAlreadyOffReply.Location = new System.Drawing.Point(24, 675);
             this.lblSearchModeAlreadyOffReply.Name = "lblSearchModeAlreadyOffReply";
             this.lblSearchModeAlreadyOffReply.Size = new System.Drawing.Size(155, 17);
             this.lblSearchModeAlreadyOffReply.TabIndex = 21;
@@ -1384,7 +1428,7 @@
             // lblSearchModeTimeOutReply
             // 
             this.lblSearchModeTimeOutReply.AutoSize = true;
-            this.lblSearchModeTimeOutReply.Location = new System.Drawing.Point(18, 586);
+            this.lblSearchModeTimeOutReply.Location = new System.Drawing.Point(24, 617);
             this.lblSearchModeTimeOutReply.Name = "lblSearchModeTimeOutReply";
             this.lblSearchModeTimeOutReply.Size = new System.Drawing.Size(143, 17);
             this.lblSearchModeTimeOutReply.TabIndex = 20;
@@ -1393,7 +1437,7 @@
             // lblSearchModeOffCmd
             // 
             this.lblSearchModeOffCmd.AutoSize = true;
-            this.lblSearchModeOffCmd.Location = new System.Drawing.Point(18, 557);
+            this.lblSearchModeOffCmd.Location = new System.Drawing.Point(24, 588);
             this.lblSearchModeOffCmd.Name = "lblSearchModeOffCmd";
             this.lblSearchModeOffCmd.Size = new System.Drawing.Size(131, 17);
             this.lblSearchModeOffCmd.TabIndex = 20;
@@ -1402,7 +1446,7 @@
             // lblSearchModeOffReply
             // 
             this.lblSearchModeOffReply.AutoSize = true;
-            this.lblSearchModeOffReply.Location = new System.Drawing.Point(18, 615);
+            this.lblSearchModeOffReply.Location = new System.Drawing.Point(24, 646);
             this.lblSearchModeOffReply.Name = "lblSearchModeOffReply";
             this.lblSearchModeOffReply.Size = new System.Drawing.Size(143, 17);
             this.lblSearchModeOffReply.TabIndex = 20;
@@ -1411,7 +1455,7 @@
             // lblSearchModeAlreadyOnReply
             // 
             this.lblSearchModeAlreadyOnReply.AutoSize = true;
-            this.lblSearchModeAlreadyOnReply.Location = new System.Drawing.Point(18, 499);
+            this.lblSearchModeAlreadyOnReply.Location = new System.Drawing.Point(24, 530);
             this.lblSearchModeAlreadyOnReply.Name = "lblSearchModeAlreadyOnReply";
             this.lblSearchModeAlreadyOnReply.Size = new System.Drawing.Size(155, 17);
             this.lblSearchModeAlreadyOnReply.TabIndex = 19;
@@ -1420,7 +1464,7 @@
             // lblSearchModeOnReply
             // 
             this.lblSearchModeOnReply.AutoSize = true;
-            this.lblSearchModeOnReply.Location = new System.Drawing.Point(18, 470);
+            this.lblSearchModeOnReply.Location = new System.Drawing.Point(24, 501);
             this.lblSearchModeOnReply.Name = "lblSearchModeOnReply";
             this.lblSearchModeOnReply.Size = new System.Drawing.Size(143, 17);
             this.lblSearchModeOnReply.TabIndex = 18;
@@ -1447,7 +1491,7 @@
             // lblSearchModeOnCmd
             // 
             this.lblSearchModeOnCmd.AutoSize = true;
-            this.lblSearchModeOnCmd.Location = new System.Drawing.Point(18, 441);
+            this.lblSearchModeOnCmd.Location = new System.Drawing.Point(24, 472);
             this.lblSearchModeOnCmd.Name = "lblSearchModeOnCmd";
             this.lblSearchModeOnCmd.Size = new System.Drawing.Size(131, 17);
             this.lblSearchModeOnCmd.TabIndex = 17;
@@ -1457,7 +1501,7 @@
             // 
             this.txbSearchErrorReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchErrorReply.Location = new System.Drawing.Point(190, 699);
+            this.txbSearchErrorReply.Location = new System.Drawing.Point(196, 730);
             this.txbSearchErrorReply.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchErrorReply.Name = "txbSearchErrorReply";
             this.txbSearchErrorReply.Size = new System.Drawing.Size(357, 23);
@@ -1467,7 +1511,7 @@
             // 
             this.txbSearchNoResultReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchNoResultReply.Location = new System.Drawing.Point(190, 670);
+            this.txbSearchNoResultReply.Location = new System.Drawing.Point(196, 701);
             this.txbSearchNoResultReply.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchNoResultReply.Name = "txbSearchNoResultReply";
             this.txbSearchNoResultReply.Size = new System.Drawing.Size(357, 23);
@@ -1477,7 +1521,7 @@
             // 
             this.txbSearchModeTimeOutReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchModeTimeOutReply.Location = new System.Drawing.Point(190, 583);
+            this.txbSearchModeTimeOutReply.Location = new System.Drawing.Point(196, 614);
             this.txbSearchModeTimeOutReply.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchModeTimeOutReply.Name = "txbSearchModeTimeOutReply";
             this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(357, 23);
@@ -1487,7 +1531,7 @@
             // 
             this.txbSearchModeOffCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchModeOffCmd.Location = new System.Drawing.Point(190, 554);
+            this.txbSearchModeOffCmd.Location = new System.Drawing.Point(196, 585);
             this.txbSearchModeOffCmd.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchModeOffCmd.Name = "txbSearchModeOffCmd";
             this.txbSearchModeOffCmd.Size = new System.Drawing.Size(357, 23);
@@ -1497,7 +1541,7 @@
             // 
             this.txbSearchModeAlreadyOffReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchModeAlreadyOffReply.Location = new System.Drawing.Point(190, 641);
+            this.txbSearchModeAlreadyOffReply.Location = new System.Drawing.Point(196, 672);
             this.txbSearchModeAlreadyOffReply.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchModeAlreadyOffReply.Name = "txbSearchModeAlreadyOffReply";
             this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(357, 23);
@@ -1507,7 +1551,7 @@
             // 
             this.txbSearchModeOffReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchModeOffReply.Location = new System.Drawing.Point(190, 612);
+            this.txbSearchModeOffReply.Location = new System.Drawing.Point(196, 643);
             this.txbSearchModeOffReply.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchModeOffReply.Name = "txbSearchModeOffReply";
             this.txbSearchModeOffReply.Size = new System.Drawing.Size(357, 23);
@@ -1517,7 +1561,7 @@
             // 
             this.txbSearchModeAlreadyOnReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(190, 496);
+            this.txbSearchModeAlreadyOnReply.Location = new System.Drawing.Point(196, 527);
             this.txbSearchModeAlreadyOnReply.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchModeAlreadyOnReply.Name = "txbSearchModeAlreadyOnReply";
             this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(357, 23);
@@ -1537,7 +1581,7 @@
             // 
             this.txbSearchModeOnReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchModeOnReply.Location = new System.Drawing.Point(190, 467);
+            this.txbSearchModeOnReply.Location = new System.Drawing.Point(196, 498);
             this.txbSearchModeOnReply.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchModeOnReply.Name = "txbSearchModeOnReply";
             this.txbSearchModeOnReply.Size = new System.Drawing.Size(357, 23);
@@ -1547,7 +1591,7 @@
             // 
             this.txbSearchModeOnCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchModeOnCmd.Location = new System.Drawing.Point(190, 438);
+            this.txbSearchModeOnCmd.Location = new System.Drawing.Point(196, 469);
             this.txbSearchModeOnCmd.MinimumSize = new System.Drawing.Size(357, 0);
             this.txbSearchModeOnCmd.Name = "txbSearchModeOnCmd";
             this.txbSearchModeOnCmd.Size = new System.Drawing.Size(357, 23);
@@ -1556,7 +1600,7 @@
             // chkSearchASCII2DEnabled
             // 
             this.chkSearchASCII2DEnabled.AutoSize = true;
-            this.chkSearchASCII2DEnabled.Location = new System.Drawing.Point(18, 411);
+            this.chkSearchASCII2DEnabled.Location = new System.Drawing.Point(24, 411);
             this.chkSearchASCII2DEnabled.Name = "chkSearchASCII2DEnabled";
             this.chkSearchASCII2DEnabled.Size = new System.Drawing.Size(130, 21);
             this.chkSearchASCII2DEnabled.TabIndex = 15;
@@ -1966,7 +2010,7 @@
             this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureOnceMessageMaxImageCount.MinimumSize = new System.Drawing.Size(60, 0);
             this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
-            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(150, 23);
+            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(116, 23);
             this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
             // 
             // lblHPictureOnceMessageMaxImageCount
@@ -4229,5 +4273,7 @@
         private System.Windows.Forms.Label lblSearchingReply;
         private System.Windows.Forms.TextBox txbSearchingReply;
         private System.Windows.Forms.CheckBox chkSearchSauceNAOSortByDesc;
+        private System.Windows.Forms.ComboBox cboSearchShowAscii2dCount;
+        private System.Windows.Forms.Label lblSearchShowAscii2dCount;
     }
 }
