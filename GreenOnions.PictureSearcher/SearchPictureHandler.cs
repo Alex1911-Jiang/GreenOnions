@@ -66,7 +66,7 @@ namespace GreenOnions.PictureSearcher
                 if (BotInfo.SearchEnabledTraceMoe || BotInfo.SearchEnabledSauceNao || BotInfo.SearchEnabledASCII2D)  //至少启用了一种搜图引擎
                     SendMessage(BotInfo.SearchingReply);  //正在搜索中提示
             
-            string qqImgUrl = ImageHelper.ReplaceGroupUrl(inImgMsg.Url);
+            string qqImgUrl = inImgMsg.Url;  //ImageHelper.ReplaceGroupUrl(inImgMsg.Url)  //现在反而不用替换群URL了?
             LogHelper.WriteInfoLog($"需要搜图的地址为:{qqImgUrl}");
             try
             {
