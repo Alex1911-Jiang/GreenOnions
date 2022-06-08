@@ -1,5 +1,6 @@
 ﻿using GreenOnions.Interface;
 using GreenOnions.Model;
+using GreenOnions.Utility.Helper;
 using Sora.Entities;
 using Sora.Entities.Base;
 using Sora.Entities.Info;
@@ -50,29 +51,40 @@ namespace GreenOnions.BotMain.CqHttp
 
             for (int i = 0; i < greenOnionsMessage.Count; i++)
             {
-                if (greenOnionsMessage[i] is IGreenOnionsTextMessage txtMsg)
+                try
                 {
-                    cqHttpMessages.Add(SoraSegment.Text(txtMsg.Text));
-                }
-                else if (greenOnionsMessage[i] is IGreenOnionsImageMessage imgMsg)
-                {
-                    string data = string.IsNullOrEmpty(imgMsg.Url) ? ("base64://" + imgMsg.Base64Str) : imgMsg.Url;
-                    cqHttpMessages.Add(SoraSegment.Image(data));
-                }
-                else if (greenOnionsMessage[i] is IGreenOnionsAtMessage atMsg)
-                {
-                    if (atMsg.AtId == -1)
-                        cqHttpMessages.Add(SoraSegment.AtAll());
-                    else
-                        cqHttpMessages.Add(SoraSegment.At(atMsg.AtId));
-                }
-                else if (greenOnionsMessage[i] is IGreenOnionsForwardMessage forwardMsg)
-                {
-                    for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
+                    if (greenOnionsMessage[i] is IGreenOnionsTextMessage txtMsg)
                     {
-                        cqHttpMessages.AddRange(ToCqHttpMessages(forwardMsg.ItemMessages[i].itemMessage, RelpyId));
+                        cqHttpMessages.Add(SoraSegment.Text(txtMsg.Text));
+                    }
+                    else if (greenOnionsMessage[i] is IGreenOnionsImageMessage imgMsg)
+                    {
+                        string data = string.IsNullOrEmpty(imgMsg.Url) ? ("base64://" + imgMsg.Base64Str) : imgMsg.Url;
+                        cqHttpMessages.Add(SoraSegment.Image(data));
+                    }
+                    else if (greenOnionsMessage[i] is IGreenOnionsAtMessage atMsg)
+                    {
+                        if (atMsg.AtId == -1)
+                            cqHttpMessages.Add(SoraSegment.AtAll());
+                        else
+                            cqHttpMessages.Add(SoraSegment.At(atMsg.AtId));
+                    }
+                    else if (greenOnionsMessage[i] is IGreenOnionsForwardMessage forwardMsg)
+                    {
+                        for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
+                        {
+                            var itemMsg = ToCqHttpMessages(forwardMsg.ItemMessages[i].itemMessage, RelpyId);
+                            if (itemMsg!= null)
+                                cqHttpMessages.AddRange(itemMsg);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage("转换为CqHttp消息失败!!!", ex);
+                    continue;
+                }
+                
             }
             return cqHttpMessages;
         }

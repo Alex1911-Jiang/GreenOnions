@@ -1,5 +1,6 @@
 ﻿using GreenOnions.Interface;
 using GreenOnions.Model;
+using GreenOnions.Utility.Helper;
 using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
 using Mirai.CSharp.Models.ChatMessages;
@@ -32,51 +33,63 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode> nodes = new List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode>();
             for (int i = 0; i < greenOnionsMessage.Count; i++)
             {
-                if (greenOnionsMessage[i] is IGreenOnionsTextMessage txtMsg)
+                try
                 {
-                    miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(txtMsg.Text));
-                }
-                else if (greenOnionsMessage[i] is IGreenOnionsImageMessage imgMsg)
-                {
-                    if (!string.IsNullOrEmpty(imgMsg.Url))
+                    if (greenOnionsMessage[i] is IGreenOnionsTextMessage txtMsg)
                     {
-                        string url = null;
-                        string path = null;
-                        if (File.Exists(imgMsg.Url))
-                            path = imgMsg.Url;
-                        else
-                            url = imgMsg.Url;
-                        miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(null, url, path));
+                        miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(txtMsg.Text));
                     }
-                    else if (!string.IsNullOrEmpty(imgMsg.Base64Str))
+                    else if (greenOnionsMessage[i] is IGreenOnionsImageMessage imgMsg)
                     {
-                        using (MemoryStream ms = imgMsg.MemoryStream)
+                        if (!string.IsNullOrEmpty(imgMsg.Url))
                         {
-                            miraiApiHttpMessages.Add(await session.UploadPictureAsync(uploadTarget, ms));
+                            string url = null;
+                            string path = null;
+                            if (File.Exists(imgMsg.Url))
+                                path = imgMsg.Url;
+                            else
+                                url = imgMsg.Url;
+                            miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.ImageMessage(null, url, path));
+                        }
+                        else if (!string.IsNullOrEmpty(imgMsg.Base64Str))
+                        {
+                            using (MemoryStream ms = imgMsg.MemoryStream)
+                            {
+                                miraiApiHttpMessages.Add(await session.UploadPictureAsync(uploadTarget, ms));
+                            }
+                        }
+                    }
+                    else if (greenOnionsMessage[i] is IGreenOnionsAtMessage atMsg)
+                    {
+                        if (atMsg.AtId == -1)
+                            miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.AtAllMessage());
+                        else
+                            miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.AtMessage(atMsg.AtId));
+                    }
+                    else if (greenOnionsMessage[i] is IGreenOnionsForwardMessage forwardMsg)
+                    {
+                        for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
+                        {
+                            var itemMsg = (await ToMiraiApiHttpMessages(forwardMsg.ItemMessages[j].itemMessage, session, uploadTarget)).Select(msg => msg as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage);
+                            if (itemMsg != null)
+                            {
+                                Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode node = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
+                                {
+                                    Id = i * j + j,
+                                    Name = forwardMsg.ItemMessages[j].NickName,
+                                    QQNumber = forwardMsg.ItemMessages[j].QQid,
+                                    Time = DateTime.Now,
+                                    Chain = itemMsg.ToArray(),
+                                };
+                                nodes.Add(node);
+                            }
                         }
                     }
                 }
-                else if (greenOnionsMessage[i] is IGreenOnionsAtMessage atMsg)
+                catch (Exception ex)
                 {
-                    if (atMsg.AtId == -1)
-                        miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.AtAllMessage());
-                    else
-                        miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.AtMessage(atMsg.AtId));
-                }
-                else if (greenOnionsMessage[i] is IGreenOnionsForwardMessage forwardMsg)
-                {
-                    for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
-                    {
-                        Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode node = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
-                        {
-                            Id = i * j + j,
-                            Name = forwardMsg.ItemMessages[j].NickName,
-                            QQNumber = forwardMsg.ItemMessages[j].QQid,
-                            Time = DateTime.Now,
-                            Chain = (await ToMiraiApiHttpMessages(forwardMsg.ItemMessages[j].itemMessage, session, uploadTarget)).Select(msg => msg as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage).ToArray(),
-                        };
-                        nodes.Add(node);
-                    }
+                    LogHelper.WriteErrorLogWithUserMessage("转换为MiraiApiHttp消息失败!!!", ex);
+                    continue;
                 }
             }
             if (nodes.Count > 0)
