@@ -21,8 +21,6 @@ namespace GreenOnions.BotManagerWindow
             if (pnlHPictureCheckBoxes.Left < 519)  //狗屎设计器整天有Bug自动移动位置
                 pnlHPictureCheckBoxes.Left = 519;
 
-            cboLogLevel.SelectedIndex = BotInfo.LogLevel;
-
             #region -- 通用设置 --
 
             txbBotName.Text = BotInfo.BotName;
@@ -60,6 +58,12 @@ namespace GreenOnions.BotManagerWindow
             txbTencentCloudSecretKey.Text = BotInfo.TencentCloudSecretKey;
             txbTencentCloudBucket.Text = BotInfo.TencentCloudBucket;
             #endregion -- 腾讯云相关设置 --
+
+            chkAutoConnectEnabled.Checked = BotInfo.AutoConnectEnabled;
+            cboAutoConnectProtocol.SelectedIndex = BotInfo.AutoConnectProtocol;
+            txbAutoConnectDelay.Text = BotInfo.AutoConnectDelay.ToString();
+
+            cboLogLevel.SelectedIndex = BotInfo.LogLevel;
 
             #endregion -- 通用设置 --
 
@@ -282,8 +286,6 @@ namespace GreenOnions.BotManagerWindow
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            BotInfo.LogLevel = cboLogLevel.SelectedIndex;
-
             #region -- 通用设置 --
             BotInfo.BotName = txbBotName.Text.Trim();
             List<long> tempAdminQQ = new List<long>();
@@ -315,6 +317,11 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.OnlyReplyDebugGroup = chkOnlyReplyDebugGroup.Checked;
             BotInfo.DebugReplyAdminOnly = chkDebugReplyAdminOnly.Checked;
             BotInfo.HttpRequestByWebBrowser = chkHttpRequestByWebBrowser.Checked;
+
+            BotInfo.AutoConnectEnabled = chkAutoConnectEnabled.Checked;
+            BotInfo.AutoConnectProtocol = cboAutoConnectProtocol.SelectedIndex;
+            BotInfo.AutoConnectDelay = Convert.ToInt32(txbAutoConnectDelay.Text);
+            BotInfo.LogLevel = cboLogLevel.SelectedIndex;
 
             #endregion -- 通用设置 --
 
@@ -715,5 +722,7 @@ namespace GreenOnions.BotManagerWindow
         private void chkTicTacToeEnabled_CheckedChanged(object sender, EventArgs e) => pnlTicTacToe.Enabled = chkTicTacToeEnabled.Checked;
 
         private void chkHPictureSendUrl_CheckedChanged(object sender, EventArgs e) => chkHPictureSendTags.Enabled = chkHPictureSendUrl.Checked;
+
+        private void chkAutoConnectEnabled_CheckedChanged(object sender, EventArgs e) => pnlAutoConnect.Enabled = chkAutoConnectEnabled.Checked;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using GreenOnions.BotMain;
 using GreenOnions.BotMain.CqHttp;
 using GreenOnions.BotMain.MiraiApiHttp;
+using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
 using System.IO;
@@ -35,45 +36,58 @@ namespace GreenOnions.BotManagerConsole
             }
             Console.WriteLine($"成功加载{iLoadCount}个插件");
 
-            Console.WriteLine("请选择连接平台: 0 = mirai-api-http,  1 = cqhttp");
-		ILRetryProtocol:;
-			if (!int.TryParse(Console.ReadLine(), out int protocol) || protocol < 0 || protocol > 1)
+			if (BotInfo.AutoConnectEnabled)
 			{
-				Console.WriteLine("选择的平台不正确, 请重新选择。");
-				goto ILRetryProtocol;
+                Console.WriteLine($"启用了自动连接, {BotInfo.AutoConnectDelay}秒后自动连接到{(BotInfo.AutoConnectProtocol == 0 ? "Mirai-Api-Http" : "CqHttp(OneBot)")}平台");
+				Console.WriteLine($"如果要取消自动连接, 请将 config.json 中 Bot.AutoConnectEnabled 修改为 False");
+				Task.Delay(BotInfo.AutoConnectDelay * 1000).Wait();
+				if (BotInfo.AutoConnectProtocol == 0)
+					await MiraiApiHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
+				else
+					await CqHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
 			}
-
-			Console.WriteLine("请输入机器人QQ号:");
-		ILRetryQQ:;
-			if (!long.TryParse(Console.ReadLine(), out long qqId))
-			{
-				Console.WriteLine("输入的QQ号不正确，请重新输入。");
-				goto ILRetryQQ;
-			}
-
-			Console.WriteLine("请输入连接 IP:");
-			string ip = Console.ReadLine();
-
-			Console.WriteLine("请输入连接端口:");
-		ILReadPort:;
-			if (!ushort.TryParse(Console.ReadLine(), out ushort port) || port < 0 || port > 65535)
-			{
-				Console.WriteLine("输入的端口号不正确，请重新输入:");
-				goto ILReadPort;
-			}
-
-			if (protocol == 0)
-			{
-				Console.WriteLine("请输入mirai-api-http verifyKey:");
-				string verifyKey = Console.ReadLine();
-                await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
-            }
 			else
-			{
-				Console.WriteLine("请输入cqhttp access-token:");
-				string accessToken = Console.ReadLine();
-                await CqHttpMain.Connect(qqId, ip, port, accessToken, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
-            }
+            {
+				Console.WriteLine("请选择连接平台: 0 = mirai-api-http,  1 = cqhttp");
+			ILRetryProtocol:;
+				if (!int.TryParse(Console.ReadLine(), out int protocol) || protocol < 0 || protocol > 1)
+				{
+					Console.WriteLine("选择的平台不正确, 请重新选择。");
+					goto ILRetryProtocol;
+				}
+
+				Console.WriteLine("请输入机器人QQ号:");
+			ILRetryQQ:;
+				if (!long.TryParse(Console.ReadLine(), out long qqId))
+				{
+					Console.WriteLine("输入的QQ号不正确，请重新输入。");
+					goto ILRetryQQ;
+				}
+
+				Console.WriteLine("请输入连接 IP:");
+				string ip = Console.ReadLine();
+
+				Console.WriteLine("请输入连接端口:");
+			ILReadPort:;
+				if (!ushort.TryParse(Console.ReadLine(), out ushort port) || port < 0 || port > 65535)
+				{
+					Console.WriteLine("输入的端口号不正确，请重新输入:");
+					goto ILReadPort;
+				}
+
+				if (protocol == 0)
+				{
+					Console.WriteLine("请输入mirai-api-http verifyKey:");
+					string verifyKey = Console.ReadLine();
+					await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
+				}
+				else
+				{
+					Console.WriteLine("请输入cqhttp access-token:");
+					string accessToken = Console.ReadLine();
+					await CqHttpMain.Connect(qqId, ip, port, accessToken, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
+				}
+			}
 		}
 
 		public static void Connecting(bool bConnect, string nickNameOrErrorMessage, string protocol)

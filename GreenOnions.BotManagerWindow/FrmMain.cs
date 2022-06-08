@@ -49,7 +49,7 @@ namespace GreenOnions.BotManagerWindow
             base.OnShown(e);
 
 			lblPluginMessage.Text = $"";
-			Task.Run(() =>
+			Task tPlugins = Task.Run(() =>
 			{
 				int iLoadCount = 0;
 				foreach ((bool load, string msg) loadPluginMsg in PluginManager.Load())
@@ -62,6 +62,19 @@ namespace GreenOnions.BotManagerWindow
                     Invoke(new Action(() => btnPlugins.Text = $"插件列表({iLoadCount})"));
 				Invoke(new Action(() => lblPluginMessage.Text = $""));
 			});
+
+			//自动连接到机器人平台
+			if (BotInfo.AutoConnectEnabled)
+			{
+				tPlugins.ContinueWith(t =>
+				{
+					Task.Delay(BotInfo.AutoConnectDelay * 1000).Wait();
+                    if (BotInfo.AutoConnectProtocol == 0)
+						ConnectToMiraiApiHttp();
+                    else
+						ConnectToCqHttp();
+				});
+			}
 		}
 
         protected override void OnSizeChanged(EventArgs e)
@@ -118,6 +131,11 @@ namespace GreenOnions.BotManagerWindow
 
 		private void btnConnectToMiraiApiHttp_Click(object sender, EventArgs e)
 		{
+			ConnectToMiraiApiHttp();
+		}
+
+		private void ConnectToMiraiApiHttp()
+        {
 			if (CheckInfo())
 			{
 				Task.Run(() => ConnectToMiraiApiHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text));
@@ -126,6 +144,11 @@ namespace GreenOnions.BotManagerWindow
 
 		private void btnConnectToCqHttp_Click(object sender, EventArgs e)
 		{
+            ConnectToCqHttp();
+        }
+
+		private void ConnectToCqHttp()
+        {
 			if (CheckInfo())
 			{
 				Task.Run(() => ConnectToCqHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text));

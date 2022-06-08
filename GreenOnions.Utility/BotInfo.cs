@@ -277,6 +277,65 @@ namespace GreenOnions.Utility
 
         #endregion -- 腾讯云相关属性 --
 
+        /// <summary>
+        /// 是否启用自动连接到机器人平台
+        /// </summary>
+        [PropertyChineseName("自动连接到机器人平台")]
+        public static bool AutoConnectEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectEnabled), value.ToString());
+        }
+        
+        /// <summary>
+        /// 自动连接的平台
+        /// </summary>
+        [PropertyChineseName("自动连接平台")]
+        public static int AutoConnectProtocol
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectProtocol));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 0;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectProtocol), value.ToString());
+        }
+
+        /// <summary>
+        /// 连接前延时
+        /// </summary>
+        [PropertyChineseName("连接前延时")]
+        public static int AutoConnectDelay
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectDelay));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 5;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectDelay), value.ToString());
+        }
+
+        /// <summary>
+        /// 自动连接失败时行为
+        /// </summary>
+        [PropertyChineseName("自动连接失败时")]
+        public static int AutoConnectFailDo
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectFailDo));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 0;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectFailDo), value.ToString());
+        }
 
         #endregion -- 公共属性 --
 

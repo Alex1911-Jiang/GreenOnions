@@ -36,6 +36,12 @@
             this.tabSettings = new System.Windows.Forms.TabControl();
             this.pageBot = new System.Windows.Forms.TabPage();
             this.pnlBot = new System.Windows.Forms.Panel();
+            this.pnlAutoConnect = new System.Windows.Forms.Panel();
+            this.txbAutoConnectDelay = new System.Windows.Forms.TextBox();
+            this.cboAutoConnectProtocol = new System.Windows.Forms.ComboBox();
+            this.lblAutoConnectDelay = new System.Windows.Forms.Label();
+            this.lblAutoConnectProtocol = new System.Windows.Forms.Label();
+            this.chkAutoConnectEnabled = new System.Windows.Forms.CheckBox();
             this.cboLogLevel = new System.Windows.Forms.ComboBox();
             this.lblLogLevel = new System.Windows.Forms.Label();
             this.chkHttpRequestByWebBrowser = new System.Windows.Forms.CheckBox();
@@ -344,6 +350,7 @@
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
+            this.pnlAutoConnect.SuspendLayout();
             this.pnlDebugMode.SuspendLayout();
             this.pnlCheckPorn.SuspendLayout();
             this.pageSearchPicture.SuspendLayout();
@@ -463,6 +470,8 @@
             // pnlBot
             // 
             this.pnlBot.AutoScroll = true;
+            this.pnlBot.Controls.Add(this.pnlAutoConnect);
+            this.pnlBot.Controls.Add(this.chkAutoConnectEnabled);
             this.pnlBot.Controls.Add(this.cboLogLevel);
             this.pnlBot.Controls.Add(this.lblLogLevel);
             this.pnlBot.Controls.Add(this.chkHttpRequestByWebBrowser);
@@ -496,6 +505,69 @@
             this.pnlBot.Size = new System.Drawing.Size(644, 679);
             this.pnlBot.TabIndex = 36;
             // 
+            // pnlAutoConnect
+            // 
+            this.pnlAutoConnect.Controls.Add(this.txbAutoConnectDelay);
+            this.pnlAutoConnect.Controls.Add(this.cboAutoConnectProtocol);
+            this.pnlAutoConnect.Controls.Add(this.lblAutoConnectDelay);
+            this.pnlAutoConnect.Controls.Add(this.lblAutoConnectProtocol);
+            this.pnlAutoConnect.Enabled = false;
+            this.pnlAutoConnect.Location = new System.Drawing.Point(4, 715);
+            this.pnlAutoConnect.MinimumSize = new System.Drawing.Size(620, 0);
+            this.pnlAutoConnect.Name = "pnlAutoConnect";
+            this.pnlAutoConnect.Size = new System.Drawing.Size(620, 62);
+            this.pnlAutoConnect.TabIndex = 40;
+            // 
+            // txbAutoConnectDelay
+            // 
+            this.txbAutoConnectDelay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbAutoConnectDelay.Location = new System.Drawing.Point(116, 34);
+            this.txbAutoConnectDelay.Name = "txbAutoConnectDelay";
+            this.txbAutoConnectDelay.Size = new System.Drawing.Size(200, 23);
+            this.txbAutoConnectDelay.TabIndex = 50;
+            // 
+            // cboAutoConnectProtocol
+            // 
+            this.cboAutoConnectProtocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboAutoConnectProtocol.FormattingEnabled = true;
+            this.cboAutoConnectProtocol.Items.AddRange(new object[] {
+            "Mirai-Api-Http",
+            "CqHttp(OneBot)"});
+            this.cboAutoConnectProtocol.Location = new System.Drawing.Point(116, 3);
+            this.cboAutoConnectProtocol.Name = "cboAutoConnectProtocol";
+            this.cboAutoConnectProtocol.Size = new System.Drawing.Size(200, 25);
+            this.cboAutoConnectProtocol.TabIndex = 39;
+            // 
+            // lblAutoConnectDelay
+            // 
+            this.lblAutoConnectDelay.AutoSize = true;
+            this.lblAutoConnectDelay.Location = new System.Drawing.Point(3, 37);
+            this.lblAutoConnectDelay.Name = "lblAutoConnectDelay";
+            this.lblAutoConnectDelay.Size = new System.Drawing.Size(91, 17);
+            this.lblAutoConnectDelay.TabIndex = 1;
+            this.lblAutoConnectDelay.Text = "连接前延时(秒):";
+            // 
+            // lblAutoConnectProtocol
+            // 
+            this.lblAutoConnectProtocol.AutoSize = true;
+            this.lblAutoConnectProtocol.Location = new System.Drawing.Point(3, 6);
+            this.lblAutoConnectProtocol.Name = "lblAutoConnectProtocol";
+            this.lblAutoConnectProtocol.Size = new System.Drawing.Size(83, 17);
+            this.lblAutoConnectProtocol.TabIndex = 0;
+            this.lblAutoConnectProtocol.Text = "自动连接平台:";
+            // 
+            // chkAutoConnectEnabled
+            // 
+            this.chkAutoConnectEnabled.AutoSize = true;
+            this.chkAutoConnectEnabled.Location = new System.Drawing.Point(7, 688);
+            this.chkAutoConnectEnabled.Name = "chkAutoConnectEnabled";
+            this.chkAutoConnectEnabled.Size = new System.Drawing.Size(147, 21);
+            this.chkAutoConnectEnabled.TabIndex = 39;
+            this.chkAutoConnectEnabled.Text = "自动连接到机器人平台";
+            this.chkAutoConnectEnabled.UseVisualStyleBackColor = true;
+            this.chkAutoConnectEnabled.CheckedChanged += new System.EventHandler(this.chkAutoConnectEnabled_CheckedChanged);
+            // 
             // cboLogLevel
             // 
             this.cboLogLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -504,15 +576,15 @@
             "消息",
             "警告",
             "错误"});
-            this.cboLogLevel.Location = new System.Drawing.Point(82, 689);
+            this.cboLogLevel.Location = new System.Drawing.Point(120, 783);
             this.cboLogLevel.Name = "cboLogLevel";
-            this.cboLogLevel.Size = new System.Drawing.Size(157, 25);
+            this.cboLogLevel.Size = new System.Drawing.Size(200, 25);
             this.cboLogLevel.TabIndex = 38;
             // 
             // lblLogLevel
             // 
             this.lblLogLevel.AutoSize = true;
-            this.lblLogLevel.Location = new System.Drawing.Point(7, 692);
+            this.lblLogLevel.Location = new System.Drawing.Point(7, 786);
             this.lblLogLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLogLevel.Name = "lblLogLevel";
             this.lblLogLevel.Size = new System.Drawing.Size(68, 17);
@@ -553,7 +625,7 @@
             this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
             this.pnlDebugMode.Controls.Add(this.txbAddDebugGroup);
             this.pnlDebugMode.Enabled = false;
-            this.pnlDebugMode.Location = new System.Drawing.Point(4, 746);
+            this.pnlDebugMode.Location = new System.Drawing.Point(4, 840);
             this.pnlDebugMode.MinimumSize = new System.Drawing.Size(620, 153);
             this.pnlDebugMode.Name = "pnlDebugMode";
             this.pnlDebugMode.Size = new System.Drawing.Size(620, 153);
@@ -562,7 +634,7 @@
             // chkOnlyReplyDebugGroup
             // 
             this.chkOnlyReplyDebugGroup.AutoSize = true;
-            this.chkOnlyReplyDebugGroup.Location = new System.Drawing.Point(121, 101);
+            this.chkOnlyReplyDebugGroup.Location = new System.Drawing.Point(116, 101);
             this.chkOnlyReplyDebugGroup.Name = "chkOnlyReplyDebugGroup";
             this.chkOnlyReplyDebugGroup.Size = new System.Drawing.Size(147, 21);
             this.chkOnlyReplyDebugGroup.TabIndex = 12;
@@ -572,10 +644,10 @@
             // lstDebugGroups
             // 
             this.lstDebugGroups.FullRowSelect = true;
-            this.lstDebugGroups.Location = new System.Drawing.Point(121, 9);
+            this.lstDebugGroups.Location = new System.Drawing.Point(116, 9);
             this.lstDebugGroups.Margin = new System.Windows.Forms.Padding(4);
             this.lstDebugGroups.Name = "lstDebugGroups";
-            this.lstDebugGroups.Size = new System.Drawing.Size(186, 85);
+            this.lstDebugGroups.Size = new System.Drawing.Size(200, 85);
             this.lstDebugGroups.TabIndex = 3;
             this.lstDebugGroups.UseCompatibleStateImageBehavior = false;
             this.lstDebugGroups.View = System.Windows.Forms.View.List;
@@ -583,7 +655,7 @@
             // chkDebugReplyAdminOnly
             // 
             this.chkDebugReplyAdminOnly.AutoSize = true;
-            this.chkDebugReplyAdminOnly.Location = new System.Drawing.Point(121, 128);
+            this.chkDebugReplyAdminOnly.Location = new System.Drawing.Point(116, 128);
             this.chkDebugReplyAdminOnly.Name = "chkDebugReplyAdminOnly";
             this.chkDebugReplyAdminOnly.Size = new System.Drawing.Size(195, 21);
             this.chkDebugReplyAdminOnly.TabIndex = 11;
@@ -593,7 +665,7 @@
             // lblAddDebugGroup
             // 
             this.lblAddDebugGroup.AutoSize = true;
-            this.lblAddDebugGroup.Location = new System.Drawing.Point(409, 9);
+            this.lblAddDebugGroup.Location = new System.Drawing.Point(420, 9);
             this.lblAddDebugGroup.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAddDebugGroup.Name = "lblAddDebugGroup";
             this.lblAddDebugGroup.Size = new System.Drawing.Size(116, 17);
@@ -603,7 +675,7 @@
             // lblDebugGroup
             // 
             this.lblDebugGroup.AutoSize = true;
-            this.lblDebugGroup.Location = new System.Drawing.Point(5, 20);
+            this.lblDebugGroup.Location = new System.Drawing.Point(3, 9);
             this.lblDebugGroup.Name = "lblDebugGroup";
             this.lblDebugGroup.Size = new System.Drawing.Size(68, 17);
             this.lblDebugGroup.TabIndex = 10;
@@ -611,7 +683,7 @@
             // 
             // btnAddDebugGroup
             // 
-            this.btnAddDebugGroup.Location = new System.Drawing.Point(315, 30);
+            this.btnAddDebugGroup.Location = new System.Drawing.Point(324, 30);
             this.btnAddDebugGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddDebugGroup.Name = "btnAddDebugGroup";
             this.btnAddDebugGroup.Size = new System.Drawing.Size(88, 23);
@@ -622,7 +694,7 @@
             // 
             // btnRemoveDebugGroup
             // 
-            this.btnRemoveDebugGroup.Location = new System.Drawing.Point(315, 61);
+            this.btnRemoveDebugGroup.Location = new System.Drawing.Point(324, 61);
             this.btnRemoveDebugGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveDebugGroup.Name = "btnRemoveDebugGroup";
             this.btnRemoveDebugGroup.Size = new System.Drawing.Size(88, 23);
@@ -633,11 +705,11 @@
             // 
             // txbAddDebugGroup
             // 
-            this.txbAddDebugGroup.Location = new System.Drawing.Point(411, 30);
+            this.txbAddDebugGroup.Location = new System.Drawing.Point(420, 30);
             this.txbAddDebugGroup.Margin = new System.Windows.Forms.Padding(4);
             this.txbAddDebugGroup.Name = "txbAddDebugGroup";
             this.txbAddDebugGroup.ShortcutsEnabled = false;
-            this.txbAddDebugGroup.Size = new System.Drawing.Size(186, 23);
+            this.txbAddDebugGroup.Size = new System.Drawing.Size(177, 23);
             this.txbAddDebugGroup.TabIndex = 0;
             this.txbAddDebugGroup.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
             this.txbAddDebugGroup.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
@@ -809,7 +881,7 @@
             // chkDebugMode
             // 
             this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(7, 722);
+            this.chkDebugMode.Location = new System.Drawing.Point(7, 814);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(75, 21);
             this.chkDebugMode.TabIndex = 9;
@@ -2010,7 +2082,7 @@
             this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureOnceMessageMaxImageCount.MinimumSize = new System.Drawing.Size(60, 0);
             this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
-            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(116, 23);
+            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(60, 23);
             this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
             // 
             // lblHPictureOnceMessageMaxImageCount
@@ -3903,6 +3975,8 @@
             this.pageBot.ResumeLayout(false);
             this.pnlBot.ResumeLayout(false);
             this.pnlBot.PerformLayout();
+            this.pnlAutoConnect.ResumeLayout(false);
+            this.pnlAutoConnect.PerformLayout();
             this.pnlDebugMode.ResumeLayout(false);
             this.pnlDebugMode.PerformLayout();
             this.pnlCheckPorn.ResumeLayout(false);
@@ -4275,5 +4349,11 @@
         private System.Windows.Forms.CheckBox chkSearchSauceNAOSortByDesc;
         private System.Windows.Forms.ComboBox cboSearchShowAscii2dCount;
         private System.Windows.Forms.Label lblSearchShowAscii2dCount;
+        private System.Windows.Forms.CheckBox chkAutoConnectEnabled;
+        private System.Windows.Forms.Panel pnlAutoConnect;
+        private System.Windows.Forms.Label lblAutoConnectDelay;
+        private System.Windows.Forms.Label lblAutoConnectProtocol;
+        private System.Windows.Forms.TextBox txbAutoConnectDelay;
+        private System.Windows.Forms.ComboBox cboAutoConnectProtocol;
     }
 }
