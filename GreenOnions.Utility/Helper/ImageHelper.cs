@@ -29,7 +29,7 @@ namespace GreenOnions.Utility.Helper
 
         public static string ReplaceGroupUrl(string groupUrl)
         {
-            return groupUrl.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
+            return groupUrl.Replace("/c2cpicdw.qpic.cn/offpic_new/", "/gchat.qpic.cn/gchatpic_new/");
         }
 
         public static MemoryStream StreamAntiShielding(this MemoryStream ms)
