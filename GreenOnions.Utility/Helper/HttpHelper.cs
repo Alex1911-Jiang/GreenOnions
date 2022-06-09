@@ -266,7 +266,7 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        public static async Task<MemoryStream> DownloadImageAsMemoryStream(string url)
+        public static async Task<MemoryStream> DownloadImageAsMemoryStreamAsync(string url)
         {
             bool retry = true;
         IL_Retry:;

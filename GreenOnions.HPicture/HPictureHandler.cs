@@ -155,7 +155,7 @@ namespace GreenOnions.HPicture
                 SendMessage(errorMessage);
             }
 
-            JObject jo = (JObject)JsonConvert.DeserializeObject(resultValue);
+            JObject jo = JsonConvert.DeserializeObject<JObject>(resultValue);
             JToken jt = jo["data"];
             string err = jo["error"].ToString();
             if (!string.IsNullOrWhiteSpace(err))//Api错误

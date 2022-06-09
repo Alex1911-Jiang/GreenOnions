@@ -268,7 +268,7 @@ namespace GreenOnions.PictureSearcher
                 LogHelper.WriteInfoLog($"不存在TraceMoe缩略图本地缓存");
                 try
                 {
-                    using (MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStream(imgUrl))
+                    using (MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStreamAsync(imgUrl))
                     {
                         File.WriteAllBytes(imgName, stream.ToArray());
                         if (checkPorn)  //鉴黄
@@ -406,7 +406,7 @@ namespace GreenOnions.PictureSearcher
                         {
                             LogHelper.WriteInfoLog($"SauceNAO相似度大于发图设定值");
 
-                            using (MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStream(imgUrl))
+                            using (MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStreamAsync(imgUrl))
                             {
                                 LogHelper.WriteInfoLog($"SauceNAO下载缩略图成功");
                                 //鉴黄

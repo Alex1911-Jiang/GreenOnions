@@ -45,11 +45,11 @@ namespace GreenOnions.Utility
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(Port));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(Port));
                 if (ushort.TryParse(strValue, out ushort usValue)) return usValue;
                 return 0;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(Port), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(Port), value.ToString());
         }
 
         public static string VerifyKey
@@ -203,11 +203,11 @@ namespace GreenOnions.Utility
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornEnabled));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(CheckPornEnabled));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return false;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornEnabled), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(CheckPornEnabled), value.ToString());
         }
 
         /// <summary>
@@ -216,8 +216,8 @@ namespace GreenOnions.Utility
         [PropertyChineseName("腾讯云APPID")]
         public static string TencentCloudAPPID
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudAPPID));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudAPPID), value);
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudAPPID));
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudAPPID), value);
         }
 
         /// <summary>
@@ -226,8 +226,8 @@ namespace GreenOnions.Utility
         [PropertyChineseName("腾讯云Region")]
         public static string TencentCloudRegion
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudRegion));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudRegion), value);
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudRegion));
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudRegion), value);
         }
 
         /// <summary>
@@ -236,8 +236,8 @@ namespace GreenOnions.Utility
         [PropertyChineseName("腾讯云SecretId")]
         public static string TencentCloudSecretId
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretId));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretId), value);
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudSecretId));
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudSecretId), value);
         }
 
         /// <summary>
@@ -246,8 +246,8 @@ namespace GreenOnions.Utility
         [PropertyChineseName("腾讯云SecretKey")]
         public static string TencentCloudSecretKey
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretKey));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudSecretKey), value);
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudSecretKey));
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudSecretKey), value);
         }
 
         /// <summary>
@@ -256,8 +256,8 @@ namespace GreenOnions.Utility
         [PropertyChineseName("腾讯云Bucket")]
         public static string TencentCloudBucket
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudBucket));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TencentCloudBucket), value);
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudBucket));
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudBucket), value);
         }
 
         /// <summary>
@@ -268,11 +268,11 @@ namespace GreenOnions.Utility
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornLimitCount));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(CheckPornLimitCount));
                 if (int.TryParse(strValue, out int iValue)) return iValue;
                 return 2000;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornLimitCount), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(CheckPornLimitCount), value.ToString());
         }
 
         #endregion -- 腾讯云相关属性 --
@@ -291,7 +291,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectEnabled), value.ToString());
         }
-        
+
         /// <summary>
         /// 自动连接的平台
         /// </summary>
@@ -322,21 +322,6 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectDelay), value.ToString());
         }
 
-        /// <summary>
-        /// 自动连接失败时行为
-        /// </summary>
-        [PropertyChineseName("自动连接失败时")]
-        public static int AutoConnectFailDo
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectFailDo));
-                if (int.TryParse(strValue, out int iValue)) return iValue;
-                return 0;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectFailDo), value.ToString());
-        }
-
         #endregion -- 公共属性 --
 
         #region -- 搜图属性 --
@@ -354,7 +339,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabled), value.ToString());
         }
-        
+
         /// <summary>
         /// 私聊时是否自动搜图
         /// </summary>
@@ -1173,7 +1158,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureWhiteNoLimit), value.ToString());
         }
-        
+
         /// <summary>
         /// 色图是否发送地址
         /// </summary>
@@ -1186,8 +1171,8 @@ namespace GreenOnions.Utility
                 return true;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendUrl), value.ToString());
-        } 
-        
+        }
+
         /// <summary>
         /// 色图是否发送标签
         /// </summary>
@@ -1201,7 +1186,7 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendTags), value.ToString());
         }
-        
+
         /// <summary>
         /// 是否以合并转发的方式发送色图
         /// </summary>
@@ -1666,11 +1651,11 @@ namespace GreenOnions.Utility
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(RssEnabled));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(RssEnabled));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return false;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(RssEnabled), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(RssEnabled), value.ToString());
         }
 
         /// <summary>
@@ -1680,11 +1665,11 @@ namespace GreenOnions.Utility
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(ReadRssInterval));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(ReadRssInterval));
                 if (double.TryParse(strValue, out double iValue)) return iValue;
                 return 10.0;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(ReadRssInterval), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(ReadRssInterval), value.ToString());
         }
 
         /// <summary>
@@ -1702,6 +1687,17 @@ namespace GreenOnions.Utility
             {
                 JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(RssSubscription), JsonConvert.SerializeObject(value));
             }
+        }
+
+        public static bool RssSendLiveCover
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(RssSendLiveCover));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(RssSendLiveCover), value.ToString());
         }
 
         #endregion -- RSS属性 --
@@ -1738,7 +1734,7 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeStartedReply)) ?? "成功开启棋局，玩家为×，<机器人名称>为○，请对棋盘图片用QQ表情涂鸦或输入格号进行下子，您先下。";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeStartedReply), value);
         }
-        
+
         /// <summary>
         /// 已经开始后再次尝试开启对局的回复语
         /// </summary>
@@ -1756,7 +1752,7 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(StopTicTacToeCmd)) ?? "<机器人名称>不玩啦";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(StopTicTacToeCmd), value);
         }
-        
+
         /// <summary>
         /// 中止对局成功回复语
         /// </summary>
@@ -1774,7 +1770,7 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeAlreadStopReply)) ?? "您现在什么也没有和我玩耶QAQ";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeAlreadStopReply), value);
         }
-        
+
         /// <summary>
         /// 对局超时回复语
         /// </summary>
@@ -1783,7 +1779,7 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeTimeoutReply)) ?? "由于超时，已为您自动退出棋局，下次请说：\"<机器人名称>不玩啦\"来临阵脱逃哦。";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeTimeoutReply), value);
         }
-        
+
         /// <summary>
         /// 玩家获胜回复语
         /// </summary>
@@ -1792,7 +1788,7 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToePlayerWinReply)) ?? "您赢了，这个<机器人名称>就是逊啦";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToePlayerWinReply), value);
         }
-        
+
         /// <summary>
         /// 机器人获胜回复语
         /// </summary>
@@ -1801,7 +1797,7 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeBotWinReply)) ?? "<机器人名称>赢了，现在知道谁是老大了ho~";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeBotWinReply), value);
         }
-        
+
         /// <summary>
         /// 平局回复语
         /// </summary>
@@ -1810,7 +1806,7 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeDrawReply)) ?? "平局了，再来一局吧~";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTicTacToe, nameof(TicTacToeDrawReply), value);
         }
-        
+
         /// <summary>
         /// 没有识别到玩家下子回复语
         /// </summary>

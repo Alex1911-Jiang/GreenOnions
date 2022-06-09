@@ -262,6 +262,7 @@ namespace GreenOnions.BotManagerWindow
                 pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
             }
             txbReadRssInterval.Text = BotInfo.ReadRssInterval.ToString();
+            chkRssSendLiveCover.Checked = BotInfo.RssSendLiveCover;
             #endregion  -- RSS --
 
             #region -- 井字棋 --
@@ -524,6 +525,7 @@ namespace GreenOnions.BotManagerWindow
                 SendByForward = i.RssSendByForward,
             });
             BotInfo.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
+            BotInfo.RssSendLiveCover = chkRssSendLiveCover.Checked;
 
             #endregion -- RSS --
 

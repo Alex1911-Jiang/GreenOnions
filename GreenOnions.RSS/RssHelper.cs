@@ -11,6 +11,8 @@ using System.Xml;
 using System.Linq;
 using GreenOnions.Model;
 using System.Threading;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace GreenOnions.RSS
 {
@@ -70,8 +72,20 @@ namespace GreenOnions.RSS
                                                 translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo) : YouDaoTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo));
                                             else
                                                 translatedText = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(rss.description) : YouDaoTranslateHelper.TranslateToChinese(rss.description));
-                                            translateMsg = $"\r\n以下为翻译内容:\r\n{ translatedText }";
+                                            translateMsg = $"\r\n以下为翻译内容:\r\n{ translatedText }\r\n";
                                             LogHelper.WriteInfoLog($"翻译成功");
+                                        }
+
+                                        string thuImgUrl = null;
+                                        if (BotInfo.RssSendLiveCover)  //获取直播封面
+                                        {
+                                            if (item.Url.Contains("bilibili") && item.Url.Contains("/room/"))
+                                            {
+                                                string roomId = item.Url.Substring(item.Url.LastIndexOf("/room/") + "/room/".Length);
+                                                string apiResult = await HttpHelper.GetHttpResponseStringAsync($@"https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id={roomId}");
+                                                JObject jo = JsonConvert.DeserializeObject<JObject>(apiResult);
+                                                thuImgUrl = jo?["data"]?["room_info"]?["cover"]?.ToString();
+                                            }
                                         }
 
                                         LogHelper.WriteInfoLog($"需要转发的组:{item.ForwardGroups.Length}个");
@@ -93,6 +107,9 @@ namespace GreenOnions.RSS
                                             {
                                                 groupResultMsg.Add(new GreenOnionsImageMessage(rss.imgsSrc[i]));
                                             }
+
+                                            if (thuImgUrl != null)
+                                                groupResultMsg.Add(new GreenOnionsImageMessage(thuImgUrl));
 
                                             groupResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
                                             groupResultMsg.Add($"\r\n原文地址:{rss.link}");
@@ -136,6 +153,9 @@ namespace GreenOnions.RSS
                                             {
                                                 friendResultMsg.Add(new GreenOnionsImageMessage(rss.imgsSrc[i]));
                                             }
+
+                                            if (thuImgUrl != null)
+                                                friendResultMsg.Add(new GreenOnionsImageMessage(thuImgUrl));
 
                                             friendResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
                                             friendResultMsg.Add($"\r\n原文地址:{rss.link}");

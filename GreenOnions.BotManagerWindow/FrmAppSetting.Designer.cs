@@ -347,6 +347,7 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
+            this.chkRssSendLiveCover = new System.Windows.Forms.CheckBox();
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -3397,6 +3398,7 @@
             // pageRss
             // 
             this.pageRss.Controls.Add(this.pnlRss);
+            this.pageRss.Controls.Add(this.chkRssSendLiveCover);
             this.pageRss.Controls.Add(this.chkRssEnabled);
             this.pageRss.Location = new System.Drawing.Point(4, 26);
             this.pageRss.Name = "pageRss";
@@ -3958,6 +3960,17 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
+            // chkRssSendLiveCover
+            // 
+            this.chkRssSendLiveCover.AutoSize = true;
+            this.chkRssSendLiveCover.Location = new System.Drawing.Point(518, 11);
+            this.chkRssSendLiveCover.Name = "chkRssSendLiveCover";
+            this.chkRssSendLiveCover.Size = new System.Drawing.Size(131, 21);
+            this.chkRssSendLiveCover.TabIndex = 0;
+            this.chkRssSendLiveCover.Text = "获取B站直播间封面";
+            this.chkRssSendLiveCover.UseVisualStyleBackColor = true;
+            this.chkRssSendLiveCover.CheckedChanged += new System.EventHandler(this.chkRssEnabled_CheckedChanged);
+            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -4355,5 +4368,6 @@
         private System.Windows.Forms.Label lblAutoConnectProtocol;
         private System.Windows.Forms.TextBox txbAutoConnectDelay;
         private System.Windows.Forms.ComboBox cboAutoConnectProtocol;
+        private System.Windows.Forms.CheckBox chkRssSendLiveCover;
     }
 }

@@ -119,7 +119,7 @@ namespace GreenOnions.Repeater
             
             if (bRewind || bHorizontalMirror || bVerticalMirror)
             {
-                MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStream(url);
+                MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStreamAsync(url);
 
                 //倒放和镜像不会同时发生且倒放优先级高于镜像, 但水平镜像和垂直镜像可能同时发生
                 if (bRewind)

@@ -106,7 +106,7 @@ namespace GreenOnions.BotMain
             {
                 if (inMsg.Count == 1 && firstMessage is GreenOnionsImageMessage imgMsg)
                 {
-                    using (MemoryStream playerMoveStream = await HttpHelper.DownloadImageAsMemoryStream(ImageHelper.ReplaceGroupUrl(imgMsg.Url)))
+                    using (MemoryStream playerMoveStream = await HttpHelper.DownloadImageAsMemoryStreamAsync(ImageHelper.ReplaceGroupUrl(imgMsg.Url)))
                     {
                         if (playerMoveStream == null)
                             return true;  //图片下载失败, 暂时没想好怎么处理
