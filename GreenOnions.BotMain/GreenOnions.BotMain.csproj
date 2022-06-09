@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Local\GreenOnions.QQPhone\GreenOnions.QQPhone.csproj" />
     <ProjectReference Include="..\GreenOnions.ForgeMessage\GreenOnions.ForgeMessage.csproj" />
     <ProjectReference Include="..\GreenOnions.Help\GreenOnions.Help.csproj" />
     <ProjectReference Include="..\GreenOnions.HPicture\GreenOnions.HPicture.csproj" />

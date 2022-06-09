@@ -196,9 +196,9 @@ namespace GreenOnions.HPicture
                 {
                     string addresses;
                     if (BotInfo.HPictureSendTags)
-                        addresses = $@"https://www.pixiv.net/artworks/{imgItem.ID} (p{imgItem.P})\r\n标题:{imgItem.Title}\r\n作者:{imgItem.Author}\r\n标签:{imgItem.Tags}";
+                        addresses = $"https://www.pixiv.net/artworks/{imgItem.ID} (p{imgItem.P})\r\n标题:{imgItem.Title}\r\n作者:{imgItem.Author}\r\n标签:{imgItem.Tags}";
                     else
-                        addresses = $@"https://www.pixiv.net/artworks/{imgItem.ID} (p{imgItem.P})";
+                        addresses = $"https://www.pixiv.net/artworks/{imgItem.ID} (p{imgItem.P})";
                     outMessage.Add(addresses);
                 }
 
