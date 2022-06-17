@@ -67,13 +67,12 @@ namespace GreenOnions.BotMain.CqHttp
                 {
                     if (outMsg != null && outMsg.Count > 0)
                     {
-                        //if (outMsg.First() is GreenOnionsForwardMessage forwardMessage)
-                        //{
-                        //    _ = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.Sender.Id, forwardMessage.ToCqHttpForwardMessage());
-                        //}
-                        //else
-                        //{
-                            //没有私聊合并转发api?
+                        if (outMsg[0] is GreenOnionsForwardMessage forwardMessage)
+                        {
+                            _ = eventArgs.SoraApi.SendPrivateForwardMsg(eventArgs.Sender.Id, forwardMessage.ToCqHttpForwardMessage());
+                        }
+                        else
+                        {
                             ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendPrivateMessage(eventArgs.Sender.Id, outMsg.ToCqHttpMessages(quoteId));
                             if (outMsg.RevokeTime > 0)
                             {
@@ -83,7 +82,7 @@ namespace GreenOnions.BotMain.CqHttp
                                     _ = eventArgs.SoraApi.RecallMessage(result.Result.messageId);
                                 });
                             }
-                        //}
+                        }
                     }
                 }
             });

@@ -17,10 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sora" Version="1.0.0-rc.51" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\GreenOnions.Interface\GreenOnions.Interface.csproj" />
   </ItemGroup>
 
