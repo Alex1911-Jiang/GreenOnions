@@ -437,6 +437,10 @@ namespace GreenOnions.PictureSearcher
                                         outMessage.Add(BotInfo.SearchDownloadThuImageFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", ex.Message)));  //下载缩略图失败
                                     }
                                 }
+                                else
+                                {
+                                    outMessage.Add(new GreenOnionsImageMessage(imgUrl));
+                                }
                                 LogHelper.WriteInfoLog($"SauceNao(浏览器)搜图完成, 相似度高于发图设定值");
                                 return (outMessage, similarity < BotInfo.SearchSauceNAOHighSimilarity);  //发缩略图, 判断相似度是否继续使用Ascii2D搜索
                             }

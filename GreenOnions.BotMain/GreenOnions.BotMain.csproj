@@ -18,10 +18,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.6" />
+    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.7" />
     <PackageReference Include="Sora" Version="1.0.0-rc.55" />
+    <PackageReference Include="Mirai-CSharp.NativeAssets.Win32" Version="1.0.2" />
+    <PackageReference Include="Mirai-CSharp.NativeAssets.Linux" Version="1.0.2" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\GreenOnions.ForgeMessage\GreenOnions.ForgeMessage.csproj" />
     <ProjectReference Include="..\GreenOnions.Help\GreenOnions.Help.csproj" />
