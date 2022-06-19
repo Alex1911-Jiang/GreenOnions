@@ -54,68 +54,15 @@ namespace GreenOnions.Utility.Helper
             OutOfLimit = 3,
         }
 
-        public static CheckedPornStatus CheckImageHealth(byte[] file, out string errorMessage)
-        {
-            errorMessage = "";
-            if (Cache.CheckPornCounting > BotInfo.CheckPornLimitCount)
-            {
-                return CheckedPornStatus.OutOfLimit;
-            }
-            try
-            {
-                string strScore = CheckImagePornScore(file);
-                if (int.TryParse(strScore, out int Score))
-                {
-                    Cache.CheckPornCounting++;
-                    if (Score > 90)
-                    {
-                        //鉴黄不通过删除图片(腾讯云竟然会因为留存色图而封号...)
-                        DeleteObjectRequest request = new DeleteObjectRequest(BotInfo.TencentCloudBucket, "CheckPorn.png");
-                        CosXml.DeleteObject(request);
-                        return CheckedPornStatus.NotHealth;  //非法
-                    }
-                    return CheckedPornStatus.Healthed;  //合法
-                }
-                else
-                {
-                    LogHelper.WriteErrorLog("腾讯云鉴黄的分值非数字");
-                    return CheckedPornStatus.Error;  //非法
-                }
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return CheckedPornStatus.Error;
-            }
-        }
-
         public static CheckedPornStatus CheckImageHealth(string localFileName, out string errorMessage)
         {
             errorMessage = "";
             if (Cache.CheckPornCounting > BotInfo.CheckPornLimitCount)
-            {
                 return CheckedPornStatus.OutOfLimit;
-            }
             try
             {
-                string strScore = CheckImagePornScore(localFileName);
-                if (int.TryParse(strScore, out int Score))
-                {
-                    Cache.CheckPornCounting++;
-                    if (Score > 90)
-                    {
-                        //鉴黄不通过删除图片(腾讯云竟然会因为留存色图而封号...)
-                        DeleteObjectRequest request = new DeleteObjectRequest(BotInfo.TencentCloudBucket, "CheckPorn.png");
-                        CosXml.DeleteObject(request);
-                        return CheckedPornStatus.NotHealth;  //非法
-                    }
-                    else
-                    {
-                        LogHelper.WriteErrorLog("腾讯云鉴黄的分值非数字");
-                        return CheckedPornStatus.Error;  //非法
-                    }
-                }
-                return CheckedPornStatus.Healthed;  //合法
+                string strScore = CheckImagePornScore(localFileName, null, null);
+                return CheckHealthed(strScore);
             }
             catch (Exception ex)
             {
@@ -124,26 +71,68 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        public static string CheckImagePornScore(byte[] file)
+        public static CheckedPornStatus CheckImageHealth(byte[] file, out string errorMessage)
         {
-            if (!IsCreateCosXmlServer)
+            errorMessage = "";
+            if (Cache.CheckPornCounting > BotInfo.CheckPornLimitCount)
+                return CheckedPornStatus.OutOfLimit;
+            try
             {
-                CreateCosXmlServer(BotInfo.TencentCloudAPPID, BotInfo.TencentCloudRegion, BotInfo.TencentCloudSecretId, BotInfo.TencentCloudSecretKey);
+                string strScore = CheckImagePornScore(null,file,null);
+                return CheckHealthed(strScore);
             }
-            if (SaveFileToTencentCOS(file, BotInfo.TencentCloudBucket, "CheckPorn.png"))
+            catch (Exception ex)
             {
-                return CheckPornScoreInner();
+                errorMessage = ex.Message;
+                return CheckedPornStatus.Error;
             }
-            throw new Exception("鉴黄失败，未能成功上传图片到云端。");
         }
 
-        public static string CheckImagePornScore(string localFileName)
+        public static CheckedPornStatus CheckImageHealth(Stream stream, out string errorMessage)
+        {
+            errorMessage = "";
+            if (Cache.CheckPornCounting > BotInfo.CheckPornLimitCount)
+                return CheckedPornStatus.OutOfLimit;
+            try
+            {
+                string strScore = CheckImagePornScore(null, null, stream);
+                return CheckHealthed(strScore);
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return CheckedPornStatus.Error;
+            }
+        }
+
+        private static CheckedPornStatus CheckHealthed(string strScore)
+        {
+            if (int.TryParse(strScore, out int Score))
+            {
+                Cache.CheckPornCounting++;
+                if (Score > 90)
+                {
+                    //鉴黄不通过删除图片(腾讯云竟然会因为留存色图而封号...)
+                    DeleteObjectRequest request = new DeleteObjectRequest(BotInfo.TencentCloudBucket, "CheckPorn.png");
+                    CosXml.DeleteObject(request);
+                    return CheckedPornStatus.NotHealth;  //非法
+                }
+                return CheckedPornStatus.Healthed;  //合法
+            }
+            else
+            {
+                LogHelper.WriteErrorLog($"鉴黄分值非数字");
+                return CheckedPornStatus.Error;  //失败
+            }
+        }
+
+        private static string CheckImagePornScore(string localFileName, byte[] file, Stream stream)
         {
             if (!IsCreateCosXmlServer)
             {
                 CreateCosXmlServer(BotInfo.TencentCloudAPPID, BotInfo.TencentCloudRegion, BotInfo.TencentCloudSecretId, BotInfo.TencentCloudSecretKey);
             }
-            if (SaveFileToTencentCOS(localFileName, BotInfo.TencentCloudBucket, "CheckPorn.png"))
+            if (SaveFileToTencentCOS(localFileName, file, stream, BotInfo.TencentCloudBucket, "CheckPorn.png"))
             {
                 return CheckPornScoreInner();
             }
@@ -164,7 +153,9 @@ namespace GreenOnions.Utility.Helper
                     }
                     else
                     {
-                        return ds.Tables["PornInfo"].Rows[0]["Msg"].ToString();
+                        string msg = ds.Tables["PornInfo"].Rows[0]["Msg"].ToString();
+                        LogHelper.WriteWarningLog($"调用腾讯云Api成功, 但没有返回正确的结果:{msg}");
+                        return msg;
                     }
                 }
                 throw new Exception("鉴黄失败，没有获取到鉴黄结果。");
@@ -175,50 +166,25 @@ namespace GreenOnions.Utility.Helper
         /// 上传到腾讯云COS
         /// </summary>
         /// <param name="srcPath">本地文件绝对路径</param>
+        /// <param name="src">文件二进制内容</param>
+        /// <param name="srcStream">文件流</param>
         /// <param name="bucket">存储桶，格式：BucketName-APPID</param>
         /// <param name="key">对象键</param>
         /// <returns>是否上传成功</returns>
-        public static bool SaveFileToTencentCOS(string srcPath, string bucket, string key)
+        public static bool SaveFileToTencentCOS(string srcPath, byte[] src, Stream srcStream, string bucket, string key)
         {
             try
             {
-                PutObjectRequest request = new PutObjectRequest(bucket, key, srcPath);
-                //设置进度回调
-                request.SetCosProgressCallback(delegate (long completed, long total)
-                {
-                    //Console.WriteLine(String.Format("progress = {0:##.##}%", completed * 100.0 / total));
-                });
-                //执行请求
-                PutObjectResult result = CosXml.PutObject(request);
-                //对象的 eTag
-                string eTag = result.eTag;
-                return true;
-            }
-            catch (COSXML.CosException.CosClientException clientEx)
-            {
-                //请求失败
-                //Console.WriteLine("CosClientException: " + clientEx);
-            }
-            catch (COSXML.CosException.CosServerException serverEx)
-            {
-                //请求失败
-                //Console.WriteLine("CosServerException: " + serverEx.GetInfo());
-            }
-            return false;
-        }
+                PutObjectRequest request;
+                if (!string.IsNullOrWhiteSpace(srcPath))
+                    request = new PutObjectRequest(bucket, key, srcPath);
+                else if (src != null && src.Length > 0)
+                    request = new PutObjectRequest(bucket, key, src);
+                else if (srcStream != null)
+                    request = new PutObjectRequest(bucket, key, srcStream);
+                else
+                    return false;
 
-        /// <summary>
-        /// 上传到腾讯云COS
-        /// </summary>
-        /// <param name="src">文件流</param>
-        /// <param name="bucket">存储桶，格式：BucketName-APPID</param>
-        /// <param name="key">对象键</param>
-        /// <returns>是否上传成功</returns>
-        public static bool SaveFileToTencentCOS(byte[] src, string bucket, string key)
-        {
-            try
-            {
-                PutObjectRequest request = new PutObjectRequest(bucket, key, src);
                 //设置进度回调
                 request.SetCosProgressCallback(delegate (long completed, long total)
                 {

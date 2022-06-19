@@ -250,7 +250,7 @@ namespace GreenOnions.PictureSearcher
                                 File.Copy(imgName, notHealth, true);
                                 break;
                             case TencentCloudHelper.CheckedPornStatus.Error:  //错误
-                                message.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags());
+                                message.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", CheckPornErrMsg)));
                                 break;
                             case TencentCloudHelper.CheckedPornStatus.OutOfLimit:  //超过限制
                                 message.Add(BotInfo.SearchCheckPornOutOfLimitReply.ReplaceGreenOnionsTags());
@@ -270,20 +270,21 @@ namespace GreenOnions.PictureSearcher
                 {
                     using (MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStreamAsync(imgUrl))
                     {
-                        File.WriteAllBytes(imgName, stream.ToArray());
+                        byte[] imgByte = stream.ToArray();
+                        File.WriteAllBytes(imgName, imgByte);
                         if (checkPorn)  //鉴黄
                         {
                             LogHelper.WriteInfoLog($"下载TraceMoe缩略图");
 
-                            switch (TencentCloudHelper.CheckImageHealth(stream.ToArray(), out string CheckPornErrMsg))
+                            switch (TencentCloudHelper.CheckImageHealth(imgByte, out string CheckPornErrMsg))
                             {
                                 case TencentCloudHelper.CheckedPornStatus.Healthed:  //健康
                                     message.Add(new GreenOnionsImageMessage(stream));
-                                    File.WriteAllBytes(healthed, stream.ToArray());
+                                    File.WriteAllBytes(healthed, imgByte);
                                     break;
                                 case TencentCloudHelper.CheckedPornStatus.NotHealth:  //不健康
                                     message.Add(BotInfo.SearchCheckPornIllegalReply.ReplaceGreenOnionsTags());
-                                    File.WriteAllBytes(notHealth, stream.ToArray());
+                                    File.WriteAllBytes(notHealth, imgByte);
                                     break;
                                 case TencentCloudHelper.CheckedPornStatus.Error:  //错误
                                     message.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags());
@@ -301,7 +302,7 @@ namespace GreenOnions.PictureSearcher
                 }
                 catch (Exception ex)
                 {
-                    message.Add(BotInfo.SearchDownloadThuImageFailReply);
+                    message.Add(BotInfo.SearchDownloadThuImageFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", ex.Message)));  //缩略图下载失败
                 }
             }
         }
@@ -589,7 +590,7 @@ namespace GreenOnions.PictureSearcher
                             catch (Exception ex)
                             {
                                 LogHelper.WriteErrorLog(ex);
-                                outMessage.Add(BotInfo.SearchDownloadThuImageFailReply.ReplaceGreenOnionsTags());
+                                outMessage.Add(BotInfo.SearchDownloadThuImageFailReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", ex.Message)));
                             }
 
                             LogHelper.WriteInfoLog($"鉴黄通过或不需要鉴黄");
