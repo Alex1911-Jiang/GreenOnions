@@ -15,9 +15,15 @@ namespace GreenOnions.ForgeMessage
                 if (originMsg.Count > 2 && (originMsg[1] is GreenOnionsAtMessage atMsg))
                 {
                     if (!BotInfo.AdminQQ.Contains(qqId) && BotInfo.AdminQQ.Contains(atMsg.AtId))
+                    {
                         SendMessage(BotInfo.RefuseForgeAdminReply.ReplaceGreenOnionsTags());
+                        return;
+                    }
                     if (!BotInfo.AdminQQ.Contains(qqId) && atMsg.AtId == BotInfo.QQId)
+                    {
                         SendMessage(BotInfo.RefuseForgeBotReply.ReplaceGreenOnionsTags());
+                        return;
+                    }
 
                     GreenOnionsForwardMessage forwardMessage = new GreenOnionsForwardMessage();
                     for (int i = 2; i < originMsg.Count; i++)
