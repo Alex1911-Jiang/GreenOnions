@@ -45,7 +45,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
             bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(e.Sender.Id, e.Sender.Name), e.Sender.Group.Id, async outMsg =>
             {
-                if (outMsg != null)
+                if (outMsg != null && outMsg.Count > 0)
                 {
                     int iRevokeTime = outMsg.RevokeTime;
                     var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Group);

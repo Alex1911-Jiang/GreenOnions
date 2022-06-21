@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -84,29 +85,19 @@ namespace GreenOnions.PictureSearcher
                     if (BotInfo.SearchSendByForward)
                     {
                         searchTasks.Add(traceMoeTask);
-                        traceMoeTask.ContinueWith(callback =>
-                        {
-                            if (callback.Result != null)  //只有高于发送阈值时才会返回
-                                outMessages.Add(callback.Result);
-                        });
+                        traceMoeTask.ContinueWith(callback => outMessages.Add(callback.Result));
                     }
                     else
                         traceMoeTask.ContinueWith(callback => SendMessage(callback.Result));
                 }
+                Task<(GreenOnionsMessages OutMessages, bool DoAscii2dSearch)> sauceNaoTask = null;
                 if (BotInfo.SearchEnabledSauceNao)
                 {
-                    Task<(GreenOnionsMessages OutMessages, bool DoAscii2dSearch)> sauceNaoTask = SearchSauceNao(qqImgUrl, SendMessage);
+                    sauceNaoTask = SearchSauceNao(qqImgUrl, SendMessage);
                     if (BotInfo.SearchSendByForward)
-                    { 
+                    {
                         searchTasks.Add(sauceNaoTask);
                         sauceNaoTask.ContinueWith(sauceNaoCallback => outMessages.Add(sauceNaoCallback.Result.OutMessages));
-
-                        if (BotInfo.SearchEnabledASCII2D)  //合并转发不能等到SauceNao结果回来之后再开启Ascii2D, 直接一起搜
-                        {
-                            Task<GreenOnionsMessages> ascii2dTask = SearchAscii2D(qqImgUrl);
-                            searchTasks.Add(ascii2dTask);
-                            ascii2dTask.ContinueWith(ascii2dCallback => outMessages.Add(ascii2dCallback.Result));
-                        }
                     }
                     else
                     {
@@ -114,29 +105,44 @@ namespace GreenOnions.PictureSearcher
                         {
                             var sauceNaoSearchResult = callback.Result;
                             if (BotInfo.SearchEnabledASCII2D && sauceNaoSearchResult.DoAscii2dSearch)
-                            {
                                 sauceNaoSearchResult.OutMessages.Add("\r\n自动使用ASCII2D搜索。");
-                                _ = SearchAscii2D(qqImgUrl).ContinueWith(callback => SendMessage(callback.Result));  //直接发送
-                            }
                             SendMessage(sauceNaoSearchResult.OutMessages);
                         });
                     }
                 }
-                else if (BotInfo.SearchEnabledASCII2D)  //不启用SauceNao只启用ASCII2D
+                if (BotInfo.SearchEnabledASCII2D)  //不启用SauceNao只启用ASCII2D
                 {
                     LogHelper.WriteInfoLog("没有启用SauceNao");
                     Task<GreenOnionsMessages> ascii2dTask = SearchAscii2D(qqImgUrl);
                     if (BotInfo.SearchSendByForward)
                     {
                         searchTasks.Add(ascii2dTask);
-                        ascii2dTask.ContinueWith(callback =>
+                        ascii2dTask.ContinueWith(async callback =>
                         {
-                            if (callback.Result != null)
+                            if (sauceNaoTask == null)
                                 outMessages.Add(callback.Result);
+                            else
+                            {
+                                await sauceNaoTask;
+                                if (sauceNaoTask.Result.DoAscii2dSearch)
+                                    outMessages.Add(callback.Result);
+                            }
                         });
                     }
                     else
-                        ascii2dTask.ContinueWith(callback => SendMessage(callback.Result));
+                    {
+                        ascii2dTask.ContinueWith(async callback =>
+                        {
+                            if (sauceNaoTask == null) 
+                                SendMessage(callback.Result);
+                            else
+                            {
+                                await sauceNaoTask;
+                                if (sauceNaoTask.Result.DoAscii2dSearch)
+                                    SendMessage(callback.Result);
+                            }
+                        });
+                    }
                 }
 
                 if (BotInfo.SearchSendByForward)
@@ -610,38 +616,38 @@ namespace GreenOnions.PictureSearcher
                                         {
                                             using (var httpClient = new HttpClient())
                                             {
-                                                var catRouteTask = CheckCatRoute(Convert.ToInt64(sauceNaoItem.pixiv_id), -1);
+                                                //var catRouteTask = CheckCatRoute(Convert.ToInt64(sauceNaoItem.pixiv_id), -1);
                                                 if (BotInfo.SearchSendByForward)
                                                 {
-                                                    string catRoute = await catRouteTask;
-                                                    if (string.IsNullOrEmpty(catRoute))
-                                                    {
+                                                    //string catRoute = await catRouteTask;
+                                                    //if (string.IsNullOrEmpty(catRoute))
+                                                    //{
                                                         string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
                                                         outMessage.Add(new GreenOnionsImageMessage(imgUrlNoP));
                                                         DownloadImageArchive(imgUrlNoP, sauceNaoItem.pixiv_id, p);
-                                                    }
-                                                    else
-                                                    {
-                                                        outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
-                                                        DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
-                                                    }
+                                                    //}
+                                                    //else
+                                                    //{
+                                                    //    outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
+                                                    //    DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
+                                                    //}
                                                 }
                                                 else
                                                 {
-                                                    _ = catRouteTask.ContinueWith(t =>
-                                                    {
-                                                        if (string.IsNullOrEmpty(t.Result))
-                                                        {
+                                                    //_ = catRouteTask.ContinueWith(t =>
+                                                    //{
+                                                    //    if (string.IsNullOrEmpty(t.Result))
+                                                    //    {
                                                             string imgUrlNoP = $"https://pixiv.re/{sauceNaoItem.pixiv_id}.png";
                                                             SendMessage(new GreenOnionsImageMessage(imgUrlNoP));
                                                             DownloadImageArchive(imgUrlNoP, sauceNaoItem.pixiv_id, p);
-                                                        }
-                                                        else
-                                                        {
-                                                            SendMessage(new GreenOnionsImageMessage(imgUrlHasP));
-                                                            DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
-                                                        }
-                                                    });
+                                                    //    }
+                                                    //    else
+                                                    //    {
+                                                    //        SendMessage(new GreenOnionsImageMessage(imgUrlHasP));
+                                                    //        DownloadImageArchive(imgUrlHasP, sauceNaoItem.pixiv_id, p);
+                                                    //    }
+                                                    //});
                                                 }
                                             }
                                         }
@@ -958,6 +964,10 @@ namespace GreenOnions.PictureSearcher
             return outMessage;
         }
 
+        /// <summary>
+        /// 检查是否存在图片(已弃用, PixivCat已经改成不带第几张图时默认第一张)
+        /// </summary>
+        [Obsolete]
         private static async Task<string> CheckCatRoute(long id, int p = -1)
         {
             using (var httpClient = new HttpClient())
@@ -1012,22 +1022,22 @@ namespace GreenOnions.PictureSearcher
         {
             GreenOnionsMessages outMessage = new GreenOnionsMessages();
 
-            string msg = await CheckCatRoute(id, p);
+            //string msg = await CheckCatRoute(id, p);
             string index = "";
             if (p != -1)
                 index = $"-{p + 1}";
 
-            if (string.IsNullOrEmpty(msg))
-            {
-                string url = $"https://pixiv.re/{id}{index}.png";
+            //if (string.IsNullOrEmpty(msg))
+            //{
+            string url = $"https://pixiv.re/{id}{index}.png";
                 string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}.png");
                 string healthed = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}_Healthed.png");
                 string notHealth = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}_NotHealth.png");
 
                 await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.OriginPictureCheckPornEnabled, url, imgName, outMessage, healthed, notHealth);
-            }
-            else
-                outMessage.Add(msg);
+            //}
+            //else
+            //    outMessage.Add(msg);
 
             return outMessage;
         }
