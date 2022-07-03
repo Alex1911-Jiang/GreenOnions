@@ -1,83 +1,104 @@
 ﻿using GreenOnions.Interface;
+using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using System.Reflection;
 
 namespace GreenOnions.BotMain
 {
     public static class PluginManager
     {
-        public static Dictionary<string, IPlugin> Plugins = new Dictionary<string, IPlugin>();
+        public static List<IPlugin> Plugins = new List<IPlugin>();
+        private static string _pluginsPath = Path.Combine(Environment.CurrentDirectory, "Plugins");
 
-        public static IEnumerable<(bool, string)> Load()
+        public static int Load()
         {
-            string pluginsPath = Path.Combine(Environment.CurrentDirectory, "Plugins");
-            if (!Directory.Exists(pluginsPath))
-                Directory.CreateDirectory(pluginsPath);
+            if (!Directory.Exists(_pluginsPath))
+                Directory.CreateDirectory(_pluginsPath);
 
-            string[] pluginItemPath = Directory.GetDirectories(pluginsPath);
+            string[] pluginItemPath = Directory.GetDirectories(_pluginsPath);
+
+            Dictionary<string, IPlugin> loadedPlugins = new Dictionary<string, IPlugin>();
+
             foreach (string pluginItem in pluginItemPath)
             {
-                string[] dlls = Directory.GetFiles(pluginItem, "*.dll", SearchOption.TopDirectoryOnly);
+                string pluginItemUser = pluginItem;
+                string[] dlls = Directory.GetFiles(pluginItemUser, "*.dll", SearchOption.TopDirectoryOnly);
                 foreach (string dll in dlls)
                 {
-                    if (!string.IsNullOrEmpty(dll))
+                    string dllPath = Path.GetDirectoryName(dll);
+                    string pluginFileName = Path.GetFileNameWithoutExtension(dll);
+                    string pluginDescriptionFileName = Path.Combine(dllPath, $"{pluginFileName}.deps.json");
+                    if (pluginFileName != "GreenOnions.Interface" && File.Exists(pluginDescriptionFileName))
                     {
-                        string dllPath = Path.GetDirectoryName(dll);
-                        string pluginName = Path.GetFileNameWithoutExtension(dll);
-                        if (pluginName != "GreenOnions.Interface" && File.Exists(Path.Combine(dllPath, $"{pluginName}.deps.json")))
+                        string errMsg = null;
+                        string pluginName = null;
+                        try
                         {
-                            if (Plugins.ContainsKey(pluginName))
+                            Assembly pluginAssembly = Assembly.LoadFrom(dll);
+                            Type[] types = pluginAssembly.GetTypes();
+                            foreach (Type type in types)
                             {
-                                yield return (true, $"存在同名插件{pluginName}, 加载失败");
-                            }
-                            string errMsg = null;
-                            try
-                            {
-                                Assembly pluginAssembly = Assembly.LoadFrom(dll);
-                                Type[] types = pluginAssembly.GetTypes();
-                                foreach (Type type in types)
+                                if (type.GetInterface("IPlugin") != null)
                                 {
-                                    if (type.GetInterface("IPlugin") != null)
+                                    IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
+                                    if (plugin != null)
                                     {
-                                        IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
-                                        if (plugin != null)
-                                        {
-                                            Plugins.Add(pluginName, plugin);
-                                            plugin.OnLoad();
-                                        }
+                                        loadedPlugins.Add(Path.GetFileNameWithoutExtension(dllPath), plugin);
                                     }
                                 }
                             }
-                            catch (Exception ex)
-                            {
-                                errMsg = ex.Message;
-                            }
-                            if (string.IsNullOrEmpty(errMsg))
-                                yield return (true, $"插件{pluginName}加载成功");
-                            else
-                                yield return (true, $"插件{pluginName}加载失败, {errMsg}");
+                        }
+                        catch (Exception ex)
+                        {
+                            LogHelper.WriteWarningLog($"插件{pluginName}({pluginFileName})加载失败, {errMsg}");
                         }
                     }
                 }
             }
+
+            List<string> pluginNewOrder = new List<string>();
+            for (int i = 0; i < BotInfo.PluginOrder.Count; i++)
+            {
+                string pluginPath = BotInfo.PluginOrder[i];
+                if (loadedPlugins.ContainsKey(pluginPath))
+                {
+                    IPlugin plugin = loadedPlugins[pluginPath];
+                    Plugins.Add(plugin);
+                    loadedPlugins.Remove(pluginPath);
+                    plugin.OnLoad(Path.Combine(_pluginsPath, pluginPath));
+                    LogHelper.WriteInfoLog($"插件{plugin.Name}加载成功");
+                    pluginNewOrder.Add(Path.GetFileNameWithoutExtension(pluginPath));
+                }
+            }
+            foreach (KeyValuePair<string, IPlugin> theOtherPlugins in loadedPlugins)
+            {
+                Plugins.Add(theOtherPlugins.Value);
+                theOtherPlugins.Value.OnLoad(theOtherPlugins.Key);
+                LogHelper.WriteInfoLog($"插件{theOtherPlugins.Value.Name}加载成功");
+                pluginNewOrder.Add(Path.GetFileNameWithoutExtension(theOtherPlugins.Key));
+            }
+            BotInfo.PluginOrder = pluginNewOrder;
+            ConfigHelper.SaveConfigFile();
+            return Plugins.Count;
         }
 
-        public static void Connected(long selfId, Func<long, IGreenOnionsMessages, Task<int>> SendFriendMessage, Func<long, IGreenOnionsMessages, Task<int>> SendGroupMessage, Func<long, long, IGreenOnionsMessages, Task<int>> SendTempMessage)
+        public static void Connected(long selfId, Func<long, GreenOnionsMessages, Task<int>> SendFriendMessage, Func<long, GreenOnionsMessages, Task<int>> SendGroupMessage, Func<long, long, GreenOnionsMessages, Task<int>> SendTempMessage)
         {
-            foreach (KeyValuePair<string, IPlugin> plugin in Plugins)
-                plugin.Value.OnConnected(selfId, SendFriendMessage, SendGroupMessage, SendTempMessage);
+            foreach (IPlugin plugin in Plugins)
+                plugin.OnConnected(selfId, SendFriendMessage, SendGroupMessage, SendTempMessage);
         }
 
         public static void Disconnected()
         {
-            foreach (KeyValuePair<string, IPlugin> plugin in Plugins)
-                plugin.Value.OnDisconnected();
+            foreach (IPlugin plugin in Plugins)
+                plugin.OnDisconnected();
         }
 
-        public static bool Message(IGreenOnionsMessages msgs, long? senderGroup, Action<IGreenOnionsMessages> Response)
+        public static bool Message(GreenOnionsMessages msgs, long? senderGroup, Action<GreenOnionsMessages> Response)
         {
-            foreach (KeyValuePair<string, IPlugin> plugin in Plugins)
+            foreach (IPlugin plugin in Plugins)
             {
-                if (plugin.Value.OnMessage(msgs, senderGroup, Response))
+                if (plugin.OnMessage(msgs, senderGroup, Response))
                     return true;  //命中插件
             }
             return false;

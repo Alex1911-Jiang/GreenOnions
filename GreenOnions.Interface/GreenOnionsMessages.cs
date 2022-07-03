@@ -1,8 +1,6 @@
-﻿using GreenOnions.Interface;
-
-namespace GreenOnions.Model
+﻿namespace GreenOnions.Interface
 {
-    public class GreenOnionsMessages : List<GreenOnionsBaseMessage>, IGreenOnionsMessages
+    public class GreenOnionsMessages : List<GreenOnionsBaseMessage>
     {
         public static implicit operator GreenOnionsMessages(GreenOnionsBaseMessage onceMsg)
         {

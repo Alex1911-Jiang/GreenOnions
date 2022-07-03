@@ -181,11 +181,11 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        private static void BindProperty(Image originImage, Image copyImage)
+        private static void BindProperty(Image originalImage, Image copyImage)
         {
-            for (int i = 0; i < originImage.PropertyItems.Length; i++)
+            for (int i = 0; i < originalImage.PropertyItems.Length; i++)
             {
-                copyImage.SetPropertyItem(originImage.PropertyItems[i]);
+                copyImage.SetPropertyItem(originalImage.PropertyItems[i]);
             }
         }
 

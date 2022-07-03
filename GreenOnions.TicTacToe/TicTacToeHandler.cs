@@ -1,4 +1,4 @@
-﻿using GreenOnions.Model;
+﻿using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GreenOnions.TicTacToe
 {
@@ -19,7 +18,7 @@ namespace GreenOnions.TicTacToe
         /// 开始棋局
         /// </summary>
         /// <param name="qqId">玩家QQ</param>
-        public static async void StartTicTacToeSession(long qqId, Action<GreenOnionsMessages> SendMessage)
+        public static void StartTicTacToeSession(long qqId, Action<GreenOnionsMessages> SendMessage)
         {
             if (Cache.PlayingTicTacToeUsers.ContainsKey(qqId))
             {

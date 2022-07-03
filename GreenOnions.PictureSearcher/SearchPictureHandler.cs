@@ -1,4 +1,4 @@
-﻿using GreenOnions.Model;
+﻿using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using HtmlAgilityPack;
@@ -12,7 +12,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -601,7 +600,7 @@ namespace GreenOnions.PictureSearcher
 
                             LogHelper.WriteInfoLog($"鉴黄通过或不需要鉴黄");
 
-                            if (BotInfo.SearchSauceNAOSendPixivOriginPicture)
+                            if (BotInfo.SearchSauceNAOSendPixivOriginalPicture)
                             {
                                 //如果是pixiv体系尝试下载原图
                                 if (sauceNaoItem.pixiv_id != null)
@@ -992,14 +991,14 @@ namespace GreenOnions.PictureSearcher
         }
 
 
-        public static async Task<GreenOnionsMessages> SendPixivOriginPictureWithIdAndP(string strPixivId)
+        public static async Task<GreenOnionsMessages> SendPixivOriginalPictureWithIdAndP(string strPixivId)
         {
             string[] idWithIndex = strPixivId.Split("-");
             if (idWithIndex.Length == 2)
             {
                 if (int.TryParse(idWithIndex[1], out int index) && long.TryParse(idWithIndex[0], out long id))
                 {
-                    return await SearchPictureHandler.DownloadPixivOriginPicture(id, index - 1);
+                    return await SearchPictureHandler.DownloadPixivOriginalPicture(id, index - 1);
                 }
             }
             string[] idWithP = strPixivId.ToLower().Split("p");
@@ -1007,18 +1006,18 @@ namespace GreenOnions.PictureSearcher
             {
                 if (int.TryParse(idWithP[1], out int p) && long.TryParse(idWithP[0], out long id))
                 {
-                    return await SearchPictureHandler.DownloadPixivOriginPicture(id, p);
+                    return await SearchPictureHandler.DownloadPixivOriginalPicture(id, p);
                 }
             }
             if (long.TryParse(strPixivId, out long idNoneP))
             {
-                return await SearchPictureHandler.DownloadPixivOriginPicture(idNoneP, -1);
+                return await SearchPictureHandler.DownloadPixivOriginalPicture(idNoneP, -1);
             }
             return null;
         }
 
 
-        private static async Task<GreenOnionsMessages> DownloadPixivOriginPicture(long id, int p = -1)
+        private static async Task<GreenOnionsMessages> DownloadPixivOriginalPicture(long id, int p = -1)
         {
             GreenOnionsMessages outMessage = new GreenOnionsMessages();
 
@@ -1034,7 +1033,7 @@ namespace GreenOnions.PictureSearcher
                 string healthed = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}_Healthed.png");
                 string notHealth = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}_NotHealth.png");
 
-                await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.OriginPictureCheckPornEnabled, url, imgName, outMessage, healthed, notHealth);
+                await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.OriginalPictureCheckPornEnabled, url, imgName, outMessage, healthed, notHealth);
             //}
             //else
             //    outMessage.Add(msg);

@@ -1,4 +1,4 @@
-﻿using GreenOnions.Model;
+﻿using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Newtonsoft.Json;

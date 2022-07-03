@@ -1,9 +1,8 @@
-﻿using GreenOnions.Interface;
-using System.Text;
+﻿using System.Text;
 
-namespace GreenOnions.Model
+namespace GreenOnions.Interface
 {
-    public abstract record GreenOnionsBaseMessage : IGreenOnionsBaseMessage
+    public abstract record GreenOnionsBaseMessage
     {
         public static implicit operator GreenOnionsBaseMessage(string text)
         {

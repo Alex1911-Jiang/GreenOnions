@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GreenOnions.Model\GreenOnions.Model.csproj" />
+    <ProjectReference Include="..\GreenOnions.Interface\GreenOnions.Interface.csproj" />
     <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />
   </ItemGroup>
 

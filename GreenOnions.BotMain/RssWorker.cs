@@ -1,10 +1,5 @@
-﻿using GreenOnions.Model;
+﻿using GreenOnions.Interface;
 using GreenOnions.RSS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GreenOnions.BotMain
 {

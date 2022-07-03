@@ -243,17 +243,17 @@ namespace GreenOnions.Utility.Helper
         }
 
 
-        public static string ReplaceGreenOnionsTags(this string OriginString, params KeyValuePair<string, string>[] CustomTags)
+        public static string ReplaceGreenOnionsTags(this string OriginalString, params KeyValuePair<string, string>[] CustomTags)
         {
-            OriginString = AssemblyHelper.ReplacePropertyChineseNameToValue(OriginString);
+            OriginalString = AssemblyHelper.ReplacePropertyChineseNameToValue(OriginalString);
             if (CustomTags != null)
             {
                 foreach (var tag in CustomTags)
                 {
-                    OriginString = OriginString.Replace($"<{tag.Key}>", tag.Value);
+                    OriginalString = OriginalString.Replace($"<{tag.Key}>", tag.Value);
                 }
             }
-            return OriginString;
+            return OriginalString;
         }
     }
 }

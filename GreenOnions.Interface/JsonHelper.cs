@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace GreenOnions.Utility.Helper
+namespace GreenOnions.Interface
 {
     public static class JsonHelper
     {
@@ -19,9 +19,10 @@ namespace GreenOnions.Utility.Helper
         public const string JsonNodeNameRss = "Rss";
         public const string JsonNodeNameTicTacToe = "TicTacToe";
         public const string JsonNodeNameOther = "Other";
+        public const string JsonNodeNamePlugin = "Plugin";
 
-        private static JObject jsonConfig = null;
-        private static JObject jsonCache = null;
+        public static JObject JsonConfig { get; set; }
+        public static JObject JsonCache { get; set; }
         public static string JsonConfigFileName { get; set; }
         public static string JsonCacheFileName { get; set; }
 
@@ -43,27 +44,35 @@ namespace GreenOnions.Utility.Helper
             JObject json = null;
 
             if (jsonFileName == JsonConfigFileName)
-                if (jsonConfig == null)
+            {
+                if (JsonConfig == null)
                     if (File.Exists(jsonFileName))
-                        using (StreamReader file = File.OpenText(jsonFileName))
-                        using (JsonTextReader reader = new JsonTextReader(file))
-                            jsonConfig = (JObject)JToken.ReadFrom(reader);
-
-            if (jsonFileName == JsonCacheFileName)
-                if (jsonCache == null)
-                    if (File.Exists(jsonFileName))
-                        using (StreamReader file = File.OpenText(jsonFileName))
-                        using (JsonTextReader reader = new JsonTextReader(file))
-                            jsonCache = (JObject)JToken.ReadFrom(reader);
-
-
-            if (jsonFileName == JsonConfigFileName)
-                json = jsonConfig;
+                        JsonConfig = ReadJsonFile(jsonFileName);
+                json = JsonConfig;
+            }
             else if (jsonFileName == JsonCacheFileName)
-                json = jsonCache;
+            {
+                if (JsonCache == null)
+                    if (File.Exists(jsonFileName))
+                        JsonCache = ReadJsonFile(jsonFileName);
+                json = JsonCache;
+            }
+            else
+            {
+                if (File.Exists(jsonFileName))
+                    json = ReadJsonFile(jsonFileName);
+            }
+
             JToken oGroup = json?[group];
             var value = oGroup?[key];
             return value?.ToString();
+        }
+
+        private static JObject ReadJsonFile(string jsonFileName)
+        {
+            using (StreamReader file = File.OpenText(jsonFileName))
+            using (JsonTextReader reader = new JsonTextReader(file))
+                return (JObject)JToken.ReadFrom(reader);
         }
 
         /// <summary>
@@ -72,23 +81,23 @@ namespace GreenOnions.Utility.Helper
         /// <param name="jsonFilePath">json文件路径</param>
         /// <param name="group">顶层键</param>
         /// <param name="key">次层键</param>
-        /// <param name="Value">值</param>
+        /// <param name="value">值</param>
         public static void SetSerializationValue(string jsonFilePath, string group, string key, string value)
         {
             string json = null;
             if (jsonFilePath == JsonConfigFileName)
             {
-                if (jsonConfig == null)
+                if (JsonConfig == null)
                     json = File.Exists(jsonFilePath) ? File.ReadAllText(jsonFilePath) : "";
                 else
-                    json = jsonConfig.ToString();
+                    json = JsonConfig.ToString();
             }
             else if (jsonFilePath == JsonCacheFileName)
             {
-                if (jsonCache == null)
+                if (JsonCache == null)
                     json = File.Exists(jsonFilePath) ? File.ReadAllText(jsonFilePath) : "";
                 else
-                    json = jsonCache.ToString();
+                    json = JsonCache.ToString();
             }
             Dictionary<string, Dictionary<string, string>> dicJson = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(json) ?? new Dictionary<string, Dictionary<string, string>>();
             if (dicJson.ContainsKey(group))
@@ -104,34 +113,9 @@ namespace GreenOnions.Utility.Helper
                 dicJson[group].Add(key, value);
             }
             if (jsonFilePath == JsonConfigFileName)
-                jsonConfig = JObject.Parse(JsonConvert.SerializeObject(dicJson, Formatting.Indented));
+                JsonConfig = JObject.Parse(JsonConvert.SerializeObject(dicJson, Formatting.Indented));
             else if (jsonFilePath == JsonCacheFileName)
-                jsonCache = JObject.Parse(JsonConvert.SerializeObject(dicJson, Formatting.Indented));
-        }
-
-        public static void SaveConfigFile() => File.WriteAllText("config.json", jsonConfig.ToString());
-        public static void SaveCacheFile() => File.WriteAllText("cache.json", jsonCache.ToString());
-
-        public static void CreateConfig()
-        {
-            PropertyInfo[] PropertyInfos = typeof(BotInfo).GetProperties();
-            for (int i = 0; i < PropertyInfos.Length; i++)
-            {
-                if (PropertyInfos[i].CanWrite)
-                    PropertyInfos[i].SetValue(null, PropertyInfos[i].GetValue(null));
-            }
-            SaveConfigFile();
-        }
-
-        public static void CreateCache()
-        {
-            PropertyInfo[] PropertyInfos = typeof(Cache).GetProperties();
-            for (int i = 0; i < PropertyInfos.Length; i++)
-            {
-                if (PropertyInfos[i].CanWrite)
-                    PropertyInfos[i].SetValue(null, PropertyInfos[i].GetValue(null));
-            }
-            SaveCacheFile();
+                JsonCache = JObject.Parse(JsonConvert.SerializeObject(dicJson, Formatting.Indented));
         }
     }
 }

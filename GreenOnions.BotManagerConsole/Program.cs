@@ -1,6 +1,7 @@
 ﻿using GreenOnions.BotMain;
 using GreenOnions.BotMain.CqHttp;
 using GreenOnions.BotMain.MiraiApiHttp;
+using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
@@ -19,22 +20,15 @@ namespace GreenOnions.BotManagerConsole
 
 			if (!File.Exists(JsonHelper.JsonConfigFileName))
 			{
-				JsonHelper.CreateConfig();
+				ConfigHelper.CreateConfig();
 				Console.WriteLine("初次使用本机器人，请先设置config.json相关参数后继续以下步骤。");
 			}
 			if (!File.Exists(JsonHelper.JsonCacheFileName))
-				JsonHelper.CreateCache();
+				ConfigHelper.CreateCache();
 
 			Console.WriteLine("有任何疑问，意见或建议欢迎到 https://github.com/Alex1911-Jiang/GreenOnions 提Issue");
 
-            int iLoadCount = 0;
-            foreach ((bool load, string msg) loadPluginMsg in PluginManager.Load())
-            {
-                if (loadPluginMsg.load)
-                    iLoadCount++;
-                Console.WriteLine(loadPluginMsg.msg);
-            }
-            Console.WriteLine($"成功加载{iLoadCount}个插件");
+            Console.WriteLine($"成功加载{PluginManager.Load()}个插件");
 
 			if (BotInfo.AutoConnectEnabled)
 			{

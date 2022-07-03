@@ -1,4 +1,5 @@
-﻿using GreenOnions.Utility.Helper;
+﻿using GreenOnions.Interface;
+using GreenOnions.Utility.Helper;
 using GreenOnions.Utility.Items;
 using Newtonsoft.Json;
 using System;
@@ -481,15 +482,15 @@ namespace GreenOnions.Utility
         /// 是否SauceNao搜图发送Pixiv原图
         /// </summary>
         [PropertyChineseName("SauceNAO 搜图结果为 Pixiv 地址时发送原图")]
-        public static bool SearchSauceNAOSendPixivOriginPicture
+        public static bool SearchSauceNAOSendPixivOriginalPicture
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginPicture));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginalPicture));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return true;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginPicture), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOSendPixivOriginalPicture), value.ToString());
         }
 
         /// <summary>
@@ -690,15 +691,15 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否在下载原图功能上启用鉴黄
         /// </summary>
-        public static bool OriginPictureCheckPornEnabled
+        public static bool OriginalPictureCheckPornEnabled
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornEnabled));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornEnabled));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return false;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornEnabled), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornEnabled), value.ToString());
         }
 
         /// <summary>
@@ -734,15 +735,15 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用下载原图
         /// </summary>
-        public static bool OriginPictureEnabled
+        public static bool OriginalPictureEnabled
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureEnabled));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureEnabled));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return true;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureEnabled), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureEnabled), value.ToString());
         }
 
         /// <summary>
@@ -762,33 +763,33 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 下载原图功能上鉴黄不通过时做以下动作: 0.以合并转发的方式发送原图 1.不做任何事 2.回复设置的语句
         /// </summary>
-        public static int OriginPictureCheckPornEvent
+        public static int OriginalPictureCheckPornEvent
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornEvent));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornEvent));
                 if (int.TryParse(strValue, out int iValue)) return iValue;
                 return 87;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornEvent), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornEvent), value.ToString());
         }
 
         /// <summary>
         /// 下载原图功能鉴黄不通过返回消息
         /// </summary>
-        public static string OriginPictureCheckPornIllegalReply
+        public static string OriginalPictureCheckPornIllegalReply
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornIllegalReply)) ?? "AI鉴黄不通过。";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornIllegalReply), value);
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornIllegalReply)) ?? "AI鉴黄不通过。";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornIllegalReply), value);
         }
 
         /// <summary>
         /// 下载原图功能鉴黄错误返回消息
         /// </summary>
-        public static string OriginPictureCheckPornErrorReply
+        public static string OriginalPictureCheckPornErrorReply
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornErrorReply)) ?? "AI鉴黄发生错误。<错误信息>";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginPictureCheckPornErrorReply), value);
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornErrorReply)) ?? "AI鉴黄发生错误。<错误信息>";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornErrorReply), value);
         }
         #endregion  -- 下载原图属性 --
 
@@ -1849,6 +1850,21 @@ namespace GreenOnions.Utility
         }
 
         #endregion -- 井字棋属性 --
+
+        #region -- 插件属性 --
+        public static List<string> PluginOrder
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePlugin, nameof(PluginOrder));
+                if (string.IsNullOrEmpty(strValue))
+                    return new List<string>();
+                return strValue.Split(';').ToList();
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePlugin, nameof(PluginOrder), string.Join(";", value));
+        }
+
+        #endregion -- 插件属性 --
     }
     public enum LimitType
     {

@@ -1,16 +1,8 @@
-﻿using GreenOnions.Model;
+﻿using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Sora.Entities;
-using Sora.Entities.Info;
-using Sora.Entities.Segment;
-using Sora.Entities.Segment.DataModel;
 using Sora.EventArgs.SoraEvent;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GreenOnions.BotMain.CqHttp
 {

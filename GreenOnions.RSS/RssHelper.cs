@@ -9,10 +9,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Linq;
-using GreenOnions.Model;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using GreenOnions.Interface;
 
 namespace GreenOnions.RSS
 {
@@ -53,7 +53,7 @@ namespace GreenOnions.RSS
                                     LogHelper.WriteInfoLog($"首次抓取到{item.Url}内容, 只保存不发送, 防止内容太多刷屏");
                                     Cache.LastOneSendRssTime.TryAdd(item.Url, DateTime.Now);  //添加现在作为起始日期(避免把所有历史信息全都抓过来发送)
                                     Cache.LastOneSendRssTime = Cache.LastOneSendRssTime;
-                                    JsonHelper.SaveCacheFile();
+                                    ConfigHelper.SaveCacheFile();
                                     continue;
                                 }
                                 foreach (var rss in ReadRss(item.Url))  //每条订阅地址可能获取到若干条更新
@@ -192,7 +192,7 @@ namespace GreenOnions.RSS
                                         else
                                             Cache.LastOneSendRssTime.TryAdd(item.Url, rss.pubDate);  //群和好友均推送完毕后记录此地址的最后更新时间
                                         Cache.LastOneSendRssTime = Cache.LastOneSendRssTime;
-                                        JsonHelper.SaveCacheFile();
+                                        ConfigHelper.SaveCacheFile();
 
                                         LogHelper.WriteInfoLog($"记录{item.Url}最后更新时间完毕");
 

@@ -1,15 +1,13 @@
-﻿using GreenOnions.Translate;
+﻿using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using GreenOnions.Model;
-using System.Reflection;
 
 namespace GreenOnions.Help
 {
@@ -24,7 +22,7 @@ namespace GreenOnions.Help
                 GreenOnionsBaseMessage[] strHelpResult = strFeatures switch
                 {
                     "--搜图" => pictureSearchHelp(),
-                    "--下载原图" => downloadOriginPictureHelp(),
+                    "--下载原图" => downloadOriginalPictureHelp(),
                     "--翻译" => translateHelp(),
                     "--GHS" => hPictureHelp(groupId),
                     "--色图" => hPictureHelp(groupId),
@@ -53,7 +51,7 @@ namespace GreenOnions.Help
             List<string> lstEnabledFeatures = new List<string>();
             if (BotInfo.SearchEnabled)
                 lstEnabledFeatures.Add("搜图");
-            if (BotInfo.OriginPictureEnabled)
+            if (BotInfo.OriginalPictureEnabled)
                 lstEnabledFeatures.Add("下载原图");
             if (BotInfo.TranslateEnabled)
                 lstEnabledFeatures.Add("翻译");
@@ -86,7 +84,7 @@ namespace GreenOnions.Help
             else
                 return new[] { $"当前{BotInfo.BotName}没有启用搜图功能" }.ToTextMessageArray();
         }
-        private static GreenOnionsBaseMessage[] downloadOriginPictureHelp()
+        private static GreenOnionsBaseMessage[] downloadOriginalPictureHelp()
         {
             return new[] { $"发送\"{BotInfo.BotName}下载Pixiv原图:Pixiv作品ID\"(注意中间有个冒号)\r\n" +
                         $"或直接\"@{BotInfo.BotName} Pixiv作品ID\"(中间没有冒号)来下载原图\r\n" +
@@ -107,7 +105,7 @@ namespace GreenOnions.Help
                 }
                 else
                 {
-                    StringBuilder strTranslateYouDao = new StringBuilder("发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。");
+                    StringBuilder strTranslateYouDao = new StringBuilder($"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。");
                     strTranslateYouDao.AppendLine($"发送\"{BotInfo.TranslateFromToCMD.ReplaceGreenOnionsTags()}翻译内容\"从指定语言翻译成指定语言。");
                     strTranslateYouDao.AppendLine($"目前支持的语言有:{string.Join("\r\n", Constants.YouDaoLanguages.Keys)}");
                     strTranslateYouDao.AppendLine("目前接入的翻译引擎为:有道翻译");

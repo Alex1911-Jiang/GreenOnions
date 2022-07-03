@@ -1,4 +1,4 @@
-﻿using GreenOnions.Model;
+﻿using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
@@ -8,11 +8,11 @@ namespace GreenOnions.ForgeMessage
 {
     public static class ForgeMessageHandler
     {
-        public static void SendForgeMessage(GreenOnionsMessages originMsg, long qqId, Action<GreenOnionsMessages> SendMessage)
+        public static void SendForgeMessage(GreenOnionsMessages originalMsg, long qqId, Action<GreenOnionsMessages> SendMessage)
         {
             if (!BotInfo.ForgeMessageAdminOnly || BotInfo.AdminQQ.Contains(qqId))
             {
-                if (originMsg.Count > 2 && (originMsg[1] is GreenOnionsAtMessage atMsg))
+                if (originalMsg.Count > 2 && (originalMsg[1] is GreenOnionsAtMessage atMsg))
                 {
                     if (!BotInfo.AdminQQ.Contains(qqId) && BotInfo.AdminQQ.Contains(atMsg.AtId))
                     {
@@ -26,9 +26,9 @@ namespace GreenOnions.ForgeMessage
                     }
 
                     GreenOnionsForwardMessage forwardMessage = new GreenOnionsForwardMessage();
-                    for (int i = 2; i < originMsg.Count; i++)
+                    for (int i = 2; i < originalMsg.Count; i++)
                     {
-                        if (originMsg[i] is GreenOnionsTextMessage textMsg)
+                        if (originalMsg[i] is GreenOnionsTextMessage textMsg)
                         {
                             string[] plainMsgs = textMsg.ToString().Trim().Split(BotInfo.ForgeMessageCmdNewLine);
                             for (int j = 0; j < plainMsgs.Length; j++)
@@ -37,7 +37,7 @@ namespace GreenOnions.ForgeMessage
                                     forwardMessage.Add(atMsg.AtId, atMsg.NickName, new GreenOnionsMessages(plainMsgs[j]));
                             }
                         }
-                        else if (originMsg[i] is GreenOnionsImageMessage imageMsg)
+                        else if (originalMsg[i] is GreenOnionsImageMessage imageMsg)
                         {
                             forwardMessage.Add(atMsg.AtId, atMsg.NickName, new GreenOnionsMessages(imageMsg));
                         }

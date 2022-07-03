@@ -1,8 +1,6 @@
-﻿using GreenOnions.Interface;
-
-namespace GreenOnions.Model
+﻿namespace GreenOnions.Interface
 {
-    public record GreenOnionsImageMessage : GreenOnionsBaseMessage, IGreenOnionsImageMessage
+    public record GreenOnionsImageMessage : GreenOnionsBaseMessage
     {
         private string _base64Str;
         public GreenOnionsImageMessage(MemoryStream ms)

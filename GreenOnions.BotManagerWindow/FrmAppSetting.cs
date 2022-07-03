@@ -73,7 +73,7 @@ namespace GreenOnions.BotManagerWindow
             txbTraceMoeSendThreshold.Text = BotInfo.TraceMoeSendThreshold.ToString();
             chkSearchSauceNAOEnabled.Checked = BotInfo.SearchEnabledSauceNao;  //SauceNao Api-Key
             chkSearchSauceNAOSortByDesc.Checked = BotInfo.SearchSauceNAOSortByDesc;
-            chkSearchSauceNAOSendPixivOriginPicture.Checked = BotInfo.SearchSauceNAOSendPixivOriginPicture;
+            chkSearchSauceNAOSendPixivOriginalPicture.Checked = BotInfo.SearchSauceNAOSendPixivOriginalPicture;
             txbSearchSauceNAOApiKey.Text = string.Join("\r\n", BotInfo.SauceNAOApiKey);
             chkSearchASCII2DEnabled.Checked = BotInfo.SearchEnabledASCII2D;  //是否启用ASCII2D搜图
             chkSearchTraceMoeEnabled.Checked = BotInfo.SearchEnabledTraceMoe;  //是否启用TraceMoe搜番
@@ -97,22 +97,22 @@ namespace GreenOnions.BotManagerWindow
             txbSearchCheckPornIllegalReply.Text = BotInfo.SearchCheckPornIllegalReply;
             txbSearchCheckPornErrorReply.Text = BotInfo.SearchCheckPornErrorReply;
 
-            chkOriginPictureEnabled.Checked = BotInfo.OriginPictureEnabled;
-            chkOriginPictureCheckPornEnabled.Checked = BotInfo.OriginPictureCheckPornEnabled;  //是否在下载原图启用鉴黄
-            switch (BotInfo.OriginPictureCheckPornEvent)  //鉴黄不通过的行为
+            chkOriginalPictureEnabled.Checked = BotInfo.OriginalPictureEnabled;
+            chkOriginalPictureCheckPornEnabled.Checked = BotInfo.OriginalPictureCheckPornEnabled;  //是否在下载原图启用鉴黄
+            switch (BotInfo.OriginalPictureCheckPornEvent)  //鉴黄不通过的行为
             {
                 case 0:
-                    rdoOriginPictureCheckPornSendByForward.Checked = true;
+                    rdoOriginalPictureCheckPornSendByForward.Checked = true;
                     break;
                 case 1:
-                    rdoOriginPictureCheckPornDoNothing.Checked = true;
+                    rdoOriginalPictureCheckPornDoNothing.Checked = true;
                     break;
                 case 2:
-                    rdoOriginPictureCheckPornReply.Checked = true;
+                    rdoOriginalPictureCheckPornReply.Checked = true;
                     break;
             }
-            txbOriginPictureCheckPornIllegalReply.Text = BotInfo.OriginPictureCheckPornIllegalReply;
-            txbOriginPictureCheckPornErrorReply.Text = BotInfo.OriginPictureCheckPornErrorReply;
+            txbOriginalPictureCheckPornIllegalReply.Text = BotInfo.OriginalPictureCheckPornIllegalReply;
+            txbOriginalPictureCheckPornErrorReply.Text = BotInfo.OriginalPictureCheckPornErrorReply;
             chkASCII2DRequestByWebBrowser.Checked = BotInfo.ASCII2DRequestByWebBrowser;
             chkSauceNaoRequestByWebBrowser.Checked = BotInfo.SauceNaoRequestByWebBrowser;
             chkSearchSendByForward.Checked = BotInfo.SearchSendByForward;
@@ -335,7 +335,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.TraceMoeSendThreshold = iTraceMoeSendThreshold;
             BotInfo.SearchEnabledSauceNao = chkSearchSauceNAOEnabled.Checked;  //是否启用SauceNao搜图
             BotInfo.SearchSauceNAOSortByDesc = chkSearchSauceNAOSortByDesc.Checked;
-            BotInfo.SearchSauceNAOSendPixivOriginPicture = chkSearchSauceNAOSendPixivOriginPicture.Checked;
+            BotInfo.SearchSauceNAOSendPixivOriginalPicture = chkSearchSauceNAOSendPixivOriginalPicture.Checked;
             BotInfo.SauceNAOApiKey = txbSearchSauceNAOApiKey.Text.Split("\r\n");
             BotInfo.SearchEnabledASCII2D = chkSearchASCII2DEnabled.Checked;  //是否启用ASCII2D搜图
             BotInfo.SearchEnabledTraceMoe = chkSearchTraceMoeEnabled.Checked;  //是否启用TraceMoe搜番
@@ -385,11 +385,11 @@ namespace GreenOnions.BotManagerWindow
 
             #region -- 下载原图设置 --
 
-            BotInfo.OriginPictureEnabled = chkOriginPictureEnabled.Checked;
-            BotInfo.OriginPictureCheckPornEnabled = chkOriginPictureCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
-            BotInfo.OriginPictureCheckPornEvent = Convert.ToInt32(pnlOriginPictureCheckPornEvent.Controls.OfType<RadioButton>().Where(x => x.Checked).First().Tag);
-            BotInfo.OriginPictureCheckPornIllegalReply = txbOriginPictureCheckPornIllegalReply.Text;
-            BotInfo.OriginPictureCheckPornErrorReply = txbOriginPictureCheckPornErrorReply.Text;
+            BotInfo.OriginalPictureEnabled = chkOriginalPictureEnabled.Checked;
+            BotInfo.OriginalPictureCheckPornEnabled = chkOriginalPictureCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
+            BotInfo.OriginalPictureCheckPornEvent = Convert.ToInt32(pnlOriginalPictureCheckPornEvent.Controls.OfType<RadioButton>().Where(x => x.Checked).First().Tag);
+            BotInfo.OriginalPictureCheckPornIllegalReply = txbOriginalPictureCheckPornIllegalReply.Text;
+            BotInfo.OriginalPictureCheckPornErrorReply = txbOriginalPictureCheckPornErrorReply.Text;
 
             #endregion -- 下载原图设置 --
 
@@ -555,7 +555,7 @@ namespace GreenOnions.BotManagerWindow
 
             #endregion -- 井字棋 --
 
-            JsonHelper.SaveConfigFile();
+            ConfigHelper.SaveConfigFile();
 
             foreach (string sauceNaoKey in txbSearchSauceNAOApiKey.Text.Split("\r\n"))
                 Cache.SetSauceNaoKey(sauceNaoKey);
@@ -713,11 +713,11 @@ namespace GreenOnions.BotManagerWindow
 
         private void chkPictureSearcherCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlPictureSearcherCheckPorn.Enabled = chkSearchCheckPornEnabled.Checked;
 
-        private void chkOriginPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlOriginPicture.Enabled = chkOriginPictureEnabled.Checked;
+        private void chkOriginalPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlOriginalPicture.Enabled = chkOriginalPictureEnabled.Checked;
 
-        private void chkOriginPictureCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlOriginPictureCheckPorn.Enabled = chkOriginPictureCheckPornEnabled.Checked;
+        private void chkOriginalPictureCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlOriginalPictureCheckPorn.Enabled = chkOriginalPictureCheckPornEnabled.Checked;
 
-        private void rdoOriginPictureCheckPornSendByForward_CheckedChanged(object sender, EventArgs e) => pnlOriginPictureCheckPornMessage.Enabled = rdoOriginPictureCheckPornReply.Checked;
+        private void rdoOriginalPictureCheckPornSendByForward_CheckedChanged(object sender, EventArgs e) => pnlOriginalPictureCheckPornMessage.Enabled = rdoOriginalPictureCheckPornReply.Checked;
 
         private void chkTranslateEnabled_CheckedChanged(object sender, EventArgs e) => pnlTranslate.Enabled = chkTranslateEnabled.Checked;
 

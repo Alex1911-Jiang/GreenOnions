@@ -1,6 +1,7 @@
 ﻿using GreenOnions.BotMain;
 using GreenOnions.BotMain.CqHttp;
 using GreenOnions.BotMain.MiraiApiHttp;
+using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
@@ -30,7 +31,7 @@ namespace GreenOnions.BotManagerWindow
 					OpenSetting();
 				}
 				if (!File.Exists(JsonHelper.JsonCacheFileName))
-					JsonHelper.CreateCache();
+					ConfigHelper.CreateCache();
 
 				txbQQ.Text = BotInfo.QQId.ToString();
 				txbIP.Text = BotInfo.IP;
@@ -51,17 +52,11 @@ namespace GreenOnions.BotManagerWindow
 			lblPluginMessage.Text = $"";
 			Task tPlugins = Task.Run(() =>
 			{
-				int iLoadCount = 0;
-				foreach ((bool load, string msg) loadPluginMsg in PluginManager.Load())
-				{
-					if (loadPluginMsg.load)
-						iLoadCount++;
-					Invoke(new Action(() => lblPluginMessage.Text = loadPluginMsg.msg));
-				}
-				if (iLoadCount > 0)
+				int iLoadCount = PluginManager.Load();
+                if (iLoadCount > 0)
                     Invoke(new Action(() => btnPlugins.Text = $"插件列表({iLoadCount})"));
-				Invoke(new Action(() => lblPluginMessage.Text = $""));
-			});
+                Invoke(new Action(() => lblPluginMessage.Text = $""));
+            });
 
 			//自动连接到机器人平台
 			if (BotInfo.AutoConnectEnabled)
@@ -188,7 +183,7 @@ namespace GreenOnions.BotManagerWindow
 				BotInfo.IP = ip;
 				BotInfo.Port = port;
 				BotInfo.VerifyKey = verifyKey;
-				JsonHelper.SaveConfigFile();
+				ConfigHelper.SaveConfigFile();
 
 				webBrowserForm.Show();
 			}

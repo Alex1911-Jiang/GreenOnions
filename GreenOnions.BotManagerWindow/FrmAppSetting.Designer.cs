@@ -97,7 +97,7 @@
             this.pnlSearchSauceNAO = new System.Windows.Forms.Panel();
             this.chkSearchSauceNAOSortByDesc = new System.Windows.Forms.CheckBox();
             this.lblSauceNAOApiKey = new System.Windows.Forms.Label();
-            this.chkSearchSauceNAOSendPixivOriginPicture = new System.Windows.Forms.CheckBox();
+            this.chkSearchSauceNAOSendPixivOriginalPicture = new System.Windows.Forms.CheckBox();
             this.txbSearchSauceNAOApiKey = new System.Windows.Forms.TextBox();
             this.lblSearchSauceNAOHighSimilarity = new System.Windows.Forms.Label();
             this.txbSearchSauceNAOLowSimilarity = new System.Windows.Forms.TextBox();
@@ -145,23 +145,23 @@
             this.txbSearchModeOnCmd = new System.Windows.Forms.TextBox();
             this.chkSearchASCII2DEnabled = new System.Windows.Forms.CheckBox();
             this.chkSearchSauceNAOEnabled = new System.Windows.Forms.CheckBox();
-            this.pageOriginPicture = new System.Windows.Forms.TabPage();
-            this.lblOriginPictureCommand = new System.Windows.Forms.Label();
-            this.txbOriginPictureCommand = new System.Windows.Forms.TextBox();
-            this.pnlOriginPicture = new System.Windows.Forms.Panel();
-            this.chkOriginPictureCheckPornEnabled = new System.Windows.Forms.CheckBox();
-            this.pnlOriginPictureCheckPorn = new System.Windows.Forms.Panel();
-            this.pnlOriginPictureCheckPornMessage = new System.Windows.Forms.Panel();
-            this.lblOriginPictureCheckPornIllegalReply = new System.Windows.Forms.Label();
-            this.txbOriginPictureCheckPornErrorReply = new System.Windows.Forms.TextBox();
-            this.txbOriginPictureCheckPornIllegalReply = new System.Windows.Forms.TextBox();
-            this.lblOriginPictureCheckPornErrorReply = new System.Windows.Forms.Label();
-            this.pnlOriginPictureCheckPornEvent = new System.Windows.Forms.Panel();
-            this.rdoOriginPictureCheckPornSendByForward = new System.Windows.Forms.RadioButton();
-            this.rdoOriginPictureCheckPornDoNothing = new System.Windows.Forms.RadioButton();
-            this.rdoOriginPictureCheckPornReply = new System.Windows.Forms.RadioButton();
-            this.lblOriginPictureCheckPornEvent = new System.Windows.Forms.Label();
-            this.chkOriginPictureEnabled = new System.Windows.Forms.CheckBox();
+            this.pageOriginalPicture = new System.Windows.Forms.TabPage();
+            this.lblOriginalPictureCommand = new System.Windows.Forms.Label();
+            this.txbOriginalPictureCommand = new System.Windows.Forms.TextBox();
+            this.pnlOriginalPicture = new System.Windows.Forms.Panel();
+            this.chkOriginalPictureCheckPornEnabled = new System.Windows.Forms.CheckBox();
+            this.pnlOriginalPictureCheckPorn = new System.Windows.Forms.Panel();
+            this.pnlOriginalPictureCheckPornMessage = new System.Windows.Forms.Panel();
+            this.lblOriginalPictureCheckPornIllegalReply = new System.Windows.Forms.Label();
+            this.txbOriginalPictureCheckPornErrorReply = new System.Windows.Forms.TextBox();
+            this.txbOriginalPictureCheckPornIllegalReply = new System.Windows.Forms.TextBox();
+            this.lblOriginalPictureCheckPornErrorReply = new System.Windows.Forms.Label();
+            this.pnlOriginalPictureCheckPornEvent = new System.Windows.Forms.Panel();
+            this.rdoOriginalPictureCheckPornSendByForward = new System.Windows.Forms.RadioButton();
+            this.rdoOriginalPictureCheckPornDoNothing = new System.Windows.Forms.RadioButton();
+            this.rdoOriginalPictureCheckPornReply = new System.Windows.Forms.RadioButton();
+            this.lblOriginalPictureCheckPornEvent = new System.Windows.Forms.Label();
+            this.chkOriginalPictureEnabled = new System.Windows.Forms.CheckBox();
             this.pageHPicture = new System.Windows.Forms.TabPage();
             this.pnlHPictureEnabeled = new System.Windows.Forms.Panel();
             this.chkHPictureSendByForward = new System.Windows.Forms.CheckBox();
@@ -358,11 +358,11 @@
             this.pnlSearchPicture.SuspendLayout();
             this.pnlSearchSauceNAO.SuspendLayout();
             this.pnlPictureSearcherCheckPorn.SuspendLayout();
-            this.pageOriginPicture.SuspendLayout();
-            this.pnlOriginPicture.SuspendLayout();
-            this.pnlOriginPictureCheckPorn.SuspendLayout();
-            this.pnlOriginPictureCheckPornMessage.SuspendLayout();
-            this.pnlOriginPictureCheckPornEvent.SuspendLayout();
+            this.pageOriginalPicture.SuspendLayout();
+            this.pnlOriginalPicture.SuspendLayout();
+            this.pnlOriginalPictureCheckPorn.SuspendLayout();
+            this.pnlOriginalPictureCheckPornMessage.SuspendLayout();
+            this.pnlOriginalPictureCheckPornEvent.SuspendLayout();
             this.pageHPicture.SuspendLayout();
             this.pnlHPictureEnabeled.SuspendLayout();
             this.pnlHPictureCheckBoxes.SuspendLayout();
@@ -440,7 +440,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabSettings.Controls.Add(this.pageBot);
             this.tabSettings.Controls.Add(this.pageSearchPicture);
-            this.tabSettings.Controls.Add(this.pageOriginPicture);
+            this.tabSettings.Controls.Add(this.pageOriginalPicture);
             this.tabSettings.Controls.Add(this.pageHPicture);
             this.tabSettings.Controls.Add(this.pageTranslate);
             this.tabSettings.Controls.Add(this.pageRepeater);
@@ -1185,7 +1185,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlSearchSauceNAO.Controls.Add(this.chkSearchSauceNAOSortByDesc);
             this.pnlSearchSauceNAO.Controls.Add(this.lblSauceNAOApiKey);
-            this.pnlSearchSauceNAO.Controls.Add(this.chkSearchSauceNAOSendPixivOriginPicture);
+            this.pnlSearchSauceNAO.Controls.Add(this.chkSearchSauceNAOSendPixivOriginalPicture);
             this.pnlSearchSauceNAO.Controls.Add(this.txbSearchSauceNAOApiKey);
             this.pnlSearchSauceNAO.Controls.Add(this.lblSearchSauceNAOHighSimilarity);
             this.pnlSearchSauceNAO.Controls.Add(this.txbSearchSauceNAOLowSimilarity);
@@ -1222,15 +1222,15 @@
             this.lblSauceNAOApiKey.TabIndex = 17;
             this.lblSauceNAOApiKey.Text = "SauceNAO Api-Key:";
             // 
-            // chkSearchSauceNAOSendPixivOriginPicture
+            // chkSearchSauceNAOSendPixivOriginalPicture
             // 
-            this.chkSearchSauceNAOSendPixivOriginPicture.AutoSize = true;
-            this.chkSearchSauceNAOSendPixivOriginPicture.Location = new System.Drawing.Point(16, 168);
-            this.chkSearchSauceNAOSendPixivOriginPicture.Name = "chkSearchSauceNAOSendPixivOriginPicture";
-            this.chkSearchSauceNAOSendPixivOriginPicture.Size = new System.Drawing.Size(270, 21);
-            this.chkSearchSauceNAOSendPixivOriginPicture.TabIndex = 56;
-            this.chkSearchSauceNAOSendPixivOriginPicture.Text = "SauceNAO 搜图结果为 Pixiv 地址时发送原图";
-            this.chkSearchSauceNAOSendPixivOriginPicture.UseVisualStyleBackColor = true;
+            this.chkSearchSauceNAOSendPixivOriginalPicture.AutoSize = true;
+            this.chkSearchSauceNAOSendPixivOriginalPicture.Location = new System.Drawing.Point(16, 168);
+            this.chkSearchSauceNAOSendPixivOriginalPicture.Name = "chkSearchSauceNAOSendPixivOriginalPicture";
+            this.chkSearchSauceNAOSendPixivOriginalPicture.Size = new System.Drawing.Size(270, 21);
+            this.chkSearchSauceNAOSendPixivOriginalPicture.TabIndex = 56;
+            this.chkSearchSauceNAOSendPixivOriginalPicture.Text = "SauceNAO 搜图结果为 Pixiv 地址时发送原图";
+            this.chkSearchSauceNAOSendPixivOriginalPicture.UseVisualStyleBackColor = true;
             // 
             // txbSearchSauceNAOApiKey
             // 
@@ -1691,201 +1691,201 @@
             this.chkSearchSauceNAOEnabled.UseVisualStyleBackColor = true;
             this.chkSearchSauceNAOEnabled.CheckedChanged += new System.EventHandler(this.chkSearchSauceNAOEnabled_CheckedChanged);
             // 
-            // pageOriginPicture
+            // pageOriginalPicture
             // 
-            this.pageOriginPicture.Controls.Add(this.lblOriginPictureCommand);
-            this.pageOriginPicture.Controls.Add(this.txbOriginPictureCommand);
-            this.pageOriginPicture.Controls.Add(this.pnlOriginPicture);
-            this.pageOriginPicture.Controls.Add(this.chkOriginPictureEnabled);
-            this.pageOriginPicture.Location = new System.Drawing.Point(4, 26);
-            this.pageOriginPicture.Name = "pageOriginPicture";
-            this.pageOriginPicture.Size = new System.Drawing.Size(652, 687);
-            this.pageOriginPicture.TabIndex = 9;
-            this.pageOriginPicture.Text = "下载原图";
-            this.pageOriginPicture.UseVisualStyleBackColor = true;
+            this.pageOriginalPicture.Controls.Add(this.lblOriginalPictureCommand);
+            this.pageOriginalPicture.Controls.Add(this.txbOriginalPictureCommand);
+            this.pageOriginalPicture.Controls.Add(this.pnlOriginalPicture);
+            this.pageOriginalPicture.Controls.Add(this.chkOriginalPictureEnabled);
+            this.pageOriginalPicture.Location = new System.Drawing.Point(4, 26);
+            this.pageOriginalPicture.Name = "pageOriginalPicture";
+            this.pageOriginalPicture.Size = new System.Drawing.Size(652, 687);
+            this.pageOriginalPicture.TabIndex = 9;
+            this.pageOriginalPicture.Text = "下载原图";
+            this.pageOriginalPicture.UseVisualStyleBackColor = true;
             // 
-            // lblOriginPictureCommand
+            // lblOriginalPictureCommand
             // 
-            this.lblOriginPictureCommand.AutoSize = true;
-            this.lblOriginPictureCommand.Location = new System.Drawing.Point(16, 183);
-            this.lblOriginPictureCommand.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblOriginPictureCommand.Name = "lblOriginPictureCommand";
-            this.lblOriginPictureCommand.Size = new System.Drawing.Size(59, 17);
-            this.lblOriginPictureCommand.TabIndex = 15;
-            this.lblOriginPictureCommand.Text = "完整命令:";
+            this.lblOriginalPictureCommand.AutoSize = true;
+            this.lblOriginalPictureCommand.Location = new System.Drawing.Point(16, 183);
+            this.lblOriginalPictureCommand.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblOriginalPictureCommand.Name = "lblOriginalPictureCommand";
+            this.lblOriginalPictureCommand.Size = new System.Drawing.Size(59, 17);
+            this.lblOriginalPictureCommand.TabIndex = 15;
+            this.lblOriginalPictureCommand.Text = "完整命令:";
             // 
-            // txbOriginPictureCommand
+            // txbOriginalPictureCommand
             // 
-            this.txbOriginPictureCommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txbOriginalPictureCommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbOriginPictureCommand.BackColor = System.Drawing.SystemColors.Control;
-            this.txbOriginPictureCommand.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbOriginPictureCommand.Location = new System.Drawing.Point(83, 181);
-            this.txbOriginPictureCommand.Margin = new System.Windows.Forms.Padding(4);
-            this.txbOriginPictureCommand.Name = "txbOriginPictureCommand";
-            this.txbOriginPictureCommand.ReadOnly = true;
-            this.txbOriginPictureCommand.Size = new System.Drawing.Size(552, 23);
-            this.txbOriginPictureCommand.TabIndex = 16;
-            this.txbOriginPictureCommand.Text = "<机器人名称>下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]<PixivID>";
+            this.txbOriginalPictureCommand.BackColor = System.Drawing.SystemColors.Control;
+            this.txbOriginalPictureCommand.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txbOriginalPictureCommand.Location = new System.Drawing.Point(83, 181);
+            this.txbOriginalPictureCommand.Margin = new System.Windows.Forms.Padding(4);
+            this.txbOriginalPictureCommand.Name = "txbOriginalPictureCommand";
+            this.txbOriginalPictureCommand.ReadOnly = true;
+            this.txbOriginalPictureCommand.Size = new System.Drawing.Size(552, 23);
+            this.txbOriginalPictureCommand.TabIndex = 16;
+            this.txbOriginalPictureCommand.Text = "<机器人名称>下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]<PixivID>";
             // 
-            // pnlOriginPicture
+            // pnlOriginalPicture
             // 
-            this.pnlOriginPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.pnlOriginalPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlOriginPicture.Controls.Add(this.chkOriginPictureCheckPornEnabled);
-            this.pnlOriginPicture.Controls.Add(this.pnlOriginPictureCheckPorn);
-            this.pnlOriginPicture.Enabled = false;
-            this.pnlOriginPicture.Location = new System.Drawing.Point(3, 35);
-            this.pnlOriginPicture.Name = "pnlOriginPicture";
-            this.pnlOriginPicture.Size = new System.Drawing.Size(646, 139);
-            this.pnlOriginPicture.TabIndex = 3;
+            this.pnlOriginalPicture.Controls.Add(this.chkOriginalPictureCheckPornEnabled);
+            this.pnlOriginalPicture.Controls.Add(this.pnlOriginalPictureCheckPorn);
+            this.pnlOriginalPicture.Enabled = false;
+            this.pnlOriginalPicture.Location = new System.Drawing.Point(3, 35);
+            this.pnlOriginalPicture.Name = "pnlOriginalPicture";
+            this.pnlOriginalPicture.Size = new System.Drawing.Size(646, 139);
+            this.pnlOriginalPicture.TabIndex = 3;
             // 
-            // chkOriginPictureCheckPornEnabled
+            // chkOriginalPictureCheckPornEnabled
             // 
-            this.chkOriginPictureCheckPornEnabled.AutoSize = true;
-            this.chkOriginPictureCheckPornEnabled.Location = new System.Drawing.Point(12, 3);
-            this.chkOriginPictureCheckPornEnabled.Name = "chkOriginPictureCheckPornEnabled";
-            this.chkOriginPictureCheckPornEnabled.Size = new System.Drawing.Size(75, 21);
-            this.chkOriginPictureCheckPornEnabled.TabIndex = 1;
-            this.chkOriginPictureCheckPornEnabled.Text = "启用鉴黄";
-            this.chkOriginPictureCheckPornEnabled.UseVisualStyleBackColor = true;
-            this.chkOriginPictureCheckPornEnabled.CheckedChanged += new System.EventHandler(this.chkOriginPictureCheckPornEnabled_CheckedChanged);
+            this.chkOriginalPictureCheckPornEnabled.AutoSize = true;
+            this.chkOriginalPictureCheckPornEnabled.Location = new System.Drawing.Point(12, 3);
+            this.chkOriginalPictureCheckPornEnabled.Name = "chkOriginalPictureCheckPornEnabled";
+            this.chkOriginalPictureCheckPornEnabled.Size = new System.Drawing.Size(75, 21);
+            this.chkOriginalPictureCheckPornEnabled.TabIndex = 1;
+            this.chkOriginalPictureCheckPornEnabled.Text = "启用鉴黄";
+            this.chkOriginalPictureCheckPornEnabled.UseVisualStyleBackColor = true;
+            this.chkOriginalPictureCheckPornEnabled.CheckedChanged += new System.EventHandler(this.chkOriginalPictureCheckPornEnabled_CheckedChanged);
             // 
-            // pnlOriginPictureCheckPorn
+            // pnlOriginalPictureCheckPorn
             // 
-            this.pnlOriginPictureCheckPorn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.pnlOriginalPictureCheckPorn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlOriginPictureCheckPorn.Controls.Add(this.pnlOriginPictureCheckPornMessage);
-            this.pnlOriginPictureCheckPorn.Controls.Add(this.pnlOriginPictureCheckPornEvent);
-            this.pnlOriginPictureCheckPorn.Controls.Add(this.lblOriginPictureCheckPornEvent);
-            this.pnlOriginPictureCheckPorn.Enabled = false;
-            this.pnlOriginPictureCheckPorn.Location = new System.Drawing.Point(0, 30);
-            this.pnlOriginPictureCheckPorn.Name = "pnlOriginPictureCheckPorn";
-            this.pnlOriginPictureCheckPorn.Size = new System.Drawing.Size(643, 105);
-            this.pnlOriginPictureCheckPorn.TabIndex = 2;
+            this.pnlOriginalPictureCheckPorn.Controls.Add(this.pnlOriginalPictureCheckPornMessage);
+            this.pnlOriginalPictureCheckPorn.Controls.Add(this.pnlOriginalPictureCheckPornEvent);
+            this.pnlOriginalPictureCheckPorn.Controls.Add(this.lblOriginalPictureCheckPornEvent);
+            this.pnlOriginalPictureCheckPorn.Enabled = false;
+            this.pnlOriginalPictureCheckPorn.Location = new System.Drawing.Point(0, 30);
+            this.pnlOriginalPictureCheckPorn.Name = "pnlOriginalPictureCheckPorn";
+            this.pnlOriginalPictureCheckPorn.Size = new System.Drawing.Size(643, 105);
+            this.pnlOriginalPictureCheckPorn.TabIndex = 2;
             // 
-            // pnlOriginPictureCheckPornMessage
+            // pnlOriginalPictureCheckPornMessage
             // 
-            this.pnlOriginPictureCheckPornMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.pnlOriginalPictureCheckPornMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlOriginPictureCheckPornMessage.Controls.Add(this.lblOriginPictureCheckPornIllegalReply);
-            this.pnlOriginPictureCheckPornMessage.Controls.Add(this.txbOriginPictureCheckPornErrorReply);
-            this.pnlOriginPictureCheckPornMessage.Controls.Add(this.txbOriginPictureCheckPornIllegalReply);
-            this.pnlOriginPictureCheckPornMessage.Controls.Add(this.lblOriginPictureCheckPornErrorReply);
-            this.pnlOriginPictureCheckPornMessage.Enabled = false;
-            this.pnlOriginPictureCheckPornMessage.Location = new System.Drawing.Point(3, 39);
-            this.pnlOriginPictureCheckPornMessage.Name = "pnlOriginPictureCheckPornMessage";
-            this.pnlOriginPictureCheckPornMessage.Size = new System.Drawing.Size(640, 63);
-            this.pnlOriginPictureCheckPornMessage.TabIndex = 6;
+            this.pnlOriginalPictureCheckPornMessage.Controls.Add(this.lblOriginalPictureCheckPornIllegalReply);
+            this.pnlOriginalPictureCheckPornMessage.Controls.Add(this.txbOriginalPictureCheckPornErrorReply);
+            this.pnlOriginalPictureCheckPornMessage.Controls.Add(this.txbOriginalPictureCheckPornIllegalReply);
+            this.pnlOriginalPictureCheckPornMessage.Controls.Add(this.lblOriginalPictureCheckPornErrorReply);
+            this.pnlOriginalPictureCheckPornMessage.Enabled = false;
+            this.pnlOriginalPictureCheckPornMessage.Location = new System.Drawing.Point(3, 39);
+            this.pnlOriginalPictureCheckPornMessage.Name = "pnlOriginalPictureCheckPornMessage";
+            this.pnlOriginalPictureCheckPornMessage.Size = new System.Drawing.Size(640, 63);
+            this.pnlOriginalPictureCheckPornMessage.TabIndex = 6;
             // 
-            // lblOriginPictureCheckPornIllegalReply
+            // lblOriginalPictureCheckPornIllegalReply
             // 
-            this.lblOriginPictureCheckPornIllegalReply.AutoSize = true;
-            this.lblOriginPictureCheckPornIllegalReply.Location = new System.Drawing.Point(13, 6);
-            this.lblOriginPictureCheckPornIllegalReply.Name = "lblOriginPictureCheckPornIllegalReply";
-            this.lblOriginPictureCheckPornIllegalReply.Size = new System.Drawing.Size(107, 17);
-            this.lblOriginPictureCheckPornIllegalReply.TabIndex = 2;
-            this.lblOriginPictureCheckPornIllegalReply.Text = "鉴黄不通过回复语:";
+            this.lblOriginalPictureCheckPornIllegalReply.AutoSize = true;
+            this.lblOriginalPictureCheckPornIllegalReply.Location = new System.Drawing.Point(13, 6);
+            this.lblOriginalPictureCheckPornIllegalReply.Name = "lblOriginalPictureCheckPornIllegalReply";
+            this.lblOriginalPictureCheckPornIllegalReply.Size = new System.Drawing.Size(107, 17);
+            this.lblOriginalPictureCheckPornIllegalReply.TabIndex = 2;
+            this.lblOriginalPictureCheckPornIllegalReply.Text = "鉴黄不通过回复语:";
             // 
-            // txbOriginPictureCheckPornErrorReply
+            // txbOriginalPictureCheckPornErrorReply
             // 
-            this.txbOriginPictureCheckPornErrorReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txbOriginalPictureCheckPornErrorReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbOriginPictureCheckPornErrorReply.Location = new System.Drawing.Point(126, 32);
-            this.txbOriginPictureCheckPornErrorReply.Name = "txbOriginPictureCheckPornErrorReply";
-            this.txbOriginPictureCheckPornErrorReply.Size = new System.Drawing.Size(503, 23);
-            this.txbOriginPictureCheckPornErrorReply.TabIndex = 5;
+            this.txbOriginalPictureCheckPornErrorReply.Location = new System.Drawing.Point(126, 32);
+            this.txbOriginalPictureCheckPornErrorReply.Name = "txbOriginalPictureCheckPornErrorReply";
+            this.txbOriginalPictureCheckPornErrorReply.Size = new System.Drawing.Size(503, 23);
+            this.txbOriginalPictureCheckPornErrorReply.TabIndex = 5;
             // 
-            // txbOriginPictureCheckPornIllegalReply
+            // txbOriginalPictureCheckPornIllegalReply
             // 
-            this.txbOriginPictureCheckPornIllegalReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txbOriginalPictureCheckPornIllegalReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbOriginPictureCheckPornIllegalReply.Location = new System.Drawing.Point(126, 3);
-            this.txbOriginPictureCheckPornIllegalReply.Name = "txbOriginPictureCheckPornIllegalReply";
-            this.txbOriginPictureCheckPornIllegalReply.Size = new System.Drawing.Size(503, 23);
-            this.txbOriginPictureCheckPornIllegalReply.TabIndex = 3;
+            this.txbOriginalPictureCheckPornIllegalReply.Location = new System.Drawing.Point(126, 3);
+            this.txbOriginalPictureCheckPornIllegalReply.Name = "txbOriginalPictureCheckPornIllegalReply";
+            this.txbOriginalPictureCheckPornIllegalReply.Size = new System.Drawing.Size(503, 23);
+            this.txbOriginalPictureCheckPornIllegalReply.TabIndex = 3;
             // 
-            // lblOriginPictureCheckPornErrorReply
+            // lblOriginalPictureCheckPornErrorReply
             // 
-            this.lblOriginPictureCheckPornErrorReply.AutoSize = true;
-            this.lblOriginPictureCheckPornErrorReply.Location = new System.Drawing.Point(13, 35);
-            this.lblOriginPictureCheckPornErrorReply.Name = "lblOriginPictureCheckPornErrorReply";
-            this.lblOriginPictureCheckPornErrorReply.Size = new System.Drawing.Size(95, 17);
-            this.lblOriginPictureCheckPornErrorReply.TabIndex = 4;
-            this.lblOriginPictureCheckPornErrorReply.Text = "鉴黄错误回复语:";
+            this.lblOriginalPictureCheckPornErrorReply.AutoSize = true;
+            this.lblOriginalPictureCheckPornErrorReply.Location = new System.Drawing.Point(13, 35);
+            this.lblOriginalPictureCheckPornErrorReply.Name = "lblOriginalPictureCheckPornErrorReply";
+            this.lblOriginalPictureCheckPornErrorReply.Size = new System.Drawing.Size(95, 17);
+            this.lblOriginalPictureCheckPornErrorReply.TabIndex = 4;
+            this.lblOriginalPictureCheckPornErrorReply.Text = "鉴黄错误回复语:";
             // 
-            // pnlOriginPictureCheckPornEvent
+            // pnlOriginalPictureCheckPornEvent
             // 
-            this.pnlOriginPictureCheckPornEvent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.pnlOriginalPictureCheckPornEvent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlOriginPictureCheckPornEvent.Controls.Add(this.rdoOriginPictureCheckPornSendByForward);
-            this.pnlOriginPictureCheckPornEvent.Controls.Add(this.rdoOriginPictureCheckPornDoNothing);
-            this.pnlOriginPictureCheckPornEvent.Controls.Add(this.rdoOriginPictureCheckPornReply);
-            this.pnlOriginPictureCheckPornEvent.Location = new System.Drawing.Point(101, 3);
-            this.pnlOriginPictureCheckPornEvent.Name = "pnlOriginPictureCheckPornEvent";
-            this.pnlOriginPictureCheckPornEvent.Size = new System.Drawing.Size(531, 30);
-            this.pnlOriginPictureCheckPornEvent.TabIndex = 1;
+            this.pnlOriginalPictureCheckPornEvent.Controls.Add(this.rdoOriginalPictureCheckPornSendByForward);
+            this.pnlOriginalPictureCheckPornEvent.Controls.Add(this.rdoOriginalPictureCheckPornDoNothing);
+            this.pnlOriginalPictureCheckPornEvent.Controls.Add(this.rdoOriginalPictureCheckPornReply);
+            this.pnlOriginalPictureCheckPornEvent.Location = new System.Drawing.Point(101, 3);
+            this.pnlOriginalPictureCheckPornEvent.Name = "pnlOriginalPictureCheckPornEvent";
+            this.pnlOriginalPictureCheckPornEvent.Size = new System.Drawing.Size(531, 30);
+            this.pnlOriginalPictureCheckPornEvent.TabIndex = 1;
             // 
-            // rdoOriginPictureCheckPornSendByForward
+            // rdoOriginalPictureCheckPornSendByForward
             // 
-            this.rdoOriginPictureCheckPornSendByForward.AutoSize = true;
-            this.rdoOriginPictureCheckPornSendByForward.Checked = true;
-            this.rdoOriginPictureCheckPornSendByForward.Location = new System.Drawing.Point(3, 5);
-            this.rdoOriginPictureCheckPornSendByForward.Name = "rdoOriginPictureCheckPornSendByForward";
-            this.rdoOriginPictureCheckPornSendByForward.Size = new System.Drawing.Size(146, 21);
-            this.rdoOriginPictureCheckPornSendByForward.TabIndex = 0;
-            this.rdoOriginPictureCheckPornSendByForward.TabStop = true;
-            this.rdoOriginPictureCheckPornSendByForward.Tag = "0";
-            this.rdoOriginPictureCheckPornSendByForward.Text = "以合并转发的方式发送";
-            this.rdoOriginPictureCheckPornSendByForward.UseVisualStyleBackColor = true;
-            this.rdoOriginPictureCheckPornSendByForward.CheckedChanged += new System.EventHandler(this.rdoOriginPictureCheckPornSendByForward_CheckedChanged);
+            this.rdoOriginalPictureCheckPornSendByForward.AutoSize = true;
+            this.rdoOriginalPictureCheckPornSendByForward.Checked = true;
+            this.rdoOriginalPictureCheckPornSendByForward.Location = new System.Drawing.Point(3, 5);
+            this.rdoOriginalPictureCheckPornSendByForward.Name = "rdoOriginalPictureCheckPornSendByForward";
+            this.rdoOriginalPictureCheckPornSendByForward.Size = new System.Drawing.Size(146, 21);
+            this.rdoOriginalPictureCheckPornSendByForward.TabIndex = 0;
+            this.rdoOriginalPictureCheckPornSendByForward.TabStop = true;
+            this.rdoOriginalPictureCheckPornSendByForward.Tag = "0";
+            this.rdoOriginalPictureCheckPornSendByForward.Text = "以合并转发的方式发送";
+            this.rdoOriginalPictureCheckPornSendByForward.UseVisualStyleBackColor = true;
+            this.rdoOriginalPictureCheckPornSendByForward.CheckedChanged += new System.EventHandler(this.rdoOriginalPictureCheckPornSendByForward_CheckedChanged);
             // 
-            // rdoOriginPictureCheckPornDoNothing
+            // rdoOriginalPictureCheckPornDoNothing
             // 
-            this.rdoOriginPictureCheckPornDoNothing.AutoSize = true;
-            this.rdoOriginPictureCheckPornDoNothing.Location = new System.Drawing.Point(172, 5);
-            this.rdoOriginPictureCheckPornDoNothing.Name = "rdoOriginPictureCheckPornDoNothing";
-            this.rdoOriginPictureCheckPornDoNothing.Size = new System.Drawing.Size(86, 21);
-            this.rdoOriginPictureCheckPornDoNothing.TabIndex = 0;
-            this.rdoOriginPictureCheckPornDoNothing.Tag = "1";
-            this.rdoOriginPictureCheckPornDoNothing.Text = "不发送图片";
-            this.rdoOriginPictureCheckPornDoNothing.UseVisualStyleBackColor = true;
-            this.rdoOriginPictureCheckPornDoNothing.CheckedChanged += new System.EventHandler(this.rdoOriginPictureCheckPornSendByForward_CheckedChanged);
+            this.rdoOriginalPictureCheckPornDoNothing.AutoSize = true;
+            this.rdoOriginalPictureCheckPornDoNothing.Location = new System.Drawing.Point(172, 5);
+            this.rdoOriginalPictureCheckPornDoNothing.Name = "rdoOriginalPictureCheckPornDoNothing";
+            this.rdoOriginalPictureCheckPornDoNothing.Size = new System.Drawing.Size(86, 21);
+            this.rdoOriginalPictureCheckPornDoNothing.TabIndex = 0;
+            this.rdoOriginalPictureCheckPornDoNothing.Tag = "1";
+            this.rdoOriginalPictureCheckPornDoNothing.Text = "不发送图片";
+            this.rdoOriginalPictureCheckPornDoNothing.UseVisualStyleBackColor = true;
+            this.rdoOriginalPictureCheckPornDoNothing.CheckedChanged += new System.EventHandler(this.rdoOriginalPictureCheckPornSendByForward_CheckedChanged);
             // 
-            // rdoOriginPictureCheckPornReply
+            // rdoOriginalPictureCheckPornReply
             // 
-            this.rdoOriginPictureCheckPornReply.AutoSize = true;
-            this.rdoOriginPictureCheckPornReply.Location = new System.Drawing.Point(283, 5);
-            this.rdoOriginPictureCheckPornReply.Name = "rdoOriginPictureCheckPornReply";
-            this.rdoOriginPictureCheckPornReply.Size = new System.Drawing.Size(98, 21);
-            this.rdoOriginPictureCheckPornReply.TabIndex = 0;
-            this.rdoOriginPictureCheckPornReply.Tag = "2";
-            this.rdoOriginPictureCheckPornReply.Text = "回复以下消息";
-            this.rdoOriginPictureCheckPornReply.UseVisualStyleBackColor = true;
-            this.rdoOriginPictureCheckPornReply.CheckedChanged += new System.EventHandler(this.rdoOriginPictureCheckPornSendByForward_CheckedChanged);
+            this.rdoOriginalPictureCheckPornReply.AutoSize = true;
+            this.rdoOriginalPictureCheckPornReply.Location = new System.Drawing.Point(283, 5);
+            this.rdoOriginalPictureCheckPornReply.Name = "rdoOriginalPictureCheckPornReply";
+            this.rdoOriginalPictureCheckPornReply.Size = new System.Drawing.Size(98, 21);
+            this.rdoOriginalPictureCheckPornReply.TabIndex = 0;
+            this.rdoOriginalPictureCheckPornReply.Tag = "2";
+            this.rdoOriginalPictureCheckPornReply.Text = "回复以下消息";
+            this.rdoOriginalPictureCheckPornReply.UseVisualStyleBackColor = true;
+            this.rdoOriginalPictureCheckPornReply.CheckedChanged += new System.EventHandler(this.rdoOriginalPictureCheckPornSendByForward_CheckedChanged);
             // 
-            // lblOriginPictureCheckPornEvent
+            // lblOriginalPictureCheckPornEvent
             // 
-            this.lblOriginPictureCheckPornEvent.AutoSize = true;
-            this.lblOriginPictureCheckPornEvent.Location = new System.Drawing.Point(12, 10);
-            this.lblOriginPictureCheckPornEvent.Name = "lblOriginPictureCheckPornEvent";
-            this.lblOriginPictureCheckPornEvent.Size = new System.Drawing.Size(83, 17);
-            this.lblOriginPictureCheckPornEvent.TabIndex = 0;
-            this.lblOriginPictureCheckPornEvent.Text = "鉴黄不通过时:";
+            this.lblOriginalPictureCheckPornEvent.AutoSize = true;
+            this.lblOriginalPictureCheckPornEvent.Location = new System.Drawing.Point(12, 10);
+            this.lblOriginalPictureCheckPornEvent.Name = "lblOriginalPictureCheckPornEvent";
+            this.lblOriginalPictureCheckPornEvent.Size = new System.Drawing.Size(83, 17);
+            this.lblOriginalPictureCheckPornEvent.TabIndex = 0;
+            this.lblOriginalPictureCheckPornEvent.Text = "鉴黄不通过时:";
             // 
-            // chkOriginPictureEnabled
+            // chkOriginalPictureEnabled
             // 
-            this.chkOriginPictureEnabled.AutoSize = true;
-            this.chkOriginPictureEnabled.Location = new System.Drawing.Point(9, 8);
-            this.chkOriginPictureEnabled.Name = "chkOriginPictureEnabled";
-            this.chkOriginPictureEnabled.Size = new System.Drawing.Size(124, 21);
-            this.chkOriginPictureEnabled.TabIndex = 0;
-            this.chkOriginPictureEnabled.Text = "启用下载Pixiv原图";
-            this.chkOriginPictureEnabled.UseVisualStyleBackColor = true;
-            this.chkOriginPictureEnabled.CheckedChanged += new System.EventHandler(this.chkOriginPictureEnabled_CheckedChanged);
+            this.chkOriginalPictureEnabled.AutoSize = true;
+            this.chkOriginalPictureEnabled.Location = new System.Drawing.Point(9, 8);
+            this.chkOriginalPictureEnabled.Name = "chkOriginalPictureEnabled";
+            this.chkOriginalPictureEnabled.Size = new System.Drawing.Size(124, 21);
+            this.chkOriginalPictureEnabled.TabIndex = 0;
+            this.chkOriginalPictureEnabled.Text = "启用下载Pixiv原图";
+            this.chkOriginalPictureEnabled.UseVisualStyleBackColor = true;
+            this.chkOriginalPictureEnabled.CheckedChanged += new System.EventHandler(this.chkOriginalPictureEnabled_CheckedChanged);
             // 
             // pageHPicture
             // 
@@ -4002,16 +4002,16 @@
             this.pnlSearchSauceNAO.PerformLayout();
             this.pnlPictureSearcherCheckPorn.ResumeLayout(false);
             this.pnlPictureSearcherCheckPorn.PerformLayout();
-            this.pageOriginPicture.ResumeLayout(false);
-            this.pageOriginPicture.PerformLayout();
-            this.pnlOriginPicture.ResumeLayout(false);
-            this.pnlOriginPicture.PerformLayout();
-            this.pnlOriginPictureCheckPorn.ResumeLayout(false);
-            this.pnlOriginPictureCheckPorn.PerformLayout();
-            this.pnlOriginPictureCheckPornMessage.ResumeLayout(false);
-            this.pnlOriginPictureCheckPornMessage.PerformLayout();
-            this.pnlOriginPictureCheckPornEvent.ResumeLayout(false);
-            this.pnlOriginPictureCheckPornEvent.PerformLayout();
+            this.pageOriginalPicture.ResumeLayout(false);
+            this.pageOriginalPicture.PerformLayout();
+            this.pnlOriginalPicture.ResumeLayout(false);
+            this.pnlOriginalPicture.PerformLayout();
+            this.pnlOriginalPictureCheckPorn.ResumeLayout(false);
+            this.pnlOriginalPictureCheckPorn.PerformLayout();
+            this.pnlOriginalPictureCheckPornMessage.ResumeLayout(false);
+            this.pnlOriginalPictureCheckPornMessage.PerformLayout();
+            this.pnlOriginalPictureCheckPornEvent.ResumeLayout(false);
+            this.pnlOriginalPictureCheckPornEvent.PerformLayout();
             this.pageHPicture.ResumeLayout(false);
             this.pageHPicture.PerformLayout();
             this.pnlHPictureEnabeled.ResumeLayout(false);
@@ -4270,21 +4270,21 @@
         private System.Windows.Forms.Label lblSearchCheckPornErrorReply;
         private System.Windows.Forms.TextBox txbSearchCheckPornErrorReply;
         private System.Windows.Forms.CheckBox chkCheckPornEnabled;
-        private System.Windows.Forms.TabPage pageOriginPicture;
-        private System.Windows.Forms.CheckBox chkOriginPictureEnabled;
-        private System.Windows.Forms.CheckBox chkOriginPictureCheckPornEnabled;
-        private System.Windows.Forms.Panel pnlOriginPictureCheckPorn;
-        private System.Windows.Forms.Label lblOriginPictureCheckPornEvent;
-        private System.Windows.Forms.Panel pnlOriginPictureCheckPornEvent;
-        private System.Windows.Forms.RadioButton rdoOriginPictureCheckPornReply;
-        private System.Windows.Forms.RadioButton rdoOriginPictureCheckPornDoNothing;
-        private System.Windows.Forms.RadioButton rdoOriginPictureCheckPornSendByForward;
-        private System.Windows.Forms.Label lblOriginPictureCheckPornIllegalReply;
-        private System.Windows.Forms.TextBox txbOriginPictureCheckPornIllegalReply;
-        private System.Windows.Forms.TextBox txbOriginPictureCheckPornErrorReply;
-        private System.Windows.Forms.Label lblOriginPictureCheckPornErrorReply;
-        private System.Windows.Forms.Panel pnlOriginPictureCheckPornMessage;
-        private System.Windows.Forms.Panel pnlOriginPicture;
+        private System.Windows.Forms.TabPage pageOriginalPicture;
+        private System.Windows.Forms.CheckBox chkOriginalPictureEnabled;
+        private System.Windows.Forms.CheckBox chkOriginalPictureCheckPornEnabled;
+        private System.Windows.Forms.Panel pnlOriginalPictureCheckPorn;
+        private System.Windows.Forms.Label lblOriginalPictureCheckPornEvent;
+        private System.Windows.Forms.Panel pnlOriginalPictureCheckPornEvent;
+        private System.Windows.Forms.RadioButton rdoOriginalPictureCheckPornReply;
+        private System.Windows.Forms.RadioButton rdoOriginalPictureCheckPornDoNothing;
+        private System.Windows.Forms.RadioButton rdoOriginalPictureCheckPornSendByForward;
+        private System.Windows.Forms.Label lblOriginalPictureCheckPornIllegalReply;
+        private System.Windows.Forms.TextBox txbOriginalPictureCheckPornIllegalReply;
+        private System.Windows.Forms.TextBox txbOriginalPictureCheckPornErrorReply;
+        private System.Windows.Forms.Label lblOriginalPictureCheckPornErrorReply;
+        private System.Windows.Forms.Panel pnlOriginalPictureCheckPornMessage;
+        private System.Windows.Forms.Panel pnlOriginalPicture;
         private System.Windows.Forms.CheckBox chkReplaceMeToYou;
         private System.Windows.Forms.CheckBox chkHttpRequestByWebBrowser;
         private System.Windows.Forms.CheckBox chkASCII2DRequestByWebBrowser;
@@ -4348,9 +4348,9 @@
         private System.Windows.Forms.CheckBox chkSearchTraceMoeEnabled;
         private System.Windows.Forms.TextBox txbSearchSauceNAOLowSimilarity;
         private System.Windows.Forms.TextBox txbSearchSauceNAOApiKey;
-        private System.Windows.Forms.Label lblOriginPictureCommand;
-        private System.Windows.Forms.TextBox txbOriginPictureCommand;
-        private System.Windows.Forms.CheckBox chkSearchSauceNAOSendPixivOriginPicture;
+        private System.Windows.Forms.Label lblOriginalPictureCommand;
+        private System.Windows.Forms.TextBox txbOriginalPictureCommand;
+        private System.Windows.Forms.CheckBox chkSearchSauceNAOSendPixivOriginalPicture;
         private System.Windows.Forms.Panel pnlSearchSauceNAO;
         private System.Windows.Forms.Panel pnlHPictureCheckBoxes;
         private System.Windows.Forms.CheckBox chkHPictureSendTags;

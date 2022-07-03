@@ -2,7 +2,6 @@
 using GreenOnions.Help;
 using GreenOnions.HPicture;
 using GreenOnions.Interface;
-using GreenOnions.Model;
 using GreenOnions.PictureSearcher;
 using GreenOnions.Repeater;
 using GreenOnions.TicTacToe;
@@ -23,7 +22,7 @@ namespace GreenOnions.BotMain
         private static Regex regexTranslateFromTo;
         private static Regex regexHPicture;
         private static Regex regexForgeMessage;
-        private static Regex regexDownloadPixivOriginPicture;
+        private static Regex regexDownloadPixivOriginalPicture;
         private static Regex regexSelectPhone;
         private static Regex regexHelp;
         private static Regex regexTicTacToeStart;
@@ -31,7 +30,7 @@ namespace GreenOnions.BotMain
 
         static MessageHandler()
         {
-            regexDownloadPixivOriginPicture = new Regex($"{BotInfo.BotName}下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]");
+            regexDownloadPixivOriginalPicture = new Regex($"{BotInfo.BotName}下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]");
             regexHelp = new Regex($"{BotInfo.BotName}帮助");
             regexSelectPhone = new Regex($"{BotInfo.BotName}查询手机号[:：]");
             UpdateRegexs();
@@ -57,7 +56,7 @@ namespace GreenOnions.BotMain
         /// <param name="senderGroup">消息来自的群号(私聊时为空)</param>
         /// <param name="SendMessage">回发消息方法</param>
         /// <returns></returns>
-        public static async Task<bool> HandleMesage(GreenOnionsMessages inMsg, long? senderGroup, Action<IGreenOnionsMessages> SendMessage)
+        public static async Task<bool> HandleMesage(GreenOnionsMessages inMsg, long? senderGroup, Action<GreenOnionsMessages> SendMessage)
         {
             if (inMsg == null || inMsg.Count == 0)
             {
@@ -80,11 +79,11 @@ namespace GreenOnions.BotMain
                     {
                         #region -- @下载原图 --
                         LogHelper.WriteInfoLog($"群消息为@下载原图");
-                        if (BotInfo.OriginPictureEnabled)
+                        if (BotInfo.OriginalPictureEnabled)
                         {
                             if (string.IsNullOrWhiteSpace(txtMsg.Text))
                                 continue;
-                            _ = SearchPictureHandler.SendPixivOriginPictureWithIdAndP(txtMsg.Text).ContinueWith(callback => SendMessage(callback.Result));
+                            _ = SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(txtMsg.Text).ContinueWith(callback => SendMessage(callback.Result));
                         }
                         #endregion -- @下载原图 --
                     }
@@ -279,17 +278,17 @@ namespace GreenOnions.BotMain
                 #endregion -- 色图 --
 
                 #region -- 下载Pixiv原图 --
-                if (BotInfo.OriginPictureEnabled)
+                if (BotInfo.OriginalPictureEnabled)
                 {
-                    if (regexDownloadPixivOriginPicture.IsMatch(firstValue))
+                    if (regexDownloadPixivOriginalPicture.IsMatch(firstValue))
                     {
                         LogHelper.WriteInfoLog($"{inMsg.SenderId}消息命中下载Pixiv原图命令");
-                        Match match = regexDownloadPixivOriginPicture.Matches(firstValue).FirstOrDefault();
+                        Match match = regexDownloadPixivOriginalPicture.Matches(firstValue).FirstOrDefault();
                         if (match.Groups.Count > 1)
                         {
                             string strId = firstValue.Substring(match.Groups[0].Length);
                             LogHelper.WriteInfoLog($"{inMsg.SenderId}下载id={strId}的原图");
-                            _ = SearchPictureHandler.SendPixivOriginPictureWithIdAndP(strId).ContinueWith(callback => SendMessage(callback.Result));
+                            _ = SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(strId).ContinueWith(callback => SendMessage(callback.Result));
                         }
                         return true;
                     }

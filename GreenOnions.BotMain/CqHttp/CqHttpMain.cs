@@ -1,4 +1,4 @@
-﻿using GreenOnions.Model;
+﻿using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Sora;
@@ -55,12 +55,15 @@ namespace GreenOnions.BotMain.CqHttp
                     {
                         if (msgs.First() is GreenOnionsForwardMessage forwardMessage)
                         {
-                            _ = api.SendGroupForwardMsg(targetId, forwardMessage.ToCqHttpForwardMessage());
+                            if (targetId != -1)
+                                _ = api.SendPrivateForwardMsg(targetId, forwardMessage.ToCqHttpForwardMessage());
+                            else if (groupId != -1)
+                                _ = api.SendGroupForwardMsg(groupId, forwardMessage.ToCqHttpForwardMessage());
                         }
                         else
                         {
                             if (targetId != -1)
-                                _ = api.SendGroupMessage(targetId, msgs.ToCqHttpMessages(null));
+                                _ = api.SendPrivateMessage(targetId, msgs.ToCqHttpMessages(null));
                             else if (groupId != -1)
                                 _ = api.SendGroupMessage(groupId, msgs.ToCqHttpMessages(null));
                         }

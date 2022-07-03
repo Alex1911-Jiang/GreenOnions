@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace GreenOnions.Model
+namespace GreenOnions.Interface
 {
     public static class GreenOnionsTypeHelper
     {

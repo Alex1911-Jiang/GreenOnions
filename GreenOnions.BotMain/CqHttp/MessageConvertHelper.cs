@@ -1,5 +1,4 @@
 ﻿using GreenOnions.Interface;
-using GreenOnions.Model;
 using GreenOnions.Utility.Helper;
 using Sora.Entities;
 using Sora.Entities.Base;
@@ -36,6 +35,8 @@ namespace GreenOnions.BotMain.CqHttp
                     greenOnionsMessages.Add(textMsg.Content);
                 else if (miraiMessage[i].Data is ImageSegment imageMsg)
                     greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url, imageMsg.ImgFile));
+                else if (miraiMessage[i].Data is FaceSegment faceMsg)
+                    greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.ToString()));
             }
 
             greenOnionsMessages.SenderId = senderId;
@@ -43,7 +44,7 @@ namespace GreenOnions.BotMain.CqHttp
             return greenOnionsMessages;
         }
 
-        public static MessageBody ToCqHttpMessages(this IGreenOnionsMessages greenOnionsMessage, int? RelpyId)
+        public static MessageBody ToCqHttpMessages(this GreenOnionsMessages greenOnionsMessage, int? RelpyId)
         {
             MessageBody cqHttpMessages = new MessageBody();
             if (greenOnionsMessage.Reply && RelpyId != null)
@@ -53,23 +54,23 @@ namespace GreenOnions.BotMain.CqHttp
             {
                 try
                 {
-                    if (greenOnionsMessage[i] is IGreenOnionsTextMessage txtMsg)
+                    if (greenOnionsMessage[i] is GreenOnionsTextMessage txtMsg)
                     {
                         cqHttpMessages.Add(SoraSegment.Text(txtMsg.Text));
                     }
-                    else if (greenOnionsMessage[i] is IGreenOnionsImageMessage imgMsg)
+                    else if (greenOnionsMessage[i] is GreenOnionsImageMessage imgMsg)
                     {
                         string data = string.IsNullOrEmpty(imgMsg.Url) ? ("base64://" + imgMsg.Base64Str) : imgMsg.Url;
                         cqHttpMessages.Add(SoraSegment.Image(data));
                     }
-                    else if (greenOnionsMessage[i] is IGreenOnionsAtMessage atMsg)
+                    else if (greenOnionsMessage[i] is GreenOnionsAtMessage atMsg)
                     {
                         if (atMsg.AtId == -1)
                             cqHttpMessages.Add(SoraSegment.AtAll());
                         else
                             cqHttpMessages.Add(SoraSegment.At(atMsg.AtId));
                     }
-                    else if (greenOnionsMessage[i] is IGreenOnionsForwardMessage forwardMsg)
+                    else if (greenOnionsMessage[i] is GreenOnionsForwardMessage forwardMsg)
                     {
                         for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                         {
@@ -89,7 +90,7 @@ namespace GreenOnions.BotMain.CqHttp
             return cqHttpMessages;
         }
 
-        public static List<CustomNode> ToCqHttpForwardMessage(this IGreenOnionsForwardMessage forwardMsg)
+        public static List<CustomNode> ToCqHttpForwardMessage(this GreenOnionsForwardMessage forwardMsg)
         {
             List<CustomNode> nodes = new List<CustomNode>();
             for (int i = 0; i < forwardMsg.ItemMessages.Count; i++)
