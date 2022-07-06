@@ -90,7 +90,5 @@ namespace GreenOnions.BotMain.CqHttp
                 ConnectedEvent(false, ex.Message);
             }
         }
-
-        public static void UpdateRegexs() => BotMain.MessageHandler.UpdateRegexs();
     }
 }

@@ -617,6 +617,16 @@ namespace GreenOnions.Utility
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnCmd)) ?? "<机器人名称>搜[图圖図]";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchModeOnCmd), value);
         }
+        
+        /// <summary>
+        /// 开启连续搜番命令(正则表达式)
+        /// </summary>
+        [PropertyChineseName("开启连续搜番模式命令")]
+        public static string SearchAnimeModeOnCmd
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchAnimeModeOnCmd)) ?? "<机器人名称>搜[图圖図]";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchAnimeModeOnCmd), value);
+        }
 
         /// <summary>
         /// 开启连续搜图功能返回消息
@@ -1299,7 +1309,6 @@ namespace GreenOnions.Utility
         {
             get
             {
-
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureLimitType));
                 if (!string.IsNullOrEmpty(strValue))
                     return (LimitType)Enum.Parse(typeof(LimitType), strValue);
@@ -1940,5 +1949,11 @@ namespace GreenOnions.Utility
     {
         OpenCV = 2,
         Nomenclature = 4,
+    }
+
+    public enum SearchMode : int
+    {
+        Picture = 1,
+        Anime = 2,
     }
 }

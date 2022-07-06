@@ -16,6 +16,7 @@ namespace GreenOnions.BotMain
     public static class MessageHandler
     {
         private static Regex regexSearchOn;
+        private static Regex regexSearchAnimeOn;
         private static Regex regexSearchOff;
         private static Regex regexTranslateToChinese;
         private static Regex regexTranslateTo;
@@ -36,17 +37,38 @@ namespace GreenOnions.BotMain
             UpdateRegexs();
         }
 
-        public static void UpdateRegexs()
+        public static string UpdateRegexs()
         {
-            regexSearchOn = new Regex(BotInfo.SearchModeOnCmd.ReplaceGreenOnionsTags());
-            regexSearchOff = new Regex(BotInfo.SearchModeOffCmd.ReplaceGreenOnionsTags());
-            regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags());
-            regexTranslateTo = new Regex(BotInfo.TranslateToCMD.ReplaceGreenOnionsTags());
-            regexTranslateFromTo = new Regex(BotInfo.TranslateFromToCMD.ReplaceGreenOnionsTags());
-            regexHPicture = new Regex(BotInfo.HPictureCmd.ReplaceGreenOnionsTags());
-            regexForgeMessage = new Regex(BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsTags());
-            regexTicTacToeStart = new Regex(BotInfo.StartTicTacToeCmd.ReplaceGreenOnionsTags());
-            regexTicTacToeStop = new Regex(BotInfo.StopTicTacToeCmd.ReplaceGreenOnionsTags());
+            string regexName = null;
+            try
+            {
+                regexName = "开启搜图";
+                regexSearchOn = new Regex(BotInfo.SearchModeOnCmd.ReplaceGreenOnionsTags());
+                regexName = "开启搜番";
+                regexSearchAnimeOn = new Regex(BotInfo.SearchAnimeModeOnCmd.ReplaceGreenOnionsTags());
+                regexName = "关闭搜图";
+                regexSearchOff = new Regex(BotInfo.SearchModeOffCmd.ReplaceGreenOnionsTags());
+                regexName = "翻译为中文";
+                regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags());
+                regexName = "翻译";
+                regexTranslateTo = new Regex(BotInfo.TranslateToCMD.ReplaceGreenOnionsTags());
+                regexName = "指定语言翻译";
+                regexTranslateFromTo = new Regex(BotInfo.TranslateFromToCMD.ReplaceGreenOnionsTags());
+                regexName = "色图";
+                regexHPicture = new Regex(BotInfo.HPictureCmd.ReplaceGreenOnionsTags());
+                regexName = "伪造消息";
+                regexForgeMessage = new Regex(BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsTags());
+                regexName = "开启井字棋";
+                regexTicTacToeStart = new Regex(BotInfo.StartTicTacToeCmd.ReplaceGreenOnionsTags());
+                regexName = "结束井字棋";
+                regexTicTacToeStop = new Regex(BotInfo.StopTicTacToeCmd.ReplaceGreenOnionsTags());
+                regexName = null;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteErrorLogWithUserMessage($"更新{regexName}正则命令发生异常", ex);
+            }
+            return regexName;
         }
 
         /// <summary>
@@ -72,7 +94,7 @@ namespace GreenOnions.BotMain
                         #region -- @搜图 --
                         LogHelper.WriteInfoLog($"群消息为@搜图");
                         if (BotInfo.SearchEnabled)
-                            SearchPictureHandler.SearchPicture(imgMsg, SendMessage);
+                            SearchPictureHandler.SearchPicture(imgMsg, SendMessage, SearchMode.Picture | SearchMode.Anime);
                         #endregion -- @搜图 --
                     }
                     else if (inMsg[i] is GreenOnionsTextMessage txtMsg)
@@ -90,14 +112,21 @@ namespace GreenOnions.BotMain
                 }
             }
 
-            if (Cache.SearchingPicturesUsers.Keys.Contains(inMsg.SenderId))  //连续搜图
+            if (Cache.SearchingPicturesAndAnimeUsers.Keys.Contains(inMsg.SenderId) || Cache.SearchingPicturesUsers.Keys.Contains(inMsg.SenderId) || Cache.SearchingAnimeUsers.Keys.Contains(inMsg.SenderId))  //连续搜图
             {
                 var imgMsgs = inMsg.OfType<GreenOnionsImageMessage>();
                 if (inMsg.Count == imgMsgs.Count())
                 {
+                    SearchMode mode = 0;
+                    if (Cache.SearchingPicturesAndAnimeUsers.Keys.Contains(inMsg.SenderId))
+                        mode = SearchMode.Picture | SearchMode.Anime;
+                    if (Cache.SearchingPicturesUsers.Keys.Contains(inMsg.SenderId))
+                        mode = SearchMode.Picture;
+                    if (Cache.SearchingAnimeUsers.Keys.Contains(inMsg.SenderId))
+                        mode =  SearchMode.Anime;
                     SearchPictureHandler.UpdateSearchTime(inMsg.SenderId);  //刷新搜图超时时间到1分钟
                     foreach (GreenOnionsImageMessage imgMsg in imgMsgs)
-                        SearchPictureHandler.SearchPicture(imgMsg, SendMessage);
+                        SearchPictureHandler.SearchPicture(imgMsg, SendMessage, mode);
                     return true;
                 }
             }
@@ -158,10 +187,16 @@ namespace GreenOnions.BotMain
                 #region -- 连续搜图 --
                 if (BotInfo.SearchEnabled)
                 {
-                    if (regexSearchOn.IsMatch(firstValue))
+                    SearchMode mode =  0;
+                    if ((BotInfo.SearchEnabledSauceNao || BotInfo.SearchEnabledASCII2D) && regexSearchOn.IsMatch(firstValue))
+                        mode |= SearchMode.Picture;
+                    if (BotInfo.SearchEnabledTraceMoe && regexSearchAnimeOn.IsMatch(firstValue))
+                        mode |= SearchMode.Anime;
+
+                    if (mode != 0)
                     {
                         LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发开始连续搜图");
-                        SearchPictureHandler.SearchOn(inMsg.SenderId, SendMessage);
+                        SearchPictureHandler.SearchOn(inMsg.SenderId, SendMessage, mode);
                         return true;
                     }
                     if (regexSearchOff.IsMatch(firstValue))
@@ -365,7 +400,7 @@ namespace GreenOnions.BotMain
                 for (int i = 0; i < inMsg.Count; i++)
                 {
                     if (inMsg[i] is GreenOnionsImageMessage imgMsg)
-                        SearchPictureHandler.SearchPicture(imgMsg, SendMessage);
+                        SearchPictureHandler.SearchPicture(imgMsg, SendMessage, SearchMode.Picture | SearchMode.Anime);
                 }
             }
 

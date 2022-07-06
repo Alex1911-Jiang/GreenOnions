@@ -37,9 +37,9 @@ namespace GreenOnions.Utility.Helper
             switch (BotInfo.ReplaceImgRoute)
             {
                 case 1:
-                    return imageUrl.Replace("/c2cpicdw.qpic.cn/offpic_new/", "/gchat.qpic.cn/gchatpic_new/");
-                case 2:
                     return imageUrl.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
+                case 2:
+                    return imageUrl.Replace("/c2cpicdw.qpic.cn/offpic_new/", "/gchat.qpic.cn/gchatpic_new/");
             }
             return imageUrl;
         }

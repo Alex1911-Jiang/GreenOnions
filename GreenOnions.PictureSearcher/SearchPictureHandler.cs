@@ -5,6 +5,7 @@ using HtmlAgilityPack;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,21 +20,35 @@ namespace GreenOnions.PictureSearcher
 {
     public static class SearchPictureHandler
     {
-        public static void SearchOn(long qqId, Action<GreenOnionsMessages> SendMessage)
+        public static void SearchOn(long qqId, Action<GreenOnionsMessages> SendMessage, SearchMode mode)
         {
-            if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
+            ConcurrentDictionary<long, DateTime> modeGroup = null;
+            switch (mode)
             {
-                Cache.SearchingPicturesUsers[qqId] = DateTime.Now.AddMinutes(1);
+                case SearchMode.Picture | SearchMode.Anime:
+                    modeGroup = Cache.SearchingPicturesAndAnimeUsers;
+                    break;
+                case SearchMode.Picture:
+                    modeGroup = Cache.SearchingPicturesUsers;
+                    break;
+                case SearchMode.Anime:
+                    modeGroup = Cache.SearchingAnimeUsers;
+                    break;
+            }
+
+            if (modeGroup.ContainsKey(qqId))
+            {
+                modeGroup[qqId] = DateTime.Now.AddMinutes(1);
                 SendMessage(BotInfo.SearchModeAlreadyOnReply.ReplaceGreenOnionsTags());
             }
             else
             {
-                Cache.SearchingPicturesUsers.TryAdd(qqId, DateTime.Now.AddMinutes(1));
+                modeGroup.TryAdd(qqId, DateTime.Now.AddMinutes(1));
                 SendMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags());
-                Cache.SetWorkingTimeout(qqId, Cache.SearchingPicturesUsers, () =>
+                Cache.SetWorkingTimeout(qqId, modeGroup, () =>
                 {
-                    if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
-                        Cache.SearchingPicturesUsers.TryRemove(qqId, out _);
+                    if (modeGroup.ContainsKey(qqId))
+                        modeGroup.TryRemove(qqId, out _);
                     SendMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsTags());
                 });
             }
@@ -41,24 +56,31 @@ namespace GreenOnions.PictureSearcher
 
         public static void UpdateSearchTime(long qqId)
         {
+            if (Cache.SearchingPicturesAndAnimeUsers.ContainsKey(qqId))
+                Cache.SearchingPicturesAndAnimeUsers[qqId] = DateTime.Now.AddMinutes(1);
             if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
                 Cache.SearchingPicturesUsers[qqId] = DateTime.Now.AddMinutes(1);
+            if (Cache.SearchingAnimeUsers.ContainsKey(qqId))
+                Cache.SearchingAnimeUsers[qqId] = DateTime.Now.AddMinutes(1);
         }
 
         public static void SearchOff(long qqId, Action<GreenOnionsMessages> SendMessage)
         {
+            bool inCacheGroup = false;
+            if (Cache.SearchingPicturesAndAnimeUsers.ContainsKey(qqId))
+                Cache.SearchingPicturesAndAnimeUsers.TryRemove(qqId, out _);
             if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
-            {
                 Cache.SearchingPicturesUsers.TryRemove(qqId, out _);
+            if (Cache.SearchingAnimeUsers.ContainsKey(qqId))
+                Cache.SearchingAnimeUsers.TryRemove(qqId, out _);
+
+            if (inCacheGroup)
                 SendMessage(BotInfo.SearchModeOffReply.ReplaceGreenOnionsTags());
-            }
             else
-            {
                 SendMessage(BotInfo.SearchModeAlreadyOffReply.ReplaceGreenOnionsTags());
-            }
         }
 
-        public static void SearchPicture(GreenOnionsImageMessage inImgMsg, Action<GreenOnionsMessages> SendMessage)
+        public static void SearchPicture(GreenOnionsImageMessage inImgMsg, Action<GreenOnionsMessages> SendMessage, SearchMode searchMode)
         {
             LogHelper.WriteInfoLog("进入搜图处理事件");
 
@@ -78,9 +100,9 @@ namespace GreenOnions.PictureSearcher
                     outMessages = new List<GreenOnionsMessages>();
                 }
 
-                if (BotInfo.SearchEnabledTraceMoe)
+                if (BotInfo.SearchEnabledTraceMoe && (searchMode & SearchMode.Anime) != 0)  //包含搜番命令
                 {
-                    Task<GreenOnionsMessages> traceMoeTask = SearchTraceMoe(qqImgUrl);
+                    Task<GreenOnionsMessages> traceMoeTask = SearchTraceMoe(qqImgUrl, searchMode == SearchMode.Anime);
                     if (BotInfo.SearchSendByForward)
                     {
                         searchTasks.Add(traceMoeTask);
@@ -90,7 +112,7 @@ namespace GreenOnions.PictureSearcher
                         traceMoeTask.ContinueWith(callback => SendMessage(callback.Result));
                 }
                 Task<(GreenOnionsMessages OutMessages, bool DoAscii2dSearch)> sauceNaoTask = null;
-                if (BotInfo.SearchEnabledSauceNao)
+                if (BotInfo.SearchEnabledSauceNao && (searchMode & SearchMode.Picture) != 0)
                 {
                     sauceNaoTask = SearchSauceNao(qqImgUrl, SendMessage);
                     if (BotInfo.SearchSendByForward)
@@ -109,7 +131,7 @@ namespace GreenOnions.PictureSearcher
                         });
                     }
                 }
-                if (BotInfo.SearchEnabledASCII2D)  //不启用SauceNao只启用ASCII2D
+                if (BotInfo.SearchEnabledASCII2D && (searchMode & SearchMode.Picture) != 0)  //不启用SauceNao只启用ASCII2D
                 {
                     LogHelper.WriteInfoLog("没有启用SauceNao");
                     Task<GreenOnionsMessages> ascii2dTask = SearchAscii2D(qqImgUrl);
@@ -160,7 +182,7 @@ namespace GreenOnions.PictureSearcher
             }
         }
 
-        private static async Task<GreenOnionsMessages> SearchTraceMoe(string qqImgUrl)
+        private static async Task<GreenOnionsMessages> SearchTraceMoe(string qqImgUrl, bool alwaysSend)
         {
             LogHelper.WriteInfoLog("进入TraceMoe搜图逻辑");
             if (!qqImgUrl.StartsWith(@"http://") && !qqImgUrl.StartsWith(@"https://"))
@@ -179,7 +201,7 @@ namespace GreenOnions.PictureSearcher
                 {
                     LogHelper.WriteInfoLog($"成功解析TraceMoe响应文");
                     double similarity = Math.Round(Convert.ToDouble(jResults[0]["similarity"]), 4) * 100; //相似度
-                    if (similarity >= BotInfo.TraceMoeSendThreshold)
+                    if (similarity >= BotInfo.TraceMoeSendThreshold || alwaysSend)  //仅搜番时相似度低也发送
                     {
                         LogHelper.WriteInfoLog($"相似度大于设定值, 读取番剧信息");
                         string id = jResults[0]["anilist"]["id"].ToString();
@@ -222,7 +244,11 @@ namespace GreenOnions.PictureSearcher
                         return null;  //相似度低于发送阈值
                 }
                 else
+                {
+                    if (alwaysSend)
+                        return BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", "TraceMoe"));  //没有结果
                     return null;  //没有搜索结果
+                }
             }
             catch (Exception ex)
             {
@@ -796,7 +822,7 @@ namespace GreenOnions.PictureSearcher
 
                         if (nodeColorWorks == null)
                         {
-                            outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", $"ASCII2D颜色第{i}个结果")));
+                            outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", $"ASCII2D颜色第{i - 1}个结果")));
                         }
                         else
                         {
@@ -891,7 +917,7 @@ namespace GreenOnions.PictureSearcher
 
                         if (nodeBovwWorks == null)
                         {
-                            outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", $"ASCII2D特征第{i}个结果")));
+                            outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("搜索类型", $"ASCII2D特征第{i - 1}个结果")));
                         }
                         else
                         {

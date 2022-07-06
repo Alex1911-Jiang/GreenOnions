@@ -82,6 +82,7 @@ namespace GreenOnions.BotManagerWindow
             chkSearchTraceMoeEnabled.Checked = BotInfo.SearchEnabledTraceMoe;  //是否启用TraceMoe搜番
             cboSearchShowAscii2dCount.SelectedIndex = BotInfo.SearchShowAscii2dCount - 1;
             txbSearchModeOnCmd.Text = BotInfo.SearchModeOnCmd;
+            txbSearchAnimeModeOnCmd.Text = BotInfo.SearchAnimeModeOnCmd;
             txbSearchModeOffCmd.Text = BotInfo.SearchModeOffCmd;
             txbSearchModeTimeOutReply.Text = BotInfo.SearchModeTimeOutReply;
             txbSearchModeOnReply.Text = BotInfo.SearchModeOnReply;
@@ -347,6 +348,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.SearchEnabledTraceMoe = chkSearchTraceMoeEnabled.Checked;  //是否启用TraceMoe搜番
             BotInfo.SearchShowAscii2dCount = cboSearchShowAscii2dCount.SelectedIndex + 1;
             BotInfo.SearchModeOnCmd = txbSearchModeOnCmd.Text;
+            BotInfo.SearchAnimeModeOnCmd = txbSearchAnimeModeOnCmd.Text;
             BotInfo.SearchModeOffCmd = txbSearchModeOffCmd.Text;
             BotInfo.SearchModeTimeOutReply = txbSearchModeTimeOutReply.Text;
             BotInfo.SearchModeOnReply = txbSearchModeOnReply.Text;
@@ -566,9 +568,11 @@ namespace GreenOnions.BotManagerWindow
             foreach (string sauceNaoKey in txbSearchSauceNAOApiKey.Text.Split("\r\n"))
                 Cache.SetSauceNaoKey(sauceNaoKey);
 
-            MessageHandler.UpdateRegexs();
-
-            Close();
+            string regexMsg = MessageHandler.UpdateRegexs();
+            if (regexMsg == null)
+                Close();
+            else
+                MessageBox.Show($"应用{regexMsg}命令失败，请检查命令的正则表达式格式。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void txbForgeMessageCmd_TextChanged(object sender, EventArgs e) => AddStringToCmd();

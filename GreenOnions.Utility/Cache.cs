@@ -19,7 +19,9 @@ namespace GreenOnions.Utility
         public static ConcurrentDictionary<long, DateTime> HPictureWhiteCDDic { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime> HPicturePMCDDic { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, int> LimitDic { get; } = new ConcurrentDictionary<long, int>();
+        public static ConcurrentDictionary<long, DateTime> SearchingPicturesAndAnimeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime> SearchingPicturesUsers { get; } = new ConcurrentDictionary<long, DateTime>();
+        public static ConcurrentDictionary<long, DateTime> SearchingAnimeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime> PlayingTicTacToeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<string, int> SauceNaoKeysAndLongRemaining { get; }  //Nao的key剩余每日可用次数
         public static ConcurrentDictionary<string, int> SauceNaoKeysAndShortRemaining { get; }  //Nao的key剩余30秒内可用次数
@@ -66,7 +68,9 @@ namespace GreenOnions.Utility
                     }
                     Task.Delay(1000 * 450).Wait();
 
-                    CheckWorkingTimeout(SearchingPicturesUsers);   //顺便检查正在搜图的人超时了没有
+                    CheckWorkingTimeout(SearchingPicturesAndAnimeUsers);   //顺便检查正在搜图的人超时了没有
+                    CheckWorkingTimeout(SearchingPicturesUsers);
+                    CheckWorkingTimeout(SearchingAnimeUsers);
                     CheckWorkingTimeout(PlayingTicTacToeUsers);
                 }
             });
