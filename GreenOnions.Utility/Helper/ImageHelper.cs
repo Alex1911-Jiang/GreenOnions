@@ -27,9 +27,21 @@ namespace GreenOnions.Utility.Helper
             _imagePath = Path.Combine(Environment.CurrentDirectory, "Image");
         }
 
-        public static string ReplaceGroupUrl(string groupUrl)
+        /// <summary>
+        /// 替换外链路由
+        /// </summary>
+        /// <param name="imageUrl">图片地址</param>
+        /// <returns>替换路由后的图片地址</returns>
+        public static string ReplaceGroupUrl(string imageUrl)
         {
-            return groupUrl.Replace("/c2cpicdw.qpic.cn/offpic_new/", "/gchat.qpic.cn/gchatpic_new/");
+            switch (BotInfo.ReplaceImgRoute)
+            {
+                case 1:
+                    return imageUrl.Replace("/c2cpicdw.qpic.cn/offpic_new/", "/gchat.qpic.cn/gchatpic_new/");
+                case 2:
+                    return imageUrl.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
+            }
+            return imageUrl;
         }
 
         public static MemoryStream StreamAntiShielding(this MemoryStream ms)

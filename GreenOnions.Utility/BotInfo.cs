@@ -195,6 +195,51 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(HttpRequestByWebBrowser), value.ToString());
         }
 
+        /// <summary>
+        /// 图片外链路由替换 0:不替换  1:替换为c2cpicdw.qpic.cn/offpic_new  2:替换为gchat.qpic.cn/gchatpic_new
+        /// </summary>
+        [PropertyChineseName("图片外链路由替换")]
+        public static int ReplaceImgRoute
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(ReplaceImgRoute));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 2;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(ReplaceImgRoute), value.ToString());
+        }
+
+        /// <summary>
+        /// 保留所有下载的图片用于缓存
+        /// </summary>
+        [PropertyChineseName("保留所有下载的图片用于缓存")]
+        public static bool DownloadImage4Caching
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(DownloadImage4Caching));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(DownloadImage4Caching), value.ToString());
+        }
+
+        /// <summary>
+        /// 所有图片下载到本地再发送文件
+        /// </summary>
+        [PropertyChineseName("所有图片下载到本地再发送文件")]
+        public static bool SendImageByFile
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(SendImageByFile));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(SendImageByFile), value.ToString());
+        }
+
         #region -- 腾讯云相关属性 --
         /// <summary>
         /// 是否接入腾讯云AI鉴黄

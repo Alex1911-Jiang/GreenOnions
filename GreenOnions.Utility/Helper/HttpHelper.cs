@@ -312,7 +312,6 @@ namespace GreenOnions.Utility.Helper
             using (WebClient webClient = new WebClient())
             {
                 webClient.DownloadFile(url, fileName);
-                webClient.Dispose();
             }
         }
     }

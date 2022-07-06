@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotManagerWindow", "GreenOnions.BotManagerWindow\GreenOnions.BotManagerWindow.csproj", "{E0052559-EDA4-45F3-BE28-FC4D84889B44}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7E8B4CB9-C907-4F58-9F43-63B1F63A2A22} = {7E8B4CB9-C907-4F58-9F43-63B1F63A2A22}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.HPicture", "GreenOnions.HPicture\GreenOnions.HPicture.csproj", "{382A8DF6-645A-409C-9EDE-2350E164ACAC}"
 EndProject
@@ -31,8 +28,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotMain", "GreenOnions.BotMain\GreenOnions.BotMain.csproj", "{B343C30B-4176-479D-8AA5-7DE2AE921320}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Interface", "GreenOnions.Interface\GreenOnions.Interface.csproj", "{5DCDA0CA-F97D-43D2-A4D6-2CFFAD529A16}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.ReplierWindow", "GreenOnions.Replier\GreenOnions.ReplierWindow.csproj", "{7E8B4CB9-C907-4F58-9F43-63B1F63A2A22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,10 +87,6 @@ Global
 		{5DCDA0CA-F97D-43D2-A4D6-2CFFAD529A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DCDA0CA-F97D-43D2-A4D6-2CFFAD529A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DCDA0CA-F97D-43D2-A4D6-2CFFAD529A16}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7E8B4CB9-C907-4F58-9F43-63B1F63A2A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E8B4CB9-C907-4F58-9F43-63B1F63A2A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E8B4CB9-C907-4F58-9F43-63B1F63A2A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E8B4CB9-C907-4F58-9F43-63B1F63A2A22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

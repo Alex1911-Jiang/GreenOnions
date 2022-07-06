@@ -312,8 +312,17 @@ namespace GreenOnions.HPicture
             }
             else
             {
-                imageMsg = new GreenOnionsImageMessage(item.URL);
-                _ = Task.Run(() => HttpHelper.DownloadImageFile(item.URL, imgName));  //仅归档
+                if (BotInfo.SendImageByFile)  //下载完成后发送文件
+                {
+                    HttpHelper.DownloadImageFile(item.URL, imgName);
+                    imageMsg = new GreenOnionsImageMessage(imgName);
+                }
+                else
+                {
+                    imageMsg = new GreenOnionsImageMessage(item.URL);
+                    if (BotInfo.DownloadImage4Caching)
+                        _ = Task.Run(() => HttpHelper.DownloadImageFile(item.URL, imgName));  //下载图片用于缓存
+                }
             }
             return imageMsg;
         }
@@ -328,8 +337,17 @@ namespace GreenOnions.HPicture
             }
             else
             {
-                imageMsg = new GreenOnionsImageMessage(item.Link);
-                _ = Task.Run(() => HttpHelper.DownloadImageFile(item.Link, imgName));  //仅归档
+                if (BotInfo.SendImageByFile)  //下载完成后发送文件
+                {
+                    HttpHelper.DownloadImageFile(item.Link, imgName);
+                    imageMsg = new GreenOnionsImageMessage(imgName);
+                }
+                else
+                {
+                    imageMsg = new GreenOnionsImageMessage(item.Link);
+                    if (BotInfo.DownloadImage4Caching)
+                        _ = Task.Run(() => HttpHelper.DownloadImageFile(item.Link, imgName));  //下载图片用于缓存
+                }
             }
             return imageMsg;
         }

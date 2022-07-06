@@ -48,6 +48,8 @@ namespace GreenOnions.BotManagerWindow
             chkOnlyReplyDebugGroup.Checked = BotInfo.OnlyReplyDebugGroup;
             chkDebugReplyAdminOnly.Checked = BotInfo.DebugReplyAdminOnly;
             chkHttpRequestByWebBrowser.Checked = BotInfo.HttpRequestByWebBrowser;
+            chkDownloadImage4Caching.Checked = BotInfo.DownloadImage4Caching;
+            chkSendImageByFile.Checked = BotInfo.SendImageByFile;
             chkCheckPornEnabled.Checked = BotInfo.CheckPornEnabled; //是否启用腾讯云鉴黄
             txbCheckPornLimitCount.Text = BotInfo.CheckPornLimitCount.ToString();
 
@@ -64,6 +66,7 @@ namespace GreenOnions.BotManagerWindow
             txbAutoConnectDelay.Text = BotInfo.AutoConnectDelay.ToString();
 
             cboLogLevel.SelectedIndex = BotInfo.LogLevel;
+            cboReplaceImgRoute.SelectedIndex = BotInfo.ReplaceImgRoute;
 
             #endregion -- 通用设置 --
 
@@ -318,9 +321,12 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.OnlyReplyDebugGroup = chkOnlyReplyDebugGroup.Checked;
             BotInfo.DebugReplyAdminOnly = chkDebugReplyAdminOnly.Checked;
             BotInfo.HttpRequestByWebBrowser = chkHttpRequestByWebBrowser.Checked;
+            BotInfo.DownloadImage4Caching = chkDownloadImage4Caching.Checked;
+            BotInfo.SendImageByFile = chkSendImageByFile.Checked;
 
             BotInfo.AutoConnectEnabled = chkAutoConnectEnabled.Checked;
             BotInfo.AutoConnectProtocol = cboAutoConnectProtocol.SelectedIndex;
+            BotInfo.ReplaceImgRoute = cboReplaceImgRoute.SelectedIndex;
             BotInfo.AutoConnectDelay = Convert.ToInt32(txbAutoConnectDelay.Text);
             BotInfo.LogLevel = cboLogLevel.SelectedIndex;
 

@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.chkDownloadImage4Caching = new System.Windows.Forms.CheckBox();
+            this.chkSendImageByFile = new System.Windows.Forms.CheckBox();
             this.txbBotName = new System.Windows.Forms.TextBox();
             this.lblBotName = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
@@ -300,6 +302,7 @@
             this.btnAddRssSubscription = new System.Windows.Forms.Button();
             this.txbReadRssInterval = new System.Windows.Forms.TextBox();
             this.lblReadRssInterval = new System.Windows.Forms.Label();
+            this.chkRssSendLiveCover = new System.Windows.Forms.CheckBox();
             this.chkRssEnabled = new System.Windows.Forms.CheckBox();
             this.pageTicTacToe = new System.Windows.Forms.TabPage();
             this.pnlTicTacToe = new System.Windows.Forms.Panel();
@@ -347,7 +350,8 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
-            this.chkRssSendLiveCover = new System.Windows.Forms.CheckBox();
+            this.cboReplaceImgRoute = new System.Windows.Forms.ComboBox();
+            this.lblReplaceImgRoute = new System.Windows.Forms.Label();
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -380,6 +384,26 @@
             this.pnlTicTacToeMoveMode.SuspendLayout();
             this.pageAbout.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // chkDownloadImage4Caching
+            // 
+            this.chkDownloadImage4Caching.AutoSize = true;
+            this.chkDownloadImage4Caching.Location = new System.Drawing.Point(3, 512);
+            this.chkDownloadImage4Caching.Name = "chkDownloadImage4Caching";
+            this.chkDownloadImage4Caching.Size = new System.Drawing.Size(183, 21);
+            this.chkDownloadImage4Caching.TabIndex = 42;
+            this.chkDownloadImage4Caching.Text = "保留所有下载的图片用于缓存";
+            this.chkDownloadImage4Caching.UseVisualStyleBackColor = true;
+            // 
+            // chkSendImageByFile
+            // 
+            this.chkSendImageByFile.AutoSize = true;
+            this.chkSendImageByFile.Location = new System.Drawing.Point(3, 539);
+            this.chkSendImageByFile.Name = "chkSendImageByFile";
+            this.chkSendImageByFile.Size = new System.Drawing.Size(532, 21);
+            this.chkSendImageByFile.TabIndex = 41;
+            this.chkSendImageByFile.Text = "所有图片下载到本地再发送文件 (解决网络环境不佳导致将地址交由平台发送会TimeOut的问题)";
+            this.chkSendImageByFile.UseVisualStyleBackColor = true;
             // 
             // txbBotName
             // 
@@ -471,6 +495,10 @@
             // pnlBot
             // 
             this.pnlBot.AutoScroll = true;
+            this.pnlBot.Controls.Add(this.cboReplaceImgRoute);
+            this.pnlBot.Controls.Add(this.lblReplaceImgRoute);
+            this.pnlBot.Controls.Add(this.chkDownloadImage4Caching);
+            this.pnlBot.Controls.Add(this.chkSendImageByFile);
             this.pnlBot.Controls.Add(this.pnlAutoConnect);
             this.pnlBot.Controls.Add(this.chkAutoConnectEnabled);
             this.pnlBot.Controls.Add(this.cboLogLevel);
@@ -513,7 +541,7 @@
             this.pnlAutoConnect.Controls.Add(this.lblAutoConnectDelay);
             this.pnlAutoConnect.Controls.Add(this.lblAutoConnectProtocol);
             this.pnlAutoConnect.Enabled = false;
-            this.pnlAutoConnect.Location = new System.Drawing.Point(4, 715);
+            this.pnlAutoConnect.Location = new System.Drawing.Point(0, 800);
             this.pnlAutoConnect.MinimumSize = new System.Drawing.Size(620, 0);
             this.pnlAutoConnect.Name = "pnlAutoConnect";
             this.pnlAutoConnect.Size = new System.Drawing.Size(620, 62);
@@ -561,7 +589,7 @@
             // chkAutoConnectEnabled
             // 
             this.chkAutoConnectEnabled.AutoSize = true;
-            this.chkAutoConnectEnabled.Location = new System.Drawing.Point(7, 688);
+            this.chkAutoConnectEnabled.Location = new System.Drawing.Point(3, 773);
             this.chkAutoConnectEnabled.Name = "chkAutoConnectEnabled";
             this.chkAutoConnectEnabled.Size = new System.Drawing.Size(147, 21);
             this.chkAutoConnectEnabled.TabIndex = 39;
@@ -577,7 +605,7 @@
             "消息",
             "警告",
             "错误"});
-            this.cboLogLevel.Location = new System.Drawing.Point(120, 783);
+            this.cboLogLevel.Location = new System.Drawing.Point(116, 868);
             this.cboLogLevel.Name = "cboLogLevel";
             this.cboLogLevel.Size = new System.Drawing.Size(200, 25);
             this.cboLogLevel.TabIndex = 38;
@@ -585,7 +613,7 @@
             // lblLogLevel
             // 
             this.lblLogLevel.AutoSize = true;
-            this.lblLogLevel.Location = new System.Drawing.Point(7, 786);
+            this.lblLogLevel.Location = new System.Drawing.Point(3, 871);
             this.lblLogLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLogLevel.Name = "lblLogLevel";
             this.lblLogLevel.Size = new System.Drawing.Size(68, 17);
@@ -595,7 +623,7 @@
             // chkHttpRequestByWebBrowser
             // 
             this.chkHttpRequestByWebBrowser.AutoSize = true;
-            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(7, 454);
+            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(3, 454);
             this.chkHttpRequestByWebBrowser.Name = "chkHttpRequestByWebBrowser";
             this.chkHttpRequestByWebBrowser.Size = new System.Drawing.Size(269, 21);
             this.chkHttpRequestByWebBrowser.TabIndex = 36;
@@ -605,7 +633,7 @@
             // chkCheckPornEnabled
             // 
             this.chkCheckPornEnabled.AutoSize = true;
-            this.chkCheckPornEnabled.Location = new System.Drawing.Point(7, 481);
+            this.chkCheckPornEnabled.Location = new System.Drawing.Point(3, 566);
             this.chkCheckPornEnabled.Name = "chkCheckPornEnabled";
             this.chkCheckPornEnabled.Size = new System.Drawing.Size(111, 21);
             this.chkCheckPornEnabled.TabIndex = 34;
@@ -626,7 +654,7 @@
             this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
             this.pnlDebugMode.Controls.Add(this.txbAddDebugGroup);
             this.pnlDebugMode.Enabled = false;
-            this.pnlDebugMode.Location = new System.Drawing.Point(4, 840);
+            this.pnlDebugMode.Location = new System.Drawing.Point(0, 925);
             this.pnlDebugMode.MinimumSize = new System.Drawing.Size(620, 153);
             this.pnlDebugMode.Name = "pnlDebugMode";
             this.pnlDebugMode.Size = new System.Drawing.Size(620, 153);
@@ -744,7 +772,7 @@
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudAPPID);
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudSecretKey);
             this.pnlCheckPorn.Enabled = false;
-            this.pnlCheckPorn.Location = new System.Drawing.Point(4, 508);
+            this.pnlCheckPorn.Location = new System.Drawing.Point(0, 593);
             this.pnlCheckPorn.MinimumSize = new System.Drawing.Size(620, 174);
             this.pnlCheckPorn.Name = "pnlCheckPorn";
             this.pnlCheckPorn.Size = new System.Drawing.Size(620, 174);
@@ -882,7 +910,7 @@
             // chkDebugMode
             // 
             this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(7, 814);
+            this.chkDebugMode.Location = new System.Drawing.Point(3, 899);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(75, 21);
             this.chkDebugMode.TabIndex = 9;
@@ -3467,6 +3495,17 @@
             this.lblReadRssInterval.TabIndex = 0;
             this.lblReadRssInterval.Text = "获取内容时间间隔(分钟):";
             // 
+            // chkRssSendLiveCover
+            // 
+            this.chkRssSendLiveCover.AutoSize = true;
+            this.chkRssSendLiveCover.Location = new System.Drawing.Point(518, 11);
+            this.chkRssSendLiveCover.Name = "chkRssSendLiveCover";
+            this.chkRssSendLiveCover.Size = new System.Drawing.Size(131, 21);
+            this.chkRssSendLiveCover.TabIndex = 0;
+            this.chkRssSendLiveCover.Text = "获取B站直播间封面";
+            this.chkRssSendLiveCover.UseVisualStyleBackColor = true;
+            this.chkRssSendLiveCover.CheckedChanged += new System.EventHandler(this.chkRssEnabled_CheckedChanged);
+            // 
             // chkRssEnabled
             // 
             this.chkRssEnabled.AutoSize = true;
@@ -3960,16 +3999,28 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
-            // chkRssSendLiveCover
+            // cboReplaceImgRoute
             // 
-            this.chkRssSendLiveCover.AutoSize = true;
-            this.chkRssSendLiveCover.Location = new System.Drawing.Point(518, 11);
-            this.chkRssSendLiveCover.Name = "chkRssSendLiveCover";
-            this.chkRssSendLiveCover.Size = new System.Drawing.Size(131, 21);
-            this.chkRssSendLiveCover.TabIndex = 0;
-            this.chkRssSendLiveCover.Text = "获取B站直播间封面";
-            this.chkRssSendLiveCover.UseVisualStyleBackColor = true;
-            this.chkRssSendLiveCover.CheckedChanged += new System.EventHandler(this.chkRssEnabled_CheckedChanged);
+            this.cboReplaceImgRoute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboReplaceImgRoute.FormattingEnabled = true;
+            this.cboReplaceImgRoute.Items.AddRange(new object[] {
+            "不替换",
+            "替换为 c2cpicdw.qpic.cn/offpic_new",
+            "替换为 gchat.qpic.cn/gchatpic_new"});
+            this.cboReplaceImgRoute.Location = new System.Drawing.Point(127, 481);
+            this.cboReplaceImgRoute.Name = "cboReplaceImgRoute";
+            this.cboReplaceImgRoute.Size = new System.Drawing.Size(200, 25);
+            this.cboReplaceImgRoute.TabIndex = 44;
+            // 
+            // lblReplaceImgRoute
+            // 
+            this.lblReplaceImgRoute.AutoSize = true;
+            this.lblReplaceImgRoute.Location = new System.Drawing.Point(4, 484);
+            this.lblReplaceImgRoute.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblReplaceImgRoute.Name = "lblReplaceImgRoute";
+            this.lblReplaceImgRoute.Size = new System.Drawing.Size(116, 17);
+            this.lblReplaceImgRoute.TabIndex = 43;
+            this.lblReplaceImgRoute.Text = "图片外链路由替换：";
             // 
             // FrmAppSetting
             // 
@@ -4369,5 +4420,9 @@
         private System.Windows.Forms.TextBox txbAutoConnectDelay;
         private System.Windows.Forms.ComboBox cboAutoConnectProtocol;
         private System.Windows.Forms.CheckBox chkRssSendLiveCover;
+        private System.Windows.Forms.CheckBox chkDownloadImage4Caching;
+        private System.Windows.Forms.CheckBox chkSendImageByFile;
+        private System.Windows.Forms.ComboBox cboReplaceImgRoute;
+        private System.Windows.Forms.Label lblReplaceImgRoute;
     }
 }
