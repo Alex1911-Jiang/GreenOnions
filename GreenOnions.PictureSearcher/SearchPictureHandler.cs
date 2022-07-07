@@ -68,11 +68,20 @@ namespace GreenOnions.PictureSearcher
         {
             bool inCacheGroup = false;
             if (Cache.SearchingPicturesAndAnimeUsers.ContainsKey(qqId))
+            {
                 Cache.SearchingPicturesAndAnimeUsers.TryRemove(qqId, out _);
+                inCacheGroup = true;
+            }
             if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
+            {
                 Cache.SearchingPicturesUsers.TryRemove(qqId, out _);
+                inCacheGroup = true;
+            }
             if (Cache.SearchingAnimeUsers.ContainsKey(qqId))
+            {
                 Cache.SearchingAnimeUsers.TryRemove(qqId, out _);
+                inCacheGroup = true;
+            }
 
             if (inCacheGroup)
                 SendMessage(BotInfo.SearchModeOffReply.ReplaceGreenOnionsTags());
