@@ -73,7 +73,7 @@ namespace GreenOnions.BotMain
             foreach (KeyValuePair<string, IPlugin> theOtherPlugins in loadedPlugins)
             {
                 Plugins.Add(theOtherPlugins.Value);
-                theOtherPlugins.Value.OnLoad(theOtherPlugins.Key);
+                theOtherPlugins.Value.OnLoad(Path.Combine(_pluginsPath, theOtherPlugins.Key));
                 LogHelper.WriteInfoLog($"插件{theOtherPlugins.Value.Name}加载成功");
                 pluginNewOrder.Add(Path.GetFileNameWithoutExtension(theOtherPlugins.Key));
             }

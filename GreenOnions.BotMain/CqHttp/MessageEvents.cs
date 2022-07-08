@@ -26,13 +26,13 @@ namespace GreenOnions.BotMain.CqHttp
                     }
                     else
                     {
-                        ValueTask<(ApiStatus, int)> result = eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, outMsg.ToCqHttpMessages(quoteId));
+                        ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, outMsg.ToCqHttpMessages(quoteId));
                         if (outMsg.RevokeTime > 0)
                         {
                             _ = result.AsTask().ContinueWith(async t =>
                             {
                                 await Task.Delay(1000 * outMsg.RevokeTime);
-                                _ = eventArgs.SoraApi.RecallMessage(outMsg.RevokeTime);
+                                _ = eventArgs.SoraApi.RecallMessage(result.Result.messageId);
                             });
                         }
                     }

@@ -27,15 +27,10 @@ namespace GreenOnions.BotManagerWindow
         {
             DataGridView dgv = (DataGridView)sender;
             if (e.RowIndex > -1 && e.ColumnIndex > -1)
-            {
                 if (dgv.CurrentCell.OwningColumn is DataGridViewButtonColumn btnCol)
-                {
                     if (btnCol.HeaderText == "设置")
-                    {
-                        PluginManager.Plugins[e.RowIndex].WindowSetting();
-                    }
-                }
-            }
+                        if (!PluginManager.Plugins[e.RowIndex].WindowSetting())
+                            PluginManager.Plugins[e.RowIndex].ConsoleSetting();
         }
     }
 }

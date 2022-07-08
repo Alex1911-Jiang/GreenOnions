@@ -38,6 +38,8 @@
             this.tabSettings = new System.Windows.Forms.TabControl();
             this.pageBot = new System.Windows.Forms.TabPage();
             this.pnlBot = new System.Windows.Forms.Panel();
+            this.cboReplaceImgRoute = new System.Windows.Forms.ComboBox();
+            this.lblReplaceImgRoute = new System.Windows.Forms.Label();
             this.pnlAutoConnect = new System.Windows.Forms.Panel();
             this.txbAutoConnectDelay = new System.Windows.Forms.TextBox();
             this.cboAutoConnectProtocol = new System.Windows.Forms.ComboBox();
@@ -134,6 +136,7 @@
             this.lblSearchModeOnReply = new System.Windows.Forms.Label();
             this.lblTraceMoeSendThresholdInfo = new System.Windows.Forms.Label();
             this.lblTraceMoeSendThreshold = new System.Windows.Forms.Label();
+            this.lblSearchAnimeModeOnCmd = new System.Windows.Forms.Label();
             this.lblSearchModeOnCmd = new System.Windows.Forms.Label();
             this.txbSearchErrorReply = new System.Windows.Forms.TextBox();
             this.txbSearchNoResultReply = new System.Windows.Forms.TextBox();
@@ -144,6 +147,7 @@
             this.txbSearchModeAlreadyOnReply = new System.Windows.Forms.TextBox();
             this.txbTraceMoeSendThreshold = new System.Windows.Forms.TextBox();
             this.txbSearchModeOnReply = new System.Windows.Forms.TextBox();
+            this.txbSearchAnimeModeOnCmd = new System.Windows.Forms.TextBox();
             this.txbSearchModeOnCmd = new System.Windows.Forms.TextBox();
             this.chkSearchASCII2DEnabled = new System.Windows.Forms.CheckBox();
             this.chkSearchSauceNAOEnabled = new System.Windows.Forms.CheckBox();
@@ -350,10 +354,6 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
-            this.cboReplaceImgRoute = new System.Windows.Forms.ComboBox();
-            this.lblReplaceImgRoute = new System.Windows.Forms.Label();
-            this.txbSearchAnimeModeOnCmd = new System.Windows.Forms.TextBox();
-            this.lblSearchAnimeModeOnCmd = new System.Windows.Forms.Label();
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -535,6 +535,29 @@
             this.pnlBot.Name = "pnlBot";
             this.pnlBot.Size = new System.Drawing.Size(644, 679);
             this.pnlBot.TabIndex = 36;
+            // 
+            // cboReplaceImgRoute
+            // 
+            this.cboReplaceImgRoute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboReplaceImgRoute.FormattingEnabled = true;
+            this.cboReplaceImgRoute.Items.AddRange(new object[] {
+            "不替换",
+            "替换为 c2cpicdw.qpic.cn/offpic_new",
+            "替换为 gchat.qpic.cn/gchatpic_new"});
+            this.cboReplaceImgRoute.Location = new System.Drawing.Point(127, 481);
+            this.cboReplaceImgRoute.Name = "cboReplaceImgRoute";
+            this.cboReplaceImgRoute.Size = new System.Drawing.Size(280, 25);
+            this.cboReplaceImgRoute.TabIndex = 44;
+            // 
+            // lblReplaceImgRoute
+            // 
+            this.lblReplaceImgRoute.AutoSize = true;
+            this.lblReplaceImgRoute.Location = new System.Drawing.Point(4, 484);
+            this.lblReplaceImgRoute.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblReplaceImgRoute.Name = "lblReplaceImgRoute";
+            this.lblReplaceImgRoute.Size = new System.Drawing.Size(116, 17);
+            this.lblReplaceImgRoute.TabIndex = 43;
+            this.lblReplaceImgRoute.Text = "图片外链路由替换：";
             // 
             // pnlAutoConnect
             // 
@@ -1593,6 +1616,15 @@
             this.lblTraceMoeSendThreshold.TabIndex = 17;
             this.lblTraceMoeSendThreshold.Text = "TraceMoe 发送阈值:";
             // 
+            // lblSearchAnimeModeOnCmd
+            // 
+            this.lblSearchAnimeModeOnCmd.AutoSize = true;
+            this.lblSearchAnimeModeOnCmd.Location = new System.Drawing.Point(24, 501);
+            this.lblSearchAnimeModeOnCmd.Name = "lblSearchAnimeModeOnCmd";
+            this.lblSearchAnimeModeOnCmd.Size = new System.Drawing.Size(131, 17);
+            this.lblSearchAnimeModeOnCmd.TabIndex = 17;
+            this.lblSearchAnimeModeOnCmd.Text = "开启连续搜番模式命令:";
+            // 
             // lblSearchModeOnCmd
             // 
             this.lblSearchModeOnCmd.AutoSize = true;
@@ -1691,6 +1723,16 @@
             this.txbSearchModeOnReply.Name = "txbSearchModeOnReply";
             this.txbSearchModeOnReply.Size = new System.Drawing.Size(357, 23);
             this.txbSearchModeOnReply.TabIndex = 16;
+            // 
+            // txbSearchAnimeModeOnCmd
+            // 
+            this.txbSearchAnimeModeOnCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbSearchAnimeModeOnCmd.Location = new System.Drawing.Point(196, 498);
+            this.txbSearchAnimeModeOnCmd.MinimumSize = new System.Drawing.Size(357, 0);
+            this.txbSearchAnimeModeOnCmd.Name = "txbSearchAnimeModeOnCmd";
+            this.txbSearchAnimeModeOnCmd.Size = new System.Drawing.Size(357, 23);
+            this.txbSearchAnimeModeOnCmd.TabIndex = 16;
             // 
             // txbSearchModeOnCmd
             // 
@@ -4002,48 +4044,6 @@
             this.lblContributorName.Size = new System.Drawing.Size(35, 17);
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
-            // 
-            // cboReplaceImgRoute
-            // 
-            this.cboReplaceImgRoute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboReplaceImgRoute.FormattingEnabled = true;
-            this.cboReplaceImgRoute.Items.AddRange(new object[] {
-            "不替换",
-            "替换为 c2cpicdw.qpic.cn/offpic_new",
-            "替换为 gchat.qpic.cn/gchatpic_new"});
-            this.cboReplaceImgRoute.Location = new System.Drawing.Point(127, 481);
-            this.cboReplaceImgRoute.Name = "cboReplaceImgRoute";
-            this.cboReplaceImgRoute.Size = new System.Drawing.Size(200, 25);
-            this.cboReplaceImgRoute.TabIndex = 44;
-            // 
-            // lblReplaceImgRoute
-            // 
-            this.lblReplaceImgRoute.AutoSize = true;
-            this.lblReplaceImgRoute.Location = new System.Drawing.Point(4, 484);
-            this.lblReplaceImgRoute.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblReplaceImgRoute.Name = "lblReplaceImgRoute";
-            this.lblReplaceImgRoute.Size = new System.Drawing.Size(116, 17);
-            this.lblReplaceImgRoute.TabIndex = 43;
-            this.lblReplaceImgRoute.Text = "图片外链路由替换：";
-            // 
-            // txbSearchAnimeModeOnCmd
-            // 
-            this.txbSearchAnimeModeOnCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchAnimeModeOnCmd.Location = new System.Drawing.Point(196, 498);
-            this.txbSearchAnimeModeOnCmd.MinimumSize = new System.Drawing.Size(357, 0);
-            this.txbSearchAnimeModeOnCmd.Name = "txbSearchAnimeModeOnCmd";
-            this.txbSearchAnimeModeOnCmd.Size = new System.Drawing.Size(357, 23);
-            this.txbSearchAnimeModeOnCmd.TabIndex = 16;
-            // 
-            // lblSearchAnimeModeOnCmd
-            // 
-            this.lblSearchAnimeModeOnCmd.AutoSize = true;
-            this.lblSearchAnimeModeOnCmd.Location = new System.Drawing.Point(24, 501);
-            this.lblSearchAnimeModeOnCmd.Name = "lblSearchAnimeModeOnCmd";
-            this.lblSearchAnimeModeOnCmd.Size = new System.Drawing.Size(131, 17);
-            this.lblSearchAnimeModeOnCmd.TabIndex = 17;
-            this.lblSearchAnimeModeOnCmd.Text = "开启连续搜番模式命令:";
             // 
             // FrmAppSetting
             // 
