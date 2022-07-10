@@ -33,25 +33,38 @@ namespace GreenOnions.BotManagerWindow
             get => chkRssTranslate.Checked;
             set => chkRssTranslate.Checked = value;
         }
-
         public bool RssTranslateFromTo
         {
             get => chkTranslateFromTo.Checked;
             set => chkTranslateFromTo.Checked = value;
         }
-
         public string RssTranslateFrom
         {
             get => cboTranslateFrom.Text;
             set => SetComboBoxIndex(cboTranslateFrom, value);
-            
         }
-
         public string RssTranslateTo
         {
             get => cboTranslateTo.Text;
             set => SetComboBoxIndex(cboTranslateTo, value);
         }
+        public string RssRemark
+        {
+            get => txbRssRemark.Text;
+            set => txbRssRemark.Text = value;
+        }
+        public bool RssSendByForward
+        {
+            get => chkRssSendByForward.Checked;
+            set => chkRssSendByForward.Checked = value;
+        }
+        public bool RssAtAll
+        {
+            get => chkRssAtAll.Checked;
+            set => chkRssAtAll.Checked = value;
+        }
+        public int RssFilterMode { get; set; }
+        public string[] RssFilterKeyWords { get; set; }
 
         private void SetComboBoxIndex(ComboBox ctrl, string value)
         {
@@ -80,28 +93,15 @@ namespace GreenOnions.BotManagerWindow
             }
         }
 
-        public string RssRemark
-        {
-            get => txbRssRemark.Text;
-            set => txbRssRemark.Text = value;
-        }
-        public bool RssSendByForward
-        {
-            get => chkRssSendByForward.Checked;
-            set => chkRssSendByForward.Checked = value;
-        }
-
-        public bool RssAtAll
-        {
-            get => chkRssAtAll.Checked;
-            set => chkRssAtAll.Checked = value;
-        }
-
         private void btnRssRemoveItem_Click(object sender, EventArgs e) => RemoveClick?.Invoke(sender, e);
 
         private void checkNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!(char.IsNumber(e.KeyChar) || e.KeyChar == (char)8 || e.KeyChar == (char)13))
+            if (e.KeyChar == (char)3 || e.KeyChar == (char)26 || e.KeyChar == (char)8 || e.KeyChar == (char)13)
+            {
+                return;
+            }
+            if (!char.IsNumber(e.KeyChar) )
             {
                 e.Handled = true;
             }
@@ -149,6 +149,14 @@ namespace GreenOnions.BotManagerWindow
                         break;
                 }
             }
+        }
+
+        private void btnFilters_Click(object sender, EventArgs e)
+        {
+            FrmRssFilter frmFilter = new FrmRssFilter(RssFilterMode, RssFilterKeyWords);
+            frmFilter.ShowDialog();
+            RssFilterMode = frmFilter.FilterMode;
+            RssFilterKeyWords = frmFilter.FilterKeyWords;
         }
     }
 }

@@ -44,6 +44,7 @@
             this.lblTranslateFrom = new System.Windows.Forms.Label();
             this.cboTranslateTo = new System.Windows.Forms.ComboBox();
             this.cboTranslateFrom = new System.Windows.Forms.ComboBox();
+            this.btnFilters = new System.Windows.Forms.Button();
             this.chkTranslateFromTo = new System.Windows.Forms.CheckBox();
             this.chkRssAtAll = new System.Windows.Forms.CheckBox();
             this.pnlTranslateFromTo.SuspendLayout();
@@ -162,7 +163,7 @@
             this.pnlTranslateFromTo.Enabled = false;
             this.pnlTranslateFromTo.Location = new System.Drawing.Point(187, 121);
             this.pnlTranslateFromTo.Name = "pnlTranslateFromTo";
-            this.pnlTranslateFromTo.Size = new System.Drawing.Size(389, 30);
+            this.pnlTranslateFromTo.Size = new System.Drawing.Size(322, 30);
             this.pnlTranslateFromTo.TabIndex = 9;
             // 
             // lblTranslateTo
@@ -201,6 +202,19 @@
             this.cboTranslateFrom.Size = new System.Drawing.Size(121, 25);
             this.cboTranslateFrom.TabIndex = 0;
             // 
+            // btnFilters
+            // 
+            this.btnFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFilters.Location = new System.Drawing.Point(515, 122);
+            this.btnFilters.Name = "btnFilters";
+            this.btnFilters.Size = new System.Drawing.Size(57, 27);
+            this.btnFilters.TabIndex = 3;
+            this.btnFilters.Text = "过滤...";
+            this.btnFilters.UseVisualStyleBackColor = true;
+            this.btnFilters.Click += new System.EventHandler(this.btnFilters_Click);
+            // 
             // chkTranslateFromTo
             // 
             this.chkTranslateFromTo.AutoSize = true;
@@ -228,6 +242,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.btnFilters);
             this.Controls.Add(this.chkRssAtAll);
             this.Controls.Add(this.chkTranslateFromTo);
             this.Controls.Add(this.pnlTranslateFromTo);
@@ -271,5 +286,6 @@
         private System.Windows.Forms.ComboBox cboTranslateFrom;
         private System.Windows.Forms.CheckBox chkTranslateFromTo;
         private System.Windows.Forms.CheckBox chkRssAtAll;
+        private System.Windows.Forms.Button btnFilters;
     }
 }

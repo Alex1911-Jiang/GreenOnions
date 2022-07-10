@@ -11,10 +11,12 @@ namespace GreenOnions.Utility.Helper
             if (BotInfo.LogLevel <= 0)
             {
                 msg = $"{msg}    时间:{DateTime.Now}    线程ID:{Thread.GetCurrentProcessorId()}\r\n";
-                Console.Write(msg);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("[信息]" + msg);
+                Console.ResetColor();
                 try
                 {
-                    File.AppendAllText("message.log", msg);
+                    File.AppendAllText("information.log", msg);
                 }
                 catch
                 {
@@ -27,7 +29,9 @@ namespace GreenOnions.Utility.Helper
             if (BotInfo.LogLevel <= 1)
             {
                 msg = $"{msg}    警告时间:{DateTime.Now}    线程ID:{Thread.GetCurrentProcessorId()}\r\n";
-                Console.Write(msg);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("[警告]" + msg);
+                Console.ResetColor();
                 try
                 {
                     File.AppendAllText("warning.log", msg);
@@ -93,7 +97,9 @@ namespace GreenOnions.Utility.Helper
         private static void AppendErrorText(string msg)
         {
             msg = msg + $"\r\n    异常发生时间:{DateTime.Now}    线程ID:{Thread.GetCurrentProcessorId()}\r\n\r\n";
-            Console.Write(msg);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("[错误]" + msg);
+            Console.ResetColor();
             try
             {
                 File.AppendAllText("error.log", msg);

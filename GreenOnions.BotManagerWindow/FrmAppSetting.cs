@@ -260,13 +260,16 @@ namespace GreenOnions.BotManagerWindow
                     ctrlRssItem.RssTranslateTo = item.TranslateTo;
                     ctrlRssItem.RssSendByForward = item.SendByForward;
                     ctrlRssItem.RssAtAll = item.AtAll;
+                    ctrlRssItem.RssFilterMode = item.FilterMode;
+                    ctrlRssItem.RssFilterKeyWords = item.FilterKeyWords;
                     ctrlRssItem.RemoveClick += (_, _) => pnlRssSubscriptionList.Controls.Remove(ctrlRssItem);
                     pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
                 }
                 pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
             }
-            txbReadRssInterval.Text = BotInfo.ReadRssInterval.ToString();
             chkRssSendLiveCover.Checked = BotInfo.RssSendLiveCover;
+            txbReadRssInterval.Text = BotInfo.ReadRssInterval.ToString();
+            chkRssParallel.Checked = BotInfo.RssParallel;
             #endregion  -- RSS --
 
             #region -- 井字棋 --
@@ -531,9 +534,12 @@ namespace GreenOnions.BotManagerWindow
                 TranslateTo = i.RssTranslateTo,
                 AtAll = i.RssAtAll,
                 SendByForward = i.RssSendByForward,
+                FilterMode = i.RssFilterMode,
+                FilterKeyWords = i.RssFilterKeyWords,
             });
             BotInfo.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
             BotInfo.RssSendLiveCover = chkRssSendLiveCover.Checked;
+            BotInfo.RssParallel = chkRssParallel.Checked;
 
             #endregion -- RSS --
 

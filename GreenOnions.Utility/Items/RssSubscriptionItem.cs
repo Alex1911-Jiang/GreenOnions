@@ -12,5 +12,7 @@
         public string TranslateTo { get; set; }
         public bool SendByForward { get; set; }
         public bool AtAll { get; set; }
+        public int FilterMode { get; set; }
+        public string[] FilterKeyWords { get; set; }
     }
 }

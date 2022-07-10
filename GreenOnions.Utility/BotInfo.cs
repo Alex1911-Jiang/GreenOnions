@@ -1728,8 +1728,24 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
+        /// 多线程并行抓取多个RSS订阅
+        /// </summary>
+        [PropertyChineseName("每条订阅各占用一个线程")]
+        public static bool RssParallel
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(RssParallel));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(RssParallel), value.ToString());
+        }
+
+        /// <summary>
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
+        [PropertyChineseName("RSS订阅项")]
         public static IEnumerable<RssSubscriptionItem> RssSubscription
         {
             get

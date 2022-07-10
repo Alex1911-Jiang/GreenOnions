@@ -302,6 +302,7 @@
             this.chkEnabledForgeMessage = new System.Windows.Forms.CheckBox();
             this.pageRss = new System.Windows.Forms.TabPage();
             this.pnlRss = new System.Windows.Forms.Panel();
+            this.chkRssParallel = new System.Windows.Forms.CheckBox();
             this.pnlRssSubscriptionList = new System.Windows.Forms.FlowLayoutPanel();
             this.btnAddRssSubscription = new System.Windows.Forms.Button();
             this.txbReadRssInterval = new System.Windows.Forms.TextBox();
@@ -3486,6 +3487,8 @@
             this.pnlRss.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlRss.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlRss.Controls.Add(this.chkRssParallel);
             this.pnlRss.Controls.Add(this.pnlRssSubscriptionList);
             this.pnlRss.Controls.Add(this.txbReadRssInterval);
             this.pnlRss.Controls.Add(this.lblReadRssInterval);
@@ -3494,6 +3497,16 @@
             this.pnlRss.Name = "pnlRss";
             this.pnlRss.Size = new System.Drawing.Size(646, 644);
             this.pnlRss.TabIndex = 1;
+            // 
+            // chkRssParallel
+            // 
+            this.chkRssParallel.AutoSize = true;
+            this.chkRssParallel.Location = new System.Drawing.Point(460, 5);
+            this.chkRssParallel.Name = "chkRssParallel";
+            this.chkRssParallel.Size = new System.Drawing.Size(159, 21);
+            this.chkRssParallel.TabIndex = 3;
+            this.chkRssParallel.Text = "每条订阅各占用一个线程";
+            this.chkRssParallel.UseVisualStyleBackColor = true;
             // 
             // pnlRssSubscriptionList
             // 
@@ -3506,7 +3519,7 @@
             this.pnlRssSubscriptionList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlRssSubscriptionList.Location = new System.Drawing.Point(23, 32);
             this.pnlRssSubscriptionList.Name = "pnlRssSubscriptionList";
-            this.pnlRssSubscriptionList.Size = new System.Drawing.Size(600, 609);
+            this.pnlRssSubscriptionList.Size = new System.Drawing.Size(598, 607);
             this.pnlRssSubscriptionList.TabIndex = 2;
             this.pnlRssSubscriptionList.WrapContents = false;
             this.pnlRssSubscriptionList.SizeChanged += new System.EventHandler(this.pnlRssSubscriptionList_SizeChanged);
@@ -3529,7 +3542,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbReadRssInterval.Location = new System.Drawing.Point(169, 3);
             this.txbReadRssInterval.Name = "txbReadRssInterval";
-            this.txbReadRssInterval.Size = new System.Drawing.Size(454, 23);
+            this.txbReadRssInterval.Size = new System.Drawing.Size(283, 23);
             this.txbReadRssInterval.TabIndex = 1;
             // 
             // lblReadRssInterval
@@ -4449,5 +4462,6 @@
         private System.Windows.Forms.Label lblReplaceImgRoute;
         private System.Windows.Forms.Label lblSearchAnimeModeOnCmd;
         private System.Windows.Forms.TextBox txbSearchAnimeModeOnCmd;
+        private System.Windows.Forms.CheckBox chkRssParallel;
     }
 }
