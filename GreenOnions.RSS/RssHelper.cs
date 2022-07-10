@@ -61,14 +61,10 @@ namespace GreenOnions.RSS
                                         ReadingTasks[item.Url] = RssInner(item, SendMessage);
                                 }
                                 else
-                                {
                                     ReadingTasks.Add(item.Url, RssInner(item, SendMessage));
-                                }
                             }
                             else
-                            {
                                 await RssInner(item, SendMessage);
-                            }
                         }
                         if (!BotInfo.RssParallel)
                             await Task.Delay((int)Math.Round(BotInfo.ReadRssInterval * 1000 * 60));
@@ -79,7 +75,7 @@ namespace GreenOnions.RSS
 
         private static Task RssInner(RssSubscriptionItem item, Action<GreenOnionsMessages, long, long> SendMessage)
         {
-            return Task.Run(async() =>
+            return Task.Run(async () =>
             {
                 try
                 {

@@ -71,13 +71,21 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     async (targetId, targetGroup, msg) => await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp))
                     );
 
-                RssWorker.StartRssTask(async (msgs, targetId, groupId) =>
+                try
                 {
-                    if (targetId != -1)
-                        _ = session.SendFriendMessageAsync(targetId, await msgs.ToMiraiApiHttpMessages(session, UploadTarget.Friend));
-                    else if (groupId != -1)
-                        _ = session.SendGroupMessageAsync(groupId, await msgs.ToMiraiApiHttpMessages(session, UploadTarget.Group));
-                });
+                    RssWorker.StartRssTask(async (msgs, targetId, groupId) =>
+                    {
+                        if (targetId != -1)
+                            _ = session.SendFriendMessageAsync(targetId, await msgs.ToMiraiApiHttpMessages(session, UploadTarget.Friend));
+                        else if (groupId != -1)
+                            _ = session.SendGroupMessageAsync(groupId, await msgs.ToMiraiApiHttpMessages(session, UploadTarget.Group));
+                    });
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage("启动RSS抓取线程发生错误", ex);
+                    throw;
+                }
 
                 while (true)
                 {

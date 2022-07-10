@@ -36,9 +36,29 @@ namespace GreenOnions.BotManagerConsole
 				Console.WriteLine($"如果要取消自动连接, 请将 config.json 中 Bot.AutoConnectEnabled 修改为 False");
 				Task.Delay(BotInfo.AutoConnectDelay * 1000).Wait();
 				if (BotInfo.AutoConnectProtocol == 0)
-					await MiraiApiHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
+				{
+					try
+					{
+						await MiraiApiHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
+					}
+					catch (Exception ex)
+					{
+						LogHelper.WriteErrorLogWithUserMessage("连接到mirai-api-http发生异常", ex);
+						Console.WriteLine("连接mirai-api-http失败，" + ex.Message);
+					}
+				}
 				else
-					await CqHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
+				{
+					try
+					{
+						await CqHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
+					}
+					catch (Exception ex)
+					{
+						LogHelper.WriteErrorLogWithUserMessage("连接到cqhttp发生异常", ex);
+						Console.WriteLine("连接cqhttp失败，" + ex.Message);
+					}
+				}
 			}
 			else
             {
@@ -73,13 +93,29 @@ namespace GreenOnions.BotManagerConsole
 				{
 					Console.WriteLine("请输入mirai-api-http verifyKey:");
 					string verifyKey = Console.ReadLine();
-					await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
+                    try
+                    {
+						await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "mirai-api-http"));
+					}
+					catch (Exception ex)
+                    {
+						LogHelper.WriteErrorLogWithUserMessage("连接mirai-api-http发生异常", ex);
+						Console.WriteLine("连接mirai-api-http发生异常" + ex.Message);
+                    }
 				}
 				else
 				{
 					Console.WriteLine("请输入cqhttp access-token:");
 					string accessToken = Console.ReadLine();
-					await CqHttpMain.Connect(qqId, ip, port, accessToken, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
+					try
+					{
+						await CqHttpMain.Connect(qqId, ip, port, accessToken, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, "cqhttp"));
+					}
+					catch (Exception ex)
+					{
+						LogHelper.WriteErrorLogWithUserMessage("连接cqhttp发生异常", ex);
+						Console.WriteLine("连接cqhttp失败，" + ex.Message);
+					}
 				}
 			}
 		}

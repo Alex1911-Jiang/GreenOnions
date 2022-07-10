@@ -48,28 +48,35 @@ namespace GreenOnions.BotMain.CqHttp
 
                 BotInfo.IsLogin = true;
 
-                RssWorker.StartRssTask((msgs, targetId, groupId) =>
+                try
                 {
-                    SoraApi api = service.GetApi(service.ServiceId);
-                    if (msgs != null && msgs.Count > 0)
+                    RssWorker.StartRssTask((msgs, targetId, groupId) =>
                     {
-                        if (msgs.First() is GreenOnionsForwardMessage forwardMessage)
+                        SoraApi api = service.GetApi(service.ServiceId);
+                        if (msgs != null && msgs.Count > 0)
                         {
-                            if (targetId != -1)
-                                _ = api.SendPrivateForwardMsg(targetId, forwardMessage.ToCqHttpForwardMessage());
-                            else if (groupId != -1)
-                                _ = api.SendGroupForwardMsg(groupId, forwardMessage.ToCqHttpForwardMessage());
+                            if (msgs.First() is GreenOnionsForwardMessage forwardMessage)
+                            {
+                                if (targetId != -1)
+                                    _ = api.SendPrivateForwardMsg(targetId, forwardMessage.ToCqHttpForwardMessage());
+                                else if (groupId != -1)
+                                    _ = api.SendGroupForwardMsg(groupId, forwardMessage.ToCqHttpForwardMessage());
+                            }
+                            else
+                            {
+                                if (targetId != -1)
+                                    _ = api.SendPrivateMessage(targetId, msgs.ToCqHttpMessages(null));
+                                else if (groupId != -1)
+                                    _ = api.SendGroupMessage(groupId, msgs.ToCqHttpMessages(null));
+                            }
                         }
-                        else
-                        {
-                            if (targetId != -1)
-                                _ = api.SendPrivateMessage(targetId, msgs.ToCqHttpMessages(null));
-                            else if (groupId != -1)
-                                _ = api.SendGroupMessage(groupId, msgs.ToCqHttpMessages(null));
-                        }
-                    }
-                });
-
+                    });
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage("启动RSS抓取线程发生错误", ex);
+                    throw;
+                }
 
                 while (true)
                 {

@@ -93,9 +93,9 @@ namespace GreenOnions.BotManagerWindow
                 await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "mirai-api-http"))));
             }
             catch (Exception ex)
-            {
-				LogHelper.WriteErrorLog(ex);
-                MessageBox.Show(ex.Message);
+			{
+				LogHelper.WriteErrorLogWithUserMessage("连接到mirai-api-http发生异常", ex);
+                MessageBox.Show("连接mirai-api-http失败" + ex.Message);
             }
 		}
 
@@ -107,9 +107,9 @@ namespace GreenOnions.BotManagerWindow
             }
 			catch (Exception ex)
 			{
-				LogHelper.WriteErrorLog(ex);
-				MessageBox.Show(ex.Message);
-			}
+				LogHelper.WriteErrorLogWithUserMessage("连接到cqhttp发生异常", ex);
+                MessageBox.Show("连接cqhttp失败" + ex.Message);
+            }
 		}
 
 		private void btnDeconnect_Click(object sender, EventArgs e)
@@ -205,6 +205,10 @@ namespace GreenOnions.BotManagerWindow
 
 		private bool CheckInfo()
         {
+            if (BotInfo.IsLogin)
+            {
+				return false;
+            }
 			if (string.IsNullOrEmpty(txbQQ.Text))
 			{
 				MessageBox.Show("请先输入机器人QQ号。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);

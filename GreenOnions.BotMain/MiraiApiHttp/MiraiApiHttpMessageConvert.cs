@@ -10,17 +10,25 @@ namespace GreenOnions.BotMain.MiraiApiHttp
     {
         public static GreenOnionsMessages ToOnionsMessages(this IChatMessage[] miraiMessage, long senderId, string senderName)
         {
+
             GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
             for (int i = 0; i < miraiMessage.Length; i++)
             {
-                if (miraiMessage[i] is IAtMessage atMsg)
-                    greenOnionsMessages.Add(new GreenOnionsAtMessage(atMsg.Target, atMsg.Display));
-                else if (miraiMessage[i] is IPlainMessage plainMsg)
-                    greenOnionsMessages.Add(plainMsg.ToString());
-                else if (miraiMessage[i] is IImageMessage imageMsg)
-                    greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url, imageMsg.ImageId));
-                else if (miraiMessage[i] is IFaceMessage faceMsg)
-                    greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.Name));
+                try
+                {
+                    if (miraiMessage[i] is IAtMessage atMsg)
+                        greenOnionsMessages.Add(new GreenOnionsAtMessage(atMsg.Target, atMsg.Display));
+                    else if (miraiMessage[i] is IPlainMessage plainMsg)
+                        greenOnionsMessages.Add(plainMsg.ToString());
+                    else if (miraiMessage[i] is IImageMessage imageMsg)
+                        greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url, imageMsg.ImageId));
+                    else if (miraiMessage[i] is IFaceMessage faceMsg)
+                        greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.Name));
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage($"转换为GreenOnions消息失败, 原消息类型为:{miraiMessage[i].GetType()}", ex);
+                }
             }
 
             greenOnionsMessages.SenderId = senderId;

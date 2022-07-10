@@ -15,28 +15,35 @@ namespace GreenOnions.BotMain.CqHttp
             GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
             for (int i = 0; i < miraiMessage.Count; i++)
             {
-                if (miraiMessage[i].Data is AtSegment atMsg)
+                try
                 {
-                    //获取@群名片
-                    if (long.TryParse(atMsg.Target, out long atId))
+                    if (miraiMessage[i].Data is AtSegment atMsg)
                     {
-                        var apiResult = api.GetGroupMemberList(senderGroup.Value).GetAwaiter().GetResult();
-                        List<GroupMemberInfo> groupMemberInfos = apiResult.groupMemberList;
-                        GroupMemberInfo targetQQ = groupMemberInfos.Where(m => m.UserId == atId).FirstOrDefault();
-                        string nickName = targetQQ?.Nick;
-                        greenOnionsMessages.Add(new GreenOnionsAtMessage(atId, nickName));
+                        //获取@群名片
+                        if (long.TryParse(atMsg.Target, out long atId))
+                        {
+                            var apiResult = api.GetGroupMemberList(senderGroup.Value).GetAwaiter().GetResult();
+                            List<GroupMemberInfo> groupMemberInfos = apiResult.groupMemberList;
+                            GroupMemberInfo targetQQ = groupMemberInfos.Where(m => m.UserId == atId).FirstOrDefault();
+                            string nickName = targetQQ?.Nick;
+                            greenOnionsMessages.Add(new GreenOnionsAtMessage(atId, nickName));
+                        }
+                        else
+                        {
+                            greenOnionsMessages.Add(new GreenOnionsAtMessage(atId, atMsg.Name));
+                        }
                     }
-                    else
-                    {
-                        greenOnionsMessages.Add(new GreenOnionsAtMessage(atId, atMsg.Name));
-                    }
+                    else if (miraiMessage[i].Data is TextSegment textMsg)
+                        greenOnionsMessages.Add(textMsg.Content);
+                    else if (miraiMessage[i].Data is ImageSegment imageMsg)
+                        greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url, imageMsg.ImgFile));
+                    else if (miraiMessage[i].Data is FaceSegment faceMsg)
+                        greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.ToString()));
                 }
-                else if (miraiMessage[i].Data is TextSegment textMsg)
-                    greenOnionsMessages.Add(textMsg.Content);
-                else if (miraiMessage[i].Data is ImageSegment imageMsg)
-                    greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url, imageMsg.ImgFile));
-                else if (miraiMessage[i].Data is FaceSegment faceMsg)
-                    greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.ToString()));
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage($"转换为GreenOnions消息失败, 原消息类型为:{miraiMessage[i].Data.GetType()}", ex);
+                }
             }
 
             greenOnionsMessages.SenderId = senderId;
