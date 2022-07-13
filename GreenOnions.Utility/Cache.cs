@@ -19,12 +19,13 @@ namespace GreenOnions.Utility
         public static ConcurrentDictionary<long, DateTime> HPictureWhiteCDDic { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime> HPicturePMCDDic { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, int> LimitDic { get; } = new ConcurrentDictionary<long, int>();
-        public static ConcurrentDictionary<long, DateTime> SearchingPicturesAndAnimeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
+        //public static ConcurrentDictionary<long, DateTime> SearchingPicturesAndAnimeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime> SearchingPicturesUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime> SearchingAnimeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
+        public static ConcurrentDictionary<long, DateTime> Searching3DUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime> PlayingTicTacToeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
-        public static ConcurrentDictionary<string, int> SauceNaoKeysAndLongRemaining { get; }  //Nao的key剩余每日可用次数
-        public static ConcurrentDictionary<string, int> SauceNaoKeysAndShortRemaining { get; }  //Nao的key剩余30秒内可用次数
+        public static ConcurrentDictionary<string, int> SauceNAOKeysAndLongRemaining { get; }  //Nao的key剩余每日可用次数
+        public static ConcurrentDictionary<string, int> SauceNAOKeysAndShortRemaining { get; }  //Nao的key剩余30秒内可用次数
 
         private static ConcurrentDictionary<string, DateTime> _LastOneSendRssTime = null;
         public static ConcurrentDictionary<string, DateTime> LastOneSendRssTime
@@ -49,28 +50,28 @@ namespace GreenOnions.Utility
 
         static Cache()
         {
-            SauceNaoKeysAndLongRemaining = new ConcurrentDictionary<string, int>();
+            SauceNAOKeysAndLongRemaining = new ConcurrentDictionary<string, int>();
             foreach (var key in BotInfo.SauceNAOApiKey)
-                SauceNaoKeysAndLongRemaining.TryAdd(key, 200);
+                SauceNAOKeysAndLongRemaining.TryAdd(key, 200);
 
-            SauceNaoKeysAndShortRemaining = new ConcurrentDictionary<string, int>();
+            SauceNAOKeysAndShortRemaining = new ConcurrentDictionary<string, int>();
             foreach (var key in BotInfo.SauceNAOApiKey)
-                SauceNaoKeysAndShortRemaining.TryAdd(key, 6);
+                SauceNAOKeysAndShortRemaining.TryAdd(key, 6);
 
             Task.Run(() =>
             {
                 while (true)
                 {
-                    foreach (var item in SauceNaoKeysAndLongRemaining)  //每7.5分钟恢复1次
+                    foreach (var item in SauceNAOKeysAndLongRemaining)  //每7.5分钟恢复1次
                     {
-                        if (SauceNaoKeysAndLongRemaining[item.Key] < 200)
-                            SauceNaoKeysAndLongRemaining[item.Key] += 1;
+                        if (SauceNAOKeysAndLongRemaining[item.Key] < 200)
+                            SauceNAOKeysAndLongRemaining[item.Key] += 1;
                     }
                     Task.Delay(1000 * 450).Wait();
 
-                    CheckWorkingTimeout(SearchingPicturesAndAnimeUsers);   //顺便检查正在搜图的人超时了没有
-                    CheckWorkingTimeout(SearchingPicturesUsers);
+                    CheckWorkingTimeout(SearchingPicturesUsers);  //顺便检查正在搜图的人超时了没有
                     CheckWorkingTimeout(SearchingAnimeUsers);
+                    CheckWorkingTimeout(Searching3DUsers);
                     CheckWorkingTimeout(PlayingTicTacToeUsers);
                 }
             });
@@ -78,22 +79,22 @@ namespace GreenOnions.Utility
             {
                 while (true)
                 {
-                    foreach (var item in SauceNaoKeysAndShortRemaining)  //每5秒恢复1次
+                    foreach (var item in SauceNAOKeysAndShortRemaining)  //每5秒恢复1次
                     {
-                        if (SauceNaoKeysAndShortRemaining[item.Key] < 6)
-                            SauceNaoKeysAndShortRemaining[item.Key] += 1;
+                        if (SauceNAOKeysAndShortRemaining[item.Key] < 6)
+                            SauceNAOKeysAndShortRemaining[item.Key] += 1;
                     }
                     Task.Delay(1000 * 5).Wait();
                 }
             });
         }
 
-        public static void SetSauceNaoKey(string key)
+        public static void SetSauceNAOKey(string key)
         {
-            if (!SauceNaoKeysAndLongRemaining.ContainsKey(key))
-                SauceNaoKeysAndLongRemaining.TryAdd(key, 200);
-            if (!SauceNaoKeysAndShortRemaining.ContainsKey(key))
-                SauceNaoKeysAndShortRemaining.TryAdd(key, 6);
+            if (!SauceNAOKeysAndLongRemaining.ContainsKey(key))
+                SauceNAOKeysAndLongRemaining.TryAdd(key, 200);
+            if (!SauceNAOKeysAndShortRemaining.ContainsKey(key))
+                SauceNAOKeysAndShortRemaining.TryAdd(key, 6);
         }
 
         private static void CheckWorkingTimeout(IDictionary<long, DateTime> source)

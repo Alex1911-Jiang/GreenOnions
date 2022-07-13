@@ -401,6 +401,8 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(PmAutoSearch), value.ToString());
         }
 
+        #region -- TraceMoe --
+
         /// <summary>
         /// 是否启用TraceMoe搜番
         /// </summary>
@@ -431,38 +433,42 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold), value.ToString());
         }
 
+        #endregion -- TraceMoe --
+
+        #region -- SauceNAO --
+
         /// <summary>
-        /// 是否启用SauceNao搜图
+        /// 是否启用SauceNAO搜图
         [PropertyChineseName("启用 SauceNAO 搜图")]
         /// </summary>
-        public static bool SearchEnabledSauceNao
+        public static bool SearchEnabledSauceNAO
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledSauceNao));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledSauceNAO));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return true;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledSauceNao), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledSauceNAO), value.ToString());
         }
 
         /// <summary>
-        /// 在Windows系统下时SauceNao优先以浏览器进行请求(腾讯云轻量403问题)
+        /// SauceNAO在Windows系统下时SauceNAO优先以浏览器进行请求(腾讯云轻量403问题)
         /// </summary>
         [PropertyChineseName("SauceNAO 使用爬虫而非API")]
-        public static bool SauceNaoRequestByWebBrowser
+        public static bool SauceNAORequestByWebBrowser
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNaoRequestByWebBrowser));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNAORequestByWebBrowser));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return false;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNaoRequestByWebBrowser), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNAORequestByWebBrowser), value.ToString());
         }
 
         /// <summary>
-        /// SauceNao Api-Key
+        /// SauceNAO Api-Key
         /// </summary>
         [PropertyChineseName("SauceNAO Api-Key")]
         public static IEnumerable<string> SauceNAOApiKey
@@ -478,23 +484,23 @@ namespace GreenOnions.Utility
             {
                 foreach (var key in value)
                 {
-                    if (!Cache.SauceNaoKeysAndLongRemaining.ContainsKey(key))  //如果添加了新Key, 装进缓存
-                        Cache.SauceNaoKeysAndLongRemaining.TryAdd(key, 200);
-                    if (!Cache.SauceNaoKeysAndShortRemaining.ContainsKey(key))  //如果添加了新Key, 装进缓存
-                        Cache.SauceNaoKeysAndShortRemaining.TryAdd(key, 6);
+                    if (!Cache.SauceNAOKeysAndLongRemaining.ContainsKey(key))  //如果添加了新Key, 装进缓存
+                        Cache.SauceNAOKeysAndLongRemaining.TryAdd(key, 200);
+                    if (!Cache.SauceNAOKeysAndShortRemaining.ContainsKey(key))  //如果添加了新Key, 装进缓存
+                        Cache.SauceNAOKeysAndShortRemaining.TryAdd(key, 6);
                 }
-                var removeLong = Cache.SauceNaoKeysAndLongRemaining.Keys.ToList().Except(value);
+                var removeLong = Cache.SauceNAOKeysAndLongRemaining.Keys.ToList().Except(value);
                 foreach (var item in removeLong)
-                    Cache.SauceNaoKeysAndLongRemaining.TryRemove(item, out _);
-                var removeShort = Cache.SauceNaoKeysAndShortRemaining.Keys.ToList().Except(value);
+                    Cache.SauceNAOKeysAndLongRemaining.TryRemove(item, out _);
+                var removeShort = Cache.SauceNAOKeysAndShortRemaining.Keys.ToList().Except(value);
                 foreach (var item in removeShort)
-                    Cache.SauceNaoKeysAndShortRemaining.TryRemove(item, out _);
+                    Cache.SauceNAOKeysAndShortRemaining.TryRemove(item, out _);
                 JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SauceNAOApiKey), string.Join(";", value));
             }
         }
 
         /// <summary>
-        /// 是否SauceNao搜图按相似度倒序排序
+        /// 是否SauceNAO搜图按相似度倒序排序
         /// </summary>
         [PropertyChineseName("按相似度排序")]
         public static bool SearchSauceNAOSortByDesc
@@ -509,9 +515,9 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// SauceNAO低相似度阈值
+        /// SauceNAO 低相似度阈值
         /// </summary>
-        [PropertyChineseName("低相似度阈值")]
+        [PropertyChineseName("SauceNAO 低相似度阈值")]
         public static int SearchSauceNAOLowSimilarity
         {
             get
@@ -524,7 +530,7 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否SauceNao搜图发送Pixiv原图
+        /// 是否SauceNAO搜图发送Pixiv原图
         /// </summary>
         [PropertyChineseName("SauceNAO 搜图结果为 Pixiv 地址时发送原图")]
         public static bool SearchSauceNAOSendPixivOriginalPicture
@@ -539,19 +545,9 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 相似度低于阈值返回消息
+        /// SauceNAO 高相似度阈值
         /// </summary>
-        [PropertyChineseName("低于相似度阈值回复语")]
-        public static string SearchLowSimilarityReply
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply)) ?? "相似度低于<低相似度阈值>%，缩略图不予显示。";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchLowSimilarityReply), value);
-        }
-
-        /// <summary>
-        /// SauceNAO高相似度阈值
-        /// </summary>
-        [PropertyChineseName("高相似度阈值")]
+        [PropertyChineseName("SauceNAO 高相似度阈值")]
         public static int SearchSauceNAOHighSimilarity
         {
             get
@@ -562,6 +558,20 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOHighSimilarity), value.ToString());
         }
+
+        /// <summary>
+        /// SauceNAO 相似度低于阈值返回消息
+        /// </summary>
+        [PropertyChineseName("SauceNAO 低于相似度阈值回复语")]
+        public static string SearchSauceNAOLowSimilarityReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOLowSimilarityReply)) ?? "相似度低于<SauceNAO 低相似度阈值>%，缩略图不予显示。";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchSauceNAOLowSimilarityReply), value);
+        }
+
+        #endregion -- SauceNAO --
+
+        #region -- ASCII2D --
 
         /// <summary>
         /// 是否启用ASCII2D搜图
@@ -597,16 +607,115 @@ namespace GreenOnions.Utility
         /// ASCII2D显示结果数量
         /// </summary>
         [PropertyChineseName("ASCII2D 显示结果数量")]
-        public static int SearchShowAscii2dCount
+        public static int SearchShowASCII2DCount
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchShowAscii2dCount));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchShowASCII2DCount));
                 if (int.TryParse(strValue, out int iValue)) return iValue;
                 return 1;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchShowAscii2dCount), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchShowASCII2DCount), value.ToString());
         }
+
+        #endregion -- ASCII2D --
+
+        #region -- Iqdb --
+
+        #region -- Iqdb anime--
+
+        /// <summary>
+        /// 是否启用Iqdb搜图
+        /// </summary>
+        [PropertyChineseName("启用 ASCII2D 搜索")]
+        public static bool SearchEnabledIqdb
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledIqdb));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabledIqdb), value.ToString());
+        }
+
+        #endregion -- Iqdb anime --
+
+        #region -- 3dIqdb --
+
+        /// <summary>
+        /// 是否启用3dIqdb搜车
+        /// </summary>
+        [PropertyChineseName("启用 ASCII2D 搜索")]
+        public static bool SearchEnabled3dIqdb
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabled3dIqdb));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchEnabled3dIqdb), value.ToString());
+        }
+
+        #endregion -- 3dIqdb --
+
+        /// <summary>
+        /// Iqdb 是否发送标签
+        /// </summary>
+        [PropertyChineseName("Iqdb 是否发送标签")]
+        public static bool SearchIqdbSendTags
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchIqdbSendTags));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchIqdbSendTags), value.ToString());
+        }
+
+        /// <summary>
+        /// Iqdb 只发送分级为安全的缩略图
+        /// </summary>
+        [PropertyChineseName("Iqdb 只发送分级为安全的缩略图")]
+        public static bool SearchIqdbMustSafe
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchIqdbMustSafe));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchIqdbMustSafe), value.ToString());
+        }
+
+        /// <summary>
+        /// Iqdb 相似度阈值
+        /// </summary>
+        [PropertyChineseName("Iqdb 相似度阈值")]
+        public static int SearchIqdbSimilarity
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchIqdbSimilarity));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 60;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchIqdbSimilarity), value.ToString());
+        }
+
+        /// <summary>
+        /// Iqdb 相似度低于阈值返回消息
+        /// </summary>
+        [PropertyChineseName("Iqdb 低于相似度阈值回复语")]
+        public static string SearchIqdbSimilarityReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchIqdbSimilarityReply)) ?? "相似度低于<Iqdb 相似度阈值>%，缩略图不予显示。";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchIqdbSimilarityReply), value);
+        }
+
+        #endregion -- Iqdb --
 
         /// <summary>
         /// 开启连续搜图命令(正则表达式)
@@ -626,6 +735,16 @@ namespace GreenOnions.Utility
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchAnimeModeOnCmd)) ?? "<机器人名称>搜[图圖図]";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchAnimeModeOnCmd), value);
+        }
+
+        /// <summary>
+        /// 开启连续搜车命令(正则表达式)
+        /// </summary>
+        [PropertyChineseName("开启连续搜车模式命令")]
+        public static string Search3DModeOnCmd
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(Search3DModeOnCmd)) ?? "<机器人名称>搜[车車]牌?";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(Search3DModeOnCmd), value);
         }
 
         /// <summary>
@@ -1971,5 +2090,6 @@ namespace GreenOnions.Utility
     {
         Picture = 1,
         Anime = 2,
+        ThreeD = 4,
     }
 }

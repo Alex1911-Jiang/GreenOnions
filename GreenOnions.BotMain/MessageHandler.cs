@@ -17,6 +17,7 @@ namespace GreenOnions.BotMain
     {
         private static Regex regexSearchOn;
         private static Regex regexSearchAnimeOn;
+        private static Regex regexSearch3DOn;
         private static Regex regexSearchOff;
         private static Regex regexTranslateToChinese;
         private static Regex regexTranslateTo;
@@ -46,6 +47,8 @@ namespace GreenOnions.BotMain
                 regexSearchOn = new Regex(BotInfo.SearchModeOnCmd.ReplaceGreenOnionsTags());
                 regexName = "开启搜番";
                 regexSearchAnimeOn = new Regex(BotInfo.SearchAnimeModeOnCmd.ReplaceGreenOnionsTags());
+                regexName = "开启搜车";
+                regexSearch3DOn = new Regex(BotInfo.Search3DModeOnCmd.ReplaceGreenOnionsTags());
                 regexName = "关闭搜图";
                 regexSearchOff = new Regex(BotInfo.SearchModeOffCmd.ReplaceGreenOnionsTags());
                 regexName = "翻译为中文";
@@ -112,18 +115,18 @@ namespace GreenOnions.BotMain
                 }
             }
 
-            if (Cache.SearchingPicturesAndAnimeUsers.Keys.Contains(inMsg.SenderId) || Cache.SearchingPicturesUsers.Keys.Contains(inMsg.SenderId) || Cache.SearchingAnimeUsers.Keys.Contains(inMsg.SenderId))  //连续搜图
+            if (Cache.SearchingPicturesUsers.Keys.Contains(inMsg.SenderId) || Cache.SearchingAnimeUsers.Keys.Contains(inMsg.SenderId) || Cache.Searching3DUsers.Keys.Contains(inMsg.SenderId))  //连续搜图
             {
                 var imgMsgs = inMsg.OfType<GreenOnionsImageMessage>();
                 if (inMsg.Count == imgMsgs.Count())
                 {
                     SearchMode mode = 0;
-                    if (Cache.SearchingPicturesAndAnimeUsers.Keys.Contains(inMsg.SenderId))
-                        mode = SearchMode.Picture | SearchMode.Anime;
                     if (Cache.SearchingPicturesUsers.Keys.Contains(inMsg.SenderId))
-                        mode = SearchMode.Picture;
+                        mode |= SearchMode.Picture;
                     if (Cache.SearchingAnimeUsers.Keys.Contains(inMsg.SenderId))
-                        mode =  SearchMode.Anime;
+                        mode |=  SearchMode.Anime;
+                    if (Cache.Searching3DUsers.Keys.Contains(inMsg.SenderId))
+                        mode |= SearchMode.ThreeD;
                     SearchPictureHandler.UpdateSearchTime(inMsg.SenderId);  //刷新搜图超时时间到1分钟
                     foreach (GreenOnionsImageMessage imgMsg in imgMsgs)
                         SearchPictureHandler.SearchPicture(imgMsg, SendMessage, mode);
@@ -188,10 +191,12 @@ namespace GreenOnions.BotMain
                 if (BotInfo.SearchEnabled)
                 {
                     SearchMode mode =  0;
-                    if ((BotInfo.SearchEnabledSauceNao || BotInfo.SearchEnabledASCII2D) && regexSearchOn.IsMatch(firstValue))
+                    if ((BotInfo.SearchEnabledSauceNAO || BotInfo.SearchEnabledASCII2D) && regexSearchOn.IsMatch(firstValue))
                         mode |= SearchMode.Picture;
                     if (BotInfo.SearchEnabledTraceMoe && regexSearchAnimeOn.IsMatch(firstValue))
                         mode |= SearchMode.Anime;
+                    if (BotInfo.SearchEnabled3dIqdb && regexSearch3DOn.IsMatch(firstValue))
+                        mode |= SearchMode.ThreeD;
 
                     if (mode != 0)
                     {
@@ -400,7 +405,7 @@ namespace GreenOnions.BotMain
                 for (int i = 0; i < inMsg.Count; i++)
                 {
                     if (inMsg[i] is GreenOnionsImageMessage imgMsg)
-                        SearchPictureHandler.SearchPicture(imgMsg, SendMessage, SearchMode.Picture | SearchMode.Anime);
+                        SearchPictureHandler.SearchPicture(imgMsg, SendMessage, SearchMode.Picture | SearchMode.Anime | SearchMode.ThreeD);
                 }
             }
 

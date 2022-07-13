@@ -28,7 +28,19 @@ namespace GreenOnions.Utility.Helper
             SaveCacheFile();
         }
 
-        public static void SaveConfigFile() => File.WriteAllText("config.json", JsonHelper.JsonConfig.ToString());
-        public static void SaveCacheFile() => File.WriteAllText("cache.json", JsonHelper.JsonCache.ToString());
+        public static void SaveConfigFile()
+        {
+            lock (JsonHelper.JsonConfig)
+            {
+                File.WriteAllText("config.json", JsonHelper.JsonConfig.ToString());
+            }
+        }
+        public static void SaveCacheFile()
+        {
+            lock (JsonHelper.JsonCache)
+            {
+                File.WriteAllText("cache.json", JsonHelper.JsonCache.ToString());
+            }
+        }
     }
 }

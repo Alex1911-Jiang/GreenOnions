@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\IqdbApi\IqdbApi\IqdbApi.csproj" />
     <ProjectReference Include="..\GreenOnions.Interface\GreenOnions.Interface.csproj" />
     <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />
   </ItemGroup>

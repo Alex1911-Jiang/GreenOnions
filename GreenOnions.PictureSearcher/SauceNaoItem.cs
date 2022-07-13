@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GreenOnions.PictureSearcher
 {
-    public struct SauceNaoItem
+    public struct SauceNAOItem
     {
         public float similarity; //相似度
         public string thumbnail;  //缩略图地址
