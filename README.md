@@ -42,7 +42,7 @@
 
 #### 一、环境配置:
 
-1. 首先确保你的系统是 Windows 10 1607 或更高版本/Windows 8.1/Windows7 Sp1 并安装了 [KB3063858](https://www.microsoft.com/zh-CN/download/details.aspx?id=47442) 和 [KB2533623](https://support.microsoft.com/zh-cn/topic/microsoft-%E5%AE%89%E5%85%A8%E5%85%AC%E5%91%8A-%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%BA%93%E5%8A%A0%E8%BD%BD%E5%8F%AF%E8%83%BD%E5%85%81%E8%AE%B8%E8%BF%9C%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81-486ea436-2d47-27e5-6cb9-26ab7230c704) 补丁<br>
+1. 首先确保你的系统是 Windows 10 1607 或更高版本/Windows 8.1/Windows7 Sp1 并安装了 KB3063858 ( [x64](https://www.microsoft.com/zh-CN/download/details.aspx?id=47442) | [x86](https://www.microsoft.com/zh-CN/download/details.aspx?id=47409) ) 和 [KB2533623](https://support.microsoft.com/zh-cn/topic/microsoft-%E5%AE%89%E5%85%A8%E5%85%AC%E5%91%8A-%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%BA%93%E5%8A%A0%E8%BD%BD%E5%8F%AF%E8%83%BD%E5%85%81%E8%AE%B8%E8%BF%9C%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81-486ea436-2d47-27e5-6cb9-26ab7230c704) 补丁<br>
 2. 下载并安装 Microsoft Visual C++ 2015-2019 Redistributable ( [x64](https://aka.ms/vs/16/release/vc_redist.x64.exe) | [x86](https://aka.ms/vs/16/release/vc_redist.x86.exe) )<br>
 3. 到 [.Net6官网](https://dotnet.microsoft.com/download/dotnet/6.0) 找到.NET Desktop Runtime下载对应自己系统架构的 Installers 版本安装<br>
 
@@ -73,7 +73,7 @@
 
 #### 一、环境配置:
 
-1. 首先确保你的系统是 Windows 10 1607 或更高版本/Windows 8.1/Windows7 Sp1 并安装了 [KB3063858](https://www.microsoft.com/zh-CN/download/details.aspx?id=47442) 和 [KB2533623](https://support.microsoft.com/zh-cn/topic/microsoft-%E5%AE%89%E5%85%A8%E5%85%AC%E5%91%8A-%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%BA%93%E5%8A%A0%E8%BD%BD%E5%8F%AF%E8%83%BD%E5%85%81%E8%AE%B8%E8%BF%9C%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81-486ea436-2d47-27e5-6cb9-26ab7230c704) 补丁<br>
+1. 首先确保你的系统是 Windows 10 1607 或更高版本/Windows 8.1/Windows7 Sp1 并安装了 KB3063858 ( [x64](https://www.microsoft.com/zh-CN/download/details.aspx?id=47442) | [x86](https://www.microsoft.com/zh-CN/download/details.aspx?id=47409) ) 和 [KB2533623](https://support.microsoft.com/zh-cn/topic/microsoft-%E5%AE%89%E5%85%A8%E5%85%AC%E5%91%8A-%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%BA%93%E5%8A%A0%E8%BD%BD%E5%8F%AF%E8%83%BD%E5%85%81%E8%AE%B8%E8%BF%9C%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81-486ea436-2d47-27e5-6cb9-26ab7230c704) 补丁<br>
 2. 下载并安装 Microsoft Visual C++ 2015-2019 Redistributable ( [x64](https://aka.ms/vs/16/release/vc_redist.x64.exe) | [x86](https://aka.ms/vs/16/release/vc_redist.x86.exe) )<br>
 3. 到 [.Net6官网](https://dotnet.microsoft.com/download/dotnet/6.0) 找到.NET Desktop Runtime下载对应自己系统架构的Installers版本安装<br>
 4. 到 [OpenJDK官网](http://jdk.java.net/) 下载 OpenJDK 尽量选择高版本的下<br>
