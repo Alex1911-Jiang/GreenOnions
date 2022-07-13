@@ -165,10 +165,8 @@
 
 ### 短期计划(TODO):
 
-1.设置搜图时一个引擎显示多少个结果的功能<br>
-2.iqdb搜图<br>
-3.yande.re随机色图<br>
-4.E-Hentai关键词色图<br>
+1.yande.re随机色图<br>
+2.E-Hentai关键词色图<br>
 
 ### 长期计划(GUDO):
 1.把System.Drawing替换为其他~~更轻量~~的跨平台图形库(准备暂时先用CV), 取消Linux系统下对Mono的依赖<br>
