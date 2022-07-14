@@ -97,12 +97,18 @@ namespace GreenOnions.BotMain.CqHttp
             return cqHttpMessages;
         }
 
-        public static List<CustomNode> ToCqHttpForwardMessage(this GreenOnionsForwardMessage forwardMsg)
+        public static List<CustomNode> ToCqHttpForwardMessage(this GreenOnionsMessages msgs)
         {
             List<CustomNode> nodes = new List<CustomNode>();
-            for (int i = 0; i < forwardMsg.ItemMessages.Count; i++)
+            for (int i = 0; i < msgs.Count; i++)
             {
-                nodes.Add(new CustomNode(forwardMsg.ItemMessages[i].NickName, forwardMsg.ItemMessages[i].QQid, forwardMsg.ItemMessages[i].itemMessage.ToCqHttpMessages(null)));
+                if (msgs[i] is GreenOnionsForwardMessage forwardMsg)
+                {
+                    for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
+                    {
+                        nodes.Add(new CustomNode(forwardMsg.ItemMessages[j].NickName, forwardMsg.ItemMessages[j].QQid, forwardMsg.ItemMessages[j].itemMessage.ToCqHttpMessages(null)));
+                    }
+                }
             }
             return nodes;
         }

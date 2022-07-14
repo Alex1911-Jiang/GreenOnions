@@ -20,9 +20,9 @@ namespace GreenOnions.BotMain.CqHttp
             {
                 if (outMsg != null && outMsg.Count > 0)
                 {
-                    if (outMsg[0] is GreenOnionsForwardMessage forwardMessage)
+                    if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
                     {
-                        _ = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.SourceGroup.Id, forwardMessage.ToCqHttpForwardMessage());
+                        _ = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.SourceGroup.Id, outMsg.ToCqHttpForwardMessage());
                     }
                     else
                     {
@@ -54,9 +54,9 @@ namespace GreenOnions.BotMain.CqHttp
             {
                 if (outMsg != null && outMsg.Count > 0)
                 {
-                    if (outMsg[0] is GreenOnionsForwardMessage forwardMessage)
+                    if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
                     {
-                        _ = eventArgs.SoraApi.SendPrivateForwardMsg(eventArgs.Sender.Id, forwardMessage.ToCqHttpForwardMessage());
+                        _ = eventArgs.SoraApi.SendPrivateForwardMsg(eventArgs.Sender.Id, outMsg.ToCqHttpForwardMessage());
                     }
                     else
                     {

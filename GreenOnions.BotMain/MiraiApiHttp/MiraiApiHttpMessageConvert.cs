@@ -10,7 +10,6 @@ namespace GreenOnions.BotMain.MiraiApiHttp
     {
         public static GreenOnionsMessages ToOnionsMessages(this IChatMessage[] miraiMessage, long senderId, string senderName)
         {
-
             GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
             for (int i = 0; i < miraiMessage.Length; i++)
             {

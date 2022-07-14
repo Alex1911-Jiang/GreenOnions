@@ -55,12 +55,12 @@ namespace GreenOnions.BotMain.CqHttp
                         SoraApi api = service.GetApi(service.ServiceId);
                         if (msgs != null && msgs.Count > 0)
                         {
-                            if (msgs.First() is GreenOnionsForwardMessage forwardMessage)
+                            if (msgs.FirstOrDefault() is GreenOnionsForwardMessage)
                             {
                                 if (targetId != -1)
-                                    _ = api.SendPrivateForwardMsg(targetId, forwardMessage.ToCqHttpForwardMessage());
+                                    _ = api.SendPrivateForwardMsg(targetId, msgs.ToCqHttpForwardMessage());
                                 else if (groupId != -1)
-                                    _ = api.SendGroupForwardMsg(groupId, forwardMessage.ToCqHttpForwardMessage());
+                                    _ = api.SendGroupForwardMsg(groupId, msgs.ToCqHttpForwardMessage());
                             }
                             else
                             {
