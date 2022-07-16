@@ -20,7 +20,7 @@ namespace GreenOnions.HPicture
             if (BotInfo.HPictureSize1200)
                 size = "regular";
 
-            string strHttpRequest = $@"https://api.lolicon.app/setu/v2?size={size}&proxy=i.pixiv.re";
+            string strHttpRequest = $@"https://api.lolicon.app/setu/v2?size={size}&proxy=i.{BotInfo.PixivProxy}";
             _ = SendLoliconHPhicture(senderId, senderGroup, strHttpRequest, size, SendMessage);
         }
 
@@ -108,7 +108,7 @@ namespace GreenOnions.HPicture
                                 keyword = "&keyword=" + strKeyword;
                             }
                         }
-                        strHttpRequest = $@"https://api.lolicon.app/setu/v2?num={lImgCount}&proxy=i.pixiv.re&r18={strR18}{keyword}&size={size}";
+                        strHttpRequest = $@"https://api.lolicon.app/setu/v2?num={lImgCount}&proxy=i.{BotInfo.PixivProxy}&r18={strR18}{keyword}&size={size}";
                         _ = SendLoliconHPhicture(senderId, senderGroup, strHttpRequest, size, SendMessage);
                     }
                     else if (pictureSource == PictureSource.GreenOnions)
@@ -227,7 +227,9 @@ namespace GreenOnions.HPicture
             if (BotInfo.HPictureSendByForward && outMessages.Count > 0)
             {
                 GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, msg)).ToArray();
-                SendMessage(forwardMessages);  //合并转发
+                GreenOnionsMessages outForwardMsg = forwardMessages;
+                outForwardMsg.RevokeTime = outMessages.First().RevokeTime;
+                SendMessage(outForwardMsg);  //合并转发
             }
         }
 
@@ -248,7 +250,7 @@ namespace GreenOnions.HPicture
                     SendMessage(BotInfo.HPictureNoResultReply);  //没有结果
                 }
 
-                IEnumerable<ELFHPictureItem> enumImg = ja.Select(i => new ELFHPictureItem(i["id"].ToString(), i["link"].ToString().Replace("pixiv.cat", "pixiv.re"), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
+                IEnumerable<ELFHPictureItem> enumImg = ja.Select(i => new ELFHPictureItem(i["id"].ToString(), i["link"].ToString().Replace("pixiv.cat", BotInfo.PixivProxy), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
 
                 //包含twimg.com的图墙内无法访问, 暂时不处理
                 foreach (ELFHPictureItem imgItem in enumImg)
@@ -293,6 +295,8 @@ namespace GreenOnions.HPicture
                 if (BotInfo.HPictureSendByForward && outMessages.Count > 0)
                 {
                     GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, msg)).ToArray();
+                    GreenOnionsMessages outForwardMsg = forwardMessages;
+                    outForwardMsg.RevokeTime = outMessages.First().RevokeTime;
                     SendMessage(forwardMessages);  //合并转发
                 }
             }

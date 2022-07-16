@@ -67,6 +67,7 @@ namespace GreenOnions.BotManagerWindow
 
             cboLogLevel.SelectedIndex = BotInfo.LogLevel;
             cboReplaceImgRoute.SelectedIndex = BotInfo.ReplaceImgRoute;
+            cboPixivProxy.Text = BotInfo.PixivProxy;
 
             #endregion -- 通用设置 --
 
@@ -343,6 +344,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.AutoConnectEnabled = chkAutoConnectEnabled.Checked;
             BotInfo.AutoConnectProtocol = cboAutoConnectProtocol.SelectedIndex;
             BotInfo.ReplaceImgRoute = cboReplaceImgRoute.SelectedIndex;
+            BotInfo.PixivProxy = cboPixivProxy.Text;
             BotInfo.AutoConnectDelay = Convert.ToInt32(txbAutoConnectDelay.Text);
             BotInfo.LogLevel = cboLogLevel.SelectedIndex;
 

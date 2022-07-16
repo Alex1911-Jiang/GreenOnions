@@ -211,6 +211,16 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
+        /// Pixiv代理地址
+        /// </summary>
+        [PropertyChineseName("Pixiv代理地址")]
+        public static string PixivProxy
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(PixivProxy)) ?? "pixiv.re";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(PixivProxy), value);
+        }
+
+        /// <summary>
         /// 保留所有下载的图片用于缓存
         /// </summary>
         [PropertyChineseName("保留所有下载的图片用于缓存")]

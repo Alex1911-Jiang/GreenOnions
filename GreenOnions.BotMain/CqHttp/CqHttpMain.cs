@@ -27,26 +27,44 @@ namespace GreenOnions.BotMain.CqHttp
                 service.Event.OnGroupMessage += MessageEvents.Event_OnGroupMessage;
                 service.Event.OnPrivateMessage += MessageEvents.Event_OnPrivateMessage;
 
-                //启动服务并捕捉错误
-                await service.StartService().RunCatch(e => Log.Error("Sora Service", Log.ErrorLogBuilder(e)));
+                bool connectCancel = false;
+                BotInfo.IsLogin = false;
+                _ = Task.Delay(3000).ContinueWith(_ =>
+                {
+                    if (!BotInfo.IsLogin)
+                    {
+                        service.StopService();
+                    }
+                });
 
+                //启动服务并捕捉错误
+                await service.StartService().RunCatch(e => 
+                {
+                    connectCancel = true;
+                    Log.Error("Sora Service", Log.ErrorLogBuilder(e));
+                });
+                if (connectCancel)
+                    throw new HttpRequestException($"尝试连接到OneBot超时，无法连接。 ({ip}:{port})");
+                BotInfo.IsLogin = true;
+                
                 service.Event.OnClientConnect += async (eventType, eventArgs) =>
                 {
                     SoraApi api = service.GetApi(service.ServiceId);
 
-                    BotInfo.QQId = api.GetLoginUserId();
+                    if (api !=null)
+                    {
+                        BotInfo.QQId = api.GetLoginUserId();
 
-                    List<FriendInfo> IFriendInfos = (await api.GetFriendList()).friendList;
-                    string nickname = "未知";
+                        List<FriendInfo> IFriendInfos = (await api.GetFriendList()).friendList;
+                        string nickname = "未知";
 
-                    var self = IFriendInfos.Where(q => q.UserId == qqId).FirstOrDefault();
-                    if (self != null)
-                        nickname = self.Nick;
+                        var self = IFriendInfos.Where(q => q.UserId == qqId).FirstOrDefault();
+                        if (self != null)
+                            nickname = self.Nick;
 
-                    ConnectedEvent?.Invoke(true, nickname);
+                        ConnectedEvent?.Invoke(true, nickname);
+                    }
                 };
-
-                BotInfo.IsLogin = true;
 
                 try
                 {

@@ -205,6 +205,8 @@ namespace GreenOnions.PictureSearcher
                     Task.Factory.ContinueWhenAll(searchTasks.ToArray(), callback =>
                     {
                         GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, msg)).ToArray();
+                        GreenOnionsMessages outForwardMsg = forwardMessages;
+                        outForwardMsg.RevokeTime = outMessages.First().RevokeTime;
                         SendMessage(forwardMessages);  //合并转发
                     });
                 }
@@ -734,17 +736,17 @@ namespace GreenOnions.PictureSearcher
                                     {
                                         LogHelper.WriteInfoLog($"图片来自Pixiv, 尝试下载原图");
                                         int p = Convert.ToInt32(matchBigImg.Groups[1].Value);
-                                        string imgUrlHasP = $"https://pixiv.re/{SauceNAOItem.pixiv_id}-{p + 1}.png";
+                                        string imgUrlHasP = $"https://{BotInfo.PixivProxy}/{SauceNAOItem.pixiv_id}-{p + 1}.png";
                                         if (p == 0)  //NAO返回的P为0
                                         {
                                             if (BotInfo.SearchSendByForward)
                                             {
-                                                string imgUrlNoP = $"https://pixiv.re/{SauceNAOItem.pixiv_id}.png";
+                                                string imgUrlNoP = $"https://{BotInfo.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
                                                 outMessage.Add(new GreenOnionsImageMessage(DownloadImageArchive(imgUrlNoP, SauceNAOItem.pixiv_id, p)));
                                             }
                                             else
                                             {
-                                                string imgUrlNoP = $"https://pixiv.re/{SauceNAOItem.pixiv_id}.png";
+                                                string imgUrlNoP = $"https://{BotInfo.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
                                                 SendMessage(new GreenOnionsImageMessage(DownloadImageArchive(imgUrlNoP, SauceNAOItem.pixiv_id, p)));
                                             }
                                         }
@@ -1082,7 +1084,7 @@ namespace GreenOnions.PictureSearcher
                 if (p != -1)
                     index = $"-{p + 1}";
 
-                using (var request = new HttpRequestMessage(new HttpMethod("GET"), $"https://pixiv.re/{id}{index}.png"))
+                using (var request = new HttpRequestMessage(new HttpMethod("GET"), $"https://{BotInfo.PixivProxy}/{id}{index}.png"))
                 {
                     HttpResponseMessage response = await httpClient.SendAsync(request);
                     if (response.StatusCode == HttpStatusCode.NotFound)
@@ -1132,7 +1134,7 @@ namespace GreenOnions.PictureSearcher
             if (p != -1)
                 index = $"-{p + 1}";
 
-            string url = $"https://pixiv.re/{id}{index}.png";
+            string url = $"https://{BotInfo.PixivProxy}/{id}{index}.png";
             string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}.png");
             string healthed = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}_Healthed.png");
             string notHealth = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}_NotHealth.png");

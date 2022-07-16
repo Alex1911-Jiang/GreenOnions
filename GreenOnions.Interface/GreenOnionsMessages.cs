@@ -31,9 +31,7 @@
         }
 
         public bool Reply { get; set; } = true;
-
         public int RevokeTime { get; set; } = 0;
-
         public long SenderId { get; set; }
         public string SenderName { get; set; }
     }

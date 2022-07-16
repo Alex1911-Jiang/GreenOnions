@@ -15,6 +15,7 @@ namespace GreenOnions.BotManagerWindow
     public partial class FrmMain : Form
 	{
 		private WebBrowserForm webBrowserForm;
+		private bool _connecting;
 		public FrmMain()
 		{
 			InitializeComponent();
@@ -97,6 +98,7 @@ namespace GreenOnions.BotManagerWindow
 				LogHelper.WriteErrorLogWithUserMessage("连接到mirai-api-http发生异常", ex);
                 MessageBox.Show("连接mirai-api-http失败" + ex.Message);
             }
+			_connecting = false;
 		}
 
 		public async Task ConnectToCqHttp(long qqId, string ip, ushort port, string verifyKey)
@@ -110,6 +112,7 @@ namespace GreenOnions.BotManagerWindow
 				LogHelper.WriteErrorLogWithUserMessage("连接到cqhttp发生异常", ex);
                 MessageBox.Show("连接cqhttp失败" + ex.Message);
             }
+			_connecting = false;
 		}
 
 		private void btnDeconnect_Click(object sender, EventArgs e)
@@ -130,10 +133,14 @@ namespace GreenOnions.BotManagerWindow
 		}
 
 		private void ConnectToMiraiApiHttp()
-        {
-			if (CheckInfo())
+		{
+			if (!_connecting)
 			{
-				Task.Run(() => ConnectToMiraiApiHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text));
+				if (CheckInfo())
+				{
+					_connecting = true;
+					Task.Run(() => ConnectToMiraiApiHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text));
+				}
 			}
 		}
 
@@ -143,10 +150,14 @@ namespace GreenOnions.BotManagerWindow
         }
 
 		private void ConnectToCqHttp()
-        {
-			if (CheckInfo())
+		{
+			if (!_connecting)
 			{
-				Task.Run(() => ConnectToCqHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text));
+				if (CheckInfo())
+				{
+					_connecting = true;
+					Task.Run(() => ConnectToCqHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text));
+				}
 			}
 		}
 

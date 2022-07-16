@@ -20,21 +20,18 @@ namespace GreenOnions.BotMain.CqHttp
             {
                 if (outMsg != null && outMsg.Count > 0)
                 {
+                    ValueTask<(ApiStatus apiStatus, int messageId)> result;
                     if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
-                    {
-                        _ = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.SourceGroup.Id, outMsg.ToCqHttpForwardMessage());
-                    }
+                        result = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.SourceGroup.Id, outMsg.ToCqHttpForwardMessage());
                     else
+                        result = eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, outMsg.ToCqHttpMessages(quoteId));
+                    if (outMsg.RevokeTime > 0)
                     {
-                        ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, outMsg.ToCqHttpMessages(quoteId));
-                        if (outMsg.RevokeTime > 0)
+                        _ = result.AsTask().ContinueWith(async t =>
                         {
-                            _ = result.AsTask().ContinueWith(async t =>
-                            {
-                                await Task.Delay(1000 * outMsg.RevokeTime);
-                                _ = eventArgs.SoraApi.RecallMessage(result.Result.messageId);
-                            });
-                        }
+                            await Task.Delay(1000 * outMsg.RevokeTime);
+                            _ = eventArgs.SoraApi.RecallMessage(result.Result.messageId);
+                        });
                     }
                 }
             });

@@ -368,6 +368,8 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
+            this.cboPixivProxy = new System.Windows.Forms.ComboBox();
+            this.lblPixivProxy = new System.Windows.Forms.Label();
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -406,7 +408,7 @@
             // chkDownloadImage4Caching
             // 
             this.chkDownloadImage4Caching.AutoSize = true;
-            this.chkDownloadImage4Caching.Location = new System.Drawing.Point(3, 512);
+            this.chkDownloadImage4Caching.Location = new System.Drawing.Point(7, 543);
             this.chkDownloadImage4Caching.Name = "chkDownloadImage4Caching";
             this.chkDownloadImage4Caching.Size = new System.Drawing.Size(183, 21);
             this.chkDownloadImage4Caching.TabIndex = 42;
@@ -416,7 +418,7 @@
             // chkSendImageByFile
             // 
             this.chkSendImageByFile.AutoSize = true;
-            this.chkSendImageByFile.Location = new System.Drawing.Point(3, 539);
+            this.chkSendImageByFile.Location = new System.Drawing.Point(7, 570);
             this.chkSendImageByFile.Name = "chkSendImageByFile";
             this.chkSendImageByFile.Size = new System.Drawing.Size(532, 21);
             this.chkSendImageByFile.TabIndex = 41;
@@ -513,6 +515,8 @@
             // pnlBot
             // 
             this.pnlBot.AutoScroll = true;
+            this.pnlBot.Controls.Add(this.cboPixivProxy);
+            this.pnlBot.Controls.Add(this.lblPixivProxy);
             this.pnlBot.Controls.Add(this.cboReplaceImgRoute);
             this.pnlBot.Controls.Add(this.lblReplaceImgRoute);
             this.pnlBot.Controls.Add(this.chkDownloadImage4Caching);
@@ -560,15 +564,15 @@
             "不替换",
             "替换为 c2cpicdw.qpic.cn/offpic_new",
             "替换为 gchat.qpic.cn/gchatpic_new"});
-            this.cboReplaceImgRoute.Location = new System.Drawing.Point(127, 481);
+            this.cboReplaceImgRoute.Location = new System.Drawing.Point(125, 481);
             this.cboReplaceImgRoute.Name = "cboReplaceImgRoute";
-            this.cboReplaceImgRoute.Size = new System.Drawing.Size(280, 25);
+            this.cboReplaceImgRoute.Size = new System.Drawing.Size(282, 25);
             this.cboReplaceImgRoute.TabIndex = 44;
             // 
             // lblReplaceImgRoute
             // 
             this.lblReplaceImgRoute.AutoSize = true;
-            this.lblReplaceImgRoute.Location = new System.Drawing.Point(4, 484);
+            this.lblReplaceImgRoute.Location = new System.Drawing.Point(7, 484);
             this.lblReplaceImgRoute.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblReplaceImgRoute.Name = "lblReplaceImgRoute";
             this.lblReplaceImgRoute.Size = new System.Drawing.Size(116, 17);
@@ -582,7 +586,7 @@
             this.pnlAutoConnect.Controls.Add(this.lblAutoConnectDelay);
             this.pnlAutoConnect.Controls.Add(this.lblAutoConnectProtocol);
             this.pnlAutoConnect.Enabled = false;
-            this.pnlAutoConnect.Location = new System.Drawing.Point(0, 800);
+            this.pnlAutoConnect.Location = new System.Drawing.Point(4, 831);
             this.pnlAutoConnect.MinimumSize = new System.Drawing.Size(620, 0);
             this.pnlAutoConnect.Name = "pnlAutoConnect";
             this.pnlAutoConnect.Size = new System.Drawing.Size(620, 62);
@@ -630,7 +634,7 @@
             // chkAutoConnectEnabled
             // 
             this.chkAutoConnectEnabled.AutoSize = true;
-            this.chkAutoConnectEnabled.Location = new System.Drawing.Point(3, 773);
+            this.chkAutoConnectEnabled.Location = new System.Drawing.Point(7, 804);
             this.chkAutoConnectEnabled.Name = "chkAutoConnectEnabled";
             this.chkAutoConnectEnabled.Size = new System.Drawing.Size(147, 21);
             this.chkAutoConnectEnabled.TabIndex = 39;
@@ -646,7 +650,7 @@
             "消息",
             "警告",
             "错误"});
-            this.cboLogLevel.Location = new System.Drawing.Point(116, 868);
+            this.cboLogLevel.Location = new System.Drawing.Point(120, 899);
             this.cboLogLevel.Name = "cboLogLevel";
             this.cboLogLevel.Size = new System.Drawing.Size(200, 25);
             this.cboLogLevel.TabIndex = 38;
@@ -654,7 +658,7 @@
             // lblLogLevel
             // 
             this.lblLogLevel.AutoSize = true;
-            this.lblLogLevel.Location = new System.Drawing.Point(3, 871);
+            this.lblLogLevel.Location = new System.Drawing.Point(7, 902);
             this.lblLogLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLogLevel.Name = "lblLogLevel";
             this.lblLogLevel.Size = new System.Drawing.Size(68, 17);
@@ -664,7 +668,7 @@
             // chkHttpRequestByWebBrowser
             // 
             this.chkHttpRequestByWebBrowser.AutoSize = true;
-            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(3, 454);
+            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(7, 454);
             this.chkHttpRequestByWebBrowser.Name = "chkHttpRequestByWebBrowser";
             this.chkHttpRequestByWebBrowser.Size = new System.Drawing.Size(269, 21);
             this.chkHttpRequestByWebBrowser.TabIndex = 36;
@@ -674,7 +678,7 @@
             // chkCheckPornEnabled
             // 
             this.chkCheckPornEnabled.AutoSize = true;
-            this.chkCheckPornEnabled.Location = new System.Drawing.Point(3, 566);
+            this.chkCheckPornEnabled.Location = new System.Drawing.Point(7, 597);
             this.chkCheckPornEnabled.Name = "chkCheckPornEnabled";
             this.chkCheckPornEnabled.Size = new System.Drawing.Size(111, 21);
             this.chkCheckPornEnabled.TabIndex = 34;
@@ -695,7 +699,7 @@
             this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
             this.pnlDebugMode.Controls.Add(this.txbAddDebugGroup);
             this.pnlDebugMode.Enabled = false;
-            this.pnlDebugMode.Location = new System.Drawing.Point(0, 925);
+            this.pnlDebugMode.Location = new System.Drawing.Point(4, 957);
             this.pnlDebugMode.MinimumSize = new System.Drawing.Size(620, 153);
             this.pnlDebugMode.Name = "pnlDebugMode";
             this.pnlDebugMode.Size = new System.Drawing.Size(620, 153);
@@ -813,7 +817,7 @@
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudAPPID);
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudSecretKey);
             this.pnlCheckPorn.Enabled = false;
-            this.pnlCheckPorn.Location = new System.Drawing.Point(0, 593);
+            this.pnlCheckPorn.Location = new System.Drawing.Point(4, 624);
             this.pnlCheckPorn.MinimumSize = new System.Drawing.Size(620, 174);
             this.pnlCheckPorn.Name = "pnlCheckPorn";
             this.pnlCheckPorn.Size = new System.Drawing.Size(620, 174);
@@ -951,7 +955,7 @@
             // chkDebugMode
             // 
             this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(3, 899);
+            this.chkDebugMode.Location = new System.Drawing.Point(7, 930);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(75, 21);
             this.chkDebugMode.TabIndex = 9;
@@ -4213,6 +4217,27 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
+            // cboPixivProxy
+            // 
+            this.cboPixivProxy.FormattingEnabled = true;
+            this.cboPixivProxy.Items.AddRange(new object[] {
+            "pixiv.re",
+            "pixiv.cat"});
+            this.cboPixivProxy.Location = new System.Drawing.Point(125, 512);
+            this.cboPixivProxy.Name = "cboPixivProxy";
+            this.cboPixivProxy.Size = new System.Drawing.Size(282, 25);
+            this.cboPixivProxy.TabIndex = 46;
+            // 
+            // lblPixivProxy
+            // 
+            this.lblPixivProxy.AutoSize = true;
+            this.lblPixivProxy.Location = new System.Drawing.Point(7, 515);
+            this.lblPixivProxy.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPixivProxy.Name = "lblPixivProxy";
+            this.lblPixivProxy.Size = new System.Drawing.Size(93, 17);
+            this.lblPixivProxy.TabIndex = 45;
+            this.lblPixivProxy.Text = "Pixiv代理地址：";
+            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -4635,5 +4660,7 @@
         private System.Windows.Forms.TextBox txbSearch3DModeOnCmd;
         private System.Windows.Forms.TextBox txbSearchIqdbSimilarityReply;
         private System.Windows.Forms.Label lblSearchIqdbSimilarityReply;
+        private System.Windows.Forms.ComboBox cboPixivProxy;
+        private System.Windows.Forms.Label lblPixivProxy;
     }
 }
