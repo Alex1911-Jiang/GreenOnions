@@ -38,6 +38,21 @@
             this.tabSettings = new System.Windows.Forms.TabControl();
             this.pageBot = new System.Windows.Forms.TabPage();
             this.pnlBot = new System.Windows.Forms.Panel();
+            this.lblWorkingTime = new System.Windows.Forms.Label();
+            this.chkWorkingTimeEnabled = new System.Windows.Forms.CheckBox();
+            this.pnlWorkingTime = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cboWorkingTimeFromHour = new System.Windows.Forms.ComboBox();
+            this.cboWorkingTimeToHour = new System.Windows.Forms.ComboBox();
+            this.cboWorkingTimeToMinute = new System.Windows.Forms.ComboBox();
+            this.cboWorkingTimeFromMinute = new System.Windows.Forms.ComboBox();
+            this.cboPixivProxy = new System.Windows.Forms.ComboBox();
+            this.lblPixivProxy = new System.Windows.Forms.Label();
             this.cboReplaceImgRoute = new System.Windows.Forms.ComboBox();
             this.lblReplaceImgRoute = new System.Windows.Forms.Label();
             this.pnlAutoConnect = new System.Windows.Forms.Panel();
@@ -368,11 +383,10 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
-            this.cboPixivProxy = new System.Windows.Forms.ComboBox();
-            this.lblPixivProxy = new System.Windows.Forms.Label();
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
+            this.pnlWorkingTime.SuspendLayout();
             this.pnlAutoConnect.SuspendLayout();
             this.pnlDebugMode.SuspendLayout();
             this.pnlCheckPorn.SuspendLayout();
@@ -515,6 +529,9 @@
             // pnlBot
             // 
             this.pnlBot.AutoScroll = true;
+            this.pnlBot.Controls.Add(this.lblWorkingTime);
+            this.pnlBot.Controls.Add(this.chkWorkingTimeEnabled);
+            this.pnlBot.Controls.Add(this.pnlWorkingTime);
             this.pnlBot.Controls.Add(this.cboPixivProxy);
             this.pnlBot.Controls.Add(this.lblPixivProxy);
             this.pnlBot.Controls.Add(this.cboReplaceImgRoute);
@@ -555,6 +572,155 @@
             this.pnlBot.Name = "pnlBot";
             this.pnlBot.Size = new System.Drawing.Size(644, 679);
             this.pnlBot.TabIndex = 36;
+            // 
+            // lblWorkingTime
+            // 
+            this.lblWorkingTime.AutoSize = true;
+            this.lblWorkingTime.Location = new System.Drawing.Point(136, 900);
+            this.lblWorkingTime.Name = "lblWorkingTime";
+            this.lblWorkingTime.Size = new System.Drawing.Size(431, 17);
+            this.lblWorkingTime.TabIndex = 53;
+            this.lblWorkingTime.Text = "(启用用, 超出指定时段后会自动断开与平台的连接并在次日进入时段后重新连接)";
+            // 
+            // chkWorkingTimeEnabled
+            // 
+            this.chkWorkingTimeEnabled.AutoSize = true;
+            this.chkWorkingTimeEnabled.Location = new System.Drawing.Point(7, 899);
+            this.chkWorkingTimeEnabled.Name = "chkWorkingTimeEnabled";
+            this.chkWorkingTimeEnabled.Size = new System.Drawing.Size(123, 21);
+            this.chkWorkingTimeEnabled.TabIndex = 52;
+            this.chkWorkingTimeEnabled.Text = "仅在指定时段工作";
+            this.chkWorkingTimeEnabled.UseVisualStyleBackColor = true;
+            this.chkWorkingTimeEnabled.CheckedChanged += new System.EventHandler(this.chkWorkingTimeEnabled_CheckedChanged);
+            // 
+            // pnlWorkingTime
+            // 
+            this.pnlWorkingTime.Controls.Add(this.label6);
+            this.pnlWorkingTime.Controls.Add(this.label7);
+            this.pnlWorkingTime.Controls.Add(this.label5);
+            this.pnlWorkingTime.Controls.Add(this.label4);
+            this.pnlWorkingTime.Controls.Add(this.label3);
+            this.pnlWorkingTime.Controls.Add(this.label2);
+            this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeFromHour);
+            this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeToHour);
+            this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeToMinute);
+            this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeFromMinute);
+            this.pnlWorkingTime.Enabled = false;
+            this.pnlWorkingTime.Location = new System.Drawing.Point(4, 926);
+            this.pnlWorkingTime.Name = "pnlWorkingTime";
+            this.pnlWorkingTime.Size = new System.Drawing.Size(620, 64);
+            this.pnlWorkingTime.TabIndex = 51;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(322, 37);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(20, 17);
+            this.label6.TabIndex = 56;
+            this.label6.Text = "分";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(322, 6);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(20, 17);
+            this.label7.TabIndex = 55;
+            this.label7.Text = "分";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(169, 37);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(20, 17);
+            this.label5.TabIndex = 54;
+            this.label5.Text = "时";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(169, 6);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(20, 17);
+            this.label4.TabIndex = 53;
+            this.label4.Text = "时";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(32, 17);
+            this.label3.TabIndex = 52;
+            this.label3.Text = "到：";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 6);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(32, 17);
+            this.label2.TabIndex = 51;
+            this.label2.Text = "从：";
+            // 
+            // cboWorkingTimeFromHour
+            // 
+            this.cboWorkingTimeFromHour.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboWorkingTimeFromHour.FormattingEnabled = true;
+            this.cboWorkingTimeFromHour.Location = new System.Drawing.Point(42, 3);
+            this.cboWorkingTimeFromHour.Name = "cboWorkingTimeFromHour";
+            this.cboWorkingTimeFromHour.Size = new System.Drawing.Size(121, 25);
+            this.cboWorkingTimeFromHour.TabIndex = 47;
+            // 
+            // cboWorkingTimeToHour
+            // 
+            this.cboWorkingTimeToHour.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboWorkingTimeToHour.FormattingEnabled = true;
+            this.cboWorkingTimeToHour.Location = new System.Drawing.Point(42, 34);
+            this.cboWorkingTimeToHour.Name = "cboWorkingTimeToHour";
+            this.cboWorkingTimeToHour.Size = new System.Drawing.Size(121, 25);
+            this.cboWorkingTimeToHour.TabIndex = 49;
+            // 
+            // cboWorkingTimeToMinute
+            // 
+            this.cboWorkingTimeToMinute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboWorkingTimeToMinute.FormattingEnabled = true;
+            this.cboWorkingTimeToMinute.Location = new System.Drawing.Point(195, 34);
+            this.cboWorkingTimeToMinute.Name = "cboWorkingTimeToMinute";
+            this.cboWorkingTimeToMinute.Size = new System.Drawing.Size(121, 25);
+            this.cboWorkingTimeToMinute.TabIndex = 50;
+            // 
+            // cboWorkingTimeFromMinute
+            // 
+            this.cboWorkingTimeFromMinute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboWorkingTimeFromMinute.FormattingEnabled = true;
+            this.cboWorkingTimeFromMinute.Location = new System.Drawing.Point(195, 3);
+            this.cboWorkingTimeFromMinute.Name = "cboWorkingTimeFromMinute";
+            this.cboWorkingTimeFromMinute.Size = new System.Drawing.Size(121, 25);
+            this.cboWorkingTimeFromMinute.TabIndex = 48;
+            // 
+            // cboPixivProxy
+            // 
+            this.cboPixivProxy.FormattingEnabled = true;
+            this.cboPixivProxy.Items.AddRange(new object[] {
+            "pixiv.re",
+            "pixiv.cat"});
+            this.cboPixivProxy.Location = new System.Drawing.Point(125, 512);
+            this.cboPixivProxy.Name = "cboPixivProxy";
+            this.cboPixivProxy.Size = new System.Drawing.Size(282, 25);
+            this.cboPixivProxy.TabIndex = 46;
+            // 
+            // lblPixivProxy
+            // 
+            this.lblPixivProxy.AutoSize = true;
+            this.lblPixivProxy.Location = new System.Drawing.Point(7, 515);
+            this.lblPixivProxy.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPixivProxy.Name = "lblPixivProxy";
+            this.lblPixivProxy.Size = new System.Drawing.Size(93, 17);
+            this.lblPixivProxy.TabIndex = 45;
+            this.lblPixivProxy.Text = "Pixiv代理地址：";
             // 
             // cboReplaceImgRoute
             // 
@@ -650,7 +816,7 @@
             "消息",
             "警告",
             "错误"});
-            this.cboLogLevel.Location = new System.Drawing.Point(120, 899);
+            this.cboLogLevel.Location = new System.Drawing.Point(120, 996);
             this.cboLogLevel.Name = "cboLogLevel";
             this.cboLogLevel.Size = new System.Drawing.Size(200, 25);
             this.cboLogLevel.TabIndex = 38;
@@ -658,7 +824,7 @@
             // lblLogLevel
             // 
             this.lblLogLevel.AutoSize = true;
-            this.lblLogLevel.Location = new System.Drawing.Point(7, 902);
+            this.lblLogLevel.Location = new System.Drawing.Point(7, 999);
             this.lblLogLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLogLevel.Name = "lblLogLevel";
             this.lblLogLevel.Size = new System.Drawing.Size(68, 17);
@@ -699,7 +865,7 @@
             this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
             this.pnlDebugMode.Controls.Add(this.txbAddDebugGroup);
             this.pnlDebugMode.Enabled = false;
-            this.pnlDebugMode.Location = new System.Drawing.Point(4, 957);
+            this.pnlDebugMode.Location = new System.Drawing.Point(4, 1054);
             this.pnlDebugMode.MinimumSize = new System.Drawing.Size(620, 153);
             this.pnlDebugMode.Name = "pnlDebugMode";
             this.pnlDebugMode.Size = new System.Drawing.Size(620, 153);
@@ -955,7 +1121,7 @@
             // chkDebugMode
             // 
             this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(7, 930);
+            this.chkDebugMode.Location = new System.Drawing.Point(7, 1027);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(75, 21);
             this.chkDebugMode.TabIndex = 9;
@@ -4217,27 +4383,6 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
-            // cboPixivProxy
-            // 
-            this.cboPixivProxy.FormattingEnabled = true;
-            this.cboPixivProxy.Items.AddRange(new object[] {
-            "pixiv.re",
-            "pixiv.cat"});
-            this.cboPixivProxy.Location = new System.Drawing.Point(125, 512);
-            this.cboPixivProxy.Name = "cboPixivProxy";
-            this.cboPixivProxy.Size = new System.Drawing.Size(282, 25);
-            this.cboPixivProxy.TabIndex = 46;
-            // 
-            // lblPixivProxy
-            // 
-            this.lblPixivProxy.AutoSize = true;
-            this.lblPixivProxy.Location = new System.Drawing.Point(7, 515);
-            this.lblPixivProxy.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblPixivProxy.Name = "lblPixivProxy";
-            this.lblPixivProxy.Size = new System.Drawing.Size(93, 17);
-            this.lblPixivProxy.TabIndex = 45;
-            this.lblPixivProxy.Text = "Pixiv代理地址：";
-            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -4255,6 +4400,8 @@
             this.pageBot.ResumeLayout(false);
             this.pnlBot.ResumeLayout(false);
             this.pnlBot.PerformLayout();
+            this.pnlWorkingTime.ResumeLayout(false);
+            this.pnlWorkingTime.PerformLayout();
             this.pnlAutoConnect.ResumeLayout(false);
             this.pnlAutoConnect.PerformLayout();
             this.pnlDebugMode.ResumeLayout(false);
@@ -4662,5 +4809,18 @@
         private System.Windows.Forms.Label lblSearchIqdbSimilarityReply;
         private System.Windows.Forms.ComboBox cboPixivProxy;
         private System.Windows.Forms.Label lblPixivProxy;
+        private System.Windows.Forms.Label lblWorkingTime;
+        private System.Windows.Forms.CheckBox chkWorkingTimeEnabled;
+        private System.Windows.Forms.Panel pnlWorkingTime;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cboWorkingTimeFromHour;
+        private System.Windows.Forms.ComboBox cboWorkingTimeToHour;
+        private System.Windows.Forms.ComboBox cboWorkingTimeToMinute;
+        private System.Windows.Forms.ComboBox cboWorkingTimeFromMinute;
     }
 }

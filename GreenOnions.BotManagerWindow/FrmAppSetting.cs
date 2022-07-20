@@ -21,6 +21,17 @@ namespace GreenOnions.BotManagerWindow
             if (pnlHPictureCheckBoxes.Left < 519)  //狗屎设计器整天有Bug自动移动位置
                 pnlHPictureCheckBoxes.Left = 519;
 
+            for (int i = 0; i < 24; i++)
+            {
+                cboWorkingTimeFromHour.Items.Add(i);
+                cboWorkingTimeToHour.Items.Add(i);
+            }
+            for (int i = 0; i < 60; i++)
+            {
+                cboWorkingTimeFromMinute.Items.Add(i);
+                cboWorkingTimeToMinute.Items.Add(i);
+            }
+
             #region -- 通用设置 --
 
             txbBotName.Text = BotInfo.BotName;
@@ -64,10 +75,16 @@ namespace GreenOnions.BotManagerWindow
             chkAutoConnectEnabled.Checked = BotInfo.AutoConnectEnabled;
             cboAutoConnectProtocol.SelectedIndex = BotInfo.AutoConnectProtocol;
             txbAutoConnectDelay.Text = BotInfo.AutoConnectDelay.ToString();
+            cboPixivProxy.Text = BotInfo.PixivProxy;
+
+            chkWorkingTimeEnabled.Checked = BotInfo.WorkingTimeEnabled;
+            cboWorkingTimeFromHour.SelectedIndex = BotInfo.WorkingTimeFromHour;
+            cboWorkingTimeFromMinute.SelectedIndex = BotInfo.WorkingTimeFromMinute;
+            cboWorkingTimeToHour.SelectedIndex = BotInfo.WorkingTimeToHour;
+            cboWorkingTimeToMinute.SelectedIndex = BotInfo.WorkingTimeToMinute;
 
             cboLogLevel.SelectedIndex = BotInfo.LogLevel;
             cboReplaceImgRoute.SelectedIndex = BotInfo.ReplaceImgRoute;
-            cboPixivProxy.Text = BotInfo.PixivProxy;
 
             #endregion -- 通用设置 --
 
@@ -345,6 +362,13 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.AutoConnectProtocol = cboAutoConnectProtocol.SelectedIndex;
             BotInfo.ReplaceImgRoute = cboReplaceImgRoute.SelectedIndex;
             BotInfo.PixivProxy = cboPixivProxy.Text;
+
+            BotInfo.WorkingTimeEnabled = chkWorkingTimeEnabled.Checked;
+            BotInfo.WorkingTimeFromHour = cboWorkingTimeFromHour.SelectedIndex;
+            BotInfo.WorkingTimeFromMinute = cboWorkingTimeFromMinute.SelectedIndex;
+            BotInfo.WorkingTimeToHour = cboWorkingTimeToHour.SelectedIndex;
+            BotInfo.WorkingTimeToMinute = cboWorkingTimeToMinute.SelectedIndex;
+
             BotInfo.AutoConnectDelay = Convert.ToInt32(txbAutoConnectDelay.Text);
             BotInfo.LogLevel = cboLogLevel.SelectedIndex;
 
@@ -606,6 +630,8 @@ namespace GreenOnions.BotManagerWindow
                 Close();
             else
                 MessageBox.Show($"应用{regexMsg}命令失败，请检查命令的正则表达式格式。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            WorkingTimeRecorder.UpdateWorkingTime();
         }
 
         private void txbForgeMessageCmd_TextChanged(object sender, EventArgs e) => AddStringToCmd();
@@ -642,7 +668,7 @@ namespace GreenOnions.BotManagerWindow
 
         private void lnkResetHPicture_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            txbHPictureCmd.Text = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟][图圖図])|(?<美图后缀>[美][图圖図]))";
+            txbHPictureCmd.Text = BotInfo.DefaultHPictureCmd;
             chkHPictureEnabledLoliconSource.Checked = true;
             AddStringToCmd();
         }
@@ -771,5 +797,7 @@ namespace GreenOnions.BotManagerWindow
         private void chkAutoConnectEnabled_CheckedChanged(object sender, EventArgs e) => pnlAutoConnect.Enabled = chkAutoConnectEnabled.Checked;
 
         private void chkSearchASCII2DEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchAscii2d.Enabled = chkSearchASCII2DEnabled.Checked;
+
+        private void chkWorkingTimeEnabled_CheckedChanged(object sender, EventArgs e) => pnlWorkingTime.Enabled = chkWorkingTimeEnabled.Checked;
     }
 }

@@ -1099,7 +1099,6 @@ namespace GreenOnions.PictureSearcher
             return null;
         }
 
-
         public static async Task<GreenOnionsMessages> SendPixivOriginalPictureWithIdAndP(string strPixivId)
         {
             string[] idWithIndex = strPixivId.Split("-");

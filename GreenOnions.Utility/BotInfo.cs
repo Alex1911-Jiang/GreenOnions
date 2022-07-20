@@ -378,6 +378,66 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(AutoConnectDelay), value.ToString());
         }
 
+        [PropertyChineseName("仅在指定时段工作")]
+        public static bool WorkingTimeEnabled
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeEnabled));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeEnabled), value.ToString());
+        }
+
+        [PropertyChineseName("工作时间 从 时")]
+        public static int WorkingTimeFromHour
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeFromHour));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 0;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeFromHour), value.ToString());
+        }
+
+        [PropertyChineseName("工作时间 从 分")]
+        public static int WorkingTimeFromMinute
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeFromMinute));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 0;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeFromMinute), value.ToString());
+        }
+
+        [PropertyChineseName("工作时间 到 时")]
+        public static int WorkingTimeToHour
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeToHour));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 0;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeToHour), value.ToString());
+        }
+
+        [PropertyChineseName("工作时间 到 分")]
+        public static int WorkingTimeToMinute
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeToMinute));
+                if (int.TryParse(strValue, out int iValue)) return iValue;
+                return 0;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeToMinute), value.ToString());
+        }
+
         #endregion -- 公共属性 --
 
         #region -- 搜图属性 --
@@ -1051,12 +1111,14 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureApiKey), value);
         }
 
+        public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟][图圖図])|(?<美图后缀>[美][图圖図]))";
+
         /// <summary>
         /// Lolicon图库色图完整命令(正则表达式)
         /// </summary>
         public static string HPictureCmd
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCmd)) ?? "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟][图圖図])|(?<美图后缀>[美][图圖図]))";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCmd)) ?? DefaultHPictureCmd;
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCmd), value);
         }
 

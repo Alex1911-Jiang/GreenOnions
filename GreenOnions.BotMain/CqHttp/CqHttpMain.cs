@@ -13,7 +13,7 @@ namespace GreenOnions.BotMain.CqHttp
 {
     public class CqHttpMain
     {
-        public static async Task Connect(long qqId, string ip, ushort port, string authKey, Action<bool, string> ConnectedEvent)
+        public static async Task Connect(long qqId, string ip, ushort port, string accessToken, Action<bool, string> ConnectedEvent)
         {
             ////设置log等级
             //Log.LogConfiguration
@@ -23,7 +23,7 @@ namespace GreenOnions.BotMain.CqHttp
             try
             {
                 //实例化Sora服务
-                ISoraService service = SoraServiceFactory.CreateService(new ClientConfig() { Host = ip, Port = port, AccessToken = authKey });
+                ISoraService service = SoraServiceFactory.CreateService(new ClientConfig() { Host = ip, Port = port, AccessToken = accessToken });
                 service.Event.OnGroupMessage += MessageEvents.Event_OnGroupMessage;
                 service.Event.OnPrivateMessage += MessageEvents.Event_OnPrivateMessage;
 

@@ -87,11 +87,24 @@ namespace GreenOnions.BotManagerWindow
 			}
 		}
 
-        public async Task ConnectToMiraiApiHttp(long qqId, string ip, ushort port, string verifyKey)
+		private void ConnectToPlatform(int platform)
+		{
+            switch (platform)
+            {
+                case 0:
+					ConnectToMiraiApiHttp();
+					break;
+				case 1:
+					ConnectToCqHttp();
+					break;
+			}
+        }
+
+		public async Task ConnectToMiraiApiHttp(long qqId, string ip, ushort port, string verifyKey)
 		{
             try
             {
-                await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "mirai-api-http"))));
+                await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 0, "mirai-api-http"))));
             }
             catch (Exception ex)
 			{
@@ -105,8 +118,8 @@ namespace GreenOnions.BotManagerWindow
 		{
 			try
 			{
-                await CqHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, "cqhttp"))));
-            }
+                await CqHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 1, "cqhttp"))));
+			}
 			catch (Exception ex)
 			{
 				LogHelper.WriteErrorLogWithUserMessage("连接到cqhttp发生异常", ex);
@@ -117,6 +130,11 @@ namespace GreenOnions.BotManagerWindow
 
 		private void btnDeconnect_Click(object sender, EventArgs e)
 		{
+			Disconnect();
+		}
+
+		private void Disconnect()
+        {
 			TextReader sr = new StringReader("exit");
 			Console.SetIn(sr);
 
@@ -173,11 +191,11 @@ namespace GreenOnions.BotManagerWindow
 			notifyIcon.Visible = false;
 		}
 
-		private void Connecting(bool bConnect, long qqId, string ip, ushort port, string verifyKey, string nickNameOrErrorMessage, string protocol)
+		private void Connecting(bool bConnect, long qqId, string ip, ushort port, string verifyKey, string nickNameOrErrorMessage, int platform, string protocolName)
         {
 			if (bConnect)
 			{
-				lblState.Text = $"连接状态: 已连接到{protocol}, 登录昵称:{nickNameOrErrorMessage}";
+				lblState.Text = $"连接状态: 已连接到{protocolName}, 登录昵称:{nickNameOrErrorMessage}";
 				lblState.ForeColor = Color.Black;
 
 				btnConnectToMiraiApiHttp.Text = "断开连接";
@@ -196,17 +214,19 @@ namespace GreenOnions.BotManagerWindow
 				BotInfo.VerifyKey = verifyKey;
 				ConfigHelper.SaveConfigFile();
 
+				WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnect);
+
 				webBrowserForm.Show();
 			}
 			else if (nickNameOrErrorMessage == null)  //连接失败且没有异常
 			{
-				MessageBox.Show($"连接失败，请检查{protocol}是否已经正常启动并已配置IP端口相关参数, 以及机器人QQ是否成功登录。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show($"连接失败，请检查{protocolName}是否已经正常启动并已配置IP端口相关参数, 以及机器人QQ是否成功登录。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 			else  //发生异常或主动断开连接
 			{
 				btnConnectToMiraiApiHttp.Text = "连接到mirai-api-http";
 				btnConnectToCqHttp.Text = "连接到cqhttp";
-				lblState.Text = $"连接状态: 未连接到{protocol}";
+				lblState.Text = $"连接状态: 未连接到{protocolName}";
 				lblState.ForeColor = Color.Red;
 				notifyIcon.Text = $"葱葱机器人";
 				if (nickNameOrErrorMessage.Length > 0)  //发生异常
