@@ -24,6 +24,20 @@ namespace GreenOnions.PictureSearcher
     {
         public static void SearchOn(long qqId, Action<GreenOnionsMessages> SendMessage, SearchMode mode)
         {
+            if (Cache.SearchingUserGroups.Where(d => d.ContainsKey(qqId)).Count() > 0)
+            {
+                for (int i = 0; i < Cache.SearchingUserGroups.Length; i++)
+                {
+                    if (Cache.SearchingUserGroups[i].ContainsKey(qqId))
+                    {
+                        Cache.SearchingUserGroups[i][qqId] = DateTime.Now.AddMinutes(1);  //延长搜图时间到1分钟
+                    }
+                }
+                SendMessage(BotInfo.SearchModeAlreadyOnReply.ReplaceGreenOnionsTags());
+                return;
+            }
+
+            List<IDictionary<long, DateTime>> lstGroups = new List<IDictionary<long, DateTime>>();
             if ((mode & SearchMode.Picture) != 0)
                 AddToGroup(Cache.SearchingPicturesUsers);
             if ((mode & SearchMode.Anime) != 0)
@@ -31,24 +45,16 @@ namespace GreenOnions.PictureSearcher
             if ((mode & SearchMode.ThreeD) != 0)
                 AddToGroup(Cache.Searching3DUsers);
 
+            if (lstGroups.Count > 0)
+            {
+                Cache.SetWorkingTimeout(qqId, () => SendMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsTags()), lstGroups.ToArray());
+                SendMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags());
+            }
+
             void AddToGroup(ConcurrentDictionary<long, DateTime> modeGroup)
             {
-                if (modeGroup.ContainsKey(qqId))
-                {
-                    modeGroup[qqId] = DateTime.Now.AddMinutes(1);
-                    SendMessage(BotInfo.SearchModeAlreadyOnReply.ReplaceGreenOnionsTags());
-                }
-                else
-                {
-                    modeGroup.TryAdd(qqId, DateTime.Now.AddMinutes(1));
-                    SendMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsTags());
-                    Cache.SetWorkingTimeout(qqId, modeGroup, () =>
-                    {
-                        if (modeGroup.ContainsKey(qqId))
-                            modeGroup.TryRemove(qqId, out _);
-                        SendMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsTags());
-                    });
-                }
+                modeGroup.TryAdd(qqId, DateTime.Now.AddMinutes(1));
+                lstGroups.Add(modeGroup);
             }
         }
 

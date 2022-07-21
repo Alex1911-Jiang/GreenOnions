@@ -23,6 +23,7 @@ namespace GreenOnions.Utility
         public static ConcurrentDictionary<long, DateTime> SearchingPicturesUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime> SearchingAnimeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime> Searching3DUsers { get; } = new ConcurrentDictionary<long, DateTime>();
+        public static ConcurrentDictionary<long, DateTime>[] SearchingUserGroups { get; } = { SearchingPicturesUsers, SearchingAnimeUsers, Searching3DUsers };
         public static ConcurrentDictionary<long, DateTime> PlayingTicTacToeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<string, int> SauceNAOKeysAndLongRemaining { get; }  //Nao的key剩余每日可用次数
         public static ConcurrentDictionary<string, int> SauceNAOKeysAndShortRemaining { get; }  //Nao的key剩余30秒内可用次数
@@ -118,20 +119,25 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonCacheFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(CheckPornCounting), value.ToString());
         }
 
-        public static void SetWorkingTimeout(long qqId, IDictionary<long, DateTime> source, Action SendTimeOutMessage)
+        public static void SetWorkingTimeout(long qqId, Action SendTimeOutMessage, params IDictionary<long, DateTime>[] source)
         {
             Task.Run(() =>
             {
-                while (source.ContainsKey(qqId))
+                while (source.Where(s => s.ContainsKey(qqId)).Count() > 0)
                 {
-                    if (source[qqId] > DateTime.Now)
-                        Task.Delay(1000).Wait();
-                    else
+                    for (int i = 0; i < source.Length; i++)
                     {
-                        source.Remove(qqId);
-                        SendTimeOutMessage();
-                        break;
+                        if (source[i].ContainsKey(qqId))
+                        {
+                            if (source[i][qqId] < DateTime.Now)
+                            {
+                                source[i].Remove(qqId);
+                                if (source.Where(s => s.ContainsKey(qqId)).Count() == 0)
+                                    SendTimeOutMessage();
+                            }
+                        }
                     }
+                    Task.Delay(1000).Wait();
                 }
             });
         }

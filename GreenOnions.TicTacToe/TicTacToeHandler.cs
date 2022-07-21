@@ -28,14 +28,14 @@ namespace GreenOnions.TicTacToe
             else
             {
                 Cache.PlayingTicTacToeUsers.TryAdd(qqId, DateTime.Now.AddMinutes(2));
-                Cache.SetWorkingTimeout(qqId, Cache.PlayingTicTacToeUsers, () =>  //启动棋局计时
+                Cache.SetWorkingTimeout(qqId, () =>  //启动棋局计时
                 {
                     if (PlayingTicTacToeSessions.ContainsKey(qqId))
                         PlayingTicTacToeSessions.Remove(qqId);
                     if (Cache.PlayingTicTacToeUsers.ContainsKey(qqId))
                         Cache.PlayingTicTacToeUsers.TryRemove(qqId, out _);
                     SendMessage(BotInfo.TicTacToeTimeoutReply.ReplaceGreenOnionsTags());  //超时退出棋局
-                });
+                }, Cache.PlayingTicTacToeUsers);
                 TicTacToeSession session = new TicTacToeSession();
                 Bitmap chessboard = session.StartNewSession();  //不能using, 要保留在棋局对象里
                 using (MemoryStream tempMs = new MemoryStream())
