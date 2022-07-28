@@ -340,7 +340,7 @@ namespace GreenOnions.RSS
                                         foreach (Match match in imgMatches)
                                         {
                                             description = description.Replace(match.Groups[0].Value, "");
-                                            imgsSrc[iImage++] = match.Groups["imgUrl"].Value.Replace("&amp;", "&");
+                                            imgsSrc[iImage++] = match.Groups["imgUrl"].Value.ReplaceHtmlTags();
                                         }
                                         #endregion -- img --
 
@@ -351,7 +351,7 @@ namespace GreenOnions.RSS
                                         foreach (Match match in videoMatches)
                                         {
                                             description = description.Replace(match.Groups[0].Value, "");
-                                            videosSrc[iVideo++] = match.Groups["videoUrl"].Value.Replace("&amp;", "&");
+                                            videosSrc[iVideo++] = match.Groups["videoUrl"].Value.ReplaceHtmlTags();
                                         }
                                         #endregion -- video --
 
@@ -362,7 +362,7 @@ namespace GreenOnions.RSS
                                         foreach (Match match in iframeMatches)
                                         {
                                             description = description.Replace(match.Groups[0].Value, "");
-                                            iframesSrc[iIframe++] = match.Groups["iframeUrl"].Value.Replace("&amp;", "&");
+                                            iframesSrc[iIframe++] = match.Groups["iframeUrl"].Value.ReplaceHtmlTags();
                                         }
                                         #endregion -- iframe --
 
@@ -375,7 +375,7 @@ namespace GreenOnions.RSS
                                                 description = description.Replace(match.Groups[0].Value, "");
                                         }
 
-                                        description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</img>", "").Replace("</video>", "").Replace("</iframe>", "").Replace("<p>", "").Replace("</p>", "\r\n").Replace("&amp;", "&");
+                                        description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</img>", "").Replace("</video>", "").Replace("</iframe>", "").Replace("<p>", "").Replace("</p>", "\r\n").ReplaceHtmlTags();
                                         break;
                                     case "link":
                                         link = subNode.InnerText;
