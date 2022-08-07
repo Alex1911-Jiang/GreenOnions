@@ -65,7 +65,8 @@ namespace GreenOnions.BotManagerWindow
 				tPlugins.ContinueWith(t =>
 				{
 					Task.Delay(BotInfo.AutoConnectDelay * 1000).Wait();
-                    if (BotInfo.AutoConnectProtocol == 0)
+					WorkingTimeRecorder.DoWork = true;
+					if (BotInfo.AutoConnectProtocol == 0)
 						ConnectToMiraiApiHttp();
                     else
 						ConnectToCqHttp();
@@ -130,6 +131,7 @@ namespace GreenOnions.BotManagerWindow
 
 		private void btnDeconnect_Click(object sender, EventArgs e)
 		{
+			WorkingTimeRecorder.DoWork = false;
 			Disconnect();
 		}
 
@@ -147,6 +149,7 @@ namespace GreenOnions.BotManagerWindow
 
 		private void btnConnectToMiraiApiHttp_Click(object sender, EventArgs e)
 		{
+			WorkingTimeRecorder.DoWork = true;
 			ConnectToMiraiApiHttp();
 		}
 
@@ -164,7 +167,8 @@ namespace GreenOnions.BotManagerWindow
 
 		private void btnConnectToCqHttp_Click(object sender, EventArgs e)
 		{
-            ConnectToCqHttp();
+			WorkingTimeRecorder.DoWork = true;
+			ConnectToCqHttp();
         }
 
 		private void ConnectToCqHttp()

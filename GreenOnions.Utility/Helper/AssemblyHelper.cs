@@ -35,16 +35,28 @@ namespace GreenOnions.Utility.Helper
         public static string ReplacePropertyChineseNameToValue(string str)
         {
             PropertyInfo[] PropertyInfos = typeof(BotInfo).GetProperties();
+            if (PropertyInfos == null)
+            {
+                LogHelper.WriteWarningLog("获取配置信息失败");
+                return str;
+            }
             foreach (PropertyInfo item in PropertyInfos)
             {
-                foreach (var attributes in item.CustomAttributes)
+                try
                 {
-                    if (attributes.AttributeType.Name == "PropertyChineseNameAttribute")
+                    foreach (var attributes in item.CustomAttributes)
                     {
-                        var attribute = attributes.ConstructorArguments.Select(v => v.Value).FirstOrDefault();
-                        if (attribute != null)
-                            str = str.Replace($"<{attribute}>", item.GetValue(null).ToString());
+                        if (attributes.AttributeType.Name == "PropertyChineseNameAttribute")
+                        {
+                            var attribute = attributes.ConstructorArguments.Select(v => v.Value).FirstOrDefault();
+                            if (attribute != null)
+                                str = str.Replace($"<{attribute}>", item.GetValue(null)?.ToString());
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage($"属性特性转换为属性值时发生异常, 属性为:{item.Name}", ex);
                 }
             }
             return str;

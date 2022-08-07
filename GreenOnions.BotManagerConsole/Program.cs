@@ -14,7 +14,7 @@ namespace GreenOnions.BotManagerConsole
 	{
 		public static async Task Main()
 		{
-			AppDomain.CurrentDomain.UnhandledException += (_, e) => LogHelper.WriteErrorLog(e.ExceptionObject);
+            AppDomain.CurrentDomain.UnhandledException += (_, e) => LogHelper.WriteErrorLog(e.ExceptionObject);
 
 			Console.WriteLine("葱葱机器人3.0");
 
@@ -99,6 +99,9 @@ namespace GreenOnions.BotManagerConsole
 						BotInfo.IP = ip;
 						BotInfo.Port = port;
 						BotInfo.VerifyKey = verifyKey;
+						WorkingTimeRecorder.DoWork = true;
+						Console.CancelKeyPress -= Console_CancelKeyPress;
+						Console.CancelKeyPress += Console_CancelKeyPress;
 						ConnectToMiraiApiHttp();
 					}
 					catch (Exception ex)
@@ -117,6 +120,9 @@ namespace GreenOnions.BotManagerConsole
 						BotInfo.IP = ip;
 						BotInfo.Port = port;
 						BotInfo.VerifyKey = accessToken;
+						WorkingTimeRecorder.DoWork = true;
+						Console.CancelKeyPress -= Console_CancelKeyPress;
+						Console.CancelKeyPress += Console_CancelKeyPress;
 						ConnectToCqHttp();
 					}
 					catch (Exception ex)
@@ -126,6 +132,15 @@ namespace GreenOnions.BotManagerConsole
 					}
 				}
 			}
+			Console.ReadLine();
+		}
+
+		private static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+		{
+			WorkingTimeRecorder.DoWork = false;
+			TextReader sr = new StringReader("exit");
+			Console.SetIn(sr);
+			e.Cancel = true;
 		}
 
         private async static void ConnectToMiraiApiHttp()
