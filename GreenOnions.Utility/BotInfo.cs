@@ -36,12 +36,14 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(QQId), value.ToString());
         }
 
+        [PropertyChineseName("IP", "连接的机器人平台IP地址")]
         public static string IP
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(IP)) ?? "127.0.0.1";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(IP), value);
         }
 
+        [PropertyChineseName("Port", "连接的机器人平台端口号")]
         public static ushort Port
         {
             get
@@ -53,6 +55,7 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(Port), value.ToString());
         }
 
+        [PropertyChineseName("VerifyKey/Access-Token", "连接的机器人平台令牌")]
         public static string VerifyKey
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(VerifyKey));
@@ -153,7 +156,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 调试模式下是否只响应指定群组的消息
         /// </summary>
-        [PropertyChineseName("只响应调试群组的消息")]
+        [PropertyChineseName("只响应调试群组的消息", "调试模式下机器人是否只响应调试群组的消息")]
         public static bool OnlyReplyDebugGroup
         {
             get
@@ -168,7 +171,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 调试模式下是否只响应机器人管理员的消息
         /// </summary>
-        [PropertyChineseName("只响应来自机器人管理员的消息")]
+        [PropertyChineseName("只响应来自机器人管理员的消息", "调试模式下机器人是否只响应来自机器人管理员的消息")]
         public static bool DebugReplyAdminOnly
         {
             get
@@ -183,7 +186,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 允许Windows系统使用浏览器执行Http请求
         /// </summary>
-        [PropertyChineseName("允许调用浏览器执行Http请求")]
+        [PropertyChineseName("允许调用浏览器执行Http请求", "是否允许Windows系统下使用浏览器执行Http请求")]
         public static bool HttpRequestByWebBrowser
         {
             get
@@ -198,7 +201,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 图片外链路由替换 0:不替换  1:替换为c2cpicdw.qpic.cn/offpic_new  2:替换为gchat.qpic.cn/gchatpic_new
         /// </summary>
-        [PropertyChineseName("图片外链路由替换")]
+        [PropertyChineseName("图片外链路由替换", "腾讯QQ群图片外链路由地址替换")]
         public static int ReplaceImgRoute
         {
             get
@@ -316,27 +319,12 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(TencentCloudBucket), value);
         }
 
-        /// <summary>
-        /// 每日允许的鉴黄次数
-        /// </summary>
-        [PropertyChineseName("每日鉴黄次数限制")]
-        public static int CheckPornLimitCount
-        {
-            get
-            {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(CheckPornLimitCount));
-                if (int.TryParse(strValue, out int iValue)) return iValue;
-                return 2000;
-            }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(CheckPornLimitCount), value.ToString());
-        }
-
         #endregion -- 腾讯云相关属性 --
 
         /// <summary>
         /// 是否启用自动连接到机器人平台
         /// </summary>
-        [PropertyChineseName("自动连接到机器人平台")]
+        [PropertyChineseName("自动连接到机器人平台", "是否启用自动连接到机器人平台")]
         public static bool AutoConnectEnabled
         {
             get
@@ -351,7 +339,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 自动连接的平台
         /// </summary>
-        [PropertyChineseName("自动连接平台")]
+        [PropertyChineseName("自动连接平台", "选择自动连接到的平台, 0 = Mirai-Api-Http, 1 = OneBot(Cqhttp)")]
         public static int AutoConnectProtocol
         {
             get
@@ -366,7 +354,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 连接前延时
         /// </summary>
-        [PropertyChineseName("连接前延时")]
+        [PropertyChineseName("连接前延时", "机器人启动后等待多少秒后连接机器人平台(用于等待机器人平台启动)")]
         public static int AutoConnectDelay
         {
             get
@@ -390,7 +378,7 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeEnabled), value.ToString());
         }
 
-        [PropertyChineseName("工作时间 从 时")]
+        [PropertyChineseName("工作时间 从", "时")]
         public static int WorkingTimeFromHour
         {
             get
@@ -402,7 +390,7 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeFromHour), value.ToString());
         }
 
-        [PropertyChineseName("工作时间 从 分")]
+        [PropertyChineseName("工作时间 从", "分")]
         public static int WorkingTimeFromMinute
         {
             get
@@ -414,7 +402,7 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeFromMinute), value.ToString());
         }
 
-        [PropertyChineseName("工作时间 到 时")]
+        [PropertyChineseName("工作时间 到", "时")]
         public static int WorkingTimeToHour
         {
             get
@@ -426,7 +414,7 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameBot, nameof(WorkingTimeToHour), value.ToString());
         }
 
-        [PropertyChineseName("工作时间 到 分")]
+        [PropertyChineseName("工作时间 到", "分")]
         public static int WorkingTimeToMinute
         {
             get
@@ -933,22 +921,25 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否在下载原图功能上启用鉴黄
+        /// 是否在搜图功能上启用鉴黄
         /// </summary>
-        public static bool OriginalPictureCheckPornEnabled
+        [PropertyChineseName("搜图 启用鉴黄")]
+        public static bool SearchCheckPornEnabled
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornEnabled));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornEnabled));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return false;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornEnabled), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornEnabled), value.ToString());
         }
+
 
         /// <summary>
         /// 搜图功能鉴黄不通过返回消息
         /// </summary>
+        [PropertyChineseName("搜图 鉴黄不通过回复语")]
         public static string SearchCheckPornIllegalReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornIllegalReply)) ?? "AI鉴黄不通过，缩略图不予显示。";
@@ -958,19 +949,11 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 搜图功能鉴黄发生异常返回消息
         /// </summary>
+        [PropertyChineseName("搜图 鉴黄错误回复语")]
         public static string SearchCheckPornErrorReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornErrorReply)) ?? "AI鉴黄发生错误，缩略图不予显示。<错误信息>";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornErrorReply), value);
-        }
-
-        /// <summary>
-        /// 超过鉴黄次数时回复语
-        /// </summary>
-        public static string SearchCheckPornOutOfLimitReply
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitReply)) ?? "今日AI鉴黄次数已耗尽，缩略图不予显示。";
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornOutOfLimitReply), value);
         }
 
         #endregion -- 搜图属性 --
@@ -979,6 +962,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用下载原图
         /// </summary>
+        [PropertyChineseName("启用按ID下载Pixiv原图功能")]
         public static bool OriginalPictureEnabled
         {
             get
@@ -991,22 +975,24 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 是否在搜图功能上启用鉴黄
+        /// 是否在下载原图功能上启用鉴黄
         /// </summary>
-        public static bool SearchCheckPornEnabled
+        [PropertyChineseName("下载原图 启用鉴黄")]
+        public static bool OriginalPictureCheckPornEnabled
         {
             get
             {
-                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornEnabled));
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornEnabled));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
                 return false;
             }
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(SearchCheckPornEnabled), value.ToString());
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornEnabled), value.ToString());
         }
 
         /// <summary>
         /// 下载原图功能上鉴黄不通过时做以下动作: 0.以合并转发的方式发送原图 1.不做任何事 2.回复设置的语句
         /// </summary>
+        [PropertyChineseName("下载原图 鉴黄不通过时", "0 = 以合并转发的方式发送原图 1 = 不做任何事 2 = 回复设置的语句")]
         public static int OriginalPictureCheckPornEvent
         {
             get
@@ -1021,6 +1007,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 下载原图功能鉴黄不通过返回消息
         /// </summary>
+        [PropertyChineseName("下载原图 鉴黄不通过回复语")]
         public static string OriginalPictureCheckPornIllegalReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornIllegalReply)) ?? "AI鉴黄不通过。";
@@ -1030,6 +1017,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 下载原图功能鉴黄错误返回消息
         /// </summary>
+        [PropertyChineseName("下载原图 鉴黄错误回复语")]
         public static string OriginalPictureCheckPornErrorReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCheckPornErrorReply)) ?? "AI鉴黄发生错误。<错误信息>";
@@ -1042,6 +1030,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用翻译功能
         /// </summary>
+        [PropertyChineseName("启用翻译功能")]
         public static bool TranslateEnabled
         {
             get
@@ -1053,6 +1042,10 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateEnabled), value.ToString());
         }
 
+        /// <summary>
+        /// 翻译引擎
+        /// </summary>
+        [PropertyChineseName("翻译引擎", "0 = 谷歌, 1 = 有道")]
         public static TranslateEngine TranslateEngineType
         {
             get
@@ -1068,6 +1061,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 翻译为中文命令(正则表达式)
         /// </summary>
+        [PropertyChineseName("翻译引擎", "0 = 谷歌, 1 = 有道")]
         public static string TranslateToChineseCMD
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateToChineseCMD)) ?? "<机器人名称>翻[译譯][:：]";
@@ -1077,18 +1071,27 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 翻译为指定语言命令(正则表达式)
         /// </summary>
+        [PropertyChineseName("翻译为指定语言命令","支持正则表达式")]
         public static string TranslateToCMD
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateToCMD)) ?? "<机器人名称>翻[译譯][成为為到至](.+[语語文])[:：]";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateToCMD), value);
         }
 
+        /// <summary>
+        /// 从指定语言翻译为指定语言命令(正则表达式)
+        /// </summary>
+        [PropertyChineseName("翻译为指定语言命令", "支持正则表达式, 使用有道翻译时该属性没有作用")]
         public static string TranslateFromToCMD
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateFromToCMD)) ?? "<机器人名称>[把从從自从](?<from>.+[语語文])翻[译譯][成为為到至](?<to>.+[语語文])[:：]";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameTranslate, nameof(TranslateFromToCMD), value);
         }
 
+        /// <summary>
+        /// 从指定语言翻译为指定语言命令(从指定语言翻译为指定语言命令)
+        /// </summary>
+        [PropertyChineseName("从指定语言翻译为指定语言命令", "支持正则表达式")]
         public static IEnumerable<long> AutoTranslateGroupMemoriesQQ
         {
             get
@@ -1105,17 +1108,13 @@ namespace GreenOnions.Utility
         #endregion -- 翻译属性 --
 
         #region -- 色图属性 --
-        public static string HPictureApiKey
-        {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureApiKey));
-            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureApiKey), value);
-        }
 
         public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟][图圖図])|(?<美图后缀>[美][图圖図]))";
 
         /// <summary>
-        /// Lolicon图库色图完整命令(正则表达式)
+        /// 色图/美图完整命令(正则表达式)
         /// </summary>
+        [PropertyChineseName("色图/美图命令", "支持正则表达式")]
         public static string HPictureCmd
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCmd)) ?? DefaultHPictureCmd;
@@ -1125,6 +1124,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否撤回美图(撤回时间跟随色图撤回时间设置)
         /// </summary>
+        [PropertyChineseName("撤回美图")]
         public static bool RevokeBeautyPicture
         {
             get
@@ -1139,6 +1139,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 启动的美图图库
         /// </summary>
+        [PropertyChineseName("美图图库","启用的美图图库, 1 = ELF图库")]
         public static List<PictureSource> EnabledBeautyPictureSource
         {
             get
@@ -1154,6 +1155,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 启动的色图图库
         /// </summary>
+        [PropertyChineseName("色图图库", "启用的色图图库, 0 = Lolicon图库")]
         public static List<PictureSource> EnabledHPictureSource
         {
             get
@@ -1169,6 +1171,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 自定义色图命令
         /// </summary>
+        [PropertyChineseName("自定义色图命令")]
         public static IEnumerable<string> HPictureUserCmd
         {
             get
@@ -1184,6 +1187,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 白名单群
         /// </summary>
+        [PropertyChineseName("色图 白名单群")]
         public static IEnumerable<long> HPictureWhiteGroup
         {
             get
@@ -1199,6 +1203,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否仅限白名单使用色图
         /// </summary>
+        [PropertyChineseName("色图 仅限白名单")]
         public static bool HPictureWhiteOnly
         {
             get
@@ -1213,6 +1218,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用R-18
         /// </summary>
+        [PropertyChineseName("色图 允许R-18")]
         public static bool HPictureAllowR18
         {
             get
@@ -1227,6 +1233,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否仅限白名单使用R-18
         /// </summary>
+        [PropertyChineseName("色图 R-18仅限白名单")]
         public static bool HPictureR18WhiteOnly
         {
             get
@@ -1241,6 +1248,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 允许私聊
         /// </summary>
+        [PropertyChineseName("色图 允许私聊")]
         public static bool HPictureAllowPM
         {
             get
@@ -1255,6 +1263,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 1200像素模式
         /// </summary>
+        [PropertyChineseName("色图 1200像素模式")]
         public static bool HPictureSize1200
         {
             get
@@ -1269,6 +1278,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 冷却时间
         /// </summary>
+        [PropertyChineseName("色图 群冷却时间","s")]
         public static int HPictureCD
         {
             get
@@ -1283,6 +1293,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 次数限制
         /// </summary>
+        [PropertyChineseName("色图 群次数限制")]
         public static int HPictureLimit
         {
             get
@@ -1297,6 +1308,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 撤回时间
         /// </summary>
+        [PropertyChineseName("色图 群撤回时间", "s")]
         public static int HPictureRevoke
         {
             get
@@ -1311,6 +1323,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 白名单群冷却时间
         /// </summary>
+        [PropertyChineseName("色图 白名单群冷却时间", "s")]
         public static int HPictureWhiteCD
         {
             get
@@ -1325,6 +1338,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 白名单群撤回时间
         /// </summary>
+        [PropertyChineseName("色图 白名单群撤回时间", "s")]
         public static int HPictureWhiteRevoke
         {
             get
@@ -1339,6 +1353,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 私聊冷却时间
         /// </summary>
+        [PropertyChineseName("色图 私聊冷却时间", "s")]
         public static int HPicturePMCD
         {
             get
@@ -1353,6 +1368,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 私聊撤回时间
         /// </summary>
+        [PropertyChineseName("色图 私聊撤回时间", "s")]
         public static int HPicturePMRevoke
         {
             get
@@ -1367,6 +1383,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 机器人管理员无冷却时间/次数限制
         /// </summary>
+        [PropertyChineseName("色图 机器人管理员无限制")]
         public static bool HPictureAdminNoLimit
         {
             get
@@ -1381,6 +1398,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 私聊无冷却时间/次数限制
         /// </summary>
+        [PropertyChineseName("色图 私聊无限制")]
         public static bool HPicturePMNoLimit
         {
             get
@@ -1395,6 +1413,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 白名单群无冷却时间/次数限制
         /// </summary>
+        [PropertyChineseName("色图 白名单群无限制")]
         public static bool HPictureWhiteNoLimit
         {
             get
@@ -1409,6 +1428,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 色图是否发送地址
         /// </summary>
+        [PropertyChineseName("色图 发送地址")]
         public static bool HPictureSendUrl
         {
             get
@@ -1423,6 +1443,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 色图是否发送标签
         /// </summary>
+        [PropertyChineseName("色图 发送标签")]
         public static bool HPictureSendTags
         {
             get
@@ -1437,6 +1458,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否以合并转发的方式发送色图
         /// </summary>
+        [PropertyChineseName("色图 以合并转发的方式发送")]
         public static bool HPictureSendByForward
         {
             get
@@ -1451,6 +1473,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 冷却中回复
         /// </summary>
+        [PropertyChineseName("色图 冷却时间内回复语")]
         public static string HPictureCDUnreadyReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureCDUnreadyReply)) ?? "乖，要懂得节制哦，休息一会再冲吧 →_→";
@@ -1460,6 +1483,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 次数用尽回复
         /// </summary>
+        [PropertyChineseName("色图 超过次数回复语")]
         public static string HPictureOutOfLimitReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureOutOfLimitReply)) ?? "今天不要再冲了啦(>_<)";
@@ -1469,6 +1493,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 发生错误回复
         /// </summary>
+        [PropertyChineseName("色图 发生错误回复语")]
         public static string HPictureErrorReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureErrorReply)) ?? "色图服务器爆炸惹_(:3」∠)_";
@@ -1478,6 +1503,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 没有结果回复
         /// </summary>
+        [PropertyChineseName("色图 没有结果回复语")]
         public static string HPictureNoResultReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureNoResultReply)) ?? "没有找到符合条件的图ㄟ( ▔, ▔ )ㄏ";
@@ -1487,6 +1513,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 下载失败回复
         /// </summary>
+        [PropertyChineseName("色图 图片下载失败回复语")]
         public static string HPictureDownloadFailReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureDownloadFailReply)) ?? "地址为:<URL>的色图不见了，可能是色图服务器下载失败或图真的没了o(╥﹏╥)o (如连续出现时请检查<机器人名称>网络/代理/墙问题。)";
@@ -1496,6 +1523,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 色图次数限制记录类型
         /// </summary>
+        [PropertyChineseName("色图 次数限制记录类型", "0 = 记次, 1 = 记张")]
         public static LimitType HPictureLimitType
         {
             get
@@ -1511,6 +1539,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 一条色图命令最多允许返回多少张色图
         /// </summary>
+        [PropertyChineseName("色图 单次请求最大图片数量", "支持1-100, 不建议超过10, 容易导致无法撤回")]
         public static int HPictureOnceMessageMaxImageCount
         {
             get
@@ -1525,6 +1554,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用色图功能
         /// </summary>
+        [PropertyChineseName("启用色图功能")]
         public static bool HPictureEnabled
         {
             get
@@ -1541,6 +1571,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用随机复读
         /// </summary>
+        [PropertyChineseName("随机复读")]
         public static bool RandomRepeatEnabled
         {
             get
@@ -1554,6 +1585,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 随机复读概率
         /// </summary>
+        [PropertyChineseName("随机复读 概率为","%")]
         public static int RandomRepeatProbability
         {
             get
@@ -1567,6 +1599,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用连续复读
         /// </summary>
+        [PropertyChineseName("连续复读")]
         public static bool SuccessiveRepeatEnabled
         {
             get
@@ -1577,9 +1610,11 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRepeater, nameof(SuccessiveRepeatEnabled), value.ToString());
         }
+
         /// <summary>
         /// 参与连续复读所需的复读次数
         /// </summary>
+        [PropertyChineseName("连续复读 次数为")]
         public static int SuccessiveRepeatCount
         {
             get
@@ -1593,6 +1628,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否倒放复读Gif
         /// </summary>
+        [PropertyChineseName("倒放Gif")]
         public static bool RewindGifEnabled
         {
             get
@@ -1606,6 +1642,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 倒放复读Gif概率
         /// </summary>
+        [PropertyChineseName("倒放Gif 概率为", "%")]
         public static int RewindGifProbability
         {
             get
@@ -1616,9 +1653,11 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRepeater, nameof(RewindGifProbability), value.ToString());
         }
+        /// 
         /// <summary>
         /// 是否水平反转复读图片
         /// </summary>
+        [PropertyChineseName("水平镜像复读图片")]
         public static bool HorizontalMirrorImageEnabled
         {
             get
@@ -1629,9 +1668,11 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRepeater, nameof(HorizontalMirrorImageEnabled), value.ToString());
         }
+
         /// <summary>
         /// 水平反转复读图片概率
         /// </summary>
+        [PropertyChineseName("水平镜像复读图片 概率为", "%")]
         public static int HorizontalMirrorImageProbability
         {
             get
@@ -1642,9 +1683,11 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRepeater, nameof(HorizontalMirrorImageProbability), value.ToString());
         }
+
         /// <summary>
         /// 是否垂直翻转复读图片
         /// </summary>
+        [PropertyChineseName("垂直镜像复读图片")]
         public static bool VerticalMirrorImageEnabled
         {
             get
@@ -1655,9 +1698,11 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRepeater, nameof(VerticalMirrorImageEnabled), value.ToString());
         }
+
         /// <summary>
         /// 垂直翻转复读图片概率
         /// </summary>
+        [PropertyChineseName("垂直镜像复读图片 概率为", "%")]
         public static int VerticalMirrorImageProbability
         {
             get
@@ -1668,9 +1713,11 @@ namespace GreenOnions.Utility
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRepeater, nameof(VerticalMirrorImageProbability), value.ToString());
         }
+
         /// <summary>
         /// 将"我"替换为"你"
         /// </summary>
+        [PropertyChineseName("复读时把\"我\"替换为\"你\"")]
         public static bool ReplaceMeToYou
         {
             get
@@ -1688,6 +1735,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用新人入群消息
         /// </summary>
+        [PropertyChineseName("发送新人入群消息")]
         public static bool SendMemberJoinedMessage
         {
             get
@@ -1702,6 +1750,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用成员退群消息
         /// </summary>
+        [PropertyChineseName("发送群员退群消息")]
         public static bool SendMemberPositiveLeaveMessage
         {
             get
@@ -1716,6 +1765,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用成员被踢消息
         /// </summary>
+        [PropertyChineseName("发送群员被踢消息")]
         public static bool SendMemberBeKickedMessage
         {
             get
@@ -1730,6 +1780,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 新人入群消息
         /// </summary>
+        [PropertyChineseName("新人入群消息")]
         public static string MemberJoinedMessage
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameGroupMemberEvent, nameof(MemberJoinedMessage)) ?? "<@成员QQ> 欢迎新大佬，群地位-1 (ΩДΩ)";
@@ -1739,6 +1790,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 成员退群消息
         /// </summary>
+        [PropertyChineseName("群员退群消息")]
         public static string MemberPositiveLeaveMessage
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameGroupMemberEvent, nameof(MemberPositiveLeaveMessage)) ?? "QQ号：<成员QQ> 退出了群，群地位+1 o(╥﹏╥)o";
@@ -1748,6 +1800,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 成员被踢消息
         /// </summary>
+        [PropertyChineseName("群员被踢消息")]
         public static string MemberBeKickedMessage
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameGroupMemberEvent, nameof(MemberBeKickedMessage)) ?? " <成员昵称> ( <成员QQ> ) 被 <操作者昵称> 踢了出群，群地位+1 (*^▽^*)";
@@ -1760,6 +1813,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用伪造消息功能
         /// </summary>
+        [PropertyChineseName("启用伪造消息功能")]
         public static bool ForgeMessageEnabled
         {
             get
@@ -1774,6 +1828,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 伪造消息前缀
         /// </summary>
+        [PropertyChineseName("伪造消息命令前缀")]
         public static string ForgeMessageCmdBegin
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(ForgeMessageCmdBegin)) ?? "<机器人名称>伪造(消息|聊天[记記][录錄])";
@@ -1783,6 +1838,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 伪造消息分行符(分行符前后的内容会分成两条消息)
         /// </summary>
+        [PropertyChineseName("伪造消息分行符")]
         public static string ForgeMessageCmdNewLine
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(ForgeMessageCmdNewLine)) ?? @"\r\n";
@@ -1792,6 +1848,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否在伪造消息末端追加消息
         /// </summary>
+        [PropertyChineseName("伪造消息 在消息末尾追加机器人消息")]
         public static bool ForgeMessageAppendBotMessageEnabled
         {
             get
@@ -1806,6 +1863,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否只允许机器人管理员使用伪造消息功能
         /// </summary>
+        [PropertyChineseName("伪造消息 仅限机器人管理员可用")]
         public static bool ForgeMessageAdminOnly
         {
             get
@@ -1820,6 +1878,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 机器人管理员使用伪造消息功能时是否不在末端追加消息
         /// </summary>
+        [PropertyChineseName("伪造消息 机器人管理员使用时不追加消息")]
         public static bool ForgeMessageAdminDontAppend
         {
             get
@@ -1834,6 +1893,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 追加消息内容
         /// </summary>
+        [PropertyChineseName("伪造消息 追加消息内容")]
         public static string ForgeMessageAppendMessage
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(ForgeMessageAppendMessage)) ?? "此消息为<机器人名称>伪造，仅作娱乐，请勿用于非法用途。";
@@ -1843,6 +1903,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否拒绝伪造机器人管理员的消息
         /// </summary>
+        [PropertyChineseName("伪造消息 拒绝伪造机器人管理员的消息")]
         public static bool RefuseForgeAdmin
         {
             get
@@ -1857,6 +1918,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 试图伪造机器人管理员消息时的回复语
         /// </summary>
+        [PropertyChineseName("伪造消息 试图伪造机器人管理员消息时的回复语")]
         public static string RefuseForgeAdminReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(RefuseForgeAdminReply)) ?? "你不能让我伪造我主人的消息。";
@@ -1866,6 +1928,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否拒绝伪造机器人的消息(如果由机器人管理员发起则不会校验此项目)
         /// </summary>
+        [PropertyChineseName("伪造消息 拒绝伪造机器人的消息")]
         public static bool RefuseForgeBot
         {
             get
@@ -1880,6 +1943,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 试图伪造机器人消息时的回复语
         /// </summary>
+        [PropertyChineseName("伪造消息 试图伪造机器人消息时的回复语")]
         public static string RefuseForgeBotReply
         {
             get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameForgeMessage, nameof(RefuseForgeBotReply)) ?? "你不会以为我会伪造自己的消息吧，不会吧不会吧？";
@@ -1893,6 +1957,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用Rss订阅转发
         /// </summary>
+        [PropertyChineseName("启用RSS订阅转发")]
         public static bool RssEnabled
         {
             get
@@ -1907,6 +1972,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 抓取RSS间隔时间(分钟)
         /// </summary>
+        [PropertyChineseName("获取内容时间间隔","分钟")]
         public static double ReadRssInterval
         {
             get
@@ -1951,6 +2017,10 @@ namespace GreenOnions.Utility
             }
         }
 
+        /// <summary>
+        /// 获取B站直播封面
+        /// </summary>
+        [PropertyChineseName("获取B站直播间封面")]
         public static bool RssSendLiveCover
         {
             get

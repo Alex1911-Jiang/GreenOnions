@@ -62,7 +62,6 @@ namespace GreenOnions.BotManagerWindow
             chkDownloadImage4Caching.Checked = BotInfo.DownloadImage4Caching;
             chkSendImageByFile.Checked = BotInfo.SendImageByFile;
             chkCheckPornEnabled.Checked = BotInfo.CheckPornEnabled; //是否启用腾讯云鉴黄
-            txbCheckPornLimitCount.Text = BotInfo.CheckPornLimitCount.ToString();
 
             #region -- 腾讯云相关设置 --
             txbTencentCloudAPPID.Text = BotInfo.TencentCloudAPPID;
@@ -150,7 +149,6 @@ namespace GreenOnions.BotManagerWindow
             chkASCII2DRequestByWebBrowser.Checked = BotInfo.ASCII2DRequestByWebBrowser;
             chkSauceNAORequestByWebBrowser.Checked = BotInfo.SauceNAORequestByWebBrowser;
             chkSearchSendByForward.Checked = BotInfo.SearchSendByForward;
-            txbSearchCheckPornOutOfLimitReply.Text = BotInfo.SearchCheckPornOutOfLimitReply;
 
             #endregion -- 搜图设置 --
 
@@ -429,12 +427,6 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.SearchCheckPornIllegalReply = txbSearchCheckPornIllegalReply.Text;
             BotInfo.SearchCheckPornErrorReply = txbSearchCheckPornErrorReply.Text;
             BotInfo.SearchSendByForward = chkSearchSendByForward.Checked;
-
-            int iCheckPornLimitCount;
-            if (!int.TryParse(txbCheckPornLimitCount.Text, out iCheckPornLimitCount))
-                iCheckPornLimitCount = 2000;
-            BotInfo.CheckPornLimitCount = iCheckPornLimitCount;
-            BotInfo.SearchCheckPornOutOfLimitReply = txbSearchCheckPornOutOfLimitReply.Text;
 
             #region -- 腾讯云相关设置 --
             BotInfo.TencentCloudAPPID = txbTencentCloudAPPID.Text;
