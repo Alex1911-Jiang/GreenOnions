@@ -51,14 +51,11 @@ namespace GreenOnions.Utility.Helper
             Healthed = 0,
             NotHealth = 1,
             Error = 2,
-            OutOfLimit = 3,
         }
 
         public static CheckedPornStatus CheckImageHealth(string localFileName, out string errorMessage)
         {
             errorMessage = "";
-            if (Cache.CheckPornCounting > BotInfo.CheckPornLimitCount)
-                return CheckedPornStatus.OutOfLimit;
             try
             {
                 string strScore = CheckImagePornScore(localFileName, null, null);
@@ -74,8 +71,6 @@ namespace GreenOnions.Utility.Helper
         public static CheckedPornStatus CheckImageHealth(byte[] file, out string errorMessage)
         {
             errorMessage = "";
-            if (Cache.CheckPornCounting > BotInfo.CheckPornLimitCount)
-                return CheckedPornStatus.OutOfLimit;
             try
             {
                 string strScore = CheckImagePornScore(null,file,null);
@@ -91,8 +86,6 @@ namespace GreenOnions.Utility.Helper
         public static CheckedPornStatus CheckImageHealth(Stream stream, out string errorMessage)
         {
             errorMessage = "";
-            if (Cache.CheckPornCounting > BotInfo.CheckPornLimitCount)
-                return CheckedPornStatus.OutOfLimit;
             try
             {
                 string strScore = CheckImagePornScore(null, null, stream);

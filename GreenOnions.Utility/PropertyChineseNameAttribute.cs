@@ -10,10 +10,12 @@ namespace GreenOnions.Utility
     public class PropertyChineseNameAttribute : Attribute
     {
         public readonly string ChineseName = "";
+        public readonly string NodeName = "";
         public readonly string Description = "";
-        public PropertyChineseNameAttribute(string chineseName, string description = null)
+        public PropertyChineseNameAttribute(string chineseName, string nodeName, string description = null)
         {
             ChineseName = chineseName;
+            NodeName = nodeName;
             Description = description;
         }
     }

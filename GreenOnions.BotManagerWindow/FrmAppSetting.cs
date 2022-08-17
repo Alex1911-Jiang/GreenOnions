@@ -183,7 +183,6 @@ namespace GreenOnions.BotManagerWindow
             }
             txbHPictureOnceMessageMaxImageCount.Text = BotInfo.HPictureOnceMessageMaxImageCount.ToString();
             chkHPictureEnabled.Checked = BotInfo.HPictureEnabled;
-            txbHPictureApiKey.Text = BotInfo.HPictureApiKey;
             txbHPictureCmd.Text = BotInfo.HPictureCmd;
             chkRevokeBeautyPicture.Checked = BotInfo.RevokeBeautyPicture;
             if (BotInfo.HPictureUserCmd != null)
@@ -385,7 +384,7 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.SearchEnabledSauceNAO = chkSearchSauceNAOEnabled.Checked;  //是否启用SauceNAO搜图
             BotInfo.SearchSauceNAOSortByDesc = chkSearchSauceNAOSortByDesc.Checked;
             BotInfo.SearchSauceNAOSendPixivOriginalPicture = chkSearchSauceNAOSendPixivOriginalPicture.Checked;
-            BotInfo.SauceNAOApiKey = txbSearchSauceNAOApiKey.Text.Split("\r\n");
+            BotInfo.SauceNAOApiKey = txbSearchSauceNAOApiKey.Text.Split("\r\n").ToList();
             int iLowSauceNAOSimilarity;
             if (!int.TryParse(txbSearchSauceNAOLowSimilarity.Text, out iLowSauceNAOSimilarity))
                 iLowSauceNAOSimilarity = 60;
@@ -481,7 +480,6 @@ namespace GreenOnions.BotManagerWindow
             BotInfo.HPictureCmd = txbHPictureCmd.Text;
             BotInfo.HPictureOnceMessageMaxImageCount = string.IsNullOrEmpty(txbHPictureOnceMessageMaxImageCount.Text) ? 10 : Convert.ToInt32(txbHPictureOnceMessageMaxImageCount.Text);
             BotInfo.HPictureEnabled = chkHPictureEnabled.Checked;
-            BotInfo.HPictureApiKey = txbHPictureApiKey.Text;
             BotInfo.RevokeBeautyPicture = chkRevokeBeautyPicture.Checked;
             List<string> tempHPictureUserCmd = new List<string>();
             foreach (ListViewItem item in lstHPictureUserCmd.Items)
@@ -579,7 +577,7 @@ namespace GreenOnions.BotManagerWindow
                 SendByForward = i.RssSendByForward,
                 FilterMode = i.RssFilterMode,
                 FilterKeyWords = i.RssFilterKeyWords,
-            });
+            }).ToList();
             BotInfo.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
             BotInfo.RssSendLiveCover = chkRssSendLiveCover.Checked;
             BotInfo.RssParallel = chkRssParallel.Checked;

@@ -28,6 +28,7 @@
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GreenOnions.Command\GreenOnions.Command.csproj" />
     <ProjectReference Include="..\GreenOnions.ForgeMessage\GreenOnions.ForgeMessage.csproj" />
     <ProjectReference Include="..\GreenOnions.Help\GreenOnions.Help.csproj" />
     <ProjectReference Include="..\GreenOnions.HPicture\GreenOnions.HPicture.csproj" />

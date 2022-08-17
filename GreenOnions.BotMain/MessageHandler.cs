@@ -1,4 +1,5 @@
-﻿using GreenOnions.ForgeMessage;
+﻿using GreenOnions.Command;
+using GreenOnions.ForgeMessage;
 using GreenOnions.Help;
 using GreenOnions.HPicture;
 using GreenOnions.Interface;
@@ -151,6 +152,18 @@ namespace GreenOnions.BotMain
             if (firstMessage is GreenOnionsTextMessage textMsg)
             {
                 string firstValue = textMsg.ToString();
+
+                #region -- 命令 --
+                if (BotInfo.AdminQQ.Contains(inMsg.SenderId) && firstValue.StartsWith("葱葱命令"))
+                {
+                    string? cmdReply = await CommandEditor.HandleCommand(firstValue.Substring("葱葱命令".Length).Trim(), UpdateRegexs);
+                    if (cmdReply != null)
+                    {
+                        SendMessage(cmdReply);
+                        return true;
+                    }
+                }
+                #endregion -- 命令 --
 
                 #region -- 井字棋 --
 

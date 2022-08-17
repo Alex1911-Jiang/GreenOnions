@@ -325,9 +325,6 @@ namespace GreenOnions.PictureSearcher
                             case TencentCloudHelper.CheckedPornStatus.Error:  //错误
                                 message.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", CheckPornErrMsg)));
                                 break;
-                            case TencentCloudHelper.CheckedPornStatus.OutOfLimit:  //超过限制
-                                message.Add(BotInfo.SearchCheckPornOutOfLimitReply.ReplaceGreenOnionsTags());
-                                break;
                         }
                     }
                 }
@@ -361,9 +358,6 @@ namespace GreenOnions.PictureSearcher
                                     break;
                                 case TencentCloudHelper.CheckedPornStatus.Error:  //错误
                                     message.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", CheckPornErrMsg)));
-                                    break;
-                                case TencentCloudHelper.CheckedPornStatus.OutOfLimit:  //超过限制
-                                    message.Add(BotInfo.SearchCheckPornOutOfLimitReply.ReplaceGreenOnionsTags());
                                     break;
                             }
                         }
@@ -567,9 +561,6 @@ namespace GreenOnions.PictureSearcher
                                                 break;
                                             case TencentCloudHelper.CheckedPornStatus.Error:  //错误
                                                 outMessage.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags(new KeyValuePair<string, string>("错误信息", CheckPornErrMsg)));
-                                                break;
-                                            case TencentCloudHelper.CheckedPornStatus.OutOfLimit:  //超过限制
-                                                outMessage.Add(BotInfo.SearchCheckPornOutOfLimitReply.ReplaceGreenOnionsTags());
                                                 break;
                                         }
                                     }
