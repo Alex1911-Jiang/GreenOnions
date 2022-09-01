@@ -154,9 +154,10 @@ namespace GreenOnions.BotMain
                 string firstValue = textMsg.ToString();
 
                 #region -- 命令 --
-                if (BotInfo.AdminQQ.Contains(inMsg.SenderId) && firstValue.StartsWith("葱葱命令"))
+                string command = "<机器人名称>命令".ReplaceGreenOnionsTags();
+                if (BotInfo.AdminQQ.Contains(inMsg.SenderId) && firstValue.StartsWith(command))
                 {
-                    string? cmdReply = await CommandEditor.HandleCommand(firstValue.Substring("葱葱命令".Length).Trim(), UpdateRegexs);
+                    string? cmdReply = await CommandEditor.HandleCommand(string.Join("", inMsg).Substring(command.Length).Trim(), UpdateRegexs);
                     if (cmdReply != null)
                     {
                         SendMessage(cmdReply);

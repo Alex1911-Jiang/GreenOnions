@@ -342,6 +342,11 @@ namespace GreenOnions.PictureSearcher
                     {
                         using (MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStreamAsync(imgUrl))
                         {
+                            if (stream == null)
+                            {
+                                message.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags());
+                                return;
+                            }
                             byte[] imgByte = stream.ToArray();
                             if (BotInfo.DownloadImage4Caching || BotInfo.SendImageByFile)
                                 File.WriteAllBytes(imgName, imgByte);  //下载图片用于缓存
@@ -544,6 +549,11 @@ namespace GreenOnions.PictureSearcher
 
                             using (MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStreamAsync(imgUrl))
                             {
+                                if (stream == null)
+                                {
+                                    outMessage.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsTags());
+                                    return (outMessage, false);
+                                }
                                 LogHelper.WriteInfoLog($"SauceNAO下载缩略图成功");
                                 //鉴黄
                                 if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)

@@ -685,7 +685,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用Iqdb搜图
         /// </summary>
-        [PropertyChineseName("启用 ASCII2D 搜索", "搜图")]
+        [PropertyChineseName("启用 Iqdb 搜索", "搜图")]
         public static bool SearchEnabledIqdb
         {
             get
@@ -704,7 +704,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 是否启用3dIqdb搜车
         /// </summary>
-        [PropertyChineseName("启用 ASCII2D 搜索", "搜图")]
+        [PropertyChineseName("启用 3d Iqdb 搜索", "搜图")]
         public static bool SearchEnabled3dIqdb
         {
             get

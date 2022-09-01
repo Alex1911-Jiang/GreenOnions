@@ -279,8 +279,8 @@ namespace GreenOnions.BotManagerWindow
                     ctrlRssItem.Width = RssItemCtrlWidth;
                     ctrlRssItem.RssSubscriptionUrl = item.Url;
                     ctrlRssItem.RssRemark = item.Remark;
-                    ctrlRssItem.RssForwardGroups = item.ForwardGroups;
-                    ctrlRssItem.RssForwardQQs = item.ForwardQQs;
+                    ctrlRssItem.RssForwardGroups = item.ForwardGroups == null ? new long[0] : item.ForwardGroups;
+                    ctrlRssItem.RssForwardQQs = item.ForwardQQs == null ? new long[0] : item.ForwardQQs;
                     ctrlRssItem.RssTranslate = item.Translate;
                     ctrlRssItem.RssTranslateFromTo = item.TranslateFromTo;
                     ctrlRssItem.RssTranslateFrom = item.TranslateFrom;

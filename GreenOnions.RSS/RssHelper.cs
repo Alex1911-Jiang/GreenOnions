@@ -42,13 +42,11 @@ namespace GreenOnions.RSS
                                 LogHelper.WriteWarningLog("没有为订阅源设置转发目标或当前处于调试模式, 不进行转发");
                                 continue;
                             }
-                            LogHelper.WriteInfoLog("1");
-                            if (item.ForwardGroups.Length == 0 && item.ForwardQQs.Length == 0)
+                            if ((item.ForwardGroups == null || item.ForwardGroups.Length == 0) && (item.ForwardGroups == null || item.ForwardQQs.Length == 0))
                             {
                                 LogHelper.WriteInfoLog($"没有要转发的群和好友, 不进行抓取");
                                 continue;
                             }
-                            LogHelper.WriteInfoLog("2");
                             if (!Cache.LastOneSendRssTime.ContainsKey(item.Url))  //如果不存在上次发送的日期记录
                             {
                                 LogHelper.WriteInfoLog($"首次抓取到{item.Url}内容, 只保存不发送, 防止内容太多刷屏");
@@ -57,7 +55,6 @@ namespace GreenOnions.RSS
                                 ConfigHelper.SaveCacheFile();
                                 continue;
                             }
-                            LogHelper.WriteInfoLog("3");
                             if (BotInfo.RssParallel)
                             {
                                 LogHelper.WriteInfoLog($"RSS开始抓取(并行模式)");
