@@ -2,6 +2,7 @@
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System.Reflection;
+using System.Runtime.Loader;
 
 namespace GreenOnions.BotMain
 {
@@ -34,6 +35,7 @@ namespace GreenOnions.BotMain
                         string pluginName = null;
                         try
                         {
+                            AssemblyLoadContext.Default.LoadFromAssemblyPath(dll);
                             Assembly pluginAssembly = Assembly.LoadFrom(dll);
                             Type[] types = pluginAssembly.GetTypes();
                             foreach (Type type in types)

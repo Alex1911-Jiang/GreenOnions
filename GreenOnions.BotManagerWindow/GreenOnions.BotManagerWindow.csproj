@@ -6,6 +6,7 @@
     <RootNamespace>GreenOnions.BotManagerWindow</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>GreenOnions.BotManagerWindow</AssemblyName>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

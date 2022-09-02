@@ -5,19 +5,38 @@ namespace GreenOnions.Interface
 {
     public static class GreenOnionsTypeHelper
     {
+        /// <summary>
+        /// 把字符串转换为文字消息
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static GreenOnionsTextMessage ToTextMessage(this string str)
         {
             return new GreenOnionsTextMessage(str);
         }
+        /// <summary>
+        /// 把StringBuilder转换为文字消息
+        /// </summary>
+        /// <param name="stringBuilder"></param>
+        /// <returns></returns>
         public static GreenOnionsTextMessage ToTextMessage(this StringBuilder stringBuilder)
         {
             return new GreenOnionsTextMessage(stringBuilder.ToString());
         }
+        /// <summary>
+        /// 把一组字符串转换为一组文字消息
+        /// </summary>
+        /// <param name="strs"></param>
+        /// <returns></returns>
         public static GreenOnionsTextMessage[] ToTextMessageArray(this IEnumerable<string> strs)
         {
             return strs.Select(s => new GreenOnionsTextMessage(s)).ToArray();
         }
-
+        /// <summary>
+        /// 把内存流转换为Base64字符串(图片)
+        /// </summary>
+        /// <param name="ms"></param>
+        /// <returns></returns>
         public static string ToBase64(this MemoryStream ms)
         {
             try
@@ -35,7 +54,11 @@ namespace GreenOnions.Interface
                 return null;
             }
         }
-
+        /// <summary>
+        /// 把Base64字符串转换为内存流(图片)
+        /// </summary>
+        /// <param name="base64"></param>
+        /// <returns></returns>
         public static MemoryStream Base64ToMemoryStream(this string base64)
         {
             try
@@ -47,7 +70,11 @@ namespace GreenOnions.Interface
                 return null;
             }
         }
-
+        /// <summary>
+        /// 计算文字的MD5, 作为图片缓存的名称
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string ComputeMD5(string str)
         {
             byte[] bt = Encoding.UTF8.GetBytes(str);
