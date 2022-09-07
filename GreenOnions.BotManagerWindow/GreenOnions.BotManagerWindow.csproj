@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="CefSharp.WinForms.NETCore" Version="101.0.180" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />
   </ItemGroup>
 
   <ItemGroup>

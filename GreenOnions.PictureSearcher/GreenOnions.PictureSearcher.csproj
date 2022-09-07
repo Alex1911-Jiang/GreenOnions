@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />
     <PackageReference Include="IqdbApi" Version="2.3.0" />
   </ItemGroup>
 

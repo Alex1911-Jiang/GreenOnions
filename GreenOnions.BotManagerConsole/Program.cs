@@ -16,7 +16,7 @@ namespace GreenOnions.BotManagerConsole
 		{
             AppDomain.CurrentDomain.UnhandledException += (_, e) => LogHelper.WriteErrorLog(e.ExceptionObject);
 
-			Console.WriteLine("葱葱机器人3.0");
+			Console.WriteLine("葱葱机器人");
 
 			if (!File.Exists(JsonHelper.JsonConfigFileName))
 			{

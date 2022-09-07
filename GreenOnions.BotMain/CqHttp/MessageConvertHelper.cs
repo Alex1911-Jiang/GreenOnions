@@ -10,7 +10,7 @@ namespace GreenOnions.BotMain.CqHttp
 {
     public static class MessageConvertHelper
     {
-        public static GreenOnionsMessages ToOnionsMessages(this MessageBody miraiMessage, long senderId, string senderName, long? senderGroup, SoraApi api)
+        public static async Task<GreenOnionsMessages> ToOnionsMessages(this MessageBody miraiMessage, long senderId, string senderName, long? senderGroup, SoraApi api)
         {
             GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
             for (int i = 0; i < miraiMessage.Count; i++)
@@ -22,7 +22,7 @@ namespace GreenOnions.BotMain.CqHttp
                         //获取@群名片
                         if (long.TryParse(atMsg.Target, out long atId))
                         {
-                            var apiResult = api.GetGroupMemberList(senderGroup.Value).GetAwaiter().GetResult();
+                            var apiResult = await api.GetGroupMemberList(senderGroup.Value);
                             List<GroupMemberInfo> groupMemberInfos = apiResult.groupMemberList;
                             GroupMemberInfo targetQQ = groupMemberInfos.Where(m => m.UserId == atId).FirstOrDefault();
                             string nickName = targetQQ?.Nick;

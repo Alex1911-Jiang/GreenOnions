@@ -215,7 +215,7 @@ namespace GreenOnions.BotManagerWindow
             this.MaximizeBox = false;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "葱葱机器人3.0主窗口";
+            this.Text = "葱葱机器人主窗口";
             this.ResumeLayout(false);
             this.PerformLayout();
 

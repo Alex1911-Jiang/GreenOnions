@@ -1109,7 +1109,7 @@ namespace GreenOnions.Utility
 
         #region -- 色图属性 --
 
-        public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟][图圖図])|(?<美图后缀>[美][图圖図]))";
+        public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟涩铯啬渋][图圖図])|(?<美图后缀>[美][图圖図]))";
 
         /// <summary>
         /// 色图/美图完整命令(正则表达式)
@@ -1137,7 +1137,7 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 启动的美图图库
+        /// 启用的美图图库
         /// </summary>
         [PropertyChineseName("美图图库", "色图", "启用的美图图库, 1 = ELF图库")]
         public static List<PictureSource> EnabledBeautyPictureSource
@@ -1153,9 +1153,9 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 启动的色图图库
+        /// 启用的色图图库
         /// </summary>
-        [PropertyChineseName("色图图库", "色图", "启用的色图图库, 0 = Lolicon图库")]
+        [PropertyChineseName("色图图库", "色图", "启用的色图图库, 0 = Lolicon图库, 3 = yande.re")]
         public static List<PictureSource> EnabledHPictureSource
         {
             get
@@ -2214,6 +2214,7 @@ namespace GreenOnions.Utility
         Lolicon = 0,
         ELF = 1,
         GreenOnions = 2,
+        Yande_re = 1,
     }
 
     public enum TranslateEngine

@@ -173,13 +173,15 @@ namespace GreenOnions.BotManagerWindow
                     chkHPictureEnabledLoliconSource.Checked = true;
                 if (hSource == PictureSource.GreenOnions)
                     chkHPictureEnabledGreenOnionsSource.Checked = true;
+                if (hSource == PictureSource.Yande_re)
+                    chkHPictureYande_reSource.Checked = true;
             }
             foreach (var beautySource in BotInfo.EnabledBeautyPictureSource)
             {
                 if (beautySource == PictureSource.ELF)
-                    chkEnabledELFBeautyPicture.Checked = true;
+                    chkBeautyPictureEnabledELFSource.Checked = true;
                 if (beautySource == PictureSource.GreenOnions)
-                    chkEnabledGreenOnionsBeautyPicture.Checked = true;
+                    chkBeautyPictureEnabledGreenOnionsSource.Checked = true;
             }
             txbHPictureOnceMessageMaxImageCount.Text = BotInfo.HPictureOnceMessageMaxImageCount.ToString();
             chkHPictureEnabled.Checked = BotInfo.HPictureEnabled;
@@ -471,9 +473,11 @@ namespace GreenOnions.BotManagerWindow
                 EnabledHPictureSource.Add(PictureSource.Lolicon);
             if (chkHPictureEnabledGreenOnionsSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.GreenOnions);
-            if (chkEnabledELFBeautyPicture.Checked)
+            if (chkHPictureYande_reSource.Checked)
+                EnabledHPictureSource.Add(PictureSource.Yande_re);
+            if (chkBeautyPictureEnabledELFSource.Checked)
                 EnabledBeautyPictureSource.Add(PictureSource.ELF);
-            if (chkEnabledGreenOnionsBeautyPicture.Checked)
+            if (chkBeautyPictureEnabledGreenOnionsSource.Checked)
                 EnabledBeautyPictureSource.Add(PictureSource.GreenOnions);
             BotInfo.EnabledHPictureSource = EnabledHPictureSource;
             BotInfo.EnabledBeautyPictureSource = EnabledBeautyPictureSource;
@@ -624,9 +628,7 @@ namespace GreenOnions.BotManagerWindow
             WorkingTimeRecorder.UpdateWorkingTime();
         }
 
-        private void txbForgeMessageCmd_TextChanged(object sender, EventArgs e) => AddStringToCmd();
-
-        private void AddStringToCmd()
+        private void txbForgeMessageCmd_TextChanged(object sender, EventArgs e)
         {
             txbForgeMessageCmdBegin.TextChanged -= txbForgeMessageCmd_TextChanged;
             txbForgeMessageCmd.Text = $"{txbForgeMessageCmdBegin.Text}<@QQ><伪造内容>";
@@ -660,7 +662,7 @@ namespace GreenOnions.BotManagerWindow
         {
             txbHPictureCmd.Text = BotInfo.DefaultHPictureCmd;
             chkHPictureEnabledLoliconSource.Checked = true;
-            AddStringToCmd();
+            chkHPictureYande_reSource.Checked = true;
         }
 
         private void chkSearchPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchPicture.Enabled = chkSearchPictureEnabled.Checked;

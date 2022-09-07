@@ -41,12 +41,12 @@
             this.lblWorkingTime = new System.Windows.Forms.Label();
             this.chkWorkingTimeEnabled = new System.Windows.Forms.CheckBox();
             this.pnlWorkingTime = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblWorkingTimeToMinute = new System.Windows.Forms.Label();
+            this.lblWorkingTimeFromMinute = new System.Windows.Forms.Label();
+            this.lblWorkingTimeToHour = new System.Windows.Forms.Label();
+            this.lblWorkingTimeFromHour = new System.Windows.Forms.Label();
+            this.lblWorkingTimeTo = new System.Windows.Forms.Label();
+            this.lblWorkingTimeFrom = new System.Windows.Forms.Label();
             this.cboWorkingTimeFromHour = new System.Windows.Forms.ComboBox();
             this.cboWorkingTimeToHour = new System.Windows.Forms.ComboBox();
             this.cboWorkingTimeToMinute = new System.Windows.Forms.ComboBox();
@@ -195,6 +195,13 @@
             this.chkOriginalPictureEnabled = new System.Windows.Forms.CheckBox();
             this.pageHPicture = new System.Windows.Forms.TabPage();
             this.pnlHPictureEnabeled = new System.Windows.Forms.Panel();
+            this.chkHPictureYande_reSource = new System.Windows.Forms.CheckBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.HPictureCD_s = new System.Windows.Forms.Label();
             this.chkHPictureSendByForward = new System.Windows.Forms.CheckBox();
             this.chkHPictureSendTags = new System.Windows.Forms.CheckBox();
             this.chkHPictureSendUrl = new System.Windows.Forms.CheckBox();
@@ -207,9 +214,9 @@
             this.lblHPictureOnceMessageMaxImageCount = new System.Windows.Forms.Label();
             this.lblBeautyPictureSource = new System.Windows.Forms.Label();
             this.lblHPictureSource = new System.Windows.Forms.Label();
-            this.chkEnabledGreenOnionsBeautyPicture = new System.Windows.Forms.CheckBox();
+            this.chkBeautyPictureEnabledGreenOnionsSource = new System.Windows.Forms.CheckBox();
             this.chkHPictureEnabledGreenOnionsSource = new System.Windows.Forms.CheckBox();
-            this.chkEnabledELFBeautyPicture = new System.Windows.Forms.CheckBox();
+            this.chkBeautyPictureEnabledELFSource = new System.Windows.Forms.CheckBox();
             this.chkHPictureEnabledLoliconSource = new System.Windows.Forms.CheckBox();
             this.rodHPictureLimitCount = new System.Windows.Forms.RadioButton();
             this.rdoHPictureLimitFrequency = new System.Windows.Forms.RadioButton();
@@ -378,12 +385,6 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
-            this.HPictureCD_s = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -596,12 +597,12 @@
             // 
             // pnlWorkingTime
             // 
-            this.pnlWorkingTime.Controls.Add(this.label6);
-            this.pnlWorkingTime.Controls.Add(this.label7);
-            this.pnlWorkingTime.Controls.Add(this.label5);
-            this.pnlWorkingTime.Controls.Add(this.label4);
-            this.pnlWorkingTime.Controls.Add(this.label3);
-            this.pnlWorkingTime.Controls.Add(this.label2);
+            this.pnlWorkingTime.Controls.Add(this.lblWorkingTimeToMinute);
+            this.pnlWorkingTime.Controls.Add(this.lblWorkingTimeFromMinute);
+            this.pnlWorkingTime.Controls.Add(this.lblWorkingTimeToHour);
+            this.pnlWorkingTime.Controls.Add(this.lblWorkingTimeFromHour);
+            this.pnlWorkingTime.Controls.Add(this.lblWorkingTimeTo);
+            this.pnlWorkingTime.Controls.Add(this.lblWorkingTimeFrom);
             this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeFromHour);
             this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeToHour);
             this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeToMinute);
@@ -612,59 +613,59 @@
             this.pnlWorkingTime.Size = new System.Drawing.Size(620, 64);
             this.pnlWorkingTime.TabIndex = 51;
             // 
-            // label6
+            // lblWorkingTimeToMinute
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(373, 37);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(20, 17);
-            this.label6.TabIndex = 56;
-            this.label6.Text = "分";
+            this.lblWorkingTimeToMinute.AutoSize = true;
+            this.lblWorkingTimeToMinute.Location = new System.Drawing.Point(373, 37);
+            this.lblWorkingTimeToMinute.Name = "lblWorkingTimeToMinute";
+            this.lblWorkingTimeToMinute.Size = new System.Drawing.Size(20, 17);
+            this.lblWorkingTimeToMinute.TabIndex = 56;
+            this.lblWorkingTimeToMinute.Text = "分";
             // 
-            // label7
+            // lblWorkingTimeFromMinute
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(373, 6);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(20, 17);
-            this.label7.TabIndex = 55;
-            this.label7.Text = "分";
+            this.lblWorkingTimeFromMinute.AutoSize = true;
+            this.lblWorkingTimeFromMinute.Location = new System.Drawing.Point(373, 6);
+            this.lblWorkingTimeFromMinute.Name = "lblWorkingTimeFromMinute";
+            this.lblWorkingTimeFromMinute.Size = new System.Drawing.Size(20, 17);
+            this.lblWorkingTimeFromMinute.TabIndex = 55;
+            this.lblWorkingTimeFromMinute.Text = "分";
             // 
-            // label5
+            // lblWorkingTimeToHour
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(220, 37);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(20, 17);
-            this.label5.TabIndex = 54;
-            this.label5.Text = "时";
+            this.lblWorkingTimeToHour.AutoSize = true;
+            this.lblWorkingTimeToHour.Location = new System.Drawing.Point(220, 37);
+            this.lblWorkingTimeToHour.Name = "lblWorkingTimeToHour";
+            this.lblWorkingTimeToHour.Size = new System.Drawing.Size(20, 17);
+            this.lblWorkingTimeToHour.TabIndex = 54;
+            this.lblWorkingTimeToHour.Text = "时";
             // 
-            // label4
+            // lblWorkingTimeFromHour
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(220, 6);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(20, 17);
-            this.label4.TabIndex = 53;
-            this.label4.Text = "时";
+            this.lblWorkingTimeFromHour.AutoSize = true;
+            this.lblWorkingTimeFromHour.Location = new System.Drawing.Point(220, 6);
+            this.lblWorkingTimeFromHour.Name = "lblWorkingTimeFromHour";
+            this.lblWorkingTimeFromHour.Size = new System.Drawing.Size(20, 17);
+            this.lblWorkingTimeFromHour.TabIndex = 53;
+            this.lblWorkingTimeFromHour.Text = "时";
             // 
-            // label3
+            // lblWorkingTimeTo
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 37);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(84, 17);
-            this.label3.TabIndex = 52;
-            this.label3.Text = "工作时间 到：";
+            this.lblWorkingTimeTo.AutoSize = true;
+            this.lblWorkingTimeTo.Location = new System.Drawing.Point(3, 37);
+            this.lblWorkingTimeTo.Name = "lblWorkingTimeTo";
+            this.lblWorkingTimeTo.Size = new System.Drawing.Size(84, 17);
+            this.lblWorkingTimeTo.TabIndex = 52;
+            this.lblWorkingTimeTo.Text = "工作时间 到：";
             // 
-            // label2
+            // lblWorkingTimeFrom
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 6);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 17);
-            this.label2.TabIndex = 51;
-            this.label2.Text = "工作时间 从：";
+            this.lblWorkingTimeFrom.AutoSize = true;
+            this.lblWorkingTimeFrom.Location = new System.Drawing.Point(3, 6);
+            this.lblWorkingTimeFrom.Name = "lblWorkingTimeFrom";
+            this.lblWorkingTimeFrom.Size = new System.Drawing.Size(84, 17);
+            this.lblWorkingTimeFrom.TabIndex = 51;
+            this.lblWorkingTimeFrom.Text = "工作时间 从：";
             // 
             // cboWorkingTimeFromHour
             // 
@@ -2277,6 +2278,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlHPictureEnabeled.AutoScroll = true;
+            this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureYande_reSource);
             this.pnlHPictureEnabeled.Controls.Add(this.label11);
             this.pnlHPictureEnabeled.Controls.Add(this.label10);
             this.pnlHPictureEnabeled.Controls.Add(this.label9);
@@ -2292,9 +2294,9 @@
             this.pnlHPictureEnabeled.Controls.Add(this.lblHPictureOnceMessageMaxImageCount);
             this.pnlHPictureEnabeled.Controls.Add(this.lblBeautyPictureSource);
             this.pnlHPictureEnabeled.Controls.Add(this.lblHPictureSource);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkEnabledGreenOnionsBeautyPicture);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkBeautyPictureEnabledGreenOnionsSource);
             this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureEnabledGreenOnionsSource);
-            this.pnlHPictureEnabeled.Controls.Add(this.chkEnabledELFBeautyPicture);
+            this.pnlHPictureEnabeled.Controls.Add(this.chkBeautyPictureEnabledELFSource);
             this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureEnabledLoliconSource);
             this.pnlHPictureEnabeled.Controls.Add(this.rodHPictureLimitCount);
             this.pnlHPictureEnabeled.Controls.Add(this.rdoHPictureLimitFrequency);
@@ -2351,6 +2353,70 @@
             this.pnlHPictureEnabeled.Name = "pnlHPictureEnabeled";
             this.pnlHPictureEnabeled.Size = new System.Drawing.Size(644, 642);
             this.pnlHPictureEnabeled.TabIndex = 8;
+            // 
+            // chkHPictureYande_reSource
+            // 
+            this.chkHPictureYande_reSource.AutoSize = true;
+            this.chkHPictureYande_reSource.Location = new System.Drawing.Point(235, 142);
+            this.chkHPictureYande_reSource.Name = "chkHPictureYande_reSource";
+            this.chkHPictureYande_reSource.Size = new System.Drawing.Size(145, 21);
+            this.chkHPictureYande_reSource.TabIndex = 29;
+            this.chkHPictureYande_reSource.Text = "yande.re(需魔法上网)";
+            this.chkHPictureYande_reSource.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(597, 555);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(22, 17);
+            this.label11.TabIndex = 28;
+            this.label11.Text = "(s)";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(597, 517);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(22, 17);
+            this.label10.TabIndex = 27;
+            this.label10.Text = "(s)";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(388, 556);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(22, 17);
+            this.label9.TabIndex = 26;
+            this.label9.Text = "(s)";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(388, 517);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(22, 17);
+            this.label8.TabIndex = 25;
+            this.label8.Text = "(s)";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(170, 555);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(22, 17);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "(s)";
+            // 
+            // HPictureCD_s
+            // 
+            this.HPictureCD_s.AutoSize = true;
+            this.HPictureCD_s.Location = new System.Drawing.Point(170, 517);
+            this.HPictureCD_s.Name = "HPictureCD_s";
+            this.HPictureCD_s.Size = new System.Drawing.Size(22, 17);
+            this.HPictureCD_s.TabIndex = 23;
+            this.HPictureCD_s.Text = "(s)";
             // 
             // chkHPictureSendByForward
             // 
@@ -2490,21 +2556,21 @@
             this.lblHPictureSource.TabIndex = 15;
             this.lblHPictureSource.Text = "色图图库:";
             // 
-            // chkEnabledGreenOnionsBeautyPicture
+            // chkBeautyPictureEnabledGreenOnionsSource
             // 
-            this.chkEnabledGreenOnionsBeautyPicture.AutoSize = true;
-            this.chkEnabledGreenOnionsBeautyPicture.Location = new System.Drawing.Point(364, 169);
-            this.chkEnabledGreenOnionsBeautyPicture.Name = "chkEnabledGreenOnionsBeautyPicture";
-            this.chkEnabledGreenOnionsBeautyPicture.Size = new System.Drawing.Size(99, 21);
-            this.chkEnabledGreenOnionsBeautyPicture.TabIndex = 14;
-            this.chkEnabledGreenOnionsBeautyPicture.Text = "启用葱葱图库";
-            this.chkEnabledGreenOnionsBeautyPicture.UseVisualStyleBackColor = true;
-            this.chkEnabledGreenOnionsBeautyPicture.Visible = false;
+            this.chkBeautyPictureEnabledGreenOnionsSource.AutoSize = true;
+            this.chkBeautyPictureEnabledGreenOnionsSource.Location = new System.Drawing.Point(519, 170);
+            this.chkBeautyPictureEnabledGreenOnionsSource.Name = "chkBeautyPictureEnabledGreenOnionsSource";
+            this.chkBeautyPictureEnabledGreenOnionsSource.Size = new System.Drawing.Size(99, 21);
+            this.chkBeautyPictureEnabledGreenOnionsSource.TabIndex = 14;
+            this.chkBeautyPictureEnabledGreenOnionsSource.Text = "启用葱葱图库";
+            this.chkBeautyPictureEnabledGreenOnionsSource.UseVisualStyleBackColor = true;
+            this.chkBeautyPictureEnabledGreenOnionsSource.Visible = false;
             // 
             // chkHPictureEnabledGreenOnionsSource
             // 
             this.chkHPictureEnabledGreenOnionsSource.AutoSize = true;
-            this.chkHPictureEnabledGreenOnionsSource.Location = new System.Drawing.Point(364, 142);
+            this.chkHPictureEnabledGreenOnionsSource.Location = new System.Drawing.Point(519, 143);
             this.chkHPictureEnabledGreenOnionsSource.Name = "chkHPictureEnabledGreenOnionsSource";
             this.chkHPictureEnabledGreenOnionsSource.Size = new System.Drawing.Size(99, 21);
             this.chkHPictureEnabledGreenOnionsSource.TabIndex = 14;
@@ -2512,24 +2578,24 @@
             this.chkHPictureEnabledGreenOnionsSource.UseVisualStyleBackColor = true;
             this.chkHPictureEnabledGreenOnionsSource.Visible = false;
             // 
-            // chkEnabledELFBeautyPicture
+            // chkBeautyPictureEnabledELFSource
             // 
-            this.chkEnabledELFBeautyPicture.AutoSize = true;
-            this.chkEnabledELFBeautyPicture.Location = new System.Drawing.Point(254, 169);
-            this.chkEnabledELFBeautyPicture.Name = "chkEnabledELFBeautyPicture";
-            this.chkEnabledELFBeautyPicture.Size = new System.Drawing.Size(94, 21);
-            this.chkEnabledELFBeautyPicture.TabIndex = 14;
-            this.chkEnabledELFBeautyPicture.Text = "启用ELF图库";
-            this.chkEnabledELFBeautyPicture.UseVisualStyleBackColor = true;
+            this.chkBeautyPictureEnabledELFSource.AutoSize = true;
+            this.chkBeautyPictureEnabledELFSource.Location = new System.Drawing.Point(137, 170);
+            this.chkBeautyPictureEnabledELFSource.Name = "chkBeautyPictureEnabledELFSource";
+            this.chkBeautyPictureEnabledELFSource.Size = new System.Drawing.Size(70, 21);
+            this.chkBeautyPictureEnabledELFSource.TabIndex = 14;
+            this.chkBeautyPictureEnabledELFSource.Text = "ELF图库";
+            this.chkBeautyPictureEnabledELFSource.UseVisualStyleBackColor = true;
             // 
             // chkHPictureEnabledLoliconSource
             // 
             this.chkHPictureEnabledLoliconSource.AutoSize = true;
             this.chkHPictureEnabledLoliconSource.Location = new System.Drawing.Point(137, 142);
             this.chkHPictureEnabledLoliconSource.Name = "chkHPictureEnabledLoliconSource";
-            this.chkHPictureEnabledLoliconSource.Size = new System.Drawing.Size(116, 21);
+            this.chkHPictureEnabledLoliconSource.Size = new System.Drawing.Size(92, 21);
             this.chkHPictureEnabledLoliconSource.TabIndex = 14;
-            this.chkHPictureEnabledLoliconSource.Text = "启用Lolicon图库";
+            this.chkHPictureEnabledLoliconSource.Text = "Lolicon图库";
             this.chkHPictureEnabledLoliconSource.UseVisualStyleBackColor = true;
             // 
             // rodHPictureLimitCount
@@ -4334,60 +4400,6 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
-            // HPictureCD_s
-            // 
-            this.HPictureCD_s.AutoSize = true;
-            this.HPictureCD_s.Location = new System.Drawing.Point(170, 517);
-            this.HPictureCD_s.Name = "HPictureCD_s";
-            this.HPictureCD_s.Size = new System.Drawing.Size(22, 17);
-            this.HPictureCD_s.TabIndex = 23;
-            this.HPictureCD_s.Text = "(s)";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(170, 555);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(22, 17);
-            this.label1.TabIndex = 24;
-            this.label1.Text = "(s)";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(388, 517);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(22, 17);
-            this.label8.TabIndex = 25;
-            this.label8.Text = "(s)";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(388, 556);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(22, 17);
-            this.label9.TabIndex = 26;
-            this.label9.Text = "(s)";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(591, 517);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(22, 17);
-            this.label10.TabIndex = 27;
-            this.label10.Text = "(s)";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(591, 555);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(22, 17);
-            this.label11.TabIndex = 28;
-            this.label11.Text = "(s)";
-            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -4631,9 +4643,9 @@
         private System.Windows.Forms.TextBox txbMemberPositiveLeaveMessage;
         private System.Windows.Forms.Label lblBeautyPictureSource;
         private System.Windows.Forms.Label lblHPictureSource;
-        private System.Windows.Forms.CheckBox chkEnabledGreenOnionsBeautyPicture;
+        private System.Windows.Forms.CheckBox chkBeautyPictureEnabledGreenOnionsSource;
         private System.Windows.Forms.CheckBox chkHPictureEnabledGreenOnionsSource;
-        private System.Windows.Forms.CheckBox chkEnabledELFBeautyPicture;
+        private System.Windows.Forms.CheckBox chkBeautyPictureEnabledELFSource;
         private System.Windows.Forms.TextBox txbAddAutoTranslateGroupMemoryQQ;
         private System.Windows.Forms.Button btnRemoveAutoTranslateGroupMemoryQQ;
         private System.Windows.Forms.Button btnAddAutoTranslateGroupMemoryQQ;
@@ -4812,12 +4824,12 @@
         private System.Windows.Forms.Label lblWorkingTime;
         private System.Windows.Forms.CheckBox chkWorkingTimeEnabled;
         private System.Windows.Forms.Panel pnlWorkingTime;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblWorkingTimeToMinute;
+        private System.Windows.Forms.Label lblWorkingTimeFromMinute;
+        private System.Windows.Forms.Label lblWorkingTimeToHour;
+        private System.Windows.Forms.Label lblWorkingTimeFromHour;
+        private System.Windows.Forms.Label lblWorkingTimeTo;
+        private System.Windows.Forms.Label lblWorkingTimeFrom;
         private System.Windows.Forms.ComboBox cboWorkingTimeFromHour;
         private System.Windows.Forms.ComboBox cboWorkingTimeToHour;
         private System.Windows.Forms.ComboBox cboWorkingTimeToMinute;
@@ -4828,5 +4840,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox chkHPictureYande_reSource;
     }
 }

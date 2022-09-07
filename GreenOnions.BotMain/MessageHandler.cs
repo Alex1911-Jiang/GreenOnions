@@ -280,19 +280,19 @@ namespace GreenOnions.BotMain
                                 {
                                     if (BotInfo.HPictureUserCmd.Contains(firstValue))
                                     {
-                                        _ = HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
+                                        HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
                                     }
                                     else
                                     {
                                         LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入群色图处理事件");
-                                        _ = HPictureHandler.SendHPictures(inMsg.SenderId, senderGroup, regexHPicture.Match(firstValue), SendMessage);
+                                        HPictureHandler.SendHPictures(inMsg.SenderId, senderGroup, regexHPicture.Match(firstValue), SendMessage);
                                     }
                                 }
                             }
                         }
                         else  //私聊消息
                         {
-                            if (BotInfo.HPictureAllowPM)
+                            if (BotInfo.HPictureAllowPM)  //允许私聊使用色图
                             {
                                 LogHelper.WriteInfoLog($"{inMsg.SenderId}有权限使用私聊色图");
                                 if (Cache.CheckPMLimit(inMsg.SenderId))
@@ -312,12 +312,12 @@ namespace GreenOnions.BotMain
                                 {
                                     if (BotInfo.HPictureUserCmd.Contains(firstValue))
                                     {
-                                        _ = HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
+                                        HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
                                     }
                                     else
                                     {
                                         LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入私聊色图处理事件");
-                                        _ = HPictureHandler.SendHPictures(inMsg.SenderId, null, regexHPicture.Match(firstValue), SendMessage);
+                                        HPictureHandler.SendHPictures(inMsg.SenderId, null, regexHPicture.Match(firstValue), SendMessage);
                                     }
                                 }
                                 else
