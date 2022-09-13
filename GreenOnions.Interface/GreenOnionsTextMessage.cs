@@ -4,7 +4,11 @@ namespace GreenOnions.Interface
 {
     public record GreenOnionsTextMessage : GreenOnionsBaseMessage
     {
-        public string Text { get; set; }
+        /// <summary>
+        /// 文字内容
+        /// </summary>
+        public string Text { get; }
+
         /// <summary>
         /// 文字消息
         /// </summary>
@@ -13,6 +17,7 @@ namespace GreenOnions.Interface
         {
             Text = text;
         }
+
         /// <summary>
         /// 文字消息
         /// </summary>

@@ -8,11 +8,11 @@
         /// <summary>
         /// 被@的的QQ号
         /// </summary>
-        public long AtId { get; set; }
+        public long AtId { get; }
         /// <summary>
         /// 被@的昵称
         /// </summary>
-        public string NickName { get; set; }
+        public string NickName { get; }
 
         /// <summary>
         /// @消息

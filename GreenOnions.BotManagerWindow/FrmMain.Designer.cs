@@ -143,7 +143,7 @@ namespace GreenOnions.BotManagerWindow
             this.lblState.Name = "lblState";
             this.lblState.Size = new System.Drawing.Size(171, 17);
             this.lblState.TabIndex = 3;
-            this.lblState.Text = "连接状态: 未连接到机器人框架";
+            this.lblState.Text = "连接状态: 未连接到机器人平台";
             // 
             // notifyIcon
             // 

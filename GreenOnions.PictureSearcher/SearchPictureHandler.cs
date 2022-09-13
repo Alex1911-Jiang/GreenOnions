@@ -958,23 +958,6 @@ namespace GreenOnions.PictureSearcher
                             LogHelper.WriteInfoLog($"ASCII2D颜色搜索完成");
                         }
                     }
-
-                    #region -- 旧逻辑 --
-                    //string pathColorItemBox = "/html/body/div['container']/div['row']/div['col-xs-12 col-lg-8 col-xl-8']/div['row item-box']";
-                    //HtmlNode nodeColorItemBox = docColor.DocumentNode.SelectNodes(pathColorItemBox)[2];
-                    //string pathColorHash = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['hash']";
-                    //string pathColorImage = "div['col-xs-12 col-sm-12 col-md-4 col-xl-4 text-xs-center image-box']/img";
-                    //string pathColorUrlA = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/a[1]";
-                    //string pathColorMemberA = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/a[2]";
-                    //string pathColorUrlSmall = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/small[1]/a";
-                    //string pathColorMemberSmall = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/small[2]/a";
-                    //HtmlNode nodeColorHash = nodeColorItemBox.SelectSingleNode(pathColorHash);
-                    //HtmlNode nodeColorImage = nodeColorItemBox.SelectSingleNode(pathColorImage);
-                    //HtmlNode nodeColorUrl = nodeColorItemBox.SelectSingleNode(pathColorUrlA) ?? nodeColorItemBox.SelectSingleNode(pathColorUrlSmall);
-                    //HtmlNode nodeColorMember = nodeColorItemBox.SelectSingleNode(pathColorMemberA) ?? nodeColorItemBox.SelectSingleNode(pathColorMemberSmall);
-                    //StringBuilder stringBuilderColor = new StringBuilder();
-                    #endregion -- 旧逻辑 --
-
                 }
                 #endregion -- 颜色搜索 --
             }
@@ -1053,21 +1036,6 @@ namespace GreenOnions.PictureSearcher
                             LogHelper.WriteInfoLog($"ASCII2D特征搜索完成");
                         }
                     }
-
-                    #region -- 旧逻辑 --
-                    //string pathBovwItemBox = "/html/body/div['container']/div['row']/div['col-xs-12 col-lg-8 col-xl-8']/div['row item-box']";
-                    //HtmlNode nodeBovwItemBox = docBovw.DocumentNode.SelectNodes(pathBovwItemBox)[2];
-                    //string pathBovwHash = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['hash']";
-                    //string pathBovwImage = "div['col-xs-12 col-sm-12 col-md-4 col-xl-4 text-xs-center image-box']/img";
-                    //string pathBovwUrlA = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/a[1]";
-                    //string pathBovwMemberA = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/a[2]";
-                    //string pathBovwUrlSmall = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/small[1]/a";
-                    //string pathBovwMemberSmall = "div['col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div['detail-box gray-link']/h6/small[2]/a";
-                    //HtmlNode nodeBovwHash = nodeBovwItemBox.SelectSingleNode(pathBovwHash);
-                    //HtmlNode nodeBovwImage = nodeBovwItemBox.SelectSingleNode(pathBovwImage);
-                    //HtmlNode nodeBovwUrl = nodeBovwItemBox.SelectSingleNode(pathBovwUrlA) ?? nodeBovwItemBox.SelectSingleNode(pathBovwUrlSmall);
-                    //HtmlNode nodeBovwMember = nodeBovwItemBox.SelectSingleNode(pathBovwMemberA) ?? nodeBovwItemBox.SelectSingleNode(pathBovwMemberSmall);
-                    #endregion -- 旧逻辑 --
                 }
                 #endregion -- 特征搜索 --
             }

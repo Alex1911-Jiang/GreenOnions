@@ -230,7 +230,7 @@ namespace GreenOnions.BotManagerWindow
 			{
 				btnConnectToMiraiApiHttp.Text = "连接到mirai-api-http";
 				btnConnectToCqHttp.Text = "连接到cqhttp";
-				lblState.Text = $"连接状态: 未连接到{protocolName}";
+				lblState.Text = $"连接状态: 未连接到机器人平台";
 				lblState.ForeColor = Color.Red;
 				notifyIcon.Text = $"葱葱机器人";
 				if (nickNameOrErrorMessage.Length > 0)  //发生异常
@@ -251,17 +251,17 @@ namespace GreenOnions.BotManagerWindow
 			}
 			if (string.IsNullOrEmpty(txbIP.Text))
 			{
-				MessageBox.Show("请先输入机器人框架 IP。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("请先输入机器人平台 IP。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				return false;
 			}
 			if (string.IsNullOrEmpty(txbPort.Text))
 			{
-				MessageBox.Show("请先输入机器人框架端口号。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("请先输入机器人平台端口号。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				return false;
 			}
 			if (string.IsNullOrEmpty(txbVerifyKey.Text))
 			{
-				MessageBox.Show("请先输入机器人框架连接凭证。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("请先输入机器人平台连接凭证。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				return false;
 			}
 			BotInfo.QQId = Convert.ToInt64(txbQQ.Text);

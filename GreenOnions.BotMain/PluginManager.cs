@@ -1,6 +1,7 @@
 ﻿using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 
@@ -66,10 +67,19 @@ namespace GreenOnions.BotMain
                 {
                     IPlugin plugin = loadedPlugins[pluginPath];
                     Plugins.Add(plugin);
-                    loadedPlugins.Remove(pluginPath);
-                    plugin.OnLoad(Path.Combine(_pluginsPath, pluginPath));
-                    LogHelper.WriteInfoLog($"插件{plugin.Name}加载成功");
-                    pluginNewOrder.Add(Path.GetFileNameWithoutExtension(pluginPath));
+                    try
+                    {
+                        loadedPlugins.Remove(pluginPath);
+                        plugin.OnLoad(Path.Combine(_pluginsPath, pluginPath));
+                        LogHelper.WriteInfoLog($"插件{plugin.Name}加载成功");
+                        pluginNewOrder.Add(Path.GetFileNameWithoutExtension(pluginPath));
+                    }
+                    catch (Exception ex)
+                    {
+                        if (Plugins.Contains(plugin))
+                            Plugins.Remove(plugin);
+                        LogHelper.WriteErrorLog($"插件{plugin.Name}加载失败，" + ex.Message);
+                    }
                 }
             }
             foreach (KeyValuePair<string, IPlugin> theOtherPlugins in loadedPlugins)
@@ -84,24 +94,56 @@ namespace GreenOnions.BotMain
             return Plugins.Count;
         }
 
-        public static void Connected(long selfId, Func<long, GreenOnionsMessages, Task<int>> SendFriendMessage, Func<long, GreenOnionsMessages, Task<int>> SendGroupMessage, Func<long, long, GreenOnionsMessages, Task<int>> SendTempMessage)
+        public static void Connected(long selfId,
+            Func<long, GreenOnionsMessages, Task<int>> SendFriendMessage,
+            Func<long, GreenOnionsMessages, Task<int>> SendGroupMessage,
+            Func<long, long, GreenOnionsMessages, Task<int>> SendTempMessage,
+            Func<Task<List<GreenOnionsFriendInfo>>> GetFriendList,
+            Func<Task<List<GreenOnionsGroupInfo>>> GetGroupList,
+            Func<long, Task<List<long>>> GetMemberList,
+            Func<long, long, Task<GreenOnionsMemberInfo>> GetMemberInfo)
         {
             foreach (IPlugin plugin in Plugins)
-                plugin.OnConnected(selfId, SendFriendMessage, SendGroupMessage, SendTempMessage);
+            {
+                try
+                {
+                    plugin.OnConnected(selfId, SendFriendMessage, SendGroupMessage, SendTempMessage, GetFriendList, GetGroupList, GetMemberList, GetMemberInfo);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLog($"插件{plugin.Name}连接方法调用发生异常，" + ex.Message);
+                }
+            }    
         }
 
         public static void Disconnected()
         {
             foreach (IPlugin plugin in Plugins)
-                plugin.OnDisconnected();
+            {
+                try
+                {
+                    plugin.OnDisconnected();
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLog($"插件{plugin.Name}断开连接方法调用发生异常，" + ex.Message);
+                }
+            }
         }
 
         public static bool Message(GreenOnionsMessages msgs, long? senderGroup, Action<GreenOnionsMessages> Response)
         {
             foreach (IPlugin plugin in Plugins)
             {
-                if (plugin.OnMessage(msgs, senderGroup, Response))
-                    return true;  //命中插件
+                try
+                {
+                    if (plugin.OnMessage(msgs, senderGroup, Response))
+                        return true;  //命中插件
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLog($"插件{plugin.Name}处理消息方法调用发生异常，" + ex.Message);
+                }
             }
             return false;
         }

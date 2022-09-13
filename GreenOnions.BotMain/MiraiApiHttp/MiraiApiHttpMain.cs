@@ -1,4 +1,5 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.Interface;
+using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Microsoft.Extensions.DependencyInjection;
 using Mirai.CSharp.Builders;
@@ -68,7 +69,11 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     BotInfo.QQId,
                     async (targetId, msg) => await session.SendFriendMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend)),
                     async (targetId, msg) => await session.SendGroupMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Group)),
-                    async (targetId, targetGroup, msg) => await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp))
+                    async (targetId, targetGroup, msg) => await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp)),
+                    async () => (await session.GetFriendListAsync()).Select(f => new GreenOnionsFriendInfo(f.Id, f.Name, f.Remark)).ToList(),
+                    async () => (await session.GetGroupListAsync()).Select(g => new GreenOnionsGroupInfo(g.Id, g.Name)).ToList(),
+                    async (groupId) => (await session.GetGroupMemberListAsync(groupId)).Select(m => m.Id).ToList(),
+                    async (groupId, memberId) => (await session.GetGroupMemberInfoAsync(groupId, memberId)).ToGreenOnionsMemberInfo()
                     );
 
                 try

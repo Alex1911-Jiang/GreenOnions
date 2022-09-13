@@ -57,6 +57,6 @@
         /// <summary>
         /// [接收消息时]发送者的昵称或群名片
         /// </summary>
-        public string SenderName { get; set; }
+        public string? SenderName { get; set; }
     }
 }

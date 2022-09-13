@@ -14,6 +14,7 @@ namespace GreenOnions.Interface
         {
             return new GreenOnionsTextMessage(str);
         }
+
         /// <summary>
         /// 把StringBuilder转换为文字消息
         /// </summary>
@@ -23,6 +24,7 @@ namespace GreenOnions.Interface
         {
             return new GreenOnionsTextMessage(stringBuilder.ToString());
         }
+
         /// <summary>
         /// 把一组字符串转换为一组文字消息
         /// </summary>
@@ -32,6 +34,7 @@ namespace GreenOnions.Interface
         {
             return strs.Select(s => new GreenOnionsTextMessage(s)).ToArray();
         }
+
         /// <summary>
         /// 把内存流转换为Base64字符串(图片)
         /// </summary>
@@ -54,6 +57,7 @@ namespace GreenOnions.Interface
                 return null;
             }
         }
+
         /// <summary>
         /// 把Base64字符串转换为内存流(图片)
         /// </summary>
@@ -70,6 +74,7 @@ namespace GreenOnions.Interface
                 return null;
             }
         }
+
         /// <summary>
         /// 计算文字的MD5, 作为图片缓存的名称
         /// </summary>

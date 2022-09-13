@@ -48,10 +48,10 @@
         /// <summary>
         /// 获取或设置图片的地址
         /// </summary>
-        public string? Url { get; set; }
+        public string? Url { get; }
         /// <summary>
         /// 获取或设置图片的文件路径
         /// </summary>
-        public string? ImgFile { get; set; }
+        public string? ImgFile { get; }
     }
 }

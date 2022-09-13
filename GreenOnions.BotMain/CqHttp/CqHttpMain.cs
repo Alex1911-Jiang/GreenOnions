@@ -1,6 +1,8 @@
-﻿using GreenOnions.Interface;
+﻿using GreenOnions.BotMain.MiraiApiHttp;
+using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
+using Mirai.CSharp.Models;
 using Sora;
 using Sora.Entities.Base;
 using Sora.Entities.Info;
@@ -44,14 +46,13 @@ namespace GreenOnions.BotMain.CqHttp
                     Log.Error("Sora Service", Log.ErrorLogBuilder(e));
                 });
                 if (connectCancel)
-                    throw new HttpRequestException($"尝试连接到OneBot超时，无法连接。 ({ip}:{port})");
-                BotInfo.IsLogin = true;
-                
+                    throw new HttpRequestException($"尝试连接到CqHttp超时，无法连接。 ({ip}:{port})");
+
                 service.Event.OnClientConnect += async (eventType, eventArgs) =>
                 {
                     SoraApi api = service.GetApi(service.ServiceId);
 
-                    if (api !=null)
+                    if (api != null)
                     {
                         BotInfo.QQId = api.GetLoginUserId();
 
@@ -63,6 +64,21 @@ namespace GreenOnions.BotMain.CqHttp
                             nickname = self.Nick;
 
                         ConnectedEvent?.Invoke(true, nickname);
+
+                        BotInfo.IsLogin = true;
+
+                        await api.SendPrivateMessage(1, null);
+
+                        PluginManager.Connected(
+                            BotInfo.QQId,
+                            async (targetId, msg) => (await api.SendPrivateMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
+                            async (targetId, msg) => (await api.SendGroupMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
+                            async (targetId, targetGroup, msg) => (await api.SendTemporaryMessage(targetId, targetGroup, msg.ToCqHttpMessages(null))).messageId,
+                            async () => (await api.GetFriendList()).friendList.Select(f => new GreenOnionsFriendInfo(f.UserId, f.Nick, f.Remark)).ToList(),
+                            async () => (await api.GetGroupList()).groupList.Select(g => new GreenOnionsGroupInfo(g.GroupId, g.GroupName)).ToList(),
+                            async (groupId) => (await api.GetGroupMemberList(groupId)).groupMemberList.Select(m => m.UserId).ToList(),
+                            async (groupId, memberId) => (await api.GetGroupMemberInfo(groupId, memberId)).memberInfo.ToGreenOnionsMemberInfo()
+                            );
                     }
                 };
 

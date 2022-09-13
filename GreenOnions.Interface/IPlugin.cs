@@ -28,7 +28,19 @@
         /// <param name="SendFriendMessage">发送好友消息方法(好友QQ号, 消息体, 返回发送后的消息id)</param>
         /// <param name="SendGroupMessage">发送群消息方法(群号, 消息体, 返回发送后的消息id)</param>
         /// <param name="SendTempMessage">发送临时消息方法(目标QQ号, 群号, 消息体, 返回发送后的消息id)</param>
-        public void OnConnected(long selfId, Func<long, GreenOnionsMessages, Task<int>> SendFriendMessage, Func<long, GreenOnionsMessages, Task<int>> SendGroupMessage, Func<long, long, GreenOnionsMessages, Task<int>> SendTempMessage);
+        /// <param name="GetFriendListAsync">获取好友列表的方法</param>
+        /// <param name="GetGroupListAsync">获取群列表的方法</param>
+        /// <param name="GetMemberListAsync">获取群员列表的方法(群员QQ号)</param>
+        /// <param name="GetMemberInfoAsync">获取群员信息的方法(群号, 群员QQ号)</param>
+        public void OnConnected(long selfId,
+            Func<long, GreenOnionsMessages, Task<int>> SendFriendMessage,
+            Func<long, GreenOnionsMessages, Task<int>> SendGroupMessage,
+            Func<long, long, GreenOnionsMessages, Task<int>> SendTempMessage,
+            Func<Task<List<GreenOnionsFriendInfo>>> GetFriendListAsync,
+            Func<Task<List<GreenOnionsGroupInfo>>> GetGroupListAsync,
+            Func<long, Task<List<long>>> GetMemberListAsync,
+            Func<long, long, Task<GreenOnionsMemberInfo>> GetMemberInfoAsync
+            );
 
         /// <summary>
         /// 机器人主动断开平台连接时触发

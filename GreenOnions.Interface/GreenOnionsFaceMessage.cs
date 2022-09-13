@@ -8,11 +8,11 @@
         /// <summary>
         /// 表情ID
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; }
         /// <summary>
         /// 表情名称
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; }
         /// <summary>
         /// 表情消息
         /// </summary>

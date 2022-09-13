@@ -25,7 +25,7 @@ namespace GreenOnions.BotMain.CqHttp
                             var apiResult = await api.GetGroupMemberList(senderGroup.Value);
                             List<GroupMemberInfo> groupMemberInfos = apiResult.groupMemberList;
                             GroupMemberInfo targetQQ = groupMemberInfos.Where(m => m.UserId == atId).FirstOrDefault();
-                            string nickName = targetQQ?.Nick;
+                            string nickName = targetQQ?.Card;
                             greenOnionsMessages.Add(new GreenOnionsAtMessage(atId, nickName));
                         }
                         else
@@ -82,9 +82,13 @@ namespace GreenOnions.BotMain.CqHttp
                         for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                         {
                             var itemMsg = ToCqHttpMessages(forwardMsg.ItemMessages[i].itemMessage, RelpyId);
-                            if (itemMsg!= null)
+                            if (itemMsg != null)
                                 cqHttpMessages.AddRange(itemMsg);
                         }
+                    }
+                    else if (greenOnionsMessage[i] is GreenOnionsVoiceMessage voiceMsg)
+                    {
+                        cqHttpMessages.Add(SoraSegment.Record(voiceMsg.Url == null ? voiceMsg.FileName : voiceMsg.Url));
                     }
                 }
                 catch (Exception ex)
@@ -111,6 +115,11 @@ namespace GreenOnions.BotMain.CqHttp
                 }
             }
             return nodes;
+        }
+
+        public static GreenOnionsMemberInfo ToGreenOnionsMemberInfo(this GroupMemberInfo groupMemberInfo)
+        {
+            return new GreenOnionsMemberInfo(groupMemberInfo.UserId, groupMemberInfo.Card, (Permission)((int)groupMemberInfo.Role - 1));
         }
     }
 }

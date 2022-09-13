@@ -93,6 +93,10 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                             }
                         }
                     }
+                    else if (greenOnionsMessage[i] is GreenOnionsVoiceMessage voiceMsg)
+                    {
+                        miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.VoiceMessage(null, voiceMsg.Url, voiceMsg.FileName));
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -106,6 +110,11 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 miraiApiHttpMessages.Add(forwardMessage);
             }
             return miraiApiHttpMessages.ToArray();
+        }
+
+        public static GreenOnionsMemberInfo ToGreenOnionsMemberInfo(this IGroupMemberInfo groupMemberInfo)
+        {
+            return new GreenOnionsMemberInfo(groupMemberInfo.Id, groupMemberInfo.Name, (Permission)(int)groupMemberInfo.Permission);
         }
     }
 }

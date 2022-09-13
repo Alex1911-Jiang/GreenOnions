@@ -339,7 +339,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 自动连接的平台
         /// </summary>
-        [PropertyChineseName("自动连接平台", "核心", "选择自动连接到的平台, 0 = Mirai-Api-Http, 1 = OneBot(Cqhttp)")]
+        [PropertyChineseName("自动连接平台", "核心", "选择自动连接到的平台, 0 = Mirai-Api-Http, 1 = CqHttp")]
         public static int AutoConnectProtocol
         {
             get

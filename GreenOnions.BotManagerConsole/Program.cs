@@ -32,7 +32,7 @@ namespace GreenOnions.BotManagerConsole
 
 			if (BotInfo.AutoConnectEnabled)
 			{
-                Console.WriteLine($"启用了自动连接, {BotInfo.AutoConnectDelay}秒后自动连接到{(BotInfo.AutoConnectProtocol == 0 ? "Mirai-Api-Http" : "CqHttp(OneBot)")}平台");
+                Console.WriteLine($"启用了自动连接, {BotInfo.AutoConnectDelay}秒后自动连接到{(BotInfo.AutoConnectProtocol == 0 ? "Mirai-Api-Http" : "CqHttp")}平台");
 				Console.WriteLine($"如果要取消自动连接, 请将 config.json 中 Bot.AutoConnectEnabled 修改为 False");
 				Task.Delay(BotInfo.AutoConnectDelay * 1000).Wait();
 				if (BotInfo.AutoConnectProtocol == 0)
