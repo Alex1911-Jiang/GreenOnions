@@ -1,20 +1,20 @@
-﻿using GreenOnions.BotMain;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using GreenOnions.BotMain;
 using GreenOnions.BotMain.CqHttp;
 using GreenOnions.BotMain.MiraiApiHttp;
 using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace GreenOnions.BotManagerConsole
 {
-	public static class Program
+    public static class Program
 	{
 		public static async Task Main()
 		{
-            AppDomain.CurrentDomain.UnhandledException += (_, e) => LogHelper.WriteErrorLog(e.ExceptionObject);
+			AppDomain.CurrentDomain.UnhandledException += (_, e) => LogHelper.WriteErrorLog(e.ExceptionObject);
 
 			Console.WriteLine("葱葱机器人");
 

@@ -26,7 +26,6 @@ namespace GreenOnions.BotMain
         private static Regex regexHPicture;
         private static Regex regexForgeMessage;
         private static Regex regexDownloadPixivOriginalPicture;
-        private static Regex regexSelectPhone;
         private static Regex regexHelp;
         private static Regex regexTicTacToeStart;
         private static Regex regexTicTacToeStop;
@@ -35,7 +34,6 @@ namespace GreenOnions.BotMain
         {
             regexDownloadPixivOriginalPicture = new Regex($"{BotInfo.BotName}下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]");
             regexHelp = new Regex($"{BotInfo.BotName}帮助");
-            regexSelectPhone = new Regex($"{BotInfo.BotName}查询手机号[:：]");
             UpdateRegexs();
         }
 
@@ -357,40 +355,6 @@ namespace GreenOnions.BotMain
                     return true;
                 }
                 #endregion -- 帮助 --
-
-                #region -- 查询手机号(夹带私货) --
-                if (regexSelectPhone.IsMatch(firstValue))
-                {
-                    if (BotInfo.QQId == 3246934384 || BotInfo.QQId == 3095752458)
-                    {
-                        string qqNumber = firstValue.Substring(regexSelectPhone.Matches(firstValue).First().Length);
-                        long lQQNumber;
-                        if (long.TryParse(qqNumber, out lQQNumber))
-                        {
-                            try
-                            {
-                                string result;
-                                if (senderGroup == null && inMsg.SenderId == lQQNumber) // 私聊
-                                    result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetSelfPhoneByQQ", lQQNumber);
-                                //result = QQPhone.QQAndPhone.GetSelfPhoneByQQ(lQQNumber);
-                                else  //群
-                                    result = AssemblyHelper.CallStaticMethod<string>("GreenOnions.QQPhone", "GreenOnions.QQPhone.QQAndPhone", "GetPhoneByQQ", lQQNumber);
-                                //result = QQPhone.QQAndPhone.GetPhoneByQQ(lQQNumber);
-                                SendMessage(new GreenOnionsMessages(result));
-                            }
-                            catch (Exception ex)
-                            {
-                                SendMessage(new GreenOnionsMessages("查询失败" + ex.Message));
-                            }
-                        }
-                        else
-                        {
-                            SendMessage(new GreenOnionsMessages("请输入正确的QQ号码(不支持以邮箱查询)"));
-                        }
-                    }
-                    return true;
-                }
-                #endregion -- 查询手机号(夹带私货) --
 
                 #region -- 自动翻译 --
                 if (BotInfo.AutoTranslateGroupMemoriesQQ.Contains(inMsg.SenderId))

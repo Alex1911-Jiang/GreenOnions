@@ -1,14 +1,10 @@
-﻿using GreenOnions.BotMain;
+﻿using System.Diagnostics;
+using GreenOnions.BotMain;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using GreenOnions.Utility.Items;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows.Forms;
 
-namespace GreenOnions.BotManagerWindow
+namespace GreenOnions.BotManagerWindows
 {
     public partial class FrmAppSetting : Form
     {

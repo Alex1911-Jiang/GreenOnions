@@ -20,11 +20,11 @@ namespace GreenOnions.BotMain
             string[] pluginItemPath = Directory.GetDirectories(_pluginsPath);
 
             Dictionary<string, IPlugin> loadedPlugins = new Dictionary<string, IPlugin>();
+            Dictionary<string, string> dependPath = new Dictionary<string, string>();
 
             foreach (string pluginItem in pluginItemPath)
             {
-                string pluginItemUser = pluginItem;
-                string[] dlls = Directory.GetFiles(pluginItemUser, "*.dll", SearchOption.TopDirectoryOnly);
+                string[] dlls = Directory.GetFiles(pluginItem, "*.dll", SearchOption.TopDirectoryOnly);
                 foreach (string dll in dlls)
                 {
                     string dllPath = Path.GetDirectoryName(dll);
@@ -36,8 +36,17 @@ namespace GreenOnions.BotMain
                         string pluginName = null;
                         try
                         {
-                            AssemblyLoadContext.Default.LoadFromAssemblyPath(dll);
-                            Assembly pluginAssembly = Assembly.LoadFrom(dll);
+                            AssemblyLoadContext assemblyLoadContext = new AssemblyLoadContext(pluginFileName);
+                            Assembly pluginAssembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
+                            dependPath.Add(pluginFileName, dllPath);
+                            assemblyLoadContext.Resolving += (context, assemblyName) =>
+                            {
+                                string filename = $@"{Path.Combine(dependPath[context.Name], assemblyName.Name + ".dll")}";
+                                if (File.Exists(filename))
+                                    return context.LoadFromAssemblyPath(filename);
+                                return null;
+                            };
+
                             Type[] types = pluginAssembly.GetTypes();
                             foreach (Type type in types)
                             {

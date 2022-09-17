@@ -1,9 +1,7 @@
-﻿using GreenOnions.BotMain;
-using GreenOnions.Interface;
-using System.Data;
-using System.Windows.Forms;
+﻿using System.Data;
+using GreenOnions.BotMain;
 
-namespace GreenOnions.BotManagerWindow
+namespace GreenOnions.BotManagerWindows
 {
     public partial class FrmPlugins : Form
     {

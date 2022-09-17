@@ -1,4 +1,4 @@
-﻿namespace GreenOnions.BotManagerWindow
+﻿namespace GreenOnions.BotManagerWindows
 {
     partial class CtrlRssItem
     {
@@ -118,7 +118,7 @@
             // btnRssRemoveItem
             // 
             this.btnRssRemoveItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRssRemoveItem.Image = global::GreenOnions.BotManagerWindow.Properties.Resources.remove;
+            this.btnRssRemoveItem.Image = global::GreenOnions.BotManagerWindows.Resource.remove;
             this.btnRssRemoveItem.Location = new System.Drawing.Point(532, 3);
             this.btnRssRemoveItem.Name = "btnRssRemoveItem";
             this.btnRssRemoveItem.Size = new System.Drawing.Size(40, 40);

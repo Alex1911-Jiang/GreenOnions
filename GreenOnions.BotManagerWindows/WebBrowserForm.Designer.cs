@@ -1,4 +1,4 @@
-﻿namespace GreenOnions.BotManagerWindow
+﻿namespace GreenOnions.BotManagerWindows
 {
     partial class WebBrowserForm
     {

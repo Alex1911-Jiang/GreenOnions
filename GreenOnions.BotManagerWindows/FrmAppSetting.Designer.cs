@@ -1,4 +1,4 @@
-﻿namespace GreenOnions.BotManagerWindow
+﻿namespace GreenOnions.BotManagerWindows
 {
     partial class FrmAppSetting
     {
@@ -3870,7 +3870,7 @@
             // 
             // btnAddRssSubscription
             // 
-            this.btnAddRssSubscription.Image = global::GreenOnions.BotManagerWindow.Properties.Resources.add;
+            this.btnAddRssSubscription.Image = global::GreenOnions.BotManagerWindows.Resource.add;
             this.btnAddRssSubscription.Location = new System.Drawing.Point(3, 3);
             this.btnAddRssSubscription.Name = "btnAddRssSubscription";
             this.btnAddRssSubscription.Size = new System.Drawing.Size(592, 150);
@@ -3999,7 +3999,7 @@
             // 
             // imgChessboard
             // 
-            this.imgChessboard.BackgroundImage = global::GreenOnions.BotManagerWindow.Properties.Resources.Chessboard;
+            this.imgChessboard.BackgroundImage = global::GreenOnions.BotManagerWindows.Resource.Chessboard;
             this.imgChessboard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.imgChessboard.Location = new System.Drawing.Point(220, 422);
             this.imgChessboard.Name = "imgChessboard";

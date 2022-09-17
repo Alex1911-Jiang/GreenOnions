@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Forms;
-
-namespace GreenOnions.BotManagerWindow
+﻿namespace GreenOnions.BotManagerWindows
 {
     public partial class FrmRssFilter : Form
     {

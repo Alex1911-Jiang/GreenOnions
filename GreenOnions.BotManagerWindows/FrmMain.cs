@@ -4,13 +4,8 @@ using GreenOnions.BotMain.MiraiApiHttp;
 using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using System;
-using System.Drawing;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace GreenOnions.BotManagerWindow
+namespace GreenOnions.BotManagerWindows
 {
     public partial class FrmMain : Form
 	{

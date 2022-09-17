@@ -1,17 +1,12 @@
-﻿using CefSharp;
-using CefSharp.WinForms;
-using GreenOnions.Utility;
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using CefSharp;
+using CefSharp.WinForms;
+using GreenOnions.Utility;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 
-namespace GreenOnions.BotManagerWindow
+namespace GreenOnions.BotManagerWindows
 {
     public partial class WebBrowserForm : Form
     {
