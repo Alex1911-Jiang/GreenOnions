@@ -1,24 +1,25 @@
-﻿using GreenOnions.Interface;
-using GreenOnions.Utility;
-using GreenOnions.Utility.Helper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using GreenOnions.Interface;
+using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
+using TencentCloud.Apigateway.V20180808.Models;
 
 namespace GreenOnions.Help
 {
     public static class HelpHandler
     {
-        public static GreenOnionsMessages Helps(Regex regexHelp, string msg, long? groupId)
+        public static GreenOnionsMessages Helps(Regex regexHelp, string msg, long? groupId, List<IPlugin> plugins)
         {
             Match match = regexHelp.Matches(msg).FirstOrDefault();
             if (match?.Groups.Count > 0)
             {
-                string strFeatures = msg.Substring(match.Groups[0].Length).ToUpper();
+                string strFeatures = msg.Substring(match.Groups[0].Length).Trim().ToUpper();
                 GreenOnionsBaseMessage[] strHelpResult = strFeatures switch
                 {
                     "--搜图" => pictureSearchHelp(),
@@ -31,14 +32,25 @@ namespace GreenOnions.Help
                     "--伪造消息" => forgeMessageHelp(),
                     "--RSS订阅转发" => rssHelp(),
                     "--井字棋" => helpTicTacToe(),
-                    "--查手机号" => phoneHelp(),
-                    "--功能" => helpFailCMD(),
-                    _ => defaultHelp(),
+                    "--功能" => helpFailCMD(plugins),
+                    null or "" => defaultHelp(),
+                    _ => null,
                 };
+                for (int i = 0; i < plugins.Count; i++)
+                {
+                    if ("--" + plugins[i].Name == strFeatures)
+                    {
+                        string helpText = plugins[i].HelpMessage.ReplaceGreenOnionsTags();
+                        if (string.IsNullOrWhiteSpace(helpText))
+                            helpText = $"插件<{plugins[i].Name}>没有帮助信息。";
+                        strHelpResult = new[] { new GreenOnionsTextMessage(helpText) };
+                        break;
+                    }
+                }
                 GreenOnionsBaseMessage[] defaultHelp()
                 {
                     if (string.IsNullOrEmpty(strFeatures))
-                        return new[] { $"现在您可以让我 {string.Join("，", getEnabledFunction())}。\r\n输入\"{BotInfo.BotName}帮助--功能\"以获取具体功能的使用帮助。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。" }.ToTextMessageArray();
+                        return new[] { $"现在您可以让我 {string.Join("，", getEnabledFunction(plugins))}。\r\n输入\"{BotInfo.BotName}帮助--功能\"以获取具体功能的使用帮助。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。" }.ToTextMessageArray();
                     return null;
                 }
                 return strHelpResult;
@@ -46,7 +58,7 @@ namespace GreenOnions.Help
             return null;
         }
 
-        private static List<string> getEnabledFunction()
+        private static List<string> getEnabledFunction(List<IPlugin> plugins)
         {
             List<string> lstEnabledFeatures = new List<string>();
             if (BotInfo.SearchEnabled)
@@ -68,10 +80,14 @@ namespace GreenOnions.Help
                 lstEnabledFeatures.Add("伪造消息");
             if (BotInfo.RssEnabled)
                 lstEnabledFeatures.Add("RSS订阅转发");
-            if (BotInfo.QQId == 3246934384)
-                lstEnabledFeatures.Add("查手机号");
             if (BotInfo.TicTacToeEnabled)
                 lstEnabledFeatures.Add("井字棋");
+
+            for (int i = 0; i < plugins.Count; i++)
+            {
+                lstEnabledFeatures.Add(plugins[i].Name);
+            }
+
             return lstEnabledFeatures;
         }
 
@@ -170,13 +186,9 @@ namespace GreenOnions.Help
         {
             return new[] { $"RSS订阅转发功能暂无命令且仅可通过管理端进行配置，{BotInfo.BotName}将抓取到的订阅源(如B站动态，推文，Pixiv日榜)发送给指定的群组或好友。" }.ToTextMessageArray();
         }
-        private static GreenOnionsBaseMessage[] phoneHelp()
+        private static GreenOnionsBaseMessage[] helpFailCMD(List<IPlugin> plugins)
         {
-            return new[] { $"发送 \"{BotInfo.BotName}查询手机号:QQ号码\" 可以查询腾讯数据库泄露的对应QQ号的手机号" }.ToTextMessageArray();
-        }
-        private static GreenOnionsBaseMessage[] helpFailCMD()
-        {
-            StringBuilder strFail = new StringBuilder($"您需要将\"功能\"替换为功能名称，例如：\"{BotInfo.BotName}帮助--搜图\" 以获取搜图功能的帮助。\r\n目前启用的功能有： {string.Join("，", getEnabledFunction())}。");
+            StringBuilder strFail = new StringBuilder($"您需要将\"功能\"替换为功能名称，例如：\"{BotInfo.BotName}帮助--搜图\" 以获取搜图功能的帮助。\r\n目前启用的功能有： {string.Join("，", getEnabledFunction(plugins))}。");
             if (BotInfo.QQId == 3246934384)
                 strFail.AppendLine($"您也可以私聊{BotInfo.BotName}留言，主人看到的时候会进行回复（可能）。");
             return new GreenOnionsBaseMessage[] { strFail };

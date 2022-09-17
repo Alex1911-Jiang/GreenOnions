@@ -11,9 +11,14 @@
         public string Name { get; }
 
         /// <summary>
-        /// 插件描述信息
+        /// 插件描述信息(显示在插件列表中)
         /// </summary>
         public string Description { get; }
+
+        /// <summary>
+        /// 帮助消息(当用户输入 "机器人名称"帮助 --"插件名称" 时会发送的帮助消息, 该消息可以替换预定义标签)
+        /// </summary>
+        public string? HelpMessage { get; }
 
         /// <summary>
         /// 加载控件成功时触发

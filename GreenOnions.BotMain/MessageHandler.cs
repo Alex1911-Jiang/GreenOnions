@@ -351,7 +351,7 @@ namespace GreenOnions.BotMain
                 if (regexHelp.IsMatch(firstValue))
                 {
                     LogHelper.WriteInfoLog($"{inMsg.SenderId}消息命中帮助命令");
-                    SendMessage(HelpHandler.Helps(regexHelp, firstValue, senderGroup));
+                    SendMessage(HelpHandler.Helps(regexHelp, firstValue, senderGroup, PluginManager.Plugins));
                     return true;
                 }
                 #endregion -- 帮助 --

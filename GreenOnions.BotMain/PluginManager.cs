@@ -1,9 +1,8 @@
-﻿using GreenOnions.Interface;
+﻿using System.Reflection;
+using System.Runtime.Loader;
+using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Loader;
 
 namespace GreenOnions.BotMain
 {
@@ -32,8 +31,6 @@ namespace GreenOnions.BotMain
                     string pluginDescriptionFileName = Path.Combine(dllPath, $"{pluginFileName}.deps.json");
                     if (pluginFileName != "GreenOnions.Interface" && File.Exists(pluginDescriptionFileName))
                     {
-                        string errMsg = null;
-                        string pluginName = null;
                         try
                         {
                             AssemblyLoadContext assemblyLoadContext = new AssemblyLoadContext(pluginFileName);
@@ -62,7 +59,7 @@ namespace GreenOnions.BotMain
                         }
                         catch (Exception ex)
                         {
-                            LogHelper.WriteWarningLog($"插件{pluginName}({pluginFileName})加载失败, {errMsg}");
+                            LogHelper.WriteWarningLog($"插件{pluginFileName}加载失败, {ex.Message}");
                         }
                     }
                 }
@@ -101,6 +98,14 @@ namespace GreenOnions.BotMain
             BotInfo.PluginOrder = pluginNewOrder;
             ConfigHelper.SaveConfigFile();
             return Plugins.Count;
+        }
+
+        public static string GetHelpMessage(string pluginName)
+        {
+            IPlugin? plugin = Plugins.Where(p => p.Name == pluginName).FirstOrDefault();
+            if (plugin != null)
+                return plugin.HelpMessage;
+            return string.Empty;
         }
 
         public static void Connected(long selfId,
