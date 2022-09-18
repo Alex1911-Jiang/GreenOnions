@@ -67,8 +67,6 @@ namespace GreenOnions.BotMain.CqHttp
 
                         BotInfo.IsLogin = true;
 
-                        await api.SendPrivateMessage(1, null);
-
                         PluginManager.Connected(
                             BotInfo.QQId,
                             async (targetId, msg) => (await api.SendPrivateMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
