@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TencentCloud.Ame.V20190916.Models;
@@ -36,11 +37,7 @@ namespace GreenOnions.HPicture
             }
             if (BotInfo.EnabledHPictureSource.Contains(PictureSource.Yande_re))
             {
-                randomSource.Add(async () =>
-                {
-                    YandeItem imgItem = await YandeApi.GetRandomHPictrue(null, false);
-                    SendYandeHPicture(senderId, senderGroup, imgItem, SendMessage);
-                });
+                randomSource.Add(() => SendYandeHPicture(senderId, senderGroup, 1, null, false, SendMessage));
             }
             if (randomSource.Count > 0)
             {
@@ -50,7 +47,7 @@ namespace GreenOnions.HPicture
             }
         }
 
-        public static async Task SendHPictures(long senderId, long? senderGroup, Match matchMessage, Action<GreenOnionsMessages> SendMessage)
+        public static void SendHPictures(long senderId, long? senderGroup, Match matchMessage, Action<GreenOnionsMessages> SendMessage)
         {
             try
             {
@@ -143,23 +140,10 @@ namespace GreenOnions.HPicture
                     }
                     else if (pictureSource == PictureSource.Yande_re)
                     {
-                        for (int i = 0; i < lImgCount; i++)
-                        {
-                            YandeItem imgItem = await YandeApi.GetRandomHPictrue(strKeyword, bR18);
-                            if (imgItem == null)
-                            {
-                                SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsTags());
-                                return;
-                            }
-                            try
-                            {
-                                SendYandeHPicture(senderId, senderGroup, imgItem, SendMessage);
-                            }
-                            catch (Exception ex)
-                            {
-                                SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags() + ex.Message);
-                            }
-                        }
+                        if (BotInfo.HPictureSendByForward)  //合并转发
+                            ForwardSendYandeHPicture(senderId, senderGroup, lImgCount, strKeyword, bR18, SendMessage);
+                        else
+                            SendYandeHPicture(senderId, senderGroup, lImgCount, strKeyword, bR18, SendMessage);
                     }
                 }
                 else if (matchMessage.Groups["美图后缀"].Success)
@@ -184,43 +168,94 @@ namespace GreenOnions.HPicture
             }
         }
 
-        private static void SendYandeHPicture(long senderId, long? senderGroup, YandeItem imgItem, Action<GreenOnionsMessages> SendMessage)
+        #region -- Yande.re --
+
+        /// <summary>
+        /// 逐张发送Yande.re色图
+        /// </summary>
+        private static async void SendYandeHPicture(long senderId, long? senderGroup, long lImgCount, string strKeyword, bool bR18, Action<GreenOnionsMessages> SendMessage)
         {
-            List<GreenOnionsMessages> outMessages = null;
-            if (BotInfo.HPictureSendByForward)
-                outMessages = new List<GreenOnionsMessages>();
-
-            RecordLimit(senderId, senderGroup, LimitType.Frequency);
-            GreenOnionsMessages outMessage = new GreenOnionsMessages();
-            if (BotInfo.HPictureSendUrl)
+            for (int i = 0; i < lImgCount; i++)
             {
-                string addresses;
-                if (BotInfo.HPictureSendTags)
-                    addresses = $"http://yande.re{imgItem.ShowPageUrl} (标签:{string.Join(", ", imgItem.Tags)})";
-                else
-                    addresses = $"http://yande.re{imgItem.ShowPageUrl}";
-                outMessage.Add(addresses);
+                try
+                {
+                    YandeItem imgItem = await YandeApi.GetRandomHPictrue(strKeyword, bR18);
+                    if (imgItem == null)
+                    {
+                        SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsTags());
+                        return;
+                    }
+                    GreenOnionsMessages outMessage = CreateOnceYandeHPicture(imgItem);
+                    SetRevokeTime(senderGroup, outMessage);  //设置撤回时间
+                    SendMessage(outMessage);
+                    RecordLimit(senderId, senderGroup, LimitType.Count);
+                }
+                catch (Exception ex)
+                {
+                    SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags() + ex.Message);
+                }
             }
+            RecordLimit(senderId, senderGroup, LimitType.Frequency);
+        }
 
-            GreenOnionsImageMessage imgMsg = CreateOnceYandeHPicture(imgItem);
-
-            SetRevokeTime(senderGroup, outMessage);  //设置撤回时间
-
-            outMessage.Add(imgMsg);
-            if (BotInfo.HPictureSendByForward)
-                outMessages.Add(outMessage);
-            else
-                SendMessage(outMessage);
-            RecordLimit(senderId, senderGroup, LimitType.Count);
-
-            if (BotInfo.HPictureSendByForward && outMessages.Count > 0)
+        /// <summary>
+        /// 合并转发Yande.re色图
+        /// </summary>
+        private static async void ForwardSendYandeHPicture(long senderId, long? senderGroup, long lImgCount, string strKeyword, bool bR18, Action<GreenOnionsMessages> SendMessage)
+        {
+            try
             {
-                GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, msg)).ToArray();
-                GreenOnionsMessages outForwardMsg = forwardMessages;
-                outForwardMsg.RevokeTime = outMessages.First().RevokeTime;
-                SendMessage(outForwardMsg);  //合并转发
+                List<GreenOnionsMessages> outMessages = new List<GreenOnionsMessages>();
+                for (int i = 0; i < lImgCount; i++)
+                {
+                    YandeItem imgItem = await YandeApi.GetRandomHPictrue(strKeyword, bR18);
+                    if (imgItem == null)
+                    {
+                        SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsTags());
+                        return;
+                    }
+                    GreenOnionsMessages outMessage = CreateOnceYandeHPicture(imgItem);
+                    outMessages.Add(outMessage);
+                    RecordLimit(senderId, senderGroup, LimitType.Count);
+                }
+                if (outMessages.Count > 0)
+                {
+                    GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, msg)).ToArray();
+                    GreenOnionsMessages outForwardMsg = forwardMessages;
+                    outForwardMsg.RevokeTime = outMessages.First().RevokeTime;
+                    SetRevokeTime(senderGroup, outForwardMsg);  //设置撤回时间
+                    SendMessage(outForwardMsg);  //合并转发
+                    RecordLimit(senderId, senderGroup, LimitType.Frequency);
+                }
+            }
+            catch (Exception ex)
+            {
+                SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags() + ex.Message);
             }
         }
+
+        /// <summary>
+        /// 使用Yande.re数据构造一条消息
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        private static GreenOnionsMessages CreateOnceYandeHPicture(YandeItem item)
+        {
+            GreenOnionsMessages outMessage = new();
+            StringBuilder sbAddress = new();
+            if (BotInfo.HPictureSendUrl)
+                sbAddress.AppendLine($"http://yande.re{item.ShowPageUrl}");
+            if (BotInfo.HPictureSendTags)
+                sbAddress.AppendLine($"标签:{string.Join(", ", item.Tags)}");
+            outMessage.Add(sbAddress);
+            string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ShowPageUrl.Substring("/post/show/".Length)}.png");
+            outMessage.Add(CreateImageMessage(item.BigImgUrl, imgCacheName));
+            return outMessage;
+        }
+
+        #endregion -- Yande.re --
+
+        #region -- Lolicon --
 
         private static async Task SendLoliconHPicture(long senderId, long? senderGroup, string strHttpRequestUrl, string sizeUrlName, Action<GreenOnionsMessages> SendMessage)
         {
@@ -307,6 +342,16 @@ namespace GreenOnions.HPicture
             RecordLimit(senderId, senderGroup, LimitType.Frequency);
         }
 
+        private static GreenOnionsImageMessage CreateOnceLoliconHPicture(LoliconHPictureItem item)
+        {
+            string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png");
+            return CreateImageMessage(item.URL, imgCacheName);
+        }
+
+        #endregion -- Lolicon --
+
+        #region -- ELF --
+
         private static async Task SendELFHPicture(long senderId, long? senderGroup, string strHttpRequestUrl, Action<GreenOnionsMessages> SendMessage)
         {
             List<GreenOnionsMessages> outMessages = null;
@@ -370,27 +415,16 @@ namespace GreenOnions.HPicture
             }
         }
 
-        private static GreenOnionsImageMessage CreateOnceLoliconHPicture(LoliconHPictureItem item)
-        {
-            string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png");
-            return CreateImageMessage(item.URL, imgCacheName);
-        }
-
         private static GreenOnionsImageMessage CreateOnceELFHPicture(ELFHPictureItem item)
         {
             string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"ELF_{item.ID}.png");
             return CreateImageMessage(item.Link, imgCacheName);
         }
 
-        private static GreenOnionsImageMessage CreateOnceYandeHPicture(YandeItem item)
-        {
-            string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ShowPageUrl.Substring("/post/show/".Length)}.png");
-            return CreateImageMessage(item.BigImgUrl, imgCacheName);
-        }
+        #endregion -- ELF --
 
         private static GreenOnionsImageMessage CreateImageMessage(string url, string cacheName)
         {
-
             GreenOnionsImageMessage imageMsg;
             if (File.Exists(cacheName) && new FileInfo(cacheName).Length > 0) //存在本地缓存时优先使用缓存
             {
@@ -413,7 +447,6 @@ namespace GreenOnions.HPicture
             return imageMsg;
         }
 
-
         /// <summary>
         /// 设置消息撤回时间
         /// </summary>
@@ -430,6 +463,9 @@ namespace GreenOnions.HPicture
             }
         }
 
+        /// <summary>
+        /// 设置次数限制和冷却时间
+        /// </summary>
         private static void RecordLimit(long senderId, long? senderGroup, LimitType limitType)
         {
             if (BotInfo.HPictureLimitType == LimitType.Frequency && limitType == LimitType.Frequency)  //如果本次记录是计次, 说明地址消息已经成功发出, 可以记录CD
