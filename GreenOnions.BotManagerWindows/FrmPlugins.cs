@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using GreenOnions.BotMain;
+using GreenOnions.Utility;
 
 namespace GreenOnions.BotManagerWindows
 {
@@ -14,10 +15,10 @@ namespace GreenOnions.BotManagerWindows
             dtPlugins.Columns.Add("Name");
             dtPlugins.Columns.Add("Description");
             dtPlugins.Columns.Add("Setting");
+            dtPlugins.Columns.Add("Enabled");
+
             for (int i = 0; i < PluginManager.Plugins.Count; i++)
-            {
-                dtPlugins.Rows.Add(i, PluginManager.Plugins[i].Name, PluginManager.Plugins[i].Description, "设置");
-            }
+                dtPlugins.Rows.Add(i + 1, PluginManager.Plugins[i].Name, PluginManager.Plugins[i].Description, "设置", BotInfo.PluginStatus[PluginManager.Plugins[i].Name]);
             dgvPlugins.DataSource = dtPlugins;
         }
 
@@ -26,9 +27,11 @@ namespace GreenOnions.BotManagerWindows
             DataGridView dgv = (DataGridView)sender;
             if (e.RowIndex > -1 && e.ColumnIndex > -1)
                 if (dgv.CurrentCell.OwningColumn is DataGridViewButtonColumn btnCol)
-                    if (btnCol.HeaderText == "设置")
+                    if (btnCol.Name == "colSetting")
+                    {
                         if (!PluginManager.Plugins[e.RowIndex].WindowSetting())
                             PluginManager.Plugins[e.RowIndex].ConsoleSetting();
+                    }
         }
     }
 }

@@ -24,7 +24,6 @@ namespace GreenOnions.Utility
         public static ConcurrentDictionary<long, DateTime> SearchingAnimeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime> Searching3DUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<long, DateTime>[] SearchingUserGroups { get; } = { SearchingPicturesUsers, SearchingAnimeUsers, Searching3DUsers };
-        public static ConcurrentDictionary<long, DateTime> PlayingTicTacToeUsers { get; } = new ConcurrentDictionary<long, DateTime>();
         public static ConcurrentDictionary<string, int> SauceNAOKeysAndLongRemaining { get; }  //Nao的key剩余每日可用次数
         public static ConcurrentDictionary<string, int> SauceNAOKeysAndShortRemaining { get; }  //Nao的key剩余30秒内可用次数
 
@@ -73,7 +72,6 @@ namespace GreenOnions.Utility
                     CheckWorkingTimeout(SearchingPicturesUsers);  //顺便检查正在搜图的人超时了没有
                     CheckWorkingTimeout(SearchingAnimeUsers);
                     CheckWorkingTimeout(Searching3DUsers);
-                    CheckWorkingTimeout(PlayingTicTacToeUsers);
                 }
             });
             Task.Run(() =>

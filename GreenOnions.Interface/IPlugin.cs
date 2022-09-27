@@ -18,7 +18,7 @@
         /// <summary>
         /// 帮助消息(当用户输入 "机器人名称"帮助 --"插件名称" 时会发送的帮助消息, 该消息可以替换预定义标签)
         /// </summary>
-        public string? HelpMessage { get; }
+        public GreenOnionsMessages? HelpMessage { get; }
 
         /// <summary>
         /// 加载控件成功时触发
@@ -30,22 +30,8 @@
         /// 机器人连接到平台时触发
         /// </summary>
         /// <param name="selfId">登录的机器人QQ号</param>
-        /// <param name="SendFriendMessage">发送好友消息方法(好友QQ号, 消息体, 返回发送后的消息id)</param>
-        /// <param name="SendGroupMessage">发送群消息方法(群号, 消息体, 返回发送后的消息id)</param>
-        /// <param name="SendTempMessage">发送临时消息方法(目标QQ号, 群号, 消息体, 返回发送后的消息id)</param>
-        /// <param name="GetFriendListAsync">获取好友列表的方法</param>
-        /// <param name="GetGroupListAsync">获取群列表的方法</param>
-        /// <param name="GetMemberListAsync">获取群员列表的方法(群员QQ号)</param>
-        /// <param name="GetMemberInfoAsync">获取群员信息的方法(群号, 群员QQ号)</param>
-        public void OnConnected(long selfId,
-            Func<long, GreenOnionsMessages, Task<int>> SendFriendMessage,
-            Func<long, GreenOnionsMessages, Task<int>> SendGroupMessage,
-            Func<long, long, GreenOnionsMessages, Task<int>> SendTempMessage,
-            Func<Task<List<GreenOnionsFriendInfo>>> GetFriendListAsync,
-            Func<Task<List<GreenOnionsGroupInfo>>> GetGroupListAsync,
-            Func<long, Task<List<long>>> GetMemberListAsync,
-            Func<long, long, Task<GreenOnionsMemberInfo>> GetMemberInfoAsync
-            );
+        /// <param name="api">接口类对象</param>
+        public void OnConnected(long selfId, GreenOnionsApi api);
 
         /// <summary>
         /// 机器人主动断开平台连接时触发

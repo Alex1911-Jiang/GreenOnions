@@ -296,25 +296,6 @@ namespace GreenOnions.BotManagerWindows
             txbReadRssInterval.Text = BotInfo.ReadRssInterval.ToString();
             chkRssParallel.Checked = BotInfo.RssParallel;
             #endregion  -- RSS --
-
-            #region -- 井字棋 --
-            chkTicTacToeEnabled.Checked = BotInfo.TicTacToeEnabled;
-            txbStartTicTacToeCmd.Text = BotInfo.StartTicTacToeCmd;
-            txbTicTacToeStartedReply.Text = BotInfo.TicTacToeStartedReply;
-            txbTicTacToeAlreadyStartReply.Text = BotInfo.TicTacToeAlreadyStartReply;
-            txbStopTicTacToeCmd.Text = BotInfo.StopTicTacToeCmd;
-            txbTicTacToeStoppedReply.Text = BotInfo.TicTacToeStoppedReply;
-            txbTicTacToeAlreadStopReply.Text = BotInfo.TicTacToeAlreadStopReply;
-            txbTicTacToeTimeoutReply.Text = BotInfo.TicTacToeTimeoutReply;
-            txbTicTacToePlayerWinReply.Text = BotInfo.TicTacToePlayerWinReply;
-            txbTicTacToeBotWinReply.Text = BotInfo.TicTacToeBotWinReply;
-            txbTicTacToeDrawReply.Text = BotInfo.TicTacToeDrawReply;
-            txbTicTacToeNoMoveReply.Text = BotInfo.TicTacToeNoMoveReply;
-            txbTicTacToeIllegalMoveReply.Text = BotInfo.TicTacToeIllegalMoveReply;
-            txbTicTacToeMoveFailReply.Text = BotInfo.TicTacToeMoveFailReply;
-            foreach (CheckBox moveMode in pnlTicTacToeMoveMode.Controls.OfType<CheckBox>())
-                moveMode.Checked = (BotInfo.TicTacToeMoveMode & Convert.ToInt32(moveMode.Tag)) != 0;
-            #endregion -- 井字棋 --
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -583,32 +564,6 @@ namespace GreenOnions.BotManagerWindows
             BotInfo.RssParallel = chkRssParallel.Checked;
 
             #endregion -- RSS --
-
-            #region -- 井字棋 --
-
-            BotInfo.TicTacToeEnabled = chkTicTacToeEnabled.Checked;
-            BotInfo.StartTicTacToeCmd = txbStartTicTacToeCmd.Text;
-            BotInfo.TicTacToeStartedReply = txbTicTacToeStartedReply.Text;
-            BotInfo.TicTacToeAlreadyStartReply = txbTicTacToeAlreadyStartReply.Text;
-            BotInfo.StopTicTacToeCmd = txbStopTicTacToeCmd.Text;
-            BotInfo.TicTacToeStoppedReply = txbTicTacToeStoppedReply.Text;
-            BotInfo.TicTacToeAlreadStopReply = txbTicTacToeAlreadStopReply.Text;
-            BotInfo.TicTacToeTimeoutReply = txbTicTacToeTimeoutReply.Text;
-            BotInfo.TicTacToePlayerWinReply = txbTicTacToePlayerWinReply.Text;
-            BotInfo.TicTacToeBotWinReply = txbTicTacToeBotWinReply.Text;
-            BotInfo.TicTacToeDrawReply = txbTicTacToeDrawReply.Text;
-
-            BotInfo.TicTacToeNoMoveReply = txbTicTacToeNoMoveReply.Text;
-            BotInfo.TicTacToeIllegalMoveReply = txbTicTacToeIllegalMoveReply.Text;
-            BotInfo.TicTacToeMoveFailReply = txbTicTacToeMoveFailReply.Text;
-            BotInfo.TicTacToeMoveMode = 0;
-            foreach (CheckBox moveMode in pnlTicTacToeMoveMode.Controls.OfType<CheckBox>())
-            {
-                if (moveMode.Checked)
-                    BotInfo.TicTacToeMoveMode |= Convert.ToInt32(moveMode.Tag);
-            }
-
-            #endregion -- 井字棋 --
 
             ConfigHelper.SaveConfigFile();
 

@@ -2,6 +2,7 @@
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Sora.Entities;
+using Sora.Enumeration.EventParamsType;
 using Sora.EventArgs.SoraEvent;
 
 namespace GreenOnions.BotMain.CqHttp
@@ -72,6 +73,14 @@ namespace GreenOnions.BotMain.CqHttp
             eventArgs.IsContinueEventChain = !isHandle;
         }
 
+        public static async ValueTask Event_OnGroupMemberChange(string eventType, GroupMemberChangeEventArgs eventArgs)
+        {
+            //var getMember = await eventArgs.SoraApi.GetGroupMemberInfo(eventArgs.SourceGroup.Id, eventArgs.ChangedUser.Id);
+            //var getOperator = await eventArgs.SoraApi.GetGroupMemberInfo(eventArgs.SourceGroup.Id, eventArgs.Operator.Id);
+            //string card = getMember.memberInfo.Card;
+            //var getUserInfo = await eventArgs.ChangedUser.GetUserInfo();
+            //string nick = getUserInfo.userInfo.Nick;
+        }
         private static bool CheckPreconditionsGroup(GroupMessageEventArgs e)
         {
             if (BotInfo.BannedGroup.Contains(e.SourceGroup.Id) ||

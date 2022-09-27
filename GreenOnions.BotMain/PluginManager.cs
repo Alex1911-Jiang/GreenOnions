@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Runtime.Loader;
 using GreenOnions.Interface;
 using GreenOnions.Utility;
@@ -8,8 +9,9 @@ namespace GreenOnions.BotMain
 {
     public static class PluginManager
     {
-        public static List<IPlugin> Plugins = new List<IPlugin>();
         private static string _pluginsPath = Path.Combine(Environment.CurrentDirectory, "Plugins");
+        public static List<IPlugin> Plugins { get; private set; } = new List<IPlugin>();
+        public static GreenOnionsApi? _api { get; private set; } = null;
 
         public static int Load()
         {
@@ -21,12 +23,18 @@ namespace GreenOnions.BotMain
             Dictionary<string, IPlugin> loadedPlugins = new Dictionary<string, IPlugin>();
             Dictionary<string, string> dependPath = new Dictionary<string, string>();
 
+            Dictionary<string, bool> pluginStatus = new Dictionary<string, bool>();
             foreach (string pluginItem in pluginItemPath)
             {
+                File.Copy("GreenOnions.Interface.dll", Path.Combine(pluginItem, "GreenOnions.Interface.dll") , true);
+#if DEBUG
+                File.Copy("GreenOnions.Interface.pdb", Path.Combine(pluginItem, "GreenOnions.Interface.pdb"), true);
+#endif
+
                 string[] dlls = Directory.GetFiles(pluginItem, "*.dll", SearchOption.TopDirectoryOnly);
                 foreach (string dll in dlls)
                 {
-                    string dllPath = Path.GetDirectoryName(dll);
+                    string dllPath = Path.GetDirectoryName(dll)!;
                     string pluginFileName = Path.GetFileNameWithoutExtension(dll);
                     string pluginDescriptionFileName = Path.Combine(dllPath, $"{pluginFileName}.deps.json");
                     if (pluginFileName != "GreenOnions.Interface" && File.Exists(pluginDescriptionFileName))
@@ -38,7 +46,7 @@ namespace GreenOnions.BotMain
                             dependPath.Add(pluginFileName, dllPath);
                             assemblyLoadContext.Resolving += (context, assemblyName) =>
                             {
-                                string filename = $@"{Path.Combine(dependPath[context.Name], assemblyName.Name + ".dll")}";
+                                string filename = $@"{Path.Combine(dependPath[context.Name!], $"{assemblyName.Name}.dll")}";
                                 if (File.Exists(filename))
                                     return context.LoadFromAssemblyPath(filename);
                                 return null;
@@ -49,10 +57,14 @@ namespace GreenOnions.BotMain
                             {
                                 if (type.GetInterface("IPlugin") != null)
                                 {
-                                    IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
+                                    IPlugin? plugin = (IPlugin?)Activator.CreateInstance(type);
                                     if (plugin != null)
                                     {
                                         loadedPlugins.Add(Path.GetFileNameWithoutExtension(dllPath), plugin);
+                                        if (!BotInfo.PluginStatus.ContainsKey(plugin.Name))
+                                            pluginStatus.Add(plugin.Name, true);
+                                        else
+                                            pluginStatus.Add(plugin.Name, BotInfo.PluginStatus[plugin.Name]);
                                     }
                                 }
                             }
@@ -65,45 +77,22 @@ namespace GreenOnions.BotMain
                 }
             }
 
-            List<string> pluginNewOrder = new List<string>();
-            for (int i = 0; i < BotInfo.PluginOrder.Count; i++)
-            {
-                string pluginPath = BotInfo.PluginOrder[i];
-                if (loadedPlugins.ContainsKey(pluginPath))
-                {
-                    IPlugin plugin = loadedPlugins[pluginPath];
-                    Plugins.Add(plugin);
-                    try
-                    {
-                        loadedPlugins.Remove(pluginPath);
-                        plugin.OnLoad(Path.Combine(_pluginsPath, pluginPath));
-                        LogHelper.WriteInfoLog($"插件{plugin.Name}加载成功");
-                        pluginNewOrder.Add(Path.GetFileNameWithoutExtension(pluginPath));
-                    }
-                    catch (Exception ex)
-                    {
-                        if (Plugins.Contains(plugin))
-                            Plugins.Remove(plugin);
-                        LogHelper.WriteErrorLog($"插件{plugin.Name}加载失败，" + ex.Message);
-                    }
-                }
-            }
+            BotInfo.PluginStatus = pluginStatus;
+
             foreach (KeyValuePair<string, IPlugin> theOtherPlugins in loadedPlugins)
             {
                 Plugins.Add(theOtherPlugins.Value);
                 theOtherPlugins.Value.OnLoad(Path.Combine(_pluginsPath, theOtherPlugins.Key));
                 LogHelper.WriteInfoLog($"插件{theOtherPlugins.Value.Name}加载成功");
-                pluginNewOrder.Add(Path.GetFileNameWithoutExtension(theOtherPlugins.Key));
             }
-            BotInfo.PluginOrder = pluginNewOrder;
             ConfigHelper.SaveConfigFile();
             return Plugins.Count;
         }
 
-        public static string GetHelpMessage(string pluginName)
+        public static GreenOnionsMessages? GetHelpMessage(string pluginName)
         {
             IPlugin? plugin = Plugins.Where(p => p.Name == pluginName).FirstOrDefault();
-            if (plugin != null)
+            if (plugin != null && BotInfo.PluginStatus[plugin.Name])
                 return plugin.HelpMessage;
             return string.Empty;
         }
@@ -114,52 +103,70 @@ namespace GreenOnions.BotMain
             Func<long, long, GreenOnionsMessages, Task<int>> SendTempMessage,
             Func<Task<List<GreenOnionsFriendInfo>>> GetFriendList,
             Func<Task<List<GreenOnionsGroupInfo>>> GetGroupList,
-            Func<long, Task<List<long>>> GetMemberList,
+            Func<long, Task<List<GreenOnionsMemberInfo>>> GetMemberList,
             Func<long, long, Task<GreenOnionsMemberInfo>> GetMemberInfo)
         {
-            foreach (IPlugin plugin in Plugins)
+            _api?.Dispose();
+            Dictionary<string, string> props = AssemblyHelper.GetAllPropertiesValue();
+            _api = new GreenOnionsApi(new ReadOnlyDictionary<string, string>(props), SendFriendMessage, SendGroupMessage, SendTempMessage, GetFriendList, GetGroupList, GetMemberList, GetMemberInfo);
+
+            for (int i = 0; i < Plugins.Count; i++)
             {
                 try
                 {
-                    plugin.OnConnected(selfId, SendFriendMessage, SendGroupMessage, SendTempMessage, GetFriendList, GetGroupList, GetMemberList, GetMemberInfo);
+                    if (BotInfo.PluginStatus[Plugins[i].Name])
+                        Plugins[i].OnConnected(selfId, _api);
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLog($"插件{plugin.Name}连接方法调用发生异常，" + ex.Message);
+                    LogHelper.WriteErrorLog($"插件{Plugins[i].Name}连接方法调用发生异常，" + ex.Message);
                 }
-            }    
+            }
         }
 
         public static void Disconnected()
         {
-            foreach (IPlugin plugin in Plugins)
+            _api?.Dispose();
+            _api = null;
+            for (int i = 0; i < Plugins.Count; i++)
             {
                 try
                 {
-                    plugin.OnDisconnected();
+                    if (BotInfo.PluginStatus[Plugins[i].Name])
+                        Plugins[i].OnDisconnected();
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLog($"插件{plugin.Name}断开连接方法调用发生异常，" + ex.Message);
+                    LogHelper.WriteErrorLog($"插件{Plugins[i].Name}断开连接方法调用发生异常，" + ex.Message);
                 }
             }
         }
 
         public static bool Message(GreenOnionsMessages msgs, long? senderGroup, Action<GreenOnionsMessages> Response)
         {
-            foreach (IPlugin plugin in Plugins)
+            for (int i = 0; i < Plugins.Count; i++)
             {
                 try
                 {
-                    if (plugin.OnMessage(msgs, senderGroup, Response))
-                        return true;  //命中插件
+                    if (BotInfo.PluginStatus[Plugins[i].Name])
+                        if (Plugins[i].OnMessage(msgs, senderGroup, Response))
+                            return true;  //命中插件
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLog($"插件{plugin.Name}处理消息方法调用发生异常，" + ex.Message);
+                    LogHelper.WriteErrorLog($"插件{Plugins[i].Name}处理消息方法调用发生异常，" + ex.Message);
                 }
             }
             return false;
+        }
+
+        public static void UpdateSettings()
+        {
+            if (_api != null)
+            {
+                Dictionary<string, string> props = AssemblyHelper.GetAllPropertiesValue();
+                _api.BotProperties = new ReadOnlyDictionary<string, string>(props);
+            }
         }
     }
 }

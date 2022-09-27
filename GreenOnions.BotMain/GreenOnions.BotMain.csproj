@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.7" />
-    <PackageReference Include="Sora" Version="1.0.0-rc.73" />
+    <PackageReference Include="Sora" Version="1.0.0-rc.77" />
     <PackageReference Include="Mirai-CSharp.NativeAssets.Win32" Version="1.0.2" />
     <PackageReference Include="Mirai-CSharp.NativeAssets.Linux" Version="1.0.2" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3" />
@@ -35,7 +35,6 @@
     <ProjectReference Include="..\GreenOnions.PictureSearcher\GreenOnions.PictureSearcher.csproj" />
     <ProjectReference Include="..\GreenOnions.Repeater\GreenOnions.Repeater.csproj" />
     <ProjectReference Include="..\GreenOnions.RSS\GreenOnions.RSS.csproj" />
-    <ProjectReference Include="..\GreenOnions.TicTacToe\GreenOnions.TicTacToe.csproj" />
     <ProjectReference Include="..\GreenOnions.Translate\GreenOnions.Translate.csproj" />
     <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />
   </ItemGroup>

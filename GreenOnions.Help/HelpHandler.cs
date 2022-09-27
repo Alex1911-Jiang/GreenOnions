@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using TencentCloud.Apigateway.V20180808.Models;
 
 namespace GreenOnions.Help
 {
@@ -31,20 +27,25 @@ namespace GreenOnions.Help
                     "--复读" => repeatHelp(),
                     "--伪造消息" => forgeMessageHelp(),
                     "--RSS订阅转发" => rssHelp(),
-                    "--井字棋" => helpTicTacToe(),
                     "--功能" => helpFailCMD(plugins),
                     null or "" => defaultHelp(),
                     _ => null,
                 };
-                for (int i = 0; i < plugins.Count; i++)
+                foreach (IPlugin plugin in plugins)
                 {
-                    if ("--" + plugins[i].Name == strFeatures)
+                    if ("--" + plugin.Name == strFeatures)
                     {
-                        string helpText = plugins[i].HelpMessage.ReplaceGreenOnionsTags();
-                        if (string.IsNullOrWhiteSpace(helpText))
-                            helpText = $"插件<{plugins[i].Name}>没有帮助信息。";
-                        strHelpResult = new[] { new GreenOnionsTextMessage(helpText) };
-                        break;
+                        if (BotInfo.PluginStatus[plugin.Name])
+                        {
+                            GreenOnionsMessages helpMsg = plugin.HelpMessage.ReplaceGreenOnionsStringTags();
+                            if (helpMsg == null || helpMsg.Count == 0)
+                                helpMsg = $"功能<{plugin.Name}>没有帮助信息。";
+                            return helpMsg;
+                        }
+                        else
+                        {
+                            return $"功能<{plugin.Name}>没有启用。";
+                        }
                     }
                 }
                 GreenOnionsBaseMessage[] defaultHelp()
@@ -80,12 +81,11 @@ namespace GreenOnions.Help
                 lstEnabledFeatures.Add("伪造消息");
             if (BotInfo.RssEnabled)
                 lstEnabledFeatures.Add("RSS订阅转发");
-            if (BotInfo.TicTacToeEnabled)
-                lstEnabledFeatures.Add("井字棋");
 
-            for (int i = 0; i < plugins.Count; i++)
+            foreach (IPlugin plugin in plugins)
             {
-                lstEnabledFeatures.Add(plugins[i].Name);
+                if (BotInfo.PluginStatus[plugin.Name])
+                    lstEnabledFeatures.Add(plugin.Name);
             }
 
             return lstEnabledFeatures;
@@ -94,8 +94,8 @@ namespace GreenOnions.Help
         private static GreenOnionsBaseMessage[] pictureSearchHelp()
         {
             if (BotInfo.SearchEnabled)
-                return new[] { $"发送\"{BotInfo.SearchModeOnCmd.ReplaceGreenOnionsTags()}\"启动搜图模式，\r\n" +
-                            $"随后直接发图即可，完事后发送\"{BotInfo.SearchModeOffCmd.ReplaceGreenOnionsTags()}\"退出搜图，\r\n" +
+                return new[] { $"发送\"{BotInfo.SearchModeOnCmd.ReplaceGreenOnionsStringTags()}\"启动搜图模式，\r\n" +
+                            $"随后直接发图即可，完事后发送\"{BotInfo.SearchModeOffCmd.ReplaceGreenOnionsStringTags()}\"退出搜图，\r\n" +
                             $"您也可以在一条消息中直接@{BotInfo.BotName}并发送图片来进行单张搜图" + "\r\n如果不明白命令中符号所代表的的意义，请在搜索引擎搜\"正则表达式\""}.ToTextMessageArray();
             else
                 return new[] { $"当前{BotInfo.BotName}没有启用搜图功能" }.ToTextMessageArray();
@@ -112,17 +112,17 @@ namespace GreenOnions.Help
             {
                 if (BotInfo.TranslateEngineType == TranslateEngine.Google)
                 {
-                    StringBuilder strTranslateGoogle = new StringBuilder($"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。");
-                    strTranslateGoogle.AppendLine($"发送\"{BotInfo.TranslateToCMD.ReplaceGreenOnionsTags()}翻译内容\"自动识别当前语言并翻译成指定语言。");
-                    strTranslateGoogle.AppendLine($"发送\"{BotInfo.TranslateFromToCMD.ReplaceGreenOnionsTags()}翻译内容\"从指定语言翻译成指定语言。");
+                    StringBuilder strTranslateGoogle = new StringBuilder($"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsStringTags()}翻译内容\" 以翻译成中文。");
+                    strTranslateGoogle.AppendLine($"发送\"{BotInfo.TranslateToCMD.ReplaceGreenOnionsStringTags()}翻译内容\"自动识别当前语言并翻译成指定语言。");
+                    strTranslateGoogle.AppendLine($"发送\"{BotInfo.TranslateFromToCMD.ReplaceGreenOnionsStringTags()}翻译内容\"从指定语言翻译成指定语言。");
                     strTranslateGoogle.AppendLine($"目前支持的语言有:{string.Join("\r\n", Constants.GoogleLanguages.Keys)}");
                     strTranslateGoogle.AppendLine("目前接入的翻译引擎为:谷歌翻译");
                     return new[] { strTranslateGoogle.ToString() }.ToTextMessageArray();
                 }
                 else
                 {
-                    StringBuilder strTranslateYouDao = new StringBuilder($"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags()}翻译内容\" 以翻译成中文。");
-                    strTranslateYouDao.AppendLine($"发送\"{BotInfo.TranslateFromToCMD.ReplaceGreenOnionsTags()}翻译内容\"从指定语言翻译成指定语言。");
+                    StringBuilder strTranslateYouDao = new StringBuilder($"发送\"{BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsStringTags()}翻译内容\" 以翻译成中文。");
+                    strTranslateYouDao.AppendLine($"发送\"{BotInfo.TranslateFromToCMD.ReplaceGreenOnionsStringTags()}翻译内容\"从指定语言翻译成指定语言。");
                     strTranslateYouDao.AppendLine($"目前支持的语言有:{string.Join("\r\n", Constants.YouDaoLanguages.Keys)}");
                     strTranslateYouDao.AppendLine("目前接入的翻译引擎为:有道翻译");
                     return new[] { strTranslateYouDao.ToString() }.ToTextMessageArray();
@@ -147,7 +147,7 @@ namespace GreenOnions.Help
 
                 string hpictureHelpMsg()
                 {
-                    StringBuilder strHPicture = new StringBuilder($"发送\"{BotInfo.HPictureCmd.ReplaceGreenOnionsTags()}\"来索要色图/美图。");
+                    StringBuilder strHPicture = new StringBuilder($"发送\"{BotInfo.HPictureCmd.ReplaceGreenOnionsStringTags()}\"来索要色图/美图。");
                     strHPicture.AppendLine($"需要注意的是，色图关键词中，如果仅输入一个关键词，则按模糊匹配查询，如果用|或&连接多个关键词，则按标签精确匹配 |代表或，&代表与(美图仅支持一个关键词)");
                     if (BotInfo.HPictureUserCmd.Count() > 0)
                         strHPicture.AppendLine($"或直接输入\"{string.Join("\",\"", BotInfo.HPictureUserCmd)}\"中的一个来索要一张随机色图。");
@@ -178,7 +178,7 @@ namespace GreenOnions.Help
         private static GreenOnionsBaseMessage[] forgeMessageHelp()
         {
             if (BotInfo.ForgeMessageEnabled)
-                return new[] { $"发送\"{BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsTags()}@被害者 伪造消息内容\" 以伪造消息，在消息之间添加\"{BotInfo.ForgeMessageCmdNewLine.ReplaceGreenOnionsTags()}\"将消息拆分为两句" + "\r\n如果不明白命令中符号所代表的的意义，请在搜索引擎搜\"正则表达式\"" }.ToTextMessageArray();
+                return new[] { $"发送\"{BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsStringTags()}@被害者 伪造消息内容\" 以伪造消息，在消息之间添加\"{BotInfo.ForgeMessageCmdNewLine.ReplaceGreenOnionsStringTags()}\"将消息拆分为两句" + "\r\n如果不明白命令中符号所代表的的意义，请在搜索引擎搜\"正则表达式\"" }.ToTextMessageArray();
             else
                 return new[] { $"当前{BotInfo.BotName}没有启用伪造消息功能" }.ToTextMessageArray();
         }
@@ -188,59 +188,10 @@ namespace GreenOnions.Help
         }
         private static GreenOnionsBaseMessage[] helpFailCMD(List<IPlugin> plugins)
         {
-            StringBuilder strFail = new StringBuilder($"您需要将\"功能\"替换为功能名称，例如：\"{BotInfo.BotName}帮助--搜图\" 以获取搜图功能的帮助。\r\n目前启用的功能有： {string.Join("，", getEnabledFunction(plugins))}。");
+            StringBuilder strFail = new StringBuilder($"您需要将\"功能\"替换为功能名称，例如：\"{BotInfo.BotName}帮助 --搜图\" 以获取搜图功能的帮助。\r\n目前启用的功能有： {string.Join("，", getEnabledFunction(plugins))}。");
             if (BotInfo.QQId == 3246934384)
                 strFail.AppendLine($"您也可以私聊{BotInfo.BotName}留言，主人看到的时候会进行回复（可能）。");
             return new GreenOnionsBaseMessage[] { strFail };
-        }
-        private static GreenOnionsBaseMessage[] helpTicTacToe()
-        {
-            if (BotInfo.TicTacToeEnabled)
-            {
-                if (!Directory.Exists("Icon"))
-                    Directory.CreateDirectory("Icon");
-
-                List<GreenOnionsBaseMessage> messages = new List<GreenOnionsBaseMessage>();
-
-                messages.Add($"发送\"{BotInfo.StartTicTacToeCmd.ReplaceGreenOnionsTags()}\"来开启一局井字棋游戏。\r\n");
-                messages.Add($"{BotInfo.BotName}会发送一个空棋盘图片，\r\n");
-
-                string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-                if ((BotInfo.TicTacToeMoveMode & (int)TicTacToeMoveMode.OpenCV) != 0)
-                {
-                    messages.Add("您可以对棋盘进行表情涂鸦来进行下子。\r\n");
-                    messages.Add("手机端操作方式：\r\n");
-
-                    string mobieGraffitiFile = Path.Combine(path, "Icon", "MobieGraffiti.jpg");
-                    Resource.MobieGraffiti.Save(mobieGraffitiFile, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    messages.Add(new GreenOnionsImageMessage(mobieGraffitiFile));
-
-                    messages.Add("电脑端操作方式：\r\n");
-
-                    string pcGraffitiFile = Path.Combine(path, "Icon", "PcGraffiti.jpg");
-                    Resource.PcGraffiti.Save(pcGraffitiFile, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    messages.Add(new GreenOnionsImageMessage(pcGraffitiFile));
-                }
-                if (BotInfo.TicTacToeMoveMode == (int)(TicTacToeMoveMode.OpenCV | TicTacToeMoveMode.Nomenclature))
-                {
-                    messages.Add("另外，");
-                }
-                if ((BotInfo.TicTacToeMoveMode & (int)TicTacToeMoveMode.Nomenclature) != 0)
-                {
-                    messages.Add("您可以通过输入格号来下子，如\"C2\"。\r\n");
-                    messages.Add("棋盘编号命名示例为：\r\n");
-
-                    string chessboardFile = Path.Combine(path, "Icon", "Chessboard.jpg");
-                    Resource.Chessboard.Save(chessboardFile, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    messages.Add(new GreenOnionsImageMessage(chessboardFile));
-                }
-                return messages.ToArray();
-            }
-            else
-            {
-                return new GreenOnionsBaseMessage[] { $"当前{BotInfo.BotName}没有启用井字棋功能" };
-            }
         }
 
     }

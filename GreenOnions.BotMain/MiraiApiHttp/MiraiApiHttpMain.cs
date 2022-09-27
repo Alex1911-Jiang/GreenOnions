@@ -72,7 +72,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     async (targetId, targetGroup, msg) => await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp)),
                     async () => (await session.GetFriendListAsync()).Select(f => new GreenOnionsFriendInfo(f.Id, f.Name, f.Remark)).ToList(),
                     async () => (await session.GetGroupListAsync()).Select(g => new GreenOnionsGroupInfo(g.Id, g.Name)).ToList(),
-                    async (groupId) => (await session.GetGroupMemberListAsync(groupId)).Select(m => m.Id).ToList(),
+                    async (groupId) => (await session.GetGroupMemberListAsync(groupId)).Select(m => m.ToGreenOnionsMemberInfo()).ToList(),
                     async (groupId, memberId) => (await session.GetGroupMemberInfoAsync(groupId, memberId)).ToGreenOnionsMemberInfo()
                     );
 

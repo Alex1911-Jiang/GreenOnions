@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using GreenOnions.Interface;
 
 namespace GreenOnions.Utility.Helper
 {
@@ -243,17 +244,33 @@ namespace GreenOnions.Utility.Helper
         }
 
 
-        public static string ReplaceGreenOnionsTags(this string OriginalString, params KeyValuePair<string, string>[] CustomTags)
+        public static string ReplaceGreenOnionsStringTags(this string originalString, params KeyValuePair<string, string>[] customTags)
         {
-            OriginalString = AssemblyHelper.ReplacePropertyChineseNameToValue(OriginalString);
-            if (CustomTags != null)
+            originalString = AssemblyHelper.ReplacePropertyChineseNameToValue(originalString);
+            if (customTags != null)
             {
-                foreach (var tag in CustomTags)
+                foreach (var tag in customTags)
+                    originalString = originalString.Replace($"<{tag.Key}>", tag.Value);
+            }
+            return originalString;
+        }
+
+        public static GreenOnionsMessages ReplaceGreenOnionsStringTags(this GreenOnionsMessages originalMessage, params KeyValuePair<string, string>[] customTags)
+        {
+            for (int i = 0; i < originalMessage.Count; i++)
+            {
+                if (originalMessage[i] is GreenOnionsTextMessage textMessage)
                 {
-                    OriginalString = OriginalString.Replace($"<{tag.Key}>", tag.Value);
+                    string text = AssemblyHelper.ReplacePropertyChineseNameToValue(textMessage.Text);
+                    if (customTags != null)
+                    {
+                        foreach (var tag in customTags)
+                            text = text.Replace($"<{tag.Key}>", tag.Value);
+                    }
+                    originalMessage[i] = text;
                 }
             }
-            return OriginalString;
+            return originalMessage;
         }
 
         public static string ReplaceHtmlTags(this string htmlText)

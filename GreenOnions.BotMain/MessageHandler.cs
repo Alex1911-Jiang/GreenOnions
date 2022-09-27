@@ -5,7 +5,6 @@ using GreenOnions.HPicture;
 using GreenOnions.Interface;
 using GreenOnions.PictureSearcher;
 using GreenOnions.Repeater;
-using GreenOnions.TicTacToe;
 using GreenOnions.Translate;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
@@ -43,33 +42,30 @@ namespace GreenOnions.BotMain
             try
             {
                 regexName = "开启搜图";
-                regexSearchOn = new Regex(BotInfo.SearchModeOnCmd.ReplaceGreenOnionsTags());
+                regexSearchOn = new Regex(BotInfo.SearchModeOnCmd.ReplaceGreenOnionsStringTags());
                 regexName = "开启搜番";
-                regexSearchAnimeOn = new Regex(BotInfo.SearchAnimeModeOnCmd.ReplaceGreenOnionsTags());
+                regexSearchAnimeOn = new Regex(BotInfo.SearchAnimeModeOnCmd.ReplaceGreenOnionsStringTags());
                 regexName = "开启搜车";
-                regexSearch3DOn = new Regex(BotInfo.Search3DModeOnCmd.ReplaceGreenOnionsTags());
+                regexSearch3DOn = new Regex(BotInfo.Search3DModeOnCmd.ReplaceGreenOnionsStringTags());
                 regexName = "关闭搜图";
-                regexSearchOff = new Regex(BotInfo.SearchModeOffCmd.ReplaceGreenOnionsTags());
+                regexSearchOff = new Regex(BotInfo.SearchModeOffCmd.ReplaceGreenOnionsStringTags());
                 regexName = "翻译为中文";
-                regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsTags());
+                regexTranslateToChinese = new Regex(BotInfo.TranslateToChineseCMD.ReplaceGreenOnionsStringTags());
                 regexName = "翻译";
-                regexTranslateTo = new Regex(BotInfo.TranslateToCMD.ReplaceGreenOnionsTags());
+                regexTranslateTo = new Regex(BotInfo.TranslateToCMD.ReplaceGreenOnionsStringTags());
                 regexName = "指定语言翻译";
-                regexTranslateFromTo = new Regex(BotInfo.TranslateFromToCMD.ReplaceGreenOnionsTags());
+                regexTranslateFromTo = new Regex(BotInfo.TranslateFromToCMD.ReplaceGreenOnionsStringTags());
                 regexName = "色图";
-                regexHPicture = new Regex(BotInfo.HPictureCmd.ReplaceGreenOnionsTags());
+                regexHPicture = new Regex(BotInfo.HPictureCmd.ReplaceGreenOnionsStringTags());
                 regexName = "伪造消息";
-                regexForgeMessage = new Regex(BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsTags());
-                regexName = "开启井字棋";
-                regexTicTacToeStart = new Regex(BotInfo.StartTicTacToeCmd.ReplaceGreenOnionsTags());
-                regexName = "结束井字棋";
-                regexTicTacToeStop = new Regex(BotInfo.StopTicTacToeCmd.ReplaceGreenOnionsTags());
+                regexForgeMessage = new Regex(BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsStringTags());
                 regexName = null;
             }
             catch (Exception ex)
             {
                 LogHelper.WriteErrorLogWithUserMessage($"更新{regexName}正则命令发生异常", ex);
             }
+            PluginManager.UpdateSettings();
             return regexName;
         }
 
@@ -132,27 +128,13 @@ namespace GreenOnions.BotMain
                     return true;
                 }
             }
-            else if (Cache.PlayingTicTacToeUsers.ContainsKey(inMsg.SenderId))  //井字棋
-            {
-                if (inMsg.Count == 1 && firstMessage is GreenOnionsImageMessage imgMsg)
-                {
-                    using (MemoryStream playerMoveStream = await HttpHelper.DownloadImageAsMemoryStreamAsync(ImageHelper.ReplaceGroupUrl(imgMsg.Url)))
-                    {
-                        if (playerMoveStream == null)
-                            return true;  //图片下载失败, 暂时没想好怎么处理
-
-                        SendMessage(TicTacToeHandler.PlayerMoveByBitmap(inMsg.SenderId, playerMoveStream));
-                    }
-                    return true;
-                }
-            }
 
             if (firstMessage is GreenOnionsTextMessage textMsg)
             {
                 string firstValue = textMsg.ToString();
 
                 #region -- 命令 --
-                string command = "<机器人名称>命令".ReplaceGreenOnionsTags();
+                string command = "<机器人名称>命令".ReplaceGreenOnionsStringTags();
                 if (BotInfo.AdminQQ.Contains(inMsg.SenderId) && firstValue.StartsWith(command))
                 {
                     string? cmdReply = await CommandEditor.HandleCommand(string.Join("", inMsg).Substring(command.Length).Trim(), UpdateRegexs);
@@ -163,32 +145,6 @@ namespace GreenOnions.BotMain
                     }
                 }
                 #endregion -- 命令 --
-
-                #region -- 井字棋 --
-
-                if (BotInfo.TicTacToeEnabled)
-                {
-                    if (regexTicTacToeStart.IsMatch(firstValue))
-                    {
-                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发开始井字棋");
-                        TicTacToeHandler.StartTicTacToeSession(inMsg.SenderId, SendMessage);
-                        return true;
-                    }
-                    else if (regexTicTacToeStop.IsMatch(firstValue))
-                    {
-                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发结束井字棋");
-                        TicTacToeHandler.StopTicTacToeSession(inMsg.SenderId, SendMessage);
-                        return true;
-                    }
-                    else if ((BotInfo.TicTacToeMoveMode & (int)TicTacToeMoveMode.Nomenclature) != 0 && Cache.PlayingTicTacToeUsers.ContainsKey(inMsg.SenderId) && firstValue.Length == 2)
-                    {
-                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发井字棋移动");
-                        TicTacToeHandler.PlayerMoveByNomenclature(firstValue, inMsg.SenderId, SendMessage);
-                        return true;
-                    }
-                }
-
-                #endregion -- 井字棋 --
 
                 #region -- 伪造消息 --
                 if (BotInfo.ForgeMessageEnabled && regexForgeMessage.IsMatch(firstValue))

@@ -37,6 +37,7 @@
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSetting = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.colEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPlugins)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,7 +70,8 @@
             this.colIndex,
             this.colName,
             this.colDescription,
-            this.colSetting});
+            this.colSetting,
+            this.colEnabled});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -121,6 +123,12 @@
             this.colSetting.HeaderText = "设置";
             this.colSetting.Name = "colSetting";
             // 
+            // colEnabled
+            // 
+            this.colEnabled.DataPropertyName = "Enabled";
+            this.colEnabled.HeaderText = "启用";
+            this.colEnabled.Name = "colEnabled";
+            // 
             // FrmPlugins
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -142,9 +150,10 @@
         #endregion
         private System.Windows.Forms.Label lblPlugins;
         private System.Windows.Forms.DataGridView dgvPlugins;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colIndex;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDescription;
-        private System.Windows.Forms.DataGridViewButtonColumn colSetting;
+        private DataGridViewTextBoxColumn colIndex;
+        private DataGridViewTextBoxColumn colName;
+        private DataGridViewTextBoxColumn colDescription;
+        private DataGridViewButtonColumn colSetting;
+        private DataGridViewCheckBoxColumn colEnabled;
     }
 }

@@ -16,12 +16,12 @@ namespace GreenOnions.ForgeMessage
                 {
                     if (!BotInfo.AdminQQ.Contains(qqId) && BotInfo.AdminQQ.Contains(atMsg.AtId))
                     {
-                        SendMessage(BotInfo.RefuseForgeAdminReply.ReplaceGreenOnionsTags());
+                        SendMessage(BotInfo.RefuseForgeAdminReply.ReplaceGreenOnionsStringTags());
                         return;
                     }
                     if (!BotInfo.AdminQQ.Contains(qqId) && atMsg.AtId == BotInfo.QQId)
                     {
-                        SendMessage(BotInfo.RefuseForgeBotReply.ReplaceGreenOnionsTags());
+                        SendMessage(BotInfo.RefuseForgeBotReply.ReplaceGreenOnionsStringTags());
                         return;
                     }
 
@@ -48,7 +48,7 @@ namespace GreenOnions.ForgeMessage
                     if (BotInfo.ForgeMessageAppendBotMessageEnabled)
                     {
                         if (!BotInfo.ForgeMessageAdminDontAppend || !BotInfo.AdminQQ.Contains(qqId))
-                            forwardMessage.Add(BotInfo.QQId, BotInfo.BotName, new GreenOnionsMessages(BotInfo.ForgeMessageAppendMessage.ReplaceGreenOnionsTags()));
+                            forwardMessage.Add(BotInfo.QQId, BotInfo.BotName, new GreenOnionsMessages(BotInfo.ForgeMessageAppendMessage.ReplaceGreenOnionsStringTags()));
                     }
                     SendMessage(forwardMessage);
                 }

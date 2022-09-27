@@ -21,15 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.ForgeMessage", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Help", "GreenOnions.Help\GreenOnions.Help.csproj", "{2B02D7EE-62D1-4770-98DA-34265E3E7B08}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.TicTacToe", "GreenOnions.TicTacToe\GreenOnions.TicTacToe.csproj", "{77A346C6-91C9-4F3C-964C-BAD196A7959D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotMain", "GreenOnions.BotMain\GreenOnions.BotMain.csproj", "{B343C30B-4176-479D-8AA5-7DE2AE921320}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Interface", "GreenOnions.Interface\GreenOnions.Interface.csproj", "{5DCDA0CA-F97D-43D2-A4D6-2CFFAD529A16}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Command", "GreenOnions.Command\GreenOnions.Command.csproj", "{DB50079E-EB06-4B3B-8748-2B0854D5043B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.BotManagerWindows", "GreenOnions.BotManagerWindows\GreenOnions.BotManagerWindows.csproj", "{A1F5AFF4-53B6-4D5F-A37E-2F4C7C208C26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotManagerWindows", "GreenOnions.BotManagerWindows\GreenOnions.BotManagerWindows.csproj", "{A1F5AFF4-53B6-4D5F-A37E-2F4C7C208C26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,10 +71,6 @@ Global
 		{2B02D7EE-62D1-4770-98DA-34265E3E7B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B02D7EE-62D1-4770-98DA-34265E3E7B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B02D7EE-62D1-4770-98DA-34265E3E7B08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{77A346C6-91C9-4F3C-964C-BAD196A7959D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77A346C6-91C9-4F3C-964C-BAD196A7959D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77A346C6-91C9-4F3C-964C-BAD196A7959D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77A346C6-91C9-4F3C-964C-BAD196A7959D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B343C30B-4176-479D-8AA5-7DE2AE921320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B343C30B-4176-479D-8AA5-7DE2AE921320}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B343C30B-4176-479D-8AA5-7DE2AE921320}.Release|Any CPU.ActiveCfg = Release|Any CPU

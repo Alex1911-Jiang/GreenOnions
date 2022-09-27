@@ -164,7 +164,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsTags() + ex.Message);
+                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsStringTags() + ex.Message);
             }
         }
 
@@ -182,7 +182,7 @@ namespace GreenOnions.HPicture
                     YandeItem imgItem = await YandeApi.GetRandomHPictrue(strKeyword, bR18);
                     if (imgItem == null)
                     {
-                        SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsTags());
+                        SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsStringTags());
                         return;
                     }
                     GreenOnionsMessages outMessage = CreateOnceYandeHPicture(imgItem);
@@ -192,7 +192,7 @@ namespace GreenOnions.HPicture
                 }
                 catch (Exception ex)
                 {
-                    SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags() + ex.Message);
+                    SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags() + ex.Message);
                 }
             }
             RecordLimit(senderId, senderGroup, LimitType.Frequency);
@@ -211,7 +211,7 @@ namespace GreenOnions.HPicture
                     YandeItem imgItem = await YandeApi.GetRandomHPictrue(strKeyword, bR18);
                     if (imgItem == null)
                     {
-                        SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsTags());
+                        SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsStringTags());
                         return;
                     }
                     GreenOnionsMessages outMessage = CreateOnceYandeHPicture(imgItem);
@@ -230,7 +230,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsTags() + ex.Message);
+                SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags() + ex.Message);
             }
         }
 
@@ -267,7 +267,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                errorMessage = BotInfo.HPictureErrorReply.ReplaceGreenOnionsTags() + ex.Message;
+                errorMessage = BotInfo.HPictureErrorReply.ReplaceGreenOnionsStringTags() + ex.Message;
             }
             if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -279,7 +279,7 @@ namespace GreenOnions.HPicture
             string err = jo["error"].ToString();
             if (!string.IsNullOrWhiteSpace(err))//Api错误
             {
-                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsTags() + err);
+                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsStringTags() + err);
             }
 
             if (jt.Count() == 0)//没找到对应词条的色图;
@@ -300,7 +300,7 @@ namespace GreenOnions.HPicture
             if (enumImg == null)
             {
                 LogHelper.WriteErrorLog("Lolicon响应解析失败");
-                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsTags());  //发生错误
+                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsStringTags());  //发生错误
             }
 
             List<GreenOnionsMessages> outMessages = null;
@@ -411,7 +411,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsTags() + ex.Message);  //发生错误
+                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsStringTags() + ex.Message);  //发生错误
             }
         }
 

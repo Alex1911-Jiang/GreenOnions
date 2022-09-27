@@ -28,6 +28,7 @@ namespace GreenOnions.BotMain.CqHttp
                 ISoraService service = SoraServiceFactory.CreateService(new ClientConfig() { Host = ip, Port = port, AccessToken = accessToken });
                 service.Event.OnGroupMessage += MessageEvents.Event_OnGroupMessage;
                 service.Event.OnPrivateMessage += MessageEvents.Event_OnPrivateMessage;
+                service.Event.OnGroupMemberChange += MessageEvents.Event_OnGroupMemberChange;
 
                 bool connectCancel = false;
                 BotInfo.IsLogin = false;
@@ -74,7 +75,7 @@ namespace GreenOnions.BotMain.CqHttp
                             async (targetId, targetGroup, msg) => (await api.SendTemporaryMessage(targetId, targetGroup, msg.ToCqHttpMessages(null))).messageId,
                             async () => (await api.GetFriendList()).friendList.Select(f => new GreenOnionsFriendInfo(f.UserId, f.Nick, f.Remark)).ToList(),
                             async () => (await api.GetGroupList()).groupList.Select(g => new GreenOnionsGroupInfo(g.GroupId, g.GroupName)).ToList(),
-                            async (groupId) => (await api.GetGroupMemberList(groupId)).groupMemberList.Select(m => m.UserId).ToList(),
+                            async (groupId) => (await api.GetGroupMemberList(groupId)).groupMemberList.Select(m => m.ToGreenOnionsMemberInfo()).ToList(),
                             async (groupId, memberId) => (await api.GetGroupMemberInfo(groupId, memberId)).memberInfo.ToGreenOnionsMemberInfo()
                             );
                     }
