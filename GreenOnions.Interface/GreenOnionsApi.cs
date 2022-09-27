@@ -44,11 +44,6 @@ namespace GreenOnions.Interface
             _getMemberInfoAsync = getMemberInfoAsync;
         }
 
-        public void SS()
-        {
-            _sendFriendMessageAsync = null;
-        }
-
         /// <summary>
         /// 发送好友消息
         /// </summary>

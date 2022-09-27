@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAppSetting));
             this.chkDownloadImage4Caching = new System.Windows.Forms.CheckBox();
             this.chkSendImageByFile = new System.Windows.Forms.CheckBox();
             this.txbBotName = new System.Windows.Forms.TextBox();
@@ -196,11 +197,11 @@
             this.pageHPicture = new System.Windows.Forms.TabPage();
             this.pnlHPictureEnabeled = new System.Windows.Forms.Panel();
             this.chkHPictureYande_reSource = new System.Windows.Forms.CheckBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblHPicturePMRevoke_s = new System.Windows.Forms.Label();
+            this.lblHPicturePMCD_s = new System.Windows.Forms.Label();
+            this.lblHPictureWhiteRevoke_s = new System.Windows.Forms.Label();
+            this.lblHPictureWhiteCD_s = new System.Windows.Forms.Label();
+            this.lblHPictureRevoke_s = new System.Windows.Forms.Label();
             this.HPictureCD_s = new System.Windows.Forms.Label();
             this.chkHPictureSendByForward = new System.Windows.Forms.CheckBox();
             this.chkHPictureSendTags = new System.Windows.Forms.CheckBox();
@@ -339,52 +340,19 @@
             this.lblReadRssInterval = new System.Windows.Forms.Label();
             this.chkRssSendLiveCover = new System.Windows.Forms.CheckBox();
             this.chkRssEnabled = new System.Windows.Forms.CheckBox();
-            this.pageTicTacToe = new System.Windows.Forms.TabPage();
-            this.pnlTicTacToe = new System.Windows.Forms.Panel();
-            this.lblTicTacToeMoveFailReply = new System.Windows.Forms.Label();
-            this.txbTicTacToeMoveFailReply = new System.Windows.Forms.TextBox();
-            this.lblChessboard = new System.Windows.Forms.Label();
-            this.imgChessboard = new System.Windows.Forms.Panel();
-            this.lblTicTacToeIllegalMoveReply = new System.Windows.Forms.Label();
-            this.txbTicTacToeIllegalMoveReply = new System.Windows.Forms.TextBox();
-            this.lblTicTacToeNoMoveReply = new System.Windows.Forms.Label();
-            this.txbTicTacToeNoMoveReply = new System.Windows.Forms.TextBox();
-            this.lblTicTacToeDrawReply = new System.Windows.Forms.Label();
-            this.lblTicTacToeBotWinReply = new System.Windows.Forms.Label();
-            this.lblTicTacToePlayerWinReply = new System.Windows.Forms.Label();
-            this.txbTicTacToeDrawReply = new System.Windows.Forms.TextBox();
-            this.txbTicTacToeBotWinReply = new System.Windows.Forms.TextBox();
-            this.lblTicTacToeTimeoutReply = new System.Windows.Forms.Label();
-            this.txbTicTacToePlayerWinReply = new System.Windows.Forms.TextBox();
-            this.txbTicTacToeTimeoutReply = new System.Windows.Forms.TextBox();
-            this.pnlTicTacToeMoveMode = new System.Windows.Forms.Panel();
-            this.chkTicTacToeMoveModeOpenCV = new System.Windows.Forms.CheckBox();
-            this.chkTicTacToeMoveModeNomenclature = new System.Windows.Forms.CheckBox();
-            this.txbTicTacToeAlreadStopReply = new System.Windows.Forms.TextBox();
-            this.txbTicTacToeStoppedReply = new System.Windows.Forms.TextBox();
-            this.txbStopTicTacToeCmd = new System.Windows.Forms.TextBox();
-            this.txbTicTacToeAlreadyStartReply = new System.Windows.Forms.TextBox();
-            this.txbTicTacToeStartedReply = new System.Windows.Forms.TextBox();
-            this.txbStartTicTacToeCmd = new System.Windows.Forms.TextBox();
-            this.lblTicTacToeMoveMode = new System.Windows.Forms.Label();
-            this.lblTicTacToeAlreadStopReply = new System.Windows.Forms.Label();
-            this.lblTicTacToeStartedReply = new System.Windows.Forms.Label();
-            this.lblTicTacToeStoppedReply = new System.Windows.Forms.Label();
-            this.lblTicTacToeAlreadyStartReply = new System.Windows.Forms.Label();
-            this.lblStopTicTacToeCmd = new System.Windows.Forms.Label();
-            this.lblStartTicTacToeCmd = new System.Windows.Forms.Label();
-            this.chkTicTacToeEnabled = new System.Windows.Forms.CheckBox();
             this.pageAbout = new System.Windows.Forms.TabPage();
-            this.txbContributorGroup = new System.Windows.Forms.TextBox();
+            this.lnkPluginsUrl = new System.Windows.Forms.LinkLabel();
+            this.lblPlugins = new System.Windows.Forms.Label();
             this.lblContributorGroup = new System.Windows.Forms.Label();
             this.txbContributorName = new System.Windows.Forms.TextBox();
             this.txbContributorQQ = new System.Windows.Forms.TextBox();
-            this.lnkProjectURL = new System.Windows.Forms.LinkLabel();
+            this.lnkProjectUrl = new System.Windows.Forms.LinkLabel();
             this.lnkContributorGithub = new System.Windows.Forms.LinkLabel();
             this.lblProjectURL = new System.Windows.Forms.Label();
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
+            this.lnkJoinGroup = new System.Windows.Forms.LinkLabel();
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pnlBot.SuspendLayout();
@@ -415,9 +383,6 @@
             this.pageRss.SuspendLayout();
             this.pnlRss.SuspendLayout();
             this.pnlRssSubscriptionList.SuspendLayout();
-            this.pageTicTacToe.SuspendLayout();
-            this.pnlTicTacToe.SuspendLayout();
-            this.pnlTicTacToeMoveMode.SuspendLayout();
             this.pageAbout.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -507,7 +472,6 @@
             this.tabSettings.Controls.Add(this.pageGroupMemberEvents);
             this.tabSettings.Controls.Add(this.pageForgeMessage);
             this.tabSettings.Controls.Add(this.pageRss);
-            this.tabSettings.Controls.Add(this.pageTicTacToe);
             this.tabSettings.Controls.Add(this.pageAbout);
             this.tabSettings.Location = new System.Drawing.Point(14, 8);
             this.tabSettings.Margin = new System.Windows.Forms.Padding(4);
@@ -2279,11 +2243,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlHPictureEnabeled.AutoScroll = true;
             this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureYande_reSource);
-            this.pnlHPictureEnabeled.Controls.Add(this.label11);
-            this.pnlHPictureEnabeled.Controls.Add(this.label10);
-            this.pnlHPictureEnabeled.Controls.Add(this.label9);
-            this.pnlHPictureEnabeled.Controls.Add(this.label8);
-            this.pnlHPictureEnabeled.Controls.Add(this.label1);
+            this.pnlHPictureEnabeled.Controls.Add(this.lblHPicturePMRevoke_s);
+            this.pnlHPictureEnabeled.Controls.Add(this.lblHPicturePMCD_s);
+            this.pnlHPictureEnabeled.Controls.Add(this.lblHPictureWhiteRevoke_s);
+            this.pnlHPictureEnabeled.Controls.Add(this.lblHPictureWhiteCD_s);
+            this.pnlHPictureEnabeled.Controls.Add(this.lblHPictureRevoke_s);
             this.pnlHPictureEnabeled.Controls.Add(this.HPictureCD_s);
             this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureSendByForward);
             this.pnlHPictureEnabeled.Controls.Add(this.chkHPictureSendTags);
@@ -2364,50 +2328,50 @@
             this.chkHPictureYande_reSource.Text = "yande.re(需魔法上网)";
             this.chkHPictureYande_reSource.UseVisualStyleBackColor = true;
             // 
-            // label11
+            // lblHPicturePMRevoke_s
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(597, 555);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(22, 17);
-            this.label11.TabIndex = 28;
-            this.label11.Text = "(s)";
+            this.lblHPicturePMRevoke_s.AutoSize = true;
+            this.lblHPicturePMRevoke_s.Location = new System.Drawing.Point(597, 555);
+            this.lblHPicturePMRevoke_s.Name = "lblHPicturePMRevoke_s";
+            this.lblHPicturePMRevoke_s.Size = new System.Drawing.Size(22, 17);
+            this.lblHPicturePMRevoke_s.TabIndex = 28;
+            this.lblHPicturePMRevoke_s.Text = "(s)";
             // 
-            // label10
+            // lblHPicturePMCD_s
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(597, 517);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(22, 17);
-            this.label10.TabIndex = 27;
-            this.label10.Text = "(s)";
+            this.lblHPicturePMCD_s.AutoSize = true;
+            this.lblHPicturePMCD_s.Location = new System.Drawing.Point(597, 517);
+            this.lblHPicturePMCD_s.Name = "lblHPicturePMCD_s";
+            this.lblHPicturePMCD_s.Size = new System.Drawing.Size(22, 17);
+            this.lblHPicturePMCD_s.TabIndex = 27;
+            this.lblHPicturePMCD_s.Text = "(s)";
             // 
-            // label9
+            // lblHPictureWhiteRevoke_s
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(388, 556);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(22, 17);
-            this.label9.TabIndex = 26;
-            this.label9.Text = "(s)";
+            this.lblHPictureWhiteRevoke_s.AutoSize = true;
+            this.lblHPictureWhiteRevoke_s.Location = new System.Drawing.Point(388, 556);
+            this.lblHPictureWhiteRevoke_s.Name = "lblHPictureWhiteRevoke_s";
+            this.lblHPictureWhiteRevoke_s.Size = new System.Drawing.Size(22, 17);
+            this.lblHPictureWhiteRevoke_s.TabIndex = 26;
+            this.lblHPictureWhiteRevoke_s.Text = "(s)";
             // 
-            // label8
+            // lblHPictureWhiteCD_s
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(388, 517);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(22, 17);
-            this.label8.TabIndex = 25;
-            this.label8.Text = "(s)";
+            this.lblHPictureWhiteCD_s.AutoSize = true;
+            this.lblHPictureWhiteCD_s.Location = new System.Drawing.Point(388, 517);
+            this.lblHPictureWhiteCD_s.Name = "lblHPictureWhiteCD_s";
+            this.lblHPictureWhiteCD_s.Size = new System.Drawing.Size(22, 17);
+            this.lblHPictureWhiteCD_s.TabIndex = 25;
+            this.lblHPictureWhiteCD_s.Text = "(s)";
             // 
-            // label1
+            // lblHPictureRevoke_s
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(170, 555);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(22, 17);
-            this.label1.TabIndex = 24;
-            this.label1.Text = "(s)";
+            this.lblHPictureRevoke_s.AutoSize = true;
+            this.lblHPictureRevoke_s.Location = new System.Drawing.Point(170, 555);
+            this.lblHPictureRevoke_s.Name = "lblHPictureRevoke_s";
+            this.lblHPictureRevoke_s.Size = new System.Drawing.Size(22, 17);
+            this.lblHPictureRevoke_s.TabIndex = 24;
+            this.lblHPictureRevoke_s.Text = "(s)";
             // 
             // HPictureCD_s
             // 
@@ -3870,7 +3834,7 @@
             // 
             // btnAddRssSubscription
             // 
-            this.btnAddRssSubscription.Image = global::GreenOnions.BotManagerWindows.Resource.add;
+            this.btnAddRssSubscription.Image = ((System.Drawing.Image)(resources.GetObject("btnAddRssSubscription.Image")));
             this.btnAddRssSubscription.Location = new System.Drawing.Point(3, 3);
             this.btnAddRssSubscription.Name = "btnAddRssSubscription";
             this.btnAddRssSubscription.Size = new System.Drawing.Size(592, 150);
@@ -3918,370 +3882,15 @@
             this.chkRssEnabled.UseVisualStyleBackColor = true;
             this.chkRssEnabled.CheckedChanged += new System.EventHandler(this.chkRssEnabled_CheckedChanged);
             // 
-            // pageTicTacToe
-            // 
-            this.pageTicTacToe.Controls.Add(this.pnlTicTacToe);
-            this.pageTicTacToe.Controls.Add(this.chkTicTacToeEnabled);
-            this.pageTicTacToe.Location = new System.Drawing.Point(4, 26);
-            this.pageTicTacToe.Name = "pageTicTacToe";
-            this.pageTicTacToe.Size = new System.Drawing.Size(652, 687);
-            this.pageTicTacToe.TabIndex = 10;
-            this.pageTicTacToe.Text = "井字棋";
-            this.pageTicTacToe.UseVisualStyleBackColor = true;
-            // 
-            // pnlTicTacToe
-            // 
-            this.pnlTicTacToe.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeMoveFailReply);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeMoveFailReply);
-            this.pnlTicTacToe.Controls.Add(this.lblChessboard);
-            this.pnlTicTacToe.Controls.Add(this.imgChessboard);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeIllegalMoveReply);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeIllegalMoveReply);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeNoMoveReply);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeNoMoveReply);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeDrawReply);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeBotWinReply);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToePlayerWinReply);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeDrawReply);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeBotWinReply);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeTimeoutReply);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToePlayerWinReply);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeTimeoutReply);
-            this.pnlTicTacToe.Controls.Add(this.pnlTicTacToeMoveMode);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeAlreadStopReply);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeStoppedReply);
-            this.pnlTicTacToe.Controls.Add(this.txbStopTicTacToeCmd);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeAlreadyStartReply);
-            this.pnlTicTacToe.Controls.Add(this.txbTicTacToeStartedReply);
-            this.pnlTicTacToe.Controls.Add(this.txbStartTicTacToeCmd);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeMoveMode);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeAlreadStopReply);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeStartedReply);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeStoppedReply);
-            this.pnlTicTacToe.Controls.Add(this.lblTicTacToeAlreadyStartReply);
-            this.pnlTicTacToe.Controls.Add(this.lblStopTicTacToeCmd);
-            this.pnlTicTacToe.Controls.Add(this.lblStartTicTacToeCmd);
-            this.pnlTicTacToe.Enabled = false;
-            this.pnlTicTacToe.Location = new System.Drawing.Point(3, 35);
-            this.pnlTicTacToe.Name = "pnlTicTacToe";
-            this.pnlTicTacToe.Size = new System.Drawing.Size(646, 645);
-            this.pnlTicTacToe.TabIndex = 1;
-            // 
-            // lblTicTacToeMoveFailReply
-            // 
-            this.lblTicTacToeMoveFailReply.AutoSize = true;
-            this.lblTicTacToeMoveFailReply.Location = new System.Drawing.Point(10, 360);
-            this.lblTicTacToeMoveFailReply.Name = "lblTicTacToeMoveFailReply";
-            this.lblTicTacToeMoveFailReply.Size = new System.Drawing.Size(159, 17);
-            this.lblTicTacToeMoveFailReply.TabIndex = 29;
-            this.lblTicTacToeMoveFailReply.Text = "识别到格子已有棋子回复语: ";
-            // 
-            // txbTicTacToeMoveFailReply
-            // 
-            this.txbTicTacToeMoveFailReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeMoveFailReply.Location = new System.Drawing.Point(178, 357);
-            this.txbTicTacToeMoveFailReply.Name = "txbTicTacToeMoveFailReply";
-            this.txbTicTacToeMoveFailReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeMoveFailReply.TabIndex = 28;
-            // 
-            // lblChessboard
-            // 
-            this.lblChessboard.AutoSize = true;
-            this.lblChessboard.Location = new System.Drawing.Point(10, 520);
-            this.lblChessboard.Name = "lblChessboard";
-            this.lblChessboard.Size = new System.Drawing.Size(107, 17);
-            this.lblChessboard.TabIndex = 27;
-            this.lblChessboard.Text = "棋盘编号命名示例:";
-            // 
-            // imgChessboard
-            // 
-            this.imgChessboard.BackgroundImage = global::GreenOnions.BotManagerWindows.Resource.Chessboard;
-            this.imgChessboard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.imgChessboard.Location = new System.Drawing.Point(220, 422);
-            this.imgChessboard.Name = "imgChessboard";
-            this.imgChessboard.Size = new System.Drawing.Size(220, 220);
-            this.imgChessboard.TabIndex = 26;
-            // 
-            // lblTicTacToeIllegalMoveReply
-            // 
-            this.lblTicTacToeIllegalMoveReply.AutoSize = true;
-            this.lblTicTacToeIllegalMoveReply.Location = new System.Drawing.Point(10, 331);
-            this.lblTicTacToeIllegalMoveReply.Name = "lblTicTacToeIllegalMoveReply";
-            this.lblTicTacToeIllegalMoveReply.Size = new System.Drawing.Size(159, 17);
-            this.lblTicTacToeIllegalMoveReply.TabIndex = 25;
-            this.lblTicTacToeIllegalMoveReply.Text = "识别到下子多于一格回复语: ";
-            // 
-            // txbTicTacToeIllegalMoveReply
-            // 
-            this.txbTicTacToeIllegalMoveReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeIllegalMoveReply.Location = new System.Drawing.Point(178, 328);
-            this.txbTicTacToeIllegalMoveReply.Name = "txbTicTacToeIllegalMoveReply";
-            this.txbTicTacToeIllegalMoveReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeIllegalMoveReply.TabIndex = 24;
-            // 
-            // lblTicTacToeNoMoveReply
-            // 
-            this.lblTicTacToeNoMoveReply.AutoSize = true;
-            this.lblTicTacToeNoMoveReply.Location = new System.Drawing.Point(10, 302);
-            this.lblTicTacToeNoMoveReply.Name = "lblTicTacToeNoMoveReply";
-            this.lblTicTacToeNoMoveReply.Size = new System.Drawing.Size(135, 17);
-            this.lblTicTacToeNoMoveReply.TabIndex = 23;
-            this.lblTicTacToeNoMoveReply.Text = "没有识别到下子回复语: ";
-            // 
-            // txbTicTacToeNoMoveReply
-            // 
-            this.txbTicTacToeNoMoveReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeNoMoveReply.Location = new System.Drawing.Point(178, 299);
-            this.txbTicTacToeNoMoveReply.Name = "txbTicTacToeNoMoveReply";
-            this.txbTicTacToeNoMoveReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeNoMoveReply.TabIndex = 22;
-            // 
-            // lblTicTacToeDrawReply
-            // 
-            this.lblTicTacToeDrawReply.AutoSize = true;
-            this.lblTicTacToeDrawReply.Location = new System.Drawing.Point(10, 273);
-            this.lblTicTacToeDrawReply.Name = "lblTicTacToeDrawReply";
-            this.lblTicTacToeDrawReply.Size = new System.Drawing.Size(75, 17);
-            this.lblTicTacToeDrawReply.TabIndex = 21;
-            this.lblTicTacToeDrawReply.Text = "平局回复语: ";
-            // 
-            // lblTicTacToeBotWinReply
-            // 
-            this.lblTicTacToeBotWinReply.AutoSize = true;
-            this.lblTicTacToeBotWinReply.Location = new System.Drawing.Point(10, 244);
-            this.lblTicTacToeBotWinReply.Name = "lblTicTacToeBotWinReply";
-            this.lblTicTacToeBotWinReply.Size = new System.Drawing.Size(111, 17);
-            this.lblTicTacToeBotWinReply.TabIndex = 20;
-            this.lblTicTacToeBotWinReply.Text = "机器人获胜回复语: ";
-            // 
-            // lblTicTacToePlayerWinReply
-            // 
-            this.lblTicTacToePlayerWinReply.AutoSize = true;
-            this.lblTicTacToePlayerWinReply.Location = new System.Drawing.Point(10, 215);
-            this.lblTicTacToePlayerWinReply.Name = "lblTicTacToePlayerWinReply";
-            this.lblTicTacToePlayerWinReply.Size = new System.Drawing.Size(99, 17);
-            this.lblTicTacToePlayerWinReply.TabIndex = 19;
-            this.lblTicTacToePlayerWinReply.Text = "玩家获胜回复语: ";
-            // 
-            // txbTicTacToeDrawReply
-            // 
-            this.txbTicTacToeDrawReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeDrawReply.Location = new System.Drawing.Point(178, 270);
-            this.txbTicTacToeDrawReply.Name = "txbTicTacToeDrawReply";
-            this.txbTicTacToeDrawReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeDrawReply.TabIndex = 18;
-            // 
-            // txbTicTacToeBotWinReply
-            // 
-            this.txbTicTacToeBotWinReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeBotWinReply.Location = new System.Drawing.Point(178, 241);
-            this.txbTicTacToeBotWinReply.Name = "txbTicTacToeBotWinReply";
-            this.txbTicTacToeBotWinReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeBotWinReply.TabIndex = 17;
-            // 
-            // lblTicTacToeTimeoutReply
-            // 
-            this.lblTicTacToeTimeoutReply.AutoSize = true;
-            this.lblTicTacToeTimeoutReply.Location = new System.Drawing.Point(10, 186);
-            this.lblTicTacToeTimeoutReply.Name = "lblTicTacToeTimeoutReply";
-            this.lblTicTacToeTimeoutReply.Size = new System.Drawing.Size(99, 17);
-            this.lblTicTacToeTimeoutReply.TabIndex = 16;
-            this.lblTicTacToeTimeoutReply.Text = "对局超时回复语: ";
-            // 
-            // txbTicTacToePlayerWinReply
-            // 
-            this.txbTicTacToePlayerWinReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToePlayerWinReply.Location = new System.Drawing.Point(178, 212);
-            this.txbTicTacToePlayerWinReply.Name = "txbTicTacToePlayerWinReply";
-            this.txbTicTacToePlayerWinReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToePlayerWinReply.TabIndex = 15;
-            // 
-            // txbTicTacToeTimeoutReply
-            // 
-            this.txbTicTacToeTimeoutReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeTimeoutReply.Location = new System.Drawing.Point(178, 183);
-            this.txbTicTacToeTimeoutReply.Name = "txbTicTacToeTimeoutReply";
-            this.txbTicTacToeTimeoutReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeTimeoutReply.TabIndex = 14;
-            // 
-            // pnlTicTacToeMoveMode
-            // 
-            this.pnlTicTacToeMoveMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlTicTacToeMoveMode.Controls.Add(this.chkTicTacToeMoveModeOpenCV);
-            this.pnlTicTacToeMoveMode.Controls.Add(this.chkTicTacToeMoveModeNomenclature);
-            this.pnlTicTacToeMoveMode.Location = new System.Drawing.Point(178, 386);
-            this.pnlTicTacToeMoveMode.Name = "pnlTicTacToeMoveMode";
-            this.pnlTicTacToeMoveMode.Size = new System.Drawing.Size(451, 30);
-            this.pnlTicTacToeMoveMode.TabIndex = 13;
-            // 
-            // chkTicTacToeMoveModeOpenCV
-            // 
-            this.chkTicTacToeMoveModeOpenCV.AutoSize = true;
-            this.chkTicTacToeMoveModeOpenCV.Location = new System.Drawing.Point(3, 6);
-            this.chkTicTacToeMoveModeOpenCV.Name = "chkTicTacToeMoveModeOpenCV";
-            this.chkTicTacToeMoveModeOpenCV.Size = new System.Drawing.Size(75, 21);
-            this.chkTicTacToeMoveModeOpenCV.TabIndex = 5;
-            this.chkTicTacToeMoveModeOpenCV.Tag = "2";
-            this.chkTicTacToeMoveModeOpenCV.Text = "图像识别";
-            this.chkTicTacToeMoveModeOpenCV.UseVisualStyleBackColor = true;
-            // 
-            // chkTicTacToeMoveModeNomenclature
-            // 
-            this.chkTicTacToeMoveModeNomenclature.AutoSize = true;
-            this.chkTicTacToeMoveModeNomenclature.Location = new System.Drawing.Point(84, 6);
-            this.chkTicTacToeMoveModeNomenclature.Name = "chkTicTacToeMoveModeNomenclature";
-            this.chkTicTacToeMoveModeNomenclature.Size = new System.Drawing.Size(75, 21);
-            this.chkTicTacToeMoveModeNomenclature.TabIndex = 5;
-            this.chkTicTacToeMoveModeNomenclature.Tag = "4";
-            this.chkTicTacToeMoveModeNomenclature.Text = "回复格号";
-            this.chkTicTacToeMoveModeNomenclature.UseVisualStyleBackColor = true;
-            // 
-            // txbTicTacToeAlreadStopReply
-            // 
-            this.txbTicTacToeAlreadStopReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeAlreadStopReply.Location = new System.Drawing.Point(178, 154);
-            this.txbTicTacToeAlreadStopReply.Name = "txbTicTacToeAlreadStopReply";
-            this.txbTicTacToeAlreadStopReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeAlreadStopReply.TabIndex = 12;
-            // 
-            // txbTicTacToeStoppedReply
-            // 
-            this.txbTicTacToeStoppedReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeStoppedReply.Location = new System.Drawing.Point(178, 125);
-            this.txbTicTacToeStoppedReply.Name = "txbTicTacToeStoppedReply";
-            this.txbTicTacToeStoppedReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeStoppedReply.TabIndex = 11;
-            // 
-            // txbStopTicTacToeCmd
-            // 
-            this.txbStopTicTacToeCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbStopTicTacToeCmd.Location = new System.Drawing.Point(178, 96);
-            this.txbStopTicTacToeCmd.Name = "txbStopTicTacToeCmd";
-            this.txbStopTicTacToeCmd.Size = new System.Drawing.Size(451, 23);
-            this.txbStopTicTacToeCmd.TabIndex = 10;
-            // 
-            // txbTicTacToeAlreadyStartReply
-            // 
-            this.txbTicTacToeAlreadyStartReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeAlreadyStartReply.Location = new System.Drawing.Point(178, 67);
-            this.txbTicTacToeAlreadyStartReply.Name = "txbTicTacToeAlreadyStartReply";
-            this.txbTicTacToeAlreadyStartReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeAlreadyStartReply.TabIndex = 9;
-            // 
-            // txbTicTacToeStartedReply
-            // 
-            this.txbTicTacToeStartedReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTicTacToeStartedReply.Location = new System.Drawing.Point(178, 38);
-            this.txbTicTacToeStartedReply.Name = "txbTicTacToeStartedReply";
-            this.txbTicTacToeStartedReply.Size = new System.Drawing.Size(451, 23);
-            this.txbTicTacToeStartedReply.TabIndex = 8;
-            // 
-            // txbStartTicTacToeCmd
-            // 
-            this.txbStartTicTacToeCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbStartTicTacToeCmd.Location = new System.Drawing.Point(178, 9);
-            this.txbStartTicTacToeCmd.Name = "txbStartTicTacToeCmd";
-            this.txbStartTicTacToeCmd.Size = new System.Drawing.Size(451, 23);
-            this.txbStartTicTacToeCmd.TabIndex = 7;
-            // 
-            // lblTicTacToeMoveMode
-            // 
-            this.lblTicTacToeMoveMode.AutoSize = true;
-            this.lblTicTacToeMoveMode.Location = new System.Drawing.Point(10, 393);
-            this.lblTicTacToeMoveMode.Name = "lblTicTacToeMoveMode";
-            this.lblTicTacToeMoveMode.Size = new System.Drawing.Size(107, 17);
-            this.lblTicTacToeMoveMode.TabIndex = 6;
-            this.lblTicTacToeMoveMode.Text = "允许玩家下子方式:";
-            // 
-            // lblTicTacToeAlreadStopReply
-            // 
-            this.lblTicTacToeAlreadStopReply.AutoSize = true;
-            this.lblTicTacToeAlreadStopReply.Location = new System.Drawing.Point(10, 157);
-            this.lblTicTacToeAlreadStopReply.Name = "lblTicTacToeAlreadStopReply";
-            this.lblTicTacToeAlreadStopReply.Size = new System.Drawing.Size(111, 17);
-            this.lblTicTacToeAlreadStopReply.TabIndex = 4;
-            this.lblTicTacToeAlreadStopReply.Text = "未在对局中回复语: ";
-            // 
-            // lblTicTacToeStartedReply
-            // 
-            this.lblTicTacToeStartedReply.AutoSize = true;
-            this.lblTicTacToeStartedReply.Location = new System.Drawing.Point(10, 41);
-            this.lblTicTacToeStartedReply.Name = "lblTicTacToeStartedReply";
-            this.lblTicTacToeStartedReply.Size = new System.Drawing.Size(123, 17);
-            this.lblTicTacToeStartedReply.TabIndex = 3;
-            this.lblTicTacToeStartedReply.Text = "开启对局成功回复语: ";
-            // 
-            // lblTicTacToeStoppedReply
-            // 
-            this.lblTicTacToeStoppedReply.AutoSize = true;
-            this.lblTicTacToeStoppedReply.Location = new System.Drawing.Point(10, 128);
-            this.lblTicTacToeStoppedReply.Name = "lblTicTacToeStoppedReply";
-            this.lblTicTacToeStoppedReply.Size = new System.Drawing.Size(123, 17);
-            this.lblTicTacToeStoppedReply.TabIndex = 2;
-            this.lblTicTacToeStoppedReply.Text = "中止对局成功回复语: ";
-            // 
-            // lblTicTacToeAlreadyStartReply
-            // 
-            this.lblTicTacToeAlreadyStartReply.AutoSize = true;
-            this.lblTicTacToeAlreadyStartReply.Location = new System.Drawing.Point(10, 70);
-            this.lblTicTacToeAlreadyStartReply.Name = "lblTicTacToeAlreadyStartReply";
-            this.lblTicTacToeAlreadyStartReply.Size = new System.Drawing.Size(111, 17);
-            this.lblTicTacToeAlreadyStartReply.TabIndex = 1;
-            this.lblTicTacToeAlreadyStartReply.Text = "已在对局中回复语: ";
-            // 
-            // lblStopTicTacToeCmd
-            // 
-            this.lblStopTicTacToeCmd.AutoSize = true;
-            this.lblStopTicTacToeCmd.Location = new System.Drawing.Point(10, 99);
-            this.lblStopTicTacToeCmd.Name = "lblStopTicTacToeCmd";
-            this.lblStopTicTacToeCmd.Size = new System.Drawing.Size(87, 17);
-            this.lblStopTicTacToeCmd.TabIndex = 0;
-            this.lblStopTicTacToeCmd.Text = "中止对局命令: ";
-            // 
-            // lblStartTicTacToeCmd
-            // 
-            this.lblStartTicTacToeCmd.AutoSize = true;
-            this.lblStartTicTacToeCmd.Location = new System.Drawing.Point(10, 12);
-            this.lblStartTicTacToeCmd.Name = "lblStartTicTacToeCmd";
-            this.lblStartTicTacToeCmd.Size = new System.Drawing.Size(87, 17);
-            this.lblStartTicTacToeCmd.TabIndex = 0;
-            this.lblStartTicTacToeCmd.Text = "开启对局命令: ";
-            // 
-            // chkTicTacToeEnabled
-            // 
-            this.chkTicTacToeEnabled.AutoSize = true;
-            this.chkTicTacToeEnabled.Location = new System.Drawing.Point(9, 8);
-            this.chkTicTacToeEnabled.Name = "chkTicTacToeEnabled";
-            this.chkTicTacToeEnabled.Size = new System.Drawing.Size(111, 21);
-            this.chkTicTacToeEnabled.TabIndex = 0;
-            this.chkTicTacToeEnabled.Text = "启用井字棋功能";
-            this.chkTicTacToeEnabled.UseVisualStyleBackColor = true;
-            this.chkTicTacToeEnabled.CheckedChanged += new System.EventHandler(this.chkTicTacToeEnabled_CheckedChanged);
-            // 
             // pageAbout
             // 
-            this.pageAbout.Controls.Add(this.txbContributorGroup);
+            this.pageAbout.Controls.Add(this.lnkPluginsUrl);
+            this.pageAbout.Controls.Add(this.lblPlugins);
             this.pageAbout.Controls.Add(this.lblContributorGroup);
             this.pageAbout.Controls.Add(this.txbContributorName);
             this.pageAbout.Controls.Add(this.txbContributorQQ);
-            this.pageAbout.Controls.Add(this.lnkProjectURL);
+            this.pageAbout.Controls.Add(this.lnkProjectUrl);
+            this.pageAbout.Controls.Add(this.lnkJoinGroup);
             this.pageAbout.Controls.Add(this.lnkContributorGithub);
             this.pageAbout.Controls.Add(this.lblProjectURL);
             this.pageAbout.Controls.Add(this.lblContributorGithub);
@@ -4295,16 +3904,26 @@
             this.pageAbout.Text = "关于";
             this.pageAbout.UseVisualStyleBackColor = true;
             // 
-            // txbContributorGroup
+            // lnkPluginsUrl
             // 
-            this.txbContributorGroup.BackColor = System.Drawing.Color.White;
-            this.txbContributorGroup.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txbContributorGroup.Location = new System.Drawing.Point(116, 111);
-            this.txbContributorGroup.Name = "txbContributorGroup";
-            this.txbContributorGroup.ReadOnly = true;
-            this.txbContributorGroup.Size = new System.Drawing.Size(100, 16);
-            this.txbContributorGroup.TabIndex = 4;
-            this.txbContributorGroup.Text = "550398174";
+            this.lnkPluginsUrl.AutoSize = true;
+            this.lnkPluginsUrl.Location = new System.Drawing.Point(116, 218);
+            this.lnkPluginsUrl.Name = "lnkPluginsUrl";
+            this.lnkPluginsUrl.Size = new System.Drawing.Size(332, 17);
+            this.lnkPluginsUrl.TabIndex = 6;
+            this.lnkPluginsUrl.TabStop = true;
+            this.lnkPluginsUrl.Text = "https://github.com/Alex1911-Jiang/GreenOnions.Plugins";
+            this.lnkPluginsUrl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkResetHPicture_LinkClicked);
+            // 
+            // lblPlugins
+            // 
+            this.lblPlugins.AutoSize = true;
+            this.lblPlugins.Location = new System.Drawing.Point(36, 218);
+            this.lblPlugins.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPlugins.Name = "lblPlugins";
+            this.lblPlugins.Size = new System.Drawing.Size(59, 17);
+            this.lblPlugins.TabIndex = 5;
+            this.lblPlugins.Text = "插件列表:";
             // 
             // lblContributorGroup
             // 
@@ -4338,16 +3957,16 @@
             this.txbContributorQQ.TabIndex = 2;
             this.txbContributorQQ.Text = "774345562";
             // 
-            // lnkProjectURL
+            // lnkProjectUrl
             // 
-            this.lnkProjectURL.AutoSize = true;
-            this.lnkProjectURL.Location = new System.Drawing.Point(116, 182);
-            this.lnkProjectURL.Name = "lnkProjectURL";
-            this.lnkProjectURL.Size = new System.Drawing.Size(288, 17);
-            this.lnkProjectURL.TabIndex = 1;
-            this.lnkProjectURL.TabStop = true;
-            this.lnkProjectURL.Text = "https://github.com/Alex1911-Jiang/GreenOnions";
-            this.lnkProjectURL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkContributorGithub_LinkClicked);
+            this.lnkProjectUrl.AutoSize = true;
+            this.lnkProjectUrl.Location = new System.Drawing.Point(116, 182);
+            this.lnkProjectUrl.Name = "lnkProjectUrl";
+            this.lnkProjectUrl.Size = new System.Drawing.Size(288, 17);
+            this.lnkProjectUrl.TabIndex = 1;
+            this.lnkProjectUrl.TabStop = true;
+            this.lnkProjectUrl.Text = "https://github.com/Alex1911-Jiang/GreenOnions";
+            this.lnkProjectUrl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkContributorGithub_LinkClicked);
             // 
             // lnkContributorGithub
             // 
@@ -4399,6 +4018,17 @@
             this.lblContributorName.Size = new System.Drawing.Size(35, 17);
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
+            // 
+            // lnkJoinGroup
+            // 
+            this.lnkJoinGroup.AutoSize = true;
+            this.lnkJoinGroup.Location = new System.Drawing.Point(116, 111);
+            this.lnkJoinGroup.Name = "lnkJoinGroup";
+            this.lnkJoinGroup.Size = new System.Drawing.Size(71, 17);
+            this.lnkJoinGroup.TabIndex = 1;
+            this.lnkJoinGroup.TabStop = true;
+            this.lnkJoinGroup.Text = "550398174";
+            this.lnkJoinGroup.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkJoinGroup_LinkClicked);
             // 
             // FrmAppSetting
             // 
@@ -4470,12 +4100,6 @@
             this.pnlRss.ResumeLayout(false);
             this.pnlRss.PerformLayout();
             this.pnlRssSubscriptionList.ResumeLayout(false);
-            this.pageTicTacToe.ResumeLayout(false);
-            this.pageTicTacToe.PerformLayout();
-            this.pnlTicTacToe.ResumeLayout(false);
-            this.pnlTicTacToe.PerformLayout();
-            this.pnlTicTacToeMoveMode.ResumeLayout(false);
-            this.pnlTicTacToeMoveMode.PerformLayout();
             this.pageAbout.ResumeLayout(false);
             this.pageAbout.PerformLayout();
             this.ResumeLayout(false);
@@ -4602,7 +4226,7 @@
         private System.Windows.Forms.TextBox txbContributorQQ;
         private System.Windows.Forms.LinkLabel lnkContributorGithub;
         private System.Windows.Forms.TextBox txbContributorName;
-        private System.Windows.Forms.LinkLabel lnkProjectURL;
+        private System.Windows.Forms.LinkLabel lnkProjectUrl;
         private System.Windows.Forms.Label lblProjectURL;
         private System.Windows.Forms.CheckBox chkHPictureEnabledLoliconSource;
         private System.Windows.Forms.CheckBox chkRevokeBeautyPicture;
@@ -4727,45 +4351,9 @@
         private System.Windows.Forms.Label lblTranslateFromTo;
         private System.Windows.Forms.Label lblSauceNAOApiKeyInfo;
         private System.Windows.Forms.Label lblTraceMoeSendThresholdInfo;
-        private System.Windows.Forms.TabPage pageTicTacToe;
-        private System.Windows.Forms.Panel pnlTicTacToe;
-        private System.Windows.Forms.CheckBox chkTicTacToeEnabled;
-        private System.Windows.Forms.Label lblStartTicTacToeCmd;
-        private System.Windows.Forms.TextBox txbTicTacToeAlreadStopReply;
-        private System.Windows.Forms.TextBox txbTicTacToeStoppedReply;
-        private System.Windows.Forms.TextBox txbStopTicTacToeCmd;
-        private System.Windows.Forms.TextBox txbTicTacToeAlreadyStartReply;
-        private System.Windows.Forms.TextBox txbTicTacToeStartedReply;
-        private System.Windows.Forms.TextBox txbStartTicTacToeCmd;
-        private System.Windows.Forms.Label lblTicTacToeMoveMode;
-        private System.Windows.Forms.CheckBox chkTicTacToeMoveModeNomenclature;
-        private System.Windows.Forms.CheckBox chkTicTacToeMoveModeOpenCV;
-        private System.Windows.Forms.Label lblTicTacToeAlreadStopReply;
-        private System.Windows.Forms.Label lblTicTacToeStartedReply;
-        private System.Windows.Forms.Label lblTicTacToeStoppedReply;
-        private System.Windows.Forms.Label lblTicTacToeAlreadyStartReply;
-        private System.Windows.Forms.Label lblStopTicTacToeCmd;
-        private System.Windows.Forms.Panel pnlTicTacToeMoveMode;
-        private System.Windows.Forms.Label lblTicTacToeDrawReply;
-        private System.Windows.Forms.Label lblTicTacToeBotWinReply;
-        private System.Windows.Forms.Label lblTicTacToePlayerWinReply;
-        private System.Windows.Forms.TextBox txbTicTacToeDrawReply;
-        private System.Windows.Forms.TextBox txbTicTacToeBotWinReply;
-        private System.Windows.Forms.Label lblTicTacToeTimeoutReply;
-        private System.Windows.Forms.TextBox txbTicTacToePlayerWinReply;
-        private System.Windows.Forms.TextBox txbTicTacToeTimeoutReply;
-        private System.Windows.Forms.Label lblTicTacToeIllegalMoveReply;
-        private System.Windows.Forms.TextBox txbTicTacToeIllegalMoveReply;
-        private System.Windows.Forms.Label lblTicTacToeNoMoveReply;
-        private System.Windows.Forms.TextBox txbTicTacToeNoMoveReply;
-        private System.Windows.Forms.Panel imgChessboard;
-        private System.Windows.Forms.Label lblChessboard;
-        private System.Windows.Forms.Label lblTicTacToeMoveFailReply;
-        private System.Windows.Forms.TextBox txbTicTacToeMoveFailReply;
         private System.Windows.Forms.Label lblLogLevel;
         private System.Windows.Forms.ComboBox cboLogLevel;
         private System.Windows.Forms.CheckBox chkSauceNAORequestByWebBrowser;
-        private System.Windows.Forms.TextBox txbContributorGroup;
         private System.Windows.Forms.Label lblContributorGroup;
         private System.Windows.Forms.CheckBox chkSearchSendByForward;
         private System.Windows.Forms.Label lblSearchDownloadThuImageFailReply;
@@ -4835,11 +4423,14 @@
         private System.Windows.Forms.ComboBox cboWorkingTimeToMinute;
         private System.Windows.Forms.ComboBox cboWorkingTimeFromMinute;
         private System.Windows.Forms.Label HPictureCD_s;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblHPictureRevoke_s;
+        private System.Windows.Forms.Label lblHPicturePMRevoke_s;
+        private System.Windows.Forms.Label lblHPicturePMCD_s;
+        private System.Windows.Forms.Label lblHPictureWhiteRevoke_s;
+        private System.Windows.Forms.Label lblHPictureWhiteCD_s;
         private System.Windows.Forms.CheckBox chkHPictureYande_reSource;
+        private LinkLabel lnkPluginsUrl;
+        private Label lblPlugins;
+        private LinkLabel lnkJoinGroup;
     }
 }

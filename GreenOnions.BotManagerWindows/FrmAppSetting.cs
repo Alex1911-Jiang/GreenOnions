@@ -733,8 +733,6 @@ namespace GreenOnions.BotManagerWindows
 
         private void chkTranslateEnabled_CheckedChanged(object sender, EventArgs e) => pnlTranslate.Enabled = chkTranslateEnabled.Checked;
 
-        private void chkTicTacToeEnabled_CheckedChanged(object sender, EventArgs e) => pnlTicTacToe.Enabled = chkTicTacToeEnabled.Checked;
-
         private void chkHPictureSendUrl_CheckedChanged(object sender, EventArgs e) => chkHPictureSendTags.Enabled = chkHPictureSendUrl.Checked;
 
         private void chkAutoConnectEnabled_CheckedChanged(object sender, EventArgs e) => pnlAutoConnect.Enabled = chkAutoConnectEnabled.Checked;
@@ -742,5 +740,10 @@ namespace GreenOnions.BotManagerWindows
         private void chkSearchASCII2DEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchAscii2d.Enabled = chkSearchASCII2DEnabled.Checked;
 
         private void chkWorkingTimeEnabled_CheckedChanged(object sender, EventArgs e) => pnlWorkingTime.Enabled = chkWorkingTimeEnabled.Checked;
+
+        private void lnkJoinGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("explorer.exe", "https://jq.qq.com/?_wv=1027&k=rJ7RA3SF");
+        }
     }
 }
