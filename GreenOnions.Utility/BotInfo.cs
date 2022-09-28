@@ -1161,8 +1161,10 @@ namespace GreenOnions.Utility
             get
             {
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(EnabledHPictureSource));
-                if (string.IsNullOrEmpty(strValue))
+                if (strValue == null)
                     return new List<PictureSource>() { 0 };
+                if (string.IsNullOrEmpty(strValue))
+                    return new List<PictureSource>();
                 return strValue.Split(';').Select(s => (PictureSource)Enum.Parse(typeof(PictureSource), s)).ToList();
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(EnabledHPictureSource), string.Join(";", value));
@@ -1177,8 +1179,10 @@ namespace GreenOnions.Utility
             get
             {
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureUserCmd));
-                if (string.IsNullOrEmpty(strValue))
+                if (strValue == null)
                     return new List<string>() { "--setu" };
+                if (string.IsNullOrEmpty(strValue))
+                    return new List<string>();
                 return strValue.Split(';').ToList();
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureUserCmd), string.Join(";", value));
@@ -2008,7 +2012,8 @@ namespace GreenOnions.Utility
             get
             {
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameRss, nameof(RssSubscription));
-                if (strValue == null) return null;
+                if (strValue == null) 
+                    return null;
                 return JsonConvert.DeserializeObject<List<RssSubscriptionItem>>(strValue);
             }
             set
