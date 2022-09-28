@@ -17,12 +17,13 @@
 - [x] 3. [trace.moe](https://trace.moe/) 搜番<br>
 - [x] 4. [lolicon](https://api.lolicon.app/#/setu) setu<br>
 - [x] 5. 群友 [Quan](https://github.com/Quan666) 的 [ELF图库](http://img.shab.fun:5000/) 美图<br>
-- [x] 6. 有道网页翻译和[GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi) 翻译<br>
+- [x] 6. 有道网页翻译和 [GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi) 翻译<br>
 - [x] 7. 随机复读, 连续复读, 镜像复读图片和倒带gif(可配置触发几率)<br>
 - [x] 8. 新人入群/退群/被踢提醒(支持定义)<br>
 - [x] 9. RSS订阅转发<br>
 - [x] 10. 下载Pixiv原图(通过[pixiv.cat](https://pixiv.cat/))<br>
-- [x] 11. 使用表情涂鸦游玩的井字棋功能 (其实是自己学习[OpenCVsharp](https://github.com/shimat/opencvsharp)过程中搞出来的, 随手搬上了bot上, 但实际由于涂鸦完还要转发, 步骤太多所以下棋体验极差, 而且仅限64位系统可用)<br>
+- [x] 11. ~~使用表情涂鸦游玩的井字棋功能 (其实是自己学习[OpenCVsharp](https://github.com/shimat/opencvsharp)过程中搞出来的, 随手搬上了bot上, 但实际由于涂鸦完还要转发, 步骤太多所以下棋体验极差)~~ 迁移到 [插件仓库](https://github.com/Alex1911-Jiang/GreenOnions.Plugins) 了<br>
+- [x] 12. [yande](yande.re/post) setu
 
 ### 项目优势:
 
@@ -39,7 +40,7 @@
 
 #### 首先, 这里有两个平台, 先选择一个顺眼的, 别两个都弄
 
-### OneBot(Cq-Http)平台：
+### OneBot 平台：
 
 #### 一、环境配置:
 
@@ -47,7 +48,7 @@
 2. 下载并安装 Microsoft Visual C++ 2015-2019 Redistributable ( [x64](https://aka.ms/vs/16/release/vc_redist.x64.exe) | [x86](https://aka.ms/vs/16/release/vc_redist.x86.exe) )<br>
 3. 到 [.Net6官网](https://dotnet.microsoft.com/download/dotnet/6.0) 找到.NET Desktop Runtime下载对应自己系统架构的 Installers 版本安装<br>
 
-#### 二、安装机器人框架([go-cqhttp](https://github.com/Mrs4s/go-cqhttp))
+#### 二、安装机器人框架 ([go-cqhttp](https://github.com/Mrs4s/go-cqhttp))
 
 1. 到 [go-cqhttp/Release](https://github.com/Mrs4s/go-cqhttp/releases) 下载 go-cqhttp (注意选对系统)<br>
 2. 双击运行 go-cqhttp.exe 点击"是", 创建启动脚本<br>
@@ -70,7 +71,7 @@
 #### 大功告成
 
 
-### Mirai-Api-Http平台：
+### Mirai-Api-Http 平台：
 
 #### 一、环境配置:
 
@@ -82,7 +83,7 @@
 6. 打开 算机属性-高级系统设置-高级-环境变量 在下方系统变量栏中新建一项 变量"JAVA_HOME" 值"C:\Program Files\Java\jdk-xx.x" (不包括引号,x为版本号)<br>
 7. 编辑系统变量Path, 添加一项"%JAVA_HOME%\bin"<br>
 
-#### 二、安装机器人框架([mirai-console-loader](https://github.com/iTXTech/mirai-console-loader))
+#### 二、安装机器人框架 ([mirai-console-loader](https://github.com/iTXTech/mirai-console-loader))
 
 1. 到 [mirai-console-loader/releases](https://github.com/iTXTech/mirai-console-loader/releases) 下载MCL (尽量选择不带beta的最新版, .zip结尾的那个)<br>
 2. 通过MCL安装 [mirai-api-http](https://github.com/project-mirai/mirai-api-http)<br>
@@ -177,16 +178,17 @@
 *过滤模式: 0=不过滤, 1=包含任一, 2=包含所有, 3=不包含
 
 
-###### 至于为什么叫葱葱, 一是一开始是给某初音群用的, 叫这个名字可以打压某助手, 二是早期没自己开发的时候使用 [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot) 的机器人叫竹竹, 就想找个类似的名字<br>
+###### 至于为什么叫葱葱, ~~一是一开始是给某初音群用的, 叫这个名字可以打压某助手~~(屠龙者终成恶龙, 现在葱葱小助手2.0也是我写的了, 不信对它发/GreenOnions试试), 二是早期没自己开发的时候使用 [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot) 的机器人叫竹竹, 就想找个类似的名字<br>
 
 ### 短期计划(TODO):
 
 1.E-Hentai关键词色图<br>
-2.群友要求萌娘百科语音报时(应该会做成插件)<br>
+2.适配几个群友提的图库<br>
+3.适配 [Konata.Core](https://github.com/KonataDev/Konata.Core) 平台
 
 ### 长期计划(GUDO):
 1.把System.Drawing替换为其他~~更轻量~~的跨平台图形库(准备暂时先用CV), 取消Linux系统下对Mono的依赖<br>
-2.把内嵌浏览器([CefSharp](https://github.com/cefsharp/CefSharp))和井字棋([OpenCVsharp](https://github.com/shimat/opencvsharp))分别搬出到独立的仓库里, 改为插件式加载, 取消强制依赖(毕竟没什么人用的功能占了500MB大小我自己也是多少带点...)<br>
+2.把内嵌浏览器([CefSharp](https://github.com/cefsharp/CefSharp))搬出到独立的仓库里, 改为插件式加载<br>
 3.添加一个RSS监控功能(沙雕群友自己网络有问题整天怪在我头上)<br>
 4.部分功能使用代理(而不需要全局代理?)<br>
 5.添加一个网站管理端?<br>
