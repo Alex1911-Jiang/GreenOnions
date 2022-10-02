@@ -424,7 +424,7 @@ namespace GreenOnions.HPicture
 
         private static GreenOnionsImageMessage CreateImageMessage(string url, string cacheName)
         {
-            GreenOnionsImageMessage imageMsg;
+            GreenOnionsImageMessage imageMsg = null;
             if (File.Exists(cacheName) && new FileInfo(cacheName).Length > 0) //存在本地缓存时优先使用缓存
             {
                 imageMsg = new GreenOnionsImageMessage(cacheName);  //上传图片
@@ -434,7 +434,8 @@ namespace GreenOnions.HPicture
                 if (BotInfo.SendImageByFile)  //下载完成后发送文件
                 {
                     HttpHelper.DownloadImageFile(url, cacheName);
-                    imageMsg = new GreenOnionsImageMessage(cacheName);
+                    if (File.Exists(cacheName))
+                        imageMsg = new GreenOnionsImageMessage(cacheName);
                 }
                 else
                 {

@@ -140,13 +140,20 @@ namespace GreenOnions.Utility.Helper
 
         public static async void DownloadImageFile(string url, string fileName)
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                byte[] file = await client.GetByteArrayAsync(url);
-                string cacheDir = Path.GetDirectoryName(fileName);
-                if (!string.IsNullOrEmpty(cacheDir) && !Directory.Exists(cacheDir))
-                    Directory.CreateDirectory(cacheDir);
-                File.WriteAllBytes(fileName, file);
+                using (HttpClient client = new HttpClient())
+                {
+                    byte[] file = await client.GetByteArrayAsync(url);
+                    string cacheDir = Path.GetDirectoryName(fileName);
+                    if (!string.IsNullOrEmpty(cacheDir) && !Directory.Exists(cacheDir))
+                        Directory.CreateDirectory(cacheDir);
+                    File.WriteAllBytes(fileName, file);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteErrorLogWithUserMessage("下载文件失败", ex);
             }
         }
 

@@ -288,7 +288,8 @@ namespace GreenOnions.RSS
             {
                 string imgName = Path.Combine(ImageHelper.ImagePath, $"RSS_{Path.GetFileName(url)})");
                 HttpHelper.DownloadImageFile(url, imgName);
-                return imgName;
+                if (File.Exists(imgName))
+                    return imgName;
             }
             return url;
         }

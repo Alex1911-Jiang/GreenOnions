@@ -372,7 +372,8 @@ namespace GreenOnions.PictureSearcher
                         if (BotInfo.SendImageByFile)  //下载完成后发送文件
                         {
                             HttpHelper.DownloadImageFile(imgUrl, imgName);
-                            message.Add(new GreenOnionsImageMessage(imgName));
+                            if (File.Exists(imgName))
+                                message.Add(new GreenOnionsImageMessage(imgName));
                         }
                         else
                         {
@@ -762,7 +763,11 @@ namespace GreenOnions.PictureSearcher
                                             if (BotInfo.SearchSendByForward)
                                                 outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
                                             else
-                                                SendMessage(new GreenOnionsImageMessage(DownloadImageArchive(imgUrlHasP, SauceNAOItem.pixiv_id, p)));
+                                            {
+                                                string strFileName = DownloadImageArchive(imgUrlHasP, SauceNAOItem.pixiv_id, p);
+                                                if (File.Exists(strFileName))
+                                                    SendMessage(new GreenOnionsImageMessage(strFileName));
+                                            }
                                         }
 
                                         //下载原图并存储
