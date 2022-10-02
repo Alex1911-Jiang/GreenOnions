@@ -286,7 +286,7 @@ namespace GreenOnions.RSS
         {
             if (BotInfo.SendImageByFile)  //下载完成后发送文件
             {
-                string imgName = Path.Combine(ImageHelper.ImagePath, $"RSS_{Path.GetFileName(url)})");
+                string imgName = Path.Combine(ImageHelper.ImagePath, $"RSS_{Path.GetFileName(url)}");
                 HttpHelper.DownloadImageFile(url, imgName);
                 if (File.Exists(imgName))
                     return imgName;
