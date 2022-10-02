@@ -22,6 +22,7 @@ namespace GreenOnions.RSS
         private static Dictionary<string, Task> ReadingTasks = new Dictionary<string, Task>();
         public static void StartRssTask(Action<GreenOnionsMessages, long, long> SendMessage)
         {
+            LogHelper.WriteInfoLog("启动RSS功能");
             if (BotInfo.RssEnabled && BotInfo.IsLogin)
             {
                 if (_RssWorker != null && !_RssWorker.IsCompleted && !_RssWorker.IsCanceled && !_RssWorker.IsFaulted)
@@ -307,7 +308,7 @@ namespace GreenOnions.RSS
         {
             if (BotInfo.SendImageByFile)  //下载完成后发送文件
             {
-                string imgName = $"RSS_{Path.GetFileName(url)}";
+                string imgName = Path.Combine(ImageHelper.ImagePath, $"RSS_{Path.GetFileName(url)})");
                 HttpHelper.DownloadImageFile(url, imgName);
                 return imgName;
             }

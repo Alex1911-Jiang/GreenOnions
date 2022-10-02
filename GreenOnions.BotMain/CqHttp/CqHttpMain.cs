@@ -68,6 +68,36 @@ namespace GreenOnions.BotMain.CqHttp
 
                         BotInfo.IsLogin = true;
 
+                        try
+                        {
+                            RssWorker.StartRssTask((msgs, targetId, groupId) =>
+                            {
+                                SoraApi api = service.GetApi(service.ServiceId);
+                                if (msgs != null && msgs.Count > 0)
+                                {
+                                    if (msgs.FirstOrDefault() is GreenOnionsForwardMessage)
+                                    {
+                                        if (targetId != -1)
+                                            _ = api.SendPrivateForwardMsg(targetId, msgs.ToCqHttpForwardMessage());
+                                        else if (groupId != -1)
+                                            _ = api.SendGroupForwardMsg(groupId, msgs.ToCqHttpForwardMessage());
+                                    }
+                                    else
+                                    {
+                                        if (targetId != -1)
+                                            _ = api.SendPrivateMessage(targetId, msgs.ToCqHttpMessages(null));
+                                        else if (groupId != -1)
+                                            _ = api.SendGroupMessage(groupId, msgs.ToCqHttpMessages(null));
+                                    }
+                                }
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            LogHelper.WriteErrorLogWithUserMessage("启动RSS抓取线程发生错误", ex);
+                            throw;
+                        }
+
                         PluginManager.Connected(
                             BotInfo.QQId,
                             async (targetId, msg) => (await api.SendPrivateMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
@@ -80,36 +110,6 @@ namespace GreenOnions.BotMain.CqHttp
                             );
                     }
                 };
-
-                try
-                {
-                    RssWorker.StartRssTask((msgs, targetId, groupId) =>
-                    {
-                        SoraApi api = service.GetApi(service.ServiceId);
-                        if (msgs != null && msgs.Count > 0)
-                        {
-                            if (msgs.FirstOrDefault() is GreenOnionsForwardMessage)
-                            {
-                                if (targetId != -1)
-                                    _ = api.SendPrivateForwardMsg(targetId, msgs.ToCqHttpForwardMessage());
-                                else if (groupId != -1)
-                                    _ = api.SendGroupForwardMsg(groupId, msgs.ToCqHttpForwardMessage());
-                            }
-                            else
-                            {
-                                if (targetId != -1)
-                                    _ = api.SendPrivateMessage(targetId, msgs.ToCqHttpMessages(null));
-                                else if (groupId != -1)
-                                    _ = api.SendGroupMessage(groupId, msgs.ToCqHttpMessages(null));
-                            }
-                        }
-                    });
-                }
-                catch (Exception ex)
-                {
-                    LogHelper.WriteErrorLogWithUserMessage("启动RSS抓取线程发生错误", ex);
-                    throw;
-                }
 
                 while (true)
                 {

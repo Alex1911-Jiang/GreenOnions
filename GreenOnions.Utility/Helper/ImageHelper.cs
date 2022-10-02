@@ -24,7 +24,7 @@ namespace GreenOnions.Utility.Helper
 
         static ImageHelper()
         {
-            _imagePath = Path.Combine(Environment.CurrentDirectory, "Image");
+            _imagePath = Path.Combine(Environment.CurrentDirectory, "Images");
         }
 
         /// <summary>
