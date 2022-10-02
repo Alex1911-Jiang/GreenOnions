@@ -77,11 +77,9 @@ namespace GreenOnions.HPicture
                 if (matchMessage.Groups["关键词"].Success)
                     strKeyword = matchMessage.Groups["关键词"].Value;
 
-                if (!string.IsNullOrWhiteSpace(strKeyword) && strKeyword.Length > 1)
-                {
-                    if (strKeyword.EndsWith("的"))
-                        strKeyword = strKeyword.Remove(strKeyword.Length - 1, 1);
-                }
+                if (BotInfo.HPictureShieldingWords.Contains(strKeyword))  //屏蔽词
+                    return;
+
                 #endregion  -- 关键词 --
 
                 bool bR18 = false;
@@ -111,10 +109,17 @@ namespace GreenOnions.HPicture
                 if (!matchMessage.Groups.ContainsKey("色图后缀") && !matchMessage.Groups.ContainsKey("美图后缀"))
                     bNonSourceSuffix = true;  //命令不含任何后缀组
 
-                if (matchMessage.Groups["色图后缀"].Success || bNonSourceSuffix)  //指定色图后缀或不含后缀组时使用色图
+                PictureSource pictureSource = (PictureSource)(-1);
+                if (bNonSourceSuffix)
+                    pictureSource = (PictureSource)BotInfo.HPictureDefaultSource;
+
+                if (matchMessage.Groups["色图后缀"].Success || BotInfo.EnabledHPictureSource.Contains(pictureSource))  //指定色图后缀或不含后缀组时使用色图
                 {
-                    Random r = new Random(Guid.NewGuid().GetHashCode());
-                    PictureSource pictureSource = BotInfo.EnabledHPictureSource[r.Next(0, BotInfo.EnabledHPictureSource.Count)];
+                    if (!bNonSourceSuffix)
+                    {
+                        Random r = new Random(Guid.NewGuid().GetHashCode());
+                        pictureSource = BotInfo.EnabledHPictureSource[r.Next(0, BotInfo.EnabledHPictureSource.Count)];
+                    }
 
                     if (pictureSource == PictureSource.Lolicon)
                     {
@@ -134,10 +139,6 @@ namespace GreenOnions.HPicture
                         strHttpRequest = $@"https://api.lolicon.app/setu/v2?num={lImgCount}&proxy=i.{BotInfo.PixivProxy}&r18={(bR18 ? "1" : "0")}{keyword}&size={size}";
                         _ = SendLoliconHPicture(senderId, senderGroup, strHttpRequest, size, SendMessage);
                     }
-                    else if (pictureSource == PictureSource.GreenOnions)
-                    {
-
-                    }
                     else if (pictureSource == PictureSource.Yande_re)
                     {
                         if (BotInfo.HPictureSendByForward)  //合并转发
@@ -146,19 +147,18 @@ namespace GreenOnions.HPicture
                             SendYandeHPicture(senderId, senderGroup, lImgCount, strKeyword, bR18, SendMessage);
                     }
                 }
-                else if (matchMessage.Groups["美图后缀"].Success)
+                else if (matchMessage.Groups["美图后缀"].Success || BotInfo.EnabledBeautyPictureSource.Contains(pictureSource))
                 {
-                    Random r = new Random(Guid.NewGuid().GetHashCode());
-                    PictureSource pictureSource = BotInfo.EnabledBeautyPictureSource[r.Next(0, BotInfo.EnabledBeautyPictureSource.Count)];
+                    if (!bNonSourceSuffix)
+                    {
+                        Random r = new Random(Guid.NewGuid().GetHashCode());
+                        pictureSource = BotInfo.EnabledBeautyPictureSource[r.Next(0, BotInfo.EnabledBeautyPictureSource.Count)];
+                    }
 
                     if (pictureSource == PictureSource.ELF)
                     {
                         strHttpRequest = string.IsNullOrEmpty(strKeyword) ? $@"http://159.75.48.23:5000/api/img/{lImgCount},0" : $@"http://159.75.48.23:5000/api/tag/{strKeyword},{lImgCount},0";
                         _ = SendELFHPicture(senderId, senderGroup, strHttpRequest, SendMessage);
-                    }
-                    else if (pictureSource == PictureSource.GreenOnions)
-                    {
-
                     }
                 }
             }
@@ -242,12 +242,12 @@ namespace GreenOnions.HPicture
         private static GreenOnionsMessages CreateOnceYandeHPicture(YandeItem item)
         {
             GreenOnionsMessages outMessage = new();
-            StringBuilder sbAddress = new();
+            StringBuilder sb = new();
             if (BotInfo.HPictureSendUrl)
-                sbAddress.AppendLine($"http://yande.re{item.ShowPageUrl}");
+                sb.AppendLine($"http://yande.re{item.ShowPageUrl}");
             if (BotInfo.HPictureSendTags)
-                sbAddress.AppendLine($"标签:{string.Join(", ", item.Tags)}");
-            outMessage.Add(sbAddress);
+                sb.AppendLine($"标签:{string.Join(", ", item.Tags)}");
+            outMessage.Add(sb);
             string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ShowPageUrl.Substring("/post/show/".Length)}.png");
             outMessage.Add(CreateImageMessage(item.BigImgUrl, imgCacheName));
             return outMessage;
@@ -310,16 +310,14 @@ namespace GreenOnions.HPicture
             foreach (LoliconHPictureItem imgItem in enumImg)
             {
                 GreenOnionsMessages outMessage = new GreenOnionsMessages();
+                StringBuilder sb = new StringBuilder();
                 if (BotInfo.HPictureSendUrl)
-                {
-                    string addresses;
-                    if (BotInfo.HPictureSendTags)
-                        addresses = $"https://www.pixiv.net/artworks/{imgItem.ID} (p{imgItem.P})\r\n标题:{imgItem.Title}\r\n作者:{imgItem.Author}\r\n标签:{imgItem.Tags}";
-                    else
-                        addresses = $"https://www.pixiv.net/artworks/{imgItem.ID} (p{imgItem.P})";
-                    outMessage.Add(addresses);
-                }
-
+                    sb.AppendLine($"https://www.pixiv.net/artworks/{imgItem.ID} (p{imgItem.P})");
+                if (BotInfo.HPictureSendTitle)
+                    sb.AppendLine($"标题:{imgItem.Title}\r\n作者:{imgItem.Author}");
+                if (BotInfo.HPictureSendTags)
+                    sb.AppendLine($"标签:{imgItem.Tags}");
+                outMessage.Add(sb);
                 GreenOnionsImageMessage imgMsg = CreateOnceLoliconHPicture(imgItem);
 
                 SetRevokeTime(senderGroup, outMessage);  //设置撤回时间
@@ -375,16 +373,17 @@ namespace GreenOnions.HPicture
                 foreach (ELFHPictureItem imgItem in enumImg)
                 {
                     GreenOnionsMessages outMessage = new GreenOnionsMessages();
+                    StringBuilder sb = new StringBuilder();
                     if (BotInfo.HPictureSendUrl)
+                        sb.AppendLine(imgItem.Source);
+                    if (BotInfo.HPictureSendTitle)
+                        sb.AppendLine($"作者:{imgItem.Author}");
+                    if (BotInfo.HPictureSendTags)
                     {
-                        string addresses;
-                        if (BotInfo.HPictureSendTags)
-                            addresses = $"{imgItem.Source}\r\n中文标签:{imgItem.Zh_Tags}\r\n日文标签:{imgItem.Jp_Tag}\r\n作者:{imgItem.Author}";
-                        else
-                            addresses = imgItem.Source;
-                        outMessage.Add(addresses);
+                        sb.AppendLine($"中文标签:{imgItem.Zh_Tags}");
+                        sb.AppendLine($"日文标签:{imgItem.Jp_Tag}");
                     }
-
+                    outMessage.Add(sb);
                     GreenOnionsImageMessage imgMsg = CreateOnceELFHPicture(imgItem);
 
                     SetRevokeTime(senderGroup, outMessage);

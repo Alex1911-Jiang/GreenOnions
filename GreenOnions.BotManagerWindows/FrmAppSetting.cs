@@ -167,8 +167,6 @@ namespace GreenOnions.BotManagerWindows
             {
                 if (hSource == PictureSource.Lolicon)
                     chkHPictureEnabledLoliconSource.Checked = true;
-                if (hSource == PictureSource.GreenOnions)
-                    chkHPictureEnabledGreenOnionsSource.Checked = true;
                 if (hSource == PictureSource.Yande_re)
                     chkHPictureYande_reSource.Checked = true;
             }
@@ -176,9 +174,10 @@ namespace GreenOnions.BotManagerWindows
             {
                 if (beautySource == PictureSource.ELF)
                     chkBeautyPictureEnabledELFSource.Checked = true;
-                if (beautySource == PictureSource.GreenOnions)
-                    chkBeautyPictureEnabledGreenOnionsSource.Checked = true;
             }
+            cboHPictureDefaultSource.DataSource = Enum.GetNames<PictureSource>();
+            cboHPictureDefaultSource.SelectedIndex = BotInfo.HPictureDefaultSource;
+
             txbHPictureOnceMessageMaxImageCount.Text = BotInfo.HPictureOnceMessageMaxImageCount.ToString();
             chkHPictureEnabled.Checked = BotInfo.HPictureEnabled;
             txbHPictureCmd.Text = BotInfo.HPictureCmd;
@@ -186,16 +185,17 @@ namespace GreenOnions.BotManagerWindows
             if (BotInfo.HPictureUserCmd != null)
             {
                 foreach (var item in BotInfo.HPictureUserCmd)
-                {
                     lstHPictureUserCmd.Items.Add(item);
-                }
+            }
+            if (BotInfo.HPictureShieldingWords != null)
+            {
+                foreach (var item in BotInfo.HPictureShieldingWords)
+                    lstShieldingWords.Items.Add(item.ToString());
             }
             if (BotInfo.HPictureWhiteGroup != null)
             {
                 foreach (var item in BotInfo.HPictureWhiteGroup)
-                {
                     lstHPictureWhiteGroup.Items.Add(item.ToString());
-                }
             }
             chkHPictureWhiteOnly.Checked = BotInfo.HPictureWhiteOnly;
             chkHPictureAllowR18.Checked = BotInfo.HPictureAllowR18;
@@ -222,6 +222,7 @@ namespace GreenOnions.BotManagerWindows
             else
                 rdoHPictureLimitFrequency.Checked = true;
             chkHPictureSendUrl.Checked = BotInfo.HPictureSendUrl;
+            chkHPictureSendTitle.Checked = BotInfo.HPictureSendTitle;
             chkHPictureSendTags.Checked = BotInfo.HPictureSendTags;
             chkHPictureSendByForward.Checked = BotInfo.HPictureSendByForward;
 
@@ -382,7 +383,7 @@ namespace GreenOnions.BotManagerWindows
             BotInfo.SearchEnabledIqdb = chkSearchIqdbEnabled.Checked;
             BotInfo.SearchEnabled3dIqdb = chkSearch3dIqdbEnabled.Checked;
             BotInfo.SearchIqdbSendTags = chkSearchIqdbSendTags.Checked;
-            BotInfo.SearchIqdbMustSafe = chkSearchIqdbMustSafe.Checked;  
+            BotInfo.SearchIqdbMustSafe = chkSearchIqdbMustSafe.Checked;
             BotInfo.SearchIqdbSimilarity = Convert.ToInt32(txbSearchIqdbSimilarity.Text);
             BotInfo.SearchIqdbSimilarityReply = txbSearchIqdbSimilarityReply.Text;
 
@@ -398,7 +399,7 @@ namespace GreenOnions.BotManagerWindows
             BotInfo.SearchModeAlreadyOffReply = txbSearchModeAlreadyOffReply.Text;
             BotInfo.SearchNoResultReply = txbSearchNoResultReply.Text;
             BotInfo.SearchErrorReply = txbSearchErrorReply.Text;
-            
+
             BotInfo.SearchDownloadThuImageFailReply = txbSearchDownloadThuImageFailReply.Text;
             BotInfo.CheckPornEnabled = chkCheckPornEnabled.Checked;  //是否启用腾讯云鉴黄
             BotInfo.SearchCheckPornEnabled = chkSearchCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
@@ -448,31 +449,28 @@ namespace GreenOnions.BotManagerWindows
             List<PictureSource> EnabledBeautyPictureSource = new List<PictureSource>();
             if (chkHPictureEnabledLoliconSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.Lolicon);
-            if (chkHPictureEnabledGreenOnionsSource.Checked)
-                EnabledHPictureSource.Add(PictureSource.GreenOnions);
             if (chkHPictureYande_reSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.Yande_re);
             if (chkBeautyPictureEnabledELFSource.Checked)
                 EnabledBeautyPictureSource.Add(PictureSource.ELF);
-            if (chkBeautyPictureEnabledGreenOnionsSource.Checked)
-                EnabledBeautyPictureSource.Add(PictureSource.GreenOnions);
             BotInfo.EnabledHPictureSource = EnabledHPictureSource;
             BotInfo.EnabledBeautyPictureSource = EnabledBeautyPictureSource;
+            BotInfo.HPictureDefaultSource = cboHPictureDefaultSource.SelectedIndex;
             BotInfo.HPictureCmd = txbHPictureCmd.Text;
             BotInfo.HPictureOnceMessageMaxImageCount = string.IsNullOrEmpty(txbHPictureOnceMessageMaxImageCount.Text) ? 10 : Convert.ToInt32(txbHPictureOnceMessageMaxImageCount.Text);
             BotInfo.HPictureEnabled = chkHPictureEnabled.Checked;
             BotInfo.RevokeBeautyPicture = chkRevokeBeautyPicture.Checked;
             List<string> tempHPictureUserCmd = new List<string>();
             foreach (ListViewItem item in lstHPictureUserCmd.Items)
-            {
                 tempHPictureUserCmd.Add(item.SubItems[0].Text);
-            }
             BotInfo.HPictureUserCmd = tempHPictureUserCmd;
+            List<string> tempShieldingWords = new List<string>();
+            foreach (ListViewItem item in lstShieldingWords.Items)
+                tempShieldingWords.Add(item.SubItems[0].Text);
+            BotInfo.HPictureShieldingWords = tempShieldingWords;
             List<long> tempHPictureWhiteGroup = new List<long>();
             foreach (ListViewItem item in lstHPictureWhiteGroup.Items)
-            {
                 tempHPictureWhiteGroup.Add(Convert.ToInt64(item.SubItems[0].Text));
-            }
             BotInfo.HPictureWhiteGroup = tempHPictureWhiteGroup;
             BotInfo.HPictureWhiteOnly = chkHPictureWhiteOnly.Checked;
             BotInfo.HPictureAllowR18 = chkHPictureAllowR18.Checked;
@@ -496,6 +494,7 @@ namespace GreenOnions.BotManagerWindows
             BotInfo.HPictureLimitType = rdoHPictureLimitFrequency.Checked ? LimitType.Frequency : LimitType.Count;
             BotInfo.HPictureWhiteNoLimit = chkHPictureWhiteNoLimit.Checked;
             BotInfo.HPictureSendUrl = chkHPictureSendUrl.Checked;
+            BotInfo.HPictureSendTitle = chkHPictureSendTitle.Checked;
             BotInfo.HPictureSendTags = chkHPictureSendTags.Checked;
             BotInfo.HPictureSendByForward = chkHPictureSendByForward.Checked;
             #endregion -- 色图设置 --
@@ -579,7 +578,7 @@ namespace GreenOnions.BotManagerWindows
             WorkingTimeRecorder.UpdateWorkingTime();
         }
 
-        private void txbForgeMessageCmd_TextChanged(object sender, EventArgs e)
+        private void txbForgeMessageCmd_TextChanged(object? sender, EventArgs e)
         {
             txbForgeMessageCmdBegin.TextChanged -= txbForgeMessageCmd_TextChanged;
             txbForgeMessageCmd.Text = $"{txbForgeMessageCmdBegin.Text}<@QQ><伪造内容>";
@@ -631,7 +630,7 @@ namespace GreenOnions.BotManagerWindows
 
         private void btnAddUserHPictureCmd_Click(object sender, EventArgs e) => AddItemToListView(lstHPictureUserCmd, txbUserHPictureCmd.Text);
 
-        private void btnAddToWhiteGroup_Click(object sender, EventArgs e) => AddItemToListView(lstHPictureWhiteGroup, txbAddToWhiteGroup.Text);
+        private void btnAddWhiteGroup_Click(object sender, EventArgs e) => AddItemToListView(lstHPictureWhiteGroup, txbWhiteGroup.Text);
 
         private void btnAddAdmin_Click(object sender, EventArgs e) => AddItemToListView(lstAdmins, txbAddAdmin.Text);
 
@@ -653,20 +652,22 @@ namespace GreenOnions.BotManagerWindows
 
         private void btnRemoveDebugGroup_Click(object sender, EventArgs e) => RemoveItemFromListView(lstDebugGroups);
 
+        private void btnAddAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => AddItemToListView(lstAutoTranslateGroupMemoriesQQ, txbAddAutoTranslateGroupMemoryQQ.Text);
+
+        private void btnRemoveAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => RemoveItemFromListView(lstAutoTranslateGroupMemoriesQQ);
+
+        private void btnAddShieldingWords_Click(object sender, EventArgs e) => AddItemToListView(lstShieldingWords, txbShieldingWords.Text);
+
+        private void btnRemoveShieldingWords_Click(object sender, EventArgs e) => RemoveItemFromListView(lstShieldingWords);
+
         private void AddItemToListView(ListView listView, string value)
         {
             if (!string.IsNullOrEmpty(value))
             {
                 foreach (ListViewItem item in listView.Items)
-                {
                     foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
-                    {
                         if (subItem.Text == value)
-                        {
                             return;
-                        }
-                    }
-                }
                 listView.Items.Add(value);
             }
         }
@@ -683,11 +684,8 @@ namespace GreenOnions.BotManagerWindows
 
         private void chkDebugMode_CheckedChanged(object sender, EventArgs e) => pnlDebugMode.Enabled = chkDebugMode.Checked;
 
-        private void btnAddAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => AddItemToListView(lstAutoTranslateGroupMemoriesQQ, txbAddAutoTranslateGroupMemoryQQ.Text);
-
-        private void btnRemoveAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => RemoveItemFromListView(lstAutoTranslateGroupMemoriesQQ);
-
         private void chkEnabledForgeMessage_CheckedChanged(object sender, EventArgs e) => pnlForgeMessage.Enabled = chkEnabledForgeMessage.Checked;
+
 
         #region -- RSS --
 
@@ -719,8 +717,8 @@ namespace GreenOnions.BotManagerWindows
         {
             txbTranslateTo.Enabled = cboTranslateEngine.SelectedIndex == (int)TranslateEngine.Google;
             BotInfo.TranslateEngineType = (TranslateEngine)cboTranslateEngine.SelectedIndex;
-        } 
-        
+        }
+
         private void chkRssEnabled_CheckedChanged(object sender, EventArgs e) => pnlRss.Enabled = chkRssEnabled.Checked;
 
         private void chkPictureSearcherCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlPictureSearcherCheckPorn.Enabled = chkSearchCheckPornEnabled.Checked;
@@ -733,17 +731,12 @@ namespace GreenOnions.BotManagerWindows
 
         private void chkTranslateEnabled_CheckedChanged(object sender, EventArgs e) => pnlTranslate.Enabled = chkTranslateEnabled.Checked;
 
-        private void chkHPictureSendUrl_CheckedChanged(object sender, EventArgs e) => chkHPictureSendTags.Enabled = chkHPictureSendUrl.Checked;
-
         private void chkAutoConnectEnabled_CheckedChanged(object sender, EventArgs e) => pnlAutoConnect.Enabled = chkAutoConnectEnabled.Checked;
 
         private void chkSearchASCII2DEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchAscii2d.Enabled = chkSearchASCII2DEnabled.Checked;
 
         private void chkWorkingTimeEnabled_CheckedChanged(object sender, EventArgs e) => pnlWorkingTime.Enabled = chkWorkingTimeEnabled.Checked;
 
-        private void lnkJoinGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("explorer.exe", "https://jq.qq.com/?_wv=1027&k=rJ7RA3SF");
-        }
+        private void lnkJoinGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) => Process.Start("explorer.exe", "https://jq.qq.com/?_wv=1027&k=rJ7RA3SF");
     }
 }

@@ -1109,7 +1109,7 @@ namespace GreenOnions.Utility
 
         #region -- 色图属性 --
 
-        public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18)?的?(?<关键词>.+)?的?((?<色图后缀>[色瑟涩铯啬渋][图圖図])|(?<美图后缀>美[图圖図]))";
+        public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18的?)?(?<关键词>.+?)?((?<色图后缀>[的得地滴の]?[色瑟涩铯啬渋][图圖図])|(?<美图后缀>[的得地滴の]?美[图圖図]))";
 
         /// <summary>
         /// 色图/美图完整命令(正则表达式)
@@ -1186,6 +1186,34 @@ namespace GreenOnions.Utility
                 return strValue.Split(';').ToList();
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureUserCmd), string.Join(";", value));
+        }
+
+        public static int HPictureDefaultSource
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureDefaultSource));
+                if (int.TryParse(strValue, out int iValue)) 
+                    return iValue;
+                return 0;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureDefaultSource), value.ToString());
+        }
+
+        /// <summary>
+        /// 白名单群
+        /// </summary>
+        [PropertyChineseName("色图 屏蔽关键词", "色图")]
+        public static List<string> HPictureShieldingWords
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureShieldingWords));
+                if (string.IsNullOrEmpty(strValue))
+                    return new List<string>();
+                return strValue.Split(';').ToList();
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureShieldingWords), string.Join(";", value));
         }
 
         /// <summary>
@@ -1445,6 +1473,21 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
+        /// 色图是否发送标题和作者
+        /// </summary>
+        [PropertyChineseName("色图 发送标题和作者", "色图")]
+        public static bool HPictureSendTitle
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendTitle));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendTitle), value.ToString());
+        }
+
+        /// <summary>
         /// 色图是否发送标签
         /// </summary>
         [PropertyChineseName("色图 发送标签", "色图")]
@@ -1454,7 +1497,7 @@ namespace GreenOnions.Utility
             {
                 string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendTags));
                 if (bool.TryParse(strValue, out bool bValue)) return bValue;
-                return true;
+                return false;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendTags), value.ToString());
         }
@@ -2071,8 +2114,7 @@ namespace GreenOnions.Utility
     {
         Lolicon = 0,
         ELF = 1,
-        GreenOnions = 2,
-        Yande_re = 1,
+        Yande_re = 2,
     }
 
     public enum TranslateEngine

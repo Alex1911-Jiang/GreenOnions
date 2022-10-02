@@ -26,8 +26,6 @@ namespace GreenOnions.BotMain
         private static Regex regexForgeMessage;
         private static Regex regexDownloadPixivOriginalPicture;
         private static Regex regexHelp;
-        private static Regex regexTicTacToeStart;
-        private static Regex regexTicTacToeStop;
 
         static MessageHandler()
         {
@@ -230,17 +228,14 @@ namespace GreenOnions.BotMain
                                     return true;
                                 }
 
-                                if (BotInfo.EnabledHPictureSource.Count > 0)
+                                if (BotInfo.EnabledHPictureSource.Count > 0 && BotInfo.HPictureUserCmd.Contains(firstValue))
                                 {
-                                    if (BotInfo.HPictureUserCmd.Contains(firstValue))
-                                    {
-                                        HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
-                                    }
-                                    else
-                                    {
-                                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入群色图处理事件");
-                                        HPictureHandler.SendHPictures(inMsg.SenderId, senderGroup, regexHPicture.Match(firstValue), SendMessage);
-                                    }
+                                    HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
+                                }
+                                else if (BotInfo.EnabledHPictureSource.Count > 0 || BotInfo.EnabledBeautyPictureSource.Count > 0)
+                                {
+                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入群色图处理事件");
+                                    HPictureHandler.SendHPictures(inMsg.SenderId, senderGroup, regexHPicture.Match(firstValue), SendMessage);
                                 }
                             }
                         }
@@ -262,21 +257,14 @@ namespace GreenOnions.BotMain
                                     return true;
                                 }
 
-                                if (BotInfo.EnabledHPictureSource.Count > 0)
+                                if (BotInfo.EnabledHPictureSource.Count > 0 && BotInfo.HPictureUserCmd.Contains(firstValue))
                                 {
-                                    if (BotInfo.HPictureUserCmd.Contains(firstValue))
-                                    {
-                                        HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
-                                    }
-                                    else
-                                    {
-                                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入私聊色图处理事件");
-                                        HPictureHandler.SendHPictures(inMsg.SenderId, null, regexHPicture.Match(firstValue), SendMessage);
-                                    }
+                                    HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
                                 }
-                                else
+                                else if (BotInfo.EnabledHPictureSource.Count > 0 || BotInfo.EnabledBeautyPictureSource.Count > 0)
                                 {
-                                    LogHelper.WriteInfoLog($"没有启用任何图库");
+                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入私聊色图处理事件");
+                                    HPictureHandler.SendHPictures(inMsg.SenderId, null, regexHPicture.Match(firstValue), SendMessage);
                                 }
                             }
                         }
