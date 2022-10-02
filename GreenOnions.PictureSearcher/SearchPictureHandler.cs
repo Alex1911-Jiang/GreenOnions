@@ -378,7 +378,7 @@ namespace GreenOnions.PictureSearcher
                         {
                             message.Add(new GreenOnionsImageMessage(imgUrl));
                             if (BotInfo.DownloadImage4Caching)
-                                _ = Task.Run(() => HttpHelper.DownloadImageFile(imgUrl, imgName));  //下载图片用于缓存
+                                _ = HttpHelper.DownloadImageFileAsync(imgUrl, imgName);  //下载图片用于缓存
                         }
                     }
                 }
@@ -781,7 +781,7 @@ namespace GreenOnions.PictureSearcher
                                                     return imgName;
                                                 }
                                                 if (BotInfo.DownloadImage4Caching)
-                                                    Task.Run(() => HttpHelper.DownloadImageFile(url, imgName));//下载图片用于缓存
+                                                    HttpHelper.DownloadImageFileAsync(url, imgName);//下载图片用于缓存
                                                 return url;
                                             }
                                         }

@@ -1,8 +1,8 @@
-﻿using GreenOnions.BotMain.MiraiApiHttp;
+﻿using System.Collections.ObjectModel;
 using GreenOnions.Interface;
+using GreenOnions.RSS;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using Mirai.CSharp.Models;
 using Sora;
 using Sora.Entities.Base;
 using Sora.Entities.Info;
@@ -15,7 +15,7 @@ namespace GreenOnions.BotMain.CqHttp
 {
     public class CqHttpMain
     {
-        public static async Task Connect(long qqId, string ip, ushort port, string accessToken, Action<bool, string> ConnectedEvent)
+        public static async void Connect(long qqId, string ip, ushort port, string accessToken, Action<bool, string> ConnectedEvent)
         {
             ////设置log等级
             //Log.LogConfiguration
@@ -68,29 +68,20 @@ namespace GreenOnions.BotMain.CqHttp
 
                         BotInfo.IsLogin = true;
 
+
+                        Dictionary<string, string> props = AssemblyHelper.GetAllPropertiesValue();
+                        GreenOnionsApi greenOnionsApi = new GreenOnionsApi(new ReadOnlyDictionary<string, string>(props), 
+                            async (targetId, msg) => (await api.SendPrivateMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
+                            async (targetId, msg) => (await api.SendGroupMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
+                            async (targetId, targetGroup, msg) => (await api.SendTemporaryMessage(targetId, targetGroup, msg.ToCqHttpMessages(null))).messageId,
+                            async () => (await api.GetFriendList()).friendList.Select(f => new GreenOnionsFriendInfo(f.UserId, f.Nick, f.Remark)).ToList(),
+                            async () => (await api.GetGroupList()).groupList.Select(g => new GreenOnionsGroupInfo(g.GroupId, g.GroupName)).ToList(),
+                            async (groupId) => (await api.GetGroupMemberList(groupId)).groupMemberList.Select(m => m.ToGreenOnionsMemberInfo()).ToList(),
+                            async (groupId, memberId) => (await api.GetGroupMemberInfo(groupId, memberId)).memberInfo.ToGreenOnionsMemberInfo());
+
                         try
                         {
-                            RssWorker.StartRssTask((msgs, targetId, groupId) =>
-                            {
-                                SoraApi api = service.GetApi(service.ServiceId);
-                                if (msgs != null && msgs.Count > 0)
-                                {
-                                    if (msgs.FirstOrDefault() is GreenOnionsForwardMessage)
-                                    {
-                                        if (targetId != -1)
-                                            _ = api.SendPrivateForwardMsg(targetId, msgs.ToCqHttpForwardMessage());
-                                        else if (groupId != -1)
-                                            _ = api.SendGroupForwardMsg(groupId, msgs.ToCqHttpForwardMessage());
-                                    }
-                                    else
-                                    {
-                                        if (targetId != -1)
-                                            _ = api.SendPrivateMessage(targetId, msgs.ToCqHttpMessages(null));
-                                        else if (groupId != -1)
-                                            _ = api.SendGroupMessage(groupId, msgs.ToCqHttpMessages(null));
-                                    }
-                                }
-                            });
+                            RssHelper.StartRssTask(greenOnionsApi);
                         }
                         catch (Exception ex)
                         {
@@ -98,31 +89,25 @@ namespace GreenOnions.BotMain.CqHttp
                             throw;
                         }
 
-                        PluginManager.Connected(
-                            BotInfo.QQId,
-                            async (targetId, msg) => (await api.SendPrivateMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
-                            async (targetId, msg) => (await api.SendGroupMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
-                            async (targetId, targetGroup, msg) => (await api.SendTemporaryMessage(targetId, targetGroup, msg.ToCqHttpMessages(null))).messageId,
-                            async () => (await api.GetFriendList()).friendList.Select(f => new GreenOnionsFriendInfo(f.UserId, f.Nick, f.Remark)).ToList(),
-                            async () => (await api.GetGroupList()).groupList.Select(g => new GreenOnionsGroupInfo(g.GroupId, g.GroupName)).ToList(),
-                            async (groupId) => (await api.GetGroupMemberList(groupId)).groupMemberList.Select(m => m.ToGreenOnionsMemberInfo()).ToList(),
-                            async (groupId, memberId) => (await api.GetGroupMemberInfo(groupId, memberId)).memberInfo.ToGreenOnionsMemberInfo()
-                            );
+                        PluginManager.Connected(BotInfo.QQId, greenOnionsApi);
                     }
                 };
 
-                while (true)
+                await Task.Run(() =>
                 {
-                    BotInfo.IsLogin = true;
-                    if (Console.ReadLine() == "exit")
+                    while (true)
                     {
-                        BotInfo.IsLogin = false;
-                        PluginManager.Disconnected();
-                        ConnectedEvent?.Invoke(false, "");
-                        break;
+                        BotInfo.IsLogin = true;
+                        if (Console.ReadLine() == "exit")
+                        {
+                            BotInfo.IsLogin = false;
+                            PluginManager.Disconnected();
+                            ConnectedEvent?.Invoke(false, "");
+                            break;
+                        }
+                        Task.Delay(100).Wait();
                     }
-                    Task.Delay(100).Wait();
-                }
+                });
             }
             catch (Exception ex)
             {

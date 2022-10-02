@@ -97,18 +97,10 @@ namespace GreenOnions.BotMain
             return string.Empty;
         }
 
-        public static void Connected(long selfId,
-            Func<long, GreenOnionsMessages, Task<int>> SendFriendMessage,
-            Func<long, GreenOnionsMessages, Task<int>> SendGroupMessage,
-            Func<long, long, GreenOnionsMessages, Task<int>> SendTempMessage,
-            Func<Task<List<GreenOnionsFriendInfo>>> GetFriendList,
-            Func<Task<List<GreenOnionsGroupInfo>>> GetGroupList,
-            Func<long, Task<List<GreenOnionsMemberInfo>>> GetMemberList,
-            Func<long, long, Task<GreenOnionsMemberInfo>> GetMemberInfo)
+        public static void Connected(long selfId, GreenOnionsApi api)
         {
             _api?.Dispose();
-            Dictionary<string, string> props = AssemblyHelper.GetAllPropertiesValue();
-            _api = new GreenOnionsApi(new ReadOnlyDictionary<string, string>(props), SendFriendMessage, SendGroupMessage, SendTempMessage, GetFriendList, GetGroupList, GetMemberList, GetMemberInfo);
+            _api = api;
 
             for (int i = 0; i < Plugins.Count; i++)
             {

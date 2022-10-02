@@ -144,8 +144,6 @@
             this.txbSearchDownloadThuImageFailReply = new System.Windows.Forms.TextBox();
             this.chkSearchSendByForward = new System.Windows.Forms.CheckBox();
             this.pnlPictureSearcherCheckPorn = new System.Windows.Forms.Panel();
-            this.lblSearchCheckPornOutOfLimitReply = new System.Windows.Forms.Label();
-            this.txbSearchCheckPornOutOfLimitReply = new System.Windows.Forms.TextBox();
             this.txbSearchCheckPornIllegalReply = new System.Windows.Forms.TextBox();
             this.lblSearchCheckPornIllegalReply = new System.Windows.Forms.Label();
             this.lblSearchCheckPornErrorReply = new System.Windows.Forms.Label();
@@ -1704,37 +1702,16 @@
             // 
             this.pnlPictureSearcherCheckPorn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlPictureSearcherCheckPorn.Controls.Add(this.lblSearchCheckPornOutOfLimitReply);
-            this.pnlPictureSearcherCheckPorn.Controls.Add(this.txbSearchCheckPornOutOfLimitReply);
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.txbSearchCheckPornIllegalReply);
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.lblSearchCheckPornIllegalReply);
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.lblSearchCheckPornErrorReply);
             this.pnlPictureSearcherCheckPorn.Controls.Add(this.txbSearchCheckPornErrorReply);
             this.pnlPictureSearcherCheckPorn.Enabled = false;
             this.pnlPictureSearcherCheckPorn.Location = new System.Drawing.Point(5, 1152);
-            this.pnlPictureSearcherCheckPorn.MinimumSize = new System.Drawing.Size(551, 89);
+            this.pnlPictureSearcherCheckPorn.MinimumSize = new System.Drawing.Size(551, 58);
             this.pnlPictureSearcherCheckPorn.Name = "pnlPictureSearcherCheckPorn";
-            this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(551, 89);
+            this.pnlPictureSearcherCheckPorn.Size = new System.Drawing.Size(551, 58);
             this.pnlPictureSearcherCheckPorn.TabIndex = 40;
-            // 
-            // lblSearchCheckPornOutOfLimitReply
-            // 
-            this.lblSearchCheckPornOutOfLimitReply.AutoSize = true;
-            this.lblSearchCheckPornOutOfLimitReply.Location = new System.Drawing.Point(19, 64);
-            this.lblSearchCheckPornOutOfLimitReply.Name = "lblSearchCheckPornOutOfLimitReply";
-            this.lblSearchCheckPornOutOfLimitReply.Size = new System.Drawing.Size(119, 17);
-            this.lblSearchCheckPornOutOfLimitReply.TabIndex = 43;
-            this.lblSearchCheckPornOutOfLimitReply.Text = "鉴黄次数耗尽回复语:";
-            // 
-            // txbSearchCheckPornOutOfLimitReply
-            // 
-            this.txbSearchCheckPornOutOfLimitReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSearchCheckPornOutOfLimitReply.Location = new System.Drawing.Point(192, 61);
-            this.txbSearchCheckPornOutOfLimitReply.MinimumSize = new System.Drawing.Size(357, 0);
-            this.txbSearchCheckPornOutOfLimitReply.Name = "txbSearchCheckPornOutOfLimitReply";
-            this.txbSearchCheckPornOutOfLimitReply.Size = new System.Drawing.Size(357, 23);
-            this.txbSearchCheckPornOutOfLimitReply.TabIndex = 42;
             // 
             // txbSearchCheckPornIllegalReply
             // 
@@ -2605,7 +2582,7 @@
             this.txbHPictureOnceMessageMaxImageCount.Margin = new System.Windows.Forms.Padding(4);
             this.txbHPictureOnceMessageMaxImageCount.MinimumSize = new System.Drawing.Size(60, 0);
             this.txbHPictureOnceMessageMaxImageCount.Name = "txbHPictureOnceMessageMaxImageCount";
-            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(129, 23);
+            this.txbHPictureOnceMessageMaxImageCount.Size = new System.Drawing.Size(113, 23);
             this.txbHPictureOnceMessageMaxImageCount.TabIndex = 17;
             // 
             // lblHPictureOnceMessageMaxImageCount
@@ -4439,8 +4416,6 @@
         private System.Windows.Forms.CheckBox chkReplaceMeToYou;
         private System.Windows.Forms.CheckBox chkHttpRequestByWebBrowser;
         private System.Windows.Forms.CheckBox chkASCII2DRequestByWebBrowser;
-        private System.Windows.Forms.Label lblSearchCheckPornOutOfLimitReply;
-        private System.Windows.Forms.TextBox txbSearchCheckPornOutOfLimitReply;
         private System.Windows.Forms.TextBox txbTranslateFromToCMD;
         private System.Windows.Forms.Label lblTranslateFromTo;
         private System.Windows.Forms.Label lblSauceNAOApiKeyInfo;

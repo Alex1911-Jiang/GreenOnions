@@ -12,7 +12,7 @@ namespace GreenOnions.BotManagerConsole
 {
     public static class Program
 	{
-		public static async Task Main()
+		public static void Main()
 		{
 			AppDomain.CurrentDomain.UnhandledException += (_, e) => LogHelper.WriteErrorLog(e.ExceptionObject);
 
@@ -39,7 +39,7 @@ namespace GreenOnions.BotManagerConsole
 				{
 					try
 					{
-                        await MiraiApiHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.AutoConnectProtocol, "mirai-api-http"));
+                        MiraiApiHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.AutoConnectProtocol, "mirai-api-http"));
                     }
 					catch (Exception ex)
 					{
@@ -51,7 +51,7 @@ namespace GreenOnions.BotManagerConsole
 				{
 					try
 					{
-                        await CqHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.AutoConnectProtocol, "cqhttp"));
+                        CqHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.AutoConnectProtocol, "cqhttp"));
                     }
 					catch (Exception ex)
 					{
@@ -143,14 +143,14 @@ namespace GreenOnions.BotManagerConsole
 			e.Cancel = true;
 		}
 
-        private async static void ConnectToMiraiApiHttp()
+        private static void ConnectToMiraiApiHttp()
         {
-            await MiraiApiHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 0, "mirai-api-http"));
+            MiraiApiHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 0, "mirai-api-http"));
         }
 
-        private async static void ConnectToCqHttp()
+        private static void ConnectToCqHttp()
         {
-            await CqHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 1, "cqhttp"));
+            CqHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 1, "cqhttp"));
         }
 
 		private static void Connecting(bool bConnect, string nickNameOrErrorMessage, int platform, string protocol)

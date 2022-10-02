@@ -1,4 +1,5 @@
-﻿using GreenOnions.Utility;
+﻿using System.Text.RegularExpressions;
+using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Mirai.CSharp.Builders;
 using Mirai.CSharp.HttpApi.Handlers;
@@ -8,7 +9,6 @@ using Mirai.CSharp.HttpApi.Parsers;
 using Mirai.CSharp.HttpApi.Parsers.Attributes;
 using Mirai.CSharp.HttpApi.Session;
 using Mirai.CSharp.Models;
-using System.Text.RegularExpressions;
 
 namespace GreenOnions.BotMain.MiraiApiHttp
 {

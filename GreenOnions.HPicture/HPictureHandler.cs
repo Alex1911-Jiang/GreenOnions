@@ -440,7 +440,7 @@ namespace GreenOnions.HPicture
                 {
                     imageMsg = new GreenOnionsImageMessage(url);
                     if (BotInfo.DownloadImage4Caching)
-                        _ = Task.Run(() => HttpHelper.DownloadImageFile(url, cacheName));  //下载图片用于缓存
+                        HttpHelper.DownloadImageFileAsync(url, cacheName);  //下载图片用于缓存
                 }
             }
             return imageMsg;

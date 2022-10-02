@@ -1,4 +1,6 @@
-﻿using GreenOnions.Interface;
+﻿using System.Collections.ObjectModel;
+using GreenOnions.Interface;
+using GreenOnions.RSS;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +15,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 {
     public static class MiraiApiHttpMain
     {
-        public static async Task Connect(long qqId, string ip, ushort port, string authKey, Action<bool, string> ConnectedEvent)
+        public static async void Connect(long qqId, string ip, ushort port, string authKey, Action<bool, string> ConnectedEvent)
         {
             try
             {
@@ -65,26 +67,19 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 BotInfo.IsLogin = true;
 
-                PluginManager.Connected(
-                    BotInfo.QQId,
+                Dictionary<string, string> props = AssemblyHelper.GetAllPropertiesValue();
+                GreenOnionsApi greenOnionsApi = new GreenOnionsApi(new ReadOnlyDictionary<string, string>(props),
                     async (targetId, msg) => await session.SendFriendMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend)),
                     async (targetId, msg) => await session.SendGroupMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Group)),
                     async (targetId, targetGroup, msg) => await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp)),
                     async () => (await session.GetFriendListAsync()).Select(f => new GreenOnionsFriendInfo(f.Id, f.Name, f.Remark)).ToList(),
                     async () => (await session.GetGroupListAsync()).Select(g => new GreenOnionsGroupInfo(g.Id, g.Name)).ToList(),
                     async (groupId) => (await session.GetGroupMemberListAsync(groupId)).Select(m => m.ToGreenOnionsMemberInfo()).ToList(),
-                    async (groupId, memberId) => (await session.GetGroupMemberInfoAsync(groupId, memberId)).ToGreenOnionsMemberInfo()
-                    );
+                    async (groupId, memberId) => (await session.GetGroupMemberInfoAsync(groupId, memberId)).ToGreenOnionsMemberInfo());
 
                 try
                 {
-                    RssWorker.StartRssTask(async (msgs, targetId, groupId) =>
-                    {
-                        if (targetId != -1)
-                            _ = session.SendFriendMessageAsync(targetId, await msgs.ToMiraiApiHttpMessages(session, UploadTarget.Friend));
-                        else if (groupId != -1)
-                            _ = session.SendGroupMessageAsync(groupId, await msgs.ToMiraiApiHttpMessages(session, UploadTarget.Group));
-                    });
+                    RssHelper.StartRssTask(greenOnionsApi);
                 }
                 catch (Exception ex)
                 {
@@ -92,19 +87,24 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     throw;
                 }
 
-                while (true)
+                PluginManager.Connected(BotInfo.QQId, greenOnionsApi);
+
+                await Task.Run(() =>
                 {
-                    BotInfo.IsLogin = true;
-                    if (Console.ReadLine() == "exit")
+                    while (true)
                     {
-                        BotInfo.IsLogin = false;
-                        PluginManager.Disconnected();
-                        session.Dispose();
-                        ConnectedEvent?.Invoke(false, "");
-                        break;
+                        BotInfo.IsLogin = true;
+                        if (Console.ReadLine() == "exit")
+                        {
+                            BotInfo.IsLogin = false;
+                            PluginManager.Disconnected();
+                            session.Dispose();
+                            ConnectedEvent?.Invoke(false, "");
+                            break;
+                        }
+                        Task.Delay(100).Wait();
                     }
-                    Task.Delay(100).Wait();
-                }
+                });
             }
             catch (Exception ex)
             {

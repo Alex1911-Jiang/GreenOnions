@@ -45,28 +45,23 @@ namespace GreenOnions.BotManagerWindows
         {
             base.OnShown(e);
 
-			lblPluginMessage.Text = $"";
-			Task tPlugins = Task.Run(() =>
+			Task.Run(() =>
 			{
 				int iLoadCount = PluginManager.Load();
-                if (iLoadCount > 0)
-                    Invoke(new Action(() => btnPlugins.Text = $"插件列表({iLoadCount})"));
-                Invoke(new Action(() => lblPluginMessage.Text = $""));
-            });
+				if (iLoadCount > 0)
+					Invoke(new Action(() => btnPlugins.Text = $"插件列表({iLoadCount})"));
 
-			//自动连接到机器人平台
-			if (BotInfo.AutoConnectEnabled)
-			{
-				tPlugins.ContinueWith(t =>
+				//自动连接到机器人平台
+				if (BotInfo.AutoConnectEnabled)
 				{
 					Task.Delay(BotInfo.AutoConnectDelay * 1000).Wait();
 					WorkingTimeRecorder.DoWork = true;
 					if (BotInfo.AutoConnectProtocol == 0)
 						ConnectToMiraiApiHttp();
-                    else
+					else
 						ConnectToCqHttp();
-				});
-			}
+				}
+			});
 		}
 
         protected override void OnSizeChanged(EventArgs e)
@@ -96,11 +91,11 @@ namespace GreenOnions.BotManagerWindows
 			}
         }
 
-		public async Task ConnectToMiraiApiHttp(long qqId, string ip, ushort port, string verifyKey)
+		public void ConnectToMiraiApiHttp(long qqId, string ip, ushort port, string verifyKey)
 		{
             try
             {
-                await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 0, "mirai-api-http"))));
+                MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 0, "mirai-api-http"))));
             }
             catch (Exception ex)
 			{
@@ -110,11 +105,11 @@ namespace GreenOnions.BotManagerWindows
 			_connecting = false;
 		}
 
-		public async Task ConnectToCqHttp(long qqId, string ip, ushort port, string verifyKey)
+		public void ConnectToCqHttp(long qqId, string ip, ushort port, string verifyKey)
 		{
 			try
 			{
-                await CqHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 1, "cqhttp"))));
+                CqHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 1, "cqhttp"))));
 			}
 			catch (Exception ex)
 			{
@@ -155,7 +150,7 @@ namespace GreenOnions.BotManagerWindows
 				if (CheckInfo())
 				{
 					_connecting = true;
-					Task.Run(() => ConnectToMiraiApiHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text));
+					ConnectToMiraiApiHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text);
 				}
 			}
 		}
@@ -173,7 +168,7 @@ namespace GreenOnions.BotManagerWindows
 				if (CheckInfo())
 				{
 					_connecting = true;
-					Task.Run(() => ConnectToCqHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text));
+					ConnectToCqHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text);
 				}
 			}
 		}

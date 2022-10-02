@@ -149,5 +149,21 @@ namespace GreenOnions.Utility.Helper
                 File.WriteAllBytes(fileName, file);
             }
         }
+
+        public static Task<byte[]> DownloadImageFileAsync(string url, string fileName)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+               Task<byte[]> task = client.GetByteArrayAsync(url);
+                task.ContinueWith(t =>
+                {
+                    string cacheDir = Path.GetDirectoryName(fileName);
+                    if (!string.IsNullOrEmpty(cacheDir) && !Directory.Exists(cacheDir))
+                        Directory.CreateDirectory(cacheDir);
+                    File.WriteAllBytes(fileName, t.Result);
+                });
+                return task;
+            }
+        }
     }
 }

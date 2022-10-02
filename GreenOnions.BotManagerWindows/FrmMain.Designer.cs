@@ -46,7 +46,6 @@ namespace GreenOnions.BotManagerWindows
             this.chkMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.btnConnectToCqHttp = new System.Windows.Forms.Button();
             this.btnPlugins = new System.Windows.Forms.Button();
-            this.lblPluginMessage = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblQQ
@@ -184,20 +183,11 @@ namespace GreenOnions.BotManagerWindows
             this.btnPlugins.UseVisualStyleBackColor = true;
             this.btnPlugins.Click += new System.EventHandler(this.btnPlugins_Click);
             // 
-            // lblPluginMessage
-            // 
-            this.lblPluginMessage.AutoSize = true;
-            this.lblPluginMessage.Location = new System.Drawing.Point(220, 229);
-            this.lblPluginMessage.Name = "lblPluginMessage";
-            this.lblPluginMessage.Size = new System.Drawing.Size(0, 17);
-            this.lblPluginMessage.TabIndex = 7;
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(435, 249);
-            this.Controls.Add(this.lblPluginMessage);
             this.Controls.Add(this.btnPlugins);
             this.Controls.Add(this.btnConnectToCqHttp);
             this.Controls.Add(this.chkMinimizeToTray);

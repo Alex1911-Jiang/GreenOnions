@@ -1,4 +1,5 @@
-﻿using GreenOnions.Command;
+﻿using System.Text.RegularExpressions;
+using GreenOnions.Command;
 using GreenOnions.ForgeMessage;
 using GreenOnions.Help;
 using GreenOnions.HPicture;
@@ -8,7 +9,6 @@ using GreenOnions.Repeater;
 using GreenOnions.Translate;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using System.Text.RegularExpressions;
 
 
 namespace GreenOnions.BotMain
