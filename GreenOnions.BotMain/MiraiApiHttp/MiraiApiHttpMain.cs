@@ -67,8 +67,8 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 BotInfo.IsLogin = true;
 
-                Dictionary<string, string> props = AssemblyHelper.GetAllPropertiesValue();
-                GreenOnionsApi greenOnionsApi = new GreenOnionsApi(new ReadOnlyDictionary<string, string>(props),
+                Dictionary<string, object> props = AssemblyHelper.GetAllPropertiesValue();
+                GreenOnionsApi greenOnionsApi = new GreenOnionsApi(new ReadOnlyDictionary<string, object>(props),
                     async (targetId, msg) => await session.SendFriendMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend)),
                     async (targetId, msg) => await session.SendGroupMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Group)),
                     async (targetId, targetGroup, msg) => await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp)),

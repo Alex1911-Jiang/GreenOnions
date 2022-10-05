@@ -18,13 +18,13 @@ namespace GreenOnions.Interface
         /// <summary>
         /// 表示GreenOnions本体所有的属性
         /// </summary>
-        public ReadOnlyDictionary<string, string> BotProperties { get; set; }
+        public ReadOnlyDictionary<string, object> BotProperties { get; set; }
 
         /// <summary>
         /// 此类不应被用户构造
         /// </summary>
         public GreenOnionsApi(
-            in ReadOnlyDictionary<string, string> botProperties,
+            in ReadOnlyDictionary<string, object> botProperties,
             in Func<long, GreenOnionsMessages, Task<int>> sendFriendMessageAsync,
             in Func<long, GreenOnionsMessages, Task<int>> sendGroupMessageAsync,
             in Func<long, long, GreenOnionsMessages, Task<int>> sendTempMessageAsync,

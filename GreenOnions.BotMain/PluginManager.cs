@@ -156,8 +156,8 @@ namespace GreenOnions.BotMain
         {
             if (_api != null)
             {
-                Dictionary<string, string> props = AssemblyHelper.GetAllPropertiesValue();
-                _api.BotProperties = new ReadOnlyDictionary<string, string>(props);
+                Dictionary<string, object> props = AssemblyHelper.GetAllPropertiesValue();
+                _api.BotProperties = new ReadOnlyDictionary<string, object>(props);
             }
         }
     }

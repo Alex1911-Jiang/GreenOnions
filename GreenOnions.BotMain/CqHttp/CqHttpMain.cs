@@ -51,46 +51,41 @@ namespace GreenOnions.BotMain.CqHttp
 
                 service.Event.OnClientConnect += async (eventType, eventArgs) =>
                 {
-                    SoraApi api = service.GetApi(service.ServiceId);
+                    BotInfo.QQId = eventArgs.SoraApi.GetLoginUserId();
 
-                    if (api != null)
+                    List<FriendInfo> IFriendInfos = (await eventArgs.SoraApi.GetFriendList()).friendList;
+                    string nickname = "未知";
+
+                    var self = IFriendInfos.Where(q => q.UserId == qqId).FirstOrDefault();
+                    if (self != null)
+                        nickname = self.Nick;
+
+                    ConnectedEvent?.Invoke(true, nickname);
+
+                    BotInfo.IsLogin = true;
+
+
+                    Dictionary<string, object> props = AssemblyHelper.GetAllPropertiesValue();
+                    GreenOnionsApi greenOnionsApi = new GreenOnionsApi(new ReadOnlyDictionary<string, object>(props),
+                        async (targetId, msg) => (await eventArgs.SoraApi.SendPrivateMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
+                        async (targetId, msg) => (await eventArgs.SoraApi.SendGroupMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
+                        async (targetId, targetGroup, msg) => (await eventArgs.SoraApi.SendTemporaryMessage(targetId, targetGroup, msg.ToCqHttpMessages(null))).messageId,
+                        async () => (await eventArgs.SoraApi.GetFriendList()).friendList.Select(f => new GreenOnionsFriendInfo(f.UserId, f.Nick, f.Remark)).ToList(),
+                        async () => (await eventArgs.SoraApi.GetGroupList()).groupList.Select(g => new GreenOnionsGroupInfo(g.GroupId, g.GroupName)).ToList(),
+                        async (groupId) => (await eventArgs.SoraApi.GetGroupMemberList(groupId)).groupMemberList.Select(m => m.ToGreenOnionsMemberInfo()).ToList(),
+                        async (groupId, memberId) => (await eventArgs.SoraApi.GetGroupMemberInfo(groupId, memberId)).memberInfo.ToGreenOnionsMemberInfo());
+
+                    try
                     {
-                        BotInfo.QQId = api.GetLoginUserId();
-
-                        List<FriendInfo> IFriendInfos = (await api.GetFriendList()).friendList;
-                        string nickname = "未知";
-
-                        var self = IFriendInfos.Where(q => q.UserId == qqId).FirstOrDefault();
-                        if (self != null)
-                            nickname = self.Nick;
-
-                        ConnectedEvent?.Invoke(true, nickname);
-
-                        BotInfo.IsLogin = true;
-
-
-                        Dictionary<string, string> props = AssemblyHelper.GetAllPropertiesValue();
-                        GreenOnionsApi greenOnionsApi = new GreenOnionsApi(new ReadOnlyDictionary<string, string>(props), 
-                            async (targetId, msg) => (await api.SendPrivateMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
-                            async (targetId, msg) => (await api.SendGroupMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
-                            async (targetId, targetGroup, msg) => (await api.SendTemporaryMessage(targetId, targetGroup, msg.ToCqHttpMessages(null))).messageId,
-                            async () => (await api.GetFriendList()).friendList.Select(f => new GreenOnionsFriendInfo(f.UserId, f.Nick, f.Remark)).ToList(),
-                            async () => (await api.GetGroupList()).groupList.Select(g => new GreenOnionsGroupInfo(g.GroupId, g.GroupName)).ToList(),
-                            async (groupId) => (await api.GetGroupMemberList(groupId)).groupMemberList.Select(m => m.ToGreenOnionsMemberInfo()).ToList(),
-                            async (groupId, memberId) => (await api.GetGroupMemberInfo(groupId, memberId)).memberInfo.ToGreenOnionsMemberInfo());
-
-                        try
-                        {
-                            RssHelper.StartRssTask(greenOnionsApi);
-                        }
-                        catch (Exception ex)
-                        {
-                            LogHelper.WriteErrorLogWithUserMessage("启动RSS抓取线程发生错误", ex);
-                            throw;
-                        }
-
-                        PluginManager.Connected(BotInfo.QQId, greenOnionsApi);
+                        RssHelper.StartRssTask(greenOnionsApi);
                     }
+                    catch (Exception ex)
+                    {
+                        LogHelper.WriteErrorLogWithUserMessage("启动RSS抓取线程发生错误", ex);
+                        throw;
+                    }
+
+                    PluginManager.Connected(BotInfo.QQId, greenOnionsApi);
                 };
 
                 await Task.Run(() =>
