@@ -80,19 +80,32 @@ namespace GreenOnions.BotMain.CqHttp
             if (!CheckPreconditionsGroup(eventArgs))
                 return;
 
-            string cmdMsg = eventArgs.SubType switch
+            string cmdMsg = string.Empty;
+            switch (eventArgs.SubType)
             {
-                MemberChangeType.Leave => BotInfo.MemberPositiveLeaveMessage,
-                MemberChangeType.Kick => BotInfo.MemberBeKickedMessage,
-                MemberChangeType.Approve or MemberChangeType.Invite => BotInfo.MemberJoinedMessage,
-                _ => throw new NotImplementedException(),
-            };
+                case MemberChangeType.Leave:
+                    if (BotInfo.SendMemberPositiveLeaveMessage)
+                        cmdMsg = BotInfo.MemberPositiveLeaveMessage;
+                    break;
+                case MemberChangeType.Kick:
+                    if (BotInfo.SendMemberBeKickedMessage)
+                        cmdMsg = BotInfo.MemberBeKickedMessage;
+                    break;
+                case MemberChangeType.Approve:
+                case MemberChangeType.Invite:
+                    if (BotInfo.SendMemberJoinedMessage)
+                        cmdMsg = BotInfo.MemberJoinedMessage;
+                    break;
+            }
 
-            MessageBody outMsg = await ReplaceMessage(cmdMsg, eventArgs.SourceGroup.Id, eventArgs.ChangedUser, eventArgs.Operator);
-            await eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, outMsg);
+            if (!string.IsNullOrWhiteSpace(cmdMsg))
+            {
+                MessageBody outMsg = await ReplaceMessage(cmdMsg, eventArgs.SourceGroup.Id, eventArgs.ChangedUser, eventArgs.Operator);
+                await eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, outMsg);
+            }
         }
 
-        private static async Task<MessageBody> ReplaceMessage(string messageCmd, long group, User member, User Operator = null)
+        private static async Task<MessageBody> ReplaceMessage(string messageCmd, long group, User member, User? Operator = null)
         {
             MessageBody outMsg = new MessageBody();
             string remainMessage = messageCmd;
