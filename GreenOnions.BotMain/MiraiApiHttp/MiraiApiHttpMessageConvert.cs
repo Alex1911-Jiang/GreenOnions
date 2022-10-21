@@ -20,7 +20,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     else if (miraiMessage[i] is IPlainMessage plainMsg)
                         greenOnionsMessages.Add(plainMsg.ToString());
                     else if (miraiMessage[i] is IImageMessage imageMsg)
-                        greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url, imageMsg.ImageId));
+                        greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url));
                     else if (miraiMessage[i] is IFaceMessage faceMsg)
                         greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.Name));
                 }

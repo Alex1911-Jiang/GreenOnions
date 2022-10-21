@@ -82,7 +82,7 @@ namespace GreenOnions.Utility.Helper
                         //往头部加信息
                         foreach (KeyValuePair<string, string> header in headers)
                         {
-                            if ( property.GetValue(header, null) is NameValueCollection collection)
+                            if (property.GetValue(header, null) is NameValueCollection collection)
                                 collection[header.Key] = header.Value;
                         }
                     }
@@ -138,38 +138,15 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        public static async void DownloadImageFile(string url, string fileName)
-        {
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    byte[] file = await client.GetByteArrayAsync(url);
-                    string cacheDir = Path.GetDirectoryName(fileName);
-                    if (!string.IsNullOrEmpty(cacheDir) && !Directory.Exists(cacheDir))
-                        Directory.CreateDirectory(cacheDir);
-                    File.WriteAllBytes(fileName, file);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.WriteErrorLogWithUserMessage("下载文件失败", ex);
-            }
-        }
-
-        public static Task<byte[]> DownloadImageFileAsync(string url, string fileName)
+        public static async Task DownloadImageFileAsync(string url, string fileName)
         {
             using (HttpClient client = new HttpClient())
             {
-               Task<byte[]> task = client.GetByteArrayAsync(url);
-                task.ContinueWith(t =>
-                {
-                    string cacheDir = Path.GetDirectoryName(fileName);
-                    if (!string.IsNullOrEmpty(cacheDir) && !Directory.Exists(cacheDir))
-                        Directory.CreateDirectory(cacheDir);
-                    File.WriteAllBytes(fileName, t.Result);
-                });
-                return task;
+                byte[] file = await client.GetByteArrayAsync(url);
+                string cacheDir = Path.GetDirectoryName(fileName);
+                if (!string.IsNullOrEmpty(cacheDir) && !Directory.Exists(cacheDir))
+                    Directory.CreateDirectory(cacheDir);
+                await File.WriteAllBytesAsync(fileName, file);
             }
         }
     }

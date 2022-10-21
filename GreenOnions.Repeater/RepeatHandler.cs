@@ -16,7 +16,7 @@ namespace GreenOnions.Repeater
         {
             MessageItem tempMessageItem;
             if (message is GreenOnionsImageMessage imgMsg)
-                tempMessageItem = new MessageItem(imgMsg.GetType(), imgMsg.ImgFile != null ? imgMsg.ImgFile : imgMsg.Url);
+                tempMessageItem = new MessageItem(imgMsg.GetType(), imgMsg.Url);
             else if (message is GreenOnionsTextMessage txtMsg)
                 tempMessageItem = new MessageItem(txtMsg.GetType(), txtMsg.Text);
             else

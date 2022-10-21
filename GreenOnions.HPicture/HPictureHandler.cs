@@ -185,7 +185,7 @@ namespace GreenOnions.HPicture
                         SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsStringTags());
                         return;
                     }
-                    GreenOnionsMessages outMessage = CreateOnceYandeHPicture(imgItem);
+                    GreenOnionsMessages outMessage = await CreateOnceYandeHPictureAsync(imgItem);
                     SetRevokeTime(senderGroup, outMessage);  //设置撤回时间
                     SendMessage(outMessage);
                     RecordLimit(senderId, senderGroup, LimitType.Count);
@@ -214,7 +214,7 @@ namespace GreenOnions.HPicture
                         SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsStringTags());
                         return;
                     }
-                    GreenOnionsMessages outMessage = CreateOnceYandeHPicture(imgItem);
+                    GreenOnionsMessages outMessage = await CreateOnceYandeHPictureAsync(imgItem);
                     outMessages.Add(outMessage);
                     RecordLimit(senderId, senderGroup, LimitType.Count);
                 }
@@ -239,7 +239,7 @@ namespace GreenOnions.HPicture
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        private static GreenOnionsMessages CreateOnceYandeHPicture(YandeItem item)
+        private static async Task<GreenOnionsMessages> CreateOnceYandeHPictureAsync(YandeItem item)
         {
             GreenOnionsMessages outMessage = new();
             StringBuilder sb = new();
@@ -249,7 +249,7 @@ namespace GreenOnions.HPicture
                 sb.AppendLine($"标签:{string.Join(", ", item.Tags)}");
             outMessage.Add(sb);
             string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ShowPageUrl.Substring("/post/show/".Length)}.png");
-            outMessage.Add(CreateImageMessage(item.BigImgUrl, imgCacheName));
+            outMessage.Add(await CreateImageMessageAsync(item.BigImgUrl, imgCacheName));
             return outMessage;
         }
 
@@ -318,7 +318,7 @@ namespace GreenOnions.HPicture
                 if (BotInfo.HPictureSendTags)
                     sb.AppendLine($"标签:{imgItem.Tags}");
                 outMessage.Add(sb);
-                GreenOnionsImageMessage imgMsg = CreateOnceLoliconHPicture(imgItem);
+                GreenOnionsImageMessage imgMsg = await CreateOnceLoliconHPictureAsync(imgItem);
 
                 SetRevokeTime(senderGroup, outMessage);  //设置撤回时间
 
@@ -340,10 +340,10 @@ namespace GreenOnions.HPicture
             RecordLimit(senderId, senderGroup, LimitType.Frequency);
         }
 
-        private static GreenOnionsImageMessage CreateOnceLoliconHPicture(LoliconHPictureItem item)
+        private static async Task<GreenOnionsImageMessage> CreateOnceLoliconHPictureAsync(LoliconHPictureItem item)
         {
             string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png");
-            return CreateImageMessage(item.URL, imgCacheName);
+            return await CreateImageMessageAsync(item.URL, imgCacheName);
         }
 
         #endregion -- Lolicon --
@@ -384,7 +384,7 @@ namespace GreenOnions.HPicture
                         sb.AppendLine($"日文标签:{imgItem.Jp_Tag}");
                     }
                     outMessage.Add(sb);
-                    GreenOnionsImageMessage imgMsg = CreateOnceELFHPicture(imgItem);
+                    GreenOnionsImageMessage imgMsg = await CreateOnceELFHPictureAsync(imgItem);
 
                     SetRevokeTime(senderGroup, outMessage);
 
@@ -414,15 +414,15 @@ namespace GreenOnions.HPicture
             }
         }
 
-        private static GreenOnionsImageMessage CreateOnceELFHPicture(ELFHPictureItem item)
+        private static async Task<GreenOnionsImageMessage> CreateOnceELFHPictureAsync(ELFHPictureItem item)
         {
             string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"ELF_{item.ID}.png");
-            return CreateImageMessage(item.Link, imgCacheName);
+            return await CreateImageMessageAsync(item.Link, imgCacheName);
         }
 
         #endregion -- ELF --
 
-        private static GreenOnionsImageMessage CreateImageMessage(string url, string cacheName)
+        private static async Task<GreenOnionsImageMessage> CreateImageMessageAsync(string url, string cacheName)
         {
             GreenOnionsImageMessage imageMsg = null;
             if (File.Exists(cacheName) && new FileInfo(cacheName).Length > 0) //存在本地缓存时优先使用缓存
@@ -433,15 +433,15 @@ namespace GreenOnions.HPicture
             {
                 if (BotInfo.SendImageByFile)  //下载完成后发送文件
                 {
-                    HttpHelper.DownloadImageFile(url, cacheName);
+                    await HttpHelper.DownloadImageFileAsync(url, cacheName);
                     if (File.Exists(cacheName))
-                        imageMsg = new GreenOnionsImageMessage(cacheName);
+                        imageMsg = new GreenOnionsImageMessage( cacheName);
                 }
-                else
+                else  //直接发送地址
                 {
                     imageMsg = new GreenOnionsImageMessage(url);
                     if (BotInfo.DownloadImage4Caching)
-                        HttpHelper.DownloadImageFileAsync(url, cacheName);  //下载图片用于缓存
+                        _ = HttpHelper.DownloadImageFileAsync(url, cacheName);  //下载图片用于缓存
                 }
             }
             return imageMsg;

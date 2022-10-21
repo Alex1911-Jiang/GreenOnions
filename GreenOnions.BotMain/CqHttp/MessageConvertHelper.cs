@@ -36,7 +36,7 @@ namespace GreenOnions.BotMain.CqHttp
                     else if (miraiMessage[i].Data is TextSegment textMsg)
                         greenOnionsMessages.Add(textMsg.Content);
                     else if (miraiMessage[i].Data is ImageSegment imageMsg)
-                        greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url, imageMsg.ImgFile));
+                        greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url));
                     else if (miraiMessage[i].Data is FaceSegment faceMsg)
                         greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.ToString()));
                 }

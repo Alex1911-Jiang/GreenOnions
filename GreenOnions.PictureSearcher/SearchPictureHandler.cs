@@ -371,7 +371,7 @@ namespace GreenOnions.PictureSearcher
                     {
                         if (BotInfo.SendImageByFile)  //下载完成后发送文件
                         {
-                            HttpHelper.DownloadImageFile(imgUrl, imgName);
+                            await HttpHelper.DownloadImageFileAsync(imgUrl, imgName);
                             if (File.Exists(imgName))
                                 message.Add(new GreenOnionsImageMessage(imgName));
                         }
@@ -750,12 +750,12 @@ namespace GreenOnions.PictureSearcher
                                             if (BotInfo.SearchSendByForward)
                                             {
                                                 string imgUrlNoP = $"https://{BotInfo.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
-                                                outMessage.Add(new GreenOnionsImageMessage(DownloadImageArchive(imgUrlNoP, SauceNAOItem.pixiv_id, p)));
+                                                outMessage.Add(new GreenOnionsImageMessage(await DownloadImageArchive(imgUrlNoP, SauceNAOItem.pixiv_id, p)));
                                             }
                                             else
                                             {
                                                 string imgUrlNoP = $"https://{BotInfo.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
-                                                SendMessage(new GreenOnionsImageMessage(DownloadImageArchive(imgUrlNoP, SauceNAOItem.pixiv_id, p)));
+                                                SendMessage(new GreenOnionsImageMessage(await DownloadImageArchive(imgUrlNoP, SauceNAOItem.pixiv_id, p)));
                                             }
                                         }
                                         else  //地址有P且>0
@@ -764,14 +764,14 @@ namespace GreenOnions.PictureSearcher
                                                 outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
                                             else
                                             {
-                                                string strFileName = DownloadImageArchive(imgUrlHasP, SauceNAOItem.pixiv_id, p);
+                                                string strFileName = await DownloadImageArchive(imgUrlHasP, SauceNAOItem.pixiv_id, p);
                                                 if (File.Exists(strFileName))
                                                     SendMessage(new GreenOnionsImageMessage(strFileName));
                                             }
                                         }
 
                                         //下载原图并存储
-                                        string DownloadImageArchive(string url, string pixivID, int p)
+                                        async Task<string> DownloadImageArchive(string url, string pixivID, int p)
                                         {
                                             string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{pixivID}_p{p}.png");
                                             if (File.Exists(imgName) && new FileInfo(imgName).Length > 0)
@@ -782,11 +782,11 @@ namespace GreenOnions.PictureSearcher
                                             {
                                                 if (BotInfo.SendImageByFile)  //下载完成后发送文件
                                                 {
-                                                    HttpHelper.DownloadImageFile(url, imgName);
+                                                    await HttpHelper.DownloadImageFileAsync(url, imgName);
                                                     return imgName;
                                                 }
                                                 if (BotInfo.DownloadImage4Caching)
-                                                    HttpHelper.DownloadImageFileAsync(url, imgName);//下载图片用于缓存
+                                                    _ = HttpHelper.DownloadImageFileAsync(url, imgName);//下载图片用于缓存
                                                 return url;
                                             }
                                         }

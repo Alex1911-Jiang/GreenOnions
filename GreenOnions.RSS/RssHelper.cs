@@ -171,7 +171,7 @@ namespace GreenOnions.RSS
                                 groupResultMsg.Add(translateMsg);
                             for (int i = 0; i < rss.imgsSrc.Length; i++)
                             {
-                                groupResultMsg.Add(new GreenOnionsImageMessage(GetImgUrlOrFileName(rss.imgsSrc[i])));
+                                groupResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(rss.imgsSrc[i])));
                             }
 
                             if (rss.videosSrc.Length > 0)
@@ -184,7 +184,7 @@ namespace GreenOnions.RSS
                             }
 
                             if (thuImgUrl != null)
-                                groupResultMsg.Add(new GreenOnionsImageMessage(GetImgUrlOrFileName(thuImgUrl)));
+                                groupResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(thuImgUrl)));
 
                             groupResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
                             groupResultMsg.Add($"\r\n原文地址:{rss.link}");
@@ -222,7 +222,7 @@ namespace GreenOnions.RSS
 
                             for (int i = 0; i < rss.imgsSrc.Length; i++)
                             {
-                                friendResultMsg.Add(new GreenOnionsImageMessage(GetImgUrlOrFileName(rss.imgsSrc[i])));
+                                friendResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(rss.imgsSrc[i])));
                             }
                             if (rss.videosSrc.Length > 0)
                             {
@@ -234,7 +234,7 @@ namespace GreenOnions.RSS
                             }
 
                             if (thuImgUrl != null)
-                                friendResultMsg.Add(new GreenOnionsImageMessage(GetImgUrlOrFileName(thuImgUrl)));
+                                friendResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(thuImgUrl)));
                             friendResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
                             friendResultMsg.Add($"\r\n原文地址:{rss.link}");
 
@@ -282,12 +282,12 @@ namespace GreenOnions.RSS
             }
         }
 
-        private static string GetImgUrlOrFileName(string url)
+        private static async Task<string> GetImgUrlOrFileNameAsync(string url)
         {
             if (BotInfo.SendImageByFile)  //下载完成后发送文件
             {
                 string imgName = Path.Combine(ImageHelper.ImagePath, $"RSS_{Path.GetFileName(url)}");
-                HttpHelper.DownloadImageFile(url, imgName);
+                await HttpHelper.DownloadImageFileAsync(url, imgName);
                 if (File.Exists(imgName))
                     return imgName;
             }
