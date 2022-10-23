@@ -491,6 +491,21 @@ namespace GreenOnions.Utility
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeSendThreshold), value.ToString());
         }
 
+        /// <summary>
+        /// TraceMoe搜番结果为里番时是否发送缩略图
+        /// </summary>
+        [PropertyChineseName("TraceMoe 发送里番缩略图", "搜图", "TraceMoe搜番结果为里番时是否发送缩略图")]
+        public static bool TraceMoeSendAdultThuImg
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeSendAdultThuImg));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return true;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(TraceMoeSendAdultThuImg), value.ToString());
+        }
+
         #endregion -- TraceMoe --
 
         #region -- SauceNAO --
@@ -801,7 +816,7 @@ namespace GreenOnions.Utility
         [PropertyChineseName("开启连续搜车模式命令", "搜图")]
         public static string Search3DModeOnCmd
         {
-            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(Search3DModeOnCmd)) ?? "<机器人名称>搜[车車]牌?";
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(Search3DModeOnCmd)) ?? "<机器人名称>搜[车車]?";
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(Search3DModeOnCmd), value);
         }
 
@@ -972,6 +987,26 @@ namespace GreenOnions.Utility
                 return true;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureEnabled), value.ToString());
+        }
+
+        /// <summary>
+        /// 下载原图命令
+        /// </summary>
+        [PropertyChineseName("下载原图 命令", "搜图")]
+        public static string OriginalPictureCommand
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCommand)) ?? "<机器人名称>下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureCommand), value);
+        }
+        
+        /// <summary>
+        /// 开始下载原图回复语
+        /// </summary>
+        [PropertyChineseName("下载原图 开始下载回复语", "搜图")]
+        public static string OriginalPictureDownloadingReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureDownloadingReply)) ?? "正在下载，请稍候...";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNamePictureSearcher, nameof(OriginalPictureDownloadingReply), value);
         }
 
         /// <summary>
@@ -1515,6 +1550,16 @@ namespace GreenOnions.Utility
                 return false;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendByForward), value.ToString());
+        }
+
+        /// <summary>
+        /// 开始下载色图时回复
+        /// </summary>
+        [PropertyChineseName("色图 开始下载色图回复语", "色图")]
+        public static string HPictureDownloadingReply
+        {
+            get => JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureDownloadingReply)) ?? "正在查找色图...";
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureDownloadingReply), value);
         }
 
         /// <summary>

@@ -29,7 +29,6 @@ namespace GreenOnions.BotMain
 
         static MessageHandler()
         {
-            regexDownloadPixivOriginalPicture = new Regex($"{BotInfo.BotName}下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]");
             regexHelp = new Regex($"{BotInfo.BotName}帮助");
             UpdateRegexs();
         }
@@ -41,6 +40,8 @@ namespace GreenOnions.BotMain
             {
                 regexName = "开启搜图";
                 regexSearchOn = new Regex(BotInfo.SearchModeOnCmd.ReplaceGreenOnionsStringTags());
+                regexName = "下载原图";
+                regexDownloadPixivOriginalPicture = new Regex(BotInfo.OriginalPictureCommand.ReplaceGreenOnionsStringTags());
                 regexName = "开启搜番";
                 regexSearchAnimeOn = new Regex(BotInfo.SearchAnimeModeOnCmd.ReplaceGreenOnionsStringTags());
                 regexName = "开启搜车";
@@ -101,7 +102,10 @@ namespace GreenOnions.BotMain
                         {
                             if (string.IsNullOrWhiteSpace(txtMsg.Text))
                                 continue;
-                            _ = SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(txtMsg.Text).ContinueWith(callback => SendMessage(callback.Result));
+                            if (!string.IsNullOrWhiteSpace(BotInfo.OriginalPictureDownloadingReply)) //回复下载中
+                                SendMessage(BotInfo.OriginalPictureDownloadingReply);
+                            GreenOnionsMessages msgOriginalPictureMsg = await SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(txtMsg.Text);
+                            SendMessage(msgOriginalPictureMsg);
                         }
                         #endregion -- @下载原图 --
                     }
@@ -280,11 +284,14 @@ namespace GreenOnions.BotMain
                     {
                         LogHelper.WriteInfoLog($"{inMsg.SenderId}消息命中下载Pixiv原图命令");
                         Match match = regexDownloadPixivOriginalPicture.Matches(firstValue).FirstOrDefault();
-                        if (match.Groups.Count > 1)
+                        if (match?.Groups.Count > 1)
                         {
                             string strId = firstValue.Substring(match.Groups[0].Length);
                             LogHelper.WriteInfoLog($"{inMsg.SenderId}下载id={strId}的原图");
-                            _ = SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(strId).ContinueWith(callback => SendMessage(callback.Result));
+                            if (!string.IsNullOrWhiteSpace(BotInfo.OriginalPictureDownloadingReply)) //回复下载中
+                                SendMessage(BotInfo.OriginalPictureDownloadingReply);
+                            GreenOnionsMessages msgOriginalPictureMsg = await SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(strId);
+                            SendMessage(msgOriginalPictureMsg);
                         }
                         return true;
                     }

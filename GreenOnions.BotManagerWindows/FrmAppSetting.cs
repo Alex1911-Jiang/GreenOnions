@@ -14,9 +14,6 @@ namespace GreenOnions.BotManagerWindows
         {
             base.OnShown(e);
 
-            if (pnlHPictureCheckBoxes.Left < 519)  //狗屎设计器整天有Bug自动移动位置
-                pnlHPictureCheckBoxes.Left = 519;
-
             for (int i = 0; i < 24; i++)
             {
                 cboWorkingTimeFromHour.Items.Add(i);
@@ -85,68 +82,13 @@ namespace GreenOnions.BotManagerWindows
 
             #region -- 搜图设置 --
             chkSearchPictureEnabled.Checked = BotInfo.SearchEnabled;  //是否启用搜图功能
-            chkPmAutoSearch.Checked = BotInfo.PmAutoSearch;
-
-            chkSearchTraceMoeEnabled.Checked = BotInfo.SearchEnabledTraceMoe;  //是否启用TraceMoe搜番
-            txbTraceMoeSendThreshold.Text = BotInfo.TraceMoeSendThreshold.ToString();
-
-            chkSearchSauceNAOEnabled.Checked = BotInfo.SearchEnabledSauceNAO;  //SauceNAO Api-Key
-            chkSearchSauceNAOSortByDesc.Checked = BotInfo.SearchSauceNAOSortByDesc;
-            chkSearchSauceNAOSendPixivOriginalPicture.Checked = BotInfo.SearchSauceNAOSendPixivOriginalPicture;
-            txbSearchSauceNAOApiKey.Text = string.Join("\r\n", BotInfo.SauceNAOApiKey);
-            txbSearchSauceNAOLowSimilarity.Text = BotInfo.SearchSauceNAOLowSimilarity.ToString();
-            txbSearchSauceNAOHighSimilarity.Text = BotInfo.SearchSauceNAOHighSimilarity.ToString();
-
-            chkSearchASCII2DEnabled.Checked = BotInfo.SearchEnabledASCII2D;  //是否启用ASCII2D搜图
-            cboSearchShowAscii2dCount.SelectedIndex = BotInfo.SearchShowASCII2DCount - 1;
-
-            chkSearchIqdbEnabled.Checked = BotInfo.SearchEnabledIqdb;
-            chkSearch3dIqdbEnabled.Checked = BotInfo.SearchEnabled3dIqdb;
-            chkSearchIqdbSendTags.Checked = BotInfo.SearchIqdbSendTags;
-            chkSearchIqdbMustSafe.Checked = BotInfo.SearchIqdbMustSafe;
-            txbSearchIqdbSimilarity.Text = BotInfo.SearchIqdbSimilarity.ToString();
-            txbSearchIqdbSimilarityReply.Text = BotInfo.SearchIqdbSimilarityReply;
-
-            txbSearchModeOnCmd.Text = BotInfo.SearchModeOnCmd;
-            txbSearchAnimeModeOnCmd.Text = BotInfo.SearchAnimeModeOnCmd;
-            txbSearch3DModeOnCmd.Text = BotInfo.Search3DModeOnCmd;
-            txbSearchModeOffCmd.Text = BotInfo.SearchModeOffCmd;
-            txbSearchModeTimeOutReply.Text = BotInfo.SearchModeTimeOutReply;
-            txbSearchModeOnReply.Text = BotInfo.SearchModeOnReply;
-            txbSearchModeAlreadyOnReply.Text = BotInfo.SearchModeAlreadyOnReply;
-            txbSearchingReply.Text = BotInfo.SearchingReply;
-            txbSearchModeOffReply.Text = BotInfo.SearchModeOffReply;
-            txbSearchModeAlreadyOffReply.Text = BotInfo.SearchModeAlreadyOffReply;
-            txbSearchNoResultReply.Text = BotInfo.SearchNoResultReply;
-            txbSearchErrorReply.Text = BotInfo.SearchErrorReply;
-            txbSearchSauceNAOLowSimilarityReply.Text = BotInfo.SearchSauceNAOLowSimilarityReply;
-            txbSearchDownloadThuImageFailReply.Text = BotInfo.SearchDownloadThuImageFailReply;
-
-            chkSearchCheckPornEnabled.Checked = BotInfo.SearchCheckPornEnabled;  //是否在搜图启用鉴黄
-            txbSearchCheckPornIllegalReply.Text = BotInfo.SearchCheckPornIllegalReply;
-            txbSearchCheckPornErrorReply.Text = BotInfo.SearchCheckPornErrorReply;
-
-            chkOriginalPictureEnabled.Checked = BotInfo.OriginalPictureEnabled;
-            chkOriginalPictureCheckPornEnabled.Checked = BotInfo.OriginalPictureCheckPornEnabled;  //是否在下载原图启用鉴黄
-            switch (BotInfo.OriginalPictureCheckPornEvent)  //鉴黄不通过的行为
-            {
-                case 0:
-                    rdoOriginalPictureCheckPornSendByForward.Checked = true;
-                    break;
-                case 1:
-                    rdoOriginalPictureCheckPornDoNothing.Checked = true;
-                    break;
-                case 2:
-                    rdoOriginalPictureCheckPornReply.Checked = true;
-                    break;
-            }
-            txbOriginalPictureCheckPornIllegalReply.Text = BotInfo.OriginalPictureCheckPornIllegalReply;
-            txbOriginalPictureCheckPornErrorReply.Text = BotInfo.OriginalPictureCheckPornErrorReply;
-            chkASCII2DRequestByWebBrowser.Checked = BotInfo.ASCII2DRequestByWebBrowser;
-            chkSauceNAORequestByWebBrowser.Checked = BotInfo.SauceNAORequestByWebBrowser;
-            chkSearchSendByForward.Checked = BotInfo.SearchSendByForward;
-
+            pnlSearchPicture.LoadConfig();
             #endregion -- 搜图设置 --
+
+            #region -- 下载原图设置 --
+            chkOriginalPictureEnabled.Checked = BotInfo.OriginalPictureEnabled;
+            pnlOriginalPicture.LoadConfig();
+            #endregion -- 下载原图设置 --
 
             #region -- 翻译设置 --
 
@@ -162,70 +104,8 @@ namespace GreenOnions.BotManagerWindows
             #endregion -- 翻译设置 --
 
             #region -- 色图设置 --
-
-            foreach (var hSource in BotInfo.EnabledHPictureSource)
-            {
-                if (hSource == PictureSource.Lolicon)
-                    chkHPictureEnabledLoliconSource.Checked = true;
-                if (hSource == PictureSource.Yande_re)
-                    chkHPictureYande_reSource.Checked = true;
-            }
-            foreach (var beautySource in BotInfo.EnabledBeautyPictureSource)
-            {
-                if (beautySource == PictureSource.ELF)
-                    chkBeautyPictureEnabledELFSource.Checked = true;
-            }
-            cboHPictureDefaultSource.DataSource = Enum.GetNames<PictureSource>();
-            cboHPictureDefaultSource.SelectedIndex = BotInfo.HPictureDefaultSource;
-
-            txbHPictureOnceMessageMaxImageCount.Text = BotInfo.HPictureOnceMessageMaxImageCount.ToString();
             chkHPictureEnabled.Checked = BotInfo.HPictureEnabled;
-            txbHPictureCmd.Text = BotInfo.HPictureCmd;
-            chkRevokeBeautyPicture.Checked = BotInfo.RevokeBeautyPicture;
-            if (BotInfo.HPictureUserCmd != null)
-            {
-                foreach (var item in BotInfo.HPictureUserCmd)
-                    lstHPictureUserCmd.Items.Add(item);
-            }
-            if (BotInfo.HPictureShieldingWords != null)
-            {
-                foreach (var item in BotInfo.HPictureShieldingWords)
-                    lstShieldingWords.Items.Add(item.ToString());
-            }
-            if (BotInfo.HPictureWhiteGroup != null)
-            {
-                foreach (var item in BotInfo.HPictureWhiteGroup)
-                    lstHPictureWhiteGroup.Items.Add(item.ToString());
-            }
-            chkHPictureWhiteOnly.Checked = BotInfo.HPictureWhiteOnly;
-            chkHPictureAllowR18.Checked = BotInfo.HPictureAllowR18;
-            chkHPictureR18WhiteOnly.Checked = BotInfo.HPictureR18WhiteOnly;
-            chkHPictureAllowPM.Checked = BotInfo.HPictureAllowPM;
-            chkHPictureSize1200.Checked = BotInfo.HPictureSize1200;
-            txbHPictureLimit.Text = BotInfo.HPictureLimit.ToString();
-            chkHPicturePMNoLimit.Checked = BotInfo.HPicturePMNoLimit;
-            chkHPictureAdminNoLimit.Checked = BotInfo.HPictureAdminNoLimit;
-            chkHPictureWhiteNoLimit.Checked = BotInfo.HPictureWhiteNoLimit;
-            txbHPictureCD.Text = BotInfo.HPictureCD.ToString();
-            txbHPictureRevoke.Text = BotInfo.HPictureRevoke.ToString();
-            txbHPictureWhiteCD.Text = BotInfo.HPictureWhiteCD.ToString();
-            txbHPictureWhiteRevoke.Text = BotInfo.HPictureWhiteRevoke.ToString();
-            txbHPicturePMCD.Text = BotInfo.HPicturePMCD.ToString();
-            txbHPicturePMRevoke.Text = BotInfo.HPicturePMRevoke.ToString();
-            txbHPictureCDUnreadyReply.Text = BotInfo.HPictureCDUnreadyReply;
-            txbHPictureOutOfLimitReply.Text = BotInfo.HPictureOutOfLimitReply;
-            txbHPictureErrorReplyReply.Text = BotInfo.HPictureErrorReply;
-            txbHPictureNoResultReply.Text = BotInfo.HPictureNoResultReply;
-            txbDownloadFailReply.Text = BotInfo.HPictureDownloadFailReply;
-            if (BotInfo.HPictureLimitType == LimitType.Count)
-                rodHPictureLimitCount.Checked = true;
-            else
-                rdoHPictureLimitFrequency.Checked = true;
-            chkHPictureSendUrl.Checked = BotInfo.HPictureSendUrl;
-            chkHPictureSendTitle.Checked = BotInfo.HPictureSendTitle;
-            chkHPictureSendTags.Checked = BotInfo.HPictureSendTags;
-            chkHPictureSendByForward.Checked = BotInfo.HPictureSendByForward;
-
+            pnlHPicture.LoadConfig();
             #endregion -- 色图设置 --
 
             #region -- 复读设置 --
@@ -353,61 +233,9 @@ namespace GreenOnions.BotManagerWindows
 
             #region -- 搜图设置 --
             BotInfo.SearchEnabled = chkSearchPictureEnabled.Checked;  //是否启用搜图功能
-            BotInfo.PmAutoSearch = chkPmAutoSearch.Checked;
-
-            BotInfo.SearchEnabledTraceMoe = chkSearchTraceMoeEnabled.Checked;  //是否启用TraceMoe搜番
-            int iTraceMoeSendThreshold;
-            if (!int.TryParse(txbTraceMoeSendThreshold.Text, out iTraceMoeSendThreshold))
-                iTraceMoeSendThreshold = 87;
-            BotInfo.TraceMoeSendThreshold = iTraceMoeSendThreshold;
-
-            BotInfo.SearchEnabledSauceNAO = chkSearchSauceNAOEnabled.Checked;  //是否启用SauceNAO搜图
-            BotInfo.SearchSauceNAOSortByDesc = chkSearchSauceNAOSortByDesc.Checked;
-            BotInfo.SearchSauceNAOSendPixivOriginalPicture = chkSearchSauceNAOSendPixivOriginalPicture.Checked;
-            BotInfo.SauceNAOApiKey = txbSearchSauceNAOApiKey.Text.Split("\r\n").ToList();
-            int iLowSauceNAOSimilarity;
-            if (!int.TryParse(txbSearchSauceNAOLowSimilarity.Text, out iLowSauceNAOSimilarity))
-                iLowSauceNAOSimilarity = 60;
-            BotInfo.SearchSauceNAOLowSimilarity = iLowSauceNAOSimilarity;  //低相似度阈值
-            BotInfo.SearchSauceNAOLowSimilarityReply = txbSearchSauceNAOLowSimilarityReply.Text;
-            int iHighSauceNAOSimilarity;
-            if (!int.TryParse(txbSearchSauceNAOHighSimilarity.Text, out iHighSauceNAOSimilarity))
-                iHighSauceNAOSimilarity = 90;
-            BotInfo.SearchSauceNAOHighSimilarity = iHighSauceNAOSimilarity;  //高相似度阈值
-            BotInfo.SauceNAORequestByWebBrowser = chkSauceNAORequestByWebBrowser.Checked;
-
-            BotInfo.SearchEnabledASCII2D = chkSearchASCII2DEnabled.Checked;  //是否启用ASCII2D搜图
-            BotInfo.SearchShowASCII2DCount = cboSearchShowAscii2dCount.SelectedIndex + 1;
-            BotInfo.ASCII2DRequestByWebBrowser = chkASCII2DRequestByWebBrowser.Checked;
-
-            BotInfo.SearchEnabledIqdb = chkSearchIqdbEnabled.Checked;
-            BotInfo.SearchEnabled3dIqdb = chkSearch3dIqdbEnabled.Checked;
-            BotInfo.SearchIqdbSendTags = chkSearchIqdbSendTags.Checked;
-            BotInfo.SearchIqdbMustSafe = chkSearchIqdbMustSafe.Checked;
-            BotInfo.SearchIqdbSimilarity = Convert.ToInt32(txbSearchIqdbSimilarity.Text);
-            BotInfo.SearchIqdbSimilarityReply = txbSearchIqdbSimilarityReply.Text;
-
-            BotInfo.SearchModeOnCmd = txbSearchModeOnCmd.Text;
-            BotInfo.SearchAnimeModeOnCmd = txbSearchAnimeModeOnCmd.Text;
-            BotInfo.Search3DModeOnCmd = txbSearch3DModeOnCmd.Text;
-            BotInfo.SearchModeOffCmd = txbSearchModeOffCmd.Text;
-            BotInfo.SearchModeTimeOutReply = txbSearchModeTimeOutReply.Text;
-            BotInfo.SearchModeOnReply = txbSearchModeOnReply.Text;
-            BotInfo.SearchModeAlreadyOnReply = txbSearchModeAlreadyOnReply.Text;
-            BotInfo.SearchingReply = txbSearchingReply.Text;
-            BotInfo.SearchModeOffReply = txbSearchModeOffReply.Text;
-            BotInfo.SearchModeAlreadyOffReply = txbSearchModeAlreadyOffReply.Text;
-            BotInfo.SearchNoResultReply = txbSearchNoResultReply.Text;
-            BotInfo.SearchErrorReply = txbSearchErrorReply.Text;
-
-            BotInfo.SearchDownloadThuImageFailReply = txbSearchDownloadThuImageFailReply.Text;
-            BotInfo.CheckPornEnabled = chkCheckPornEnabled.Checked;  //是否启用腾讯云鉴黄
-            BotInfo.SearchCheckPornEnabled = chkSearchCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
-            BotInfo.SearchCheckPornIllegalReply = txbSearchCheckPornIllegalReply.Text;
-            BotInfo.SearchCheckPornErrorReply = txbSearchCheckPornErrorReply.Text;
-            BotInfo.SearchSendByForward = chkSearchSendByForward.Checked;
-
+            pnlSearchPicture.SaveConfig();
             #region -- 腾讯云相关设置 --
+            BotInfo.CheckPornEnabled = chkCheckPornEnabled.Checked;  //是否启用腾讯云鉴黄
             BotInfo.TencentCloudAPPID = txbTencentCloudAPPID.Text;
             BotInfo.TencentCloudRegion = txbTencentCloudRegion.Text;
             BotInfo.TencentCloudSecretId = txbTencentCloudSecretId.Text;
@@ -417,13 +245,8 @@ namespace GreenOnions.BotManagerWindows
             #endregion -- 搜图设置 --
 
             #region -- 下载原图设置 --
-
             BotInfo.OriginalPictureEnabled = chkOriginalPictureEnabled.Checked;
-            BotInfo.OriginalPictureCheckPornEnabled = chkOriginalPictureCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
-            BotInfo.OriginalPictureCheckPornEvent = Convert.ToInt32(pnlOriginalPictureCheckPornEvent.Controls.OfType<RadioButton>().Where(x => x.Checked).First().Tag);
-            BotInfo.OriginalPictureCheckPornIllegalReply = txbOriginalPictureCheckPornIllegalReply.Text;
-            BotInfo.OriginalPictureCheckPornErrorReply = txbOriginalPictureCheckPornErrorReply.Text;
-
+            pnlOriginalPicture.SaveConfig();
             #endregion -- 下载原图设置 --
 
             #region -- 翻译设置 --
@@ -444,59 +267,8 @@ namespace GreenOnions.BotManagerWindows
             #endregion  -- 翻译设置 --
 
             #region -- 色图设置 --
-
-            List<PictureSource> EnabledHPictureSource = new List<PictureSource>();
-            List<PictureSource> EnabledBeautyPictureSource = new List<PictureSource>();
-            if (chkHPictureEnabledLoliconSource.Checked)
-                EnabledHPictureSource.Add(PictureSource.Lolicon);
-            if (chkHPictureYande_reSource.Checked)
-                EnabledHPictureSource.Add(PictureSource.Yande_re);
-            if (chkBeautyPictureEnabledELFSource.Checked)
-                EnabledBeautyPictureSource.Add(PictureSource.ELF);
-            BotInfo.EnabledHPictureSource = EnabledHPictureSource;
-            BotInfo.EnabledBeautyPictureSource = EnabledBeautyPictureSource;
-            BotInfo.HPictureDefaultSource = cboHPictureDefaultSource.SelectedIndex;
-            BotInfo.HPictureCmd = txbHPictureCmd.Text;
-            BotInfo.HPictureOnceMessageMaxImageCount = string.IsNullOrEmpty(txbHPictureOnceMessageMaxImageCount.Text) ? 10 : Convert.ToInt32(txbHPictureOnceMessageMaxImageCount.Text);
             BotInfo.HPictureEnabled = chkHPictureEnabled.Checked;
-            BotInfo.RevokeBeautyPicture = chkRevokeBeautyPicture.Checked;
-            List<string> tempHPictureUserCmd = new List<string>();
-            foreach (ListViewItem item in lstHPictureUserCmd.Items)
-                tempHPictureUserCmd.Add(item.SubItems[0].Text);
-            BotInfo.HPictureUserCmd = tempHPictureUserCmd;
-            List<string> tempShieldingWords = new List<string>();
-            foreach (ListViewItem item in lstShieldingWords.Items)
-                tempShieldingWords.Add(item.SubItems[0].Text);
-            BotInfo.HPictureShieldingWords = tempShieldingWords;
-            List<long> tempHPictureWhiteGroup = new List<long>();
-            foreach (ListViewItem item in lstHPictureWhiteGroup.Items)
-                tempHPictureWhiteGroup.Add(Convert.ToInt64(item.SubItems[0].Text));
-            BotInfo.HPictureWhiteGroup = tempHPictureWhiteGroup;
-            BotInfo.HPictureWhiteOnly = chkHPictureWhiteOnly.Checked;
-            BotInfo.HPictureAllowR18 = chkHPictureAllowR18.Checked;
-            BotInfo.HPictureR18WhiteOnly = chkHPictureR18WhiteOnly.Checked;
-            BotInfo.HPictureAllowPM = chkHPictureAllowPM.Checked;
-            BotInfo.HPictureSize1200 = chkHPictureSize1200.Checked;
-            BotInfo.HPictureLimit = string.IsNullOrEmpty(txbHPictureLimit.Text) ? 0 : Convert.ToInt32(txbHPictureLimit.Text);
-            BotInfo.HPicturePMNoLimit = chkHPicturePMNoLimit.Checked;
-            BotInfo.HPictureAdminNoLimit = chkHPictureAdminNoLimit.Checked;
-            BotInfo.HPictureCD = string.IsNullOrEmpty(txbHPictureCD.Text) ? 0 : Convert.ToInt32(txbHPictureCD.Text);
-            BotInfo.HPictureRevoke = string.IsNullOrEmpty(txbHPictureRevoke.Text) ? 0 : Convert.ToInt32(txbHPictureRevoke.Text);
-            BotInfo.HPictureWhiteCD = string.IsNullOrEmpty(txbHPictureWhiteCD.Text) ? 0 : Convert.ToInt32(txbHPictureWhiteCD.Text);
-            BotInfo.HPictureWhiteRevoke = string.IsNullOrEmpty(txbHPictureWhiteRevoke.Text) ? 0 : Convert.ToInt32(txbHPictureWhiteRevoke.Text);
-            BotInfo.HPicturePMCD = string.IsNullOrEmpty(txbHPicturePMCD.Text) ? 0 : Convert.ToInt32(txbHPicturePMCD.Text);
-            BotInfo.HPicturePMRevoke = string.IsNullOrEmpty(txbHPicturePMRevoke.Text) ? 0 : Convert.ToInt32(txbHPicturePMRevoke.Text);
-            BotInfo.HPictureCDUnreadyReply = txbHPictureCDUnreadyReply.Text;
-            BotInfo.HPictureOutOfLimitReply = txbHPictureOutOfLimitReply.Text;
-            BotInfo.HPictureErrorReply = txbHPictureErrorReplyReply.Text;
-            BotInfo.HPictureNoResultReply = txbHPictureNoResultReply.Text;
-            BotInfo.HPictureDownloadFailReply = txbDownloadFailReply.Text;
-            BotInfo.HPictureLimitType = rdoHPictureLimitFrequency.Checked ? LimitType.Frequency : LimitType.Count;
-            BotInfo.HPictureWhiteNoLimit = chkHPictureWhiteNoLimit.Checked;
-            BotInfo.HPictureSendUrl = chkHPictureSendUrl.Checked;
-            BotInfo.HPictureSendTitle = chkHPictureSendTitle.Checked;
-            BotInfo.HPictureSendTags = chkHPictureSendTags.Checked;
-            BotInfo.HPictureSendByForward = chkHPictureSendByForward.Checked;
+            pnlHPicture.SaveConfig();
             #endregion -- 色图设置 --
 
             #region -- 复读设置 --
@@ -566,8 +338,7 @@ namespace GreenOnions.BotManagerWindows
 
             ConfigHelper.SaveConfigFile();
 
-            foreach (string SauceNAOKey in txbSearchSauceNAOApiKey.Text.Split("\r\n"))
-                Cache.SetSauceNAOKey(SauceNAOKey);
+            pnlSearchPicture.UpdateCache();
 
             string regexMsg = MessageHandler.UpdateRegexs();
             if (regexMsg == null)
@@ -585,7 +356,7 @@ namespace GreenOnions.BotManagerWindows
             txbForgeMessageCmdBegin.TextChanged += txbForgeMessageCmd_TextChanged;
         }
 
-        private void chkEnableHPicture_CheckedChanged(object sender, EventArgs e) => pnlHPictureEnabeled.Enabled = chkHPictureEnabled.Checked;
+        private void chkEnableHPicture_CheckedChanged(object sender, EventArgs e) => pnlHPicture.Enabled = chkHPictureEnabled.Checked;
 
         private void checkNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -608,13 +379,6 @@ namespace GreenOnions.BotManagerWindows
             }
         }
 
-        private void lnkResetHPicture_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            txbHPictureCmd.Text = BotInfo.DefaultHPictureCmd;
-            chkHPictureEnabledLoliconSource.Checked = true;
-            chkHPictureYande_reSource.Checked = true;
-        }
-
         private void chkSearchPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchPicture.Enabled = chkSearchPictureEnabled.Checked;
 
         private void chkCheckPorn_CheckedChanged(object sender, EventArgs e) => pnlCheckPorn.Enabled = chkCheckPornEnabled.Checked;
@@ -624,27 +388,18 @@ namespace GreenOnions.BotManagerWindows
             Process.Start("explorer.exe", (sender as Control).Text);
         }
 
-        private void chkSearchSauceNAOEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchSauceNAO.Enabled = chkSearchSauceNAOEnabled.Checked;
 
         #region -- 添加或移除ListView --
-
-        private void btnAddUserHPictureCmd_Click(object sender, EventArgs e) => AddItemToListView(lstHPictureUserCmd, txbUserHPictureCmd.Text);
-
-        private void btnAddWhiteGroup_Click(object sender, EventArgs e) => AddItemToListView(lstHPictureWhiteGroup, txbWhiteGroup.Text);
 
         private void btnAddAdmin_Click(object sender, EventArgs e) => AddItemToListView(lstAdmins, txbAddAdmin.Text);
 
         private void btnAddBanGroup_Click(object sender, EventArgs e) => AddItemToListView(lstBannedGroup, txbBanGroup.Text);
 
         private void btnAddBanUser_Click(object sender, EventArgs e) => AddItemToListView(lstBannedUser, txbBanUser.Text);
-
+        
         private void btnAddDebugGroup_Click(object sender, EventArgs e) => AddItemToListView(lstDebugGroups, txbAddDebugGroup.Text);
 
         private void btnRemoveAdmin_Click(object sender, EventArgs e) => RemoveItemFromListView(lstAdmins);
-
-        private void btnRemoveUserHPictureCmd_Click(object sender, EventArgs e) => RemoveItemFromListView(lstHPictureUserCmd);
-
-        private void btnRemoveWhiteGroup_Click(object sender, EventArgs e) => RemoveItemFromListView(lstHPictureWhiteGroup);
 
         private void btnRemoveBanGroup_Click(object sender, EventArgs e) => RemoveItemFromListView(lstBannedGroup);
 
@@ -655,10 +410,6 @@ namespace GreenOnions.BotManagerWindows
         private void btnAddAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => AddItemToListView(lstAutoTranslateGroupMemoriesQQ, txbAddAutoTranslateGroupMemoryQQ.Text);
 
         private void btnRemoveAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => RemoveItemFromListView(lstAutoTranslateGroupMemoriesQQ);
-
-        private void btnAddShieldingWords_Click(object sender, EventArgs e) => AddItemToListView(lstShieldingWords, txbShieldingWords.Text);
-
-        private void btnRemoveShieldingWords_Click(object sender, EventArgs e) => RemoveItemFromListView(lstShieldingWords);
 
         private void AddItemToListView(ListView listView, string value)
         {
@@ -721,19 +472,12 @@ namespace GreenOnions.BotManagerWindows
 
         private void chkRssEnabled_CheckedChanged(object sender, EventArgs e) => pnlRss.Enabled = chkRssEnabled.Checked;
 
-        private void chkPictureSearcherCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlPictureSearcherCheckPorn.Enabled = chkSearchCheckPornEnabled.Checked;
 
         private void chkOriginalPictureEnabled_CheckedChanged(object sender, EventArgs e) => pnlOriginalPicture.Enabled = chkOriginalPictureEnabled.Checked;
-
-        private void chkOriginalPictureCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlOriginalPictureCheckPorn.Enabled = chkOriginalPictureCheckPornEnabled.Checked;
-
-        private void rdoOriginalPictureCheckPornSendByForward_CheckedChanged(object sender, EventArgs e) => pnlOriginalPictureCheckPornMessage.Enabled = rdoOriginalPictureCheckPornReply.Checked;
 
         private void chkTranslateEnabled_CheckedChanged(object sender, EventArgs e) => pnlTranslate.Enabled = chkTranslateEnabled.Checked;
 
         private void chkAutoConnectEnabled_CheckedChanged(object sender, EventArgs e) => pnlAutoConnect.Enabled = chkAutoConnectEnabled.Checked;
-
-        private void chkSearchASCII2DEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchAscii2d.Enabled = chkSearchASCII2DEnabled.Checked;
 
         private void chkWorkingTimeEnabled_CheckedChanged(object sender, EventArgs e) => pnlWorkingTime.Enabled = chkWorkingTimeEnabled.Checked;
 

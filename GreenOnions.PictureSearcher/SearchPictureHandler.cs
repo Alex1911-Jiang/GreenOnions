@@ -271,7 +271,8 @@ namespace GreenOnions.PictureSearcher
                         {
                             string notHealth = Path.Combine(ImageHelper.ImagePath, $"TraceMoe_{id}_{previewSize}_NotHealth.png");
                             string healthed = Path.Combine(ImageHelper.ImagePath, $"TraceMoe_{id}_{previewSize}_Healthed.png");
-                            await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled, imgUrl, imgName, outMessage, notHealth, healthed);
+                            if (!isAdult || BotInfo.TraceMoeSendAdultThuImg)
+                                await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled, imgUrl, imgName, outMessage, notHealth, healthed);
                         }
                         catch (Exception ex)
                         {

@@ -1,16 +1,15 @@
-﻿using GreenOnions.Interface;
-using GreenOnions.Utility;
-using GreenOnions.Utility.Helper;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using TencentCloud.Ame.V20190916.Models;
+using GreenOnions.Interface;
+using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Yande.re.Api;
 
 namespace GreenOnions.HPicture
@@ -22,6 +21,8 @@ namespace GreenOnions.HPicture
         /// </summary>
         public static void SendOnlyOneHPictures(long senderId, long? senderGroup, Action<GreenOnionsMessages> SendMessage)
         {
+            if (!string.IsNullOrWhiteSpace(BotInfo.HPictureDownloadingReply))  //开始下载
+                SendMessage(BotInfo.HPictureDownloadingReply);
             List<Action> randomSource = new List<Action>();
             if (BotInfo.EnabledHPictureSource.Contains(PictureSource.Lolicon))
             {
@@ -104,6 +105,9 @@ namespace GreenOnions.HPicture
                     }
                 }
                 #endregion -- R18 --
+
+                if (!string.IsNullOrWhiteSpace(BotInfo.HPictureDownloadingReply))  //开始下载
+                    SendMessage(BotInfo.HPictureDownloadingReply);
 
                 bool bNonSourceSuffix = false;
                 if (!matchMessage.Groups.ContainsKey("色图后缀") && !matchMessage.Groups.ContainsKey("美图后缀"))
