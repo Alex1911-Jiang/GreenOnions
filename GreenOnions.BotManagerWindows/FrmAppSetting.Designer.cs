@@ -1240,7 +1240,7 @@
             this.pageTranslate.Location = new System.Drawing.Point(4, 33);
             this.pageTranslate.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pageTranslate.Name = "pageTranslate";
-            this.pageTranslate.Size = new System.Drawing.Size(1029, 975);
+            this.pageTranslate.Size = new System.Drawing.Size(192, 63);
             this.pageTranslate.TabIndex = 4;
             this.pageTranslate.Text = "翻译设置";
             this.pageTranslate.UseVisualStyleBackColor = true;
@@ -1269,7 +1269,7 @@
             this.pnlTranslate.Location = new System.Drawing.Point(5, 49);
             this.pnlTranslate.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlTranslate.Name = "pnlTranslate";
-            this.pnlTranslate.Size = new System.Drawing.Size(1015, 912);
+            this.pnlTranslate.Size = new System.Drawing.Size(178, 0);
             this.pnlTranslate.TabIndex = 1;
             // 
             // txbTranslateFromToCMD
@@ -1279,7 +1279,7 @@
             this.txbTranslateFromToCMD.Location = new System.Drawing.Point(310, 175);
             this.txbTranslateFromToCMD.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbTranslateFromToCMD.Name = "txbTranslateFromToCMD";
-            this.txbTranslateFromToCMD.Size = new System.Drawing.Size(700, 30);
+            this.txbTranslateFromToCMD.Size = new System.Drawing.Size(0, 30);
             this.txbTranslateFromToCMD.TabIndex = 15;
             // 
             // lblTranslateFromTo
@@ -1314,7 +1314,7 @@
             this.cboTranslateEngine.Location = new System.Drawing.Point(215, 4);
             this.cboTranslateEngine.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.cboTranslateEngine.Name = "cboTranslateEngine";
-            this.cboTranslateEngine.Size = new System.Drawing.Size(795, 32);
+            this.cboTranslateEngine.Size = new System.Drawing.Size(0, 32);
             this.cboTranslateEngine.TabIndex = 12;
             this.cboTranslateEngine.SelectedIndexChanged += new System.EventHandler(this.cboTranslateEngine_SelectedIndexChanged);
             // 
@@ -1397,7 +1397,7 @@
             this.txbTranslateTo.Location = new System.Drawing.Point(310, 134);
             this.txbTranslateTo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbTranslateTo.Name = "txbTranslateTo";
-            this.txbTranslateTo.Size = new System.Drawing.Size(700, 30);
+            this.txbTranslateTo.Size = new System.Drawing.Size(0, 30);
             this.txbTranslateTo.TabIndex = 3;
             // 
             // txbTranslateToChinese
@@ -1407,7 +1407,7 @@
             this.txbTranslateToChinese.Location = new System.Drawing.Point(310, 93);
             this.txbTranslateToChinese.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbTranslateToChinese.Name = "txbTranslateToChinese";
-            this.txbTranslateToChinese.Size = new System.Drawing.Size(700, 30);
+            this.txbTranslateToChinese.Size = new System.Drawing.Size(0, 30);
             this.txbTranslateToChinese.TabIndex = 2;
             // 
             // lblTranslateTo
@@ -1463,7 +1463,7 @@
             this.pageRepeater.Location = new System.Drawing.Point(4, 33);
             this.pageRepeater.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pageRepeater.Name = "pageRepeater";
-            this.pageRepeater.Size = new System.Drawing.Size(1029, 975);
+            this.pageRepeater.Size = new System.Drawing.Size(192, 63);
             this.pageRepeater.TabIndex = 5;
             this.pageRepeater.Text = "复读设置";
             this.pageRepeater.UseVisualStyleBackColor = true;
@@ -1537,7 +1537,7 @@
             this.txbRewindGifProbability.Location = new System.Drawing.Point(415, 145);
             this.txbRewindGifProbability.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbRewindGifProbability.Name = "txbRewindGifProbability";
-            this.txbRewindGifProbability.Size = new System.Drawing.Size(609, 30);
+            this.txbRewindGifProbability.Size = new System.Drawing.Size(0, 30);
             this.txbRewindGifProbability.TabIndex = 1;
             this.txbRewindGifProbability.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
             this.txbRewindGifProbability.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
@@ -1559,7 +1559,7 @@
             this.txbVerticalMirrorImageProbability.Location = new System.Drawing.Point(415, 261);
             this.txbVerticalMirrorImageProbability.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbVerticalMirrorImageProbability.Name = "txbVerticalMirrorImageProbability";
-            this.txbVerticalMirrorImageProbability.Size = new System.Drawing.Size(609, 30);
+            this.txbVerticalMirrorImageProbability.Size = new System.Drawing.Size(0, 30);
             this.txbVerticalMirrorImageProbability.TabIndex = 1;
             this.txbVerticalMirrorImageProbability.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
             this.txbVerticalMirrorImageProbability.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
@@ -1571,7 +1571,7 @@
             this.txbHorizontalMirrorImageProbability.Location = new System.Drawing.Point(415, 205);
             this.txbHorizontalMirrorImageProbability.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbHorizontalMirrorImageProbability.Name = "txbHorizontalMirrorImageProbability";
-            this.txbHorizontalMirrorImageProbability.Size = new System.Drawing.Size(609, 30);
+            this.txbHorizontalMirrorImageProbability.Size = new System.Drawing.Size(0, 30);
             this.txbHorizontalMirrorImageProbability.TabIndex = 1;
             this.txbHorizontalMirrorImageProbability.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
             this.txbHorizontalMirrorImageProbability.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
@@ -1583,7 +1583,7 @@
             this.txbSuccessiveRepeatCount.Location = new System.Drawing.Point(415, 88);
             this.txbSuccessiveRepeatCount.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSuccessiveRepeatCount.Name = "txbSuccessiveRepeatCount";
-            this.txbSuccessiveRepeatCount.Size = new System.Drawing.Size(609, 30);
+            this.txbSuccessiveRepeatCount.Size = new System.Drawing.Size(0, 30);
             this.txbSuccessiveRepeatCount.TabIndex = 1;
             this.txbSuccessiveRepeatCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
             this.txbSuccessiveRepeatCount.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
@@ -1595,7 +1595,7 @@
             this.txbRandomRepeatProbability.Location = new System.Drawing.Point(415, 30);
             this.txbRandomRepeatProbability.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbRandomRepeatProbability.Name = "txbRandomRepeatProbability";
-            this.txbRandomRepeatProbability.Size = new System.Drawing.Size(609, 30);
+            this.txbRandomRepeatProbability.Size = new System.Drawing.Size(0, 30);
             this.txbRandomRepeatProbability.TabIndex = 1;
             this.txbRandomRepeatProbability.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
             this.txbRandomRepeatProbability.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
@@ -1655,7 +1655,7 @@
             this.pageGroupMemberEvents.Location = new System.Drawing.Point(4, 33);
             this.pageGroupMemberEvents.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pageGroupMemberEvents.Name = "pageGroupMemberEvents";
-            this.pageGroupMemberEvents.Size = new System.Drawing.Size(1029, 975);
+            this.pageGroupMemberEvents.Size = new System.Drawing.Size(192, 63);
             this.pageGroupMemberEvents.TabIndex = 6;
             this.pageGroupMemberEvents.Text = "进/退群提醒";
             this.pageGroupMemberEvents.UseVisualStyleBackColor = true;
@@ -1667,7 +1667,7 @@
             this.txbMemberBeKickedMessage.Location = new System.Drawing.Point(383, 155);
             this.txbMemberBeKickedMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbMemberBeKickedMessage.Name = "txbMemberBeKickedMessage";
-            this.txbMemberBeKickedMessage.Size = new System.Drawing.Size(641, 30);
+            this.txbMemberBeKickedMessage.Size = new System.Drawing.Size(0, 30);
             this.txbMemberBeKickedMessage.TabIndex = 3;
             // 
             // txbMemberPositiveLeaveMessage
@@ -1677,7 +1677,7 @@
             this.txbMemberPositiveLeaveMessage.Location = new System.Drawing.Point(383, 96);
             this.txbMemberPositiveLeaveMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbMemberPositiveLeaveMessage.Name = "txbMemberPositiveLeaveMessage";
-            this.txbMemberPositiveLeaveMessage.Size = new System.Drawing.Size(641, 30);
+            this.txbMemberPositiveLeaveMessage.Size = new System.Drawing.Size(0, 30);
             this.txbMemberPositiveLeaveMessage.TabIndex = 3;
             // 
             // txbMemberJoinedMessage
@@ -1687,7 +1687,7 @@
             this.txbMemberJoinedMessage.Location = new System.Drawing.Point(383, 37);
             this.txbMemberJoinedMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbMemberJoinedMessage.Name = "txbMemberJoinedMessage";
-            this.txbMemberJoinedMessage.Size = new System.Drawing.Size(641, 30);
+            this.txbMemberJoinedMessage.Size = new System.Drawing.Size(0, 30);
             this.txbMemberJoinedMessage.TabIndex = 3;
             // 
             // chkSendMemberBeKickedMessage
@@ -1730,7 +1730,7 @@
             this.pageForgeMessage.Location = new System.Drawing.Point(4, 33);
             this.pageForgeMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pageForgeMessage.Name = "pageForgeMessage";
-            this.pageForgeMessage.Size = new System.Drawing.Size(1029, 975);
+            this.pageForgeMessage.Size = new System.Drawing.Size(192, 63);
             this.pageForgeMessage.TabIndex = 7;
             this.pageForgeMessage.Text = "伪造消息";
             this.pageForgeMessage.UseVisualStyleBackColor = true;
@@ -1762,7 +1762,7 @@
             this.pnlForgeMessage.Location = new System.Drawing.Point(5, 51);
             this.pnlForgeMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlForgeMessage.Name = "pnlForgeMessage";
-            this.pnlForgeMessage.Size = new System.Drawing.Size(1015, 912);
+            this.pnlForgeMessage.Size = new System.Drawing.Size(178, 0);
             this.pnlForgeMessage.TabIndex = 11;
             // 
             // lblForgeMessageCmd
@@ -1785,7 +1785,7 @@
             this.txbForgeMessageCmd.Margin = new System.Windows.Forms.Padding(6);
             this.txbForgeMessageCmd.Name = "txbForgeMessageCmd";
             this.txbForgeMessageCmd.ReadOnly = true;
-            this.txbForgeMessageCmd.Size = new System.Drawing.Size(861, 30);
+            this.txbForgeMessageCmd.Size = new System.Drawing.Size(24, 30);
             this.txbForgeMessageCmd.TabIndex = 14;
             // 
             // chkForgeMessageAdminDontAppend
@@ -1870,7 +1870,7 @@
             this.txbRefuseForgeBotReply.Location = new System.Drawing.Point(388, 305);
             this.txbRefuseForgeBotReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbRefuseForgeBotReply.Name = "txbRefuseForgeBotReply";
-            this.txbRefuseForgeBotReply.Size = new System.Drawing.Size(620, 30);
+            this.txbRefuseForgeBotReply.Size = new System.Drawing.Size(0, 30);
             this.txbRefuseForgeBotReply.TabIndex = 12;
             // 
             // lblForgeMessageAppendSelfMessage
@@ -1890,7 +1890,7 @@
             this.txbRefuseForgeAdminReply.Location = new System.Drawing.Point(388, 219);
             this.txbRefuseForgeAdminReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbRefuseForgeAdminReply.Name = "txbRefuseForgeAdminReply";
-            this.txbRefuseForgeAdminReply.Size = new System.Drawing.Size(620, 30);
+            this.txbRefuseForgeAdminReply.Size = new System.Drawing.Size(0, 30);
             this.txbRefuseForgeAdminReply.TabIndex = 12;
             // 
             // txbForgeMessageAppendMessage
@@ -1900,7 +1900,7 @@
             this.txbForgeMessageAppendMessage.Location = new System.Drawing.Point(237, 137);
             this.txbForgeMessageAppendMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbForgeMessageAppendMessage.Name = "txbForgeMessageAppendMessage";
-            this.txbForgeMessageAppendMessage.Size = new System.Drawing.Size(771, 30);
+            this.txbForgeMessageAppendMessage.Size = new System.Drawing.Size(0, 30);
             this.txbForgeMessageAppendMessage.TabIndex = 12;
             // 
             // lblForgeMessageCmdNewLine
@@ -1920,7 +1920,7 @@
             this.txbForgeMessageCmdNewLine.Location = new System.Drawing.Point(237, 55);
             this.txbForgeMessageCmdNewLine.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbForgeMessageCmdNewLine.Name = "txbForgeMessageCmdNewLine";
-            this.txbForgeMessageCmdNewLine.Size = new System.Drawing.Size(771, 30);
+            this.txbForgeMessageCmdNewLine.Size = new System.Drawing.Size(0, 30);
             this.txbForgeMessageCmdNewLine.TabIndex = 12;
             // 
             // lblForgeMessageCmdBegin
@@ -1940,7 +1940,7 @@
             this.txbForgeMessageCmdBegin.Location = new System.Drawing.Point(237, 14);
             this.txbForgeMessageCmdBegin.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbForgeMessageCmdBegin.Name = "txbForgeMessageCmdBegin";
-            this.txbForgeMessageCmdBegin.Size = new System.Drawing.Size(771, 30);
+            this.txbForgeMessageCmdBegin.Size = new System.Drawing.Size(0, 30);
             this.txbForgeMessageCmdBegin.TabIndex = 10;
             this.txbForgeMessageCmdBegin.TextChanged += new System.EventHandler(this.txbForgeMessageCmd_TextChanged);
             // 
@@ -1964,7 +1964,7 @@
             this.pageRss.Location = new System.Drawing.Point(4, 33);
             this.pageRss.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pageRss.Name = "pageRss";
-            this.pageRss.Size = new System.Drawing.Size(1029, 975);
+            this.pageRss.Size = new System.Drawing.Size(192, 63);
             this.pageRss.TabIndex = 8;
             this.pageRss.Text = "RSS转发";
             this.pageRss.UseVisualStyleBackColor = true;
@@ -1983,14 +1983,14 @@
             this.pnlRss.Location = new System.Drawing.Point(5, 49);
             this.pnlRss.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRss.Name = "pnlRss";
-            this.pnlRss.Size = new System.Drawing.Size(1014, 912);
+            this.pnlRss.Size = new System.Drawing.Size(177, 0);
             this.pnlRss.TabIndex = 1;
             // 
             // chkRssParallel
             // 
             this.chkRssParallel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkRssParallel.AutoSize = true;
-            this.chkRssParallel.Location = new System.Drawing.Point(744, 7);
+            this.chkRssParallel.Location = new System.Drawing.Point(-93, 7);
             this.chkRssParallel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkRssParallel.Name = "chkRssParallel";
             this.chkRssParallel.Size = new System.Drawing.Size(234, 28);
@@ -2010,7 +2010,7 @@
             this.pnlRssSubscriptionList.Location = new System.Drawing.Point(36, 45);
             this.pnlRssSubscriptionList.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRssSubscriptionList.Name = "pnlRssSubscriptionList";
-            this.pnlRssSubscriptionList.Size = new System.Drawing.Size(942, 810);
+            this.pnlRssSubscriptionList.Size = new System.Drawing.Size(105, 0);
             this.pnlRssSubscriptionList.TabIndex = 2;
             this.pnlRssSubscriptionList.WrapContents = false;
             this.pnlRssSubscriptionList.SizeChanged += new System.EventHandler(this.pnlRssSubscriptionList_SizeChanged);
@@ -2035,7 +2035,7 @@
             this.txbReadRssInterval.Location = new System.Drawing.Point(266, 4);
             this.txbReadRssInterval.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbReadRssInterval.Name = "txbReadRssInterval";
-            this.txbReadRssInterval.Size = new System.Drawing.Size(468, 30);
+            this.txbReadRssInterval.Size = new System.Drawing.Size(0, 30);
             this.txbReadRssInterval.TabIndex = 1;
             // 
             // lblReadRssInterval
@@ -2089,7 +2089,7 @@
             this.pageAbout.Location = new System.Drawing.Point(4, 33);
             this.pageAbout.Margin = new System.Windows.Forms.Padding(6);
             this.pageAbout.Name = "pageAbout";
-            this.pageAbout.Size = new System.Drawing.Size(1029, 975);
+            this.pageAbout.Size = new System.Drawing.Size(192, 63);
             this.pageAbout.TabIndex = 2;
             this.pageAbout.Text = "关于";
             this.pageAbout.UseVisualStyleBackColor = true;

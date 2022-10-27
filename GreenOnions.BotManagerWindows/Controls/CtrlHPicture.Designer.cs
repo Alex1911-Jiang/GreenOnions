@@ -106,7 +106,7 @@
             this.lblLimitType = new System.Windows.Forms.Label();
             this.lblUserCmd = new System.Windows.Forms.Label();
             this.txbHPictureCmd = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkHPictureSendProxyUrl = new System.Windows.Forms.CheckBox();
             this.lblHPictureDownloadingReply = new System.Windows.Forms.Label();
             this.txbHPictureDownloadingReply = new System.Windows.Forms.TextBox();
             this.pnlHPictureCheckBoxes.SuspendLayout();
@@ -938,18 +938,18 @@
             this.txbHPictureCmd.Size = new System.Drawing.Size(588, 184);
             this.txbHPictureCmd.TabIndex = 46;
             // 
-            // checkBox1
+            // chkHPictureSendProxyUrl
             // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.chkHPictureSendProxyUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(162, 927);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(6);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(180, 28);
-            this.checkBox1.TabIndex = 115;
-            this.checkBox1.Text = "发送图片代理地址";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkHPictureSendProxyUrl.AutoSize = true;
+            this.chkHPictureSendProxyUrl.Location = new System.Drawing.Point(162, 927);
+            this.chkHPictureSendProxyUrl.Margin = new System.Windows.Forms.Padding(6);
+            this.chkHPictureSendProxyUrl.Name = "chkHPictureSendProxyUrl";
+            this.chkHPictureSendProxyUrl.Size = new System.Drawing.Size(180, 28);
+            this.chkHPictureSendProxyUrl.TabIndex = 115;
+            this.chkHPictureSendProxyUrl.Text = "发送图片代理地址";
+            this.chkHPictureSendProxyUrl.UseVisualStyleBackColor = true;
             // 
             // lblHPictureDownloadingReply
             // 
@@ -981,7 +981,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.lblHPictureDownloadingReply);
             this.Controls.Add(this.txbHPictureDownloadingReply);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.chkHPictureSendProxyUrl);
             this.Controls.Add(this.chkHPictureSendTitle);
             this.Controls.Add(this.lblHPictureDefaultSourceReadme);
             this.Controls.Add(this.lblHPictureDefaultSource);
@@ -1147,7 +1147,7 @@
         private Label lblLimitType;
         private Label lblUserCmd;
         private TextBox txbHPictureCmd;
-        private CheckBox checkBox1;
+        private CheckBox chkHPictureSendProxyUrl;
         private Label lblHPictureDownloadingReply;
         private TextBox txbHPictureDownloadingReply;
     }

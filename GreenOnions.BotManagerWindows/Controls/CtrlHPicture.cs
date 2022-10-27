@@ -82,6 +82,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             else
                 rdoHPictureLimitFrequency.Checked = true;
             chkHPictureSendUrl.Checked = BotInfo.HPictureSendUrl;
+            chkHPictureSendProxyUrl.Checked = BotInfo.HPictureSendProxyUrl;
             chkHPictureSendTitle.Checked = BotInfo.HPictureSendTitle;
             chkHPictureSendTags.Checked = BotInfo.HPictureSendTags;
             chkHPictureSendByForward.Checked = BotInfo.HPictureSendByForward;
@@ -138,6 +139,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             BotInfo.HPictureLimitType = rdoHPictureLimitFrequency.Checked ? LimitType.Frequency : LimitType.Count;
             BotInfo.HPictureWhiteNoLimit = chkHPictureWhiteNoLimit.Checked;
             BotInfo.HPictureSendUrl = chkHPictureSendUrl.Checked;
+            BotInfo.HPictureSendProxyUrl = chkHPictureSendProxyUrl.Checked;
             BotInfo.HPictureSendTitle = chkHPictureSendTitle.Checked;
             BotInfo.HPictureSendTags = chkHPictureSendTags.Checked;
             BotInfo.HPictureSendByForward = chkHPictureSendByForward.Checked;

@@ -51,10 +51,13 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Group);
                     _ = session.SendGroupMessageAsync(e.Sender.Group.Id, msg, outMsg.Reply ? quoteId : null).ContinueWith(async sendedCallBack =>
                     {
-                        if (iRevokeTime > 0)
+                        if (!sendedCallBack.IsFaulted && !sendedCallBack.IsCanceled)
                         {
-                            await Task.Delay(1000 * iRevokeTime);
-                            _ = session.RevokeMessageAsync(sendedCallBack.Result);
+                            if (iRevokeTime > 0)
+                            {
+                                await Task.Delay(1000 * iRevokeTime);
+                                await session.RevokeMessageAsync(sendedCallBack.Result, e.Sender.Group.Id);
+                            }
                         }
                     });
                 }

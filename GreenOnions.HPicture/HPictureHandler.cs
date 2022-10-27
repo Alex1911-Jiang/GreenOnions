@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -196,7 +197,7 @@ namespace GreenOnions.HPicture
                 }
                 catch (Exception ex)
                 {
-                    SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags() + ex.Message);
+                    SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("URL", "yande.re/post")) + ex.Message);
                 }
             }
             RecordLimit(senderId, senderGroup, LimitType.Frequency);
@@ -234,7 +235,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags() + ex.Message);
+                SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("URL", "yande.re/post")) + ex.Message);
             }
         }
 
@@ -316,7 +317,9 @@ namespace GreenOnions.HPicture
                 GreenOnionsMessages outMessage = new GreenOnionsMessages();
                 StringBuilder sb = new StringBuilder();
                 if (BotInfo.HPictureSendUrl)
-                    sb.AppendLine($"https://www.pixiv.net/artworks/{imgItem.ID} (p{imgItem.P})");
+                    sb.AppendLine($"作品页：https://www.pixiv.net/artworks/{imgItem.ID} (p{imgItem.P})");
+                if (BotInfo.HPictureSendProxyUrl)
+                    sb.AppendLine($"图片代理地址：{imgItem.URL}");
                 if (BotInfo.HPictureSendTitle)
                     sb.AppendLine($"标题:{imgItem.Title}\r\n作者:{imgItem.Author}");
                 if (BotInfo.HPictureSendTags)

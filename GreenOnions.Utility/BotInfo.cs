@@ -1493,9 +1493,9 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 色图是否发送地址
+        /// 色图是否发送作品地址
         /// </summary>
-        [PropertyChineseName("色图 发送地址", "色图")]
+        [PropertyChineseName("色图 发送作品地址", "色图")]
         public static bool HPictureSendUrl
         {
             get
@@ -1505,6 +1505,21 @@ namespace GreenOnions.Utility
                 return true;
             }
             set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendUrl), value.ToString());
+        }
+
+        /// <summary>
+        /// 色图是否发送图片代理地址
+        /// </summary>
+        [PropertyChineseName("色图 发送图片代理地址", "色图")]
+        public static bool HPictureSendProxyUrl
+        {
+            get
+            {
+                string strValue = JsonHelper.GetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendProxyUrl));
+                if (bool.TryParse(strValue, out bool bValue)) return bValue;
+                return false;
+            }
+            set => JsonHelper.SetSerializationValue(JsonHelper.JsonConfigFileName, JsonHelper.JsonNodeNameHPicture, nameof(HPictureSendProxyUrl), value.ToString());
         }
 
         /// <summary>

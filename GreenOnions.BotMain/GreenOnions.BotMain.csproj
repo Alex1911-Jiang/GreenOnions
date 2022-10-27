@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.7" />
+    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.9-preview.1" />
     <PackageReference Include="Mirai-CSharp.NativeAssets.Win32" Version="1.0.2" />
     <PackageReference Include="Mirai-CSharp.NativeAssets.Linux" Version="1.0.2" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3" />
