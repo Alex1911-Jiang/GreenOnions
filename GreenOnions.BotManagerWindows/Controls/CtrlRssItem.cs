@@ -1,6 +1,6 @@
 ﻿using GreenOnions.Utility;
 
-namespace GreenOnions.BotManagerWindows
+namespace GreenOnions.BotManagerWindows.Controls
 {
     public partial class CtrlRssItem : UserControl
     {

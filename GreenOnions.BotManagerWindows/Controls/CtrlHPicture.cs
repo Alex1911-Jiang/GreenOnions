@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using GreenOnions.Utility;
+﻿using GreenOnions.Utility;
 
 namespace GreenOnions.BotManagerWindows.Controls
 {
@@ -156,36 +147,16 @@ namespace GreenOnions.BotManagerWindows.Controls
             chkHPictureYande_reSource.Checked = true;
         }
 
-        private void AddItemToListView(ListView listView, string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                foreach (ListViewItem item in listView.Items)
-                    foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
-                        if (subItem.Text == value)
-                            return;
-                listView.Items.Add(value);
-            }
-        }
+        private void btnAddUserHPictureCmd_Click(object sender, EventArgs e) => ((IConfigSetting)this).AddItemToListView(lstHPictureUserCmd, txbUserHPictureCmd.Text);
 
-        private void RemoveItemFromListView(ListView listView)
-        {
-            if (listView.SelectedItems.Count > 0)
-            {
-                listView.Items.Remove(listView.SelectedItems[0]);
-            }
-        }
+        private void btnAddWhiteGroup_Click(object sender, EventArgs e) => ((IConfigSetting)this).AddItemToListView(lstHPictureWhiteGroup, txbWhiteGroup.Text);
 
-        private void btnAddUserHPictureCmd_Click(object sender, EventArgs e) => AddItemToListView(lstHPictureUserCmd, txbUserHPictureCmd.Text);
+        private void btnRemoveUserHPictureCmd_Click(object sender, EventArgs e) => ((IConfigSetting)this).RemoveItemFromListView(lstHPictureUserCmd);
 
-        private void btnAddWhiteGroup_Click(object sender, EventArgs e) => AddItemToListView(lstHPictureWhiteGroup, txbWhiteGroup.Text);
+        private void btnRemoveWhiteGroup_Click(object sender, EventArgs e) => ((IConfigSetting)this).RemoveItemFromListView(lstHPictureWhiteGroup);
 
-        private void btnRemoveUserHPictureCmd_Click(object sender, EventArgs e) => RemoveItemFromListView(lstHPictureUserCmd);
+        private void btnAddShieldingWords_Click(object sender, EventArgs e) => ((IConfigSetting)this).AddItemToListView(lstShieldingWords, txbShieldingWords.Text);
 
-        private void btnRemoveWhiteGroup_Click(object sender, EventArgs e) => RemoveItemFromListView(lstHPictureWhiteGroup);
-
-        private void btnAddShieldingWords_Click(object sender, EventArgs e) => AddItemToListView(lstShieldingWords, txbShieldingWords.Text);
-
-        private void btnRemoveShieldingWords_Click(object sender, EventArgs e) => RemoveItemFromListView(lstShieldingWords);
+        private void btnRemoveShieldingWords_Click(object sender, EventArgs e) => ((IConfigSetting)this).RemoveItemFromListView(lstShieldingWords);
     }
 }

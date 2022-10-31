@@ -124,7 +124,7 @@
             this.txbSearch3DModeOnCmd.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearch3DModeOnCmd.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearch3DModeOnCmd.Name = "txbSearch3DModeOnCmd";
-            this.txbSearch3DModeOnCmd.Size = new System.Drawing.Size(682, 30);
+            this.txbSearch3DModeOnCmd.Size = new System.Drawing.Size(656, 30);
             this.txbSearch3DModeOnCmd.TabIndex = 106;
             // 
             // pnlSearchIqdb
@@ -145,7 +145,7 @@
             this.pnlSearchIqdb.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlSearchIqdb.MinimumSize = new System.Drawing.Size(860, 225);
             this.pnlSearchIqdb.Name = "pnlSearchIqdb";
-            this.pnlSearchIqdb.Size = new System.Drawing.Size(980, 267);
+            this.pnlSearchIqdb.Size = new System.Drawing.Size(954, 267);
             this.pnlSearchIqdb.TabIndex = 105;
             // 
             // txbSearchIqdbSimilarityReply
@@ -156,7 +156,7 @@
             this.txbSearchIqdbSimilarityReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchIqdbSimilarityReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchIqdbSimilarityReply.Name = "txbSearchIqdbSimilarityReply";
-            this.txbSearchIqdbSimilarityReply.Size = new System.Drawing.Size(679, 30);
+            this.txbSearchIqdbSimilarityReply.Size = new System.Drawing.Size(653, 30);
             this.txbSearchIqdbSimilarityReply.TabIndex = 72;
             // 
             // lblSearchIqdbSimilarityReply
@@ -209,7 +209,7 @@
             this.txbSearchIqdbSimilarity.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchIqdbSimilarity.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchIqdbSimilarity.Name = "txbSearchIqdbSimilarity";
-            this.txbSearchIqdbSimilarity.Size = new System.Drawing.Size(678, 30);
+            this.txbSearchIqdbSimilarity.Size = new System.Drawing.Size(652, 30);
             this.txbSearchIqdbSimilarity.TabIndex = 68;
             // 
             // lblSearchIqdbSimilarity
@@ -257,7 +257,7 @@
             this.pnlSearchAscii2d.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlSearchAscii2d.MinimumSize = new System.Drawing.Size(860, 84);
             this.pnlSearchAscii2d.Name = "pnlSearchAscii2d";
-            this.pnlSearchAscii2d.Size = new System.Drawing.Size(980, 84);
+            this.pnlSearchAscii2d.Size = new System.Drawing.Size(954, 84);
             this.pnlSearchAscii2d.TabIndex = 104;
             // 
             // chkASCII2DRequestByWebBrowser
@@ -302,7 +302,7 @@
             this.cboSearchShowAscii2dCount.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.cboSearchShowAscii2dCount.MinimumSize = new System.Drawing.Size(559, 0);
             this.cboSearchShowAscii2dCount.Name = "cboSearchShowAscii2dCount";
-            this.cboSearchShowAscii2dCount.Size = new System.Drawing.Size(679, 32);
+            this.cboSearchShowAscii2dCount.Size = new System.Drawing.Size(653, 32);
             this.cboSearchShowAscii2dCount.TabIndex = 63;
             // 
             // lblSearchShowAscii2dCount
@@ -333,7 +333,7 @@
             this.txbSearchingReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchingReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchingReply.Name = "txbSearchingReply";
-            this.txbSearchingReply.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchingReply.Size = new System.Drawing.Size(656, 30);
             this.txbSearchingReply.TabIndex = 102;
             // 
             // chkPmAutoSearch
@@ -371,7 +371,7 @@
             this.pnlSearchSauceNAO.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlSearchSauceNAO.MinimumSize = new System.Drawing.Size(860, 423);
             this.pnlSearchSauceNAO.Name = "pnlSearchSauceNAO";
-            this.pnlSearchSauceNAO.Size = new System.Drawing.Size(980, 423);
+            this.pnlSearchSauceNAO.Size = new System.Drawing.Size(954, 423);
             this.pnlSearchSauceNAO.TabIndex = 100;
             // 
             // chkSearchSauceNAOSortByDesc
@@ -415,7 +415,7 @@
             this.txbSearchSauceNAOApiKey.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchSauceNAOApiKey.Multiline = true;
             this.txbSearchSauceNAOApiKey.Name = "txbSearchSauceNAOApiKey";
-            this.txbSearchSauceNAOApiKey.Size = new System.Drawing.Size(679, 120);
+            this.txbSearchSauceNAOApiKey.Size = new System.Drawing.Size(653, 120);
             this.txbSearchSauceNAOApiKey.TabIndex = 16;
             // 
             // lblSearchSauceNAOHighSimilarity
@@ -436,7 +436,7 @@
             this.txbSearchSauceNAOLowSimilarity.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchSauceNAOLowSimilarity.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchSauceNAOLowSimilarity.Name = "txbSearchSauceNAOLowSimilarity";
-            this.txbSearchSauceNAOLowSimilarity.Size = new System.Drawing.Size(679, 30);
+            this.txbSearchSauceNAOLowSimilarity.Size = new System.Drawing.Size(653, 30);
             this.txbSearchSauceNAOLowSimilarity.TabIndex = 16;
             // 
             // txbSearchSauceNAOHighSimilarity
@@ -447,7 +447,7 @@
             this.txbSearchSauceNAOHighSimilarity.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchSauceNAOHighSimilarity.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchSauceNAOHighSimilarity.Name = "txbSearchSauceNAOHighSimilarity";
-            this.txbSearchSauceNAOHighSimilarity.Size = new System.Drawing.Size(679, 30);
+            this.txbSearchSauceNAOHighSimilarity.Size = new System.Drawing.Size(653, 30);
             this.txbSearchSauceNAOHighSimilarity.TabIndex = 53;
             // 
             // txbSearchSauceNAOLowSimilarityReply
@@ -458,7 +458,7 @@
             this.txbSearchSauceNAOLowSimilarityReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchSauceNAOLowSimilarityReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchSauceNAOLowSimilarityReply.Name = "txbSearchSauceNAOLowSimilarityReply";
-            this.txbSearchSauceNAOLowSimilarityReply.Size = new System.Drawing.Size(679, 30);
+            this.txbSearchSauceNAOLowSimilarityReply.Size = new System.Drawing.Size(653, 30);
             this.txbSearchSauceNAOLowSimilarityReply.TabIndex = 16;
             // 
             // lblSearchSauceNAOLowSimilarity
@@ -540,7 +540,7 @@
             this.txbSearchDownloadThuImageFailReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchDownloadThuImageFailReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchDownloadThuImageFailReply.Name = "txbSearchDownloadThuImageFailReply";
-            this.txbSearchDownloadThuImageFailReply.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchDownloadThuImageFailReply.Size = new System.Drawing.Size(656, 30);
             this.txbSearchDownloadThuImageFailReply.TabIndex = 98;
             // 
             // chkSearchSendByForward
@@ -567,7 +567,7 @@
             this.pnlSearchCheckPorn.Location = new System.Drawing.Point(1, 1660);
             this.pnlSearchCheckPorn.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlSearchCheckPorn.Name = "pnlSearchCheckPorn";
-            this.pnlSearchCheckPorn.Size = new System.Drawing.Size(984, 82);
+            this.pnlSearchCheckPorn.Size = new System.Drawing.Size(958, 82);
             this.pnlSearchCheckPorn.TabIndex = 96;
             // 
             // txbSearchCheckPornIllegalReply
@@ -578,7 +578,7 @@
             this.txbSearchCheckPornIllegalReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchCheckPornIllegalReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchCheckPornIllegalReply.Name = "txbSearchCheckPornIllegalReply";
-            this.txbSearchCheckPornIllegalReply.Size = new System.Drawing.Size(680, 30);
+            this.txbSearchCheckPornIllegalReply.Size = new System.Drawing.Size(654, 30);
             this.txbSearchCheckPornIllegalReply.TabIndex = 35;
             // 
             // lblSearchCheckPornIllegalReply
@@ -609,7 +609,7 @@
             this.txbSearchCheckPornErrorReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchCheckPornErrorReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchCheckPornErrorReply.Name = "txbSearchCheckPornErrorReply";
-            this.txbSearchCheckPornErrorReply.Size = new System.Drawing.Size(680, 30);
+            this.txbSearchCheckPornErrorReply.Size = new System.Drawing.Size(654, 30);
             this.txbSearchCheckPornErrorReply.TabIndex = 36;
             // 
             // chkSearchCheckPornEnabled
@@ -764,7 +764,7 @@
             this.txbSearchErrorReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchErrorReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchErrorReply.Name = "txbSearchErrorReply";
-            this.txbSearchErrorReply.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchErrorReply.Size = new System.Drawing.Size(656, 30);
             this.txbSearchErrorReply.TabIndex = 72;
             // 
             // txbSearchNoResultReply
@@ -775,7 +775,7 @@
             this.txbSearchNoResultReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchNoResultReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchNoResultReply.Name = "txbSearchNoResultReply";
-            this.txbSearchNoResultReply.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchNoResultReply.Size = new System.Drawing.Size(656, 30);
             this.txbSearchNoResultReply.TabIndex = 76;
             // 
             // txbSearchModeTimeOutReply
@@ -786,7 +786,7 @@
             this.txbSearchModeTimeOutReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchModeTimeOutReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchModeTimeOutReply.Name = "txbSearchModeTimeOutReply";
-            this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchModeTimeOutReply.Size = new System.Drawing.Size(656, 30);
             this.txbSearchModeTimeOutReply.TabIndex = 81;
             // 
             // txbSearchModeOffCmd
@@ -797,7 +797,7 @@
             this.txbSearchModeOffCmd.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchModeOffCmd.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchModeOffCmd.Name = "txbSearchModeOffCmd";
-            this.txbSearchModeOffCmd.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchModeOffCmd.Size = new System.Drawing.Size(656, 30);
             this.txbSearchModeOffCmd.TabIndex = 74;
             // 
             // txbSearchModeAlreadyOffReply
@@ -808,7 +808,7 @@
             this.txbSearchModeAlreadyOffReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchModeAlreadyOffReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchModeAlreadyOffReply.Name = "txbSearchModeAlreadyOffReply";
-            this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchModeAlreadyOffReply.Size = new System.Drawing.Size(656, 30);
             this.txbSearchModeAlreadyOffReply.TabIndex = 75;
             // 
             // txbSearchModeOffReply
@@ -819,7 +819,7 @@
             this.txbSearchModeOffReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchModeOffReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchModeOffReply.Name = "txbSearchModeOffReply";
-            this.txbSearchModeOffReply.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchModeOffReply.Size = new System.Drawing.Size(656, 30);
             this.txbSearchModeOffReply.TabIndex = 80;
             // 
             // txbSearchModeAlreadyOnReply
@@ -830,7 +830,7 @@
             this.txbSearchModeAlreadyOnReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchModeAlreadyOnReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchModeAlreadyOnReply.Name = "txbSearchModeAlreadyOnReply";
-            this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchModeAlreadyOnReply.Size = new System.Drawing.Size(656, 30);
             this.txbSearchModeAlreadyOnReply.TabIndex = 77;
             // 
             // txbTraceMoeSendThreshold
@@ -841,7 +841,7 @@
             this.txbTraceMoeSendThreshold.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbTraceMoeSendThreshold.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbTraceMoeSendThreshold.Name = "txbTraceMoeSendThreshold";
-            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(679, 30);
+            this.txbTraceMoeSendThreshold.Size = new System.Drawing.Size(653, 30);
             this.txbTraceMoeSendThreshold.TabIndex = 78;
             // 
             // txbSearchModeOnReply
@@ -852,7 +852,7 @@
             this.txbSearchModeOnReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchModeOnReply.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchModeOnReply.Name = "txbSearchModeOnReply";
-            this.txbSearchModeOnReply.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchModeOnReply.Size = new System.Drawing.Size(656, 30);
             this.txbSearchModeOnReply.TabIndex = 79;
             // 
             // txbSearchAnimeModeOnCmd
@@ -863,7 +863,7 @@
             this.txbSearchAnimeModeOnCmd.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchAnimeModeOnCmd.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchAnimeModeOnCmd.Name = "txbSearchAnimeModeOnCmd";
-            this.txbSearchAnimeModeOnCmd.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchAnimeModeOnCmd.Size = new System.Drawing.Size(656, 30);
             this.txbSearchAnimeModeOnCmd.TabIndex = 71;
             // 
             // txbSearchModeOnCmd
@@ -874,7 +874,7 @@
             this.txbSearchModeOnCmd.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbSearchModeOnCmd.MinimumSize = new System.Drawing.Size(559, 4);
             this.txbSearchModeOnCmd.Name = "txbSearchModeOnCmd";
-            this.txbSearchModeOnCmd.Size = new System.Drawing.Size(682, 30);
+            this.txbSearchModeOnCmd.Size = new System.Drawing.Size(656, 30);
             this.txbSearchModeOnCmd.TabIndex = 73;
             // 
             // chkSearchASCII2DEnabled
@@ -912,7 +912,7 @@
             this.pnlSearchTraceMoe.Controls.Add(this.lblTraceMoeSendThresholdInfo);
             this.pnlSearchTraceMoe.Location = new System.Drawing.Point(3, 77);
             this.pnlSearchTraceMoe.Name = "pnlSearchTraceMoe";
-            this.pnlSearchTraceMoe.Size = new System.Drawing.Size(980, 101);
+            this.pnlSearchTraceMoe.Size = new System.Drawing.Size(954, 101);
             this.pnlSearchTraceMoe.TabIndex = 108;
             // 
             // chkTraceMoeSendAdultThuImg
@@ -968,9 +968,8 @@
             this.Controls.Add(this.txbSearchModeOnCmd);
             this.Controls.Add(this.chkSearchASCII2DEnabled);
             this.Controls.Add(this.chkSearchSauceNAOEnabled);
-            this.MinimumSize = new System.Drawing.Size(1012, 906);
             this.Name = "CtrlSearchPicture";
-            this.Size = new System.Drawing.Size(986, 926);
+            this.Size = new System.Drawing.Size(986, 906);
             this.pnlSearchIqdb.ResumeLayout(false);
             this.pnlSearchIqdb.PerformLayout();
             this.pnlSearchAscii2d.ResumeLayout(false);

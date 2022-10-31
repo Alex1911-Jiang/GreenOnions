@@ -73,7 +73,7 @@
             this.pnlOriginalPictureCheckPorn.Location = new System.Drawing.Point(5, 141);
             this.pnlOriginalPictureCheckPorn.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlOriginalPictureCheckPorn.Name = "pnlOriginalPictureCheckPorn";
-            this.pnlOriginalPictureCheckPorn.Size = new System.Drawing.Size(999, 144);
+            this.pnlOriginalPictureCheckPorn.Size = new System.Drawing.Size(996, 144);
             this.pnlOriginalPictureCheckPorn.TabIndex = 4;
             // 
             // pnlOriginalPictureCheckPornMessage
@@ -89,7 +89,7 @@
             this.pnlOriginalPictureCheckPornMessage.Location = new System.Drawing.Point(5, 55);
             this.pnlOriginalPictureCheckPornMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlOriginalPictureCheckPornMessage.Name = "pnlOriginalPictureCheckPornMessage";
-            this.pnlOriginalPictureCheckPornMessage.Size = new System.Drawing.Size(987, 83);
+            this.pnlOriginalPictureCheckPornMessage.Size = new System.Drawing.Size(984, 83);
             this.pnlOriginalPictureCheckPornMessage.TabIndex = 6;
             // 
             // lblOriginalPictureCheckPornIllegalReply
@@ -109,7 +109,7 @@
             this.txbOriginalPictureCheckPornErrorReply.Location = new System.Drawing.Point(182, 50);
             this.txbOriginalPictureCheckPornErrorReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbOriginalPictureCheckPornErrorReply.Name = "txbOriginalPictureCheckPornErrorReply";
-            this.txbOriginalPictureCheckPornErrorReply.Size = new System.Drawing.Size(800, 30);
+            this.txbOriginalPictureCheckPornErrorReply.Size = new System.Drawing.Size(797, 30);
             this.txbOriginalPictureCheckPornErrorReply.TabIndex = 5;
             // 
             // txbOriginalPictureCheckPornIllegalReply
@@ -119,7 +119,7 @@
             this.txbOriginalPictureCheckPornIllegalReply.Location = new System.Drawing.Point(182, 10);
             this.txbOriginalPictureCheckPornIllegalReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbOriginalPictureCheckPornIllegalReply.Name = "txbOriginalPictureCheckPornIllegalReply";
-            this.txbOriginalPictureCheckPornIllegalReply.Size = new System.Drawing.Size(800, 30);
+            this.txbOriginalPictureCheckPornIllegalReply.Size = new System.Drawing.Size(797, 30);
             this.txbOriginalPictureCheckPornIllegalReply.TabIndex = 3;
             // 
             // lblOriginalPictureCheckPornErrorReply
@@ -142,7 +142,7 @@
             this.pnlOriginalPictureCheckPornEvent.Location = new System.Drawing.Point(187, 4);
             this.pnlOriginalPictureCheckPornEvent.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlOriginalPictureCheckPornEvent.Name = "pnlOriginalPictureCheckPornEvent";
-            this.pnlOriginalPictureCheckPornEvent.Size = new System.Drawing.Size(805, 42);
+            this.pnlOriginalPictureCheckPornEvent.Size = new System.Drawing.Size(802, 42);
             this.pnlOriginalPictureCheckPornEvent.TabIndex = 1;
             // 
             // rdoOriginalPictureCheckPornSendByForward
@@ -215,7 +215,7 @@
             this.txbOriginalPictureCommand.Location = new System.Drawing.Point(192, 6);
             this.txbOriginalPictureCommand.Margin = new System.Windows.Forms.Padding(6);
             this.txbOriginalPictureCommand.Name = "txbOriginalPictureCommand";
-            this.txbOriginalPictureCommand.Size = new System.Drawing.Size(802, 30);
+            this.txbOriginalPictureCommand.Size = new System.Drawing.Size(799, 30);
             this.txbOriginalPictureCommand.TabIndex = 18;
             // 
             // lblOriginalPictureDownloadingReply
@@ -237,7 +237,7 @@
             this.txbOriginalPictureDownloadingReply.Location = new System.Drawing.Point(192, 48);
             this.txbOriginalPictureDownloadingReply.Margin = new System.Windows.Forms.Padding(6);
             this.txbOriginalPictureDownloadingReply.Name = "txbOriginalPictureDownloadingReply";
-            this.txbOriginalPictureDownloadingReply.Size = new System.Drawing.Size(802, 30);
+            this.txbOriginalPictureDownloadingReply.Size = new System.Drawing.Size(799, 30);
             this.txbOriginalPictureDownloadingReply.TabIndex = 20;
             // 
             // CtrlOriginalPicture
@@ -251,9 +251,8 @@
             this.Controls.Add(this.txbOriginalPictureCommand);
             this.Controls.Add(this.chkOriginalPictureCheckPornEnabled);
             this.Controls.Add(this.pnlOriginalPictureCheckPorn);
-            this.MinimumSize = new System.Drawing.Size(1015, 0);
             this.Name = "CtrlOriginalPicture";
-            this.Size = new System.Drawing.Size(1015, 288);
+            this.Size = new System.Drawing.Size(1012, 906);
             this.pnlOriginalPictureCheckPorn.ResumeLayout(false);
             this.pnlOriginalPictureCheckPorn.PerformLayout();
             this.pnlOriginalPictureCheckPornMessage.ResumeLayout(false);

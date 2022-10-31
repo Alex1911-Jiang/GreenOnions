@@ -1,16 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Compile Update="Controls\CtrlBot.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\CtrlForgeMessage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Controls\CtrlHPicture.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Controls\CtrlOriginalPicture.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Controls\CtrlRepeater.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Controls\CtrlSearchPicture.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="CtrlRssItem.cs">
+    <Compile Update="Controls\CtrlTranslate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\CtrlRss.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\CtrlRssItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="FrmAppSetting.cs">
