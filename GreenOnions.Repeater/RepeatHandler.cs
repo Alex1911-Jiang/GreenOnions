@@ -16,7 +16,10 @@ namespace GreenOnions.Repeater
         {
             MessageItem tempMessageItem;
             if (message is GreenOnionsImageMessage imgMsg)
-                tempMessageItem = new MessageItem(imgMsg.GetType(), imgMsg.Url);
+            {
+                using (MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStreamAsync(imgMsg.Url))
+                    tempMessageItem = new MessageItem(imgMsg.GetType(), ms.ToBase64());
+            }
             else if (message is GreenOnionsTextMessage txtMsg)
                 tempMessageItem = new MessageItem(txtMsg.GetType(), txtMsg.Text);
             else
@@ -158,12 +161,12 @@ namespace GreenOnions.Repeater
 
             public static bool operator ==(MessageItem left, MessageItem right)
             {
-                return Equals(left, right);
+                return left.MessageType == right.MessageType && left.MessageValue == right.MessageValue;
             }
 
             public static bool operator !=(MessageItem left, MessageItem right)
             {
-                return !Equals(left, right);
+                return left.MessageType != right.MessageType || left.MessageValue != right.MessageValue;
             }
 
             public override bool Equals(object obj)

@@ -177,6 +177,9 @@ namespace GreenOnions.BotManagerWindows
             txbReadRssInterval.Text = BotInfo.ReadRssInterval.ToString();
             chkRssParallel.Checked = BotInfo.RssParallel;
             #endregion  -- RSS --
+
+            if (tabSettings.Width > Width || tabSettings.Height > Height)
+                ResetCtrlSize();
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -482,5 +485,18 @@ namespace GreenOnions.BotManagerWindows
         private void chkWorkingTimeEnabled_CheckedChanged(object sender, EventArgs e) => pnlWorkingTime.Enabled = chkWorkingTimeEnabled.Checked;
 
         private void lnkJoinGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) => Process.Start("explorer.exe", "https://jq.qq.com/?_wv=1027&k=rJ7RA3SF");
+
+        private void btnResetCtrlSize_Click(object sender, EventArgs e)
+        {
+            ResetCtrlSize();
+        }
+
+        private void ResetCtrlSize()
+        {
+            tabSettings.Size = new Size(Width - 50, Height - 100);
+            tabSettings.Location = new Point(13, 13);
+            btnOk.Location = new Point(Width / 2 - btnOk.Width / 2, Height - btnOk.Height - 50);
+            btnOk.BringToFront();
+        }
     }
 }

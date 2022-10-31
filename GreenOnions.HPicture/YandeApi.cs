@@ -10,7 +10,7 @@ namespace GreenOnions.HPicture
         private static string _lastTag = string.Empty;
         public static async Task<YandeItem> GetRandomHPictrue(string tag, bool r18)
         {
-            if (_api == null || tag != _lastTag)
+            if (tag != _lastTag)
             {
                 _lastTag = tag;
                 _api = await YandeClient.CreateNew(false, true, tag);
