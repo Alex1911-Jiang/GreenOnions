@@ -49,7 +49,7 @@
             this.pnlTranslateEnabled = new System.Windows.Forms.Panel();
             this.chkTranslateEnabled = new System.Windows.Forms.CheckBox();
             this.pageRepeater = new System.Windows.Forms.TabPage();
-            this.ctrlRepeater1 = new GreenOnions.BotManagerWindows.Controls.CtrlRepeater();
+            this.pnlRepeater = new GreenOnions.BotManagerWindows.Controls.CtrlRepeater();
             this.pageGroupMemberEvents = new System.Windows.Forms.TabPage();
             this.txbMemberBeKickedMessage = new System.Windows.Forms.TextBox();
             this.txbMemberPositiveLeaveMessage = new System.Windows.Forms.TextBox();
@@ -338,24 +338,24 @@
             // 
             // pageRepeater
             // 
-            this.pageRepeater.Controls.Add(this.ctrlRepeater1);
+            this.pageRepeater.Controls.Add(this.pnlRepeater);
             this.pageRepeater.Location = new System.Drawing.Point(4, 33);
             this.pageRepeater.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageRepeater.Name = "pageRepeater";
-            this.pageRepeater.Size = new System.Drawing.Size(192, 63);
+            this.pageRepeater.Size = new System.Drawing.Size(1026, 957);
             this.pageRepeater.TabIndex = 5;
             this.pageRepeater.Text = "复读设置";
             this.pageRepeater.UseVisualStyleBackColor = true;
             // 
-            // ctrlRepeater1
+            // pnlRepeater
             // 
-            this.ctrlRepeater1.BackColor = System.Drawing.Color.White;
-            this.ctrlRepeater1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ctrlRepeater1.Location = new System.Drawing.Point(0, 0);
-            this.ctrlRepeater1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.ctrlRepeater1.Name = "ctrlRepeater1";
-            this.ctrlRepeater1.Size = new System.Drawing.Size(192, 63);
-            this.ctrlRepeater1.TabIndex = 0;
+            this.pnlRepeater.BackColor = System.Drawing.Color.White;
+            this.pnlRepeater.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlRepeater.Location = new System.Drawing.Point(0, 0);
+            this.pnlRepeater.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.pnlRepeater.Name = "pnlRepeater";
+            this.pnlRepeater.Size = new System.Drawing.Size(1026, 957);
+            this.pnlRepeater.TabIndex = 0;
             // 
             // pageGroupMemberEvents
             // 
@@ -488,7 +488,7 @@
             this.pageRss.Location = new System.Drawing.Point(4, 33);
             this.pageRss.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageRss.Name = "pageRss";
-            this.pageRss.Size = new System.Drawing.Size(1026, 957);
+            this.pageRss.Size = new System.Drawing.Size(192, 63);
             this.pageRss.TabIndex = 8;
             this.pageRss.Text = "RSS转发";
             this.pageRss.UseVisualStyleBackColor = true;
@@ -501,7 +501,7 @@
             this.pnlRss.Location = new System.Drawing.Point(0, 56);
             this.pnlRss.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRss.Name = "pnlRss";
-            this.pnlRss.Size = new System.Drawing.Size(1026, 901);
+            this.pnlRss.Size = new System.Drawing.Size(192, 7);
             this.pnlRss.TabIndex = 2;
             // 
             // pnlRssEnabled
@@ -511,7 +511,7 @@
             this.pnlRssEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlRssEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRssEnabled.Name = "pnlRssEnabled";
-            this.pnlRssEnabled.Size = new System.Drawing.Size(1026, 56);
+            this.pnlRssEnabled.Size = new System.Drawing.Size(192, 56);
             this.pnlRssEnabled.TabIndex = 1;
             // 
             // chkRssEnabled
@@ -774,5 +774,6 @@
         private Controls.CtrlForgeMessage pnlForgeMessage;
         private Controls.CtrlRss pnlRss;
         private Controls.CtrlBot pnlBot;
+        private Controls.CtrlRepeater pnlRepeater;
     }
 }

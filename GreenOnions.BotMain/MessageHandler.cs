@@ -102,9 +102,7 @@ namespace GreenOnions.BotMain
                         {
                             if (string.IsNullOrWhiteSpace(txtMsg.Text))
                                 continue;
-                            if (!string.IsNullOrWhiteSpace(BotInfo.OriginalPictureDownloadingReply)) //回复下载中
-                                SendMessage(BotInfo.OriginalPictureDownloadingReply);
-                            GreenOnionsMessages msgOriginalPictureMsg = await SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(txtMsg.Text);
+                            GreenOnionsMessages msgOriginalPictureMsg = await SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(txtMsg.Text, SendMessage);
                             SendMessage(msgOriginalPictureMsg);
                         }
                         #endregion -- @下载原图 --
@@ -290,7 +288,7 @@ namespace GreenOnions.BotMain
                             LogHelper.WriteInfoLog($"{inMsg.SenderId}下载id={strId}的原图");
                             if (!string.IsNullOrWhiteSpace(BotInfo.OriginalPictureDownloadingReply)) //回复下载中
                                 SendMessage(BotInfo.OriginalPictureDownloadingReply);
-                            GreenOnionsMessages msgOriginalPictureMsg = await SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(strId);
+                            GreenOnionsMessages msgOriginalPictureMsg = await SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(strId, SendMessage);
                             SendMessage(msgOriginalPictureMsg);
                         }
                         return true;

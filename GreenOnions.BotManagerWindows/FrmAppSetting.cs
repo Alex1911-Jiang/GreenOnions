@@ -13,6 +13,10 @@ namespace GreenOnions.BotManagerWindows
         {
             base.OnShown(e);
 
+            #region -- 基本设置 --
+            pnlBot.LoadConfig();
+            #endregion -- 基本设置 --
+
             #region -- 搜图设置 --
             chkSearchPictureEnabled.Checked = BotInfo.SearchEnabled;  //是否启用搜图功能
             pnlSearchPicture.LoadConfig();
@@ -23,15 +27,19 @@ namespace GreenOnions.BotManagerWindows
             pnlOriginalPicture.LoadConfig();
             #endregion -- 下载原图设置 --
 
+            #region -- 色图设置 --
+            chkHPictureEnabled.Checked = BotInfo.HPictureEnabled;
+            pnlHPicture.LoadConfig();
+            #endregion -- 色图设置 --
+
             #region -- 翻译设置 --
             chkTranslateEnabled.Checked = BotInfo.TranslateEnabled;
             pnlTranslate.LoadConfig();
             #endregion -- 翻译设置 --
 
-            #region -- 色图设置 --
-            chkHPictureEnabled.Checked = BotInfo.HPictureEnabled;
-            pnlHPicture.LoadConfig();
-            #endregion -- 色图设置 --
+            #region -- 复读设置 --
+            pnlRepeater.LoadConfig();
+            #endregion -- 复读设置 --
 
             #region -- 进/退群消息设置 --
             chkSendMemberJoinedMessage.Checked = BotInfo.SendMemberJoinedMessage;
@@ -58,6 +66,10 @@ namespace GreenOnions.BotManagerWindows
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            #region -- 基本设置 --
+            pnlBot.SaveConfig();
+            #endregion -- 基本设置 --
+
             #region -- 搜图设置 --
             BotInfo.SearchEnabled = chkSearchPictureEnabled.Checked;  //是否启用搜图功能
             pnlSearchPicture.SaveConfig();
@@ -68,15 +80,19 @@ namespace GreenOnions.BotManagerWindows
             pnlOriginalPicture.SaveConfig();
             #endregion -- 下载原图设置 --
 
+            #region -- 色图设置 --
+            BotInfo.HPictureEnabled = chkHPictureEnabled.Checked;
+            pnlHPicture.SaveConfig();
+            #endregion -- 色图设置 --
+
             #region -- 翻译设置 --
             BotInfo.TranslateEnabled = chkTranslateEnabled.Checked;
             pnlTranslate.SaveConfig();
             #endregion  -- 翻译设置 --
 
-            #region -- 色图设置 --
-            BotInfo.HPictureEnabled = chkHPictureEnabled.Checked;
-            pnlHPicture.SaveConfig();
-            #endregion -- 色图设置 --
+            #region -- 复读设置 --
+            pnlRepeater.SaveConfig();
+            #endregion -- 复读设置 --
 
             #region -- 进/退群消息设置 --
 

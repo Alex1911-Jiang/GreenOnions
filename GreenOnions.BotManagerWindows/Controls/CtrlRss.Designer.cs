@@ -42,7 +42,7 @@
             // 
             this.chkRssParallel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkRssParallel.AutoSize = true;
-            this.chkRssParallel.Location = new System.Drawing.Point(545, 25);
+            this.chkRssParallel.Location = new System.Drawing.Point(534, 26);
             this.chkRssParallel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkRssParallel.Name = "chkRssParallel";
             this.chkRssParallel.Size = new System.Drawing.Size(234, 28);
@@ -52,8 +52,9 @@
             // 
             // chkRssSendLiveCover
             // 
+            this.chkRssSendLiveCover.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkRssSendLiveCover.AutoSize = true;
-            this.chkRssSendLiveCover.Location = new System.Drawing.Point(789, 26);
+            this.chkRssSendLiveCover.Location = new System.Drawing.Point(778, 26);
             this.chkRssSendLiveCover.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkRssSendLiveCover.Name = "chkRssSendLiveCover";
             this.chkRssSendLiveCover.Size = new System.Drawing.Size(191, 28);
@@ -76,9 +77,9 @@
             this.pnlRssSubscriptionList.Size = new System.Drawing.Size(947, 820);
             this.pnlRssSubscriptionList.TabIndex = 7;
             this.pnlRssSubscriptionList.WrapContents = false;
+            this.pnlRssSubscriptionList.SizeChanged += new System.EventHandler(this.pnlRssSubscriptionList_SizeChanged);
             this.pnlRssSubscriptionList.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.pnlRssSubscriptionList_ControlChanged);
             this.pnlRssSubscriptionList.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.pnlRssSubscriptionList_ControlChanged);
-            this.pnlRssSubscriptionList.SizeChanged += new System.EventHandler(this.pnlRssSubscriptionList_SizeChanged);
             // 
             // btnAddRssSubscription
             // 
@@ -98,7 +99,7 @@
             this.txbReadRssInterval.Location = new System.Drawing.Point(263, 23);
             this.txbReadRssInterval.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbReadRssInterval.Name = "txbReadRssInterval";
-            this.txbReadRssInterval.Size = new System.Drawing.Size(272, 30);
+            this.txbReadRssInterval.Size = new System.Drawing.Size(261, 30);
             this.txbReadRssInterval.TabIndex = 6;
             // 
             // lblReadRssInterval
@@ -116,8 +117,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.chkRssParallel);
             this.Controls.Add(this.chkRssSendLiveCover);
+            this.Controls.Add(this.chkRssParallel);
             this.Controls.Add(this.pnlRssSubscriptionList);
             this.Controls.Add(this.txbReadRssInterval);
             this.Controls.Add(this.lblReadRssInterval);

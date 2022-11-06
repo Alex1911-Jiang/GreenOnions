@@ -1080,13 +1080,15 @@ namespace GreenOnions.PictureSearcher
             return null;
         }
 
-        public static async Task<GreenOnionsMessages> SendPixivOriginalPictureWithIdAndP(string strPixivId)
+        public static async Task<GreenOnionsMessages> SendPixivOriginalPictureWithIdAndP(string strPixivId, Action<GreenOnionsMessages> SendMessage)
         {
             string[] idWithIndex = strPixivId.Split("-");
             if (idWithIndex.Length == 2)
             {
                 if (int.TryParse(idWithIndex[1], out int index) && long.TryParse(idWithIndex[0], out long id))
                 {
+                    if (!string.IsNullOrWhiteSpace(BotInfo.OriginalPictureDownloadingReply)) //回复下载中
+                        SendMessage(BotInfo.OriginalPictureDownloadingReply);
                     return await SearchPictureHandler.DownloadPixivOriginalPicture(id, index - 1);
                 }
             }
@@ -1095,6 +1097,8 @@ namespace GreenOnions.PictureSearcher
             {
                 if (int.TryParse(idWithP[1], out int p) && long.TryParse(idWithP[0], out long id))
                 {
+                    if (!string.IsNullOrWhiteSpace(BotInfo.OriginalPictureDownloadingReply)) //回复下载中
+                        SendMessage(BotInfo.OriginalPictureDownloadingReply);
                     return await SearchPictureHandler.DownloadPixivOriginalPicture(id, p);
                 }
             }
