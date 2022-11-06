@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -15,25 +16,25 @@ namespace GreenOnions.Help
             Match match = regexHelp.Matches(msg).FirstOrDefault();
             if (match?.Groups.Count > 0)
             {
-                string strFeatures = msg.Substring(match.Groups[0].Length).Trim().ToUpper();
+                string strFeatures = msg.Substring(match.Groups[0].Length).Trim();
                 GreenOnionsBaseMessage[] strHelpResult = strFeatures switch
                 {
-                    "--搜图" => pictureSearchHelp(),
+                    "--搜图" => PictureSearchHelp(),
                     "--下载原图" => downloadOriginalPictureHelp(),
-                    "--翻译" => translateHelp(),
-                    "--GHS" => hPictureHelp(groupId),
-                    "--色图" => hPictureHelp(groupId),
-                    "--美图" => hPictureHelp(groupId),
-                    "--复读" => repeatHelp(),
-                    "--伪造消息" => forgeMessageHelp(),
-                    "--RSS订阅转发" => rssHelp(),
-                    "--功能" => helpFailCMD(plugins),
-                    null or "" => defaultHelp(),
+                    "--翻译" => TranslateHelp(),
+                    "--GHS" => HPictureHelp(groupId),
+                    "--色图" => HPictureHelp(groupId),
+                    "--美图" => HPictureHelp(groupId),
+                    "--复读" => RepeatHelp(),
+                    "--伪造消息" => ForgeMessageHelp(),
+                    "--RSS订阅转发" => RssHelp(),
+                    "--功能" => HelpFailCMD(plugins),
+                    null or "" => DefaultHelp(),
                     _ => null,
                 };
                 foreach (IPlugin plugin in plugins)
                 {
-                    if ("--" + plugin.Name == strFeatures)
+                    if (strFeatures.Equals("--" + plugin.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         if (BotInfo.PluginStatus[plugin.Name])
                         {
@@ -48,10 +49,10 @@ namespace GreenOnions.Help
                         }
                     }
                 }
-                GreenOnionsBaseMessage[] defaultHelp()
+                GreenOnionsBaseMessage[] DefaultHelp()
                 {
                     if (string.IsNullOrEmpty(strFeatures))
-                        return new[] { $"现在您可以让我 {string.Join("，", getEnabledFunction(plugins))}。\r\n输入\"{BotInfo.BotName}帮助--功能\"以获取具体功能的使用帮助。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。" }.ToTextMessageArray();
+                        return new[] { $"现在您可以让我 {string.Join("，", GetEnabledFunction(plugins))}。\r\n输入\"{BotInfo.BotName}帮助--功能\"以获取具体功能的使用帮助。\r\n如果您觉得{BotInfo.BotName}好用，请到{BotInfo.BotName}的项目地址 https://github.com/Alex1911-Jiang/GreenOnions 给{BotInfo.BotName}一颗星星。" }.ToTextMessageArray();
                     return null;
                 }
                 return strHelpResult;
@@ -59,7 +60,7 @@ namespace GreenOnions.Help
             return null;
         }
 
-        private static List<string> getEnabledFunction(List<IPlugin> plugins)
+        private static List<string> GetEnabledFunction(List<IPlugin> plugins)
         {
             List<string> lstEnabledFeatures = new List<string>();
             if (BotInfo.SearchEnabled)
@@ -91,7 +92,7 @@ namespace GreenOnions.Help
             return lstEnabledFeatures;
         }
 
-        private static GreenOnionsBaseMessage[] pictureSearchHelp()
+        private static GreenOnionsBaseMessage[] PictureSearchHelp()
         {
             if (BotInfo.SearchEnabled)
                 return new[] { $"发送\"{BotInfo.SearchModeOnCmd.ReplaceGreenOnionsStringTags()}\"启动搜图模式，\r\n" +
@@ -106,7 +107,7 @@ namespace GreenOnions.Help
                         $"或直接\"@{BotInfo.BotName} Pixiv作品ID\"(中间没有冒号)来下载原图\r\n" +
                         $"当作品页存在不止一个作品时可在作品号后面加 p数字 来取第几张图，例如：10000p0"}.ToTextMessageArray();
         }
-        private static GreenOnionsBaseMessage[] translateHelp()
+        private static GreenOnionsBaseMessage[] TranslateHelp()
         {
             if (BotInfo.TranslateEnabled)
             {
@@ -131,21 +132,21 @@ namespace GreenOnions.Help
             else
                 return new[] { $"当前{BotInfo.BotName}没有启用翻译功能" }.ToTextMessageArray();
         }
-        private static GreenOnionsBaseMessage[] hPictureHelp(long? groupId)
+        private static GreenOnionsBaseMessage[] HPictureHelp(long? groupId)
         {
             if (BotInfo.HPictureEnabled && BotInfo.EnabledHPictureSource.Contains(PictureSource.Lolicon))
             {
                 if (groupId != null)  //群消息
                 {
                     if (!BotInfo.HPictureWhiteOnly || (BotInfo.HPictureR18WhiteOnly && BotInfo.HPictureWhiteGroup.Contains(groupId.Value)))
-                        return new[] { hpictureHelpMsg() }.ToTextMessageArray();
+                        return new[] { HpictureHelpMsg() }.ToTextMessageArray();
                     else
                         return new[] { $"没有为当前群组启用色图功能" }.ToTextMessageArray();
                 }
                 else
-                    return new[] { hpictureHelpMsg() }.ToTextMessageArray();
+                    return new[] { HpictureHelpMsg() }.ToTextMessageArray();
 
-                string hpictureHelpMsg()
+                string HpictureHelpMsg()
                 {
                     StringBuilder strHPicture = new StringBuilder($"发送\"{BotInfo.HPictureCmd.ReplaceGreenOnionsStringTags()}\"来索要色图/美图。");
                     strHPicture.AppendLine($"需要注意的是，色图关键词中，如果仅输入一个关键词，则按模糊匹配查询，如果用|或&连接多个关键词，则按标签精确匹配 |代表或，&代表与(美图仅支持一个关键词)");
@@ -158,7 +159,7 @@ namespace GreenOnions.Help
             else
                 return new[] { $"当前{BotInfo.BotName}没有启用色图功能" }.ToTextMessageArray();
         }
-        private static GreenOnionsBaseMessage[] repeatHelp()
+        private static GreenOnionsBaseMessage[] RepeatHelp()
         {
             StringBuilder strRepeat = new StringBuilder();
             if (!BotInfo.RandomRepeatEnabled && !BotInfo.SuccessiveRepeatEnabled)
@@ -175,20 +176,20 @@ namespace GreenOnions.Help
                 strRepeat.AppendLine($"有{BotInfo.RewindGifProbability}%几率倒放Gif");
             return new[] { strRepeat.ToString() }.ToTextMessageArray();
         }
-        private static GreenOnionsBaseMessage[] forgeMessageHelp()
+        private static GreenOnionsBaseMessage[] ForgeMessageHelp()
         {
             if (BotInfo.ForgeMessageEnabled)
                 return new[] { $"发送\"{BotInfo.ForgeMessageCmdBegin.ReplaceGreenOnionsStringTags()}@被害者 伪造消息内容\" 以伪造消息，在消息之间添加\"{BotInfo.ForgeMessageCmdNewLine.ReplaceGreenOnionsStringTags()}\"将消息拆分为两句" + "\r\n如果不明白命令中符号所代表的的意义，请在搜索引擎搜\"正则表达式\"" }.ToTextMessageArray();
             else
                 return new[] { $"当前{BotInfo.BotName}没有启用伪造消息功能" }.ToTextMessageArray();
         }
-        private static GreenOnionsBaseMessage[] rssHelp()
+        private static GreenOnionsBaseMessage[] RssHelp()
         {
             return new[] { $"RSS订阅转发功能暂无命令且仅可通过管理端进行配置，{BotInfo.BotName}将抓取到的订阅源(如B站动态，推文，Pixiv日榜)发送给指定的群组或好友。" }.ToTextMessageArray();
         }
-        private static GreenOnionsBaseMessage[] helpFailCMD(List<IPlugin> plugins)
+        private static GreenOnionsBaseMessage[] HelpFailCMD(List<IPlugin> plugins)
         {
-            StringBuilder strFail = new StringBuilder($"您需要将\"功能\"替换为功能名称，例如：\"{BotInfo.BotName}帮助 --搜图\" 以获取搜图功能的帮助。\r\n目前启用的功能有： {string.Join("，", getEnabledFunction(plugins))}。");
+            StringBuilder strFail = new StringBuilder($"您需要将\"功能\"替换为功能名称，例如：\"{BotInfo.BotName}帮助 --搜图\" 以获取搜图功能的帮助。\r\n目前启用的功能有： {string.Join("，", GetEnabledFunction(plugins))}。");
             if (BotInfo.QQId == 3246934384)
                 strFail.AppendLine($"您也可以私聊{BotInfo.BotName}留言，主人看到的时候会进行回复（可能）。");
             return new GreenOnionsBaseMessage[] { strFail };
