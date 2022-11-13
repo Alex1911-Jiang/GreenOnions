@@ -31,7 +31,8 @@
         /// <param name="messages"></param>
         public GreenOnionsMessages(GreenOnionsBaseMessage messages)
         {
-            Add(messages);
+            if (messages != null)
+                Add(messages);
         }
         /// <summary>
         /// 消息组中包含一条多种类型的
@@ -39,7 +40,8 @@
         /// <param name="messages"></param>
         public GreenOnionsMessages(IEnumerable<GreenOnionsBaseMessage> messages)
         {
-            AddRange(messages);
+            if (messages != null)
+                AddRange(messages);
         }
 
         /// <summary>

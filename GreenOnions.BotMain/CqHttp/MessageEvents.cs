@@ -14,6 +14,11 @@ namespace GreenOnions.BotMain.CqHttp
         private static readonly Regex regexTags = new Regex("<@?成员QQ>|<成员昵称>|<@?操作者QQ>|<操作者昵称>");
         public static async ValueTask Event_OnGroupMessage(string eventType, GroupMessageEventArgs eventArgs)
         {
+            if (eventArgs.SoraApi == null)
+            {
+                LogHelper.WriteErrorLogWithUserMessage("SoraApi为空", null);
+                return;
+            }
             if (!CheckPreconditionsGroup(eventArgs))
                 return;
 

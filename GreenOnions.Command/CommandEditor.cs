@@ -27,7 +27,7 @@ namespace GreenOnions.Command
             {"List`1","集合" },
         };
 
-        public static async Task<string?> HandleCommand(string message, Func<string> UpdateRegex)
+        public static string? HandleCommand(string message, Func<string> UpdateRegex)
         {
             bool bGet = false;
             bool bSet = false;
@@ -153,28 +153,25 @@ namespace GreenOnions.Command
                 else if (bList)  //列出属性
                 {
                     string commandBody = message.Substring("--list".Length).Trim();
-                    if (!string.IsNullOrWhiteSpace(commandBody))
+                    if (string.IsNullOrWhiteSpace(commandBody))
                     {
-                        if (string.IsNullOrWhiteSpace(commandBody))
+                        HashSet<string> nodes = new HashSet<string>();
+                        foreach (KeyValuePair<PropertyInfo, PropertyChineseNameAttribute> item in FindPropertysByNodeName(null))
+                            nodes.Add(item.Value.NodeName);
+                        return $"属性存在\r\n<{string.Join(">\r\n<", nodes)}>\r\n个分组，如果需要列出各组中的属性，请输入命令\"--list 组名\"(不含尖括号)";
+                    }
+                    else
+                    {
+                        Dictionary<PropertyInfo, PropertyChineseNameAttribute> props = FindPropertysByNodeName(commandBody);
+                        List<string> strProps = new List<string>();
+                        foreach (KeyValuePair<PropertyInfo, PropertyChineseNameAttribute> item in props)
                         {
-                            HashSet<string> nodes = new HashSet<string>();
-                            foreach (KeyValuePair<PropertyInfo, PropertyChineseNameAttribute> item in FindPropertysByNodeName(null))
-                                nodes.Add(item.Value.NodeName);
-                            return $"属性存在\r\n<{string.Join(">\r\n<", nodes)}>\r\n个分组，如果需要列出各组中的属性，请输入命令\"--list 组名\"(不含尖括号)";
+                            string description = string.Empty;
+                            if (!string.IsNullOrEmpty(item.Value.Description))
+                                description = $" ({item.Value.Description})";
+                            strProps.Add($"属性:<{item.Key.Name}>, 别名:<{item.Value.ChineseName}>{description}");
                         }
-                        else
-                        {
-                            Dictionary<PropertyInfo, PropertyChineseNameAttribute> props = FindPropertysByNodeName(commandBody);
-                            List<string> strProps = new List<string>();
-                            foreach (KeyValuePair<PropertyInfo, PropertyChineseNameAttribute> item in props)
-                            {
-                                string description = string.Empty;
-                                if (!string.IsNullOrEmpty(item.Value.Description))
-                                    description = $" ({item.Value.Description})";
-                                strProps.Add($"属性:<{item.Key.Name}>, 别名:<{item.Value.ChineseName}>{description}");
-                            }
-                            return $"{string.Join("\r\n", strProps)}\r\n如果需要获取属性的值请使用命令 \"--get 属性名\"(不含尖括号)";
-                        }
+                        return $"{string.Join("\r\n", strProps)}\r\n如果需要获取属性的值请使用命令 \"--get 属性名\"(不含尖括号)";
                     }
                 }
                 else if (bDescription)
@@ -211,8 +208,8 @@ namespace GreenOnions.Command
                         lstRss.Add($"{{\r\n" +
                             $"    Url(订阅地址)=\"{BotInfo.RssSubscription[i].Url}\",\r\n" +
                             $"    Remark(别名)=\"{BotInfo.RssSubscription[i].Remark}\",\r\n" +
-                            $"    ForwardGroups(转发到群)=\"{string.Join(';',BotInfo.RssSubscription[i].ForwardGroups == null ? new long[0]:BotInfo.RssSubscription[i].ForwardGroups)}\",\r\n" +
-                            $"    ForwardQQs(转发到好友)=\"{string.Join(';', BotInfo.RssSubscription[i].ForwardQQs == null ? new long[0]:BotInfo.RssSubscription[i].ForwardQQs)}\",\r\n" +
+                            $"    ForwardGroups(转发到群)=\"{string.Join(';', BotInfo.RssSubscription[i].ForwardGroups == null ? new long[0] : BotInfo.RssSubscription[i].ForwardGroups)}\",\r\n" +
+                            $"    ForwardQQs(转发到好友)=\"{string.Join(';', BotInfo.RssSubscription[i].ForwardQQs == null ? new long[0] : BotInfo.RssSubscription[i].ForwardQQs)}\",\r\n" +
                             $"    Translate(是否翻译)=\"{BotInfo.RssSubscription[i].Translate}\",\r\n" +
                             $"    TranslateFromTo(是否指定翻译语言)=\"{BotInfo.RssSubscription[i].TranslateFromTo}\",\r\n" +
                             $"    TranslateFrom(从什么语言翻译)=\"{BotInfo.RssSubscription[i].TranslateFromTo}\",\r\n" +
@@ -220,7 +217,7 @@ namespace GreenOnions.Command
                             $"    AtAll(是否@所有人)=\"{BotInfo.RssSubscription[i].AtAll}\",\r\n" +
                             $"    SendByForward(是否以合并转发方式发送)=\"{BotInfo.RssSubscription[i].SendByForward}\",\r\n" +
                             $"    FilterMode(过滤模式 0=不过滤, 1=包含任一, 2=包含所有, 3=不包含)=\"{BotInfo.RssSubscription[i].FilterMode}\",\r\n" +
-                            $"    FilterKeyWords(过滤关键词)=\"{string.Join(';',BotInfo.RssSubscription[i].FilterKeyWords == null ? new string[0] : BotInfo.RssSubscription[i].FilterKeyWords)}\"," +
+                            $"    FilterKeyWords(过滤关键词)=\"{string.Join(';', BotInfo.RssSubscription[i].FilterKeyWords == null ? new string[0] : BotInfo.RssSubscription[i].FilterKeyWords)}\"," +
                             $"\r\n}}");
                     }
                     return $"当前存在以下RSS订阅项:\r\n{string.Join(",\r\n", lstRss)}";
