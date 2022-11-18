@@ -138,7 +138,7 @@ namespace GreenOnions.BotMain
                 string command =  "<机器人名称>命令".ReplaceGreenOnionsStringTags();
                 if (BotInfo.Config.AdminQQ.Contains(inMsg.SenderId) && firstValue.StartsWith(command))
                 {
-                    string? cmdReplyStr = await CommandEditor.HandleCommand(string.Join("", inMsg).Substring(command.Length).Trim(), UpdateRegexs);
+                    string? cmdReplyStr = CommandEditor.HandleCommand(string.Join("", inMsg).Substring(command.Length).Trim(), UpdateRegexs);
                     if (cmdReplyStr is not null)
                     {
                         GreenOnionsMessages cmdReplyMsg = cmdReplyStr;
