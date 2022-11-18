@@ -60,5 +60,9 @@
         /// [接收消息时]发送者的昵称或群名片
         /// </summary>
         public string? SenderName { get; set; }
+        /// <summary>
+        /// 是否为葱葱命令消息（true时，不会进行葱葱预定义标签替换）
+        /// </summary>
+        public bool IsGreenOnionsCommand { get; set; } = false;
     }
 }

@@ -8,7 +8,7 @@ namespace GreenOnions.Utility.Helper
     {
         public static void WriteInfoLog(string msg)
         {
-            if (BotInfo.LogLevel <= 0)
+            if (BotInfo.Config.LogLevel <= 0)
             {
                 msg = $"{msg}    时间:{DateTime.Now}    线程ID:{Thread.GetCurrentProcessorId()}\r\n";
                 Console.ForegroundColor = ConsoleColor.White;
@@ -26,7 +26,7 @@ namespace GreenOnions.Utility.Helper
 
         public static void WriteWarningLog(string msg)
         {
-            if (BotInfo.LogLevel <= 1)
+            if (BotInfo.Config.LogLevel <= 1)
             {
                 msg = $"{msg}    警告时间:{DateTime.Now}    线程ID:{Thread.GetCurrentProcessorId()}\r\n";
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -44,7 +44,7 @@ namespace GreenOnions.Utility.Helper
 
         public static void WriteErrorLog(Exception ex)
         {
-            if (BotInfo.LogLevel <= 2)
+            if (BotInfo.Config.LogLevel <= 2)
             {
                 WriteErrorLogInner(ex);
             }
@@ -52,10 +52,10 @@ namespace GreenOnions.Utility.Helper
 
         public static void WriteErrorLog(object exObj)
         {
-            if (BotInfo.LogLevel <= 2)
+            if (BotInfo.Config.LogLevel <= 2)
             {
                 Exception ex = exObj as Exception;
-                if (ex == null)
+                if (ex is null)
                     AppendErrorText(exObj?.ToString());
                 else if (ex is AggregateException)
                 {
@@ -70,10 +70,10 @@ namespace GreenOnions.Utility.Helper
 
         public static void WriteErrorLogWithUserMessage(string messageStart, object exObj, string messageEnd = "")
         {
-            if (BotInfo.LogLevel <= 2)
+            if (BotInfo.Config.LogLevel <= 2)
             {
                 Exception ex = exObj as Exception;
-                if (ex == null)
+                if (ex is null)
                     AppendErrorText($"{messageStart}。{exObj?.ToString()}。{messageEnd}");
                 else if (ex is AggregateException)
                 {

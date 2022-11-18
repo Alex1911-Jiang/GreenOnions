@@ -18,28 +18,26 @@ namespace GreenOnions.BotManagerConsole
 
 			Console.WriteLine("葱葱机器人");
 
-			if (!File.Exists(JsonHelper.JsonConfigFileName))
+			if (!File.Exists("config.json"))
 			{
-				ConfigHelper.CreateConfig();
+				BotInfo.CreateConfig();
 				Console.WriteLine("初次使用本机器人，请先设置config.json相关参数后继续以下步骤。");
 			}
-			if (!File.Exists(JsonHelper.JsonCacheFileName))
-				ConfigHelper.CreateCache();
 
 			Console.WriteLine("有任何疑问，意见或建议欢迎到 https://github.com/Alex1911-Jiang/GreenOnions 提Issue");
 
             Console.WriteLine($"成功加载{PluginManager.Load()}个插件");
 
-			if (BotInfo.AutoConnectEnabled)
+			if (BotInfo.Config.AutoConnectEnabled)
 			{
-                Console.WriteLine($"启用了自动连接, {BotInfo.AutoConnectDelay}秒后自动连接到{(BotInfo.AutoConnectProtocol == 0 ? "Mirai-Api-Http" : "CqHttp")}平台");
+                Console.WriteLine($"启用了自动连接, {BotInfo.Config.AutoConnectDelay}秒后自动连接到{(BotInfo.Config.AutoConnectProtocol == 0 ? "Mirai-Api-Http" : "CqHttp")}平台");
 				Console.WriteLine($"如果要取消自动连接, 请将 config.json 中 Bot.AutoConnectEnabled 修改为 False");
-				Task.Delay(BotInfo.AutoConnectDelay * 1000).Wait();
-				if (BotInfo.AutoConnectProtocol == 0)
+				Task.Delay(BotInfo.Config.AutoConnectDelay * 1000).Wait();
+				if (BotInfo.Config.AutoConnectProtocol == 0)
 				{
 					try
 					{
-                        MiraiApiHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.AutoConnectProtocol, "mirai-api-http"));
+                        MiraiApiHttpMain.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.Config.AutoConnectProtocol, "mirai-api-http"));
                     }
 					catch (Exception ex)
 					{
@@ -51,7 +49,7 @@ namespace GreenOnions.BotManagerConsole
 				{
 					try
 					{
-                        CqHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.AutoConnectProtocol, "cqhttp"));
+                        CqHttpMain.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.Config.AutoConnectProtocol, "cqhttp"));
                     }
 					catch (Exception ex)
 					{
@@ -95,10 +93,10 @@ namespace GreenOnions.BotManagerConsole
 					string verifyKey = Console.ReadLine();
                     try
                     {
-						BotInfo.QQId = qqId;
-						BotInfo.IP = ip;
-						BotInfo.Port = port;
-						BotInfo.VerifyKey = verifyKey;
+						BotInfo.Config.QQId = qqId;
+						BotInfo.Config.IP = ip;
+						BotInfo.Config.Port = port;
+                        BotInfo.Config.VerifyKey = verifyKey;
 						WorkingTimeRecorder.DoWork = true;
 						Console.CancelKeyPress -= Console_CancelKeyPress;
 						Console.CancelKeyPress += Console_CancelKeyPress;
@@ -116,10 +114,10 @@ namespace GreenOnions.BotManagerConsole
 					string accessToken = Console.ReadLine();
 					try
 					{
-						BotInfo.QQId = qqId;
-						BotInfo.IP = ip;
-						BotInfo.Port = port;
-						BotInfo.VerifyKey = accessToken;
+						BotInfo.Config.QQId = qqId;
+						BotInfo.Config.IP = ip;
+						BotInfo.Config.Port = port;
+                        BotInfo.Config.VerifyKey = accessToken;
 						WorkingTimeRecorder.DoWork = true;
 						Console.CancelKeyPress -= Console_CancelKeyPress;
 						Console.CancelKeyPress += Console_CancelKeyPress;
@@ -145,12 +143,12 @@ namespace GreenOnions.BotManagerConsole
 
         private static void ConnectToMiraiApiHttp()
         {
-            MiraiApiHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 0, "mirai-api-http"));
+            MiraiApiHttpMain.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 0, "mirai-api-http"));
         }
 
         private static void ConnectToCqHttp()
         {
-            CqHttpMain.Connect(BotInfo.QQId, BotInfo.IP, BotInfo.Port, BotInfo.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 1, "cqhttp"));
+            CqHttpMain.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, (bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 1, "cqhttp"));
         }
 
 		private static void Connecting(bool bConnect, string nickNameOrErrorMessage, int platform, string protocol)
@@ -160,7 +158,7 @@ namespace GreenOnions.BotManagerConsole
 				Console.WriteLine($"连接状态: 已连接到{protocol}, 登录昵称:{nickNameOrErrorMessage}");
 				WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnected);
 			}
-			else if (nickNameOrErrorMessage == null)  //连接失败且没有异常
+			else if (nickNameOrErrorMessage is null)  //连接失败且没有异常
 				Console.WriteLine($"连接失败，请检查{protocol}是否已经正常启动并已配置IP端口相关参数, 以及机器人QQ是否成功登录。");
 			else  //发生异常
 				if (nickNameOrErrorMessage.Length > 0)

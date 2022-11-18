@@ -45,7 +45,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
             bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(e.Sender.Id, e.Sender.Name), e.Sender.Group.Id, async outMsg =>
             {
-                if (outMsg != null && outMsg.Count > 0)
+                if (outMsg is not null && outMsg.Count > 0)
                 {
                     int iRevokeTime = outMsg.RevokeTime;
                     var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Group);
@@ -67,47 +67,47 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
         public Task HandleMessageAsync(IMiraiHttpSession session, IGroupMemberJoinedEventArgs e)
         {
-            if (!CheckPreconditions(e.Member) || !BotInfo.SendMemberJoinedMessage)
+            if (!CheckPreconditions(e.Member) || !BotInfo.Config.SendMemberJoinedMessage)
             {
                 return Task.CompletedTask;
             }
-            return session.SendGroupMessageAsync(e.Member.Group.Id, ReplaceMessage(session.GetMessageChainBuilder(), BotInfo.MemberJoinedMessage, e.Member));
+            return session.SendGroupMessageAsync(e.Member.Group.Id, ReplaceMessage(session.GetMessageChainBuilder(), BotInfo.Config.MemberJoinedMessage, e.Member));
         }
 
         public Task HandleMessageAsync(IMiraiHttpSession session, IGroupMemberPositiveLeaveEventArgs e)
         {
-            if (!CheckPreconditions(e.Member) || !BotInfo.SendMemberPositiveLeaveMessage)
+            if (!CheckPreconditions(e.Member) || !BotInfo.Config.SendMemberPositiveLeaveMessage)
             {
                 return Task.CompletedTask;
             }
-            return session.SendGroupMessageAsync(e.Member.Group.Id, ReplaceMessage(session.GetMessageChainBuilder(), BotInfo.MemberPositiveLeaveMessage, e.Member));
+            return session.SendGroupMessageAsync(e.Member.Group.Id, ReplaceMessage(session.GetMessageChainBuilder(), BotInfo.Config.MemberPositiveLeaveMessage, e.Member));
         }
 
         public Task HandleMessageAsync(IMiraiHttpSession session, IGroupMemberKickedEventArgs e)
         {
-            if (!CheckPreconditions(e.Member) || !BotInfo.SendMemberBeKickedMessage)
+            if (!CheckPreconditions(e.Member) || !BotInfo.Config.SendMemberBeKickedMessage)
             {
                 return Task.CompletedTask;
             }
-            return session.SendGroupMessageAsync(e.Member.Group.Id, ReplaceMessage(session.GetMessageChainBuilder(), BotInfo.MemberBeKickedMessage, e.Member, e.Operator));
+            return session.SendGroupMessageAsync(e.Member.Group.Id, ReplaceMessage(session.GetMessageChainBuilder(), BotInfo.Config.MemberBeKickedMessage, e.Member, e.Operator));
         }
 
         private readonly Regex regexTags = new Regex("<@?成员QQ>|<成员昵称>|<@?操作者QQ>|<操作者昵称>");
 
         private bool CheckPreconditions(IGroupMemberInfo e)
         {
-            if (BotInfo.BannedGroup.Contains(e.Group.Id) ||
-                BotInfo.BannedUser.Contains(e.Id))
+            if (BotInfo.Config.BannedGroup.Contains(e.Group.Id) ||
+                BotInfo.Config.BannedUser.Contains(e.Id))
             {
                 return false;
             }
-            if (BotInfo.DebugMode)
+            if (BotInfo.Config.DebugMode)
             {
-                if (BotInfo.DebugReplyAdminOnly)
-                    if (!BotInfo.AdminQQ.Contains(e.Id))
+                if (BotInfo.Config.DebugReplyAdminOnly)
+                    if (!BotInfo.Config.AdminQQ.Contains(e.Id))
                         return false;
-                if (BotInfo.OnlyReplyDebugGroup)
-                    if (!BotInfo.DebugGroups.Contains(e.Group.Id))
+                if (BotInfo.Config.OnlyReplyDebugGroup)
+                    if (!BotInfo.Config.DebugGroups.Contains(e.Group.Id))
                         return false;
             }
             return true;
@@ -141,7 +141,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 {
                     builder.AddPlainMessage(member.Name);
                 }
-                else if (Operator != null)
+                else if (Operator is not null)
                 {
                     if (identifier == "<@操作者QQ>")
                     {

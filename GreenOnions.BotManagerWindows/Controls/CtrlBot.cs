@@ -22,114 +22,114 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         public void LoadConfig()
         {
-            txbBotName.Text = BotInfo.BotName;
+            txbBotName.Text = BotInfo.Config.BotName;
 
-            foreach (var item in BotInfo.AdminQQ)
+            foreach (var item in BotInfo.Config.AdminQQ)
             {
                 lstAdmins.Items.Add(item.ToString());
             }
 
-            foreach (long item in BotInfo.BannedGroup)
+            foreach (long item in BotInfo.Config.BannedGroup)
             {
                 lstBannedGroup.Items.Add(item.ToString());
             }
 
-            foreach (var item in BotInfo.BannedUser)
+            foreach (var item in BotInfo.Config.BannedUser)
             {
                 lstBannedUser.Items.Add(item.ToString());
             }
 
-            chkDebugMode.Checked = BotInfo.DebugMode;
-            foreach (var item in BotInfo.DebugGroups)
+            chkDebugMode.Checked = BotInfo.Config.DebugMode;
+            foreach (var item in BotInfo.Config.DebugGroups)
             {
                 lstDebugGroups.Items.Add(item.ToString());
             }
-            chkOnlyReplyDebugGroup.Checked = BotInfo.OnlyReplyDebugGroup;
-            chkDebugReplyAdminOnly.Checked = BotInfo.DebugReplyAdminOnly;
-            chkHttpRequestByWebBrowser.Checked = BotInfo.HttpRequestByWebBrowser;
-            chkDownloadImage4Caching.Checked = BotInfo.DownloadImage4Caching;
-            chkSendImageByFile.Checked = BotInfo.SendImageByFile;
-            chkCheckPornEnabled.Checked = BotInfo.CheckPornEnabled; //是否启用腾讯云鉴黄
+            chkOnlyReplyDebugGroup.Checked = BotInfo.Config.OnlyReplyDebugGroup;
+            chkDebugReplyAdminOnly.Checked = BotInfo.Config.DebugReplyAdminOnly;
+            chkHttpRequestByWebBrowser.Checked = BotInfo.Config.HttpRequestByWebBrowser;
+            chkDownloadImage4Caching.Checked = BotInfo.Config.DownloadImage4Caching;
+            chkSendImageByFile.Checked = BotInfo.Config.SendImageByFile;
+            chkCheckPornEnabled.Checked = BotInfo.Config.CheckPornEnabled; //是否启用腾讯云鉴黄
 
             #region -- 腾讯云相关设置 --
-            txbTencentCloudAPPID.Text = BotInfo.TencentCloudAPPID;
-            txbTencentCloudRegion.Text = BotInfo.TencentCloudRegion;
-            txbTencentCloudSecretId.Text = BotInfo.TencentCloudSecretId;
-            txbTencentCloudSecretKey.Text = BotInfo.TencentCloudSecretKey;
-            txbTencentCloudBucket.Text = BotInfo.TencentCloudBucket;
+            txbTencentCloudAPPID.Text = BotInfo.Config.TencentCloudAPPID;
+            txbTencentCloudRegion.Text = BotInfo.Config.TencentCloudRegion;
+            txbTencentCloudSecretId.Text = BotInfo.Config.TencentCloudSecretId;
+            txbTencentCloudSecretKey.Text = BotInfo.Config.TencentCloudSecretKey;
+            txbTencentCloudBucket.Text = BotInfo.Config.TencentCloudBucket;
             #endregion -- 腾讯云相关设置 --
 
-            chkAutoConnectEnabled.Checked = BotInfo.AutoConnectEnabled;
-            cboAutoConnectProtocol.SelectedIndex = BotInfo.AutoConnectProtocol;
-            txbAutoConnectDelay.Text = BotInfo.AutoConnectDelay.ToString();
-            cboPixivProxy.Text = BotInfo.PixivProxy;
+            chkAutoConnectEnabled.Checked = BotInfo.Config.AutoConnectEnabled;
+            cboAutoConnectProtocol.SelectedIndex = BotInfo.Config.AutoConnectProtocol;
+            txbAutoConnectDelay.Text = BotInfo.Config.AutoConnectDelay.ToString();
+            cboPixivProxy.Text = BotInfo.Config.PixivProxy;
 
-            chkWorkingTimeEnabled.Checked = BotInfo.WorkingTimeEnabled;
-            cboWorkingTimeFromHour.SelectedIndex = BotInfo.WorkingTimeFromHour;
-            cboWorkingTimeFromMinute.SelectedIndex = BotInfo.WorkingTimeFromMinute;
-            cboWorkingTimeToHour.SelectedIndex = BotInfo.WorkingTimeToHour;
-            cboWorkingTimeToMinute.SelectedIndex = BotInfo.WorkingTimeToMinute;
+            chkWorkingTimeEnabled.Checked = BotInfo.Config.WorkingTimeEnabled;
+            cboWorkingTimeFromHour.SelectedIndex = BotInfo.Config.WorkingTimeFromHour;
+            cboWorkingTimeFromMinute.SelectedIndex = BotInfo.Config.WorkingTimeFromMinute;
+            cboWorkingTimeToHour.SelectedIndex = BotInfo.Config.WorkingTimeToHour;
+            cboWorkingTimeToMinute.SelectedIndex = BotInfo.Config.WorkingTimeToMinute;
 
-            cboLogLevel.SelectedIndex = BotInfo.LogLevel;
-            cboReplaceImgRoute.SelectedIndex = BotInfo.ReplaceImgRoute;
+            cboLogLevel.SelectedIndex = BotInfo.Config.LogLevel;
+            cboReplaceImgRoute.SelectedIndex = BotInfo.Config.ReplaceImgRoute;
         }
 
         public void SaveConfig()
         {
-            BotInfo.BotName = txbBotName.Text.Trim();
-            List<long> tempAdminQQ = new List<long>();
+            BotInfo.Config.BotName = txbBotName.Text.Trim();
+            HashSet<long> tempAdminQQ = new HashSet<long>();
             foreach (ListViewItem item in lstAdmins.Items)
             {
                 tempAdminQQ.Add(Convert.ToInt64(item.SubItems[0].Text));
             }
-            BotInfo.AdminQQ = tempAdminQQ;
-            List<long> tempBannedGroup = new List<long>();
+            BotInfo.Config.AdminQQ = tempAdminQQ;
+            HashSet<long> tempBannedGroup = new HashSet<long>();
             foreach (ListViewItem item in lstBannedGroup.Items)
             {
                 tempBannedGroup.Add(Convert.ToInt64(item.SubItems[0].Text));
             }
-            BotInfo.BannedGroup = tempBannedGroup;
-            List<long> tempBannedUser = new List<long>();
+            BotInfo.Config.BannedGroup = tempBannedGroup;
+            HashSet<long> tempBannedUser = new HashSet<long>();
             foreach (ListViewItem item in lstBannedUser.Items)
             {
                 tempBannedUser.Add(Convert.ToInt64(item.SubItems[0].Text));
             }
-            BotInfo.BannedUser = tempBannedUser;
+            BotInfo.Config.BannedUser = tempBannedUser;
 
-            BotInfo.DebugMode = chkDebugMode.Checked;
-            List<long> tempDebugGroups = new List<long>();
+            BotInfo.Config.DebugMode = chkDebugMode.Checked;
+            HashSet<long> tempDebugGroups = new HashSet<long>();
             foreach (ListViewItem item in lstDebugGroups.Items)
             {
                 tempDebugGroups.Add(Convert.ToInt64(item.SubItems[0].Text));
             }
-            BotInfo.DebugGroups = tempDebugGroups;
-            BotInfo.OnlyReplyDebugGroup = chkOnlyReplyDebugGroup.Checked;
-            BotInfo.DebugReplyAdminOnly = chkDebugReplyAdminOnly.Checked;
-            BotInfo.HttpRequestByWebBrowser = chkHttpRequestByWebBrowser.Checked;
-            BotInfo.DownloadImage4Caching = chkDownloadImage4Caching.Checked;
-            BotInfo.SendImageByFile = chkSendImageByFile.Checked;
+            BotInfo.Config.DebugGroups = tempDebugGroups;
+            BotInfo.Config.OnlyReplyDebugGroup = chkOnlyReplyDebugGroup.Checked;
+            BotInfo.Config.DebugReplyAdminOnly = chkDebugReplyAdminOnly.Checked;
+            BotInfo.Config.HttpRequestByWebBrowser = chkHttpRequestByWebBrowser.Checked;
+            BotInfo.Config.DownloadImage4Caching = chkDownloadImage4Caching.Checked;
+            BotInfo.Config.SendImageByFile = chkSendImageByFile.Checked;
 
-            BotInfo.AutoConnectEnabled = chkAutoConnectEnabled.Checked;
-            BotInfo.AutoConnectProtocol = cboAutoConnectProtocol.SelectedIndex;
-            BotInfo.ReplaceImgRoute = cboReplaceImgRoute.SelectedIndex;
-            BotInfo.PixivProxy = cboPixivProxy.Text;
+            BotInfo.Config.AutoConnectEnabled = chkAutoConnectEnabled.Checked;
+            BotInfo.Config.AutoConnectProtocol = cboAutoConnectProtocol.SelectedIndex;
+            BotInfo.Config.ReplaceImgRoute = cboReplaceImgRoute.SelectedIndex;
+            BotInfo.Config.PixivProxy = cboPixivProxy.Text;
 
-            BotInfo.WorkingTimeEnabled = chkWorkingTimeEnabled.Checked;
-            BotInfo.WorkingTimeFromHour = cboWorkingTimeFromHour.SelectedIndex;
-            BotInfo.WorkingTimeFromMinute = cboWorkingTimeFromMinute.SelectedIndex;
-            BotInfo.WorkingTimeToHour = cboWorkingTimeToHour.SelectedIndex;
-            BotInfo.WorkingTimeToMinute = cboWorkingTimeToMinute.SelectedIndex;
+            BotInfo.Config.WorkingTimeEnabled = chkWorkingTimeEnabled.Checked;
+            BotInfo.Config.WorkingTimeFromHour = cboWorkingTimeFromHour.SelectedIndex;
+            BotInfo.Config.WorkingTimeFromMinute = cboWorkingTimeFromMinute.SelectedIndex;
+            BotInfo.Config.WorkingTimeToHour = cboWorkingTimeToHour.SelectedIndex;
+            BotInfo.Config.WorkingTimeToMinute = cboWorkingTimeToMinute.SelectedIndex;
 
-            BotInfo.AutoConnectDelay = Convert.ToInt32(txbAutoConnectDelay.Text);
-            BotInfo.LogLevel = cboLogLevel.SelectedIndex;
+            BotInfo.Config.AutoConnectDelay = Convert.ToInt32(txbAutoConnectDelay.Text);
+            BotInfo.Config.LogLevel = cboLogLevel.SelectedIndex;
 
             #region -- 腾讯云相关设置 --
-            BotInfo.CheckPornEnabled = chkCheckPornEnabled.Checked;  //是否启用腾讯云鉴黄
-            BotInfo.TencentCloudAPPID = txbTencentCloudAPPID.Text;
-            BotInfo.TencentCloudRegion = txbTencentCloudRegion.Text;
-            BotInfo.TencentCloudSecretId = txbTencentCloudSecretId.Text;
-            BotInfo.TencentCloudSecretKey = txbTencentCloudSecretKey.Text;
-            BotInfo.TencentCloudBucket = txbTencentCloudBucket.Text;
+            BotInfo.Config.CheckPornEnabled = chkCheckPornEnabled.Checked;  //是否启用腾讯云鉴黄
+            BotInfo.Config.TencentCloudAPPID = txbTencentCloudAPPID.Text;
+            BotInfo.Config.TencentCloudRegion = txbTencentCloudRegion.Text;
+            BotInfo.Config.TencentCloudSecretId = txbTencentCloudSecretId.Text;
+            BotInfo.Config.TencentCloudSecretKey = txbTencentCloudSecretKey.Text;
+            BotInfo.Config.TencentCloudBucket = txbTencentCloudBucket.Text;
             #endregion -- 腾讯云相关设置 --
         }
 

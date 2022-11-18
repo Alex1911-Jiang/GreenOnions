@@ -1,22 +1,49 @@
-﻿using COSXML;
+﻿using System;
+using System.Data;
+using System.IO;
+using COSXML;
 using COSXML.Auth;
 using COSXML.Model.Object;
 using COSXML.Model.Tag;
-using System;
-using System.Data;
-using System.IO;
-using System.Net;
 
 namespace GreenOnions.Utility.Helper
 {
-    public static class TencentCloudHelper
+    public class TencentCloudClient
     {
-        private static CosXmlServer _cosXml = null;
-        public static CosXmlServer CosXml => _cosXml ?? throw new Exception("请先调用CreateCosXmlServer方法创建COS连接实例!");
+        private CosXmlServer _cosXml;
+        private string _appid;
+        private string _region;
+        private string _bucket;
+
         /// <summary>
-        /// 是否已经创建了CosXmlServer
+        /// 创建腾讯云服务器SDK访问对象
         /// </summary>
-        public static bool IsCreateCosXmlServer => _cosXml != null;
+        /// <param name="appid">appid</param>
+        /// <param name="region">地区</param>
+        /// <param name="secretId">secretId</param>
+        /// <param name="secretKey">secretKey</param>
+        /// <param name="bucket">存储桶名称</param>
+        /// <param name="durationSecond">有效时长,单位为 秒</param>
+        public TencentCloudClient(string appid, string region, string secretId, string secretKey, string bucket, long durationSecond = 600)
+        {
+            _appid = appid;
+            _region = region;
+            _bucket = bucket;
+
+            //初始化 CosXmlConfig 
+            CosXmlConfig config = new CosXmlConfig.Builder()
+                .SetConnectionTimeoutMs(60000)
+                .SetReadWriteTimeoutMs(40000)
+                .IsHttps(true)
+                .SetAppid(appid)
+                .SetRegion(region)
+                .SetDebugLog(true)
+                .Build();
+            QCloudCredentialProvider cosCredentialProvider = new DefaultQCloudCredentialProvider(secretId, secretKey, durationSecond);
+
+            //初始化 CosXmlServer
+            _cosXml = new CosXmlServer(config, cosCredentialProvider);
+        }
 
         /// <summary>
         /// 请求腾讯云COS的API
@@ -27,7 +54,7 @@ namespace GreenOnions.Utility.Helper
         /// <param name="key">对象键</param>
         /// <param name="param">额外参数</param>
         /// <returns>返回XML</returns>
-        public static Stream TencentCOSGetHttpResponse(string appid, string region, string bucket, string key, string param = "")
+        public Stream TencentCOSGetHttpResponse(string appid, string region, string bucket, string key, string param = "")
         {
             if (!param.StartsWith("&")) param = "&" + param;
 
@@ -41,7 +68,7 @@ namespace GreenOnions.Utility.Helper
             preSignatureStruct.signDurationSecond = 600; //请求签名时间为 600s
             preSignatureStruct.headers = null;//签名中需要校验的 header
             preSignatureStruct.queryParameters = null; //签名中需要校验的 URL 中请求参数
-            string requestSignURL = CosXml.GenerateSignURL(preSignatureStruct) + param;
+            string requestSignURL = _cosXml.GenerateSignURL(preSignatureStruct) + param;
 
             return HttpHelper.GetHttpResponseStream(requestSignURL, out _);
         }
@@ -53,7 +80,7 @@ namespace GreenOnions.Utility.Helper
             Error = 2,
         }
 
-        public static CheckedPornStatus CheckImageHealth(string localFileName, out string errorMessage)
+        public CheckedPornStatus CheckImageHealth(string localFileName, out string errorMessage)
         {
             errorMessage = "";
             try
@@ -68,7 +95,7 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        public static CheckedPornStatus CheckImageHealth(byte[] file, out string errorMessage)
+        public CheckedPornStatus CheckImageHealth(byte[] file, out string errorMessage)
         {
             errorMessage = "";
             try
@@ -83,7 +110,7 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        public static CheckedPornStatus CheckImageHealth(Stream stream, out string errorMessage)
+        public CheckedPornStatus CheckImageHealth(Stream stream, out string errorMessage)
         {
             errorMessage = "";
             try
@@ -98,16 +125,15 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        private static CheckedPornStatus CheckHealthed(string strScore)
+        private CheckedPornStatus CheckHealthed(string strScore)
         {
             if (int.TryParse(strScore, out int Score))
             {
-                Cache.CheckPornCounting++;
                 if (Score > 90)
                 {
                     //鉴黄不通过删除图片(腾讯云竟然会因为留存色图而封号...)
-                    DeleteObjectRequest request = new DeleteObjectRequest(BotInfo.TencentCloudBucket, "CheckPorn.png");
-                    CosXml.DeleteObject(request);
+                    DeleteObjectRequest request = new DeleteObjectRequest(_bucket, "CheckPorn.png");
+                    _cosXml.DeleteObject(request);
                     return CheckedPornStatus.NotHealth;  //非法
                 }
                 return CheckedPornStatus.Healthed;  //合法
@@ -119,22 +145,18 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        private static string CheckImagePornScore(string localFileName, byte[] file, Stream stream)
+        private string CheckImagePornScore(string localFileName, byte[] file, Stream stream)
         {
-            if (!IsCreateCosXmlServer)
-            {
-                CreateCosXmlServer(BotInfo.TencentCloudAPPID, BotInfo.TencentCloudRegion, BotInfo.TencentCloudSecretId, BotInfo.TencentCloudSecretKey);
-            }
-            if (SaveFileToTencentCOS(localFileName, file, stream, BotInfo.TencentCloudBucket, "CheckPorn.png"))
+            if (SaveFileToTencentCOS(localFileName, file, stream, _bucket, "CheckPorn.png"))
             {
                 return CheckPornScoreInner();
             }
             throw new Exception("鉴黄失败，未能成功上传图片到云端。");
         }
 
-        private static string CheckPornScoreInner()
+        private string CheckPornScoreInner()
         {
-            using (Stream stream = TencentCOSGetHttpResponse(BotInfo.TencentCloudAPPID, BotInfo.TencentCloudRegion, BotInfo.TencentCloudBucket, "CheckPorn.png", "&ci-process=sensitive-content-recognition&detect-type=porn"))
+            using (Stream stream = TencentCOSGetHttpResponse(_appid, _region, _bucket, "CheckPorn.png", "&ci-process=sensitive-content-recognition&detect-type=porn"))
             {
                 DataSet ds = new DataSet();
                 ds.ReadXml(stream);
@@ -164,16 +186,16 @@ namespace GreenOnions.Utility.Helper
         /// <param name="bucket">存储桶，格式：BucketName-APPID</param>
         /// <param name="key">对象键</param>
         /// <returns>是否上传成功</returns>
-        public static bool SaveFileToTencentCOS(string srcPath, byte[] src, Stream srcStream, string bucket, string key)
+        public bool SaveFileToTencentCOS(string srcPath, byte[] src, Stream srcStream, string bucket, string key)
         {
             try
             {
                 PutObjectRequest request;
                 if (!string.IsNullOrWhiteSpace(srcPath))
                     request = new PutObjectRequest(bucket, key, srcPath);
-                else if (src != null && src.Length > 0)
+                else if (src is not null && src.Length > 0)
                     request = new PutObjectRequest(bucket, key, src);
-                else if (srcStream != null)
+                else if (srcStream is not null)
                     request = new PutObjectRequest(bucket, key, srcStream);
                 else
                     return false;
@@ -184,7 +206,7 @@ namespace GreenOnions.Utility.Helper
                     //Console.WriteLine(String.Format("progress = {0:##.##}%", completed * 100.0 / total));
                 });
                 //执行请求
-                PutObjectResult result = CosXml.PutObject(request);
+                PutObjectResult result = _cosXml.PutObject(request);
                 //对象的 eTag
                 string eTag = result.eTag;
                 return true;
@@ -200,33 +222,6 @@ namespace GreenOnions.Utility.Helper
                 //Console.WriteLine("CosServerException: " + serverEx.GetInfo());
             }
             return false;
-        }
-
-        /// <summary>
-        /// 创建腾讯云服务器SDK访问对象
-        /// </summary>
-        /// <param name="appid">appid</param>
-        /// <param name="region">地区</param>
-        /// <param name="secretId">secretId</param>
-        /// <param name="secretKey">secretKey</param>
-        /// <param name="durationSecond">有效时长,单位为 秒</param>
-        /// <returns></returns>
-        private static CosXmlServer CreateCosXmlServer(string appid, string region, string secretId, string secretKey, long durationSecond = 600)
-        {
-            //初始化 CosXmlConfig 
-            CosXmlConfig config = new CosXmlConfig.Builder()
-                .SetConnectionTimeoutMs(60000)
-                .SetReadWriteTimeoutMs(40000)
-                .IsHttps(true)
-                .SetAppid(appid)
-                .SetRegion(region)
-                .SetDebugLog(true)
-                .Build();
-            QCloudCredentialProvider cosCredentialProvider = new DefaultQCloudCredentialProvider(secretId, secretKey, durationSecond);
-
-            //初始化 CosXmlServer
-            _cosXml = new CosXmlServer(config, cosCredentialProvider);
-            return CosXml;
         }
     }
 }

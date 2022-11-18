@@ -1,12 +1,4 @@
-﻿using GreenOnions.Interface;
-using GreenOnions.Utility;
-using GreenOnions.Utility.Helper;
-using HtmlAgilityPack;
-using IqdbApi;
-using IqdbApi.Enums;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +9,16 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using GreenOnions.Interface;
+using GreenOnions.Interface.Configs.Enums;
+using GreenOnions.Interface.Helpers;
+using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
+using HtmlAgilityPack;
+using IqdbApi;
+using IqdbApi.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace GreenOnions.PictureSearcher
 {
@@ -24,31 +26,31 @@ namespace GreenOnions.PictureSearcher
     {
         public static void SearchOn(long qqId, Action<GreenOnionsMessages> SendMessage, SearchMode mode)
         {
-            if (Cache.SearchingUserGroups.Where(d => d.ContainsKey(qqId)).Count() > 0)
+            if (BotInfo.Cache.SearchingUserGroups.Where(d => d.ContainsKey(qqId)).Count() > 0)
             {
-                for (int i = 0; i < Cache.SearchingUserGroups.Length; i++)
+                for (int i = 0; i < BotInfo.Cache.SearchingUserGroups.Length; i++)
                 {
-                    if (Cache.SearchingUserGroups[i].ContainsKey(qqId))
+                    if (BotInfo.Cache.SearchingUserGroups[i].ContainsKey(qqId))
                     {
-                        Cache.SearchingUserGroups[i][qqId] = DateTime.Now.AddMinutes(1);  //延长搜图时间到1分钟
+                        BotInfo.Cache.SearchingUserGroups[i][qqId] = DateTime.Now.AddMinutes(1);  //延长搜图时间到1分钟
                     }
                 }
-                SendMessage(BotInfo.SearchModeAlreadyOnReply.ReplaceGreenOnionsStringTags());
+                SendMessage(BotInfo.Config.SearchModeAlreadyOnReply);
                 return;
             }
 
             List<IDictionary<long, DateTime>> lstGroups = new List<IDictionary<long, DateTime>>();
             if ((mode & SearchMode.Picture) != 0)
-                AddToGroup(Cache.SearchingPicturesUsers);
+                AddToGroup(BotInfo.Cache.SearchingPicturesUsers);
             if ((mode & SearchMode.Anime) != 0)
-                AddToGroup(Cache.SearchingAnimeUsers);
+                AddToGroup(BotInfo.Cache.SearchingAnimeUsers);
             if ((mode & SearchMode.ThreeD) != 0)
-                AddToGroup(Cache.Searching3DUsers);
+                AddToGroup(BotInfo.Cache.Searching3DUsers);
 
             if (lstGroups.Count > 0)
             {
-                Cache.SetWorkingTimeout(qqId, () => SendMessage(BotInfo.SearchModeTimeOutReply.ReplaceGreenOnionsStringTags()), lstGroups.ToArray());
-                SendMessage(BotInfo.SearchModeOnReply.ReplaceGreenOnionsStringTags());
+                BotInfo.Cache.SetWorkingTimeout(qqId, () => SendMessage(BotInfo.Config.SearchModeTimeOutReply), lstGroups.ToArray());
+                SendMessage(BotInfo.Config.SearchModeOnReply);
             }
 
             void AddToGroup(ConcurrentDictionary<long, DateTime> modeGroup)
@@ -60,46 +62,46 @@ namespace GreenOnions.PictureSearcher
 
         public static void UpdateSearchTime(long qqId)
         {
-            if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
-                Cache.SearchingPicturesUsers[qqId] = DateTime.Now.AddMinutes(1);
-            if (Cache.SearchingAnimeUsers.ContainsKey(qqId))
-                Cache.SearchingAnimeUsers[qqId] = DateTime.Now.AddMinutes(1);
-            if (Cache.Searching3DUsers.ContainsKey(qqId))
-                Cache.Searching3DUsers[qqId] = DateTime.Now.AddMinutes(1);
+            if (BotInfo.Cache.SearchingPicturesUsers.ContainsKey(qqId))
+                BotInfo.Cache.SearchingPicturesUsers[qqId] = DateTime.Now.AddMinutes(1);
+            if (BotInfo.Cache.SearchingAnimeUsers.ContainsKey(qqId))
+                BotInfo.Cache.SearchingAnimeUsers[qqId] = DateTime.Now.AddMinutes(1);
+            if (BotInfo.Cache.Searching3DUsers.ContainsKey(qqId))
+                BotInfo.Cache.Searching3DUsers[qqId] = DateTime.Now.AddMinutes(1);
         }
 
         public static void SearchOff(long qqId, Action<GreenOnionsMessages> SendMessage)
         {
             bool inCacheGroup = false;
-            if (Cache.SearchingPicturesUsers.ContainsKey(qqId))
+            if (BotInfo.Cache.SearchingPicturesUsers.ContainsKey(qqId))
             {
-                Cache.SearchingPicturesUsers.TryRemove(qqId, out _);
+                BotInfo.Cache.SearchingPicturesUsers.TryRemove(qqId, out _);
                 inCacheGroup = true;
             }
-            if (Cache.SearchingAnimeUsers.ContainsKey(qqId))
+            if (BotInfo.Cache.SearchingAnimeUsers.ContainsKey(qqId))
             {
-                Cache.SearchingAnimeUsers.TryRemove(qqId, out _);
+                BotInfo.Cache.SearchingAnimeUsers.TryRemove(qqId, out _);
                 inCacheGroup = true;
             }
-            if (Cache.Searching3DUsers.ContainsKey(qqId))
+            if (BotInfo.Cache.Searching3DUsers.ContainsKey(qqId))
             {
-                Cache.Searching3DUsers.TryRemove(qqId, out _);
+                BotInfo.Cache.Searching3DUsers.TryRemove(qqId, out _);
                 inCacheGroup = true;
             }
 
             if (inCacheGroup)
-                SendMessage(BotInfo.SearchModeOffReply.ReplaceGreenOnionsStringTags());
+                SendMessage(BotInfo.Config.SearchModeOffReply);
             else
-                SendMessage(BotInfo.SearchModeAlreadyOffReply.ReplaceGreenOnionsStringTags());
+                SendMessage(BotInfo.Config.SearchModeAlreadyOffReply);
         }
 
         public static void SearchPicture(GreenOnionsImageMessage inImgMsg, Action<GreenOnionsMessages> SendMessage, SearchMode searchMode)
         {
             LogHelper.WriteInfoLog("进入搜图处理事件");
 
-            if (!string.IsNullOrWhiteSpace(BotInfo.SearchingReply))
-                if (BotInfo.SearchEnabledTraceMoe || BotInfo.SearchEnabledSauceNAO || BotInfo.SearchEnabledASCII2D || BotInfo.SearchEnabledIqdb || BotInfo.SearchEnabled3dIqdb)  //至少启用了一种搜图引擎
-                    SendMessage(BotInfo.SearchingReply);  //正在搜索中提示
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.SearchingReply))
+                if (BotInfo.Config.SearchEnabledTraceMoe || BotInfo.Config.SearchEnabledSauceNAO || BotInfo.Config.SearchEnabledASCII2D || BotInfo.Config.SearchEnabledIqdb || BotInfo.Config.SearchEnabled3dIqdb)  //至少启用了一种搜图引擎
+                    SendMessage(BotInfo.Config.SearchingReply);  //正在搜索中提示
 
             string qqImgUrl = ImageHelper.ReplaceGroupUrl(inImgMsg.Url).Replace("//","/").Replace("http:/", "http://").Replace("https:/", "https://");
             LogHelper.WriteInfoLog($"需要搜图的地址为:{qqImgUrl}");
@@ -107,17 +109,17 @@ namespace GreenOnions.PictureSearcher
             {
                 List<Task> searchTasks = null;
                 List<GreenOnionsMessages> outMessages = null;
-                if (BotInfo.SearchSendByForward)
+                if (BotInfo.Config.SearchSendByForward)
                 {
                     searchTasks = new List<Task>();
                     outMessages = new List<GreenOnionsMessages>();
                 }
 
                 //TraceMoe
-                if (BotInfo.SearchEnabledTraceMoe && (searchMode & SearchMode.Anime) != 0)  //包含搜番命令
+                if (BotInfo.Config.SearchEnabledTraceMoe && (searchMode & SearchMode.Anime) != 0)  //包含搜番命令
                 {
                     Task<GreenOnionsMessages> traceMoeTask = SearchTraceMoe(qqImgUrl, searchMode == SearchMode.Anime);
-                    if (BotInfo.SearchSendByForward)
+                    if (BotInfo.Config.SearchSendByForward)
                     {
                         searchTasks.Add(traceMoeTask);
                         traceMoeTask.ContinueWith(callback => outMessages.Add(callback.Result));
@@ -127,10 +129,10 @@ namespace GreenOnions.PictureSearcher
                 }
                 //SauceNAO
                 Task<(GreenOnionsMessages OutMessages, bool DoAscii2dSearch)> SauceNAOTask = null;
-                if (BotInfo.SearchEnabledSauceNAO && (searchMode & SearchMode.Picture) != 0)
+                if (BotInfo.Config.SearchEnabledSauceNAO && (searchMode & SearchMode.Picture) != 0)
                 {
                     SauceNAOTask = SearchSauceNAO(qqImgUrl, SendMessage);
-                    if (BotInfo.SearchSendByForward)
+                    if (BotInfo.Config.SearchSendByForward)
                     {
                         searchTasks.Add(SauceNAOTask);
                         SauceNAOTask.ContinueWith(SauceNAOCallback => outMessages.Add(SauceNAOCallback.Result.OutMessages));
@@ -140,23 +142,23 @@ namespace GreenOnions.PictureSearcher
                         SauceNAOTask.ContinueWith(callback =>
                         {
                             var SauceNAOSearchResult = callback.Result;
-                            if (BotInfo.SearchEnabledASCII2D && SauceNAOSearchResult.DoAscii2dSearch)
+                            if (BotInfo.Config.SearchEnabledASCII2D && SauceNAOSearchResult.DoAscii2dSearch)
                                 SauceNAOSearchResult.OutMessages.Add("\r\n自动使用ASCII2D搜索。");
                             SendMessage(SauceNAOSearchResult.OutMessages);
                         });
                     }
                 }
                 //ASCII2D
-                if (BotInfo.SearchEnabledASCII2D && (searchMode & SearchMode.Picture) != 0)  //不启用SauceNAO只启用ASCII2D
+                if (BotInfo.Config.SearchEnabledASCII2D && (searchMode & SearchMode.Picture) != 0)  //不启用SauceNAO只启用ASCII2D
                 {
                     LogHelper.WriteInfoLog("没有启用SauceNAO");
                     Task<GreenOnionsMessages> ascii2dTask = SearchAscii2D(qqImgUrl);
-                    if (BotInfo.SearchSendByForward)
+                    if (BotInfo.Config.SearchSendByForward)
                     {
                         searchTasks.Add(ascii2dTask);
                         ascii2dTask.ContinueWith(async callback =>
                         {
-                            if (SauceNAOTask == null)
+                            if (SauceNAOTask is null)
                                 outMessages.Add(callback.Result);
                             else
                             {
@@ -170,7 +172,7 @@ namespace GreenOnions.PictureSearcher
                     {
                         ascii2dTask.ContinueWith(async callback =>
                         {
-                            if (SauceNAOTask == null)
+                            if (SauceNAOTask is null)
                                 SendMessage(callback.Result);
                             else
                             {
@@ -182,10 +184,10 @@ namespace GreenOnions.PictureSearcher
                     }
                 }
                 //Iqdb anime
-                if (BotInfo.SearchEnabledIqdb && (searchMode & SearchMode.Picture) != 0)  //www.iqdb.org
+                if (BotInfo.Config.SearchEnabledIqdb && (searchMode & SearchMode.Picture) != 0)  //www.iqdb.org
                 {
                     Task<GreenOnionsMessages> iqdbTask = SearchIqdb(qqImgUrl.Replace("http:", "https:"), false);
-                    if (BotInfo.SearchSendByForward)
+                    if (BotInfo.Config.SearchSendByForward)
                     {
                         searchTasks.Add(iqdbTask);
                         iqdbTask.ContinueWith(callback => outMessages.Add(callback.Result));
@@ -194,10 +196,10 @@ namespace GreenOnions.PictureSearcher
                         iqdbTask.ContinueWith(callback => SendMessage(callback.Result));
                 }
                 // 3d Iqdb
-                if (BotInfo.SearchEnabled3dIqdb && (searchMode & SearchMode.ThreeD) != 0)  //3d.iqdb.org
+                if (BotInfo.Config.SearchEnabled3dIqdb && (searchMode & SearchMode.ThreeD) != 0)  //3d.iqdb.org
                 {
                     Task<GreenOnionsMessages> iqdbTask = SearchIqdb(qqImgUrl.Replace("http:", "https:"), true);
-                    if (BotInfo.SearchSendByForward)
+                    if (BotInfo.Config.SearchSendByForward)
                     {
                         searchTasks.Add(iqdbTask);
                         iqdbTask.ContinueWith(callback => outMessages.Add(callback.Result));
@@ -206,11 +208,11 @@ namespace GreenOnions.PictureSearcher
                         iqdbTask.ContinueWith(callback => SendMessage(callback.Result));
                 }
 
-                if (BotInfo.SearchSendByForward)
+                if (BotInfo.Config.SearchSendByForward)
                 {
                     Task.Factory.ContinueWhenAll(searchTasks.ToArray(), callback =>
                     {
-                        GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, msg)).ToArray();
+                        GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, msg)).ToArray();
                         GreenOnionsMessages outForwardMsg = forwardMessages;
                         outForwardMsg.RevokeTime = outMessages.First().RevokeTime;
                         SendMessage(forwardMessages);  //合并转发
@@ -243,7 +245,7 @@ namespace GreenOnions.PictureSearcher
                 {
                     LogHelper.WriteInfoLog($"成功解析TraceMoe响应文");
                     double similarity = Math.Round(Convert.ToDouble(jResults[0]["similarity"]), 4) * 100; //相似度
-                    if (similarity >= BotInfo.TraceMoeSendThreshold || alwaysSend)  //仅搜番时相似度低也发送
+                    if (similarity >= BotInfo.Config.TraceMoeSendThreshold || alwaysSend)  //仅搜番时相似度低也发送
                     {
                         LogHelper.WriteInfoLog($"相似度大于设定值, 读取番剧信息");
                         string id = jResults[0]["anilist"]["id"].ToString();
@@ -271,13 +273,13 @@ namespace GreenOnions.PictureSearcher
                         {
                             string notHealth = Path.Combine(ImageHelper.ImagePath, $"TraceMoe_{id}_{previewSize}_NotHealth.png");
                             string healthed = Path.Combine(ImageHelper.ImagePath, $"TraceMoe_{id}_{previewSize}_Healthed.png");
-                            if (!isAdult || BotInfo.TraceMoeSendAdultThuImg)
-                                await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled, imgUrl, imgName, outMessage, notHealth, healthed);
+                            if (!isAdult || BotInfo.Config.TraceMoeSendAdultThuImg)
+                                await CheckPornAndCache(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, imgName, outMessage, notHealth, healthed);
                         }
                         catch (Exception ex)
                         {
                             LogHelper.WriteErrorLog(ex);
-                            outMessage.Add(BotInfo.SearchDownloadThuImageFailReply.ReplaceGreenOnionsStringTags());
+                            outMessage.Add(BotInfo.Config.SearchDownloadThuImageFailReply);
                         }
 
                         LogHelper.WriteInfoLog($"TraceMoe搜番完成");
@@ -289,14 +291,14 @@ namespace GreenOnions.PictureSearcher
                 else
                 {
                     if (alwaysSend)
-                        return BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "TraceMoe"));  //没有结果
+                        return BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "TraceMoe" } });  //没有结果
                     return null;  //没有搜索结果
                 }
             }
             catch (Exception ex)
             {
                 LogHelper.WriteErrorLogWithUserMessage("TraceMoe搜番失败, 内容解析错误", ex, $"请求地址为：{TraceMoeUrl}");
-                return BotInfo.SearchErrorReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "TraceMoe")) + ex.Message;
+                return BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "TraceMoe" } }) + ex.Message;
             }
         }
 
@@ -308,23 +310,24 @@ namespace GreenOnions.PictureSearcher
                 if (checkPorn)  //鉴黄
                 {
                     if (File.Exists(notHealth))  //曾经鉴黄不通过的
-                        message.Add(BotInfo.SearchCheckPornIllegalReply); //鉴黄不通过
+                        message.Add(BotInfo.Config.SearchCheckPornIllegalReply); //鉴黄不通过
                     else if (File.Exists(healthed))  //曾经鉴黄通过的
                         message.Add(new GreenOnionsImageMessage(imgName));
                     else  //曾经没参与鉴黄的
                     {
-                        switch (TencentCloudHelper.CheckImageHealth(imgName, out string CheckPornErrMsg))
+                        TencentCloudClient tencentCloudClient = new TencentCloudClient(BotInfo.Config.TencentCloudAPPID, BotInfo.Config.TencentCloudRegion, BotInfo.Config.TencentCloudSecretId, BotInfo.Config.TencentCloudSecretKey, BotInfo.Config.TencentCloudBucket);
+                        switch (tencentCloudClient.CheckImageHealth(imgName, out string CheckPornErrMsg))
                         {
-                            case TencentCloudHelper.CheckedPornStatus.Healthed:  //健康
+                            case TencentCloudClient.CheckedPornStatus.Healthed:  //健康
                                 message.Add(new GreenOnionsImageMessage(imgName));
                                 File.Copy(imgName, healthed, true);
                                 break;
-                            case TencentCloudHelper.CheckedPornStatus.NotHealth:  //不健康
-                                message.Add(BotInfo.SearchCheckPornIllegalReply.ReplaceGreenOnionsStringTags());
+                            case TencentCloudClient.CheckedPornStatus.NotHealth:  //不健康
+                                message.Add(BotInfo.Config.SearchCheckPornIllegalReply);
                                 File.Copy(imgName, notHealth, true);
                                 break;
-                            case TencentCloudHelper.CheckedPornStatus.Error:  //错误
-                                message.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("错误信息", CheckPornErrMsg)));
+                            case TencentCloudClient.CheckedPornStatus.Error:  //错误
+                                message.Add(BotInfo.Config.SearchCheckPornErrorReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "错误信息", CheckPornErrMsg } }));
                                 break;
                         }
                     }
@@ -343,34 +346,35 @@ namespace GreenOnions.PictureSearcher
                     {
                         using (MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStreamAsync(imgUrl))
                         {
-                            if (stream == null)
+                            if (stream is null)
                             {
-                                message.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsStringTags());
+                                message.Add(BotInfo.Config.SearchCheckPornErrorReply);
                                 return;
                             }
                             byte[] imgByte = stream.ToArray();
-                            if (BotInfo.DownloadImage4Caching || BotInfo.SendImageByFile)
+                            if (BotInfo.Config.DownloadImage4Caching || BotInfo.Config.SendImageByFile)
                                 File.WriteAllBytes(imgName, imgByte);  //下载图片用于缓存
                             LogHelper.WriteInfoLog($"下载缩略图");
-                            switch (TencentCloudHelper.CheckImageHealth(imgByte, out string CheckPornErrMsg))
+                            TencentCloudClient tencentCloudClient = new TencentCloudClient(BotInfo.Config.TencentCloudAPPID, BotInfo.Config.TencentCloudRegion, BotInfo.Config.TencentCloudSecretId, BotInfo.Config.TencentCloudSecretKey, BotInfo.Config.TencentCloudBucket);
+                            switch (tencentCloudClient.CheckImageHealth(imgByte, out string CheckPornErrMsg))
                             {
-                                case TencentCloudHelper.CheckedPornStatus.Healthed:  //健康
+                                case TencentCloudClient.CheckedPornStatus.Healthed:  //健康
                                     message.Add(new GreenOnionsImageMessage(stream));
                                     File.WriteAllBytes(healthed, imgByte);
                                     break;
-                                case TencentCloudHelper.CheckedPornStatus.NotHealth:  //不健康
-                                    message.Add(BotInfo.SearchCheckPornIllegalReply.ReplaceGreenOnionsStringTags());
+                                case TencentCloudClient.CheckedPornStatus.NotHealth:  //不健康
+                                    message.Add(BotInfo.Config.SearchCheckPornIllegalReply);
                                     File.WriteAllBytes(notHealth, imgByte);
                                     break;
-                                case TencentCloudHelper.CheckedPornStatus.Error:  //错误
-                                    message.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("错误信息", CheckPornErrMsg)));
+                                case TencentCloudClient.CheckedPornStatus.Error:  //错误
+                                    message.Add(BotInfo.Config.SearchCheckPornErrorReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "错误信息", CheckPornErrMsg } }));
                                     break;
                             }
                         }
                     }
                     else  //不鉴黄
                     {
-                        if (BotInfo.SendImageByFile)  //下载完成后发送文件
+                        if (BotInfo.Config.SendImageByFile)  //下载完成后发送文件
                         {
                             await HttpHelper.DownloadImageFileAsync(imgUrl, imgName);
                             if (File.Exists(imgName))
@@ -379,14 +383,14 @@ namespace GreenOnions.PictureSearcher
                         else
                         {
                             message.Add(new GreenOnionsImageMessage(imgUrl));
-                            if (BotInfo.DownloadImage4Caching)
+                            if (BotInfo.Config.DownloadImage4Caching)
                                 _ = HttpHelper.DownloadImageFileAsync(imgUrl, imgName);  //下载图片用于缓存
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    message.Add(BotInfo.SearchDownloadThuImageFailReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("错误信息", ex.Message)));  //缩略图下载失败
+                    message.Add(BotInfo.Config.SearchDownloadThuImageFailReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "错误信息", ex.Message } }));  //缩略图下载失败
                 }
             }
         }
@@ -398,7 +402,7 @@ namespace GreenOnions.PictureSearcher
                 try
                 {
                     var iqdbResults = await iqdbClient.SearchUrl(qqImgUrl);
-                    if (iqdbResults != null && iqdbResults.Matches.Count > 0)
+                    if (iqdbResults is not null && iqdbResults.Matches.Count > 0)
                     {
                         var firstItem = iqdbResults.Matches.First();
 
@@ -406,7 +410,7 @@ namespace GreenOnions.PictureSearcher
                         stringBuilder.AppendLine("地址：" + firstItem.Url);
                         stringBuilder.AppendLine($"相似度：{firstItem.Similarity}%({ firstItem.Source.ToString().Replace("_", "") })");
                         stringBuilder.AppendLine("年龄分级：" + firstItem.Rating);
-                        if (BotInfo.SearchIqdbSendTags)  //发送标签(英文)
+                        if (BotInfo.Config.SearchIqdbSendTags)  //发送标签(英文)
                         {
                             stringBuilder.AppendLine("标签：" + string.Join(',', firstItem.Tags));
                         }
@@ -414,16 +418,16 @@ namespace GreenOnions.PictureSearcher
                         GreenOnionsMessages outMessage = new GreenOnionsMessages(stringBuilder);
 
                         string thuImgUrl = $"https://{(is3D ? "3d" : "www")}.iqdb.org{firstItem.PreviewUrl}";
-                        if (firstItem.Similarity < BotInfo.SearchIqdbSimilarity)
+                        if (firstItem.Similarity < BotInfo.Config.SearchIqdbSimilarity)
                         {
-                            outMessage.Add(BotInfo.SearchIqdbSimilarityReply.ReplaceGreenOnionsStringTags());
+                            outMessage.Add(BotInfo.Config.SearchIqdbSimilarityReply);
                         }
-                        else if (BotInfo.SearchIqdbMustSafe)  //必须分级为安全
+                        else if (BotInfo.Config.SearchIqdbMustSafe)  //必须分级为安全
                         {
                             if (firstItem.Rating == Rating.Safe)  //安全作品无需鉴黄
                                 outMessage.Add(new GreenOnionsImageMessage(thuImgUrl));
                             else
-                                outMessage.Add(BotInfo.SearchCheckPornIllegalReply.ReplaceGreenOnionsStringTags());  //不安全不显示缩略图
+                                outMessage.Add(BotInfo.Config.SearchCheckPornIllegalReply);  //不安全不显示缩略图
                         }
                         else  //鉴黄
                         {
@@ -431,20 +435,20 @@ namespace GreenOnions.PictureSearcher
                             string imgName = Path.Combine(ImageHelper.ImagePath, $"Thu_{firstItem.Source}_{urlMd5}.png");
                             string notHealth = Path.Combine(ImageHelper.ImagePath, $"Thu_{firstItem.Source}_{urlMd5}_NotHealth.png");
                             string healthed = Path.Combine(ImageHelper.ImagePath, $"Thu_{firstItem.Source}_{urlMd5}_Healthed.png");
-                            await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled, thuImgUrl, imgName, outMessage, notHealth, healthed);
+                            await CheckPornAndCache(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, thuImgUrl, imgName, outMessage, notHealth, healthed);
                         }
                         return outMessage;
                     }
                     else
                     {
                         LogHelper.WriteWarningLog($"Iqdb没有搜索到结果, 搜索地址为：{qqImgUrl}");
-                        return (BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "Iqdb")));
+                        return (BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "Iqdb" } }));
                     }
                 }
                 catch (Exception ex)
                 {
                     LogHelper.WriteErrorLogWithUserMessage($"Iqdb搜索失败, 搜索地址为：{qqImgUrl}", ex);
-                    return (BotInfo.SearchErrorReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "Iqdb")));
+                    return (BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "Iqdb" } }));
                 }
             }
         }
@@ -459,12 +463,12 @@ namespace GreenOnions.PictureSearcher
             LogHelper.WriteInfoLog("进入SauceNAO搜图逻辑");
             string apiKeyStr = "";
             string apiKey = "";
-            if (Cache.SauceNAOKeysAndShortRemaining.Count > 0)
+            if (BotInfo.Cache.SauceNAOKeysAndShortRemaining.Count > 0)
             {
-                var source = Cache.SauceNAOKeysAndShortRemaining.OrderByDescending(p => p.Value).ToDictionary(k => k.Key, v => v.Value);
+                var source = BotInfo.Cache.SauceNAOKeysAndShortRemaining.OrderByDescending(p => p.Value).ToDictionary(k => k.Key, v => v.Value);
                 foreach (KeyValuePair<string, int> item in source)
                 {
-                    if (Cache.SauceNAOKeysAndShortRemaining[item.Key] > 0 && Cache.SauceNAOKeysAndLongRemaining[item.Key] > 0)
+                    if (BotInfo.Cache.SauceNAOKeysAndShortRemaining[item.Key] > 0 && BotInfo.Cache.SauceNAOKeysAndLongRemaining[item.Key] > 0)
                     {
                         apiKey = item.Key;
                         break;
@@ -481,7 +485,7 @@ namespace GreenOnions.PictureSearcher
             string SauceNAOUrl = "";
             try
             {
-                if (EventHelper.GetDocumentByBrowserEvent != null && BotInfo.HttpRequestByWebBrowser && BotInfo.SauceNAORequestByWebBrowser)  //浏览器方式
+                if (EventHelper.GetDocumentByBrowserEvent is not null && BotInfo.Config.HttpRequestByWebBrowser && BotInfo.Config.SauceNAORequestByWebBrowser)  //浏览器方式
                 {
                     //html方式只有一个结果
                     SauceNAOUrl = @$"https://SauceNAO.com/search.php?db=999&output_type=0{apiKeyStr}&testmode=1&url={qqImgUrl}";
@@ -498,11 +502,11 @@ namespace GreenOnions.PictureSearcher
                     string resultSimilarity = "/html/body/div[@id='mainarea']/div[@id='middle']/div[@class='result']/table[@class='resulttable']/tbody/tr/td[@class='resulttablecontent']/div[@class='resultmatchinfo']/div[@class='resultsimilarityinfo']";
                     HtmlNode imgNode = docSauceNAO.DocumentNode.SelectSingleNode(imgXPath);
 
-                    if (imgNode == null)
+                    if (imgNode is null)
                     {
                         LogHelper.WriteWarningLog($"SauceNAO(浏览器)没有搜索到结果, 请求地址为：{SauceNAOUrl}");
                         File.WriteAllText("html.html", strSauceNAOResult);
-                        return (BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "SauceNAO")), true);  //没有结果并自动使用Ascii2D
+                        return (BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "SauceNAO" } }), true);  //没有结果并自动使用Ascii2D
                     }
                     else
                     {
@@ -545,41 +549,42 @@ namespace GreenOnions.PictureSearcher
 
                         #region -- 相似度过滤和鉴黄 --
                         //相似度大于发送缩略图的阈值
-                        if (similarity > BotInfo.SearchSauceNAOLowSimilarity)
+                        if (similarity > BotInfo.Config.SearchSauceNAOLowSimilarity)
                         {
                             LogHelper.WriteInfoLog($"SauceNAO相似度大于发图设定值");
 
                             using (MemoryStream stream = await HttpHelper.DownloadImageAsMemoryStreamAsync(imgUrl))
                             {
-                                if (stream == null)
+                                if (stream is null)
                                 {
-                                    outMessage.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsStringTags());
+                                    outMessage.Add(BotInfo.Config.SearchCheckPornErrorReply);
                                     return (outMessage, false);
                                 }
                                 LogHelper.WriteInfoLog($"SauceNAO下载缩略图成功");
                                 //鉴黄
-                                if (BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled)
+                                if (BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled)
                                 {
                                     //爬虫模式无法区分文本类型, 不进行缓存, 每次都重复鉴黄
                                     try
                                     {
-                                        switch (TencentCloudHelper.CheckImageHealth(stream.ToArray(), out string CheckPornErrMsg))
+                                        TencentCloudClient tencentCloudClient = new TencentCloudClient(BotInfo.Config.TencentCloudAPPID, BotInfo.Config.TencentCloudRegion, BotInfo.Config.TencentCloudSecretId, BotInfo.Config.TencentCloudSecretKey, BotInfo.Config.TencentCloudBucket);
+                                        switch (tencentCloudClient.CheckImageHealth(stream.ToArray(), out string CheckPornErrMsg))
                                         {
-                                            case TencentCloudHelper.CheckedPornStatus.Healthed:  //健康
+                                            case TencentCloudClient.CheckedPornStatus.Healthed:  //健康
                                                 outMessage.Add(new GreenOnionsImageMessage(stream));
                                                 break;
-                                            case TencentCloudHelper.CheckedPornStatus.NotHealth:  //不健康
-                                                outMessage.Add(BotInfo.SearchCheckPornIllegalReply.ReplaceGreenOnionsStringTags());
+                                            case TencentCloudClient.CheckedPornStatus.NotHealth:  //不健康
+                                                outMessage.Add(BotInfo.Config.SearchCheckPornIllegalReply);
                                                 break;
-                                            case TencentCloudHelper.CheckedPornStatus.Error:  //错误
-                                                outMessage.Add(BotInfo.SearchCheckPornErrorReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("错误信息", CheckPornErrMsg)));
+                                            case TencentCloudClient.CheckedPornStatus.Error:  //错误
+                                                outMessage.Add(BotInfo.Config.SearchCheckPornErrorReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "错误信息", CheckPornErrMsg } }));
                                                 break;
                                         }
                                     }
                                     catch (Exception ex)
                                     {
                                         LogHelper.WriteErrorLog(ex);
-                                        outMessage.Add(BotInfo.SearchDownloadThuImageFailReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("错误信息", ex.Message)));  //下载缩略图失败
+                                        outMessage.Add(BotInfo.Config.SearchDownloadThuImageFailReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "错误信息", ex.Message } }));  //下载缩略图失败
                                     }
                                 }
                                 else
@@ -587,14 +592,14 @@ namespace GreenOnions.PictureSearcher
                                     outMessage.Add(new GreenOnionsImageMessage(imgUrl));
                                 }
                                 LogHelper.WriteInfoLog($"SauceNAO(浏览器)搜图完成, 相似度高于发图设定值");
-                                return (outMessage, similarity < BotInfo.SearchSauceNAOHighSimilarity);  //发缩略图, 判断相似度是否继续使用Ascii2D搜索
+                                return (outMessage, similarity < BotInfo.Config.SearchSauceNAOHighSimilarity);  //发缩略图, 判断相似度是否继续使用Ascii2D搜索
                             }
                         }
                         else
                         {
                             LogHelper.WriteInfoLog($"SauceNAO(浏览器)搜图完成, 相似度低于发图设定值");
-                            outMessage.Add(BotInfo.SearchSauceNAOLowSimilarityReply.ReplaceGreenOnionsStringTags());  //不显示缩略图
-                            return (outMessage, similarity < BotInfo.SearchSauceNAOHighSimilarity);  //不发缩略图, 判断相似度是否继续使用Ascii2D搜索
+                            outMessage.Add(BotInfo.Config.SearchSauceNAOLowSimilarityReply);  //不显示缩略图
+                            return (outMessage, similarity < BotInfo.Config.SearchSauceNAOHighSimilarity);  //不发缩略图, 判断相似度是否继续使用Ascii2D搜索
                         }
                         #endregion -- 相似度过滤和鉴黄 --
                     }
@@ -610,21 +615,21 @@ namespace GreenOnions.PictureSearcher
                     JToken json = JsonConvert.DeserializeObject<JToken>(strSauceNAOResult);
 
                     JToken jHeader = json["header"];
-                    if (jHeader != null)
+                    if (jHeader is not null)
                     {
-                        Cache.SauceNAOKeysAndLongRemaining[apiKey] = Convert.ToInt32(jHeader["long_remaining"]);
-                        Cache.SauceNAOKeysAndShortRemaining[apiKey] = Convert.ToInt32(jHeader["short_remaining"]);
+                        BotInfo.Cache.SauceNAOKeysAndLongRemaining[apiKey] = Convert.ToInt32(jHeader["long_remaining"]);
+                        BotInfo.Cache.SauceNAOKeysAndShortRemaining[apiKey] = Convert.ToInt32(jHeader["short_remaining"]);
                     }
 
                     JArray jResults = json["results"] as JArray;
 
-                    if (BotInfo.SearchSauceNAOSortByDesc)
+                    if (BotInfo.Config.SearchSauceNAOSortByDesc)
                         jResults = new JArray(jResults.OrderByDescending(x => x["header"]["similarity"]));  //按相似度排序
 
-                    if (jResults == null)
+                    if (jResults is null)
                     {
                         LogHelper.WriteWarningLog($"SauceNAO(后端)没有搜索到结果, 请求地址为：{SauceNAOUrl}");
-                        return (BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "SauceNAO")), true);  //没有结果并自动使用Ascii2D
+                        return (BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "SauceNAO" } }), true);  //没有结果并自动使用Ascii2D
                     }
 
                     LogHelper.WriteInfoLog($"成功解析SauceNAO响应文");
@@ -640,7 +645,7 @@ namespace GreenOnions.PictureSearcher
                         SauceNAOItem.thumbnail = jItemHeader["thumbnail"].ToString();  //缩略图地址
                         SauceNAOItem.index_name = jItemHeader["index_name"].ToString();  //index_name
 
-                        if (jData["ext_urls"] != null)
+                        if (jData["ext_urls"] is not null)
                         {
                             SauceNAOItem.ext_urls = new List<string>();
                             foreach (JToken ext_url in jData["ext_urls"])
@@ -663,7 +668,7 @@ namespace GreenOnions.PictureSearcher
                         #endregion -- 其他体系 --
 
                         //如果优先度高的没有地址
-                        if (SauceNAOItem.ext_urls == null)
+                        if (SauceNAOItem.ext_urls is null)
                         {
                             LogHelper.WriteInfoLog($"搜图结果不含来源地址, 查找相似度低一级的结果");
                             continue;
@@ -671,7 +676,7 @@ namespace GreenOnions.PictureSearcher
 
                         StringBuilder stringBuilder = new StringBuilder();
 
-                        if (SauceNAOItem.ext_urls != null)
+                        if (SauceNAOItem.ext_urls is not null)
                         {
                             string strUrl = "";
                             if (SauceNAOItem.ext_urls.Count == 1)
@@ -704,13 +709,13 @@ namespace GreenOnions.PictureSearcher
 
                         #region -- 相似度过滤和鉴黄 --
                         //相似度大于设定的阈值
-                        if (SauceNAOItem.similarity > BotInfo.SearchSauceNAOLowSimilarity)
+                        if (SauceNAOItem.similarity > BotInfo.Config.SearchSauceNAOLowSimilarity)
                         {
                             LogHelper.WriteInfoLog($"相似度大于发图设定值");
                             string imgName;
                             string notHealth;
                             string healthed;
-                            if (SauceNAOItem.pixiv_id == null)
+                            if (SauceNAOItem.pixiv_id is null)
                             {
                                 string urlMd5 = GreenOnionsTypeHelper.ComputeMD5(SauceNAOItem.thumbnail);
                                 imgName = Path.Combine(ImageHelper.ImagePath, $"Thu_Other_{urlMd5}.png");
@@ -725,43 +730,43 @@ namespace GreenOnions.PictureSearcher
                             }
                             try
                             {
-                                await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled, SauceNAOItem.thumbnail, imgName, outMessage, notHealth, healthed);
+                                await CheckPornAndCache(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, SauceNAOItem.thumbnail, imgName, outMessage, notHealth, healthed);
                             }
                             catch (Exception ex)
                             {
                                 LogHelper.WriteErrorLog(ex);
-                                outMessage.Add(BotInfo.SearchDownloadThuImageFailReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("错误信息", ex.Message)));
+                                outMessage.Add(BotInfo.Config.SearchDownloadThuImageFailReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "错误信息", ex.Message } }));
                             }
 
                             LogHelper.WriteInfoLog($"鉴黄通过或不需要鉴黄");
 
-                            if (BotInfo.SearchSauceNAOSendPixivOriginalPicture)
+                            if (BotInfo.Config.SearchSauceNAOSendPixivOriginalPicture)
                             {
                                 //如果是pixiv体系尝试下载原图
-                                if (SauceNAOItem.pixiv_id != null)
+                                if (SauceNAOItem.pixiv_id is not null)
                                 {
                                     Match matchBigImg = Regex.Match(SauceNAOItem.index_name, @$".+{SauceNAOItem.pixiv_id}_p([0-9]+)[_\.].+");
                                     if (matchBigImg.Groups.Count > 1)
                                     {
                                         LogHelper.WriteInfoLog($"图片来自Pixiv, 尝试下载原图");
                                         int p = Convert.ToInt32(matchBigImg.Groups[1].Value);
-                                        string imgUrlHasP = $"https://{BotInfo.PixivProxy}/{SauceNAOItem.pixiv_id}-{p + 1}.png";
+                                        string imgUrlHasP = $"https://{BotInfo.Config.PixivProxy}/{SauceNAOItem.pixiv_id}-{p + 1}.png";
                                         if (p == 0)  //NAO返回的P为0
                                         {
-                                            if (BotInfo.SearchSendByForward)
+                                            if (BotInfo.Config.SearchSendByForward)
                                             {
-                                                string imgUrlNoP = $"https://{BotInfo.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
+                                                string imgUrlNoP = $"https://{BotInfo.Config.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
                                                 outMessage.Add(new GreenOnionsImageMessage(await DownloadImageArchive(imgUrlNoP, SauceNAOItem.pixiv_id, p)));
                                             }
                                             else
                                             {
-                                                string imgUrlNoP = $"https://{BotInfo.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
+                                                string imgUrlNoP = $"https://{BotInfo.Config.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
                                                 SendMessage(new GreenOnionsImageMessage(await DownloadImageArchive(imgUrlNoP, SauceNAOItem.pixiv_id, p)));
                                             }
                                         }
                                         else  //地址有P且>0
                                         {
-                                            if (BotInfo.SearchSendByForward)
+                                            if (BotInfo.Config.SearchSendByForward)
                                                 outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
                                             else
                                             {
@@ -781,12 +786,12 @@ namespace GreenOnions.PictureSearcher
                                             }
                                             else
                                             {
-                                                if (BotInfo.SendImageByFile)  //下载完成后发送文件
+                                                if (BotInfo.Config.SendImageByFile)  //下载完成后发送文件
                                                 {
                                                     await HttpHelper.DownloadImageFileAsync(url, imgName);
                                                     return imgName;
                                                 }
-                                                if (BotInfo.DownloadImage4Caching)
+                                                if (BotInfo.Config.DownloadImage4Caching)
                                                     _ = HttpHelper.DownloadImageFileAsync(url, imgName);//下载图片用于缓存
                                                 return url;
                                             }
@@ -796,14 +801,14 @@ namespace GreenOnions.PictureSearcher
                             }
 
                             LogHelper.WriteInfoLog($"SauceNAO(后端)搜图完成, 相似度高于发图设定值");
-                            return (outMessage, SauceNAOItem.similarity < BotInfo.SearchSauceNAOHighSimilarity);
+                            return (outMessage, SauceNAOItem.similarity < BotInfo.Config.SearchSauceNAOHighSimilarity);
                         }
                         else
                         {
                             LogHelper.WriteInfoLog($"相似度低于发图设定值");
-                            outMessage.Add(BotInfo.SearchSauceNAOLowSimilarityReply.ReplaceGreenOnionsStringTags());
+                            outMessage.Add(BotInfo.Config.SearchSauceNAOLowSimilarityReply);
                             LogHelper.WriteInfoLog($"SauceNAO(后端)搜图完成, 相似度低于发图设定值");
-                            return (outMessage, SauceNAOItem.similarity < BotInfo.SearchSauceNAOHighSimilarity);
+                            return (outMessage, SauceNAOItem.similarity < BotInfo.Config.SearchSauceNAOHighSimilarity);
                         }
                         #endregion -- 相似度过滤和鉴黄 --
                     }
@@ -817,8 +822,8 @@ namespace GreenOnions.PictureSearcher
                 if (ex.Message.Contains("429"))
                 {
                     LogHelper.WriteWarningLog($"当前Key:{apiKey}的搜索次数已耗尽");
-                    Cache.SauceNAOKeysAndLongRemaining[apiKey] = 0;
-                    Cache.SauceNAOKeysAndShortRemaining[apiKey] = 0;
+                    BotInfo.Cache.SauceNAOKeysAndLongRemaining[apiKey] = 0;
+                    BotInfo.Cache.SauceNAOKeysAndShortRemaining[apiKey] = 0;
                     outMessage.Add("SauceNAO搜索次数已耗尽。");
                 }
 
@@ -827,7 +832,7 @@ namespace GreenOnions.PictureSearcher
             }
 
             //没有结果
-            return (BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "SauceNAO")), true);
+            return (BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "SauceNAO" } }), true);
         }
 
         private static async Task<GreenOnionsMessages> SearchAscii2D(string qqImgUrl)
@@ -841,7 +846,7 @@ namespace GreenOnions.PictureSearcher
             string colorUrl = @$"https://ascii2d.net/search/url/{qqImgUrl}?type=color";
             string bovwUrl = null;
 
-            if (EventHelper.GetDocumentByBrowserEvent != null && BotInfo.HttpRequestByWebBrowser && BotInfo.ASCII2DRequestByWebBrowser)  //使用浏览器请求
+            if (EventHelper.GetDocumentByBrowserEvent is not null && BotInfo.Config.HttpRequestByWebBrowser && BotInfo.Config.ASCII2DRequestByWebBrowser)  //使用浏览器请求
             {
                 try
                 {
@@ -861,13 +866,13 @@ namespace GreenOnions.PictureSearcher
                     catch (Exception ex)
                     {
                         LogHelper.WriteErrorLogWithUserMessage("ASCII2D特征(浏览器)搜索失败", ex, $"请求地址为：{bovwUrl}");
-                        outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "ASCII2D特征")) + ex.Message);
+                        outMessage.Add(BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "ASCII2D特征" } }) + ex.Message);
                     }
                 }
                 catch (Exception ex)
                 {
                     LogHelper.WriteErrorLogWithUserMessage("ASCII2D颜色(浏览器)搜索失败", ex, $"请求地址为：{colorUrl}");
-                    outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "ASCII2D颜色")) + ex.Message);
+                    outMessage.Add(BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "ASCII2D颜色" } }) + ex.Message);
                 }
             }
             else
@@ -887,13 +892,13 @@ namespace GreenOnions.PictureSearcher
                     catch (Exception ex)
                     {
                         LogHelper.WriteErrorLogWithUserMessage("ASCII2D特征(后端)搜索失败", ex, $"请求地址为：{colorUrl}");
-                        outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "ASCII2D特征")) + ex.Message);
+                        outMessage.Add(BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "ASCII2D特征" } }) + ex.Message);
                     }
                 }
                 catch (Exception ex)
                 {
                     LogHelper.WriteErrorLogWithUserMessage("ASCII2D颜色(后端)搜索失败", ex, $"请求地址为：{colorUrl}");
-                    outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "ASCII2D颜色")) + ex.Message);
+                    outMessage.Add(BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "ASCII2D颜色" } }) + ex.Message);
                 }
             }
 
@@ -906,7 +911,7 @@ namespace GreenOnions.PictureSearcher
                     HtmlDocument docColor = new HtmlDocument();
                     docColor.LoadHtml(strAscii2dColorResult);
 
-                    for (int i = 2; i < BotInfo.SearchShowASCII2DCount + 2; i++)  //HtmlAgilityPack的索引从1开始, 且第1个位置是上传的图片, 故从2开始读取, 结果存在最多20个
+                    for (int i = 2; i < BotInfo.Config.SearchShowASCII2DCount + 2; i++)  //HtmlAgilityPack的索引从1开始, 且第1个位置是上传的图片, 故从2开始读取, 结果存在最多20个
                     {
                         //缩略图
                         HtmlNode nodeColorImg = docColor.DocumentNode.SelectSingleNode($"/html/body/div[@class='container']/div[@class='row']/div[@class='col-xs-12 col-lg-8 col-xl-8']/div[@class='row item-box'][{i}]/div[@class='col-xs-12 col-sm-12 col-md-4 col-xl-4 text-xs-center image-box']/img");
@@ -923,9 +928,9 @@ namespace GreenOnions.PictureSearcher
                         //来源
                         HtmlNode nodeColorSource = docColor.DocumentNode.SelectSingleNode($"/html/body/div[@class='container']/div[@class='row']/div[@class='col-xs-12 col-lg-8 col-xl-8']/div[@class='row item-box'][{i}]/div[@class='col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div[@class='detail-box gray-link']/h6/small");
 
-                        if (nodeColorWorks == null)
+                        if (nodeColorWorks is null)
                         {
-                            outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", $"ASCII2D颜色第{i - 1}个结果")));
+                            outMessage.Add(BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", $"ASCII2D颜色第{i - 1}个结果" } }));
                         }
                         else
                         {
@@ -942,7 +947,7 @@ namespace GreenOnions.PictureSearcher
                             stringBuilderColor.AppendLine("ASCII2D 颜色搜索");
                             stringBuilderColor.AppendLine($"标题:{nodeColorWorks.InnerText}");
                             stringBuilderColor.AppendLine($"地址:{nodeColorWorks.Attributes["href"].Value.ReplaceHtmlTags()}");
-                            if (nodeColorCreator != null)
+                            if (nodeColorCreator is not null)
                             {
                                 stringBuilderColor.AppendLine($"作者:{nodeColorCreator.InnerText}");
                                 stringBuilderColor.AppendLine($"主页:{nodeColorCreator.Attributes["href"].Value.ReplaceHtmlTags()}");
@@ -954,7 +959,7 @@ namespace GreenOnions.PictureSearcher
                             string healthed = Path.Combine(ImageHelper.ImagePath, $"Ascii2D_{nodeColorHash.InnerHtml}_Healthed.png");
                             try
                             {
-                                await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled, imgUrl, imgName, outMessage, notHealth, healthed);
+                                await CheckPornAndCache(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, imgName, outMessage, notHealth, healthed);
                             }
                             catch (Exception ex)
                             {
@@ -970,7 +975,7 @@ namespace GreenOnions.PictureSearcher
             catch (Exception ex)
             {
                 LogHelper.WriteErrorLogWithUserMessage("ASCII2D颜色搜索解析错误", ex, $"请求地址为:{colorUrl}\r\n请求结果为：{strAscii2dColorResult}");
-                outMessage.Add(BotInfo.SearchErrorReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "ASCII2D颜色")) + ex.Message);
+                outMessage.Add(BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "ASCII2D颜色" } }) + ex.Message);
             }
 
             outMessage.Add("\r\n\r\n");
@@ -984,7 +989,7 @@ namespace GreenOnions.PictureSearcher
                     HtmlDocument docBovw = new HtmlDocument();
                     docBovw.LoadHtml(strAscii2dBovwResult);
 
-                    for (int i = 2; i < BotInfo.SearchShowASCII2DCount + 2; i++)  //HtmlAgilityPack的索引从1开始, 且第1个位置是上传的图片, 故从2开始读取, 结果存在最多20个
+                    for (int i = 2; i < BotInfo.Config.SearchShowASCII2DCount + 2; i++)  //HtmlAgilityPack的索引从1开始, 且第1个位置是上传的图片, 故从2开始读取, 结果存在最多20个
                     {
                         //缩略图
                         HtmlNode nodeBovwImg = docBovw.DocumentNode.SelectSingleNode($"/html/body/div[@class='container']/div[@class='row']/div[@class='col-xs-12 col-lg-8 col-xl-8']/div[@class='row item-box'][{i}]/div[@class='col-xs-12 col-sm-12 col-md-4 col-xl-4 text-xs-center image-box']/img");
@@ -1001,9 +1006,9 @@ namespace GreenOnions.PictureSearcher
                         //来源
                         HtmlNode nodeBovwSource = docBovw.DocumentNode.SelectSingleNode($"/html/body/div[@class='container']/div[@class='row']/div[@class='col-xs-12 col-lg-8 col-xl-8']/div[@class='row item-box'][{i}]/div[@class='col-xs-12 col-sm-12 col-md-8 col-xl-8 info-box']/div[@class='detail-box gray-link']/h6/small");
 
-                        if (nodeBovwWorks == null)
+                        if (nodeBovwWorks is null)
                         {
-                            outMessage.Add(BotInfo.SearchNoResultReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", $"ASCII2D特征第{i - 1}个结果")));
+                            outMessage.Add(BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", $"ASCII2D特征第{i - 1}个结果" } }));
                         }
                         else
                         {
@@ -1020,7 +1025,7 @@ namespace GreenOnions.PictureSearcher
                             stringBuilderBovw.AppendLine("ASCII2D 特征搜索");
                             stringBuilderBovw.AppendLine($"标题:{nodeBovwWorks.InnerText}");
                             stringBuilderBovw.AppendLine($"地址:{nodeBovwWorks.Attributes["href"].Value.ReplaceHtmlTags()}");
-                            if (nodeBovwCreator != null)
+                            if (nodeBovwCreator is not null)
                             {
                                 stringBuilderBovw.AppendLine($"作者:{nodeBovwCreator.InnerText}");
                                 stringBuilderBovw.AppendLine($"主页:{nodeBovwCreator.Attributes["href"].Value.ReplaceHtmlTags()}");
@@ -1032,7 +1037,7 @@ namespace GreenOnions.PictureSearcher
                             string healthed = Path.Combine(ImageHelper.ImagePath, $"Ascii2D_{nodeBovwHash.InnerHtml}_Healthed.png");
                             try
                             {
-                                await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.SearchCheckPornEnabled, imgUrl, imgName, outMessage, notHealth, healthed);
+                                await CheckPornAndCache(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, imgName, outMessage, notHealth, healthed);
                             }
                             catch (Exception ex)
                             {
@@ -1048,7 +1053,7 @@ namespace GreenOnions.PictureSearcher
             catch (Exception ex)
             {
                 LogHelper.WriteErrorLogWithUserMessage("ASCII2D特征搜索解析错误", ex, $"请求地址为:{bovwUrl}\r\n请求结果为：{strAscii2dBovwResult}");
-                outMessage.Add(BotInfo.SearchErrorReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("搜索类型", "ASCII2D特征")) + ex.Message);
+                outMessage.Add(BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "搜索类型", "ASCII2D特征" } }) + ex.Message);
             }
             return outMessage;
         }
@@ -1065,7 +1070,7 @@ namespace GreenOnions.PictureSearcher
                 if (p != -1)
                     index = $"-{p + 1}";
 
-                using (var request = new HttpRequestMessage(new HttpMethod("GET"), $"https://{BotInfo.PixivProxy}/{id}{index}.png"))
+                using (var request = new HttpRequestMessage(new HttpMethod("GET"), $"https://{BotInfo.Config.PixivProxy}/{id}{index}.png"))
                 {
                     HttpResponseMessage response = await httpClient.SendAsync(request);
                     if (response.StatusCode == HttpStatusCode.NotFound)
@@ -1087,8 +1092,8 @@ namespace GreenOnions.PictureSearcher
             {
                 if (int.TryParse(idWithIndex[1], out int index) && long.TryParse(idWithIndex[0], out long id))
                 {
-                    if (!string.IsNullOrWhiteSpace(BotInfo.OriginalPictureDownloadingReply)) //回复下载中
-                        SendMessage(BotInfo.OriginalPictureDownloadingReply);
+                    if (!string.IsNullOrWhiteSpace(BotInfo.Config.OriginalPictureDownloadingReply)) //回复下载中
+                        SendMessage(BotInfo.Config.OriginalPictureDownloadingReply);
                     return await SearchPictureHandler.DownloadPixivOriginalPicture(id, index - 1);
                 }
             }
@@ -1097,8 +1102,8 @@ namespace GreenOnions.PictureSearcher
             {
                 if (int.TryParse(idWithP[1], out int p) && long.TryParse(idWithP[0], out long id))
                 {
-                    if (!string.IsNullOrWhiteSpace(BotInfo.OriginalPictureDownloadingReply)) //回复下载中
-                        SendMessage(BotInfo.OriginalPictureDownloadingReply);
+                    if (!string.IsNullOrWhiteSpace(BotInfo.Config.OriginalPictureDownloadingReply)) //回复下载中
+                        SendMessage(BotInfo.Config.OriginalPictureDownloadingReply);
                     return await SearchPictureHandler.DownloadPixivOriginalPicture(id, p);
                 }
             }
@@ -1118,12 +1123,12 @@ namespace GreenOnions.PictureSearcher
             if (p != -1)
                 index = $"-{p + 1}";
 
-            string url = $"https://{BotInfo.PixivProxy}/{id}{index}.png";
+            string url = $"https://{BotInfo.Config.PixivProxy}/{id}{index}.png";
             string imgName = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}.png");
             string healthed = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}_Healthed.png");
             string notHealth = Path.Combine(ImageHelper.ImagePath, $"Pixiv_{id}_p{p}_NotHealth.png");
 
-            await CheckPornAndCache(BotInfo.CheckPornEnabled && BotInfo.OriginalPictureCheckPornEnabled, url, imgName, outMessage, healthed, notHealth);
+            await CheckPornAndCache(BotInfo.Config.CheckPornEnabled && BotInfo.Config.OriginalPictureCheckPornEnabled, url, imgName, outMessage, healthed, notHealth);
 
             return outMessage;
         }

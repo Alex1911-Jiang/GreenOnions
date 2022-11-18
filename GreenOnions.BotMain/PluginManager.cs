@@ -11,7 +11,7 @@ namespace GreenOnions.BotMain
     {
         private static string _pluginsPath = Path.Combine(Environment.CurrentDirectory, "Plugins");
         public static List<IPlugin> Plugins { get; private set; } = new List<IPlugin>();
-        public static GreenOnionsApi? _api { get; private set; } = null;
+        public static IGreenOnionsApi? _api { get; private set; } = null;
 
         public static int Load()
         {
@@ -55,10 +55,10 @@ namespace GreenOnions.BotMain
                             Type[] types = pluginAssembly.GetTypes();
                             foreach (Type type in types)
                             {
-                                if (type.GetInterface("IPlugin") != null)
+                                if (type.GetInterface("IPlugin") is not null)
                                 {
                                     IPlugin? plugin = (IPlugin?)Activator.CreateInstance(type);
-                                    if (plugin != null)
+                                    if (plugin is not null)
                                     {
                                         loadedPlugins.Add(Path.GetFileNameWithoutExtension(dllPath), plugin);
                                         if (!BotInfo.PluginStatus.ContainsKey(plugin.Name))
@@ -82,24 +82,22 @@ namespace GreenOnions.BotMain
             foreach (KeyValuePair<string, IPlugin> theOtherPlugins in loadedPlugins)
             {
                 Plugins.Add(theOtherPlugins.Value);
-                theOtherPlugins.Value.OnLoad(Path.Combine(_pluginsPath, theOtherPlugins.Key));
+                theOtherPlugins.Value.OnLoad(Path.Combine(_pluginsPath, theOtherPlugins.Key), BotInfo.Config);
                 LogHelper.WriteInfoLog($"插件{theOtherPlugins.Value.Name}加载成功");
             }
-            ConfigHelper.SaveConfigFile();
             return Plugins.Count;
         }
 
         public static GreenOnionsMessages? GetHelpMessage(string pluginName)
         {
             IPlugin? plugin = Plugins.Where(p => p.Name == pluginName).FirstOrDefault();
-            if (plugin != null && BotInfo.PluginStatus[plugin.Name])
+            if (plugin is not null && BotInfo.PluginStatus[plugin.Name])
                 return plugin.HelpMessage;
             return string.Empty;
         }
 
-        public static void Connected(long selfId, GreenOnionsApi api)
+        public static void Connected(long selfId, IGreenOnionsApi api)
         {
-            _api?.Dispose();
             _api = api;
 
             for (int i = 0; i < Plugins.Count; i++)
@@ -118,7 +116,6 @@ namespace GreenOnions.BotMain
 
         public static void Disconnected()
         {
-            _api?.Dispose();
             _api = null;
             for (int i = 0; i < Plugins.Count; i++)
             {
@@ -150,15 +147,6 @@ namespace GreenOnions.BotMain
                 }
             }
             return false;
-        }
-
-        public static void UpdateSettings()
-        {
-            if (_api != null)
-            {
-                Dictionary<string, object> props = AssemblyHelper.GetAllPropertiesValue();
-                _api.BotProperties = new ReadOnlyDictionary<string, object>(props);
-            }
         }
     }
 }

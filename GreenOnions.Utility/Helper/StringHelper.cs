@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using GreenOnions.Interface;
+using GreenOnions.Interface.Configs;
+using TencentCloud.Kms.V20190118.Models;
 
 namespace GreenOnions.Utility.Helper
 {
@@ -207,7 +210,7 @@ namespace GreenOnions.Utility.Helper
                 if (rxMain.IsMatch(result))
                 {
                     var match = rxMain.Matches(result).Where(m => m.Value.Length > 0).FirstOrDefault();
-                    if (match != null)
+                    if (match is not null)
                         return match.Value;
                 }
             }
@@ -225,7 +228,7 @@ namespace GreenOnions.Utility.Helper
                     Regex rxFont = new Regex(font[i]);
                     foreach (Match matchFont in rxFont.Matches(result))
                     {
-                        if (matchFont != null)
+                        if (matchFont is not null)
                             result = result.Substring(result.IndexOf(matchFont.Value.Trim()) + matchFont.Value.Trim().Length);  //去头
                     }
                 }
@@ -235,42 +238,12 @@ namespace GreenOnions.Utility.Helper
                     Regex rxBack = new Regex(back[i]);
                     foreach (Match matchBack in rxBack.Matches(result))
                     {
-                        if (matchBack != null)
+                        if (matchBack is not null)
                             result = result.Substring(0, result.Length - matchBack.Value.Length);  //去尾
                     }
                 }
             }
             return result;
-        }
-
-
-        public static string ReplaceGreenOnionsStringTags(this string originalString, params KeyValuePair<string, string>[] customTags)
-        {
-            originalString = AssemblyHelper.ReplacePropertyChineseNameToValue(originalString);
-            if (customTags != null)
-            {
-                foreach (var tag in customTags)
-                    originalString = originalString.Replace($"<{tag.Key}>", tag.Value);
-            }
-            return originalString;
-        }
-
-        public static GreenOnionsMessages ReplaceGreenOnionsStringTags(this GreenOnionsMessages originalMessage, params KeyValuePair<string, string>[] customTags)
-        {
-            for (int i = 0; i < originalMessage.Count; i++)
-            {
-                if (originalMessage[i] is GreenOnionsTextMessage textMessage)
-                {
-                    string text = AssemblyHelper.ReplacePropertyChineseNameToValue(textMessage.Text);
-                    if (customTags != null)
-                    {
-                        foreach (var tag in customTags)
-                            text = text.Replace($"<{tag.Key}>", tag.Value);
-                    }
-                    originalMessage[i] = text;
-                }
-            }
-            return originalMessage;
         }
 
         public static string ReplaceHtmlTags(this string htmlText)
@@ -286,7 +259,67 @@ namespace GreenOnions.Utility.Helper
                     .Replace("&copy;", "©")
                     .Replace("&reg;", "®")
                     .Replace("&times;", "×")
-                    .Replace("&pide;", "÷");
+            .Replace("&pide;", "÷");
+        }
+
+        public static string ReplaceGreenOnionsStringTags(this string originalString, IDictionary<string, string> customTags = null)
+        {
+            originalString = originalString.ReplacePropertyChineseNameToValue();
+            if (customTags is not null)
+            {
+                foreach (var tag in customTags)
+                    originalString = originalString.Replace($"<{tag.Key}>", tag.Value);
+            }
+            return originalString;
+        }
+
+        public static GreenOnionsMessages ReplaceGreenOnionsStringTags(this GreenOnionsMessages originalMessage, params KeyValuePair<string, string>[] customTags)
+        {
+            for (int i = 0; i < originalMessage.Count; i++)
+            {
+                if (originalMessage[i] is GreenOnionsTextMessage textMessage)
+                {
+                    string text = textMessage.Text.ReplacePropertyChineseNameToValue();
+                    if (customTags is not null)
+                    {
+                        foreach (var tag in customTags)
+                            text = text.Replace($"<{tag.Key}>", tag.Value);
+                    }
+                    originalMessage[i] = text;
+                }
+            }
+            return originalMessage;
+        }
+
+
+        private static string ReplacePropertyChineseNameToValue(this string str)
+        {
+            PropertyInfo[] PropertyInfos = typeof(IBotConfig).GetProperties();
+            if (PropertyInfos is null)
+            {
+                LogHelper.WriteWarningLog("获取配置信息失败");
+                return str;
+            }
+            foreach (PropertyInfo item in PropertyInfos)
+            {
+                try
+                {
+                    foreach (var attributes in item.CustomAttributes)
+                    {
+                        if (attributes.AttributeType.Name == "PropertyChineseNameAttribute")
+                        {
+                            var attribute = attributes.ConstructorArguments.Select(v => v.Value).FirstOrDefault();
+                            if (attribute is not null)
+                                str = str.Replace($"<{attribute}>", item.GetValue(BotInfo.Config)?.ToString());
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage($"属性特性转换为属性值时发生异常, 属性为:{item.Name}", ex);
+                }
+            }
+            return str;
         }
     }
 }

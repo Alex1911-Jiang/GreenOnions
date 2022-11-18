@@ -20,7 +20,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     else if (miraiMessage[i] is IPlainMessage plainMsg)
                         greenOnionsMessages.Add(plainMsg.ToString());
                     else if (miraiMessage[i] is IImageMessage imageMsg)
-                        greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url));
+                        greenOnionsMessages.Add(new GreenOnionsImageMessage(ImageHelper.ReplaceGroupUrl(imageMsg.Url)));
                     else if (miraiMessage[i] is IFaceMessage faceMsg)
                         greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.Name));
                 }
@@ -37,6 +37,9 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
         public static async Task<IChatMessage[]> ToMiraiApiHttpMessages(this GreenOnionsMessages greenOnionsMessage, IMiraiHttpSession session, UploadTarget uploadTarget)
         {
+            if (!greenOnionsMessage.IsGreenOnionsCommand)
+                greenOnionsMessage.ReplaceGreenOnionsStringTags();
+
             List<IChatMessage> miraiApiHttpMessages = new List<IChatMessage>();
             List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode> nodes = new List<Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode>();
             for (int i = 0; i < greenOnionsMessage.Count; i++)
@@ -79,7 +82,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                         for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                         {
                             var itemMsg = (await ToMiraiApiHttpMessages(forwardMsg.ItemMessages[j].itemMessage, session, uploadTarget)).Select(msg => msg as Mirai.CSharp.HttpApi.Models.ChatMessages.IChatMessage);
-                            if (itemMsg != null)
+                            if (itemMsg is not null)
                             {
                                 Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode node = new Mirai.CSharp.HttpApi.Models.ChatMessages.ForwardMessageNode()
                                 {

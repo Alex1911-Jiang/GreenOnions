@@ -16,26 +16,26 @@ namespace GreenOnions.BotMain
         public static void StartRecord(int connectedPlatform, Action<int> ConnectMethod, Action DisconnectMethod)
         {
             _connectedPlatform = connectedPlatform;
-            timeFrom = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.WorkingTimeFromHour).AddMinutes(BotInfo.WorkingTimeFromMinute));
-            timeTo = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.WorkingTimeToHour).AddMinutes(BotInfo.WorkingTimeToMinute));
+            timeFrom = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute));
+            timeTo = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute));
 
             if (timeFrom == timeTo)
                 return;
 
-            if (BotInfo.WorkingTimeEnabled)
+            if (BotInfo.Config.WorkingTimeEnabled)
             {
                 if (IsRecording)
                     return;
                 _isRecording = true;
                 Task.Run(() =>
                 {
-                    while (BotInfo.WorkingTimeEnabled && DoWork)
+                    while (BotInfo.Config.WorkingTimeEnabled && DoWork)
                     {
                         if (timeFrom < timeTo)  //工作时间在当天内
                         {
                             if (BotInfo.IsLogin)
                             {
-                                if (DateTime.Now >= DateTime.Today.AddHours(BotInfo.WorkingTimeToHour).AddMinutes(BotInfo.WorkingTimeToMinute))
+                                if (DateTime.Now >= DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute))
                                 {
                                     LogHelper.WriteWarningLog("自动断开连接");
                                     DisconnectMethod();
@@ -43,8 +43,8 @@ namespace GreenOnions.BotMain
                             }
                             else
                             {
-                                if (DateTime.Now > DateTime.Today.AddHours(BotInfo.WorkingTimeFromHour).AddMinutes(BotInfo.WorkingTimeFromMinute)
-                                && DateTime.Now < DateTime.Today.AddHours(BotInfo.WorkingTimeToHour).AddMinutes(BotInfo.WorkingTimeToMinute))
+                                if (DateTime.Now > DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute)
+                                && DateTime.Now < DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute))
                                 {
                                     LogHelper.WriteWarningLog($"自动重新连接到平台{_connectedPlatform}");
                                     ConnectMethod(_connectedPlatform);
@@ -55,8 +55,8 @@ namespace GreenOnions.BotMain
                         {
                             if (BotInfo.IsLogin)
                             {
-                                if (DateTime.Now > DateTime.Today.AddHours(BotInfo.WorkingTimeToHour).AddMinutes(BotInfo.WorkingTimeToMinute)
-                                && DateTime.Now < DateTime.Today.AddHours(BotInfo.WorkingTimeFromHour).AddMinutes(BotInfo.WorkingTimeFromMinute))
+                                if (DateTime.Now > DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute)
+                                && DateTime.Now < DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute))
                                 {
                                     LogHelper.WriteWarningLog("自动断开连接");
                                     DisconnectMethod();
@@ -64,7 +64,7 @@ namespace GreenOnions.BotMain
                             }
                             else
                             {
-                                if (DateTime.Now >= DateTime.Today.AddHours(BotInfo.WorkingTimeFromHour).AddMinutes(BotInfo.WorkingTimeFromMinute))
+                                if (DateTime.Now >= DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute))
                                 {
                                     LogHelper.WriteWarningLog($"自动重新连接到平台{_connectedPlatform}");
                                     ConnectMethod(_connectedPlatform);
@@ -81,8 +81,8 @@ namespace GreenOnions.BotMain
 
         public static void UpdateWorkingTime()
         {
-            timeFrom = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.WorkingTimeFromHour).AddMinutes(BotInfo.WorkingTimeFromMinute));
-            timeTo = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.WorkingTimeToHour).AddMinutes(BotInfo.WorkingTimeToMinute));
+            timeFrom = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute));
+            timeTo = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute));
         }
     }
 }

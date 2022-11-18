@@ -39,16 +39,16 @@ namespace GreenOnions.Repeater
 
             if (!tempMessageItem.IsRepeated)  //已经参与过复读的消息不再参与随机复读
             {
-                if (BotInfo.SuccessiveRepeatEnabled)
+                if (BotInfo.Config.SuccessiveRepeatEnabled)
                 {
                     GreenOnionsBaseMessage resultMessage = await SuccessiveRepeat(message, tempMessageItem);
-                    if (resultMessage != null)
+                    if (resultMessage is not null)
                         return resultMessage;
                 }
-                if (BotInfo.RandomRepeatEnabled)
+                if (BotInfo.Config.RandomRepeatEnabled)
                 {
                     GreenOnionsBaseMessage resultMessage = await RandomRepeat(message, tempMessageItem);
-                    if (resultMessage != null)
+                    if (resultMessage is not null)
                         return resultMessage;
                 }
             }
@@ -64,7 +64,7 @@ namespace GreenOnions.Repeater
         /// <returns></returns>
         private static async Task<GreenOnionsBaseMessage> RandomRepeat(GreenOnionsBaseMessage message, MessageItem messageItem)
         {
-            if (new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) <= BotInfo.RandomRepeatProbability)
+            if (new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) <= BotInfo.Config.RandomRepeatProbability)
                 return await Pepeat(message, messageItem);
             return null;
         }
@@ -78,7 +78,7 @@ namespace GreenOnions.Repeater
         /// <returns></returns>
         private static async Task<GreenOnionsBaseMessage> SuccessiveRepeat(GreenOnionsBaseMessage message, MessageItem messageItem)
         {
-            if (messageItem.RepeatedCount >= BotInfo.SuccessiveRepeatCount)
+            if (messageItem.RepeatedCount >= BotInfo.Config.SuccessiveRepeatCount)
                 return await Pepeat(message, messageItem);
             return null;
         }
@@ -89,7 +89,7 @@ namespace GreenOnions.Repeater
             {
                 messageItem.IsRepeated = true;
                 string msg = message.ToString();
-                if (BotInfo.ReplaceMeToYou)
+                if (BotInfo.Config.ReplaceMeToYou)
                     msg = msg.Replace("我", "你");
                 return msg;
             }
@@ -97,7 +97,7 @@ namespace GreenOnions.Repeater
             {
                 messageItem.IsRepeated = true;
                 MemoryStream ms = await MirrorImage(ImageHelper.ReplaceGroupUrl(imageMessage.Url));
-                if (ms != null)
+                if (ms is not null)
                     return new GreenOnionsImageMessage(ms);
                 else
                     return new GreenOnionsImageMessage(imageMessage.Url);
@@ -110,21 +110,21 @@ namespace GreenOnions.Repeater
             bool bRewind = false;
             bool bHorizontalMirror = false;
             bool bVerticalMirror = false;
-            if (BotInfo.RewindGifEnabled)
-                bRewind = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.RewindGifProbability;
+            if (BotInfo.Config.RewindGifEnabled)
+                bRewind = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.Config.RewindGifProbability;
             if (!bRewind)
             {
-                if (BotInfo.HorizontalMirrorImageEnabled)
-                    bHorizontalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.HorizontalMirrorImageProbability;
-                if (BotInfo.VerticalMirrorImageEnabled)
-                    bVerticalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.VerticalMirrorImageProbability;
+                if (BotInfo.Config.HorizontalMirrorImageEnabled)
+                    bHorizontalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.Config.HorizontalMirrorImageProbability;
+                if (BotInfo.Config.VerticalMirrorImageEnabled)
+                    bVerticalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.Config.VerticalMirrorImageProbability;
             }
             
             if (bRewind || bHorizontalMirror || bVerticalMirror)
             {
                 MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStreamAsync(url);
 
-                if (ms != null)
+                if (ms is not null)
                 {
                     try
                     {

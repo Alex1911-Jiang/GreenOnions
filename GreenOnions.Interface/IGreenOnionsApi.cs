@@ -3,46 +3,17 @@
 namespace GreenOnions.Interface
 {
     /// <summary>
-    /// 抽象平台Api接口类
+    /// 抽象平台Api接口
     /// </summary>
-    public sealed class GreenOnionsApi : IDisposable
+    public interface IGreenOnionsApi
     {
-        private Func<long, GreenOnionsMessages, Task<int>> _sendFriendMessageAsync;
-        private Func<long, GreenOnionsMessages, Task<int>> _sendGroupMessageAsync;
-        private Func<long, long, GreenOnionsMessages, Task<int>> _sendTempMessageAsync;
-        private Func<Task<List<GreenOnionsFriendInfo>>> _getFriendListAsync;
-        private Func<Task<List<GreenOnionsGroupInfo>>> _getGroupListAsync;
-        private Func<long, Task<List<GreenOnionsMemberInfo>>> _getMemberListAsync;
-        private Func<long, long, Task<GreenOnionsMemberInfo>> _getMemberInfoAsync;
-
-        /// <summary>
-        /// 表示GreenOnions本体所有的属性
-        /// </summary>
-        public ReadOnlyDictionary<string, object> BotProperties { get; set; }
-
-        /// <summary>
-        /// 此类不应被用户构造
-        /// </summary>
-        public GreenOnionsApi(
-            in ReadOnlyDictionary<string, object> botProperties,
-            in Func<long, GreenOnionsMessages, Task<int>> sendFriendMessageAsync,
-            in Func<long, GreenOnionsMessages, Task<int>> sendGroupMessageAsync,
-            in Func<long, long, GreenOnionsMessages, Task<int>> sendTempMessageAsync,
-            in Func<Task<List<GreenOnionsFriendInfo>>> getFriendListAsync,
-            in Func<Task<List<GreenOnionsGroupInfo>>> getGroupListAsync,
-            in Func<long, Task<List<GreenOnionsMemberInfo>>> getMemberListAsync,
-            in Func<long, long, Task<GreenOnionsMemberInfo>> getMemberInfoAsync
-            )
-        {
-            BotProperties = botProperties;
-            _sendFriendMessageAsync = sendFriendMessageAsync;
-            _sendGroupMessageAsync = sendGroupMessageAsync;
-            _sendTempMessageAsync = sendTempMessageAsync;
-            _getFriendListAsync = getFriendListAsync;
-            _getGroupListAsync = getGroupListAsync;
-            _getMemberListAsync = getMemberListAsync;
-            _getMemberInfoAsync = getMemberInfoAsync;
-        }
+        public Func<long, GreenOnionsMessages, Task<int>> _sendFriendMessageAsync { get; init; }
+        public Func<long, GreenOnionsMessages, Task<int>> _sendGroupMessageAsync { get; init; }
+        public Func<long, long, GreenOnionsMessages, Task<int>> _sendTempMessageAsync { get; init; }
+        public Func<Task<List<GreenOnionsFriendInfo>>> _getFriendListAsync { get; init; }
+        public Func<Task<List<GreenOnionsGroupInfo>>> _getGroupListAsync { get; init; }
+        public Func<long, Task<List<GreenOnionsMemberInfo>>> _getMemberListAsync { get; init; }
+        public Func<long, long, Task<GreenOnionsMemberInfo>> _getMemberInfoAsync { get; init; }
 
         /// <summary>
         /// 发送好友消息
@@ -97,27 +68,6 @@ namespace GreenOnions.Interface
         public Task<GreenOnionsMemberInfo> GetMemberInfoAsync(long groupId, long memberId) => _getMemberInfoAsync(groupId, memberId);
 
         /// <summary>
-        /// 替换群图片路由
-        /// </summary>
-        /// <param name="imageUrl">原始图片Url</param>
-        /// <returns>替换路由后的图片Url</returns>
-        public string ReplaceGroupUrl(string imageUrl)
-        {
-            if (BotProperties.ContainsKey("ReplaceImgRoute"))
-            {
-                int iRouteType = Convert.ToInt32(BotProperties["ReplaceImgRoute"]);
-                switch (iRouteType)
-                {
-                    case 1:
-                        return imageUrl.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
-                    case 2:
-                        return imageUrl.Replace("/c2cpicdw.qpic.cn/offpic_new/", "/gchat.qpic.cn/gchatpic_new/");
-                }
-            }
-            return imageUrl;
-        }
-
-        /// <summary>
         /// 设置目标QQ号业务超时触发事件
         /// </summary>
         /// <param name="qqId">申请业务的QQ(目标QQ)</param>
@@ -146,18 +96,15 @@ namespace GreenOnions.Interface
             });
         }
 
+        #region -- 方法 --
+
         /// <summary>
-        /// 释放Api委托
+        /// 替换目标文本中的标签字符串为变量值，如 "机器人名称" => BotName
         /// </summary>
-        public void Dispose()
-        {
-            _sendFriendMessageAsync = null;
-            _sendGroupMessageAsync = null;
-            _sendTempMessageAsync = null;
-            _getFriendListAsync = null;
-            _getGroupListAsync = null;
-            _getMemberListAsync = null;
-            _getMemberInfoAsync = null;
-        }
+        /// <param name="originalString">目标文本</param>
+        /// <returns>替换标签为变量的完整文本</returns>
+        public string ReplaceGreenOnionsStringTags(string originalString);
+
+        #endregion -- 方法 --
     }
 }

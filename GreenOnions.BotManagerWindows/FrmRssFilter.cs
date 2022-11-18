@@ -10,7 +10,7 @@
         {
             InitializeComponent();
             Controls.OfType<RadioButton>().Where(r => Convert.ToInt32(r.Tag) == filterMode).First().Checked = true;
-            if (filterKeyWords != null)
+            if (filterKeyWords is not null)
                 txbFilterKeyWords.Text = string.Join("\r\n", filterKeyWords);
         }
     }

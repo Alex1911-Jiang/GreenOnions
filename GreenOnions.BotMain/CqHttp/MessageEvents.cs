@@ -26,7 +26,7 @@ namespace GreenOnions.BotMain.CqHttp
             int quoteId = eventArgs.Message.MessageId;
             bool isHandle = await MessageHandler.HandleMesage(await eventArgs.Message.MessageBody.ToOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick, eventArgs.SourceGroup, eventArgs.SoraApi), eventArgs.SourceGroup.Id, outMsg =>
             {
-                if (outMsg != null && outMsg.Count > 0)
+                if (outMsg is not null && outMsg.Count > 0)
                 {
                     ValueTask<(ApiStatus apiStatus, int messageId)> result;
                     if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
@@ -56,7 +56,7 @@ namespace GreenOnions.BotMain.CqHttp
             int quoteId = eventArgs.Message.MessageId;
             bool isHandle = await MessageHandler.HandleMesage(await eventArgs.Message.MessageBody.ToOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick, null, eventArgs.SoraApi), null, outMsg =>
             {
-                if (outMsg != null && outMsg.Count > 0)
+                if (outMsg is not null && outMsg.Count > 0)
                 {
                     if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
                     {
@@ -89,17 +89,17 @@ namespace GreenOnions.BotMain.CqHttp
             switch (eventArgs.SubType)
             {
                 case MemberChangeType.Leave:
-                    if (BotInfo.SendMemberPositiveLeaveMessage)
-                        cmdMsg = BotInfo.MemberPositiveLeaveMessage;
+                    if (BotInfo.Config.SendMemberPositiveLeaveMessage)
+                        cmdMsg = BotInfo.Config.MemberPositiveLeaveMessage;
                     break;
                 case MemberChangeType.Kick:
-                    if (BotInfo.SendMemberBeKickedMessage)
-                        cmdMsg = BotInfo.MemberBeKickedMessage;
+                    if (BotInfo.Config.SendMemberBeKickedMessage)
+                        cmdMsg = BotInfo.Config.MemberBeKickedMessage;
                     break;
                 case MemberChangeType.Approve:
                 case MemberChangeType.Invite:
-                    if (BotInfo.SendMemberJoinedMessage)
-                        cmdMsg = BotInfo.MemberJoinedMessage;
+                    if (BotInfo.Config.SendMemberJoinedMessage)
+                        cmdMsg = BotInfo.Config.MemberJoinedMessage;
                     break;
             }
 
@@ -148,7 +148,7 @@ namespace GreenOnions.BotMain.CqHttp
                         outMsg.AddText(getMember.memberInfo.Card);
                     }
                 }
-                else if (Operator != null)
+                else if (Operator is not null)
                 {
                     if (identifier == "<@操作者QQ>")
                     {
@@ -179,18 +179,18 @@ namespace GreenOnions.BotMain.CqHttp
 
         private static bool CheckPreconditionsGroup(GroupMemberChangeEventArgs e)
         {
-            if (BotInfo.BannedGroup.Contains(e.SourceGroup.Id) ||
-                BotInfo.BannedUser.Contains(e.ChangedUser.Id))
+            if (BotInfo.Config.BannedGroup.Contains(e.SourceGroup.Id) ||
+                BotInfo.Config.BannedUser.Contains(e.ChangedUser.Id))
             {
                 return false;
             }
-            if (BotInfo.DebugMode)
+            if (BotInfo.Config.DebugMode)
             {
-                if (BotInfo.DebugReplyAdminOnly)
-                    if (!BotInfo.AdminQQ.Contains(e.ChangedUser.Id))
+                if (BotInfo.Config.DebugReplyAdminOnly)
+                    if (!BotInfo.Config.AdminQQ.Contains(e.ChangedUser.Id))
                         return false;
-                if (BotInfo.OnlyReplyDebugGroup)
-                    if (!BotInfo.DebugGroups.Contains(e.SourceGroup.Id))
+                if (BotInfo.Config.OnlyReplyDebugGroup)
+                    if (!BotInfo.Config.DebugGroups.Contains(e.SourceGroup.Id))
                         return false;
             }
             return true;
@@ -198,18 +198,18 @@ namespace GreenOnions.BotMain.CqHttp
 
         private static bool CheckPreconditionsGroup(GroupMessageEventArgs e)
         {
-            if (BotInfo.BannedGroup.Contains(e.SourceGroup.Id) ||
-                BotInfo.BannedUser.Contains(e.Sender.Id))
+            if (BotInfo.Config.BannedGroup.Contains(e.SourceGroup.Id) ||
+                BotInfo.Config.BannedUser.Contains(e.Sender.Id))
             {
                 return false;
             }
-            if (BotInfo.DebugMode)
+            if (BotInfo.Config.DebugMode)
             {
-                if (BotInfo.DebugReplyAdminOnly)
-                    if (!BotInfo.AdminQQ.Contains(e.Sender.Id))
+                if (BotInfo.Config.DebugReplyAdminOnly)
+                    if (!BotInfo.Config.AdminQQ.Contains(e.Sender.Id))
                         return false;
-                if (BotInfo.OnlyReplyDebugGroup)
-                    if (!BotInfo.DebugGroups.Contains(e.SourceGroup.Id))
+                if (BotInfo.Config.OnlyReplyDebugGroup)
+                    if (!BotInfo.Config.DebugGroups.Contains(e.SourceGroup.Id))
                         return false;
             }
             return true;
@@ -217,14 +217,14 @@ namespace GreenOnions.BotMain.CqHttp
         
         private static bool CheckPreconditionsPrivate(PrivateMessageEventArgs e)
         {
-            if (BotInfo.BannedUser.Contains(e.Sender.Id))
+            if (BotInfo.Config.BannedUser.Contains(e.Sender.Id))
             {
                 return false;
             }
-            if (BotInfo.DebugMode)
+            if (BotInfo.Config.DebugMode)
             {
-                if (BotInfo.DebugReplyAdminOnly)
-                    if (!BotInfo.AdminQQ.Contains(e.Sender.Id))
+                if (BotInfo.Config.DebugReplyAdminOnly)
+                    if (!BotInfo.Config.AdminQQ.Contains(e.Sender.Id))
                         return false;
             }
             return true;

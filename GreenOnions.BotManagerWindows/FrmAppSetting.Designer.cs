@@ -13,7 +13,7 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (components is not null))
             {
                 components.Dispose();
             }
@@ -78,6 +78,7 @@
             this.lblContributorGithub = new System.Windows.Forms.Label();
             this.lblContributorQQ = new System.Windows.Forms.Label();
             this.lblContributorName = new System.Windows.Forms.Label();
+            this.btnResetCtrlSize = new System.Windows.Forms.Button();
             this.tabSettings.SuspendLayout();
             this.pageBot.SuspendLayout();
             this.pageSearchPicture.SuspendLayout();
@@ -342,7 +343,7 @@
             this.pageRepeater.Location = new System.Drawing.Point(4, 33);
             this.pageRepeater.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageRepeater.Name = "pageRepeater";
-            this.pageRepeater.Size = new System.Drawing.Size(1026, 957);
+            this.pageRepeater.Size = new System.Drawing.Size(192, 63);
             this.pageRepeater.TabIndex = 5;
             this.pageRepeater.Text = "复读设置";
             this.pageRepeater.UseVisualStyleBackColor = true;
@@ -354,7 +355,7 @@
             this.pnlRepeater.Location = new System.Drawing.Point(0, 0);
             this.pnlRepeater.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRepeater.Name = "pnlRepeater";
-            this.pnlRepeater.Size = new System.Drawing.Size(1026, 957);
+            this.pnlRepeater.Size = new System.Drawing.Size(192, 63);
             this.pnlRepeater.TabIndex = 0;
             // 
             // pageGroupMemberEvents
@@ -680,11 +681,21 @@
             this.lblContributorName.TabIndex = 0;
             this.lblContributorName.Text = "作者:";
             // 
+            // btnResetCtrlSize
+            // 
+            this.btnResetCtrlSize.Location = new System.Drawing.Point(0, 0);
+            this.btnResetCtrlSize.Name = "btnResetCtrlSize";
+            this.btnResetCtrlSize.Size = new System.Drawing.Size(20, 20);
+            this.btnResetCtrlSize.TabIndex = 5;
+            this.btnResetCtrlSize.UseVisualStyleBackColor = true;
+            this.btnResetCtrlSize.Click += new System.EventHandler(this.btnResetCtrlSize_Click);
+            // 
             // FrmAppSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1075, 1074);
+            this.Controls.Add(this.btnResetCtrlSize);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.tabSettings);
             this.Margin = new System.Windows.Forms.Padding(6);
@@ -774,5 +785,6 @@
         private Controls.CtrlRss pnlRss;
         private Controls.CtrlBot pnlBot;
         private Controls.CtrlRepeater pnlRepeater;
+        private Button btnResetCtrlSize;
     }
 }

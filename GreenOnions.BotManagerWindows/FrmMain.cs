@@ -21,18 +21,16 @@ namespace GreenOnions.BotManagerWindows
 			#region -- 读取配置 --
 			try
 			{
-				if (!File.Exists(JsonHelper.JsonConfigFileName))
+				if (!File.Exists("config.json"))
 				{
 					MessageBox.Show("初次使用本机器人，请先配置相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					OpenSetting();
 				}
-				if (!File.Exists(JsonHelper.JsonCacheFileName))
-					ConfigHelper.CreateCache();
 
-				txbQQ.Text = BotInfo.QQId.ToString();
-				txbIP.Text = BotInfo.IP;
-				txbPort.Text = BotInfo.Port.ToString();
-				txbVerifyKey.Text = BotInfo.VerifyKey;
+				txbQQ.Text = BotInfo.Config.QQId.ToString();
+				txbIP.Text = BotInfo.Config.IP;
+				txbPort.Text = BotInfo.Config.Port.ToString();
+				txbVerifyKey.Text = BotInfo.Config.VerifyKey;
 			}
 			catch (Exception ex)
 			{
@@ -52,11 +50,11 @@ namespace GreenOnions.BotManagerWindows
 					Invoke(new Action(() => btnPlugins.Text = $"插件列表({iLoadCount})"));
 
 				//自动连接到机器人平台
-				if (BotInfo.AutoConnectEnabled)
+				if (BotInfo.Config.AutoConnectEnabled)
 				{
-					Task.Delay(BotInfo.AutoConnectDelay * 1000).Wait();
+					Task.Delay(BotInfo.Config.AutoConnectDelay * 1000).Wait();
 					WorkingTimeRecorder.DoWork = true;
-					if (BotInfo.AutoConnectProtocol == 0)
+					if (BotInfo.Config.AutoConnectProtocol == 0)
 						ConnectToMiraiApiHttp();
 					else
 						ConnectToCqHttp();
@@ -119,7 +117,7 @@ namespace GreenOnions.BotManagerWindows
 			_connecting = false;
 		}
 
-		private void btnDeconnect_Click(object sender, EventArgs e)
+		private void btnDeconnect_Click(object? sender, EventArgs e)
 		{
 			WorkingTimeRecorder.DoWork = false;
 			Disconnect();
@@ -137,7 +135,7 @@ namespace GreenOnions.BotManagerWindows
 			btnConnectToCqHttp.Click += btnConnectToCqHttp_Click;
 		}
 
-		private void btnConnectToMiraiApiHttp_Click(object sender, EventArgs e)
+		private void btnConnectToMiraiApiHttp_Click(object? sender, EventArgs e)
 		{
 			WorkingTimeRecorder.DoWork = true;
 			ConnectToMiraiApiHttp();
@@ -155,7 +153,7 @@ namespace GreenOnions.BotManagerWindows
 			}
 		}
 
-		private void btnConnectToCqHttp_Click(object sender, EventArgs e)
+		private void btnConnectToCqHttp_Click(object? sender, EventArgs e)
 		{
 			WorkingTimeRecorder.DoWork = true;
 			ConnectToCqHttp();
@@ -202,17 +200,18 @@ namespace GreenOnions.BotManagerWindows
 
 				notifyIcon.Text = $"葱葱机器人:{nickNameOrErrorMessage}";
 
-				BotInfo.QQId = qqId;
-				BotInfo.IP = ip;
-				BotInfo.Port = port;
-				BotInfo.VerifyKey = verifyKey;
-				ConfigHelper.SaveConfigFile();
+                BotInfo.Config.QQId = qqId;
+                BotInfo.Config.IP = ip;
+                BotInfo.Config.Port = port;
+                BotInfo.Config.VerifyKey = verifyKey;
+
+                BotInfo.SaveConfigFile();
 
 				WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnect);
 
 				webBrowserForm.Show();
 			}
-			else if (nickNameOrErrorMessage == null)  //连接失败且没有异常
+			else if (nickNameOrErrorMessage is null)  //连接失败且没有异常
 			{
 				MessageBox.Show($"连接失败，请检查{protocolName}是否已经正常启动并已配置IP端口相关参数, 以及机器人QQ是否成功登录。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
@@ -253,11 +252,12 @@ namespace GreenOnions.BotManagerWindows
 			{
 				MessageBox.Show("请先输入机器人平台连接凭证。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				return false;
-			}
-			BotInfo.QQId = Convert.ToInt64(txbQQ.Text);
-			BotInfo.IP = txbIP.Text;
-            BotInfo.Port = Convert.ToUInt16(txbPort.Text);
-            BotInfo.VerifyKey = txbVerifyKey.Text;
+            }
+
+            BotInfo.Config.QQId = Convert.ToInt64(txbQQ.Text);
+            BotInfo.Config.IP = txbIP.Text;
+            BotInfo.Config.Port = Convert.ToUInt16(txbPort.Text);
+            BotInfo.Config.VerifyKey = txbVerifyKey.Text;
 			return true;
 		}
 

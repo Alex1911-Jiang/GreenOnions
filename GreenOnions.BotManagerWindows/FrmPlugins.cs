@@ -41,7 +41,7 @@ namespace GreenOnions.BotManagerWindows
                         Dictionary<string, bool> dicPluginStatus = BotInfo.PluginStatus;
                         dicPluginStatus[PluginManager.Plugins[e.RowIndex].Name] = Convert.ToBoolean(chkCell.EditingCellFormattedValue);
                         BotInfo.PluginStatus = dicPluginStatus;
-                        ConfigHelper.SaveConfigFile();
+                        BotInfo.SavePluginsStatus();
                     }
                 }
             }

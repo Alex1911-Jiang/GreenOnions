@@ -57,23 +57,22 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 await session.ConnectAsync(qqId); // 填入期望连接到的机器人QQ号
 
-                Cache.SetTaskAtFixedTime();
+                BotInfo.Cache.SetTaskAtFixedTime();
 
                 IFriendInfo[] IFriendInfos = await session.GetFriendListAsync();
                 string nickname = "未知";
 
                 var self = IFriendInfos.Where(m => m.Id == qqId).FirstOrDefault();  //获取自身昵称失败, 部分QQ号好友中不存在自己?
-                if (self != null)
+                if (self is not null)
                     nickname = self.Name;
 
                 ConnectedEvent?.Invoke(true, nickname);
 
-                BotInfo.QQId = session.QQNumber.Value;
+                BotInfo.Config.QQId = session.QQNumber!.Value;
 
                 BotInfo.IsLogin = true;
 
-                Dictionary<string, object> props = AssemblyHelper.GetAllPropertiesValue();
-                GreenOnionsApi greenOnionsApi = new GreenOnionsApi(new ReadOnlyDictionary<string, object>(props),
+                GreenOnionsApi greenOnionsApi = new GreenOnionsApi(
                     async (targetId, msg) => await session.SendFriendMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend)),
                     async (targetId, msg) => await session.SendGroupMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Group)),
                     async (targetId, targetGroup, msg) => await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp)),
@@ -92,7 +91,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     throw;
                 }
 
-                PluginManager.Connected(BotInfo.QQId, greenOnionsApi);
+                PluginManager.Connected(BotInfo.Config.QQId, greenOnionsApi);
 
                 await Task.Run(() =>
                 {

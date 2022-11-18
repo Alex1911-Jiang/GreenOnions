@@ -1,4 +1,5 @@
 ﻿using GreenOnions.Interface;
+using GreenOnions.Interface.Helpers;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using System;
@@ -10,18 +11,18 @@ namespace GreenOnions.ForgeMessage
     {
         public static void SendForgeMessage(GreenOnionsMessages originalMsg, long qqId, Action<GreenOnionsMessages> SendMessage)
         {
-            if (!BotInfo.ForgeMessageAdminOnly || BotInfo.AdminQQ.Contains(qqId))
+            if (!BotInfo.Config.ForgeMessageAdminOnly || BotInfo.Config.AdminQQ.Contains(qqId))
             {
                 if (originalMsg.Count > 2 && (originalMsg[1] is GreenOnionsAtMessage atMsg))
                 {
-                    if (!BotInfo.AdminQQ.Contains(qqId) && BotInfo.AdminQQ.Contains(atMsg.AtId))
+                    if (!BotInfo.Config.AdminQQ.Contains(qqId) && BotInfo.Config.AdminQQ.Contains(atMsg.AtId))
                     {
-                        SendMessage(BotInfo.RefuseForgeAdminReply.ReplaceGreenOnionsStringTags());
+                        SendMessage(BotInfo.Config.RefuseForgeAdminReply);
                         return;
                     }
-                    if (!BotInfo.AdminQQ.Contains(qqId) && atMsg.AtId == BotInfo.QQId)
+                    if (!BotInfo.Config.AdminQQ.Contains(qqId) && atMsg.AtId == BotInfo.Config.QQId)
                     {
-                        SendMessage(BotInfo.RefuseForgeBotReply.ReplaceGreenOnionsStringTags());
+                        SendMessage(BotInfo.Config.RefuseForgeBotReply);
                         return;
                     }
 
@@ -30,7 +31,7 @@ namespace GreenOnions.ForgeMessage
                     {
                         if (originalMsg[i] is GreenOnionsTextMessage textMsg)
                         {
-                            string[] plainMsgs = textMsg.ToString().Trim().Split(BotInfo.ForgeMessageCmdNewLine);
+                            string[] plainMsgs = textMsg.ToString().Trim().Split(BotInfo.Config.ForgeMessageCmdNewLine);
                             for (int j = 0; j < plainMsgs.Length; j++)
                             {
                                 if (!string.IsNullOrEmpty(plainMsgs[j]))
@@ -45,10 +46,10 @@ namespace GreenOnions.ForgeMessage
                             continue;
                     }
 
-                    if (BotInfo.ForgeMessageAppendBotMessageEnabled)
+                    if (BotInfo.Config.ForgeMessageAppendBotMessageEnabled)
                     {
-                        if (!BotInfo.ForgeMessageAdminDontAppend || !BotInfo.AdminQQ.Contains(qqId))
-                            forwardMessage.Add(BotInfo.QQId, BotInfo.BotName, new GreenOnionsMessages(BotInfo.ForgeMessageAppendMessage.ReplaceGreenOnionsStringTags()));
+                        if (!BotInfo.Config.ForgeMessageAdminDontAppend || !BotInfo.Config.AdminQQ.Contains(qqId))
+                            forwardMessage.Add(BotInfo.Config.QQId, BotInfo.Config.BotName, new GreenOnionsMessages(BotInfo.Config.ForgeMessageAppendMessage));
                     }
                     SendMessage(forwardMessage);
                 }

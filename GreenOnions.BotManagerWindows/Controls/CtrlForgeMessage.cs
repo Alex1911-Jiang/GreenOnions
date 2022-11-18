@@ -11,30 +11,30 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         public void LoadConfig()
         {
-            txbForgeMessageCmdBegin.Text = BotInfo.ForgeMessageCmdBegin;
-            txbForgeMessageCmdNewLine.Text = BotInfo.ForgeMessageCmdNewLine;
-            chkForgeMessageAppendBotMessageEnabled.Checked = BotInfo.ForgeMessageAppendBotMessageEnabled;
-            chkForgeMessageAdminOnly.Checked = BotInfo.ForgeMessageAdminOnly;
-            chkForgeMessageAdminDontAppend.Checked = BotInfo.ForgeMessageAdminDontAppend;
-            txbForgeMessageAppendMessage.Text = BotInfo.ForgeMessageAppendMessage;
-            chkRefuseForgeAdmin.Checked = BotInfo.RefuseForgeAdmin;
-            txbRefuseForgeAdminReply.Text = BotInfo.RefuseForgeAdminReply;
-            chkRefuseForgeBot.Checked = BotInfo.RefuseForgeBot;
-            txbRefuseForgeBotReply.Text = BotInfo.RefuseForgeBotReply;
+            txbForgeMessageCmdBegin.Text = BotInfo.Config.ForgeMessageCmdBegin;
+            txbForgeMessageCmdNewLine.Text = BotInfo.Config.ForgeMessageCmdNewLine;
+            chkForgeMessageAppendBotMessageEnabled.Checked = BotInfo.Config.ForgeMessageAppendBotMessageEnabled;
+            chkForgeMessageAdminOnly.Checked = BotInfo.Config.ForgeMessageAdminOnly;
+            chkForgeMessageAdminDontAppend.Checked = BotInfo.Config.ForgeMessageAdminDontAppend;
+            txbForgeMessageAppendMessage.Text = BotInfo.Config.ForgeMessageAppendMessage;
+            chkRefuseForgeAdmin.Checked = BotInfo.Config.RefuseForgeAdmin;
+            txbRefuseForgeAdminReply.Text = BotInfo.Config.RefuseForgeAdminReply;
+            chkRefuseForgeBot.Checked = BotInfo.Config.RefuseForgeBot;
+            txbRefuseForgeBotReply.Text = BotInfo.Config.RefuseForgeBotReply;
         }
 
         public void SaveConfig()
         {
-            BotInfo.ForgeMessageCmdBegin = txbForgeMessageCmdBegin.Text;
-            BotInfo.ForgeMessageCmdNewLine = txbForgeMessageCmdNewLine.Text;
-            BotInfo.ForgeMessageAppendBotMessageEnabled = chkForgeMessageAppendBotMessageEnabled.Checked;
-            BotInfo.ForgeMessageAdminOnly = chkForgeMessageAdminOnly.Checked;
-            BotInfo.ForgeMessageAdminDontAppend = chkForgeMessageAdminDontAppend.Checked;
-            BotInfo.ForgeMessageAppendMessage = txbForgeMessageAppendMessage.Text;
-            BotInfo.RefuseForgeAdmin = chkRefuseForgeAdmin.Checked;
-            BotInfo.RefuseForgeAdminReply = txbRefuseForgeAdminReply.Text;
-            BotInfo.RefuseForgeBot = chkRefuseForgeBot.Checked;
-            BotInfo.RefuseForgeBotReply = txbRefuseForgeBotReply.Text;
+            BotInfo.Config.ForgeMessageCmdBegin = txbForgeMessageCmdBegin.Text;
+            BotInfo.Config.ForgeMessageCmdNewLine = txbForgeMessageCmdNewLine.Text;
+            BotInfo.Config.ForgeMessageAppendBotMessageEnabled = chkForgeMessageAppendBotMessageEnabled.Checked;
+            BotInfo.Config.ForgeMessageAdminOnly = chkForgeMessageAdminOnly.Checked;
+            BotInfo.Config.ForgeMessageAdminDontAppend = chkForgeMessageAdminDontAppend.Checked;
+            BotInfo.Config.ForgeMessageAppendMessage = txbForgeMessageAppendMessage.Text;
+            BotInfo.Config.RefuseForgeAdmin = chkRefuseForgeAdmin.Checked;
+            BotInfo.Config.RefuseForgeAdminReply = txbRefuseForgeAdminReply.Text;
+            BotInfo.Config.RefuseForgeBot = chkRefuseForgeBot.Checked;
+            BotInfo.Config.RefuseForgeBotReply = txbRefuseForgeBotReply.Text;
         }
 
         public void UpdateCache()

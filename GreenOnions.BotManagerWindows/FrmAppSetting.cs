@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using GreenOnions.BotMain;
 using GreenOnions.Utility;
-using GreenOnions.Utility.Helper;
 
 namespace GreenOnions.BotManagerWindows
 {
@@ -18,22 +17,22 @@ namespace GreenOnions.BotManagerWindows
             #endregion -- 基本设置 --
 
             #region -- 搜图设置 --
-            chkSearchPictureEnabled.Checked = BotInfo.SearchEnabled;  //是否启用搜图功能
+            chkSearchPictureEnabled.Checked = BotInfo.Config.SearchEnabled;  //是否启用搜图功能
             pnlSearchPicture.LoadConfig();
             #endregion -- 搜图设置 --
 
             #region -- 下载原图设置 --
-            chkOriginalPictureEnabled.Checked = BotInfo.OriginalPictureEnabled;
+            chkOriginalPictureEnabled.Checked = BotInfo.Config.OriginalPictureEnabled;
             pnlOriginalPicture.LoadConfig();
             #endregion -- 下载原图设置 --
 
             #region -- 色图设置 --
-            chkHPictureEnabled.Checked = BotInfo.HPictureEnabled;
+            chkHPictureEnabled.Checked = BotInfo.Config.HPictureEnabled;
             pnlHPicture.LoadConfig();
             #endregion -- 色图设置 --
 
             #region -- 翻译设置 --
-            chkTranslateEnabled.Checked = BotInfo.TranslateEnabled;
+            chkTranslateEnabled.Checked = BotInfo.Config.TranslateEnabled;
             pnlTranslate.LoadConfig();
             #endregion -- 翻译设置 --
 
@@ -42,21 +41,21 @@ namespace GreenOnions.BotManagerWindows
             #endregion -- 复读设置 --
 
             #region -- 进/退群消息设置 --
-            chkSendMemberJoinedMessage.Checked = BotInfo.SendMemberJoinedMessage;
-            chkSendMemberPositiveLeaveMessage.Checked = BotInfo.SendMemberPositiveLeaveMessage;
-            chkSendMemberBeKickedMessage.Checked = BotInfo.SendMemberBeKickedMessage;
-            txbMemberJoinedMessage.Text = BotInfo.MemberJoinedMessage;
-            txbMemberPositiveLeaveMessage.Text = BotInfo.MemberPositiveLeaveMessage;
-            txbMemberBeKickedMessage.Text = BotInfo.MemberBeKickedMessage;
+            chkSendMemberJoinedMessage.Checked = BotInfo.Config.SendMemberJoinedMessage;
+            chkSendMemberPositiveLeaveMessage.Checked = BotInfo.Config.SendMemberPositiveLeaveMessage;
+            chkSendMemberBeKickedMessage.Checked = BotInfo.Config.SendMemberBeKickedMessage;
+            txbMemberJoinedMessage.Text = BotInfo.Config.MemberJoinedMessage;
+            txbMemberPositiveLeaveMessage.Text = BotInfo.Config.MemberPositiveLeaveMessage;
+            txbMemberBeKickedMessage.Text = BotInfo.Config.MemberBeKickedMessage;
             #endregion  -- 进/退群消息设置 --
 
             #region -- 伪造消息 --
-            chkEnabledForgeMessage.Checked = BotInfo.ForgeMessageEnabled;
+            chkEnabledForgeMessage.Checked = BotInfo.Config.ForgeMessageEnabled;
             pnlForgeMessage.LoadConfig();
             #endregion -- 伪造消息 --
 
             #region -- RSS --
-            chkRssEnabled.Checked = BotInfo.RssEnabled;
+            chkRssEnabled.Checked = BotInfo.Config.RssEnabled;
             pnlRss.LoadConfig();
             #endregion  -- RSS --
 
@@ -71,22 +70,22 @@ namespace GreenOnions.BotManagerWindows
             #endregion -- 基本设置 --
 
             #region -- 搜图设置 --
-            BotInfo.SearchEnabled = chkSearchPictureEnabled.Checked;  //是否启用搜图功能
+            BotInfo.Config.SearchEnabled = chkSearchPictureEnabled.Checked;  //是否启用搜图功能
             pnlSearchPicture.SaveConfig();
             #endregion -- 搜图设置 --
 
             #region -- 下载原图设置 --
-            BotInfo.OriginalPictureEnabled = chkOriginalPictureEnabled.Checked;
+            BotInfo.Config.OriginalPictureEnabled = chkOriginalPictureEnabled.Checked;
             pnlOriginalPicture.SaveConfig();
             #endregion -- 下载原图设置 --
 
             #region -- 色图设置 --
-            BotInfo.HPictureEnabled = chkHPictureEnabled.Checked;
+            BotInfo.Config.HPictureEnabled = chkHPictureEnabled.Checked;
             pnlHPicture.SaveConfig();
             #endregion -- 色图设置 --
 
             #region -- 翻译设置 --
-            BotInfo.TranslateEnabled = chkTranslateEnabled.Checked;
+            BotInfo.Config.TranslateEnabled = chkTranslateEnabled.Checked;
             pnlTranslate.SaveConfig();
             #endregion  -- 翻译设置 --
 
@@ -96,36 +95,36 @@ namespace GreenOnions.BotManagerWindows
 
             #region -- 进/退群消息设置 --
 
-            BotInfo.SendMemberJoinedMessage = chkSendMemberJoinedMessage.Checked;
-            BotInfo.SendMemberPositiveLeaveMessage = chkSendMemberPositiveLeaveMessage.Checked;
-            BotInfo.SendMemberBeKickedMessage = chkSendMemberBeKickedMessage.Checked;
-            BotInfo.MemberJoinedMessage = txbMemberJoinedMessage.Text;
-            BotInfo.MemberPositiveLeaveMessage = txbMemberPositiveLeaveMessage.Text;
-            BotInfo.MemberBeKickedMessage = txbMemberBeKickedMessage.Text;
+            BotInfo.Config.SendMemberJoinedMessage = chkSendMemberJoinedMessage.Checked;
+            BotInfo.Config.SendMemberPositiveLeaveMessage = chkSendMemberPositiveLeaveMessage.Checked;
+            BotInfo.Config.SendMemberBeKickedMessage = chkSendMemberBeKickedMessage.Checked;
+            BotInfo.Config.MemberJoinedMessage = txbMemberJoinedMessage.Text;
+            BotInfo.Config.MemberPositiveLeaveMessage = txbMemberPositiveLeaveMessage.Text;
+            BotInfo.Config.MemberBeKickedMessage = txbMemberBeKickedMessage.Text;
 
             #endregion  -- 进/退群消息设置 --
 
             #region -- 伪造消息 --
-            BotInfo.ForgeMessageEnabled = chkEnabledForgeMessage.Checked;
+            BotInfo.Config.ForgeMessageEnabled = chkEnabledForgeMessage.Checked;
             pnlForgeMessage.SaveConfig();
             #endregion -- 伪造消息 --
 
             #region -- RSS --
-            BotInfo.RssEnabled = chkRssEnabled.Checked;
+            BotInfo.Config.RssEnabled = chkRssEnabled.Checked;
             pnlRss.SaveConfig();
             #endregion -- RSS --
 
-            ConfigHelper.SaveConfigFile();
+            BotInfo.SaveConfigFile();
 
             pnlSearchPicture.UpdateCache();
 
+            WorkingTimeRecorder.UpdateWorkingTime();
+
             string regexMsg = MessageHandler.UpdateRegexs();
-            if (regexMsg == null)
+            if (regexMsg is null)
                 Close();
             else
                 MessageBox.Show($"应用{regexMsg}命令失败，请检查命令的正则表达式格式。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            WorkingTimeRecorder.UpdateWorkingTime();
         }
 
 

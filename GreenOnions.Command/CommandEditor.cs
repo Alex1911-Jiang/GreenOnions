@@ -1,10 +1,10 @@
-﻿using GreenOnions.Utility;
-using GreenOnions.Utility.Helper;
-using GreenOnions.Utility.Items;
-using System.Collections;
-using System.Linq;
+﻿using System.Collections;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using GreenOnions.Interface;
+using GreenOnions.Interface.Configs;
+using GreenOnions.Interface.Items;
+using GreenOnions.Utility;
 
 namespace GreenOnions.Command
 {
@@ -50,9 +50,9 @@ namespace GreenOnions.Command
                     if (!string.IsNullOrWhiteSpace(commandBody))
                     {
                         PropertyInfo? prop = FindProperty(commandBody);
-                        if (prop != null)
+                        if (prop is not null)
                         {
-                            object originalVal = prop.GetValue(null)!;
+                            object originalVal = prop.GetValue(BotInfo.Config)!;
                             string strValue;
                             string strAddDescription = string.Empty;
                             if (!(originalVal is string) && originalVal is IEnumerable enu)
@@ -85,9 +85,9 @@ namespace GreenOnions.Command
                             string propValue = commandBody[(firstEqualIndex + 1)..].TrimEnd();
 
                             PropertyInfo? prop = FindProperty(propName);
-                            if (prop != null)
+                            if (prop is not null)
                             {
-                                object originalVal = prop.GetValue(null)!;
+                                object originalVal = prop.GetValue(BotInfo.Config)!;
                                 Type originalType = originalVal.GetType();
                                 try
                                 {
@@ -97,23 +97,23 @@ namespace GreenOnions.Command
 
                                         string[] elements = propValue.Split(';');
                                         if (elementType == typeof(long))
-                                            prop.SetValue(null, elements.Select(s => Convert.ToInt64(s)).ToList());
+                                            prop.SetValue(BotInfo.Config, elements.Select(s => Convert.ToInt64(s)).ToList());
                                         else
-                                            prop.SetValue(null, elements);
+                                            prop.SetValue(BotInfo.Config, elements);
                                         propValue = $"\r\n{string.Join(";\r\n", elements)}";
                                     }
                                     else if (prop.PropertyType.IsEnum)
                                     {
                                         object enu = Enum.Parse(originalType, propValue);
-                                        prop.SetValue(null, enu);
+                                        prop.SetValue(BotInfo.Config, enu);
                                         propValue = enu.ToString()!;
                                     }
                                     else
                                     {
-                                        prop.SetValue(null, Convert.ChangeType(propValue, originalType));
+                                        prop.SetValue(BotInfo.Config, Convert.ChangeType(propValue, originalType));
                                     }
                                     string strUpdateRegexMessage = UpdateRegex();
-                                    ConfigHelper.SaveConfigFile();
+                                    BotInfo.SaveConfigFile();
                                     return $"属性<{prop.Name}>值已成功设置为:{propValue}。{strUpdateRegexMessage}";
                                 }
                                 catch (Exception ex)
@@ -121,7 +121,7 @@ namespace GreenOnions.Command
                                     if (originalVal is IEnumerable)
                                     {
                                         Type? elementType = GetEnumerableType(originalType);
-                                        if (elementType != null)
+                                        if (elementType is not null)
                                         {
                                             string typeChineseName = elementType.Name;
                                             if (_typeDescription.ContainsKey(elementType.Name))
@@ -180,7 +180,7 @@ namespace GreenOnions.Command
                     if (!string.IsNullOrWhiteSpace(commandBody))
                     {
                         PropertyInfo? prop = FindProperty(commandBody);
-                        if (prop != null)
+                        if (prop is not null)
                         {
                             string strEnumValuesInfo = string.Empty;
                             if (prop.PropertyType.IsEnum)
@@ -192,7 +192,7 @@ namespace GreenOnions.Command
                             }
 
                             PropertyChineseNameAttribute? attr = GetDescription(prop);
-                            if (attr != null)
+                            if (attr is not null)
                             {
                                 return $"属性:<{prop.Name}>，\r\n别名:<{attr.ChineseName}>，\r\n隶属于分组:<{attr.NodeName}>，\r\n描述信息为:\"{attr.Description}\"\r\n{strEnumValuesInfo}";
                             }
@@ -203,21 +203,22 @@ namespace GreenOnions.Command
                 else if (bRss)
                 {
                     List<string> lstRss = new List<string>();
-                    for (int i = 0; i < BotInfo.RssSubscription.Count; i++)
+                    RssSubscriptionItem[] rssSubscription = BotInfo.Config.RssSubscription.ToArray();
+                    for (int i = 0; i < rssSubscription.Length; i++)
                     {
                         lstRss.Add($"{{\r\n" +
-                            $"    Url(订阅地址)=\"{BotInfo.RssSubscription[i].Url}\",\r\n" +
-                            $"    Remark(别名)=\"{BotInfo.RssSubscription[i].Remark}\",\r\n" +
-                            $"    ForwardGroups(转发到群)=\"{string.Join(';', BotInfo.RssSubscription[i].ForwardGroups == null ? new long[0] : BotInfo.RssSubscription[i].ForwardGroups)}\",\r\n" +
-                            $"    ForwardQQs(转发到好友)=\"{string.Join(';', BotInfo.RssSubscription[i].ForwardQQs == null ? new long[0] : BotInfo.RssSubscription[i].ForwardQQs)}\",\r\n" +
-                            $"    Translate(是否翻译)=\"{BotInfo.RssSubscription[i].Translate}\",\r\n" +
-                            $"    TranslateFromTo(是否指定翻译语言)=\"{BotInfo.RssSubscription[i].TranslateFromTo}\",\r\n" +
-                            $"    TranslateFrom(从什么语言翻译)=\"{BotInfo.RssSubscription[i].TranslateFromTo}\",\r\n" +
-                            $"    TranslateTo(翻译为什么语言)=\"{BotInfo.RssSubscription[i].TranslateTo}\",\r\n" +
-                            $"    AtAll(是否@所有人)=\"{BotInfo.RssSubscription[i].AtAll}\",\r\n" +
-                            $"    SendByForward(是否以合并转发方式发送)=\"{BotInfo.RssSubscription[i].SendByForward}\",\r\n" +
-                            $"    FilterMode(过滤模式 0=不过滤, 1=包含任一, 2=包含所有, 3=不包含)=\"{BotInfo.RssSubscription[i].FilterMode}\",\r\n" +
-                            $"    FilterKeyWords(过滤关键词)=\"{string.Join(';', BotInfo.RssSubscription[i].FilterKeyWords == null ? new string[0] : BotInfo.RssSubscription[i].FilterKeyWords)}\"," +
+                            $"    Url(订阅地址)=\"{rssSubscription[i].Url}\",\r\n" +
+                            $"    Remark(别名)=\"{rssSubscription[i].Remark}\",\r\n" +
+                            $"    ForwardGroups(转发到群)=\"{string.Join(';', rssSubscription[i].ForwardGroups is null ? new long[0] : rssSubscription[i].ForwardGroups!)}\",\r\n" +
+                            $"    ForwardQQs(转发到好友)=\"{string.Join(';', rssSubscription[i].ForwardQQs is null ? new long[0] : rssSubscription[i].ForwardQQs!)}\",\r\n" +
+                            $"    Translate(是否翻译)=\"{rssSubscription[i].Translate}\",\r\n" +
+                            $"    TranslateFromTo(是否指定翻译语言)=\"{rssSubscription[i].TranslateFromTo}\",\r\n" +
+                            $"    TranslateFrom(从什么语言翻译)=\"{rssSubscription[i].TranslateFromTo}\",\r\n" +
+                            $"    TranslateTo(翻译为什么语言)=\"{rssSubscription[i].TranslateTo}\",\r\n" +
+                            $"    AtAll(是否@所有人)=\"{rssSubscription[i].AtAll}\",\r\n" +
+                            $"    SendByForward(是否以合并转发方式发送)=\"{rssSubscription[i].SendByForward}\",\r\n" +
+                            $"    FilterMode(过滤模式 0=不过滤, 1=包含任一, 2=包含所有, 3=不包含)=\"{rssSubscription[i].FilterMode}\",\r\n" +
+                            $"    FilterKeyWords(过滤关键词)=\"{string.Join(';', rssSubscription[i].FilterKeyWords is null ? new string[0] : rssSubscription[i].FilterKeyWords!)}\"," +
                             $"\r\n}}");
                     }
                     return $"当前存在以下RSS订阅项:\r\n{string.Join(",\r\n", lstRss)}";
@@ -242,7 +243,7 @@ namespace GreenOnions.Command
                     Match matchUrl = regexUrl.Match(commandBody);
                     if (matchUrl.Groups["Url"].Success)  //必须有Url
                     {
-                        if (BotInfo.RssSubscription.Where(r => r.Url == matchUrl.Groups["Url"].Value).Count() > 0)
+                        if (BotInfo.Config.RssSubscription.Where(r => r.Url == matchUrl.Groups["Url"].Value).Count() > 0)
                         {
                             return $"添加订阅失败, 已存在地址为:\r\n{matchUrl.Groups["Url"].Value}\r\n的订阅项";
                         }
@@ -293,10 +294,10 @@ namespace GreenOnions.Command
                         if (matchFilterKeyWords.Groups["FilterKeyWords"].Success)
                             rssItem.FilterKeyWords = matchFilterKeyWords.Groups["FilterKeyWords"].Value.Split(";");
 
-                        var rssList = BotInfo.RssSubscription;
+                        var rssList = BotInfo.Config.RssSubscription;
                         rssList.Add(rssItem);
-                        BotInfo.RssSubscription = rssList;
-                        ConfigHelper.SaveConfigFile();
+                        BotInfo.Config.RssSubscription = rssList;
+                        BotInfo.SaveConfigFile();
 
                         return $"已成功订阅:<{rssItem.Remark}>";
                     }
@@ -308,15 +309,15 @@ namespace GreenOnions.Command
                 else if (bRemoveRss)
                 {
                     string commandBody = message.Substring("--removerss".Length).Trim();
-                    var rssList = BotInfo.RssSubscription;
-                    RssSubscriptionItem rssItem = rssList.Where(rss => rss.Remark == commandBody).FirstOrDefault();
-                    if (rssItem == null)
-                        rssItem = rssList.Where(rss => rss.Url == commandBody).FirstOrDefault();
-                    if (rssItem != null)
+                    var rssList = BotInfo.Config.RssSubscription;
+                    RssSubscriptionItem rssItem = rssList.FirstOrDefault(rss => rss.Remark == commandBody);
+                    if (rssItem is null)
+                        rssItem = rssList.FirstOrDefault(rss => rss.Url == commandBody);
+                    if (rssItem is not null)
                     {
                         rssList.Remove(rssItem);
-                        BotInfo.RssSubscription = rssList;
-                        ConfigHelper.SaveConfigFile();
+                        BotInfo.Config.RssSubscription = rssList;
+                        BotInfo.SaveConfigFile();
                         return $"订阅项:<{rssItem.Remark}>已成功移除";
                     }
                     else
@@ -330,7 +331,7 @@ namespace GreenOnions.Command
 
         private static Type? GetEnumerableType(Type type)
         {
-            if (type == null)
+            if (type is null)
                 return null;
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
@@ -338,7 +339,7 @@ namespace GreenOnions.Command
 
             var iface = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)).FirstOrDefault();
 
-            if (iface == null)
+            if (iface is null)
                 return null;
 
             return GetEnumerableType(iface);
@@ -354,7 +355,7 @@ namespace GreenOnions.Command
                     return props[i];
                 }
                 PropertyChineseNameAttribute? chnNameAttr = props[i].GetCustomAttribute<PropertyChineseNameAttribute>();
-                if (chnNameAttr != null)
+                if (chnNameAttr is not null)
                 {
                     if (chnNameAttr.ChineseName == propName)
                     {
@@ -368,7 +369,7 @@ namespace GreenOnions.Command
         private static PropertyChineseNameAttribute? GetDescription(PropertyInfo prop)
         {
             PropertyChineseNameAttribute? chnNameAttr = prop.GetCustomAttribute<PropertyChineseNameAttribute>();
-            if (chnNameAttr != null)
+            if (chnNameAttr is not null)
                 return chnNameAttr;
             return null;
         }
@@ -376,11 +377,11 @@ namespace GreenOnions.Command
         private static Dictionary<PropertyInfo, PropertyChineseNameAttribute> FindPropertysByNodeName(string nodeName)
         {
             Dictionary<PropertyInfo, PropertyChineseNameAttribute> propertyInfos = new Dictionary<PropertyInfo, PropertyChineseNameAttribute>();
-            PropertyInfo[] props = typeof(BotInfo).GetProperties();
+            PropertyInfo[] props = typeof(IBotConfig).GetProperties();
             for (int i = 0; i < props.Length; i++)
             {
                 PropertyChineseNameAttribute? chnNameAttr = props[i].GetCustomAttribute<PropertyChineseNameAttribute>();
-                if (chnNameAttr != null)
+                if (chnNameAttr is not null)
                 {
                     if (string.IsNullOrWhiteSpace(nodeName) || chnNameAttr.NodeName == nodeName)
                         propertyInfos.Add(props[i], chnNameAttr);

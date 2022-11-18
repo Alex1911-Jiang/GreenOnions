@@ -32,7 +32,7 @@ namespace GreenOnions.Utility.Helper
             {
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    if (headers != null)
+                    if (headers is not null)
                     {
                         foreach (var header in headers)
                             httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
@@ -73,11 +73,11 @@ namespace GreenOnions.Utility.Helper
                 //request.ContentType = "application/x-www-form-urlencoded";
 
                 //往头部加入自定义验证信息 Authorization
-                if (headers != null)
+                if (headers is not null)
                 {
                     var property = typeof(WebHeaderCollection).GetProperty("InnerCollection", BindingFlags.Instance | BindingFlags.NonPublic);
 
-                    if (property != null)
+                    if (property is not null)
                     {
                         //往头部加信息
                         foreach (KeyValuePair<string, string> header in headers)

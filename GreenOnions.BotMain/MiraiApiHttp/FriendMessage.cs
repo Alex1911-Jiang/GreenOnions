@@ -24,7 +24,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             int quoteId = (e.Chain[0] as SourceMessage).Id;
             bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(e.Sender.Id, e.Sender.Name), null, async outMsg =>
              {
-                if (outMsg != null && outMsg.Count > 0)
+                if (outMsg is not null && outMsg.Count > 0)
                 {
                     int iRevokeTime = outMsg.RevokeTime;
                     var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Friend);
@@ -46,14 +46,14 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
         private bool CheckPreconditions(Mirai.CSharp.HttpApi.Models.IFriendInfo e)
         {
-            if (BotInfo.BannedUser.Contains(e.Id))
+            if (BotInfo.Config.BannedUser.Contains(e.Id))
             {
                 LogHelper.WriteInfoLog($"{e.Id}在黑名单中, 不响应私聊消息");
                 return false;
             }
-            if (BotInfo.DebugMode)
-                if (BotInfo.DebugReplyAdminOnly)
-                    if (!BotInfo.AdminQQ.Contains(e.Id))
+            if (BotInfo.Config.DebugMode)
+                if (BotInfo.Config.DebugReplyAdminOnly)
+                    if (!BotInfo.Config.AdminQQ.Contains(e.Id))
                         return false;  //调试模式不响应非管理员消息
             return true;
         }

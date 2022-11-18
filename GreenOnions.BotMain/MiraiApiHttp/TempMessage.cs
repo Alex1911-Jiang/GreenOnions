@@ -24,7 +24,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             int quoteId = (e.Chain[0] as SourceMessage).Id;
             bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(e.Sender.Id, e.Sender.Name), e.Sender.Group.Id, async outMsg =>  //临时消息按群设置记撤回时间
             {
-                if (outMsg != null && outMsg.Count > 0)
+                if (outMsg is not null && outMsg.Count > 0)
                 {
                     int iRevokeTime = outMsg.RevokeTime;
                     var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Temp);
@@ -46,15 +46,15 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
         private bool CheckPreconditions(Mirai.CSharp.HttpApi.Models.IGroupMemberInfo e)
         {
-            if (BotInfo.BannedGroup.Contains(e.Group.Id) ||
-                BotInfo.BannedUser.Contains(e.Id))
+            if (BotInfo.Config.BannedGroup.Contains(e.Group.Id) ||
+                BotInfo.Config.BannedUser.Contains(e.Id))
             {
                 LogHelper.WriteInfoLog($"QQ:{e.Id}或群:{e.Group.Id}在黑名单中, 不响应临时消息");
                 return false;
             }
-            if (BotInfo.DebugMode)
-                if (BotInfo.DebugReplyAdminOnly)
-                    if (!BotInfo.AdminQQ.Contains(e.Id))
+            if (BotInfo.Config.DebugMode)
+                if (BotInfo.Config.DebugReplyAdminOnly)
+                    if (!BotInfo.Config.AdminQQ.Contains(e.Id))
                         return false;  //调试模式不响应非管理员消息
             return true;
         }

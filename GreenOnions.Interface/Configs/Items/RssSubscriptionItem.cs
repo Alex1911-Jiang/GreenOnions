@@ -1,23 +1,26 @@
-﻿namespace GreenOnions.Utility.Items
+﻿namespace GreenOnions.Interface.Items
 {
+    /// <summary>
+    /// 表示一个RSS订阅对象
+    /// </summary>
     public class RssSubscriptionItem
     {
         /// <summary>
         /// 订阅地址
         /// </summary>
-        public string Url { get; set; }
+        public string? Url { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
-        public string Remark { get; set; }
+        public string? Remark { get; set; }
         /// <summary>
         /// 转发群组
         /// </summary>
-        public long[] ForwardGroups { get; set; }
+        public long[]? ForwardGroups { get; set; }
         /// <summary>
         /// 转发好友
         /// </summary>
-        public long[] ForwardQQs { get; set; }
+        public long[]? ForwardQQs { get; set; }
         /// <summary>
         /// 翻译
         /// </summary>
@@ -29,11 +32,11 @@
         /// <summary>
         /// 翻译从
         /// </summary>
-        public string TranslateFrom { get; set; }
+        public string? TranslateFrom { get; set; }
         /// <summary>
         /// 翻译到
         /// </summary>
-        public string TranslateTo { get; set; }
+        public string? TranslateTo { get; set; }
         /// <summary>
         /// 以合并转发方式发送
         /// </summary>
@@ -49,6 +52,6 @@
         /// <summary>
         /// 过滤词
         /// </summary>
-        public string[] FilterKeyWords { get; set; }
+        public string[]? FilterKeyWords { get; set; }
     }
 }

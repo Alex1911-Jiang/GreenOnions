@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Reflection;
+using GreenOnions.Interface.Configs;
 
-namespace GreenOnions.Interface
+namespace GreenOnions.Interface.Helpers
 {
     /// <summary>
     /// 属性帮助类
@@ -29,7 +31,7 @@ namespace GreenOnions.Interface
                             replacedStr.Replace(tag, prop.Value.AnyToString());
                     }
 
-                    if (customTags != null)
+                    if (customTags is not null)
                     {
                         foreach (var tag in customTags)
                             replacedStr = replacedStr.Replace($"<{tag.Key}>", tag.Value);
@@ -40,29 +42,6 @@ namespace GreenOnions.Interface
             return originalMessage;
         }
 
-        /// <summary>
-        /// 替换消息中的标签为属性值
-        /// </summary>
-        /// <param name="originalMessage">原始消息</param>
-        /// <param name="propertiesValue">属性集</param>
-        /// <param name="customTags">自定义标签</param>
-        /// <returns>替换标签后的消息</returns>
-        public static string ReplaceGreenOnionsTags(this string originalMessage, IDictionary<string, object> propertiesValue, params KeyValuePair<string, string>[] customTags)
-        {
-            foreach (KeyValuePair<string, object> prop in propertiesValue)
-            {
-                string tag = $"<{prop.Key}>";
-                if (originalMessage.Contains(tag))
-                    originalMessage = originalMessage.Replace(tag, prop.Value.AnyToString());
-            }
-
-            if (customTags != null)
-            {
-                foreach (var tag in customTags)
-                    originalMessage = originalMessage.Replace($"<{tag.Key}>", tag.Value);
-            }
-            return originalMessage;
-        }
 
         /// <summary>
         /// 任意类型转字符串

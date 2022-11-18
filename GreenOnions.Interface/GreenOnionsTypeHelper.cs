@@ -40,7 +40,7 @@ namespace GreenOnions.Interface
         /// </summary>
         /// <param name="ms"></param>
         /// <returns></returns>
-        public static string ToBase64(this MemoryStream ms)
+        public static string? ToBase64(this MemoryStream ms)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace GreenOnions.Interface
                 ms.Dispose();
                 return base64Img;
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }
@@ -63,13 +63,13 @@ namespace GreenOnions.Interface
         /// </summary>
         /// <param name="base64"></param>
         /// <returns></returns>
-        public static MemoryStream Base64ToMemoryStream(this string base64)
+        public static MemoryStream? Base64ToMemoryStream(this string base64)
         {
             try
             {
                 return new MemoryStream(Convert.FromBase64String(base64));
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }

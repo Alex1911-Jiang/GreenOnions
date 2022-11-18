@@ -1,9 +1,9 @@
-﻿using GreenOnions.Interface;
-using GreenOnions.Utility;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using GreenOnions.Interface;
+using GreenOnions.Interface.Configs.Enums;
+using GreenOnions.Utility;
 
 namespace GreenOnions.Translate
 {
@@ -14,7 +14,7 @@ namespace GreenOnions.Translate
             try
             {
                 string text = msg.Substring(regexTranslateToChinese.Matches(msg).First().Value.Length);
-                string translateResult = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(text) : YouDaoTranslateHelper.TranslateToChinese(text));
+                string translateResult = await (BotInfo.Config.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(text) : YouDaoTranslateHelper.TranslateToChinese(text));
                 SendMessage(translateResult);
             }
             catch (Exception ex)
@@ -52,7 +52,7 @@ namespace GreenOnions.Translate
                     {
                         string from = match.Groups["from"].Value;
                         string to = match.Groups["to"].Value;
-                        translateResult = await (BotInfo.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(text, from, to) : YouDaoTranslateHelper.TranslateFromTo(text, from, to));
+                        translateResult = await (BotInfo.Config.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(text, from, to) : YouDaoTranslateHelper.TranslateFromTo(text, from, to));
                     }
                     SendMessage(translateResult);
                 }

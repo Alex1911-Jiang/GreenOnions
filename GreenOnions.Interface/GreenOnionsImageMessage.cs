@@ -5,7 +5,7 @@
     /// </summary>
     public record GreenOnionsImageMessage : GreenOnionsBaseMessage
     {
-        private string _base64Str;
+        private string? _base64Str;
         /// <summary>
         /// 图片消息
         /// </summary>
@@ -24,6 +24,9 @@
             Url = url;
         }
 
+        /// <summary>
+        /// 图片的内存字节流
+        /// </summary>
         public MemoryStream? MemoryStream
         {
             get
@@ -34,7 +37,7 @@
         /// <summary>
         /// 获取图片的Base64字符串
         /// </summary>
-        public string Base64Str => _base64Str;
+        public string? Base64Str => _base64Str;
         /// <summary>
         /// 获取或设置图片的地址
         /// </summary>

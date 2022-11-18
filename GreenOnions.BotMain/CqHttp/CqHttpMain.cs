@@ -51,22 +51,20 @@ namespace GreenOnions.BotMain.CqHttp
 
                 service.Event.OnClientConnect += async (eventType, eventArgs) =>
                 {
-                    BotInfo.QQId = eventArgs.SoraApi.GetLoginUserId();
+                    BotInfo.Config.QQId = eventArgs.SoraApi.GetLoginUserId();
 
                     List<FriendInfo> IFriendInfos = (await eventArgs.SoraApi.GetFriendList()).friendList;
                     string nickname = "未知";
 
                     var self = IFriendInfos.Where(q => q.UserId == qqId).FirstOrDefault();
-                    if (self != null)
+                    if (self is not null)
                         nickname = self.Nick;
 
                     ConnectedEvent?.Invoke(true, nickname);
 
                     BotInfo.IsLogin = true;
 
-
-                    Dictionary<string, object> props = AssemblyHelper.GetAllPropertiesValue();
-                    GreenOnionsApi greenOnionsApi = new GreenOnionsApi(new ReadOnlyDictionary<string, object>(props),
+                    GreenOnionsApi greenOnionsApi = new GreenOnionsApi(
                         async (targetId, msg) => (await eventArgs.SoraApi.SendPrivateMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
                         async (targetId, msg) => (await eventArgs.SoraApi.SendGroupMessage(targetId, msg.ToCqHttpMessages(null))).messageId,
                         async (targetId, targetGroup, msg) => (await eventArgs.SoraApi.SendTemporaryMessage(targetId, targetGroup, msg.ToCqHttpMessages(null))).messageId,
@@ -85,7 +83,7 @@ namespace GreenOnions.BotMain.CqHttp
                         throw;
                     }
 
-                    PluginManager.Connected(BotInfo.QQId, greenOnionsApi);
+                    PluginManager.Connected(BotInfo.Config.QQId, greenOnionsApi);
                 };
 
                 await Task.Run(() =>

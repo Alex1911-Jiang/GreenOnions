@@ -43,7 +43,7 @@ namespace GreenOnions.BotManagerWindows
 
         public new void Show()
         {
-            if (BotInfo.DebugMode && !IsHandleCreated)
+            if (BotInfo.Config.DebugMode && !IsHandleCreated)
                 base.CreateHandle();
             if (!Visible)
                 base.Show();
@@ -98,7 +98,7 @@ namespace GreenOnions.BotManagerWindows
         private void SaveCookie(WebBrowser browser)
         {
             string cookieStr = browser.Document.Cookie;
-            if (cookieStr == null)
+            if (cookieStr is null)
             {
                 txbMessage.AppendText($"网站{browser.Url.Host}没有需要保存的Cookie\r\n");
                 return;
@@ -118,13 +118,13 @@ namespace GreenOnions.BotManagerWindows
             {
                 unlock = false;
 
-                if (browser == null)
+                if (browser is null)
                     throw new ArgumentNullException(nameof(browser));
 
                 HtmlDocument doc = new HtmlDocument();
                 doc.LoadHtml(document);
                 var cloudflareHtml = doc.DocumentNode.SelectNodes("/html");
-                if (cloudflareHtml != null && (cloudflareHtml[0].InnerText.Contains("Please Wait") || cloudflareHtml[0].InnerText.Contains("Cloudflare")))
+                if (cloudflareHtml is not null && (cloudflareHtml[0].InnerText.Contains("Please Wait") || cloudflareHtml[0].InnerText.Contains("Cloudflare")))
                 {
                     txbMessage.AppendText($"当前请求地址为: {browser.Url.ToString()}\r\n");
                     waitTime += nowWaitTime;

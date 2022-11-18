@@ -12,10 +12,10 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         public void LoadConfig()
         {
-            txbOriginalPictureCommand.Text = BotInfo.OriginalPictureCommand;
-            txbOriginalPictureDownloadingReply.Text = BotInfo.OriginalPictureDownloadingReply;
-            chkOriginalPictureCheckPornEnabled.Checked = BotInfo.OriginalPictureCheckPornEnabled;  //是否在下载原图启用鉴黄
-            switch (BotInfo.OriginalPictureCheckPornEvent)  //鉴黄不通过的行为
+            txbOriginalPictureCommand.Text = BotInfo.Config.OriginalPictureCommand;
+            txbOriginalPictureDownloadingReply.Text = BotInfo.Config.OriginalPictureDownloadingReply;
+            chkOriginalPictureCheckPornEnabled.Checked = BotInfo.Config.OriginalPictureCheckPornEnabled;  //是否在下载原图启用鉴黄
+            switch (BotInfo.Config.OriginalPictureCheckPornEvent)  //鉴黄不通过的行为
             {
                 case 0:
                     rdoOriginalPictureCheckPornSendByForward.Checked = true;
@@ -27,18 +27,18 @@ namespace GreenOnions.BotManagerWindows.Controls
                     rdoOriginalPictureCheckPornReply.Checked = true;
                     break;
             }
-            txbOriginalPictureCheckPornIllegalReply.Text = BotInfo.OriginalPictureCheckPornIllegalReply;
-            txbOriginalPictureCheckPornErrorReply.Text = BotInfo.OriginalPictureCheckPornErrorReply;
+            txbOriginalPictureCheckPornIllegalReply.Text = BotInfo.Config.OriginalPictureCheckPornIllegalReply;
+            txbOriginalPictureCheckPornErrorReply.Text = BotInfo.Config.OriginalPictureCheckPornErrorReply;
         }
 
         public void SaveConfig()
         {
-            BotInfo.OriginalPictureCommand = txbOriginalPictureCommand.Text;
-            BotInfo.OriginalPictureDownloadingReply = txbOriginalPictureDownloadingReply.Text;
-            BotInfo.OriginalPictureCheckPornEnabled = chkOriginalPictureCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
-            BotInfo.OriginalPictureCheckPornEvent = Convert.ToInt32(pnlOriginalPictureCheckPornEvent.Controls.OfType<RadioButton>().Where(x => x.Checked).First().Tag);
-            BotInfo.OriginalPictureCheckPornIllegalReply = txbOriginalPictureCheckPornIllegalReply.Text;
-            BotInfo.OriginalPictureCheckPornErrorReply = txbOriginalPictureCheckPornErrorReply.Text;
+            BotInfo.Config.OriginalPictureCommand = txbOriginalPictureCommand.Text;
+            BotInfo.Config.OriginalPictureDownloadingReply = txbOriginalPictureDownloadingReply.Text;
+            BotInfo.Config.OriginalPictureCheckPornEnabled = chkOriginalPictureCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
+            BotInfo.Config.OriginalPictureCheckPornEvent = Convert.ToInt32(pnlOriginalPictureCheckPornEvent.Controls.OfType<RadioButton>().Where(x => x.Checked).First().Tag);
+            BotInfo.Config.OriginalPictureCheckPornIllegalReply = txbOriginalPictureCheckPornIllegalReply.Text;
+            BotInfo.Config.OriginalPictureCheckPornErrorReply = txbOriginalPictureCheckPornErrorReply.Text;
         }
 
         public void UpdateCache()

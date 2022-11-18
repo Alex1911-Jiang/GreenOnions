@@ -36,7 +36,7 @@ namespace GreenOnions.BotMain.CqHttp
                     else if (miraiMessage[i].Data is TextSegment textMsg)
                         greenOnionsMessages.Add(textMsg.Content);
                     else if (miraiMessage[i].Data is ImageSegment imageMsg)
-                        greenOnionsMessages.Add(new GreenOnionsImageMessage(imageMsg.Url));
+                        greenOnionsMessages.Add(new GreenOnionsImageMessage(ImageHelper.ReplaceGroupUrl(imageMsg.Url)));
                     else if (miraiMessage[i].Data is FaceSegment faceMsg)
                         greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.ToString()));
                 }
@@ -56,8 +56,11 @@ namespace GreenOnions.BotMain.CqHttp
 
         public static MessageBody ToCqHttpMessages(this GreenOnionsMessages greenOnionsMessage, int? RelpyId)
         {
+            if (!greenOnionsMessage.IsGreenOnionsCommand)
+                greenOnionsMessage.ReplaceGreenOnionsStringTags();
+
             MessageBody cqHttpMessages = new MessageBody();
-            if (greenOnionsMessage.Reply && RelpyId != null)
+            if (greenOnionsMessage.Reply && RelpyId is not null)
                 cqHttpMessages.Add(SoraSegment.Reply(RelpyId.Value));
 
             for (int i = 0; i < greenOnionsMessage.Count; i++)
@@ -85,13 +88,13 @@ namespace GreenOnions.BotMain.CqHttp
                         for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                         {
                             var itemMsg = ToCqHttpMessages(forwardMsg.ItemMessages[i].itemMessage, RelpyId);
-                            if (itemMsg != null)
+                            if (itemMsg is not null)
                                 cqHttpMessages.AddRange(itemMsg);
                         }
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsVoiceMessage voiceMsg)
                     {
-                        cqHttpMessages.Add(SoraSegment.Record(voiceMsg.Url == null ? voiceMsg.FileName : voiceMsg.Url));
+                        cqHttpMessages.Add(SoraSegment.Record(voiceMsg.Url is null ? voiceMsg.FileName : voiceMsg.Url));
                     }
                 }
                 catch (Exception ex)

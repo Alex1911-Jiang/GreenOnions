@@ -1,7 +1,6 @@
 ﻿using System.Data;
-using GreenOnions.BotManagerWindows.Controls;
+using GreenOnions.Interface.Items;
 using GreenOnions.Utility;
-using GreenOnions.Utility.Items;
 
 namespace GreenOnions.BotManagerWindows.Controls
 {
@@ -14,17 +13,17 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         public void LoadConfig()
         {
-            if (BotInfo.RssSubscription != null)
+            if (BotInfo.Config.RssSubscription is not null)
             {
                 pnlRssSubscriptionList.Controls.Remove(btnAddRssSubscription);
-                foreach (RssSubscriptionItem item in BotInfo.RssSubscription)
+                foreach (RssSubscriptionItem item in BotInfo.Config.RssSubscription)
                 {
                     CtrlRssItem ctrlRssItem = new CtrlRssItem();
                     ctrlRssItem.Width = RssItemCtrlWidth;
                     ctrlRssItem.RssSubscriptionUrl = item.Url;
                     ctrlRssItem.RssRemark = item.Remark;
-                    ctrlRssItem.RssForwardGroups = item.ForwardGroups == null ? new long[0] : item.ForwardGroups;
-                    ctrlRssItem.RssForwardQQs = item.ForwardQQs == null ? new long[0] : item.ForwardQQs;
+                    ctrlRssItem.RssForwardGroups = item.ForwardGroups is null ? new long[0] : item.ForwardGroups;
+                    ctrlRssItem.RssForwardQQs = item.ForwardQQs is null ? new long[0] : item.ForwardQQs;
                     ctrlRssItem.RssTranslate = item.Translate;
                     ctrlRssItem.RssTranslateFromTo = item.TranslateFromTo;
                     ctrlRssItem.RssTranslateFrom = item.TranslateFrom;
@@ -38,14 +37,14 @@ namespace GreenOnions.BotManagerWindows.Controls
                 }
                 pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
             }
-            chkRssSendLiveCover.Checked = BotInfo.RssSendLiveCover;
-            txbReadRssInterval.Text = BotInfo.ReadRssInterval.ToString();
-            chkRssParallel.Checked = BotInfo.RssParallel;
+            chkRssSendLiveCover.Checked = BotInfo.Config.RssSendLiveCover;
+            txbReadRssInterval.Text = BotInfo.Config.ReadRssInterval.ToString();
+            chkRssParallel.Checked = BotInfo.Config.RssParallel;
         }
 
         public void SaveConfig()
         {
-            BotInfo.RssSubscription = pnlRssSubscriptionList.Controls.OfType<CtrlRssItem>().Select(i => new RssSubscriptionItem()
+            BotInfo.Config.RssSubscription = pnlRssSubscriptionList.Controls.OfType<CtrlRssItem>().Select(i => new RssSubscriptionItem()
             {
                 Url = i.RssSubscriptionUrl,
                 Remark = i.RssRemark,
@@ -59,10 +58,10 @@ namespace GreenOnions.BotManagerWindows.Controls
                 SendByForward = i.RssSendByForward,
                 FilterMode = i.RssFilterMode,
                 FilterKeyWords = i.RssFilterKeyWords,
-            }).ToList();
-            BotInfo.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
-            BotInfo.RssSendLiveCover = chkRssSendLiveCover.Checked;
-            BotInfo.RssParallel = chkRssParallel.Checked;
+            }).ToHashSet();
+            BotInfo.Config.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
+            BotInfo.Config.RssSendLiveCover = chkRssSendLiveCover.Checked;
+            BotInfo.Config.RssParallel = chkRssParallel.Checked;
         }
 
         public void UpdateCache()

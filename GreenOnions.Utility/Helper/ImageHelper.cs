@@ -28,19 +28,18 @@ namespace GreenOnions.Utility.Helper
         }
 
         /// <summary>
-        /// 替换外链路由
+        /// 替换群图片路由
         /// </summary>
-        /// <param name="imageUrl">图片地址</param>
-        /// <returns>替换路由后的图片地址</returns>
+        /// <param name="imageUrl">原始图片Url</param>
+        /// <returns>替换路由后的图片Url</returns>
         public static string ReplaceGroupUrl(string imageUrl)
         {
-            switch (BotInfo.ReplaceImgRoute)
+            imageUrl = BotInfo.Config.ReplaceImgRoute switch
             {
-                case 1:
-                    return imageUrl.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/");
-                case 2:
-                    return imageUrl.Replace("/c2cpicdw.qpic.cn/offpic_new/", "/gchat.qpic.cn/gchatpic_new/");
-            }
+                1 => imageUrl.Replace("/gchat.qpic.cn/gchatpic_new/", "/c2cpicdw.qpic.cn/offpic_new/"),
+                2 => imageUrl.Replace("/c2cpicdw.qpic.cn/offpic_new/", "/gchat.qpic.cn/gchatpic_new/"),
+                _ => imageUrl
+            };
             return imageUrl;
         }
 
@@ -164,14 +163,14 @@ namespace GreenOnions.Utility.Helper
                 {
                     bool bHorizontalMirror = false;
                     bool bVerticalMirror = false;
-                    if (BotInfo.HorizontalMirrorImageEnabled)
-                        bHorizontalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.HorizontalMirrorImageProbability;
+                    if (BotInfo.Config.HorizontalMirrorImageEnabled)
+                        bHorizontalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.Config.HorizontalMirrorImageProbability;
 
                     if (bHorizontalMirror)
                         mirrorImageDirection = MirrorImageDirection.Horizontal;
 
-                    if (BotInfo.VerticalMirrorImageEnabled)
-                        bVerticalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.VerticalMirrorImageProbability;
+                    if (BotInfo.Config.VerticalMirrorImageEnabled)
+                        bVerticalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.Config.VerticalMirrorImageProbability;
 
                     if (bVerticalMirror)
                         mirrorImageDirection = MirrorImageDirection.Vertical;

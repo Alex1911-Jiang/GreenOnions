@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GreenOnions.Interface;
+using GreenOnions.Interface.Configs.Enums;
+using GreenOnions.Interface.Helpers;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Newtonsoft.Json;
@@ -22,22 +23,22 @@ namespace GreenOnions.HPicture
         /// </summary>
         public static void SendOnlyOneHPictures(long senderId, long? senderGroup, Action<GreenOnionsMessages> SendMessage)
         {
-            if (!string.IsNullOrWhiteSpace(BotInfo.HPictureDownloadingReply))  //开始下载
-                SendMessage(BotInfo.HPictureDownloadingReply);
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.HPictureDownloadingReply))  //开始下载
+                SendMessage(BotInfo.Config.HPictureDownloadingReply);
             List<Action> randomSource = new List<Action>();
-            if (BotInfo.EnabledHPictureSource.Contains(PictureSource.Lolicon))
+            if (BotInfo.Config.EnabledHPictureSource.Contains(PictureSource.Lolicon))
             {
                 randomSource.Add(async () =>
                 {
                     string size = "original";
-                    if (BotInfo.HPictureSize1200)
+                    if (BotInfo.Config.HPictureSize1200)
                         size = "regular";
 
-                    string strHttpRequest = $@"https://api.lolicon.app/setu/v2?size={size}&proxy=i.{BotInfo.PixivProxy}";
+                    string strHttpRequest = $@"https://api.lolicon.app/setu/v2?size={size}&proxy=i.{BotInfo.Config.PixivProxy}";
                     await SendLoliconHPicture(senderId, senderGroup, strHttpRequest, size, SendMessage);
                 });
             }
-            if (BotInfo.EnabledHPictureSource.Contains(PictureSource.Yande_re))
+            if (BotInfo.Config.EnabledHPictureSource.Contains(PictureSource.Yande_re))
             {
                 randomSource.Add(() => SendYandeHPicture(senderId, senderGroup, 1, null, false, SendMessage));
             }
@@ -54,7 +55,7 @@ namespace GreenOnions.HPicture
             try
             {
                 string size = "original";
-                if (BotInfo.HPictureSize1200)
+                if (BotInfo.Config.HPictureSize1200)
                     size = "regular";
 
                 string strHttpRequest;
@@ -70,8 +71,8 @@ namespace GreenOnions.HPicture
                 if (lImgCount <= 0)   //犯贱呢要0张或以下色图
                     return;
 
-                if (lImgCount > BotInfo.HPictureOnceMessageMaxImageCount)
-                    lImgCount = BotInfo.HPictureOnceMessageMaxImageCount;
+                if (lImgCount > BotInfo.Config.HPictureOnceMessageMaxImageCount)
+                    lImgCount = BotInfo.Config.HPictureOnceMessageMaxImageCount;
                 #endregion -- 色图数量 --
 
                 #region -- 关键词 --
@@ -79,7 +80,7 @@ namespace GreenOnions.HPicture
                 if (matchMessage.Groups["关键词"].Success)
                     strKeyword = matchMessage.Groups["关键词"].Value;
 
-                if (BotInfo.HPictureShieldingWords.Contains(strKeyword))  //屏蔽词
+                if (BotInfo.Config.HPictureShieldingWords.Contains(strKeyword))  //屏蔽词
                     return;
 
                 #endregion  -- 关键词 --
@@ -89,12 +90,12 @@ namespace GreenOnions.HPicture
                 #region -- R18 --
                 if (matchMessage.Groups["r18"].Success)
                 {
-                    if (BotInfo.HPictureAllowR18)
+                    if (BotInfo.Config.HPictureAllowR18)
                     {
                         bR18 = true;
-                        if (senderGroup != null) //群聊
+                        if (senderGroup is not null) //群聊
                         {
-                            if (BotInfo.HPictureR18WhiteOnly && !BotInfo.HPictureWhiteGroup.Contains(senderGroup.Value))
+                            if (BotInfo.Config.HPictureR18WhiteOnly && !BotInfo.Config.HPictureWhiteGroup.Contains(senderGroup.Value))
                             {
                                 return;  //仅限白名单但此群不在白名单中, 不响应R18命令
                             }
@@ -107,8 +108,8 @@ namespace GreenOnions.HPicture
                 }
                 #endregion -- R18 --
 
-                if (!string.IsNullOrWhiteSpace(BotInfo.HPictureDownloadingReply))  //开始下载
-                    SendMessage(BotInfo.HPictureDownloadingReply);
+                if (!string.IsNullOrWhiteSpace(BotInfo.Config.HPictureDownloadingReply))  //开始下载
+                    SendMessage(BotInfo.Config.HPictureDownloadingReply);
 
                 bool bNonSourceSuffix = false;
                 if (!matchMessage.Groups.ContainsKey("色图后缀") && !matchMessage.Groups.ContainsKey("美图后缀"))
@@ -116,14 +117,14 @@ namespace GreenOnions.HPicture
 
                 PictureSource pictureSource = (PictureSource)(-1);
                 if (bNonSourceSuffix)
-                    pictureSource = (PictureSource)BotInfo.HPictureDefaultSource;
+                    pictureSource = (PictureSource)BotInfo.Config.HPictureDefaultSource;
 
-                if (matchMessage.Groups["色图后缀"].Success || BotInfo.EnabledHPictureSource.Contains(pictureSource))  //指定色图后缀或不含后缀组时使用色图
+                if (matchMessage.Groups["色图后缀"].Success || BotInfo.Config.EnabledHPictureSource.Contains(pictureSource))  //指定色图后缀或不含后缀组时使用色图
                 {
                     if (!bNonSourceSuffix)
                     {
                         Random r = new Random(Guid.NewGuid().GetHashCode());
-                        pictureSource = BotInfo.EnabledHPictureSource[r.Next(0, BotInfo.EnabledHPictureSource.Count)];
+                        pictureSource = BotInfo.Config.EnabledHPictureSource.ToArray()[r.Next(0, BotInfo.Config.EnabledHPictureSource.Count)];
                     }
 
                     if (pictureSource == PictureSource.Lolicon)
@@ -141,23 +142,23 @@ namespace GreenOnions.HPicture
                                 keyword = "&keyword=" + strKeyword;
                             }
                         }
-                        strHttpRequest = $@"https://api.lolicon.app/setu/v2?num={lImgCount}&proxy=i.{BotInfo.PixivProxy}&r18={(bR18 ? "1" : "0")}{keyword}&size={size}";
+                        strHttpRequest = $@"https://api.lolicon.app/setu/v2?num={lImgCount}&proxy=i.{BotInfo.Config.PixivProxy}&r18={(bR18 ? "1" : "0")}{keyword}&size={size}";
                         _ = SendLoliconHPicture(senderId, senderGroup, strHttpRequest, size, SendMessage);
                     }
                     else if (pictureSource == PictureSource.Yande_re)
                     {
-                        if (BotInfo.HPictureSendByForward)  //合并转发
+                        if (BotInfo.Config.HPictureSendByForward)  //合并转发
                             ForwardSendYandeHPicture(senderId, senderGroup, lImgCount, strKeyword, bR18, SendMessage);
                         else
                             SendYandeHPicture(senderId, senderGroup, lImgCount, strKeyword, bR18, SendMessage);
                     }
                 }
-                else if (matchMessage.Groups["美图后缀"].Success || BotInfo.EnabledBeautyPictureSource.Contains(pictureSource))
+                else if (matchMessage.Groups["美图后缀"].Success || BotInfo.Config.EnabledBeautyPictureSource.Contains(pictureSource))
                 {
                     if (!bNonSourceSuffix)
                     {
                         Random r = new Random(Guid.NewGuid().GetHashCode());
-                        pictureSource = BotInfo.EnabledBeautyPictureSource[r.Next(0, BotInfo.EnabledBeautyPictureSource.Count)];
+                        pictureSource = BotInfo.Config.EnabledBeautyPictureSource.ToArray()[r.Next(0, BotInfo.Config.EnabledBeautyPictureSource.Count)];
                     }
 
                     if (pictureSource == PictureSource.ELF)
@@ -169,7 +170,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsStringTags() + ex.Message);
+                SendMessage(BotInfo.Config.HPictureErrorReply + ex.Message);
             }
         }
 
@@ -185,9 +186,9 @@ namespace GreenOnions.HPicture
                 try
                 {
                     YandeItem imgItem = await YandeApi.GetRandomHPictrue(strKeyword, bR18);
-                    if (imgItem == null)
+                    if (imgItem is null)
                     {
-                        SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsStringTags());
+                        SendMessage(BotInfo.Config.HPictureNoResultReply);
                         return;
                     }
                     GreenOnionsMessages outMessage = await CreateOnceYandeHPictureAsync(imgItem);
@@ -197,7 +198,7 @@ namespace GreenOnions.HPicture
                 }
                 catch (Exception ex)
                 {
-                    SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("URL", "yande.re/post")) + ex.Message);
+                    SendMessage(BotInfo.Config.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "URL", "yande.re/post" } }) + ex.Message);
                 }
             }
             RecordLimit(senderId, senderGroup, LimitType.Frequency);
@@ -214,9 +215,9 @@ namespace GreenOnions.HPicture
                 for (int i = 0; i < lImgCount; i++)
                 {
                     YandeItem imgItem = await YandeApi.GetRandomHPictrue(strKeyword, bR18);
-                    if (imgItem == null)
+                    if (imgItem is null)
                     {
-                        SendMessage(BotInfo.HPictureNoResultReply.ReplaceGreenOnionsStringTags());
+                        SendMessage(BotInfo.Config.HPictureNoResultReply);
                         return;
                     }
                     GreenOnionsMessages outMessage = await CreateOnceYandeHPictureAsync(imgItem);
@@ -225,7 +226,7 @@ namespace GreenOnions.HPicture
                 }
                 if (outMessages.Count > 0)
                 {
-                    GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, msg)).ToArray();
+                    GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, msg)).ToArray();
                     GreenOnionsMessages outForwardMsg = forwardMessages;
                     outForwardMsg.RevokeTime = outMessages.First().RevokeTime;
                     SetRevokeTime(senderGroup, outForwardMsg);  //设置撤回时间
@@ -235,7 +236,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                SendMessage(BotInfo.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags(new KeyValuePair<string, string>("URL", "yande.re/post")) + ex.Message);
+                SendMessage(BotInfo.Config.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags(new Dictionary<string, string>() { { "URL", "yande.re/post" } }) + ex.Message);
             }
         }
 
@@ -248,9 +249,9 @@ namespace GreenOnions.HPicture
         {
             GreenOnionsMessages outMessage = new();
             StringBuilder sb = new();
-            if (BotInfo.HPictureSendUrl)
+            if (BotInfo.Config.HPictureSendUrl)
                 sb.AppendLine($"http://yande.re{item.ShowPageUrl}");
-            if (BotInfo.HPictureSendTags)
+            if (BotInfo.Config.HPictureSendTags)
                 sb.AppendLine($"标签:{string.Join(", ", item.Tags)}");
             outMessage.Add(sb);
             string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ShowPageUrl.Substring("/post/show/".Length)}.png");
@@ -272,7 +273,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                errorMessage = BotInfo.HPictureErrorReply.ReplaceGreenOnionsStringTags() + ex.Message;
+                errorMessage = BotInfo.Config.HPictureErrorReply + ex.Message;
             }
             if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -284,12 +285,12 @@ namespace GreenOnions.HPicture
             string err = jo["error"].ToString();
             if (!string.IsNullOrWhiteSpace(err))//Api错误
             {
-                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsStringTags() + err);
+                SendMessage(BotInfo.Config.HPictureErrorReply + err);
             }
 
             if (jt.Count() == 0)//没找到对应词条的色图;
             {
-                SendMessage(BotInfo.HPictureNoResultReply);  //没有结果
+                SendMessage(BotInfo.Config.HPictureNoResultReply);  //没有结果
             }
 
             IEnumerable<LoliconHPictureItem> enumImg = jt.Select(i => new LoliconHPictureItem(
@@ -302,46 +303,48 @@ namespace GreenOnions.HPicture
                 @$"https://www.pixiv.net/artworks/{i["pid"]}(p{i["p"]})")
             );
 
-            if (enumImg == null)
+            if (enumImg is null)
             {
                 LogHelper.WriteErrorLog("Lolicon响应解析失败");
-                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsStringTags());  //发生错误
+                SendMessage(BotInfo.Config.HPictureErrorReply);  //发生错误
             }
 
             List<GreenOnionsMessages> outMessages = null;
-            if (BotInfo.HPictureSendByForward)
+            if (BotInfo.Config.HPictureSendByForward)
                 outMessages = new List<GreenOnionsMessages>();
 
             foreach (LoliconHPictureItem imgItem in enumImg)
             {
                 GreenOnionsMessages outMessage = new GreenOnionsMessages();
                 StringBuilder sb = new StringBuilder();
-                if (BotInfo.HPictureSendUrl)
+                if (BotInfo.Config.HPictureSendUrl)
                     sb.AppendLine($"作品页：https://www.pixiv.net/artworks/{imgItem.ID} (p{imgItem.P})");
-                if (BotInfo.HPictureSendProxyUrl)
+                if (BotInfo.Config.HPictureSendProxyUrl)
                     sb.AppendLine($"图片代理地址：{imgItem.URL}");
-                if (BotInfo.HPictureSendTitle)
+                if (BotInfo.Config.HPictureSendTitle)
                     sb.AppendLine($"标题:{imgItem.Title}\r\n作者:{imgItem.Author}");
-                if (BotInfo.HPictureSendTags)
+                if (BotInfo.Config.HPictureSendTags)
                     sb.AppendLine($"标签:{imgItem.Tags}");
                 outMessage.Add(sb);
                 GreenOnionsImageMessage imgMsg = await CreateOnceLoliconHPictureAsync(imgItem);
 
                 SetRevokeTime(senderGroup, outMessage);  //设置撤回时间
 
+                outMessage.Reply = false;
                 outMessage.Add(imgMsg);
-                if (BotInfo.HPictureSendByForward)
+                if (BotInfo.Config.HPictureSendByForward)
                     outMessages.Add(outMessage);
                 else
                     SendMessage(outMessage);
                 RecordLimit(senderId, senderGroup, LimitType.Count);
             }
 
-            if (BotInfo.HPictureSendByForward && outMessages.Count > 0)
+            if (BotInfo.Config.HPictureSendByForward && outMessages.Count > 0)
             {
-                GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, msg)).ToArray();
+                GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, msg)).ToArray();
                 GreenOnionsMessages outForwardMsg = forwardMessages;
                 outForwardMsg.RevokeTime = outMessages.First().RevokeTime;
+                outForwardMsg.Reply = false;
                 SendMessage(outForwardMsg);  //合并转发
             }
             RecordLimit(senderId, senderGroup, LimitType.Frequency);
@@ -349,7 +352,7 @@ namespace GreenOnions.HPicture
 
         private static async Task<GreenOnionsImageMessage> CreateOnceLoliconHPictureAsync(LoliconHPictureItem item)
         {
-            string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{(BotInfo.HPictureSize1200 ? "_1200" : "")}.png");
+            string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{(BotInfo.Config.HPictureSize1200 ? "_1200" : "")}.png");
             return await CreateImageMessageAsync(item.URL, imgCacheName);
         }
 
@@ -360,7 +363,7 @@ namespace GreenOnions.HPicture
         private static async Task SendELFHPicture(long senderId, long? senderGroup, string strHttpRequestUrl, Action<GreenOnionsMessages> SendMessage)
         {
             List<GreenOnionsMessages> outMessages = null;
-            if (BotInfo.HPictureSendByForward)
+            if (BotInfo.Config.HPictureSendByForward)
                 outMessages = new List<GreenOnionsMessages>();
 
             string resultValue = "";
@@ -371,21 +374,21 @@ namespace GreenOnions.HPicture
                 JArray ja = (JArray)JsonConvert.DeserializeObject(resultValue);
                 if (ja.Count == 0)
                 {
-                    SendMessage(BotInfo.HPictureNoResultReply);  //没有结果
+                    SendMessage(BotInfo.Config.HPictureNoResultReply);  //没有结果
                 }
 
-                IEnumerable<ELFHPictureItem> enumImg = ja.Select(i => new ELFHPictureItem(i["id"].ToString(), i["link"].ToString().Replace("pixiv.cat", BotInfo.PixivProxy), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
+                IEnumerable<ELFHPictureItem> enumImg = ja.Select(i => new ELFHPictureItem(i["id"].ToString(), i["link"].ToString().Replace("pixiv.cat", BotInfo.Config.PixivProxy), i["source"].ToString(), string.Join(",", i["jp_tag"].Select(s => s.ToString())), string.Join(",", i["zh_tags"].Select(s => s.ToString())), i["author"].ToString()));
 
                 //包含twimg.com的图墙内无法访问, 暂时不处理
                 foreach (ELFHPictureItem imgItem in enumImg)
                 {
                     GreenOnionsMessages outMessage = new GreenOnionsMessages();
                     StringBuilder sb = new StringBuilder();
-                    if (BotInfo.HPictureSendUrl)
+                    if (BotInfo.Config.HPictureSendUrl)
                         sb.AppendLine(imgItem.Source);
-                    if (BotInfo.HPictureSendTitle)
+                    if (BotInfo.Config.HPictureSendTitle)
                         sb.AppendLine($"作者:{imgItem.Author}");
-                    if (BotInfo.HPictureSendTags)
+                    if (BotInfo.Config.HPictureSendTags)
                     {
                         sb.AppendLine($"中文标签:{imgItem.Zh_Tags}");
                         sb.AppendLine($"日文标签:{imgItem.Jp_Tag}");
@@ -395,20 +398,20 @@ namespace GreenOnions.HPicture
 
                     SetRevokeTime(senderGroup, outMessage);
 
-                    if (BotInfo.RevokeBeautyPicture)  //撤回美图
+                    if (BotInfo.Config.RevokeBeautyPicture)  //撤回美图
                         SetRevokeTime(senderGroup, outMessage);  //设置撤回时间
 
                     outMessage.Add(imgMsg);
-                    if (BotInfo.HPictureSendByForward)
+                    if (BotInfo.Config.HPictureSendByForward)
                         outMessages.Add(outMessage);
                     else
                         SendMessage(outMessage);
                     RecordLimit(senderId, senderGroup, LimitType.Count);
                 }
 
-                if (BotInfo.HPictureSendByForward && outMessages.Count > 0)
+                if (BotInfo.Config.HPictureSendByForward && outMessages.Count > 0)
                 {
-                    GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.QQId, BotInfo.BotName, msg)).ToArray();
+                    GreenOnionsForwardMessage[] forwardMessages = outMessages.Select(msg => new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, msg)).ToArray();
                     GreenOnionsMessages outForwardMsg = forwardMessages;
                     outForwardMsg.RevokeTime = outMessages.First().RevokeTime;
                     SendMessage(forwardMessages);  //合并转发
@@ -417,7 +420,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                SendMessage(BotInfo.HPictureErrorReply.ReplaceGreenOnionsStringTags() + ex.Message);  //发生错误
+                SendMessage(BotInfo.Config.HPictureErrorReply + ex.Message);  //发生错误
             }
         }
 
@@ -438,7 +441,7 @@ namespace GreenOnions.HPicture
             }
             else
             {
-                if (BotInfo.SendImageByFile)  //下载完成后发送文件
+                if (BotInfo.Config.SendImageByFile)  //下载完成后发送文件
                 {
                     await HttpHelper.DownloadImageFileAsync(url, cacheName);
                     if (File.Exists(cacheName))
@@ -447,7 +450,7 @@ namespace GreenOnions.HPicture
                 else  //直接发送地址
                 {
                     imageMsg = new GreenOnionsImageMessage(url);
-                    if (BotInfo.DownloadImage4Caching)
+                    if (BotInfo.Config.DownloadImage4Caching)
                         _ = HttpHelper.DownloadImageFileAsync(url, cacheName);  //下载图片用于缓存
                 }
             }
@@ -459,14 +462,14 @@ namespace GreenOnions.HPicture
         /// </summary>
         private static void SetRevokeTime(long? senderGroup, GreenOnionsMessages message)
         {
-            if (senderGroup == null)
-                message.RevokeTime = BotInfo.HPicturePMRevoke;  //私聊撤回
+            if (senderGroup is null)
+                message.RevokeTime = BotInfo.Config.HPicturePMRevoke;  //私聊撤回
             else
             {
-                if (BotInfo.HPictureWhiteGroup.Contains(senderGroup.Value))  //白名单群撤回
-                    message.RevokeTime = BotInfo.HPictureWhiteRevoke;
+                if (BotInfo.Config.HPictureWhiteGroup.Contains(senderGroup.Value))  //白名单群撤回
+                    message.RevokeTime = BotInfo.Config.HPictureWhiteRevoke;
                 else
-                    message.RevokeTime = BotInfo.HPictureRevoke;  //普通群撤回
+                    message.RevokeTime = BotInfo.Config.HPictureRevoke;  //普通群撤回
             }
         }
 
@@ -475,15 +478,15 @@ namespace GreenOnions.HPicture
         /// </summary>
         private static void RecordLimit(long senderId, long? senderGroup, LimitType limitType)
         {
-            if (BotInfo.HPictureLimitType == LimitType.Frequency && limitType == LimitType.Frequency)  //如果本次记录是计次, 说明地址消息已经成功发出, 可以记录CD
-                Cache.RecordLimit(senderId);
-            else if (limitType == LimitType.Count && BotInfo.HPictureLimitType == LimitType.Count)  //如果本次记录是记张且设置是记张
-                Cache.RecordLimit(senderId);
+            if (BotInfo.Config.HPictureLimitType == LimitType.Frequency && limitType == LimitType.Frequency)  //如果本次记录是计次, 说明地址消息已经成功发出, 可以记录CD
+                BotInfo.Cache.RecordLimit(senderId);
+            else if (limitType == LimitType.Count && BotInfo.Config.HPictureLimitType == LimitType.Count)  //如果本次记录是记张且设置是记张
+                BotInfo.Cache.RecordLimit(senderId);
 
-            if (senderGroup != null)  //群色图记录CD
-                Cache.RecordGroupCD(senderId, senderGroup.Value);
+            if (senderGroup is not null)  //群色图记录CD
+                BotInfo.Cache.RecordGroupCD(senderId, senderGroup.Value);
             else
-                Cache.RecordFriendCD(senderId);
+                BotInfo.Cache.RecordFriendCD(senderId);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.Interface.Configs.Enums;
+using GreenOnions.Utility;
 
 namespace GreenOnions.BotManagerWindows.Controls
 {
@@ -64,9 +65,9 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         private void SetComboBoxIndex(ComboBox ctrl, string value)
         {
-            if (ctrl.DataSource == null)
+            if (ctrl.DataSource is null)
             {
-                switch (BotInfo.TranslateEngineType)
+                switch (BotInfo.Config.TranslateEngineType)
                 {
                     case TranslateEngine.Google:
                         cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();
@@ -131,9 +132,9 @@ namespace GreenOnions.BotManagerWindows.Controls
         private void chkTranslateFromTo_CheckedChanged(object sender, EventArgs e)
         {
             pnlTranslateFromTo.Enabled = chkTranslateFromTo.Checked;
-            if (chkTranslateFromTo.Checked && BotInfo.TranslateEnabled)
+            if (chkTranslateFromTo.Checked && BotInfo.Config.TranslateEnabled)
             {
-                switch (BotInfo.TranslateEngineType)
+                switch (BotInfo.Config.TranslateEngineType)
                 {
                     case TranslateEngine.Google:
                         cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();

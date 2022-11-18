@@ -13,7 +13,7 @@
         /// <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (components is not null))
             {
                 components.Dispose();
             }
@@ -307,16 +307,15 @@
             // 
             // pnlHPictureCheckBoxes
             // 
-            this.pnlHPictureCheckBoxes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlHPictureCheckBoxes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlHPictureCheckBoxes.Controls.Add(this.lnkResetHPicture);
             this.pnlHPictureCheckBoxes.Controls.Add(this.chkHPictureSize1200);
             this.pnlHPictureCheckBoxes.Controls.Add(this.chkRevokeBeautyPicture);
-            this.pnlHPictureCheckBoxes.Location = new System.Drawing.Point(808, 4);
+            this.pnlHPictureCheckBoxes.Location = new System.Drawing.Point(756, 4);
             this.pnlHPictureCheckBoxes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlHPictureCheckBoxes.MinimumSize = new System.Drawing.Size(149, 0);
             this.pnlHPictureCheckBoxes.Name = "pnlHPictureCheckBoxes";
-            this.pnlHPictureCheckBoxes.Size = new System.Drawing.Size(149, 186);
+            this.pnlHPictureCheckBoxes.Size = new System.Drawing.Size(152, 186);
             this.pnlHPictureCheckBoxes.TabIndex = 96;
             // 
             // lnkResetHPicture
