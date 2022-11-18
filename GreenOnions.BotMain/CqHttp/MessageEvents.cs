@@ -137,15 +137,22 @@ namespace GreenOnions.BotMain.CqHttp
                 }
                 else if (identifier == "<成员昵称>")
                 {
-                    var getMember = await member.SoraApi.GetGroupMemberInfo(group, member.Id);
-                    if (string.IsNullOrEmpty(getMember.memberInfo.Card))
+                    if (member.Id == BotInfo.Config.QQId)
                     {
-                        var getUserInfo = await member.GetUserInfo();
-                        outMsg.AddText(getUserInfo.userInfo.Nick);
+                        outMsg.AddText(BotInfo.Config.BotName);
                     }
                     else
                     {
-                        outMsg.AddText(getMember.memberInfo.Card);
+                        var getMember = await member.SoraApi.GetGroupMemberInfo(group, member.Id);
+                        if (string.IsNullOrEmpty(getMember.memberInfo.Card))
+                        {
+                            var getUserInfo = await member.GetUserInfo();
+                            outMsg.AddText(getUserInfo.userInfo.Nick);
+                        }
+                        else
+                        {
+                            outMsg.AddText(getMember.memberInfo.Card);
+                        }
                     }
                 }
                 else if (Operator is not null)
@@ -160,15 +167,22 @@ namespace GreenOnions.BotMain.CqHttp
                     }
                     else if (identifier == "<操作者昵称>")
                     {
-                        var getOperator = await Operator.SoraApi.GetGroupMemberInfo(group, Operator.Id);
-                        if (string.IsNullOrEmpty(getOperator.memberInfo.Card))
+                        if (Operator.Id == BotInfo.Config.QQId)
                         {
-                            var getUserInfo = await Operator.GetUserInfo();
-                            outMsg.AddText(getUserInfo.userInfo.Nick);
+                            outMsg.AddText(BotInfo.Config.BotName);
                         }
                         else
                         {
-                            outMsg.AddText(getOperator.memberInfo.Card);
+                            var getOperator = await Operator.SoraApi.GetGroupMemberInfo(group, Operator.Id);
+                            if (string.IsNullOrEmpty(getOperator.memberInfo.Card))
+                            {
+                                var getUserInfo = await Operator.GetUserInfo();
+                                outMsg.AddText(getUserInfo.userInfo.Nick);
+                            }
+                            else
+                            {
+                                outMsg.AddText(getOperator.memberInfo.Card);
+                            }
                         }
                     }
                 }

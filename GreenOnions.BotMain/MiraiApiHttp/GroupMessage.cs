@@ -139,7 +139,10 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 }
                 else if (identifier == "<成员昵称>")
                 {
-                    builder.AddPlainMessage(member.Name);
+                    if (member.Id == BotInfo.Config.QQId)
+                        builder.AddPlainMessage(BotInfo.Config.BotName);
+                    else
+                        builder.AddPlainMessage(member.Name);
                 }
                 else if (Operator is not null)
                 {
@@ -153,7 +156,10 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     }
                     else if (identifier == "<操作者昵称>")
                     {
-                        builder.AddPlainMessage(Operator.Name);
+                        if (Operator.Id == BotInfo.Config.QQId)
+                            builder.AddPlainMessage(BotInfo.Config.BotName);
+                        else
+                            builder.AddPlainMessage(Operator.Name);
                     }
                 }
             }
