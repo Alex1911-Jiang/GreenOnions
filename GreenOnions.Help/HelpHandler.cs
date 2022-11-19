@@ -111,23 +111,23 @@ namespace GreenOnions.Help
         {
             if (BotInfo.Config.TranslateEnabled)
             {
-                if (BotInfo.Config.TranslateEngineType == TranslateEngine.Google)
-                {
-                    StringBuilder strTranslateGoogle = new StringBuilder($"发送\"{BotInfo.Config.TranslateToChineseCMD}翻译内容\" 以翻译成中文。");
-                    strTranslateGoogle.AppendLine($"发送\"{BotInfo.Config.TranslateToCMD}翻译内容\"自动识别当前语言并翻译成指定语言。");
-                    strTranslateGoogle.AppendLine($"发送\"{BotInfo.Config.TranslateFromToCMD}翻译内容\"从指定语言翻译成指定语言。");
-                    strTranslateGoogle.AppendLine($"目前支持的语言有:{string.Join("\r\n", Constants.GoogleLanguages.Keys)}");
-                    strTranslateGoogle.AppendLine("目前接入的翻译引擎为:谷歌翻译");
-                    return new[] { strTranslateGoogle.ToString() }.ToTextMessageArray();
-                }
-                else
-                {
+                //if (BotInfo.Config.TranslateEngineType == TranslateEngine.Google)
+                //{
+                //    StringBuilder strTranslateGoogle = new StringBuilder($"发送\"{BotInfo.Config.TranslateToChineseCMD}翻译内容\" 以翻译成中文。");
+                //    strTranslateGoogle.AppendLine($"发送\"{BotInfo.Config.TranslateToCMD}翻译内容\"自动识别当前语言并翻译成指定语言。");
+                //    strTranslateGoogle.AppendLine($"发送\"{BotInfo.Config.TranslateFromToCMD}翻译内容\"从指定语言翻译成指定语言。");
+                //    strTranslateGoogle.AppendLine($"目前支持的语言有:{string.Join("\r\n", Constants.GoogleLanguages.Keys)}");
+                //    strTranslateGoogle.AppendLine("目前接入的翻译引擎为:谷歌翻译");
+                //    return new[] { strTranslateGoogle.ToString() }.ToTextMessageArray();
+                //}
+                //else
+                //{
                     StringBuilder strTranslateYouDao = new StringBuilder($"发送\"{BotInfo.Config.TranslateToChineseCMD}翻译内容\" 以翻译成中文。");
                     strTranslateYouDao.AppendLine($"发送\"{BotInfo.Config.TranslateFromToCMD}翻译内容\"从指定语言翻译成指定语言。");
                     strTranslateYouDao.AppendLine($"目前支持的语言有:{string.Join("\r\n", Constants.YouDaoLanguages.Keys)}");
                     strTranslateYouDao.AppendLine("目前接入的翻译引擎为:有道翻译");
                     return new[] { strTranslateYouDao.ToString() }.ToTextMessageArray();
-                }
+                //}
             }
             else
                 return new[] { $"当前{BotInfo.Config.BotName}没有启用翻译功能" }.ToTextMessageArray();

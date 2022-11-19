@@ -22,7 +22,7 @@ namespace GreenOnions.BotMain
         private static Regex regexSearch3DOn;
         private static Regex regexSearchOff;
         private static Regex regexTranslateToChinese;
-        private static Regex regexTranslateTo;
+        //private static Regex regexTranslateTo;
         private static Regex regexTranslateFromTo;
         private static Regex regexHPicture;
         private static Regex regexForgeMessage;
@@ -53,8 +53,8 @@ namespace GreenOnions.BotMain
                 regexName = "翻译为中文";
                 regexTranslateToChinese = new Regex(BotInfo.Config.TranslateToChineseCMD.ReplaceGreenOnionsStringTags());
                 regexName = "翻译";
-                regexTranslateTo = new Regex(BotInfo.Config.TranslateToCMD.ReplaceGreenOnionsStringTags());
-                regexName = "指定语言翻译";
+                //regexTranslateTo = new Regex(BotInfo.Config.TranslateToCMD.ReplaceGreenOnionsStringTags());
+                //regexName = "指定语言翻译";
                 regexTranslateFromTo = new Regex(BotInfo.Config.TranslateFromToCMD.ReplaceGreenOnionsStringTags());
                 regexName = "色图";
                 regexHPicture = new Regex(BotInfo.Config.HPictureCmd.ReplaceGreenOnionsStringTags());
@@ -193,12 +193,12 @@ namespace GreenOnions.BotMain
                         TranslateHandler.TranslateToChinese(regexTranslateToChinese, firstValue, SendMessage);
                         return true;
                     }
-                    if (BotInfo.Config.TranslateEngineType == TranslateEngine.Google && regexTranslateTo.IsMatch(firstValue))  //翻译为指定语言(仅限谷歌)
-                    {
-                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发自动识别语言并翻译为指定语言");
-                        TranslateHandler.TranslateTo(regexTranslateTo, firstValue, SendMessage);
-                        return true;
-                    }
+                    //if (BotInfo.Config.TranslateEngineType == TranslateEngine.Google && regexTranslateTo.IsMatch(firstValue))  //翻译为指定语言(仅限谷歌)
+                    //{
+                    //    LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发自动识别语言并翻译为指定语言");
+                    //    TranslateHandler.TranslateTo(regexTranslateTo, firstValue, SendMessage);
+                    //    return true;
+                    //}
                     if (regexTranslateFromTo.IsMatch(firstValue))  //从指定语言翻译为指定语言
                     {
                         LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发从指定语言翻译为指定语言");
@@ -311,7 +311,7 @@ namespace GreenOnions.BotMain
                 #region -- 自动翻译 --
                 if (BotInfo.Config.AutoTranslateGroupMemoriesQQ.Contains(inMsg.SenderId))
                 {
-                    string tranStr = await GoogleTranslateHelper.TranslateToChinese(string.Join('\n', inMsg.OfType<GreenOnionsTextMessage>().Select(m => m.Text)));
+                    string tranStr = await YouDaoTranslateHelper.TranslateToChinese(string.Join('\n', inMsg.OfType<GreenOnionsTextMessage>().Select(m => m.Text)));
                     try
                     {
                         SendMessage(new GreenOnionsMessages(tranStr));

@@ -40,16 +40,20 @@ namespace GreenOnions.Utility
 
         static BotInfo()
         {
-            string strConfig = File.ReadAllText("Config.json");
-
-            Config = JsonConvert.DeserializeObject<BotConfig>(strConfig);
-            if (Config.QQId == 0)
+            if (File.Exists("Config.json"))
             {
-                Config = UpdateOldConfig(strConfig);
-                if (Config is null)
-                    Config = new BotConfig();
-                SaveConfigFile();
+                string strConfig = File.ReadAllText("Config.json");
+
+                Config = JsonConvert.DeserializeObject<BotConfig>(strConfig);
+                if (Config.QQId == 0)
+                {
+                    Config = UpdateOldConfig(strConfig);
+                }
             }
+            if (Config is null)
+                Config = new BotConfig();
+            SaveConfigFile();
+
 
             Cache.SauceNAOKeysAndLongRemaining = new ConcurrentDictionary<string, int>();
             foreach (var key in Config.SauceNAOApiKey)

@@ -48,7 +48,7 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         private void cboTranslateEngine_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txbTranslateTo.Enabled = cboTranslateEngine.SelectedIndex == (int)TranslateEngine.Google;
+            txbTranslateTo.Enabled = cboTranslateEngine.SelectedIndex == (int)TranslateEngine.YouDao;
             BotInfo.Config.TranslateEngineType = (TranslateEngine)cboTranslateEngine.SelectedIndex;
         }
     }

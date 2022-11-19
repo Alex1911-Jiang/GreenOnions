@@ -30,7 +30,6 @@
         {
             this.txbTranslateFromToCMD = new System.Windows.Forms.TextBox();
             this.lblTranslateFromTo = new System.Windows.Forms.Label();
-            this.lblTranslateEngineHelp = new System.Windows.Forms.Label();
             this.cboTranslateEngine = new System.Windows.Forms.ComboBox();
             this.lblTranslateEngine = new System.Windows.Forms.Label();
             this.txbAddAutoTranslateGroupMemoryQQ = new System.Windows.Forms.TextBox();
@@ -43,6 +42,7 @@
             this.txbTranslateToChinese = new System.Windows.Forms.TextBox();
             this.lblTranslateTo = new System.Windows.Forms.Label();
             this.lblTranslateToChinese = new System.Windows.Forms.Label();
+            this.lblTranslateEngineHelp = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txbTranslateFromToCMD
@@ -65,16 +65,6 @@
             this.lblTranslateFromTo.TabIndex = 29;
             this.lblTranslateFromTo.Text = "从指定语言翻译为指定语言命令:";
             // 
-            // lblTranslateEngineHelp
-            // 
-            this.lblTranslateEngineHelp.AutoSize = true;
-            this.lblTranslateEngineHelp.Location = new System.Drawing.Point(221, 58);
-            this.lblTranslateEngineHelp.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.lblTranslateEngineHelp.Name = "lblTranslateEngineHelp";
-            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(587, 24);
-            this.lblTranslateEngineHelp.TabIndex = 28;
-            this.lblTranslateEngineHelp.Text = "提示: 谷歌翻译 Api 需翻墙，有道翻译识别语言经常出错，建议手动指定)";
-            // 
             // cboTranslateEngine
             // 
             this.cboTranslateEngine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -82,7 +72,6 @@
             this.cboTranslateEngine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTranslateEngine.FormattingEnabled = true;
             this.cboTranslateEngine.Items.AddRange(new object[] {
-            "Google",
             "YouDao"});
             this.cboTranslateEngine.Location = new System.Drawing.Point(221, 18);
             this.cboTranslateEngine.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
@@ -167,6 +156,7 @@
             // 
             this.txbTranslateTo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbTranslateTo.Enabled = false;
             this.txbTranslateTo.Location = new System.Drawing.Point(316, 148);
             this.txbTranslateTo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbTranslateTo.Name = "txbTranslateTo";
@@ -186,6 +176,7 @@
             // lblTranslateTo
             // 
             this.lblTranslateTo.AutoSize = true;
+            this.lblTranslateTo.Enabled = false;
             this.lblTranslateTo.Location = new System.Drawing.Point(25, 152);
             this.lblTranslateTo.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblTranslateTo.Name = "lblTranslateTo";
@@ -202,6 +193,16 @@
             this.lblTranslateToChinese.Size = new System.Drawing.Size(140, 24);
             this.lblTranslateToChinese.TabIndex = 16;
             this.lblTranslateToChinese.Text = "翻译为中文命令:";
+            // 
+            // lblTranslateEngineHelp
+            // 
+            this.lblTranslateEngineHelp.AutoSize = true;
+            this.lblTranslateEngineHelp.Location = new System.Drawing.Point(221, 58);
+            this.lblTranslateEngineHelp.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblTranslateEngineHelp.Name = "lblTranslateEngineHelp";
+            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(175, 24);
+            this.lblTranslateEngineHelp.TabIndex = 28;
+            this.lblTranslateEngineHelp.Text = "谷歌翻译 API 已停用";
             // 
             // CtrlTranslate
             // 
@@ -234,7 +235,6 @@
 
         private TextBox txbTranslateFromToCMD;
         private Label lblTranslateFromTo;
-        private Label lblTranslateEngineHelp;
         private ComboBox cboTranslateEngine;
         private Label lblTranslateEngine;
         private TextBox txbAddAutoTranslateGroupMemoryQQ;
@@ -247,5 +247,6 @@
         private TextBox txbTranslateToChinese;
         private Label lblTranslateTo;
         private Label lblTranslateToChinese;
+        private Label lblTranslateEngineHelp;
     }
 }

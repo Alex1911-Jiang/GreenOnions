@@ -67,17 +67,17 @@ namespace GreenOnions.BotManagerWindows.Controls
         {
             if (ctrl.DataSource is null)
             {
-                switch (BotInfo.Config.TranslateEngineType)
-                {
-                    case TranslateEngine.Google:
-                        cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();
-                        cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
-                        break;
-                    case TranslateEngine.YouDao:
+                //switch (BotInfo.Config.TranslateEngineType)
+                //{
+                //    case TranslateEngine.Google:
+                //        cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();
+                //        cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
+                //        break;
+                //    case TranslateEngine.YouDao:
                         cboTranslateFrom.DataSource = Constants.YouDaoLanguages.Keys.ToList();
                         cboTranslateTo.DataSource = Constants.YouDaoLanguages.Keys.ToList();
-                        break;
-                }
+                //        break;
+                //}
             }
             List<string> source = (ctrl.DataSource as List<string>);
             for (int i = 0; i < source.Count; i++)
@@ -134,17 +134,17 @@ namespace GreenOnions.BotManagerWindows.Controls
             pnlTranslateFromTo.Enabled = chkTranslateFromTo.Checked;
             if (chkTranslateFromTo.Checked && BotInfo.Config.TranslateEnabled)
             {
-                switch (BotInfo.Config.TranslateEngineType)
-                {
-                    case TranslateEngine.Google:
-                        cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();
-                        cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
-                        break;
-                    case TranslateEngine.YouDao:
+                //switch (BotInfo.Config.TranslateEngineType)
+                //{
+                //    case TranslateEngine.Google:
+                //        cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();
+                //        cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
+                //        break;
+                //    case TranslateEngine.YouDao:
                         cboTranslateFrom.DataSource = Constants.YouDaoLanguages.Keys.ToList();
                         cboTranslateTo.DataSource = Constants.YouDaoLanguages.Keys.ToList();
-                        break;
-                }
+                //        break;
+                //}
             }
         }
 

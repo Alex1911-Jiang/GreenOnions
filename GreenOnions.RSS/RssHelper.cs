@@ -139,9 +139,9 @@ namespace GreenOnions.RSS
                             LogHelper.WriteInfoLog($"本条RSS订阅启用了翻译");
                             string translatedText;
                             if (item.TranslateFromTo)
-                                translatedText = await (BotInfo.Config.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo) : YouDaoTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo));
+                                translatedText = await YouDaoTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo);
                             else
-                                translatedText = await (BotInfo.Config.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(rss.description) : YouDaoTranslateHelper.TranslateToChinese(rss.description));
+                                translatedText = await YouDaoTranslateHelper.TranslateToChinese(rss.description);
                             translateMsg = $"\r\n以下为翻译内容:\r\n{ translatedText }\r\n";
                             LogHelper.WriteInfoLog($"翻译成功");
                         }

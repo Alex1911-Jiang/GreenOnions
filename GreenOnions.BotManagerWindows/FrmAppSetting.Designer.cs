@@ -489,7 +489,7 @@
             this.pageRss.Location = new System.Drawing.Point(4, 33);
             this.pageRss.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageRss.Name = "pageRss";
-            this.pageRss.Size = new System.Drawing.Size(192, 63);
+            this.pageRss.Size = new System.Drawing.Size(1026, 957);
             this.pageRss.TabIndex = 8;
             this.pageRss.Text = "RSS转发";
             this.pageRss.UseVisualStyleBackColor = true;
@@ -502,7 +502,7 @@
             this.pnlRss.Location = new System.Drawing.Point(0, 56);
             this.pnlRss.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRss.Name = "pnlRss";
-            this.pnlRss.Size = new System.Drawing.Size(192, 7);
+            this.pnlRss.Size = new System.Drawing.Size(1026, 901);
             this.pnlRss.TabIndex = 2;
             // 
             // pnlRssEnabled
@@ -512,7 +512,7 @@
             this.pnlRssEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlRssEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRssEnabled.Name = "pnlRssEnabled";
-            this.pnlRssEnabled.Size = new System.Drawing.Size(192, 56);
+            this.pnlRssEnabled.Size = new System.Drawing.Size(1026, 56);
             this.pnlRssEnabled.TabIndex = 1;
             // 
             // chkRssEnabled

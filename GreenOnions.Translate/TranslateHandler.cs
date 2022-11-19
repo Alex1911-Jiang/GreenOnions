@@ -14,7 +14,7 @@ namespace GreenOnions.Translate
             try
             {
                 string text = msg.Substring(regexTranslateToChinese.Matches(msg).First().Value.Length);
-                string translateResult = await (BotInfo.Config.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateToChinese(text) : YouDaoTranslateHelper.TranslateToChinese(text));
+                string translateResult = await YouDaoTranslateHelper.TranslateToChinese(text);  //BotInfo.Config.TranslateEngineType
                 SendMessage(translateResult);
             }
             catch (Exception ex)
@@ -23,20 +23,22 @@ namespace GreenOnions.Translate
             }
         }
 
+        [Obsolete("谷歌翻译已停用，有道翻译不支持该方式", true)]
         public async static void TranslateTo(Regex regexTranslateTo, string msg, Action<GreenOnionsMessages> SendMessage)
         {
-            Match match = regexTranslateTo.Matches(msg).First();
-            if (match.Groups.Count > 1)
-            {
-                try
-                {
-                    SendMessage(await GoogleTranslateHelper.TranslateTo(msg.Substring(match.Value.Length), match.Groups[1].Value));
-                }
-                catch (Exception ex)
-                {
-                    SendMessage("翻译失败，" + ex.Message);
-                }
-            }
+            throw new NotImplementedException("谷歌翻译已停用，有道翻译不支持该方式");
+            //Match match = regexTranslateTo.Matches(msg).First();
+            //if (match.Groups.Count > 1)
+            //{
+            //    try
+            //    {
+            //        SendMessage(await GoogleTranslateHelper.TranslateTo(msg.Substring(match.Value.Length), match.Groups[1].Value));
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        SendMessage("翻译失败，" + ex.Message);
+            //    }
+            //}
         }
 
         public async static void TranslateFromTo(Regex regexTranslateFromTo, string msg, Action<GreenOnionsMessages> SendMessage)
@@ -52,7 +54,7 @@ namespace GreenOnions.Translate
                     {
                         string from = match.Groups["from"].Value;
                         string to = match.Groups["to"].Value;
-                        translateResult = await (BotInfo.Config.TranslateEngineType == TranslateEngine.Google ? GoogleTranslateHelper.TranslateFromTo(text, from, to) : YouDaoTranslateHelper.TranslateFromTo(text, from, to));
+                        translateResult = await YouDaoTranslateHelper.TranslateFromTo(text, from, to);  //BotInfo.Config.TranslateEngineType
                     }
                     SendMessage(translateResult);
                 }
