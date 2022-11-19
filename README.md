@@ -17,13 +17,13 @@
 - [x] 3. [trace.moe](https://trace.moe/) 搜番<br>
 - [x] 4. [lolicon](https://api.lolicon.app/#/setu) setu<br>
 - [x] 5. 群友 [Quan](https://github.com/Quan666) 的 [ELF图库](http://img.shab.fun:5000/) 美图<br>
-- [x] 6. 有道网页翻译和 [GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi) 翻译<br>
+- [x] 6. 有道翻译和 [GoogleTranslateFreeApi](https://github.com/wadereye/GoogleTranslateFreeApi) 翻译<br>
 - [x] 7. 随机复读, 连续复读, 镜像复读图片和倒带gif(可配置触发几率)<br>
 - [x] 8. 新人入群/退群/被踢提醒(支持定义)<br>
 - [x] 9. RSS订阅转发<br>
 - [x] 10. 下载Pixiv原图(通过[pixiv.cat](https://pixiv.cat/))<br>
-- [x] 11. ~~使用表情涂鸦游玩的井字棋功能 (其实是自己学习[OpenCVsharp](https://github.com/shimat/opencvsharp)过程中搞出来的, 随手搬上了bot上, 但实际由于涂鸦完还要转发, 步骤太多所以下棋体验极差)~~ 迁移到 [插件仓库](https://github.com/Alex1911-Jiang/GreenOnions.Plugins) 了<br>
-- [x] 12. [yande](yande.re/post) setu
+- [x] 11. [yande](yande.re/post) setu
+#### 更多功能请移步: [插件仓库](https://github.com/Alex1911-Jiang/GreenOnions.Plugins)
 
 ### 项目优势:
 
@@ -35,6 +35,9 @@
 6. 支持配置以合并转发的方式发送消息，防止不可描述的图片炸号<br>
 7. RSS转发功能有控件配置，可方便添加删除和设置翻译<br>
 8. 可使用QQ消息配置机器人属性<br>
+
+### 视频部署教程: [BV1Zv4y1w7zV](https://www.bilibili.com/video/BV1Zv4y1w7zV/?vd_source=f8622c32e255b12559a63ccdcef969cd) (感谢群友Luminol倾情奉献)
+如果懒得看视频，也可以看以下文字教程
 
 ## Windows食用方法(傻瓜版):
 
