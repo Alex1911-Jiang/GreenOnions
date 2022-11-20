@@ -162,7 +162,7 @@
 
 ### 短期计划(TODO):
 
-1.群友要求的自定义 API 请求和解析（青春版Postman？）
+1.群友要求的自定义 API 请求和解析（青春版Postman？）<br>
 2.E-Hentai关键词色图<br>
 3.适配几个群友提的图库<br>
 4.适配 [Konata.Core](https://github.com/KonataDev/Konata.Core) 平台
