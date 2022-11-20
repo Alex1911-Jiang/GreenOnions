@@ -6,7 +6,7 @@ using Mirai.CSharp.Models.ChatMessages;
 
 namespace GreenOnions.BotMain.MiraiApiHttp
 {
-    public static class MiraiApiHttpMessageConvert
+    public static class MiraiApiHttpMessageConverter
     {
         public static GreenOnionsMessages ToOnionsMessages(this IChatMessage[] miraiMessage, long senderId, string senderName)
         {
@@ -64,10 +64,8 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                         }
                         else if (!string.IsNullOrEmpty(imgMsg.Base64Str))
                         {
-                            using (MemoryStream ms = imgMsg.MemoryStream)
-                            {
-                                miraiApiHttpMessages.Add(await session.UploadPictureAsync(uploadTarget, ms));
-                            }
+                            using MemoryStream ms = imgMsg.MemoryStream!;
+                            miraiApiHttpMessages.Add(await session.UploadPictureAsync(uploadTarget, ms));
                         }
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsAtMessage atMsg)
@@ -98,7 +96,21 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsVoiceMessage voiceMsg)
                     {
-                        miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.VoiceMessage(null, voiceMsg.Url, voiceMsg.FileName));
+                        if (!string.IsNullOrEmpty(voiceMsg.Url))
+                        {
+                            string url = null;
+                            string path = null;
+                            if (File.Exists(voiceMsg.Url))
+                                path = voiceMsg.Url;
+                            else
+                                url = voiceMsg.Url;
+                            miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.VoiceMessage(null, url, path));
+                        }
+                        else if (!string.IsNullOrEmpty(voiceMsg.Base64Str))
+                        {
+                            using MemoryStream ms = voiceMsg.MemoryStream!;
+                            miraiApiHttpMessages.Add(await session.UploadVoiceAsync(uploadTarget, ms));
+                        }
                     }
                 }
                 catch (Exception ex)

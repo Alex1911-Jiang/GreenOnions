@@ -5,24 +5,39 @@
     /// </summary>
     public record GreenOnionsVoiceMessage : GreenOnionsBaseMessage
     {
+        private string? _base64Str;
         /// <summary>
-        /// 音频Url
+        /// 音频Url或物理路径
         /// </summary>
         public string? Url { get; }
-        /// <summary>
-        /// 音频文件路径
-        /// </summary>
-        public string? FileName { get; }
 
         /// <summary>
         /// 音频消息
         /// </summary>
-        /// <param name="url">音频Url(和路径任选一个, 同时有值时优先使用Url)</param>
-        /// <param name="fileName">音频文件路径(和Url任选一个, 同时有值时优先使用Url)</param>
-        public GreenOnionsVoiceMessage(string? url, string? fileName )
+        /// <param name="url">音频Url或物理路径</param>
+        public GreenOnionsVoiceMessage(string? url)
         {
             Url = url;
-            FileName = fileName;
         }
+
+        public GreenOnionsVoiceMessage(MemoryStream ms)
+        {
+            _base64Str = ms.ToBase64();
+        }
+
+        /// <summary>
+        /// 图片的内存字节流
+        /// </summary>
+        public MemoryStream? MemoryStream
+        {
+            get
+            {
+                return _base64Str?.Base64ToMemoryStream();
+            }
+        }
+        /// <summary>
+        /// 获取图片的Base64字符串
+        /// </summary>
+        public string? Base64Str => _base64Str;
     }
 }

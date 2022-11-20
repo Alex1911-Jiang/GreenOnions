@@ -28,7 +28,8 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 {
                     int iRevokeTime = outMsg.RevokeTime;
                     var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Friend);
-                    _ = session.SendFriendMessageAsync(e.Sender.Id, msg, outMsg.Reply ? quoteId : null).ContinueWith(async sendedCallBack =>
+
+                     _ = session.SendFriendMessageAsync(e.Sender.Id, msg, outMsg.Reply ? quoteId : null).ContinueWith(async sendedCallBack =>
                     {
                         if (!sendedCallBack.IsFaulted && !sendedCallBack.IsCanceled)
                         {

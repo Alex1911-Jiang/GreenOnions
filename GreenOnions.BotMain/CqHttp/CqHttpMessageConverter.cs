@@ -8,7 +8,7 @@ using Sora.Entities.Segment.DataModel;
 
 namespace GreenOnions.BotMain.CqHttp
 {
-    public static class MessageConvertHelper
+    public static class CqHttpMessageConverter
     {
         public static async Task<GreenOnionsMessages> ToOnionsMessages(this MessageBody miraiMessage, long senderId, string senderName, long? senderGroup, SoraApi api)
         {
@@ -94,7 +94,8 @@ namespace GreenOnions.BotMain.CqHttp
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsVoiceMessage voiceMsg)
                     {
-                        cqHttpMessages.Add(SoraSegment.Record(voiceMsg.Url is null ? voiceMsg.FileName : voiceMsg.Url));
+                        string data = string.IsNullOrEmpty(voiceMsg.Url) ? ("base64://" + voiceMsg.Base64Str) : voiceMsg.Url;
+                        cqHttpMessages.Add(SoraSegment.Record(data));
                     }
                 }
                 catch (Exception ex)
