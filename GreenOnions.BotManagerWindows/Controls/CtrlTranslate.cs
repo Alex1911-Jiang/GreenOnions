@@ -12,7 +12,8 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         public void LoadConfig()
         {
-            cboTranslateEngine.SelectedIndex = (int)BotInfo.Config.TranslateEngineType;
+            int index = cboTranslateEngine.Items.IndexOf(BotInfo.Config.TranslateEngineType);
+            cboTranslateEngine.SelectedIndex = index;
             txbTranslateToChinese.Text = BotInfo.Config.TranslateToChineseCMD;
             txbTranslateTo.Text = BotInfo.Config.TranslateToCMD;
             txbTranslateFromToCMD.Text = BotInfo.Config.TranslateFromToCMD;
