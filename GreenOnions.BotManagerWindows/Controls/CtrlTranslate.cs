@@ -12,7 +12,7 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         public void LoadConfig()
         {
-            int index = cboTranslateEngine.Items.IndexOf(BotInfo.Config.TranslateEngineType);
+            int index = cboTranslateEngine.Items.IndexOf(BotInfo.Config.TranslateEngineType.ToString());
             cboTranslateEngine.SelectedIndex = index;
             txbTranslateToChinese.Text = BotInfo.Config.TranslateToChineseCMD;
             txbTranslateTo.Text = BotInfo.Config.TranslateToCMD;
@@ -24,7 +24,10 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         public void SaveConfig()
         {
-            BotInfo.Config.TranslateEngineType = (TranslateEngine)cboTranslateEngine.SelectedIndex;
+            if (string.IsNullOrEmpty(cboTranslateEngine.Text))
+                BotInfo.Config.TranslateEngineType = TranslateEngine.YouDao;
+            else
+                BotInfo.Config.TranslateEngineType = Enum.Parse<TranslateEngine>(cboTranslateEngine.Text);
             BotInfo.Config.TranslateToChineseCMD = txbTranslateToChinese.Text;
             BotInfo.Config.TranslateToCMD = txbTranslateTo.Text;
             BotInfo.Config.TranslateFromToCMD = txbTranslateFromToCMD.Text;

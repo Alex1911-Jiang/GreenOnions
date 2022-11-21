@@ -51,7 +51,7 @@ namespace GreenOnions.Utility
                 }
             }
             if (Config is null)
-                Config = new BotConfig();
+                Config = new BotConfig() { QQId = -1 };
             SaveConfigFile();
 
 
