@@ -347,7 +347,7 @@ namespace GreenOnions.Command
 
         private static PropertyInfo? FindProperty(string propName)
         {
-            PropertyInfo[] props = typeof(BotInfo).GetProperties();
+            PropertyInfo[] props = typeof(BotConfig).GetProperties();
             for (int i = 0; i < props.Length; i++)
             {
                 if (props[i].Name == propName)
