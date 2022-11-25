@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using GreenOnions.Interface;
@@ -104,9 +105,24 @@ namespace GreenOnions.Command
                                     }
                                     else if (prop.PropertyType.IsEnum)
                                     {
-                                        object enu = Enum.Parse(originalType, propValue);
-                                        prop.SetValue(BotInfo.Config, enu);
-                                        propValue = enu.ToString()!;
+                                        if (propValue.EndsWith(';'))
+                                            propValue = propValue.Remove(propValue.Length - 1);
+                                        if (Enum.TryParse(originalType, propValue, out object? enu))
+                                        {
+                                            if (enu != null)
+                                            {
+                                                prop.SetValue(BotInfo.Config, enu);
+                                                propValue = enu.ToString()!;
+                                            }
+                                            else
+                                            {
+                                                return ShowEnumValues();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            return ShowEnumValues();
+                                        }
                                     }
                                     else
                                     {
@@ -132,10 +148,7 @@ namespace GreenOnions.Command
                                     }
                                     else if (prop.PropertyType.IsEnum)
                                     {
-                                        List<string> lstEnumName = new List<string>();
-                                        foreach (var item in Enum.GetValues(prop.PropertyType))
-                                            lstEnumName.Add(item.ToString()!);
-                                        return $"属性<{prop.Name}>值设置失败，该属性是一个枚举，允许的值有:\r\n{string.Join(";\r\n", lstEnumName)}。";
+                                        return ShowEnumValues();
                                     }
                                     else if (originalVal is bool)
                                     {
@@ -146,6 +159,14 @@ namespace GreenOnions.Command
                                         return $"属性<{prop.Name}>值设置失败，该属性是一个{_typeDescription[originalType.Name]}。";
                                     }
                                 }
+                            }
+                            string ShowEnumValues()
+                            {
+
+                                List<string> lstEnumName = new List<string>();
+                                foreach (var item in Enum.GetValues(prop.PropertyType))
+                                    lstEnumName.Add(item.ToString()!);
+                                return $"属性<{prop.Name}>值设置失败，该属性是一个枚举，允许的值有:\r\n{string.Join(";\r\n", lstEnumName)}。";
                             }
                         }
                     }
@@ -347,19 +368,20 @@ namespace GreenOnions.Command
 
         private static PropertyInfo? FindProperty(string propName)
         {
-            PropertyInfo[] props = typeof(BotConfig).GetProperties();
-            for (int i = 0; i < props.Length; i++)
+            Dictionary<string, PropertyInfo> interfaceProps = typeof(IBotConfig).GetProperties().ToDictionary(k => k.Name, v => v);
+            PropertyInfo[] classProps = typeof(BotConfig).GetProperties();
+            for (int i = 0; i < classProps.Length; i++)
             {
-                if (props[i].Name == propName)
+                if (classProps[i].Name == propName)
                 {
-                    return props[i];
+                    return classProps[i];
                 }
-                PropertyChineseNameAttribute? chnNameAttr = props[i].GetCustomAttribute<PropertyChineseNameAttribute>();
+                PropertyChineseNameAttribute? chnNameAttr = interfaceProps[classProps[i].Name].GetCustomAttribute<PropertyChineseNameAttribute>();
                 if (chnNameAttr is not null)
                 {
                     if (chnNameAttr.ChineseName == propName)
                     {
-                        return props[i];
+                        return classProps[i];
                     }
                 }
             }
