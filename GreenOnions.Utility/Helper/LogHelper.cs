@@ -1,26 +1,42 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 
 namespace GreenOnions.Utility.Helper
 {
     public static class LogHelper
     {
+        private static Logger _logger;
+        static LogHelper()
+        {
+            var config = new LoggingConfiguration();
+
+            var consoleTarget = new ColoredConsoleTarget() { Layout = "${message}    ${longdate}" };
+            config.AddTarget("console", consoleTarget);
+
+            var fileTarget = new FileTarget() { FileName = "${basedir}/${level}.log", Layout = "${message}    ${longdate}" };
+            config.AddTarget("file", fileTarget);
+
+
+            var rule1 = new LoggingRule("*", LogLevel.Debug, consoleTarget);
+            config.LoggingRules.Add(rule1);
+
+            var rule2 = new LoggingRule("*", LogLevel.Debug, fileTarget);
+            config.LoggingRules.Add(rule2);
+
+            LogManager.Configuration = config;
+
+            _logger = LogManager.GetLogger("LogHelper");
+        }
+
         public static void WriteInfoLog(string msg)
         {
             if (BotInfo.Config.LogLevel <= 0)
             {
-                msg = $"{msg}    时间:{DateTime.Now}    线程ID:{Thread.GetCurrentProcessorId()}\r\n";
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("[信息]" + msg);
-                Console.ResetColor();
-                try
-                {
-                    File.AppendAllText("information.log", msg);
-                }
-                catch
-                {
-                }
+                msg = $"{msg}    线程ID:{Thread.GetCurrentProcessorId()}    ";
+                _logger.Info(msg);
             }
         }
 
@@ -28,17 +44,8 @@ namespace GreenOnions.Utility.Helper
         {
             if (BotInfo.Config.LogLevel <= 1)
             {
-                msg = $"{msg}    警告时间:{DateTime.Now}    线程ID:{Thread.GetCurrentProcessorId()}\r\n";
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("[警告]" + msg);
-                Console.ResetColor();
-                try
-                {
-                    File.AppendAllText("warning.log", msg);
-                }
-                catch
-                {
-                }
+                msg = $"{msg}    线程ID:{Thread.GetCurrentProcessorId()}    ";
+                _logger.Warn(msg);
             }
         }
 
@@ -74,7 +81,7 @@ namespace GreenOnions.Utility.Helper
             {
                 Exception ex = exObj as Exception;
                 if (ex is null)
-                    AppendErrorText($"{messageStart}。{exObj?.ToString()}。{messageEnd}");
+                    AppendErrorText($"{messageStart}    {exObj?.ToString()}    {messageEnd}");
                 else if (ex is AggregateException)
                 {
                     AppendErrorText(messageStart);
@@ -92,21 +99,12 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        private static void WriteErrorLogInner(Exception ex) => AppendErrorText($"发生异常:\r\n    错误信息:{ex.Message}\r\n    调用堆栈:{ex.StackTrace}\r\n    源:{ex.Source}\r\n    完整异常信息:{ex}\r\n");
+        private static void WriteErrorLogInner(Exception ex) => AppendErrorText($"发生异常:\r\n    错误信息:{ex.Message}\r\n    完整异常信息:{ex}\r\n");
 
         private static void AppendErrorText(string msg)
         {
-            msg = msg + $"\r\n    异常发生时间:{DateTime.Now}    线程ID:{Thread.GetCurrentProcessorId()}\r\n\r\n";
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("[错误]" + msg);
-            Console.ResetColor();
-            try
-            {
-                File.AppendAllText("error.log", msg);
-            }
-            catch
-            {
-            }
+            msg = $"{msg}    线程ID:{Thread.GetCurrentProcessorId()}";
+            _logger.Error(msg);
         }
     }
 }

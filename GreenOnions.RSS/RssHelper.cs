@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using GreenOnions.Interface;
-using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Interface.Items;
 using GreenOnions.Translate;
 using GreenOnions.Utility;
@@ -288,7 +287,22 @@ namespace GreenOnions.RSS
         {
             if (BotInfo.Config.SendImageByFile)  //下载完成后发送文件
             {
-                string imgName = Path.Combine(ImageHelper.ImagePath, $"RSS_{Path.GetFileName(url)}");
+                string fileName;
+                if (url.Contains("twimg"))
+                {
+                    string extSubStart = url.Substring(url.IndexOf("?format=") + "?format=".Length);
+                    string ext = extSubStart.Substring(0, extSubStart.IndexOf('&'));
+
+                    string nameSubToEnd = url.Substring(0, url.IndexOf("?format"));
+                    string nameSub = nameSubToEnd.Substring(nameSubToEnd.LastIndexOf('/') + 1);
+
+                    fileName = $"{nameSub}.{ext}";
+                }
+                else
+                {
+                    fileName = Path.GetFileName(url);
+                }
+                string imgName = Path.Combine(ImageHelper.ImagePath, $"RSS_{fileName}");
                 await HttpHelper.DownloadImageFileAsync(url, imgName);
                 if (File.Exists(imgName))
                     return imgName;
