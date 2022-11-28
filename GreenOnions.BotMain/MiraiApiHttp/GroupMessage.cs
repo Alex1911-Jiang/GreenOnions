@@ -67,7 +67,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
         public Task HandleMessageAsync(IMiraiHttpSession session, IGroupMemberJoinedEventArgs e)
         {
-            if (!CheckPreconditions(e.Member) || !BotInfo.Config.SendMemberJoinedMessage)
+            if (!BotInfo.Config.SendMemberJoinedMessage || !CheckPreconditions(e.Member))
             {
                 return Task.CompletedTask;
             }
@@ -76,7 +76,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
         public Task HandleMessageAsync(IMiraiHttpSession session, IGroupMemberPositiveLeaveEventArgs e)
         {
-            if (!CheckPreconditions(e.Member) || !BotInfo.Config.SendMemberPositiveLeaveMessage)
+            if (!BotInfo.Config.SendMemberPositiveLeaveMessage || !CheckPreconditions(e.Member))
             {
                 return Task.CompletedTask;
             }
@@ -85,7 +85,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
         public Task HandleMessageAsync(IMiraiHttpSession session, IGroupMemberKickedEventArgs e)
         {
-            if (!CheckPreconditions(e.Member) || !BotInfo.Config.SendMemberBeKickedMessage)
+            if (!BotInfo.Config.SendMemberBeKickedMessage || !CheckPreconditions(e.Member))
             {
                 return Task.CompletedTask;
             }

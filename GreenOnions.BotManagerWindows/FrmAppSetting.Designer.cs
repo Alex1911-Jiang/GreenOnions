@@ -299,7 +299,7 @@
             this.pageTranslate.Location = new System.Drawing.Point(4, 33);
             this.pageTranslate.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageTranslate.Name = "pageTranslate";
-            this.pageTranslate.Size = new System.Drawing.Size(192, 63);
+            this.pageTranslate.Size = new System.Drawing.Size(1026, 957);
             this.pageTranslate.TabIndex = 4;
             this.pageTranslate.Text = "翻译设置";
             this.pageTranslate.UseVisualStyleBackColor = true;
@@ -312,7 +312,7 @@
             this.pnlTranslate.Location = new System.Drawing.Point(0, 56);
             this.pnlTranslate.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlTranslate.Name = "pnlTranslate";
-            this.pnlTranslate.Size = new System.Drawing.Size(192, 7);
+            this.pnlTranslate.Size = new System.Drawing.Size(1026, 901);
             this.pnlTranslate.TabIndex = 2;
             // 
             // pnlTranslateEnabled
@@ -322,7 +322,7 @@
             this.pnlTranslateEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlTranslateEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlTranslateEnabled.Name = "pnlTranslateEnabled";
-            this.pnlTranslateEnabled.Size = new System.Drawing.Size(192, 56);
+            this.pnlTranslateEnabled.Size = new System.Drawing.Size(1026, 56);
             this.pnlTranslateEnabled.TabIndex = 1;
             // 
             // chkTranslateEnabled
@@ -343,7 +343,7 @@
             this.pageRepeater.Location = new System.Drawing.Point(4, 33);
             this.pageRepeater.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageRepeater.Name = "pageRepeater";
-            this.pageRepeater.Size = new System.Drawing.Size(192, 63);
+            this.pageRepeater.Size = new System.Drawing.Size(1026, 957);
             this.pageRepeater.TabIndex = 5;
             this.pageRepeater.Text = "复读设置";
             this.pageRepeater.UseVisualStyleBackColor = true;
@@ -355,7 +355,7 @@
             this.pnlRepeater.Location = new System.Drawing.Point(0, 0);
             this.pnlRepeater.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRepeater.Name = "pnlRepeater";
-            this.pnlRepeater.Size = new System.Drawing.Size(192, 63);
+            this.pnlRepeater.Size = new System.Drawing.Size(1026, 957);
             this.pnlRepeater.TabIndex = 0;
             // 
             // pageGroupMemberEvents
@@ -369,7 +369,7 @@
             this.pageGroupMemberEvents.Location = new System.Drawing.Point(4, 33);
             this.pageGroupMemberEvents.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pageGroupMemberEvents.Name = "pageGroupMemberEvents";
-            this.pageGroupMemberEvents.Size = new System.Drawing.Size(192, 63);
+            this.pageGroupMemberEvents.Size = new System.Drawing.Size(1026, 957);
             this.pageGroupMemberEvents.TabIndex = 6;
             this.pageGroupMemberEvents.Text = "进/退群提醒";
             this.pageGroupMemberEvents.UseVisualStyleBackColor = true;
@@ -381,7 +381,7 @@
             this.txbMemberBeKickedMessage.Location = new System.Drawing.Point(383, 155);
             this.txbMemberBeKickedMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbMemberBeKickedMessage.Name = "txbMemberBeKickedMessage";
-            this.txbMemberBeKickedMessage.Size = new System.Drawing.Size(0, 30);
+            this.txbMemberBeKickedMessage.Size = new System.Drawing.Size(616, 30);
             this.txbMemberBeKickedMessage.TabIndex = 3;
             // 
             // txbMemberPositiveLeaveMessage
@@ -391,7 +391,7 @@
             this.txbMemberPositiveLeaveMessage.Location = new System.Drawing.Point(383, 96);
             this.txbMemberPositiveLeaveMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbMemberPositiveLeaveMessage.Name = "txbMemberPositiveLeaveMessage";
-            this.txbMemberPositiveLeaveMessage.Size = new System.Drawing.Size(0, 30);
+            this.txbMemberPositiveLeaveMessage.Size = new System.Drawing.Size(616, 30);
             this.txbMemberPositiveLeaveMessage.TabIndex = 3;
             // 
             // txbMemberJoinedMessage
@@ -401,7 +401,7 @@
             this.txbMemberJoinedMessage.Location = new System.Drawing.Point(383, 37);
             this.txbMemberJoinedMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbMemberJoinedMessage.Name = "txbMemberJoinedMessage";
-            this.txbMemberJoinedMessage.Size = new System.Drawing.Size(0, 30);
+            this.txbMemberJoinedMessage.Size = new System.Drawing.Size(616, 30);
             this.txbMemberJoinedMessage.TabIndex = 3;
             // 
             // chkSendMemberBeKickedMessage
@@ -444,7 +444,7 @@
             this.pageForgeMessage.Location = new System.Drawing.Point(4, 33);
             this.pageForgeMessage.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageForgeMessage.Name = "pageForgeMessage";
-            this.pageForgeMessage.Size = new System.Drawing.Size(192, 63);
+            this.pageForgeMessage.Size = new System.Drawing.Size(1026, 957);
             this.pageForgeMessage.TabIndex = 7;
             this.pageForgeMessage.Text = "伪造消息";
             this.pageForgeMessage.UseVisualStyleBackColor = true;
@@ -457,7 +457,7 @@
             this.pnlForgeMessage.Location = new System.Drawing.Point(0, 56);
             this.pnlForgeMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlForgeMessage.Name = "pnlForgeMessage";
-            this.pnlForgeMessage.Size = new System.Drawing.Size(192, 7);
+            this.pnlForgeMessage.Size = new System.Drawing.Size(1026, 901);
             this.pnlForgeMessage.TabIndex = 13;
             // 
             // pnlForgeMessageEnabled
@@ -467,7 +467,7 @@
             this.pnlForgeMessageEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlForgeMessageEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlForgeMessageEnabled.Name = "pnlForgeMessageEnabled";
-            this.pnlForgeMessageEnabled.Size = new System.Drawing.Size(192, 56);
+            this.pnlForgeMessageEnabled.Size = new System.Drawing.Size(1026, 56);
             this.pnlForgeMessageEnabled.TabIndex = 12;
             // 
             // chkEnabledForgeMessage
@@ -489,7 +489,7 @@
             this.pageRss.Location = new System.Drawing.Point(4, 33);
             this.pageRss.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageRss.Name = "pageRss";
-            this.pageRss.Size = new System.Drawing.Size(1026, 957);
+            this.pageRss.Size = new System.Drawing.Size(192, 63);
             this.pageRss.TabIndex = 8;
             this.pageRss.Text = "RSS转发";
             this.pageRss.UseVisualStyleBackColor = true;
@@ -502,7 +502,7 @@
             this.pnlRss.Location = new System.Drawing.Point(0, 56);
             this.pnlRss.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRss.Name = "pnlRss";
-            this.pnlRss.Size = new System.Drawing.Size(1026, 901);
+            this.pnlRss.Size = new System.Drawing.Size(192, 7);
             this.pnlRss.TabIndex = 2;
             // 
             // pnlRssEnabled
@@ -512,7 +512,7 @@
             this.pnlRssEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlRssEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRssEnabled.Name = "pnlRssEnabled";
-            this.pnlRssEnabled.Size = new System.Drawing.Size(1026, 56);
+            this.pnlRssEnabled.Size = new System.Drawing.Size(192, 56);
             this.pnlRssEnabled.TabIndex = 1;
             // 
             // chkRssEnabled
