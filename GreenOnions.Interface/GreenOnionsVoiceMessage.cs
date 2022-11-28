@@ -20,9 +20,14 @@
             Url = url;
         }
 
-        public GreenOnionsVoiceMessage(MemoryStream ms)
+        /// <summary>
+        /// 音频消息
+        /// </summary>
+        /// <param name="stream">音频流</param>
+        /// <param name="disposeStream">是否在创建完音频消息实例后释放流</param>
+        public GreenOnionsVoiceMessage(Stream stream, bool disposeStream = true)
         {
-            _base64Str = ms.ToBase64();
+            _base64Str = stream.ToBase64(disposeStream);
         }
 
         /// <summary>

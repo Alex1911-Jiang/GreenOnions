@@ -48,6 +48,12 @@ namespace GreenOnions.BotMain.CqHttp
 
         public static async ValueTask Event_OnPrivateMessage(string eventType, PrivateMessageEventArgs eventArgs)
         {
+            if (eventArgs.SoraApi == null)
+            {
+                LogHelper.WriteErrorLogWithUserMessage("SoraApi为空", null);
+                return;
+            }
+
             if (!CheckPreconditionsPrivate(eventArgs))
                 return;
 
@@ -82,6 +88,12 @@ namespace GreenOnions.BotMain.CqHttp
 
         public static async ValueTask Event_OnGroupMemberChange(string eventType, GroupMemberChangeEventArgs eventArgs)
         {
+            if (eventArgs.SoraApi == null)
+            {
+                LogHelper.WriteErrorLogWithUserMessage("SoraApi为空", null);
+                return;
+            }
+
             if (!CheckPreconditionsGroup(eventArgs))
                 return;
 

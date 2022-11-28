@@ -6,6 +6,7 @@ namespace GreenOnions.BotManagerWindows.Controls
 {
     public partial class CtrlRss : UserControl, IConfigSetting
     {
+        private int _rssItemCtrlWidth = 592;
         public CtrlRss()
         {
             InitializeComponent();
@@ -19,7 +20,7 @@ namespace GreenOnions.BotManagerWindows.Controls
                 foreach (RssSubscriptionItem item in BotInfo.Config.RssSubscription)
                 {
                     CtrlRssItem ctrlRssItem = new CtrlRssItem();
-                    ctrlRssItem.Width = RssItemCtrlWidth;
+                    ctrlRssItem.Width = _rssItemCtrlWidth;
                     ctrlRssItem.RssSubscriptionUrl = item.Url;
                     ctrlRssItem.RssRemark = item.Remark;
                     ctrlRssItem.RssForwardGroups = item.ForwardGroups is null ? new long[0] : item.ForwardGroups;
@@ -70,12 +71,11 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         #region -- RSS --
 
-        private int RssItemCtrlWidth = 592;
         private void btnAddRssSubscription_Click(object sender, EventArgs e)
         {
             pnlRssSubscriptionList.Controls.Remove(btnAddRssSubscription);
             CtrlRssItem ctrlRssItem = new CtrlRssItem();
-            ctrlRssItem.Width = RssItemCtrlWidth;
+            ctrlRssItem.Width = _rssItemCtrlWidth;
             ctrlRssItem.RemoveClick += (_, _) => pnlRssSubscriptionList.Controls.Remove(ctrlRssItem);
             pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
             pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
@@ -88,9 +88,9 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         private void ComputeRssItemWidth()
         {
-            RssItemCtrlWidth = pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Height + pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Margin.Top * 2 + btnAddRssSubscription.Margin.Top - 1 > pnlRssSubscriptionList.Height ? pnlRssSubscriptionList.Width - 25 : pnlRssSubscriptionList.Width - 8;
+            _rssItemCtrlWidth = pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Height + pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Margin.Top * 2 + btnAddRssSubscription.Margin.Top - 1 > pnlRssSubscriptionList.Height ? pnlRssSubscriptionList.Width - 25 : pnlRssSubscriptionList.Width - 8;
             foreach (Control item in pnlRssSubscriptionList.Controls)
-                item.Width = RssItemCtrlWidth;
+                item.Width = _rssItemCtrlWidth;
         }
         #endregion -- RSS --
     }

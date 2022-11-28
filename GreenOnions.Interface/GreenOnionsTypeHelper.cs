@@ -36,22 +36,22 @@ namespace GreenOnions.Interface
         }
 
         /// <summary>
-        /// 把内存流转换为Base64字符串(图片或音频)
+        /// 把流转换为Base64字符串(图片或音频)
         /// </summary>
-        /// <param name="ms">内存流</param>
+        /// <param name="stream">流</param>
         /// <param name="dispose">是否在转换完毕后释放内存流</param>
         /// <returns></returns>
-        public static string? ToBase64(this MemoryStream ms, bool dispose = true)
+        public static string? ToBase64(this Stream stream, bool dispose = true)
         {
             try
             {
-                byte[] arr = new byte[ms.Length];
-                ms.Position = 0;
-                ms.Read(arr, 0, (int)ms.Length);
-                ms.Close();
+                byte[] arr = new byte[stream.Length];
+                stream.Position = 0;
+                stream.Read(arr, 0, (int)stream.Length);
+                stream.Close();
                 string base64Img = Convert.ToBase64String(arr);
                 if (dispose)
-                    ms.Dispose();
+                    stream.Dispose();
                 return base64Img;
             }
             catch
