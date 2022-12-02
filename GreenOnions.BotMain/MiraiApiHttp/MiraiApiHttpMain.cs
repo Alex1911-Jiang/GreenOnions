@@ -93,22 +93,19 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 PluginManager.Connected(BotInfo.Config.QQId, greenOnionsApi);
 
-                await Task.Run(() =>
+                while (true)
                 {
-                    while (true)
+                    BotInfo.IsLogin = true;
+                    if (Console.ReadLine() == "exit")
                     {
-                        BotInfo.IsLogin = true;
-                        if (Console.ReadLine() == "exit")
-                        {
-                            BotInfo.IsLogin = false;
-                            PluginManager.Disconnected();
-                            session.Dispose();
-                            ConnectedEvent?.Invoke(false, "");
-                            break;
-                        }
-                        Task.Delay(100).Wait();
+                        BotInfo.IsLogin = false;
+                        PluginManager.Disconnected();
+                        session.Dispose();
+                        ConnectedEvent?.Invoke(false, "");
+                        break;
                     }
-                });
+                    await Task.Delay(100);
+                }
             }
             catch (Exception ex)
             {

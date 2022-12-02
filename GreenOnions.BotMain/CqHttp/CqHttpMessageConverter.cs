@@ -100,7 +100,7 @@ namespace GreenOnions.BotMain.CqHttp
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage("转换为CqHttp消息失败!!!", ex);
+                    LogHelper.WriteErrorLogWithUserMessage($"转换为CqHttp消息失败!!! 消息类型为：{greenOnionsMessage[i].GetType()}", ex);
                     continue;
                 }
                 
