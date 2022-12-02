@@ -13,7 +13,7 @@ namespace GreenOnions.BotManagerWindows
         [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool InternetSetCookie(string lpszUrlName, string lbszCookieName, string lpszCookieData);
 
-        private ChromiumWebBrowser _webBrowser = null;
+        private ChromiumWebBrowser _webBrowser;
         private string _document = "";
         private string _jumpUrl = "";
         private Encoding _encoding = Encoding.UTF8;

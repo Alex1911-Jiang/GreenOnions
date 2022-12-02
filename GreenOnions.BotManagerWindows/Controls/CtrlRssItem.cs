@@ -19,12 +19,12 @@ namespace GreenOnions.BotManagerWindows.Controls
         public long[] RssForwardGroups
         {
             get => txbRssForwardGroups.Text.Replace("\r","").Split('\n').Select(s => s = s.Trim()).Where(s => !string.IsNullOrEmpty(s)).Select(s => Convert.ToInt64(s)).ToArray();
-            set => txbRssForwardGroups.Text = String.Join("\r\n", value);
+            set => txbRssForwardGroups.Text = string.Join("\r\n", value);
         }
         public long[] RssForwardQQs
         {
             get => txbRssForwardQQs.Text.Replace("\r", "").Split('\n').Select(s => s = s.Trim()).Where(s => !string.IsNullOrEmpty(s)).Select(s => Convert.ToInt64(s)).ToArray();
-            set => txbRssForwardQQs.Text = String.Join("\r\n", value);
+            set => txbRssForwardQQs.Text = string.Join("\r\n", value);
         }
         public bool RssTranslate
         {
@@ -64,7 +64,7 @@ namespace GreenOnions.BotManagerWindows.Controls
         public int RssFilterMode { get; set; }
         public string[]? RssFilterKeyWords { get; set; }
 
-        private void SetComboBoxIndex(ComboBox ctrl, string value)
+        private void SetComboBoxIndex(ComboBox ctrl, string? value)
         {
             if (ctrl.DataSource is null)
             {
@@ -80,13 +80,15 @@ namespace GreenOnions.BotManagerWindows.Controls
                 //        break;
                 //}
             }
-            List<string> source = (ctrl.DataSource as List<string>);
-            for (int i = 0; i < source.Count; i++)
+            if (ctrl.DataSource is List<string> source)
             {
-                if (source[i] == value)
+                for (int i = 0; i < source.Count; i++)
                 {
-                    ctrl.SelectedIndex = i;
-                    break;
+                    if (source[i] == value)
+                    {
+                        ctrl.SelectedIndex = i;
+                        break;
+                    }
                 }
             }
         }

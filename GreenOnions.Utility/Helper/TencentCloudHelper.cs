@@ -211,12 +211,12 @@ namespace GreenOnions.Utility.Helper
                 string eTag = result.eTag;
                 return true;
             }
-            catch (COSXML.CosException.CosClientException clientEx)
+            catch (COSXML.CosException.CosClientException)
             {
                 //请求失败
                 //Console.WriteLine("CosClientException: " + clientEx);
             }
-            catch (COSXML.CosException.CosServerException serverEx)
+            catch (COSXML.CosException.CosServerException)
             {
                 //请求失败
                 //Console.WriteLine("CosServerException: " + serverEx.GetInfo());

@@ -6,7 +6,7 @@
 
         public string[] FilterKeyWords => txbFilterKeyWords.Text.Replace("\r","").Split('\n');
 
-        public FrmRssFilter(int filterMode, string[] filterKeyWords)
+        public FrmRssFilter(int filterMode, string[]? filterKeyWords)
         {
             InitializeComponent();
             Controls.OfType<RadioButton>().Where(r => Convert.ToInt32(r.Tag) == filterMode).First().Checked = true;

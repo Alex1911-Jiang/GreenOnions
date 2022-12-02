@@ -29,7 +29,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             }
             LogHelper.WriteInfoLog($"收到来自{e.Sender.Id}的群消息");
 
-            int quoteId = (e.Chain[0] as SourceMessage).Id;
+            int quoteId = (e.Chain[0] as SourceMessage)!.Id;
 
             for (int i = 0; i < e.Chain.Length; i++)
             {
@@ -37,8 +37,8 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 if (e.Chain[i] is IAtMessage atMsg)
                 {
                     IGroupMemberInfo[] groupMemberInfos = await session.GetGroupMemberListAsync(e.Sender.Group.Id);
-                    IGroupMemberInfo targetQQ = groupMemberInfos.Where(m => m.Id == atMsg.Target).FirstOrDefault();
-                    string nickName = targetQQ?.Name;
+                    IGroupMemberInfo? targetQQ = groupMemberInfos.Where(m => m.Id == atMsg.Target).FirstOrDefault();
+                    string? nickName = targetQQ?.Name;
                     e.Chain[i] = new AtMessage(atMsg.Target, nickName);
                 }
             }
@@ -113,7 +113,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             return true;
         }
 
-        private IMessageChainBuilder ReplaceMessage(IMessageChainBuilder builder, string messageCmd, IGroupMemberInfo member, IGroupMemberInfo Operator = null)
+        private IMessageChainBuilder ReplaceMessage(IMessageChainBuilder builder, string messageCmd, IGroupMemberInfo member, IGroupMemberInfo? Operator = null)
         {
             string remainMessage = messageCmd;
             foreach (Match match in regexTags.Matches(messageCmd))

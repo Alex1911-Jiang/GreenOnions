@@ -773,7 +773,6 @@
         private Controls.CtrlOriginalPicture pnlOriginalPicture;
         private Controls.CtrlHPicture pnlHPicture;
         private Controls.CtrlTranslate pnlTranslate;
-        private Controls.CtrlRepeater ctrlRepeater1;
         private Controls.CtrlForgeMessage pnlForgeMessage;
         private Controls.CtrlRss pnlRss;
         private Controls.CtrlBot pnlBot;

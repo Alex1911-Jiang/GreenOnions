@@ -126,7 +126,7 @@ namespace GreenOnions.Utility.Helper
                     }
                     return ms;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     if (retry)
                     {

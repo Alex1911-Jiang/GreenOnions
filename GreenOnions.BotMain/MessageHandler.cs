@@ -35,9 +35,9 @@ namespace GreenOnions.BotMain
             UpdateRegexs();
         }
 
-        public static string UpdateRegexs()
+        public static string? UpdateRegexs()
         {
-            string regexName = null;
+            string? regexName = null;
             try
             {
                 regexName = "开启搜图";
@@ -284,7 +284,7 @@ namespace GreenOnions.BotMain
                     if (regexDownloadPixivOriginalPicture.IsMatch(firstValue))
                     {
                         LogHelper.WriteInfoLog($"{inMsg.SenderId}消息命中下载Pixiv原图命令");
-                        Match match = regexDownloadPixivOriginalPicture.Matches(firstValue).FirstOrDefault();
+                        Match? match = regexDownloadPixivOriginalPicture.Matches(firstValue).FirstOrDefault();
                         if (match?.Groups.Count > 1)
                         {
                             string strId = firstValue.Substring(match.Groups[0].Length);

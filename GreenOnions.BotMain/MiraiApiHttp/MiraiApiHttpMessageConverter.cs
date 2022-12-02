@@ -18,11 +18,11 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     if (miraiMessage[i] is IAtMessage atMsg)
                         greenOnionsMessages.Add(new GreenOnionsAtMessage(atMsg.Target, atMsg.Display));
                     else if (miraiMessage[i] is IPlainMessage plainMsg)
-                        greenOnionsMessages.Add(plainMsg.ToString());
+                        greenOnionsMessages.Add(plainMsg.ToString() ?? string.Empty);
                     else if (miraiMessage[i] is IImageMessage imageMsg)
-                        greenOnionsMessages.Add(new GreenOnionsImageMessage(ImageHelper.ReplaceGroupUrl(imageMsg.Url)));
+                        greenOnionsMessages.Add(new GreenOnionsImageMessage(ImageHelper.ReplaceGroupUrl(imageMsg.Url!)));
                     else if (miraiMessage[i] is IFaceMessage faceMsg)
-                        greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.Name));
+                        greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.Name!));
                 }
                 catch (Exception ex)
                 {
@@ -54,8 +54,8 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     {
                         if (!string.IsNullOrEmpty(imgMsg.Url))
                         {
-                            string url = null;
-                            string path = null;
+                            string? url = null;
+                            string? path = null;
                             if (File.Exists(imgMsg.Url))
                                 path = imgMsg.Url;
                             else
@@ -88,7 +88,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                                     Name = forwardMsg.ItemMessages[j].NickName,
                                     QQNumber = forwardMsg.ItemMessages[j].QQid,
                                     Time = DateTime.Now,
-                                    Chain = itemMsg.ToArray(),
+                                    Chain = itemMsg.ToArray()!,
                                 };
                                 nodes.Add(node);
                             }
@@ -98,8 +98,8 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     {
                         if (!string.IsNullOrEmpty(voiceMsg.Url))
                         {
-                            string url = null;
-                            string path = null;
+                            string? url = null;
+                            string? path = null;
                             if (File.Exists(voiceMsg.Url))
                                 path = voiceMsg.Url;
                             else

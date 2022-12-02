@@ -75,7 +75,7 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        public static void WriteErrorLogWithUserMessage(string messageStart, object exObj, string messageEnd = "")
+        public static void WriteErrorLogWithUserMessage(string messageStart, object? exObj, string messageEnd = "")
         {
             if (BotInfo.Config.LogLevel <= 2)
             {

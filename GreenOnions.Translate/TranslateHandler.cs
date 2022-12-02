@@ -24,7 +24,7 @@ namespace GreenOnions.Translate
         }
 
         [Obsolete("谷歌翻译已停用，有道翻译不支持该方式", true)]
-        public async static void TranslateTo(Regex regexTranslateTo, string msg, Action<GreenOnionsMessages> SendMessage)
+        public static void TranslateTo(Regex regexTranslateTo, string msg, Action<GreenOnionsMessages> SendMessage)
         {
             throw new NotImplementedException("谷歌翻译已停用，有道翻译不支持该方式");
             //Match match = regexTranslateTo.Matches(msg).First();

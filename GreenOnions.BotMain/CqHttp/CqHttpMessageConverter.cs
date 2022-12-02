@@ -10,23 +10,29 @@ namespace GreenOnions.BotMain.CqHttp
 {
     public static class CqHttpMessageConverter
     {
-        public static async Task<GreenOnionsMessages> ToOnionsMessages(this MessageBody miraiMessage, long senderId, string senderName, long? senderGroup, SoraApi api)
+        public static async Task<GreenOnionsMessages> ToOnionsMessages(this MessageBody miraiMessage, long senderId, string senderName, long? senderGroup, SoraApi? api)
         {
             GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
             for (int i = 0; i < miraiMessage.Count; i++)
             {
                 try
                 {
-                    if (miraiMessage[i].Data is AtSegment atMsg)
+                    if (miraiMessage[i].Data is AtSegment atMsg && senderGroup != null)
                     {
                         //获取@群名片
                         if (long.TryParse(atMsg.Target, out long atId))
                         {
-                            var apiResult = await api.GetGroupMemberList(senderGroup.Value);
-                            List<GroupMemberInfo> groupMemberInfos = apiResult.groupMemberList;
-                            GroupMemberInfo targetQQ = groupMemberInfos.Where(m => m.UserId == atId).FirstOrDefault();
-                            string nickName = targetQQ?.Card;
-                            greenOnionsMessages.Add(new GreenOnionsAtMessage(atId, nickName));
+                            if (api != null)
+                            {
+                                var apiResult = await api.GetGroupMemberList(senderGroup.Value);
+                                List<GroupMemberInfo> groupMemberInfos = apiResult.groupMemberList;
+                                GroupMemberInfo? targetQQ = groupMemberInfos.Where(m => m.UserId == atId).FirstOrDefault();
+                                if (targetQQ != null)
+                                {
+                                    string? nickName = targetQQ?.Card;
+                                    greenOnionsMessages.Add(new GreenOnionsAtMessage(atId, nickName));
+                                }
+                            }
                         }
                         else
                         {

@@ -28,7 +28,7 @@ namespace GreenOnions.Command
             {"List`1","集合" },
         };
 
-        public static string? HandleCommand(string message, Func<string> UpdateRegex)
+        public static string? HandleCommand(string message, Func<string?> UpdateRegex)
         {
             bool bGet = false;
             bool bSet = false;
@@ -128,11 +128,11 @@ namespace GreenOnions.Command
                                     {
                                         prop.SetValue(BotInfo.Config, Convert.ChangeType(propValue, originalType));
                                     }
-                                    string strUpdateRegexMessage = UpdateRegex();
+                                    string strUpdateRegexMessage = UpdateRegex() ?? string.Empty;
                                     BotInfo.SaveConfigFile();
                                     return $"属性<{prop.Name}>值已成功设置为:{propValue}。{strUpdateRegexMessage}";
                                 }
-                                catch (Exception ex)
+                                catch (Exception)
                                 {
                                     if (originalVal is IEnumerable)
                                     {
@@ -331,7 +331,7 @@ namespace GreenOnions.Command
                 {
                     string commandBody = message.Substring("--removerss".Length).Trim();
                     var rssList = BotInfo.Config.RssSubscription;
-                    RssSubscriptionItem rssItem = rssList.FirstOrDefault(rss => rss.Remark == commandBody);
+                    RssSubscriptionItem? rssItem = rssList.FirstOrDefault(rss => rss.Remark == commandBody);
                     if (rssItem is null)
                         rssItem = rssList.FirstOrDefault(rss => rss.Url == commandBody);
                     if (rssItem is not null)
@@ -396,7 +396,7 @@ namespace GreenOnions.Command
             return null;
         }
 
-        private static Dictionary<PropertyInfo, PropertyChineseNameAttribute> FindPropertysByNodeName(string nodeName)
+        private static Dictionary<PropertyInfo, PropertyChineseNameAttribute> FindPropertysByNodeName(string? nodeName)
         {
             Dictionary<PropertyInfo, PropertyChineseNameAttribute> propertyInfos = new Dictionary<PropertyInfo, PropertyChineseNameAttribute>();
             PropertyInfo[] props = typeof(IBotConfig).GetProperties();

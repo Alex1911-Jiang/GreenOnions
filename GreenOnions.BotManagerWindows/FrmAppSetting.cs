@@ -120,7 +120,7 @@ namespace GreenOnions.BotManagerWindows
 
             WorkingTimeRecorder.UpdateWorkingTime();
 
-            string regexMsg = MessageHandler.UpdateRegexs();
+            string? regexMsg = MessageHandler.UpdateRegexs();
             if (regexMsg is null)
                 Close();
             else

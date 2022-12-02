@@ -227,6 +227,5 @@ namespace GreenOnions.BotManagerWindows
         private System.Windows.Forms.CheckBox chkMinimizeToTray;
         private System.Windows.Forms.Button btnConnectToCqHttp;
         private System.Windows.Forms.Button btnPlugins;
-        private System.Windows.Forms.Label lblPluginMessage;
     }
 }
