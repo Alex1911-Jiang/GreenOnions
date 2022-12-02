@@ -60,7 +60,7 @@ namespace GreenOnions.BotMain
                                     IPlugin? plugin = (IPlugin?)Activator.CreateInstance(type);
                                     if (plugin is not null)
                                     {
-                                        loadedPlugins.Add(Path.GetFileNameWithoutExtension(dllPath), plugin);
+                                        loadedPlugins.Add(dllPath.Substring(dllPath.LastIndexOf(@"\") + 1), plugin);
                                         if (!BotInfo.PluginStatus.ContainsKey(plugin.Name))
                                             pluginStatus.Add(plugin.Name, true);
                                         else
