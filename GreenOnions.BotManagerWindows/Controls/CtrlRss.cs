@@ -6,7 +6,6 @@ namespace GreenOnions.BotManagerWindows.Controls
 {
     public partial class CtrlRss : UserControl, IConfigSetting
     {
-        private int _rssItemCtrlWidth = 592;
         public CtrlRss()
         {
             InitializeComponent();
@@ -19,8 +18,8 @@ namespace GreenOnions.BotManagerWindows.Controls
                 pnlRssSubscriptionList.Controls.Remove(btnAddRssSubscription);
                 foreach (RssSubscriptionItem item in BotInfo.Config.RssSubscription)
                 {
-                    CtrlRssItem ctrlRssItem = new CtrlRssItem();
-                    ctrlRssItem.Width = _rssItemCtrlWidth;
+                    CtrlRssItem ctrlRssItem = new CtrlRssItem(pnlRssSubscriptionList.Controls.Remove);
+                    ctrlRssItem.Width = ComputeRssItemWidth();
                     ctrlRssItem.RssSubscriptionUrl = item.Url;
                     ctrlRssItem.RssRemark = item.Remark;
                     ctrlRssItem.RssForwardGroups = item.ForwardGroups is null ? new long[0] : item.ForwardGroups;
@@ -33,7 +32,6 @@ namespace GreenOnions.BotManagerWindows.Controls
                     ctrlRssItem.RssAtAll = item.AtAll;
                     ctrlRssItem.RssFilterMode = item.FilterMode;
                     ctrlRssItem.RssFilterKeyWords = item.FilterKeyWords;
-                    ctrlRssItem.RemoveClick += (_, _) => pnlRssSubscriptionList.Controls.Remove(ctrlRssItem);
                     pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
                 }
                 pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
@@ -74,23 +72,26 @@ namespace GreenOnions.BotManagerWindows.Controls
         private void btnAddRssSubscription_Click(object sender, EventArgs e)
         {
             pnlRssSubscriptionList.Controls.Remove(btnAddRssSubscription);
-            CtrlRssItem ctrlRssItem = new CtrlRssItem();
-            ctrlRssItem.Width = _rssItemCtrlWidth;
-            ctrlRssItem.RemoveClick += (_, _) => pnlRssSubscriptionList.Controls.Remove(ctrlRssItem);
+            CtrlRssItem ctrlRssItem = new CtrlRssItem(pnlRssSubscriptionList.Controls.Remove);
+            ctrlRssItem.Width = ComputeRssItemWidth();
             pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
             pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
             pnlRssSubscriptionList.ScrollControlIntoView(btnAddRssSubscription);
         }
 
-        private void pnlRssSubscriptionList_ControlChanged(object sender, ControlEventArgs e) => ComputeRssItemWidth();
+        private void pnlRssSubscriptionList_ControlChanged(object sender, ControlEventArgs e) => ResetRssItemWidth(ComputeRssItemWidth());
 
-        private void pnlRssSubscriptionList_SizeChanged(object sender, EventArgs e) => ComputeRssItemWidth();
+        private void pnlRssSubscriptionList_SizeChanged(object sender, EventArgs e) => ResetRssItemWidth(ComputeRssItemWidth());
 
-        private void ComputeRssItemWidth()
+        private int  ComputeRssItemWidth()
         {
-            _rssItemCtrlWidth = pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Height + pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Margin.Top * 2 + btnAddRssSubscription.Margin.Top - 1 > pnlRssSubscriptionList.Height ? pnlRssSubscriptionList.Width - 25 : pnlRssSubscriptionList.Width - 8;
+            return pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Height + pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Margin.Top * 2 + btnAddRssSubscription.Margin.Top - 1 > pnlRssSubscriptionList.Height ? pnlRssSubscriptionList.Width - 25 : pnlRssSubscriptionList.Width - 8;
+        }
+
+        private void ResetRssItemWidth(int rssItemCtrlWidth)
+        {
             foreach (Control item in pnlRssSubscriptionList.Controls)
-                item.Width = _rssItemCtrlWidth;
+                item.Width = rssItemCtrlWidth;
         }
         #endregion -- RSS --
     }

@@ -52,10 +52,9 @@
             // chkOriginalPictureCheckPornEnabled
             // 
             this.chkOriginalPictureCheckPornEnabled.AutoSize = true;
-            this.chkOriginalPictureCheckPornEnabled.Location = new System.Drawing.Point(24, 105);
-            this.chkOriginalPictureCheckPornEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.chkOriginalPictureCheckPornEnabled.Location = new System.Drawing.Point(15, 74);
             this.chkOriginalPictureCheckPornEnabled.Name = "chkOriginalPictureCheckPornEnabled";
-            this.chkOriginalPictureCheckPornEnabled.Size = new System.Drawing.Size(108, 28);
+            this.chkOriginalPictureCheckPornEnabled.Size = new System.Drawing.Size(75, 21);
             this.chkOriginalPictureCheckPornEnabled.TabIndex = 3;
             this.chkOriginalPictureCheckPornEnabled.Text = "启用鉴黄";
             this.chkOriginalPictureCheckPornEnabled.UseVisualStyleBackColor = true;
@@ -63,96 +62,77 @@
             // 
             // pnlOriginalPictureCheckPorn
             // 
-            this.pnlOriginalPictureCheckPorn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlOriginalPictureCheckPorn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlOriginalPictureCheckPorn.Controls.Add(this.pnlOriginalPictureCheckPornMessage);
             this.pnlOriginalPictureCheckPorn.Controls.Add(this.pnlOriginalPictureCheckPornEvent);
             this.pnlOriginalPictureCheckPorn.Controls.Add(this.lblOriginalPictureCheckPornEvent);
             this.pnlOriginalPictureCheckPorn.Enabled = false;
-            this.pnlOriginalPictureCheckPorn.Location = new System.Drawing.Point(5, 141);
-            this.pnlOriginalPictureCheckPorn.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.pnlOriginalPictureCheckPorn.Location = new System.Drawing.Point(3, 100);
             this.pnlOriginalPictureCheckPorn.Name = "pnlOriginalPictureCheckPorn";
-            this.pnlOriginalPictureCheckPorn.Size = new System.Drawing.Size(996, 144);
+            this.pnlOriginalPictureCheckPorn.Size = new System.Drawing.Size(624, 103);
             this.pnlOriginalPictureCheckPorn.TabIndex = 4;
             // 
             // pnlOriginalPictureCheckPornMessage
             // 
-            this.pnlOriginalPictureCheckPornMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlOriginalPictureCheckPornMessage.Controls.Add(this.lblOriginalPictureCheckPornIllegalReply);
             this.pnlOriginalPictureCheckPornMessage.Controls.Add(this.txbOriginalPictureCheckPornErrorReply);
             this.pnlOriginalPictureCheckPornMessage.Controls.Add(this.txbOriginalPictureCheckPornIllegalReply);
             this.pnlOriginalPictureCheckPornMessage.Controls.Add(this.lblOriginalPictureCheckPornErrorReply);
             this.pnlOriginalPictureCheckPornMessage.Enabled = false;
-            this.pnlOriginalPictureCheckPornMessage.Location = new System.Drawing.Point(5, 55);
-            this.pnlOriginalPictureCheckPornMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.pnlOriginalPictureCheckPornMessage.Location = new System.Drawing.Point(3, 39);
             this.pnlOriginalPictureCheckPornMessage.Name = "pnlOriginalPictureCheckPornMessage";
-            this.pnlOriginalPictureCheckPornMessage.Size = new System.Drawing.Size(984, 83);
+            this.pnlOriginalPictureCheckPornMessage.Size = new System.Drawing.Size(616, 59);
             this.pnlOriginalPictureCheckPornMessage.TabIndex = 6;
             // 
             // lblOriginalPictureCheckPornIllegalReply
             // 
             this.lblOriginalPictureCheckPornIllegalReply.AutoSize = true;
-            this.lblOriginalPictureCheckPornIllegalReply.Location = new System.Drawing.Point(14, 13);
-            this.lblOriginalPictureCheckPornIllegalReply.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblOriginalPictureCheckPornIllegalReply.Location = new System.Drawing.Point(9, 9);
             this.lblOriginalPictureCheckPornIllegalReply.Name = "lblOriginalPictureCheckPornIllegalReply";
-            this.lblOriginalPictureCheckPornIllegalReply.Size = new System.Drawing.Size(158, 24);
+            this.lblOriginalPictureCheckPornIllegalReply.Size = new System.Drawing.Size(107, 17);
             this.lblOriginalPictureCheckPornIllegalReply.TabIndex = 2;
             this.lblOriginalPictureCheckPornIllegalReply.Text = "鉴黄不通过回复语:";
             // 
             // txbOriginalPictureCheckPornErrorReply
             // 
-            this.txbOriginalPictureCheckPornErrorReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbOriginalPictureCheckPornErrorReply.Location = new System.Drawing.Point(182, 50);
-            this.txbOriginalPictureCheckPornErrorReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txbOriginalPictureCheckPornErrorReply.Location = new System.Drawing.Point(116, 35);
             this.txbOriginalPictureCheckPornErrorReply.Name = "txbOriginalPictureCheckPornErrorReply";
-            this.txbOriginalPictureCheckPornErrorReply.Size = new System.Drawing.Size(797, 30);
+            this.txbOriginalPictureCheckPornErrorReply.Size = new System.Drawing.Size(497, 23);
             this.txbOriginalPictureCheckPornErrorReply.TabIndex = 5;
             // 
             // txbOriginalPictureCheckPornIllegalReply
             // 
-            this.txbOriginalPictureCheckPornIllegalReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbOriginalPictureCheckPornIllegalReply.Location = new System.Drawing.Point(182, 10);
-            this.txbOriginalPictureCheckPornIllegalReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txbOriginalPictureCheckPornIllegalReply.Location = new System.Drawing.Point(116, 7);
             this.txbOriginalPictureCheckPornIllegalReply.Name = "txbOriginalPictureCheckPornIllegalReply";
-            this.txbOriginalPictureCheckPornIllegalReply.Size = new System.Drawing.Size(797, 30);
+            this.txbOriginalPictureCheckPornIllegalReply.Size = new System.Drawing.Size(497, 23);
             this.txbOriginalPictureCheckPornIllegalReply.TabIndex = 3;
             // 
             // lblOriginalPictureCheckPornErrorReply
             // 
             this.lblOriginalPictureCheckPornErrorReply.AutoSize = true;
-            this.lblOriginalPictureCheckPornErrorReply.Location = new System.Drawing.Point(14, 54);
-            this.lblOriginalPictureCheckPornErrorReply.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblOriginalPictureCheckPornErrorReply.Location = new System.Drawing.Point(9, 38);
             this.lblOriginalPictureCheckPornErrorReply.Name = "lblOriginalPictureCheckPornErrorReply";
-            this.lblOriginalPictureCheckPornErrorReply.Size = new System.Drawing.Size(140, 24);
+            this.lblOriginalPictureCheckPornErrorReply.Size = new System.Drawing.Size(95, 17);
             this.lblOriginalPictureCheckPornErrorReply.TabIndex = 4;
             this.lblOriginalPictureCheckPornErrorReply.Text = "鉴黄错误回复语:";
             // 
             // pnlOriginalPictureCheckPornEvent
             // 
-            this.pnlOriginalPictureCheckPornEvent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlOriginalPictureCheckPornEvent.Controls.Add(this.rdoOriginalPictureCheckPornSendByForward);
             this.pnlOriginalPictureCheckPornEvent.Controls.Add(this.rdoOriginalPictureCheckPornDoNothing);
             this.pnlOriginalPictureCheckPornEvent.Controls.Add(this.rdoOriginalPictureCheckPornReply);
-            this.pnlOriginalPictureCheckPornEvent.Location = new System.Drawing.Point(187, 4);
-            this.pnlOriginalPictureCheckPornEvent.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.pnlOriginalPictureCheckPornEvent.Location = new System.Drawing.Point(119, 3);
             this.pnlOriginalPictureCheckPornEvent.Name = "pnlOriginalPictureCheckPornEvent";
-            this.pnlOriginalPictureCheckPornEvent.Size = new System.Drawing.Size(802, 42);
+            this.pnlOriginalPictureCheckPornEvent.Size = new System.Drawing.Size(500, 30);
             this.pnlOriginalPictureCheckPornEvent.TabIndex = 1;
             // 
             // rdoOriginalPictureCheckPornSendByForward
             // 
             this.rdoOriginalPictureCheckPornSendByForward.AutoSize = true;
             this.rdoOriginalPictureCheckPornSendByForward.Checked = true;
-            this.rdoOriginalPictureCheckPornSendByForward.Location = new System.Drawing.Point(5, 8);
-            this.rdoOriginalPictureCheckPornSendByForward.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.rdoOriginalPictureCheckPornSendByForward.Location = new System.Drawing.Point(3, 6);
             this.rdoOriginalPictureCheckPornSendByForward.Name = "rdoOriginalPictureCheckPornSendByForward";
-            this.rdoOriginalPictureCheckPornSendByForward.Size = new System.Drawing.Size(215, 28);
+            this.rdoOriginalPictureCheckPornSendByForward.Size = new System.Drawing.Size(146, 21);
             this.rdoOriginalPictureCheckPornSendByForward.TabIndex = 0;
             this.rdoOriginalPictureCheckPornSendByForward.TabStop = true;
             this.rdoOriginalPictureCheckPornSendByForward.Tag = "0";
@@ -163,10 +143,9 @@
             // rdoOriginalPictureCheckPornDoNothing
             // 
             this.rdoOriginalPictureCheckPornDoNothing.AutoSize = true;
-            this.rdoOriginalPictureCheckPornDoNothing.Location = new System.Drawing.Point(270, 8);
-            this.rdoOriginalPictureCheckPornDoNothing.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.rdoOriginalPictureCheckPornDoNothing.Location = new System.Drawing.Point(172, 6);
             this.rdoOriginalPictureCheckPornDoNothing.Name = "rdoOriginalPictureCheckPornDoNothing";
-            this.rdoOriginalPictureCheckPornDoNothing.Size = new System.Drawing.Size(125, 28);
+            this.rdoOriginalPictureCheckPornDoNothing.Size = new System.Drawing.Size(86, 21);
             this.rdoOriginalPictureCheckPornDoNothing.TabIndex = 0;
             this.rdoOriginalPictureCheckPornDoNothing.Tag = "1";
             this.rdoOriginalPictureCheckPornDoNothing.Text = "不发送图片";
@@ -176,10 +155,9 @@
             // rdoOriginalPictureCheckPornReply
             // 
             this.rdoOriginalPictureCheckPornReply.AutoSize = true;
-            this.rdoOriginalPictureCheckPornReply.Location = new System.Drawing.Point(445, 8);
-            this.rdoOriginalPictureCheckPornReply.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.rdoOriginalPictureCheckPornReply.Location = new System.Drawing.Point(283, 6);
             this.rdoOriginalPictureCheckPornReply.Name = "rdoOriginalPictureCheckPornReply";
-            this.rdoOriginalPictureCheckPornReply.Size = new System.Drawing.Size(143, 28);
+            this.rdoOriginalPictureCheckPornReply.Size = new System.Drawing.Size(98, 21);
             this.rdoOriginalPictureCheckPornReply.TabIndex = 0;
             this.rdoOriginalPictureCheckPornReply.Tag = "2";
             this.rdoOriginalPictureCheckPornReply.Text = "回复以下消息";
@@ -189,60 +167,55 @@
             // lblOriginalPictureCheckPornEvent
             // 
             this.lblOriginalPictureCheckPornEvent.AutoSize = true;
-            this.lblOriginalPictureCheckPornEvent.Location = new System.Drawing.Point(19, 14);
-            this.lblOriginalPictureCheckPornEvent.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblOriginalPictureCheckPornEvent.Location = new System.Drawing.Point(12, 10);
             this.lblOriginalPictureCheckPornEvent.Name = "lblOriginalPictureCheckPornEvent";
-            this.lblOriginalPictureCheckPornEvent.Size = new System.Drawing.Size(122, 24);
+            this.lblOriginalPictureCheckPornEvent.Size = new System.Drawing.Size(83, 17);
             this.lblOriginalPictureCheckPornEvent.TabIndex = 0;
             this.lblOriginalPictureCheckPornEvent.Text = "鉴黄不通过时:";
             // 
             // lblOriginalPictureCommand
             // 
             this.lblOriginalPictureCommand.AutoSize = true;
-            this.lblOriginalPictureCommand.Location = new System.Drawing.Point(19, 6);
-            this.lblOriginalPictureCommand.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblOriginalPictureCommand.Location = new System.Drawing.Point(12, 4);
+            this.lblOriginalPictureCommand.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOriginalPictureCommand.Name = "lblOriginalPictureCommand";
-            this.lblOriginalPictureCommand.Size = new System.Drawing.Size(50, 24);
+            this.lblOriginalPictureCommand.Size = new System.Drawing.Size(35, 17);
             this.lblOriginalPictureCommand.TabIndex = 17;
             this.lblOriginalPictureCommand.Text = "命令:";
             // 
             // txbOriginalPictureCommand
             // 
-            this.txbOriginalPictureCommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.txbOriginalPictureCommand.BackColor = System.Drawing.Color.White;
             this.txbOriginalPictureCommand.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbOriginalPictureCommand.Location = new System.Drawing.Point(192, 6);
-            this.txbOriginalPictureCommand.Margin = new System.Windows.Forms.Padding(6);
+            this.txbOriginalPictureCommand.Location = new System.Drawing.Point(122, 4);
+            this.txbOriginalPictureCommand.Margin = new System.Windows.Forms.Padding(4);
             this.txbOriginalPictureCommand.Name = "txbOriginalPictureCommand";
-            this.txbOriginalPictureCommand.Size = new System.Drawing.Size(799, 30);
+            this.txbOriginalPictureCommand.Size = new System.Drawing.Size(498, 23);
             this.txbOriginalPictureCommand.TabIndex = 18;
             // 
             // lblOriginalPictureDownloadingReply
             // 
             this.lblOriginalPictureDownloadingReply.AutoSize = true;
-            this.lblOriginalPictureDownloadingReply.Location = new System.Drawing.Point(19, 48);
-            this.lblOriginalPictureDownloadingReply.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblOriginalPictureDownloadingReply.Location = new System.Drawing.Point(12, 34);
+            this.lblOriginalPictureDownloadingReply.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOriginalPictureDownloadingReply.Name = "lblOriginalPictureDownloadingReply";
-            this.lblOriginalPictureDownloadingReply.Size = new System.Drawing.Size(140, 24);
+            this.lblOriginalPictureDownloadingReply.Size = new System.Drawing.Size(95, 17);
             this.lblOriginalPictureDownloadingReply.TabIndex = 19;
             this.lblOriginalPictureDownloadingReply.Text = "开始下载回复语:";
             // 
             // txbOriginalPictureDownloadingReply
             // 
-            this.txbOriginalPictureDownloadingReply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.txbOriginalPictureDownloadingReply.BackColor = System.Drawing.Color.White;
             this.txbOriginalPictureDownloadingReply.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbOriginalPictureDownloadingReply.Location = new System.Drawing.Point(192, 48);
-            this.txbOriginalPictureDownloadingReply.Margin = new System.Windows.Forms.Padding(6);
+            this.txbOriginalPictureDownloadingReply.Location = new System.Drawing.Point(122, 34);
+            this.txbOriginalPictureDownloadingReply.Margin = new System.Windows.Forms.Padding(4);
             this.txbOriginalPictureDownloadingReply.Name = "txbOriginalPictureDownloadingReply";
-            this.txbOriginalPictureDownloadingReply.Size = new System.Drawing.Size(799, 30);
+            this.txbOriginalPictureDownloadingReply.Size = new System.Drawing.Size(498, 23);
             this.txbOriginalPictureDownloadingReply.TabIndex = 20;
             // 
             // CtrlOriginalPicture
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.lblOriginalPictureDownloadingReply);
@@ -251,8 +224,9 @@
             this.Controls.Add(this.txbOriginalPictureCommand);
             this.Controls.Add(this.chkOriginalPictureCheckPornEnabled);
             this.Controls.Add(this.pnlOriginalPictureCheckPorn);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "CtrlOriginalPicture";
-            this.Size = new System.Drawing.Size(1012, 906);
+            this.Size = new System.Drawing.Size(630, 642);
             this.pnlOriginalPictureCheckPorn.ResumeLayout(false);
             this.pnlOriginalPictureCheckPorn.PerformLayout();
             this.pnlOriginalPictureCheckPornMessage.ResumeLayout(false);

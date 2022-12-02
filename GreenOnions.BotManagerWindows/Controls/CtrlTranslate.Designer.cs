@@ -47,64 +47,56 @@
             // 
             // txbTranslateFromToCMD
             // 
-            this.txbTranslateFromToCMD.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTranslateFromToCMD.Location = new System.Drawing.Point(316, 189);
-            this.txbTranslateFromToCMD.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txbTranslateFromToCMD.Location = new System.Drawing.Point(197, 134);
             this.txbTranslateFromToCMD.Name = "txbTranslateFromToCMD";
-            this.txbTranslateFromToCMD.Size = new System.Drawing.Size(665, 30);
+            this.txbTranslateFromToCMD.Size = new System.Drawing.Size(425, 23);
             this.txbTranslateFromToCMD.TabIndex = 30;
             // 
             // lblTranslateFromTo
             // 
             this.lblTranslateFromTo.AutoSize = true;
-            this.lblTranslateFromTo.Location = new System.Drawing.Point(25, 193);
-            this.lblTranslateFromTo.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblTranslateFromTo.Location = new System.Drawing.Point(12, 137);
             this.lblTranslateFromTo.Name = "lblTranslateFromTo";
-            this.lblTranslateFromTo.Size = new System.Drawing.Size(266, 24);
+            this.lblTranslateFromTo.Size = new System.Drawing.Size(179, 17);
             this.lblTranslateFromTo.TabIndex = 29;
             this.lblTranslateFromTo.Text = "从指定语言翻译为指定语言命令:";
             // 
             // cboTranslateEngine
             // 
-            this.cboTranslateEngine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.cboTranslateEngine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTranslateEngine.FormattingEnabled = true;
             this.cboTranslateEngine.Items.AddRange(new object[] {
             "YouDao"});
-            this.cboTranslateEngine.Location = new System.Drawing.Point(221, 18);
-            this.cboTranslateEngine.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.cboTranslateEngine.Location = new System.Drawing.Point(137, 13);
             this.cboTranslateEngine.Name = "cboTranslateEngine";
-            this.cboTranslateEngine.Size = new System.Drawing.Size(760, 32);
+            this.cboTranslateEngine.Size = new System.Drawing.Size(485, 25);
             this.cboTranslateEngine.TabIndex = 27;
             this.cboTranslateEngine.SelectedIndexChanged += new System.EventHandler(this.cboTranslateEngine_SelectedIndexChanged);
             // 
             // lblTranslateEngine
             // 
             this.lblTranslateEngine.AutoSize = true;
-            this.lblTranslateEngine.Location = new System.Drawing.Point(25, 22);
-            this.lblTranslateEngine.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblTranslateEngine.Location = new System.Drawing.Point(12, 16);
             this.lblTranslateEngine.Name = "lblTranslateEngine";
-            this.lblTranslateEngine.Size = new System.Drawing.Size(86, 24);
+            this.lblTranslateEngine.Size = new System.Drawing.Size(59, 17);
             this.lblTranslateEngine.TabIndex = 26;
             this.lblTranslateEngine.Text = "翻译引擎:";
             // 
             // txbAddAutoTranslateGroupMemoryQQ
             // 
-            this.txbAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(721, 296);
-            this.txbAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(6);
+            this.txbAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(455, 210);
+            this.txbAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txbAddAutoTranslateGroupMemoryQQ.Name = "txbAddAutoTranslateGroupMemoryQQ";
             this.txbAddAutoTranslateGroupMemoryQQ.ShortcutsEnabled = false;
-            this.txbAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(260, 30);
+            this.txbAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(167, 23);
             this.txbAddAutoTranslateGroupMemoryQQ.TabIndex = 20;
             // 
             // btnRemoveAutoTranslateGroupMemoryQQ
             // 
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(551, 340);
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(6);
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(347, 241);
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRemoveAutoTranslateGroupMemoryQQ.Name = "btnRemoveAutoTranslateGroupMemoryQQ";
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(138, 32);
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(88, 23);
             this.btnRemoveAutoTranslateGroupMemoryQQ.TabIndex = 24;
             this.btnRemoveAutoTranslateGroupMemoryQQ.Text = ">>移除>>";
             this.btnRemoveAutoTranslateGroupMemoryQQ.UseVisualStyleBackColor = true;
@@ -112,10 +104,10 @@
             // 
             // btnAddAutoTranslateGroupMemoryQQ
             // 
-            this.btnAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(551, 296);
-            this.btnAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(6);
+            this.btnAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(347, 210);
+            this.btnAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAddAutoTranslateGroupMemoryQQ.Name = "btnAddAutoTranslateGroupMemoryQQ";
-            this.btnAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(138, 32);
+            this.btnAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(88, 23);
             this.btnAddAutoTranslateGroupMemoryQQ.TabIndex = 25;
             this.btnAddAutoTranslateGroupMemoryQQ.Text = "<<添加<<";
             this.btnAddAutoTranslateGroupMemoryQQ.UseVisualStyleBackColor = true;
@@ -124,10 +116,10 @@
             // lstAutoTranslateGroupMemoriesQQ
             // 
             this.lstAutoTranslateGroupMemoriesQQ.FullRowSelect = true;
-            this.lstAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(251, 267);
-            this.lstAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(6);
+            this.lstAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(156, 189);
+            this.lstAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lstAutoTranslateGroupMemoriesQQ.Name = "lstAutoTranslateGroupMemoriesQQ";
-            this.lstAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(260, 118);
+            this.lstAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(167, 85);
             this.lstAutoTranslateGroupMemoriesQQ.TabIndex = 23;
             this.lstAutoTranslateGroupMemoriesQQ.UseCompatibleStateImageBehavior = false;
             this.lstAutoTranslateGroupMemoriesQQ.View = System.Windows.Forms.View.List;
@@ -135,78 +127,69 @@
             // lblAddAutoTranslateGroupMemoryQQ
             // 
             this.lblAddAutoTranslateGroupMemoryQQ.AutoSize = true;
-            this.lblAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(718, 267);
-            this.lblAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(453, 189);
+            this.lblAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAddAutoTranslateGroupMemoryQQ.Name = "lblAddAutoTranslateGroupMemoryQQ";
-            this.lblAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(238, 24);
+            this.lblAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(160, 17);
             this.lblAddAutoTranslateGroupMemoryQQ.TabIndex = 21;
             this.lblAddAutoTranslateGroupMemoryQQ.Text = "添加自动翻译群友消息QQ：";
             // 
             // lblAutoTranslateGroupMemoriesQQ
             // 
             this.lblAutoTranslateGroupMemoriesQQ.AutoSize = true;
-            this.lblAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(25, 267);
-            this.lblAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(12, 189);
+            this.lblAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAutoTranslateGroupMemoriesQQ.Name = "lblAutoTranslateGroupMemoriesQQ";
-            this.lblAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(202, 24);
+            this.lblAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(136, 17);
             this.lblAutoTranslateGroupMemoriesQQ.TabIndex = 22;
             this.lblAutoTranslateGroupMemoriesQQ.Text = "自动翻译群友消息QQ：";
             // 
             // txbTranslateTo
             // 
-            this.txbTranslateTo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.txbTranslateTo.Enabled = false;
-            this.txbTranslateTo.Location = new System.Drawing.Point(316, 148);
-            this.txbTranslateTo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txbTranslateTo.Location = new System.Drawing.Point(197, 105);
             this.txbTranslateTo.Name = "txbTranslateTo";
-            this.txbTranslateTo.Size = new System.Drawing.Size(665, 30);
+            this.txbTranslateTo.Size = new System.Drawing.Size(425, 23);
             this.txbTranslateTo.TabIndex = 19;
             // 
             // txbTranslateToChinese
             // 
-            this.txbTranslateToChinese.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbTranslateToChinese.Location = new System.Drawing.Point(316, 107);
-            this.txbTranslateToChinese.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txbTranslateToChinese.Location = new System.Drawing.Point(197, 76);
             this.txbTranslateToChinese.Name = "txbTranslateToChinese";
-            this.txbTranslateToChinese.Size = new System.Drawing.Size(665, 30);
+            this.txbTranslateToChinese.Size = new System.Drawing.Size(425, 23);
             this.txbTranslateToChinese.TabIndex = 18;
             // 
             // lblTranslateTo
             // 
             this.lblTranslateTo.AutoSize = true;
             this.lblTranslateTo.Enabled = false;
-            this.lblTranslateTo.Location = new System.Drawing.Point(25, 152);
-            this.lblTranslateTo.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblTranslateTo.Location = new System.Drawing.Point(12, 108);
             this.lblTranslateTo.Name = "lblTranslateTo";
-            this.lblTranslateTo.Size = new System.Drawing.Size(176, 24);
+            this.lblTranslateTo.Size = new System.Drawing.Size(119, 17);
             this.lblTranslateTo.TabIndex = 17;
             this.lblTranslateTo.Text = "翻译为指定语言命令:";
             // 
             // lblTranslateToChinese
             // 
             this.lblTranslateToChinese.AutoSize = true;
-            this.lblTranslateToChinese.Location = new System.Drawing.Point(25, 111);
-            this.lblTranslateToChinese.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblTranslateToChinese.Location = new System.Drawing.Point(12, 79);
             this.lblTranslateToChinese.Name = "lblTranslateToChinese";
-            this.lblTranslateToChinese.Size = new System.Drawing.Size(140, 24);
+            this.lblTranslateToChinese.Size = new System.Drawing.Size(95, 17);
             this.lblTranslateToChinese.TabIndex = 16;
             this.lblTranslateToChinese.Text = "翻译为中文命令:";
             // 
             // lblTranslateEngineHelp
             // 
             this.lblTranslateEngineHelp.AutoSize = true;
-            this.lblTranslateEngineHelp.Location = new System.Drawing.Point(221, 58);
-            this.lblTranslateEngineHelp.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblTranslateEngineHelp.Location = new System.Drawing.Point(137, 41);
             this.lblTranslateEngineHelp.Name = "lblTranslateEngineHelp";
-            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(175, 24);
+            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(119, 17);
             this.lblTranslateEngineHelp.TabIndex = 28;
             this.lblTranslateEngineHelp.Text = "谷歌翻译 API 已停用";
             // 
             // CtrlTranslate
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.txbTranslateFromToCMD);
@@ -224,8 +207,9 @@
             this.Controls.Add(this.txbTranslateToChinese);
             this.Controls.Add(this.lblTranslateTo);
             this.Controls.Add(this.lblTranslateToChinese);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "CtrlTranslate";
-            this.Size = new System.Drawing.Size(1012, 906);
+            this.Size = new System.Drawing.Size(630, 642);
             this.ResumeLayout(false);
             this.PerformLayout();
 

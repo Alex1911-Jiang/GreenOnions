@@ -1,16 +1,17 @@
-﻿using GreenOnions.Interface.Configs.Enums;
-using GreenOnions.Utility;
+﻿using GreenOnions.Utility;
 
 namespace GreenOnions.BotManagerWindows.Controls
 {
     public partial class CtrlRssItem : UserControl
     {
-        public event EventHandler RemoveClick;
-        public CtrlRssItem()
+        private event Action<Control> RemoveClick;
+        public CtrlRssItem(Action<Control> removeClick )
         {
+            RemoveClick = removeClick;
             InitializeComponent();
+            this.btnRssRemoveItem.Click += (_, _) => RemoveClick(this);
         }
-        public string RssSubscriptionUrl
+        public string? RssSubscriptionUrl
         {
             get => txbRssSubscriptionUrl.Text;
             set => txbRssSubscriptionUrl.Text = value;
@@ -35,17 +36,17 @@ namespace GreenOnions.BotManagerWindows.Controls
             get => chkTranslateFromTo.Checked;
             set => chkTranslateFromTo.Checked = value;
         }
-        public string RssTranslateFrom
+        public string? RssTranslateFrom
         {
             get => cboTranslateFrom.Text;
             set => SetComboBoxIndex(cboTranslateFrom, value);
         }
-        public string RssTranslateTo
+        public string? RssTranslateTo
         {
             get => cboTranslateTo.Text;
             set => SetComboBoxIndex(cboTranslateTo, value);
         }
-        public string RssRemark
+        public string? RssRemark
         {
             get => txbRssRemark.Text;
             set => txbRssRemark.Text = value;
@@ -61,7 +62,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             set => chkRssAtAll.Checked = value;
         }
         public int RssFilterMode { get; set; }
-        public string[] RssFilterKeyWords { get; set; }
+        public string[]? RssFilterKeyWords { get; set; }
 
         private void SetComboBoxIndex(ComboBox ctrl, string value)
         {
@@ -89,8 +90,6 @@ namespace GreenOnions.BotManagerWindows.Controls
                 }
             }
         }
-
-        private void btnRssRemoveItem_Click(object sender, EventArgs e) => RemoveClick?.Invoke(sender, e);
 
         private void checkNumber_KeyPress(object sender, KeyPressEventArgs e)
         {

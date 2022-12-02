@@ -49,7 +49,6 @@
             // 
             // btnLoadUrl
             // 
-            this.btnLoadUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLoadUrl.Location = new System.Drawing.Point(722, 321);
             this.btnLoadUrl.Name = "btnLoadUrl";
             this.btnLoadUrl.Size = new System.Drawing.Size(75, 23);
@@ -60,8 +59,6 @@
             // 
             // txbUrl
             // 
-            this.txbUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.txbUrl.Location = new System.Drawing.Point(3, 321);
             this.txbUrl.Name = "txbUrl";
             this.txbUrl.Size = new System.Drawing.Size(713, 23);

@@ -53,10 +53,9 @@
             // lblRssSubscriptionUrl
             // 
             this.lblRssSubscriptionUrl.AutoSize = true;
-            this.lblRssSubscriptionUrl.Location = new System.Drawing.Point(27, 8);
-            this.lblRssSubscriptionUrl.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblRssSubscriptionUrl.Location = new System.Drawing.Point(17, 6);
             this.lblRssSubscriptionUrl.Name = "lblRssSubscriptionUrl";
-            this.lblRssSubscriptionUrl.Size = new System.Drawing.Size(86, 24);
+            this.lblRssSubscriptionUrl.Size = new System.Drawing.Size(59, 17);
             this.lblRssSubscriptionUrl.TabIndex = 0;
             this.lblRssSubscriptionUrl.Text = "订阅地址:";
             // 
@@ -64,39 +63,36 @@
             // 
             this.txbRssSubscriptionUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbRssSubscriptionUrl.Location = new System.Drawing.Point(129, 4);
-            this.txbRssSubscriptionUrl.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txbRssSubscriptionUrl.Location = new System.Drawing.Point(82, 3);
             this.txbRssSubscriptionUrl.Name = "txbRssSubscriptionUrl";
-            this.txbRssSubscriptionUrl.Size = new System.Drawing.Size(669, 30);
+            this.txbRssSubscriptionUrl.Size = new System.Drawing.Size(427, 23);
             this.txbRssSubscriptionUrl.TabIndex = 1;
             // 
             // lblRssForwardGroup
             // 
             this.lblRssForwardGroup.AutoSize = true;
-            this.lblRssForwardGroup.Location = new System.Drawing.Point(27, 117);
-            this.lblRssForwardGroup.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblRssForwardGroup.Location = new System.Drawing.Point(17, 83);
             this.lblRssForwardGroup.Name = "lblRssForwardGroup";
-            this.lblRssForwardGroup.Size = new System.Drawing.Size(86, 24);
+            this.lblRssForwardGroup.Size = new System.Drawing.Size(59, 17);
             this.lblRssForwardGroup.TabIndex = 2;
             this.lblRssForwardGroup.Text = "转发群组:";
             // 
             // lblRssForwardQQ
             // 
+            this.lblRssForwardQQ.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRssForwardQQ.AutoSize = true;
-            this.lblRssForwardQQ.Location = new System.Drawing.Point(421, 117);
-            this.lblRssForwardQQ.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblRssForwardQQ.Location = new System.Drawing.Point(268, 83);
             this.lblRssForwardQQ.Name = "lblRssForwardQQ";
-            this.lblRssForwardQQ.Size = new System.Drawing.Size(80, 24);
+            this.lblRssForwardQQ.Size = new System.Drawing.Size(55, 17);
             this.lblRssForwardQQ.TabIndex = 2;
             this.lblRssForwardQQ.Text = "转发QQ:";
             // 
             // chkRssTranslate
             // 
             this.chkRssTranslate.AutoSize = true;
-            this.chkRssTranslate.Location = new System.Drawing.Point(27, 176);
-            this.chkRssTranslate.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.chkRssTranslate.Location = new System.Drawing.Point(17, 125);
             this.chkRssTranslate.Name = "chkRssTranslate";
-            this.chkRssTranslate.Size = new System.Drawing.Size(72, 28);
+            this.chkRssTranslate.Size = new System.Drawing.Size(51, 21);
             this.chkRssTranslate.TabIndex = 3;
             this.chkRssTranslate.Text = "翻译";
             this.chkRssTranslate.UseVisualStyleBackColor = true;
@@ -104,22 +100,21 @@
             // 
             // txbRssForwardGroups
             // 
-            this.txbRssForwardGroups.Location = new System.Drawing.Point(129, 86);
-            this.txbRssForwardGroups.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txbRssForwardGroups.Location = new System.Drawing.Point(82, 61);
             this.txbRssForwardGroups.Multiline = true;
             this.txbRssForwardGroups.Name = "txbRssForwardGroups";
-            this.txbRssForwardGroups.Size = new System.Drawing.Size(281, 83);
+            this.txbRssForwardGroups.Size = new System.Drawing.Size(180, 60);
             this.txbRssForwardGroups.TabIndex = 4;
             this.txbRssForwardGroups.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
             this.txbRssForwardGroups.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // txbRssForwardQQs
             // 
-            this.txbRssForwardQQs.Location = new System.Drawing.Point(517, 86);
-            this.txbRssForwardQQs.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txbRssForwardQQs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbRssForwardQQs.Location = new System.Drawing.Point(329, 61);
             this.txbRssForwardQQs.Multiline = true;
             this.txbRssForwardQQs.Name = "txbRssForwardQQs";
-            this.txbRssForwardQQs.Size = new System.Drawing.Size(281, 83);
+            this.txbRssForwardQQs.Size = new System.Drawing.Size(180, 60);
             this.txbRssForwardQQs.TabIndex = 4;
             this.txbRssForwardQQs.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
             this.txbRssForwardQQs.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
@@ -128,31 +123,27 @@
             // 
             this.btnRssRemoveItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRssRemoveItem.Image = global::GreenOnions.BotManagerWindows.Resource.remove;
-            this.btnRssRemoveItem.Location = new System.Drawing.Point(836, 4);
-            this.btnRssRemoveItem.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.btnRssRemoveItem.Location = new System.Drawing.Point(532, 3);
             this.btnRssRemoveItem.Name = "btnRssRemoveItem";
-            this.btnRssRemoveItem.Size = new System.Drawing.Size(63, 56);
+            this.btnRssRemoveItem.Size = new System.Drawing.Size(40, 40);
             this.btnRssRemoveItem.TabIndex = 5;
             this.btnRssRemoveItem.UseVisualStyleBackColor = true;
-            this.btnRssRemoveItem.Click += new System.EventHandler(this.btnRssRemoveItem_Click);
             // 
             // txbRssRemark
             // 
             this.txbRssRemark.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbRssRemark.Location = new System.Drawing.Point(129, 45);
-            this.txbRssRemark.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.txbRssRemark.Location = new System.Drawing.Point(82, 32);
             this.txbRssRemark.Name = "txbRssRemark";
-            this.txbRssRemark.Size = new System.Drawing.Size(669, 30);
+            this.txbRssRemark.Size = new System.Drawing.Size(427, 23);
             this.txbRssRemark.TabIndex = 7;
             // 
             // lblRssRemark
             // 
             this.lblRssRemark.AutoSize = true;
-            this.lblRssRemark.Location = new System.Drawing.Point(27, 49);
-            this.lblRssRemark.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblRssRemark.Location = new System.Drawing.Point(17, 35);
             this.lblRssRemark.Name = "lblRssRemark";
-            this.lblRssRemark.Size = new System.Drawing.Size(80, 24);
+            this.lblRssRemark.Size = new System.Drawing.Size(59, 17);
             this.lblRssRemark.TabIndex = 6;
             this.lblRssRemark.Text = "备      注:";
             // 
@@ -160,46 +151,41 @@
             // 
             this.chkRssSendByForward.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkRssSendByForward.AutoSize = true;
-            this.chkRssSendByForward.Location = new System.Drawing.Point(809, 76);
-            this.chkRssSendByForward.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.chkRssSendByForward.Location = new System.Drawing.Point(515, 54);
             this.chkRssSendByForward.Name = "chkRssSendByForward";
-            this.chkRssSendByForward.Size = new System.Drawing.Size(77, 52);
+            this.chkRssSendByForward.Size = new System.Drawing.Size(55, 38);
             this.chkRssSendByForward.TabIndex = 8;
             this.chkRssSendByForward.Text = " 合并\r\n 转发";
             this.chkRssSendByForward.UseVisualStyleBackColor = true;
             // 
             // pnlTranslateFromTo
             // 
-            this.pnlTranslateFromTo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTranslateFromTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlTranslateFromTo.Controls.Add(this.lblTranslateTo);
             this.pnlTranslateFromTo.Controls.Add(this.lblTranslateFrom);
             this.pnlTranslateFromTo.Controls.Add(this.cboTranslateTo);
             this.pnlTranslateFromTo.Controls.Add(this.cboTranslateFrom);
             this.pnlTranslateFromTo.Enabled = false;
-            this.pnlTranslateFromTo.Location = new System.Drawing.Point(294, 171);
-            this.pnlTranslateFromTo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.pnlTranslateFromTo.Location = new System.Drawing.Point(187, 121);
             this.pnlTranslateFromTo.Name = "pnlTranslateFromTo";
-            this.pnlTranslateFromTo.Size = new System.Drawing.Size(506, 42);
+            this.pnlTranslateFromTo.Size = new System.Drawing.Size(322, 30);
             this.pnlTranslateFromTo.TabIndex = 9;
             // 
             // lblTranslateTo
             // 
             this.lblTranslateTo.AutoSize = true;
-            this.lblTranslateTo.Location = new System.Drawing.Point(270, 7);
-            this.lblTranslateTo.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblTranslateTo.Location = new System.Drawing.Point(172, 5);
             this.lblTranslateTo.Name = "lblTranslateTo";
-            this.lblTranslateTo.Size = new System.Drawing.Size(32, 24);
+            this.lblTranslateTo.Size = new System.Drawing.Size(23, 17);
             this.lblTranslateTo.TabIndex = 2;
             this.lblTranslateTo.Text = "到:";
             // 
             // lblTranslateFrom
             // 
             this.lblTranslateFrom.AutoSize = true;
-            this.lblTranslateFrom.Location = new System.Drawing.Point(19, 7);
-            this.lblTranslateFrom.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblTranslateFrom.Location = new System.Drawing.Point(12, 5);
             this.lblTranslateFrom.Name = "lblTranslateFrom";
-            this.lblTranslateFrom.Size = new System.Drawing.Size(32, 24);
+            this.lblTranslateFrom.Size = new System.Drawing.Size(23, 17);
             this.lblTranslateFrom.TabIndex = 1;
             this.lblTranslateFrom.Text = "从:";
             // 
@@ -207,31 +193,26 @@
             // 
             this.cboTranslateTo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTranslateTo.FormattingEnabled = true;
-            this.cboTranslateTo.Location = new System.Drawing.Point(316, 3);
-            this.cboTranslateTo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.cboTranslateTo.Location = new System.Drawing.Point(201, 2);
             this.cboTranslateTo.Name = "cboTranslateTo";
-            this.cboTranslateTo.Size = new System.Drawing.Size(188, 32);
+            this.cboTranslateTo.Size = new System.Drawing.Size(121, 25);
             this.cboTranslateTo.TabIndex = 0;
             // 
             // cboTranslateFrom
             // 
             this.cboTranslateFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTranslateFrom.FormattingEnabled = true;
-            this.cboTranslateFrom.Location = new System.Drawing.Point(64, 3);
-            this.cboTranslateFrom.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.cboTranslateFrom.Location = new System.Drawing.Point(41, 2);
             this.cboTranslateFrom.Name = "cboTranslateFrom";
-            this.cboTranslateFrom.Size = new System.Drawing.Size(188, 32);
+            this.cboTranslateFrom.Size = new System.Drawing.Size(121, 25);
             this.cboTranslateFrom.TabIndex = 0;
             // 
             // btnFilters
             // 
-            this.btnFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFilters.Location = new System.Drawing.Point(809, 172);
-            this.btnFilters.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.btnFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFilters.Location = new System.Drawing.Point(515, 122);
             this.btnFilters.Name = "btnFilters";
-            this.btnFilters.Size = new System.Drawing.Size(90, 38);
+            this.btnFilters.Size = new System.Drawing.Size(57, 27);
             this.btnFilters.TabIndex = 3;
             this.btnFilters.Text = "过滤...";
             this.btnFilters.UseVisualStyleBackColor = true;
@@ -241,10 +222,9 @@
             // 
             this.chkTranslateFromTo.AutoSize = true;
             this.chkTranslateFromTo.Enabled = false;
-            this.chkTranslateFromTo.Location = new System.Drawing.Point(129, 176);
-            this.chkTranslateFromTo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.chkTranslateFromTo.Location = new System.Drawing.Point(82, 125);
             this.chkTranslateFromTo.Name = "chkTranslateFromTo";
-            this.chkTranslateFromTo.Size = new System.Drawing.Size(144, 28);
+            this.chkTranslateFromTo.Size = new System.Drawing.Size(99, 21);
             this.chkTranslateFromTo.TabIndex = 10;
             this.chkTranslateFromTo.Text = "指定翻译语言";
             this.chkTranslateFromTo.UseVisualStyleBackColor = true;
@@ -254,17 +234,16 @@
             // 
             this.chkRssAtAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkRssAtAll.AutoSize = true;
-            this.chkRssAtAll.Location = new System.Drawing.Point(809, 138);
-            this.chkRssAtAll.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.chkRssAtAll.Location = new System.Drawing.Point(515, 98);
             this.chkRssAtAll.Name = "chkRssAtAll";
-            this.chkRssAtAll.Size = new System.Drawing.Size(91, 28);
+            this.chkRssAtAll.Size = new System.Drawing.Size(63, 21);
             this.chkRssAtAll.TabIndex = 11;
             this.chkRssAtAll.Text = "@全员";
             this.chkRssAtAll.UseVisualStyleBackColor = true;
             // 
             // CtrlRssItem
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.btnFilters);
@@ -282,9 +261,8 @@
             this.Controls.Add(this.lblRssForwardGroup);
             this.Controls.Add(this.txbRssSubscriptionUrl);
             this.Controls.Add(this.lblRssSubscriptionUrl);
-            this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.Name = "CtrlRssItem";
-            this.Size = new System.Drawing.Size(904, 212);
+            this.Size = new System.Drawing.Size(575, 150);
             this.pnlTranslateFromTo.ResumeLayout(false);
             this.pnlTranslateFromTo.PerformLayout();
             this.ResumeLayout(false);

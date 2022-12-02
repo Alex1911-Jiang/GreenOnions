@@ -152,7 +152,6 @@ namespace GreenOnions.BotManagerWindows
             // 
             // chkMinimizeToTray
             // 
-            this.chkMinimizeToTray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkMinimizeToTray.AutoSize = true;
             this.chkMinimizeToTray.Checked = true;
             this.chkMinimizeToTray.CheckState = System.Windows.Forms.CheckState.Checked;
