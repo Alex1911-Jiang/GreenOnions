@@ -82,8 +82,15 @@ namespace GreenOnions.BotMain
             foreach (KeyValuePair<string, IPlugin> theOtherPlugins in loadedPlugins)
             {
                 Plugins.Add(theOtherPlugins.Value);
-                theOtherPlugins.Value.OnLoad(Path.Combine(_pluginsPath, theOtherPlugins.Key), BotInfo.Config);
-                LogHelper.WriteInfoLog($"插件{theOtherPlugins.Value.Name}加载成功");
+                try
+                {
+                    theOtherPlugins.Value.OnLoad(Path.Combine(_pluginsPath, theOtherPlugins.Key), BotInfo.Config);
+                    LogHelper.WriteInfoLog($"插件{theOtherPlugins.Value.Name}加载成功");
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage($"插件{theOtherPlugins.Value.Name}加载失败", ex);
+                }
             }
             return Plugins.Count;
         }
