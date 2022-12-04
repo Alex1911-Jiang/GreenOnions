@@ -53,9 +53,12 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     .BuildServiceProvider();
                 await using AsyncServiceScope scope = services.CreateAsyncScope(); // 自 .NET 6.0 起才可以如此操作代替上边两句
                 services = scope.ServiceProvider;
+
                 IMiraiHttpSession session = services.GetRequiredService<IMiraiHttpSession>(); // 大部分服务都基于接口注册, 请使用接口作为类型解析
 
-                await session.ConnectAsync(qqId); // 填入期望连接到的机器人QQ号
+                CancellationTokenSource ts = new CancellationTokenSource();
+
+                await session.ConnectAsync(qqId, ts.Token); // 填入期望连接到的机器人QQ号
 
                 BotInfo.Cache.SetTaskAtFixedTime();
 
@@ -100,7 +103,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     {
                         BotInfo.IsLogin = false;
                         PluginManager.Disconnected();
-                        session.Dispose();
+                        ts.Cancel();
                         ConnectedEvent?.Invoke(false, "");
                         break;
                     }
