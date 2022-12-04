@@ -319,9 +319,12 @@ namespace GreenOnions.RSS
                 doc.Load(url);
                 string title = doc.GetElementsByTagName("title")[0].InnerText;
                 XmlNodeList nodeList = doc.GetElementsByTagName("item");
+                if (nodeList.Count == 0)
+                    nodeList = doc.GetElementsByTagName("entry");
+
                 if (doc.HasChildNodes)
                 {
-                    LogHelper.WriteInfoLog($"抓取成功");
+                    LogHelper.WriteInfoLog($"{url}抓取成功");
                     foreach (XmlNode node in nodeList)
                     {
                         if (node.HasChildNodes)
@@ -337,6 +340,7 @@ namespace GreenOnions.RSS
                                 switch (subNode.Name.ToLower())
                                 {
                                     case "description":
+                                    case "content":
                                         description = subNode.InnerText;
 
                                         #region -- img ---
@@ -384,9 +388,13 @@ namespace GreenOnions.RSS
                                         description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</img>", "").Replace("</video>", "").Replace("</iframe>", "").Replace("<p>", "").Replace("</p>", "\r\n").ReplaceHtmlTags();
                                         break;
                                     case "link":
-                                        link = subNode.InnerText;
+                                        if (subNode.Attributes["href"] != null)
+                                            link = subNode.Attributes["href"].Value;
+                                        else
+                                            link = subNode.InnerText;
                                         break;
                                     case "pubdate":
+                                    case "updated":
                                         pubDate = DateTime.Parse(subNode.InnerText);
                                         break;
                                 }
