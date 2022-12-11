@@ -40,9 +40,9 @@ namespace GreenOnions.Utility
 
         static BotInfo()
         {
-            if (File.Exists("Config.json"))
+            if (File.Exists("config.json"))
             {
-                string strConfig = File.ReadAllText("Config.json");
+                string strConfig = File.ReadAllText("config.json");
 
                 Config = JsonConvert.DeserializeObject<BotConfig>(strConfig);
                 if (Config.QQId == 0)
@@ -50,8 +50,15 @@ namespace GreenOnions.Utility
                     Config = UpdateOldConfig(strConfig);
                 }
             }
+            else
+            {
+                Console.WriteLine($"不存在配置文件{new FileInfo("config.json").FullName}");
+            }
             if (Config is null)
+            {
+                Console.WriteLine("生成新的配置文件");
                 Config = new BotConfig() { QQId = -1 };
+            }
             SaveConfigFile();
 
 
