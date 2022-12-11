@@ -17,7 +17,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 {
     public static class MiraiApiHttpMain
     {
-        public static async void Connect(long qqId, string ip, ushort port, string authKey, Action<bool, string> ConnectedEvent)
+        public static async Task Connect(long qqId, string ip, ushort port, string authKey, Action<bool, string> ConnectedEvent)
         {
             try
             {

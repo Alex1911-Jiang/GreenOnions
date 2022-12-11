@@ -13,7 +13,7 @@ namespace GreenOnions.BotMain.CqHttp
 {
     public class CqHttpMain
     {
-        public static async void Connect(long qqId, string ip, ushort port, string accessToken, Action<bool, string> ConnectedEvent)
+        public static async Task Connect(long qqId, string ip, ushort port, string accessToken, Action<bool, string> ConnectedEvent)
         {
             ////设置log等级
             //Log.LogConfiguration
