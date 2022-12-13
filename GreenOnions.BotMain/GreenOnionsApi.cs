@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using GreenOnions.Interface;
+﻿using GreenOnions.Interface;
 using GreenOnions.Utility.Helper;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace GreenOnions.BotMain
 {
@@ -125,9 +125,20 @@ namespace GreenOnions.BotMain
         /// </summary>
         /// <param name="originalString">目标文本</param>
         /// <returns>替换标签为变量的完整文本</returns>
-        public string ReplaceGreenOnionsStringTags(string originalString)
+        public string ReplaceGreenOnionsStringTags(string originalString, params (string Key, string Value)[] customTags)
         {
-            return originalString.ReplaceGreenOnionsStringTags();
+            string text = originalString.ReplaceGreenOnionsStringTags();
+            if (customTags is not null)
+            {
+                foreach (var tag in customTags)
+                {
+                    if (tag.Key.StartsWith('<') && tag.Key.EndsWith('>'))
+                        text = text.Replace($"{tag.Key}", tag.Value);
+                    else
+                        text = text.Replace($"<{tag.Key}>", tag.Value);
+                }
+            }
+            return text;
         }
     }
 }

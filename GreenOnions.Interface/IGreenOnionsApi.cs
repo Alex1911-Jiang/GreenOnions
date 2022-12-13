@@ -102,8 +102,9 @@ namespace GreenOnions.Interface
         /// 替换目标文本中的标签字符串为变量值，如 "机器人名称" => BotName
         /// </summary>
         /// <param name="originalString">目标文本</param>
+        /// <param name="customTags">自定义替换标签/文本对</param>
         /// <returns>替换标签为变量的完整文本</returns>
-        public string ReplaceGreenOnionsStringTags(string originalString);
+        public string ReplaceGreenOnionsStringTags(string originalString, params (string Key, string Value)[] customTags);
 
         #endregion -- 方法 --
     }
