@@ -19,7 +19,6 @@ namespace GreenOnions.BotManagerWindows.Controls
                 foreach (RssSubscriptionItem item in BotInfo.Config.RssSubscription)
                 {
                     CtrlRssItem ctrlRssItem = new CtrlRssItem(pnlRssSubscriptionList.Controls.Remove);
-                    ctrlRssItem.Width = ComputeRssItemWidth();
                     ctrlRssItem.RssSubscriptionUrl = item.Url;
                     ctrlRssItem.RssRemark = item.Remark;
                     ctrlRssItem.RssForwardGroups = item.ForwardGroups is null ? new long[0] : item.ForwardGroups;
@@ -33,12 +32,13 @@ namespace GreenOnions.BotManagerWindows.Controls
                     ctrlRssItem.RssFilterMode = item.FilterMode;
                     ctrlRssItem.RssFilterKeyWords = item.FilterKeyWords;
                     pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
+                    ctrlRssItem.Width = ComputeRssItemWidth();
                 }
                 pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
+                btnAddRssSubscription.Width = ComputeRssItemWidth();
             }
             chkRssSendLiveCover.Checked = BotInfo.Config.RssSendLiveCover;
             txbReadRssInterval.Text = BotInfo.Config.ReadRssInterval.ToString();
-            chkRssParallel.Checked = BotInfo.Config.RssParallel;
         }
 
         public void SaveConfig()
@@ -60,22 +60,20 @@ namespace GreenOnions.BotManagerWindows.Controls
             }).ToHashSet();
             BotInfo.Config.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
             BotInfo.Config.RssSendLiveCover = chkRssSendLiveCover.Checked;
-            BotInfo.Config.RssParallel = chkRssParallel.Checked;
         }
 
         public void UpdateCache()
         {
         }
 
-        #region -- RSS --
-
         private void btnAddRssSubscription_Click(object sender, EventArgs e)
         {
             pnlRssSubscriptionList.Controls.Remove(btnAddRssSubscription);
             CtrlRssItem ctrlRssItem = new CtrlRssItem(pnlRssSubscriptionList.Controls.Remove);
-            ctrlRssItem.Width = ComputeRssItemWidth();
             pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
             pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
+            ctrlRssItem.Width = ComputeRssItemWidth();
+            btnAddRssSubscription.Width = ComputeRssItemWidth();
             pnlRssSubscriptionList.ScrollControlIntoView(btnAddRssSubscription);
         }
 
@@ -85,7 +83,8 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         private int  ComputeRssItemWidth()
         {
-            return pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Height + pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Margin.Top * 2 + btnAddRssSubscription.Margin.Top - 1 > pnlRssSubscriptionList.Height ? pnlRssSubscriptionList.Width - 25 : pnlRssSubscriptionList.Width - 8;
+            int dpiScale = (int)Math.Ceiling(Graphics.FromHwnd(Handle).DpiX / 96);
+            return pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Height + pnlRssSubscriptionList.Controls.Count * btnAddRssSubscription.Margin.Top * 2 + btnAddRssSubscription.Margin.Top - 1 > pnlRssSubscriptionList.Height ? pnlRssSubscriptionList.Width - 25 * dpiScale : pnlRssSubscriptionList.Width - 8 * dpiScale;
         }
 
         private void ResetRssItemWidth(int rssItemCtrlWidth)
@@ -93,6 +92,13 @@ namespace GreenOnions.BotManagerWindows.Controls
             foreach (Control item in pnlRssSubscriptionList.Controls)
                 item.Width = rssItemCtrlWidth;
         }
-        #endregion -- RSS --
+
+        private void btnRssLogViewer_Click(object sender, EventArgs e)
+        {
+            btnRssLogViewer.Enabled = false;
+            FrmRssLogViewer viewer = new FrmRssLogViewer();
+            viewer.FormClosed += (_, _) => btnRssLogViewer.Enabled = true;
+            viewer.Show();
+        }
     }
 }

@@ -979,12 +979,6 @@ namespace GreenOnions.Interface.Configs
         public double ReadRssInterval { get; }
 
         /// <summary>
-        /// 多线程并行抓取多个RSS订阅
-        /// </summary>
-        [PropertyChineseName("每条订阅各占用一个线程", "RSS订阅转发")]
-        public bool RssParallel { get; }
-
-        /// <summary>
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
         [PropertyChineseName("RSS订阅项", "RSS订阅转发")]

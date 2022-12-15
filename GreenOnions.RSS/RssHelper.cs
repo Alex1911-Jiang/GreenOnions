@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
@@ -17,270 +19,317 @@ namespace GreenOnions.RSS
 {
     public static class RssHelper
     {
-        public static async void StartRssTask(IGreenOnionsApi api)
-        {
-            LogHelper.WriteInfoLog("启动RSS功能");
-            if (BotInfo.Config.RssEnabled && BotInfo.IsLogin)
-            {
-                LogHelper.WriteInfoLog("启动RSS抓取线程");
-                LogHelper.WriteInfoLog($"{BotInfo.Config.RssEnabled},{BotInfo.IsLogin}");
-                while (BotInfo.Config.RssEnabled && BotInfo.IsLogin)
-                {
-                    LogHelper.WriteInfoLog($"存在{BotInfo.Config.RssSubscription.Count()}条订阅地址");
+        public static ConcurrentQueue<string> Logs { get; set; }
+        private static Task _mainTask = null;
+        private static Dictionary<string, Task> _rssTasks = null;
 
-                    if (BotInfo.Config.RssParallel)
+        public static void StartRssTask(IGreenOnionsApi api)
+        {
+            _mainTask = Task.Run(async () =>
+            {
+                _rssTasks = new Dictionary<string, Task>();
+                Logs = new ConcurrentQueue<string>();
+                LogInfo("启动RSS功能");
+                if (BotInfo.Config.RssEnabled && BotInfo.IsLogin)
+                {
+                    LogInfo("启动RSS抓取线程");
+                    while (BotInfo.Config.RssEnabled && BotInfo.IsLogin)
                     {
-                        Parallel.ForEach(BotInfo.Config.RssSubscription, async item =>  //若干条订阅地址
-                        {
-                            RssInner(item, api);
-                            await Task.Delay((int)Math.Round(BotInfo.Config.ReadRssInterval * 1000 * 60));
-                        });
+                        _rssTasks.Clear();
+                        LogInfo($"存在{BotInfo.Config.RssSubscription.Count()}条订阅地址");
+                        foreach (RssSubscriptionItem item in BotInfo.Config.RssSubscription)  //若干条订阅地址
+                            _rssTasks.Add(item.Url, RssInner(item, api));
+                        Task.WaitAll(_rssTasks.Values.ToArray());
+                        await Task.Delay((int)Math.Round(BotInfo.Config.ReadRssInterval * 1000 * 60));
+                    }
+                    LogInfo("已禁用RSS功能或断开与平台的连接，RSS进程结束");
+                    _rssTasks.Clear();
+                    _rssTasks = null;
+                }
+            });
+        }
+
+        public static Dictionary<string,string> GetTaskStatus()
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            if (_mainTask == null || _rssTasks == null)
+                result.Add("中控线程","尚未启动");
+            else
+                result.Add("中控线程", "正常工作中");
+            if (_rssTasks is not null)
+            {
+                foreach (var item in _rssTasks)
+                {
+                    if (item.Value.IsCompleted)
+                    {
+                        StringBuilder taskStatus = new StringBuilder("已停止，");
+                        if (item.Value.IsFaulted)
+                            taskStatus.Append("被中断");
+                        else if (item.Value.IsCanceled)
+                            taskStatus.Append("被取消");
+                        else
+                            taskStatus.Append("正常结束");
+                        result.Add(item.Key, taskStatus.ToString());
                     }
                     else
                     {
-                        foreach (RssSubscriptionItem item in BotInfo.Config.RssSubscription)  //若干条订阅地址
-                        {
-                            RssInner(item, api);
-                            await Task.Delay((int)Math.Round(BotInfo.Config.ReadRssInterval * 1000 * 60));
-                        }
+                        result.Add(item.Key, "正常工作中");
                     }
                 }
             }
+            return result;
         }
-
-        private static async void RssInner(RssSubscriptionItem item, IGreenOnionsApi api)
+        
+        private static Task RssInner(RssSubscriptionItem item, IGreenOnionsApi api)
         {
-            LogHelper.WriteInfoLog(item.Url);
-            //如果在调试模式并且转发的QQ和群组均不在管理员和调试群组集合中时不去请求
-            if (BotInfo.Config.DebugMode && ((BotInfo.Config.DebugReplyAdminOnly && item.ForwardQQs.Intersect(BotInfo.Config.AdminQQ).Count() == 0) || (BotInfo.Config.OnlyReplyDebugGroup && item.ForwardGroups.Intersect(BotInfo.Config.DebugGroups).Count() == 0)))
+            return Task.Run(async () =>
             {
-                LogHelper.WriteWarningLog("没有为订阅源设置转发目标或当前处于调试模式, 不进行转发");
-                return;
-            }
-            if ((item.ForwardGroups is null || item.ForwardGroups.Length == 0) && (item.ForwardGroups is null || item.ForwardQQs.Length == 0))
-            {
-                LogHelper.WriteInfoLog($"没有要转发的群和好友, 不进行抓取");
-                return;
-            }
-            if (!BotInfo.LastOneSendRssTime.ContainsKey(item.Url))  //如果不存在上次发送的日期记录
-            {
-                LogHelper.WriteInfoLog($"首次抓取到{item.Url}内容, 只保存不发送, 防止内容太多刷屏");
-                BotInfo.LastOneSendRssTime.TryAdd(item.Url, DateTime.Now);  //添加现在作为起始日期(避免把所有历史信息全都抓过来发送)
-                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime);
-                File.WriteAllText("rssCache.json", serRssCache);
-                return;
-            }
-
-            try
-            {
-                LogHelper.WriteInfoLog($"抓取地址:{item.Url}");
-                foreach (var rss in ReadRss(item.Url))  //每条订阅地址可能获取到若干条更新
+                //如果在调试模式并且转发的QQ和群组均不在管理员和调试群组集合中时不去请求
+                if (BotInfo.Config.DebugMode && ((BotInfo.Config.DebugReplyAdminOnly && item.ForwardQQs.Intersect(BotInfo.Config.AdminQQ).Count() == 0) || (BotInfo.Config.OnlyReplyDebugGroup && item.ForwardGroups.Intersect(BotInfo.Config.DebugGroups).Count() == 0)))
                 {
-                    if (rss.pubDate > BotInfo.LastOneSendRssTime[item.Url])
+                    LogWarn($"{item.Url}没有为订阅源设置转发目标或当前处于调试模式, 不进行转发");
+                    return;
+                }
+                if ((item.ForwardGroups is null || item.ForwardGroups.Length == 0) && (item.ForwardGroups is null || item.ForwardQQs.Length == 0))
+                {
+                    LogInfo($"{item.Url}没有要转发的群和好友, 不进行抓取");
+                    return;
+                }
+
+                if (!BotInfo.LastOneSendRssTime.ContainsKey(item.Url))  //如果不存在上次发送的日期记录
+                {
+                    LogInfo($"{item.Url}没有记录, 添加当前时间作为比对时间");
+                    BotInfo.LastOneSendRssTime.TryAdd(item.Url, DateTime.Now);  //添加现在作为起始日期(避免把所有历史信息全都抓过来发送)
+                    string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime);
+                    File.WriteAllText("rssCache.json", serRssCache);
+                    return;
+                }
+
+                try
+                {
+                    LogInfo($"{item.Url}开始抓取");
+                    bool hasUpdate = false;
+                    foreach (var rss in ReadRss(item.Url))  //每条订阅地址可能获取到若干条更新
                     {
-                        LogHelper.WriteInfoLog($"更新时间晚于记录时间, 需要推送消息");
-
-                        bool bSend = false;
-                        int bContainCount = 0;
-                        switch (item.FilterMode)
+                        if (rss.pubDate > BotInfo.LastOneSendRssTime[item.Url])
                         {
-                            case 0:  //不过滤
-                                bSend = true;
-                                break;
-                            case 1:  //包含任意发送
-                                for (int i = 0; i < item.FilterKeyWords.Length; i++)
-                                {
-                                    if (rss.description.Contains(item.FilterKeyWords[i]))
-                                    {
-                                        bSend = true;
-                                        break;
-                                    }
-                                }
-                                break;
-                            case 2:  //包含所有发送
-                                for (int i = 0; i < item.FilterKeyWords.Length; i++)
-                                {
-                                    if (rss.description.Contains(item.FilterKeyWords[i]))
-                                        bContainCount++;
-                                }
-                                if (bContainCount == item.FilterKeyWords.Length)
+                            hasUpdate = true;
+                            LogInfo($"{item.Url}更新时间晚于记录时间, 需要推送消息");
+
+                            bool bSend = false;
+                            int bContainCount = 0;
+                            switch (item.FilterMode)
+                            {
+                                case 0:  //不过滤
                                     bSend = true;
-                                break;
-                            case 3:  //包含任意不发送
-                                bSend = true;
-                                for (int i = 0; i < item.FilterKeyWords.Length; i++)
-                                {
-                                    if (rss.description.Contains(item.FilterKeyWords[i]))
+                                    break;
+                                case 1:  //包含任意发送
+                                    for (int i = 0; i < item.FilterKeyWords.Length; i++)
                                     {
+                                        if (rss.description.Contains(item.FilterKeyWords[i]))
+                                        {
+                                            bSend = true;
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                case 2:  //包含所有发送
+                                    for (int i = 0; i < item.FilterKeyWords.Length; i++)
+                                    {
+                                        if (rss.description.Contains(item.FilterKeyWords[i]))
+                                            bContainCount++;
+                                    }
+                                    if (bContainCount == item.FilterKeyWords.Length)
+                                        bSend = true;
+                                    break;
+                                case 3:  //包含任意不发送
+                                    bSend = true;
+                                    for (int i = 0; i < item.FilterKeyWords.Length; i++)
+                                    {
+                                        if (rss.description.Contains(item.FilterKeyWords[i]))
+                                        {
+                                            bSend = false;
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                case 4:  //包含所有不发送
+                                    bSend = true;
+                                    for (int i = 0; i < item.FilterKeyWords.Length; i++)
+                                    {
+                                        if (rss.description.Contains(item.FilterKeyWords[i]))
+                                            bContainCount++;
+                                    }
+                                    if (bContainCount == item.FilterKeyWords.Length)
                                         bSend = false;
-                                        break;
+                                    break;
+                            }
+                            if (!bSend)
+                                continue;
+
+                            string titleMsg = $"{rss.title}更新啦:\r\n{rss.description}";
+                            string translateMsg = null;
+                            if (item.Translate)
+                            {
+                                LogInfo($"{item.Url}本条RSS订阅启用了翻译");
+                                string translatedText;
+                                if (item.TranslateFromTo)
+                                    translatedText = await YouDaoTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo);
+                                else
+                                    translatedText = await YouDaoTranslateHelper.TranslateToChinese(rss.description);
+                                translateMsg = $"\r\n以下为翻译内容:\r\n{translatedText}\r\n";
+                                LogInfo($"{item.Url}翻译成功");
+                            }
+                            string thuImgUrl = null;
+                            if (BotInfo.Config.RssSendLiveCover)  //获取直播封面
+                            {
+                                if (item.Url.Contains("bilibili") && item.Url.Contains("/room/"))
+                                {
+                                    string roomId = item.Url.Substring(item.Url.LastIndexOf("/room/") + "/room/".Length);
+                                    string apiResult = await HttpHelper.GetHttpResponseStringAsync($@"https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id={roomId}");
+                                    JObject jo = JsonConvert.DeserializeObject<JObject>(apiResult);
+                                    thuImgUrl = jo?["data"]?["room_info"]?["cover"]?.ToString();
+                                }
+                            }
+                            LogInfo($"{item.Url}需要转发的组:{item.ForwardGroups.Length}个");
+                            if (item.ForwardGroups.Length > 0)
+                            {
+                                GreenOnionsMessages groupResultMsg = new GreenOnionsMessages();
+
+                                if (item.AtAll)
+                                {
+                                    groupResultMsg.Add(new GreenOnionsAtMessage(-1, "全体成员"));
+                                    groupResultMsg.Add("\r\n");
+                                }
+
+                                groupResultMsg.Add(titleMsg);
+                                if (translateMsg is not null)
+                                    groupResultMsg.Add(translateMsg);
+                                for (int i = 0; i < rss.imgsSrc.Length; i++)
+                                {
+                                    try
+                                    {
+                                        groupResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(rss.imgsSrc[i])));
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        LogWarn($"{item.Url}图片下载失败，{ex.Message}");
+                                        LogInfo($"{item.Url}图片地址：{rss.imgsSrc[i]}");
                                     }
                                 }
-                                break;
-                            case 4:  //包含所有不发送
-                                bSend = true;
-                                for (int i = 0; i < item.FilterKeyWords.Length; i++)
-                                {
-                                    if (rss.description.Contains(item.FilterKeyWords[i]))
-                                        bContainCount++;
-                                }
-                                if (bContainCount == item.FilterKeyWords.Length)
-                                    bSend = false;
-                                break;
-                        }
-                        if (!bSend)
-                            continue;
 
-                        string titleMsg = $"{rss.title}更新啦:\r\n{rss.description}";
-                        string translateMsg = null;
-                        if (item.Translate)
-                        {
-                            LogHelper.WriteInfoLog($"本条RSS订阅启用了翻译");
-                            string translatedText;
-                            if (item.TranslateFromTo)
-                                translatedText = await YouDaoTranslateHelper.TranslateFromTo(rss.description, item.TranslateFrom, item.TranslateTo);
+                                if (rss.videosSrc.Length > 0)
+                                {
+                                    groupResultMsg.Add("视频地址:\r\n");
+                                    for (int i = 0; i < rss.videosSrc.Length; i++)
+                                    {
+                                        groupResultMsg.Add(rss.videosSrc[i]);
+                                    }
+                                }
+
+                                if (thuImgUrl is not null)
+                                    groupResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(thuImgUrl)));
+
+                                groupResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
+                                groupResultMsg.Add($"\r\n原文地址:{rss.link}");
+
+                                LogInfo($"{item.Url}组合群消息完成");
+
+                                if (item.SendByForward)
+                                {
+                                    LogInfo($"{item.Url}发送模式为合并转发");
+                                    GreenOnionsForwardMessage greenOnionsForwardMessage = new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, groupResultMsg);
+
+                                    for (int i = 0; i < item.ForwardGroups.Length; i++)
+                                    {
+                                        await api.SendGroupMessageAsync(item.ForwardGroups[i], greenOnionsForwardMessage);
+                                    }
+                                }
+                                else
+                                {
+                                    LogInfo($"{item.Url}发送模式为直接发送");
+                                    for (int i = 0; i < item.ForwardGroups.Length; i++)
+                                    {
+                                        await api.SendGroupMessageAsync(item.ForwardGroups[i], groupResultMsg);
+                                    }
+                                }
+                                LogInfo($"{item.Url}全部群消息发送完毕");
+                            }
+                            LogInfo($"{item.Url}需要转发的好友:{item.ForwardQQs.Length}个");
+                            if (item.ForwardQQs.Length > 0)
+                            {
+                                GreenOnionsMessages friendResultMsg = new GreenOnionsMessages();
+
+                                friendResultMsg.Add(titleMsg);
+                                if (translateMsg is not null)
+                                    friendResultMsg.Add(translateMsg);
+
+                                for (int i = 0; i < rss.imgsSrc.Length; i++)
+                                {
+                                    friendResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(rss.imgsSrc[i])));
+                                }
+                                if (rss.videosSrc.Length > 0)
+                                {
+                                    friendResultMsg.Add("视频地址:\r\n");
+                                    for (int i = 0; i < rss.videosSrc.Length; i++)
+                                    {
+                                        friendResultMsg.Add(rss.videosSrc[i]);
+                                    }
+                                }
+
+                                if (thuImgUrl is not null)
+                                    friendResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(thuImgUrl)));
+                                friendResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
+                                friendResultMsg.Add($"\r\n原文地址:{rss.link}");
+
+                                LogInfo($"{item.Url}组合好友消息完成");
+
+                                if (item.SendByForward)
+                                {
+                                    LogInfo($"{item.Url}发送模式为合并转发");
+                                    GreenOnionsForwardMessage greenOnionsForwardMessage = new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, friendResultMsg);
+                                    for (int i = 0; i < item.ForwardQQs.Length; i++)
+                                    {
+                                        await api.SendFriendMessageAsync(item.ForwardQQs[i], greenOnionsForwardMessage);
+                                    }
+                                }
+                                else
+                                {
+                                    LogInfo($"{item.Url}发送模式为直接发送");
+                                    for (int i = 0; i < item.ForwardQQs.Length; i++)
+                                    {
+                                        await api.SendFriendMessageAsync(item.ForwardQQs[i], friendResultMsg);
+                                    }
+                                }
+                                LogInfo($"{item.Url}全部好友消息发送完毕");
+                            }
+
+                            if (BotInfo.LastOneSendRssTime.ContainsKey(item.Url))
+                                BotInfo.LastOneSendRssTime[item.Url] = rss.pubDate;
                             else
-                                translatedText = await YouDaoTranslateHelper.TranslateToChinese(rss.description);
-                            translateMsg = $"\r\n以下为翻译内容:\r\n{ translatedText }\r\n";
-                            LogHelper.WriteInfoLog($"翻译成功");
+                                BotInfo.LastOneSendRssTime.TryAdd(item.Url, rss.pubDate);  //群和好友均推送完毕后记录此地址的最后更新时间
+                            BotInfo.LastOneSendRssTime = BotInfo.LastOneSendRssTime;
+                            string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime);
+                            File.WriteAllText("rssCache.json", serRssCache);
+
+                            LogInfo($"{item.Url}记录最后更新时间完毕");
+
+                            //if (rss.iframseSrc.Length > 0)  //视频或内嵌网页没想好怎么处理
+                            //{
+
+                            //}
                         }
-                        string thuImgUrl = null;
-                        if (BotInfo.Config.RssSendLiveCover)  //获取直播封面
-                        {
-                            if (item.Url.Contains("bilibili") && item.Url.Contains("/room/"))
-                            {
-                                string roomId = item.Url.Substring(item.Url.LastIndexOf("/room/") + "/room/".Length);
-                                string apiResult = await HttpHelper.GetHttpResponseStringAsync($@"https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id={roomId}");
-                                JObject jo = JsonConvert.DeserializeObject<JObject>(apiResult);
-                                thuImgUrl = jo?["data"]?["room_info"]?["cover"]?.ToString();
-                            }
-                        }
-                        LogHelper.WriteInfoLog($"需要转发的组:{item.ForwardGroups.Length}个");
-                        if (item.ForwardGroups.Length > 0)
-                        {
-                            GreenOnionsMessages groupResultMsg = new GreenOnionsMessages();
-
-                            if (item.AtAll)
-                            {
-                                groupResultMsg.Add(new GreenOnionsAtMessage(-1, "全体成员"));
-                                groupResultMsg.Add("\r\n");
-                            }
-
-                            groupResultMsg.Add(titleMsg);
-                            if (translateMsg is not null)
-                                groupResultMsg.Add(translateMsg);
-                            for (int i = 0; i < rss.imgsSrc.Length; i++)
-                            {
-                                groupResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(rss.imgsSrc[i])));
-                            }
-
-                            if (rss.videosSrc.Length > 0)
-                            {
-                                groupResultMsg.Add("视频地址:\r\n");
-                                for (int i = 0; i < rss.videosSrc.Length; i++)
-                                {
-                                    groupResultMsg.Add(rss.videosSrc[i]);
-                                }
-                            }
-
-                            if (thuImgUrl is not null)
-                                groupResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(thuImgUrl)));
-
-                            groupResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
-                            groupResultMsg.Add($"\r\n原文地址:{rss.link}");
-
-                            LogHelper.WriteInfoLog($"组合群消息完成");
-
-                            if (item.SendByForward)
-                            {
-                                LogHelper.WriteInfoLog($"发送模式为合并转发");
-                                GreenOnionsForwardMessage greenOnionsForwardMessage = new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, groupResultMsg);
-
-                                for (int i = 0; i < item.ForwardGroups.Length; i++)
-                                {
-                                    await api.SendGroupMessageAsync(item.ForwardGroups[i], greenOnionsForwardMessage);
-                                }
-                            }
-                            else
-                            {
-                                LogHelper.WriteInfoLog($"发送模式为直接发送");
-                                for (int i = 0; i < item.ForwardGroups.Length; i++)
-                                {
-                                    await api.SendGroupMessageAsync(item.ForwardGroups[i], groupResultMsg);
-                                }
-                            }
-                            LogHelper.WriteInfoLog($"全部群消息发送完毕");
-                        }
-                        LogHelper.WriteInfoLog($"需要转发的好友:{item.ForwardQQs.Length}个");
-                        if (item.ForwardQQs.Length > 0)
-                        {
-                            GreenOnionsMessages friendResultMsg = new GreenOnionsMessages();
-
-                            friendResultMsg.Add(titleMsg);
-                            if (translateMsg is not null)
-                                friendResultMsg.Add(translateMsg);
-
-                            for (int i = 0; i < rss.imgsSrc.Length; i++)
-                            {
-                                friendResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(rss.imgsSrc[i])));
-                            }
-                            if (rss.videosSrc.Length > 0)
-                            {
-                                friendResultMsg.Add("视频地址:\r\n");
-                                for (int i = 0; i < rss.videosSrc.Length; i++)
-                                {
-                                    friendResultMsg.Add(rss.videosSrc[i]);
-                                }
-                            }
-
-                            if (thuImgUrl is not null)
-                                friendResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(thuImgUrl)));
-                            friendResultMsg.Add($"\r\n更新时间:{rss.pubDate}");
-                            friendResultMsg.Add($"\r\n原文地址:{rss.link}");
-
-                            LogHelper.WriteInfoLog($"组合好友消息完成");
-
-                            if (item.SendByForward)
-                            {
-                                LogHelper.WriteInfoLog($"发送模式为合并转发");
-                                GreenOnionsForwardMessage greenOnionsForwardMessage = new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, friendResultMsg);
-                                for (int i = 0; i < item.ForwardQQs.Length; i++)
-                                {
-                                    await api.SendFriendMessageAsync(item.ForwardQQs[i], greenOnionsForwardMessage);
-                                }
-                            }
-                            else
-                            {
-                                LogHelper.WriteInfoLog($"发送模式为直接发送");
-                                for (int i = 0; i < item.ForwardQQs.Length; i++)
-                                {
-                                    await api.SendFriendMessageAsync(item.ForwardQQs[i], friendResultMsg);
-                                }
-                            }
-                            LogHelper.WriteInfoLog($"全部好友消息发送完毕");
-                        }
-
-                        if (BotInfo.LastOneSendRssTime.ContainsKey(item.Url))
-                            BotInfo.LastOneSendRssTime[item.Url] = rss.pubDate;
-                        else
-                            BotInfo.LastOneSendRssTime.TryAdd(item.Url, rss.pubDate);  //群和好友均推送完毕后记录此地址的最后更新时间
-                        BotInfo.LastOneSendRssTime = BotInfo.LastOneSendRssTime;
-                        string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime);
-                        File.WriteAllText("rssCache.json", serRssCache);
-
-                        LogHelper.WriteInfoLog($"记录{item.Url}最后更新时间完毕");
-
-                        //if (rss.iframseSrc.Length > 0)  //视频或内嵌网页没想好怎么处理
-                        //{
-
-                        //}
+                    }
+                    if (!hasUpdate)
+                    {
+                        LogInfo($"{item.Url}更新时间早于或等于记录时间, 无需推送");
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.WriteErrorLogWithUserMessage("获取RSS错误", ex, $"请求地址为:{item.Url}");
-            }
+                catch (Exception ex)
+                {
+                    LogError($"{item.Url}获取RSS错误", ex, $"请求地址为:{item.Url}");
+                }
+            });
         }
 
         private static async Task<string> GetImgUrlOrFileNameAsync(string url)
@@ -314,7 +363,7 @@ namespace GreenOnions.RSS
         {
             if (url != string.Empty)
             {
-                LogHelper.WriteInfoLog($"准备请求{url}抓取更新");
+                LogInfo($"{url}抓取内容");
                 XmlDocument doc = new XmlDocument();
                 doc.Load(url);
                 string title = doc.GetElementsByTagName("title")[0].InnerText;
@@ -324,7 +373,7 @@ namespace GreenOnions.RSS
 
                 if (doc.HasChildNodes)
                 {
-                    LogHelper.WriteInfoLog($"{url}抓取成功");
+                    LogInfo($"{url}抓取成功");
                     foreach (XmlNode node in nodeList)
                     {
                         if (node.HasChildNodes)
@@ -402,12 +451,35 @@ namespace GreenOnions.RSS
                                     break;
                             }
 
-                            LogHelper.WriteInfoLog($"返回抓取内容");
                             yield return (title, description, imgsSrc, videosSrc, iframesSrc, pubDate, link);
                         }
                     }
                 }
             }
+        }
+
+        private static void LogInfo(string logMessage)
+        {
+            while (Logs.Count > 5000)
+                Logs.TryDequeue(out _);
+            Logs.Enqueue("消息：" + logMessage);
+            LogHelper.WriteInfoLog(logMessage);
+        }
+
+        private static void LogWarn(string logMessage)
+        {
+            while (Logs.Count > 5000)
+                Logs.TryDequeue(out _);
+            Logs.Enqueue("警告：" + logMessage);
+            LogHelper.WriteWarningLog(logMessage);
+        }
+
+        private static void LogError(string logMessageStart, Exception ex, string logMessageEnd)
+        {
+            while (Logs.Count > 5000)
+                Logs.TryDequeue(out _);
+            Logs.Enqueue($"错误：{logMessageStart}，{ex.Message}");
+            LogHelper.WriteErrorLogWithUserMessage(logMessageStart, ex, logMessageEnd);
         }
     }
 }

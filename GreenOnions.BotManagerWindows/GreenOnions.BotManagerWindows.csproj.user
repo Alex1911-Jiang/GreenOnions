@@ -40,6 +40,9 @@
     <Compile Update="FrmRssFilter.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FrmRssLogViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="WebBrowserForm.cs">
       <SubType>Form</SubType>
     </Compile>
