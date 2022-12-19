@@ -36,6 +36,7 @@
             this.lblReadRssInterval = new System.Windows.Forms.Label();
             this.pnlRssSettings = new System.Windows.Forms.Panel();
             this.btnRssLogViewer = new System.Windows.Forms.Button();
+            this.chkRssParallel = new System.Windows.Forms.CheckBox();
             this.pnlRssSubscriptionList.SuspendLayout();
             this.pnlRssSettings.SuspendLayout();
             this.SuspendLayout();
@@ -43,7 +44,7 @@
             // chkRssSendLiveCover
             // 
             this.chkRssSendLiveCover.AutoSize = true;
-            this.chkRssSendLiveCover.Location = new System.Drawing.Point(5, 7);
+            this.chkRssSendLiveCover.Location = new System.Drawing.Point(233, 6);
             this.chkRssSendLiveCover.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkRssSendLiveCover.Name = "chkRssSendLiveCover";
             this.chkRssSendLiveCover.Size = new System.Drawing.Size(191, 28);
@@ -83,16 +84,16 @@
             // 
             this.txbReadRssInterval.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbReadRssInterval.Location = new System.Drawing.Point(422, 4);
+            this.txbReadRssInterval.Location = new System.Drawing.Point(650, 4);
             this.txbReadRssInterval.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbReadRssInterval.Name = "txbReadRssInterval";
-            this.txbReadRssInterval.Size = new System.Drawing.Size(445, 30);
+            this.txbReadRssInterval.Size = new System.Drawing.Size(217, 30);
             this.txbReadRssInterval.TabIndex = 6;
             // 
             // lblReadRssInterval
             // 
             this.lblReadRssInterval.AutoSize = true;
-            this.lblReadRssInterval.Location = new System.Drawing.Point(206, 8);
+            this.lblReadRssInterval.Location = new System.Drawing.Point(434, 7);
             this.lblReadRssInterval.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblReadRssInterval.Name = "lblReadRssInterval";
             this.lblReadRssInterval.Size = new System.Drawing.Size(206, 24);
@@ -101,6 +102,7 @@
             // 
             // pnlRssSettings
             // 
+            this.pnlRssSettings.Controls.Add(this.chkRssParallel);
             this.pnlRssSettings.Controls.Add(this.btnRssLogViewer);
             this.pnlRssSettings.Controls.Add(this.lblReadRssInterval);
             this.pnlRssSettings.Controls.Add(this.chkRssSendLiveCover);
@@ -122,6 +124,16 @@
             this.btnRssLogViewer.Text = "监控";
             this.btnRssLogViewer.UseVisualStyleBackColor = true;
             this.btnRssLogViewer.Click += new System.EventHandler(this.btnRssLogViewer_Click);
+            // 
+            // chkRssParallel
+            // 
+            this.chkRssParallel.AutoSize = true;
+            this.chkRssParallel.Location = new System.Drawing.Point(6, 6);
+            this.chkRssParallel.Name = "chkRssParallel";
+            this.chkRssParallel.Size = new System.Drawing.Size(216, 28);
+            this.chkRssParallel.TabIndex = 10;
+            this.chkRssParallel.Text = "每条订阅占用一个线程";
+            this.chkRssParallel.UseVisualStyleBackColor = true;
             // 
             // CtrlRss
             // 
@@ -150,5 +162,6 @@
         private Button button1;
         private Button button2;
         private Button button3;
+        private CheckBox chkRssParallel;
     }
 }

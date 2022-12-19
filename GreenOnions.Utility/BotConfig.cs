@@ -795,6 +795,11 @@ namespace GreenOnions.Utility
         public double ReadRssInterval { get; set; } = 10.0;
 
         /// <summary>
+        /// 多线程并行抓取多个RSS订阅
+        /// </summary>
+        public bool RssParallel { get; set; } = false;
+
+        /// <summary>
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
         public HashSet<RssSubscriptionItem> RssSubscription { get; set; } = null;

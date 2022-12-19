@@ -37,6 +37,7 @@ namespace GreenOnions.BotManagerWindows.Controls
                 pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
                 btnAddRssSubscription.Width = ComputeRssItemWidth();
             }
+            chkRssParallel.Checked = BotInfo.Config.RssParallel;
             chkRssSendLiveCover.Checked = BotInfo.Config.RssSendLiveCover;
             txbReadRssInterval.Text = BotInfo.Config.ReadRssInterval.ToString();
         }
@@ -58,6 +59,7 @@ namespace GreenOnions.BotManagerWindows.Controls
                 FilterMode = i.RssFilterMode,
                 FilterKeyWords = i.RssFilterKeyWords,
             }).ToHashSet();
+            BotInfo.Config.RssParallel = chkRssParallel.Checked;
             BotInfo.Config.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
             BotInfo.Config.RssSendLiveCover = chkRssSendLiveCover.Checked;
         }
