@@ -72,6 +72,8 @@ namespace GreenOnions.BotManagerWindows.Controls
 
             cboLogLevel.SelectedIndex = BotInfo.Config.LogLevel;
             cboReplaceImgRoute.SelectedIndex = BotInfo.Config.ReplaceImgRoute;
+
+            chkSplitTextAndImageMessage.Checked = BotInfo.Config.SplitTextAndImageMessage;
         }
 
         public void SaveConfig()
@@ -131,6 +133,8 @@ namespace GreenOnions.BotManagerWindows.Controls
             BotInfo.Config.TencentCloudSecretKey = txbTencentCloudSecretKey.Text;
             BotInfo.Config.TencentCloudBucket = txbTencentCloudBucket.Text;
             #endregion -- 腾讯云相关设置 --
+
+            BotInfo.Config.SplitTextAndImageMessage = chkSplitTextAndImageMessage.Checked;
         }
 
         public void UpdateCache()

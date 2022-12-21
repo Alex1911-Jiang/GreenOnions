@@ -203,6 +203,12 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         [PropertyChineseName("工作时间 到", "核心", "分")]
         public int WorkingTimeToMinute { get; }
+
+        /// <summary>
+        /// 搜图和色图把文字消息和图片消息拆分开（对于私聊含有pixiv发不出去的问题）
+        /// </summary>
+        [PropertyChineseName("搜图和色图把文字消息和图片消息拆分开", "核心")]
+        public bool SplitTextAndImageMessage { get; }
         #endregion -- 核心配置项 --
 
         #region -- 搜图配置项 --
@@ -218,6 +224,12 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         [PropertyChineseName("私聊时自动搜图", "搜图")]
         public bool PmAutoSearch { get; }
+
+        /// <summary>
+        /// 是否发送缩略图
+        /// </summary>
+        [PropertyChineseName("发送缩略图", "搜图")]
+        public bool SearchSendThuImage { get; }
 
         #region -- TraceMoe --
 

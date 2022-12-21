@@ -331,11 +331,24 @@ namespace GreenOnions.HPicture
                 SetRevokeTime(senderGroup, outMessage);  //设置撤回时间
 
                 outMessage.Reply = false;
-                outMessage.Add(imgMsg);
                 if (BotInfo.Config.HPictureSendByForward)
+                {
+                    outMessage.Add(imgMsg);
                     outMessages.Add(outMessage);
+                }
                 else
-                    SendMessage(outMessage);
+                {
+                    if (BotInfo.Config.SplitTextAndImageMessage)
+                    {
+                        SendMessage(outMessage);
+                        SendMessage(imgMsg);
+                    }
+                    else
+                    {
+                        outMessage.Add(imgMsg);
+                        SendMessage(outMessage);
+                    }
+                }
                 RecordLimit(senderId, senderGroup, LimitType.Count);
             }
 

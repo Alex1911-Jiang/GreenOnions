@@ -143,6 +143,11 @@ namespace GreenOnions.Utility
 
         public int WorkingTimeToMinute { get; set; } = 0;
 
+        /// <summary>
+        /// 搜图和色图把文字消息和图片消息拆分开（对于私聊含有pixiv发不出去的问题）
+        /// </summary>
+        public bool SplitTextAndImageMessage { get; set; } = true;
+
         #endregion -- 核心配置项 --
 
         #region -- 搜图配置项 --
@@ -156,6 +161,11 @@ namespace GreenOnions.Utility
         /// 私聊时是否自动搜图
         /// </summary>
         public bool PmAutoSearch { get; set; } = true;
+
+        /// <summary>
+        /// 是否发送缩略图
+        /// </summary>
+        public bool SearchSendThuImage { get; set; } = true;
 
         #region -- TraceMoe --
 
