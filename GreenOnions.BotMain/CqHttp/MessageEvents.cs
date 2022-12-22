@@ -203,6 +203,17 @@ namespace GreenOnions.BotMain.CqHttp
             return outMsg;
         }
 
+        public static async ValueTask Event_OnGroupMemberMute(string eventType, GroupMuteEventArgs eventArgs)
+        {
+            if (BotInfo.Config.LeaveGroupAfterBeMushin)
+            {
+                if (eventArgs.Duration == -1 || (eventArgs.User == BotInfo.Config.QQId && eventArgs.Duration > 0))  //全体禁言或禁言自己
+                {
+                    await eventArgs.SoraApi.LeaveGroup(eventArgs.SourceGroup.Id);
+                }
+            }
+        }
+
         private static bool CheckPreconditionsGroup(GroupMemberChangeEventArgs e)
         {
             if (BotInfo.Config.BannedGroup.Contains(e.SourceGroup.Id) ||

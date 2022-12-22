@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using GreenOnions.Interface;
+﻿using GreenOnions.Interface;
 using GreenOnions.RSS;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
@@ -98,6 +97,17 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 while (true)
                 {
+                    if (BotInfo.Config.LeaveGroupAfterBeMushin)  //自动退出被禁言的群
+                    {
+                        var groups = await session.GetGroupListAsync();
+                        foreach (var group in groups)
+                        {
+                            var selfInfo = await session.GetGroupMemberInfoAsync(session.QQNumber!.Value, group.Id);
+                            if (selfInfo.MuteTimeRemaining > TimeSpan.FromSeconds(1))
+                                await session.LeaveGroupAsync(group.Id);
+                        }
+                    }
+
                     BotInfo.IsLogin = true;
                     if (Console.ReadLine() == "exit")
                     {

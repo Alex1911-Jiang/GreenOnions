@@ -99,6 +99,7 @@
             this.lblBanGroup = new System.Windows.Forms.Label();
             this.lstBannedGroup = new System.Windows.Forms.ListView();
             this.chkSplitTextAndImageMessage = new System.Windows.Forms.CheckBox();
+            this.chkLeaveGroupAfterBeMushin = new System.Windows.Forms.CheckBox();
             this.pnlWorkingTime.SuspendLayout();
             this.pnlAutoConnect.SuspendLayout();
             this.pnlDebugMode.SuspendLayout();
@@ -108,7 +109,7 @@
             // lblWorkingTime
             // 
             this.lblWorkingTime.AutoSize = true;
-            this.lblWorkingTime.Location = new System.Drawing.Point(209, 1277);
+            this.lblWorkingTime.Location = new System.Drawing.Point(209, 1311);
             this.lblWorkingTime.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblWorkingTime.Name = "lblWorkingTime";
             this.lblWorkingTime.Size = new System.Drawing.Size(643, 24);
@@ -118,7 +119,7 @@
             // chkWorkingTimeEnabled
             // 
             this.chkWorkingTimeEnabled.AutoSize = true;
-            this.chkWorkingTimeEnabled.Location = new System.Drawing.Point(6, 1275);
+            this.chkWorkingTimeEnabled.Location = new System.Drawing.Point(6, 1309);
             this.chkWorkingTimeEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkWorkingTimeEnabled.Name = "chkWorkingTimeEnabled";
             this.chkWorkingTimeEnabled.Size = new System.Drawing.Size(180, 28);
@@ -140,7 +141,7 @@
             this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeToMinute);
             this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeFromMinute);
             this.pnlWorkingTime.Enabled = false;
-            this.pnlWorkingTime.Location = new System.Drawing.Point(2, 1313);
+            this.pnlWorkingTime.Location = new System.Drawing.Point(2, 1347);
             this.pnlWorkingTime.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlWorkingTime.Name = "pnlWorkingTime";
             this.pnlWorkingTime.Size = new System.Drawing.Size(952, 90);
@@ -253,7 +254,7 @@
             "pixiv.re",
             "pixiv.cat",
             "pixiv.nl"});
-            this.cboPixivProxy.Location = new System.Drawing.Point(192, 719);
+            this.cboPixivProxy.Location = new System.Drawing.Point(192, 753);
             this.cboPixivProxy.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.cboPixivProxy.Name = "cboPixivProxy";
             this.cboPixivProxy.Size = new System.Drawing.Size(441, 32);
@@ -262,7 +263,7 @@
             // lblPixivProxy
             // 
             this.lblPixivProxy.AutoSize = true;
-            this.lblPixivProxy.Location = new System.Drawing.Point(6, 723);
+            this.lblPixivProxy.Location = new System.Drawing.Point(6, 757);
             this.lblPixivProxy.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblPixivProxy.Name = "lblPixivProxy";
             this.lblPixivProxy.Size = new System.Drawing.Size(139, 24);
@@ -277,7 +278,7 @@
             "不替换",
             "替换为 c2cpicdw.qpic.cn/offpic_new",
             "替换为 gchat.qpic.cn/gchatpic_new"});
-            this.cboReplaceImgRoute.Location = new System.Drawing.Point(192, 675);
+            this.cboReplaceImgRoute.Location = new System.Drawing.Point(192, 709);
             this.cboReplaceImgRoute.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.cboReplaceImgRoute.Name = "cboReplaceImgRoute";
             this.cboReplaceImgRoute.Size = new System.Drawing.Size(441, 32);
@@ -286,7 +287,7 @@
             // lblReplaceImgRoute
             // 
             this.lblReplaceImgRoute.AutoSize = true;
-            this.lblReplaceImgRoute.Location = new System.Drawing.Point(6, 679);
+            this.lblReplaceImgRoute.Location = new System.Drawing.Point(6, 713);
             this.lblReplaceImgRoute.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblReplaceImgRoute.Name = "lblReplaceImgRoute";
             this.lblReplaceImgRoute.Size = new System.Drawing.Size(172, 24);
@@ -296,7 +297,7 @@
             // chkDownloadImage4Caching
             // 
             this.chkDownloadImage4Caching.AutoSize = true;
-            this.chkDownloadImage4Caching.Location = new System.Drawing.Point(6, 795);
+            this.chkDownloadImage4Caching.Location = new System.Drawing.Point(6, 829);
             this.chkDownloadImage4Caching.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkDownloadImage4Caching.Name = "chkDownloadImage4Caching";
             this.chkDownloadImage4Caching.Size = new System.Drawing.Size(270, 28);
@@ -307,7 +308,7 @@
             // chkSendImageByFile
             // 
             this.chkSendImageByFile.AutoSize = true;
-            this.chkSendImageByFile.Location = new System.Drawing.Point(6, 833);
+            this.chkSendImageByFile.Location = new System.Drawing.Point(6, 867);
             this.chkSendImageByFile.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkSendImageByFile.Name = "chkSendImageByFile";
             this.chkSendImageByFile.Size = new System.Drawing.Size(794, 28);
@@ -322,7 +323,7 @@
             this.pnlAutoConnect.Controls.Add(this.lblAutoConnectDelay);
             this.pnlAutoConnect.Controls.Add(this.lblAutoConnectProtocol);
             this.pnlAutoConnect.Enabled = false;
-            this.pnlAutoConnect.Location = new System.Drawing.Point(2, 1179);
+            this.pnlAutoConnect.Location = new System.Drawing.Point(2, 1213);
             this.pnlAutoConnect.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlAutoConnect.Name = "pnlAutoConnect";
             this.pnlAutoConnect.Size = new System.Drawing.Size(952, 88);
@@ -372,7 +373,7 @@
             // chkAutoConnectEnabled
             // 
             this.chkAutoConnectEnabled.AutoSize = true;
-            this.chkAutoConnectEnabled.Location = new System.Drawing.Point(6, 1141);
+            this.chkAutoConnectEnabled.Location = new System.Drawing.Point(6, 1175);
             this.chkAutoConnectEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkAutoConnectEnabled.Name = "chkAutoConnectEnabled";
             this.chkAutoConnectEnabled.Size = new System.Drawing.Size(216, 28);
@@ -389,7 +390,7 @@
             "消息",
             "警告",
             "错误"});
-            this.cboLogLevel.Location = new System.Drawing.Point(184, 1412);
+            this.cboLogLevel.Location = new System.Drawing.Point(184, 1446);
             this.cboLogLevel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.cboLogLevel.Name = "cboLogLevel";
             this.cboLogLevel.Size = new System.Drawing.Size(277, 32);
@@ -398,7 +399,7 @@
             // lblLogLevel
             // 
             this.lblLogLevel.AutoSize = true;
-            this.lblLogLevel.Location = new System.Drawing.Point(0, 1460);
+            this.lblLogLevel.Location = new System.Drawing.Point(0, 1494);
             this.lblLogLevel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblLogLevel.Name = "lblLogLevel";
             this.lblLogLevel.Size = new System.Drawing.Size(100, 24);
@@ -408,7 +409,7 @@
             // chkHttpRequestByWebBrowser
             // 
             this.chkHttpRequestByWebBrowser.AutoSize = true;
-            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(6, 637);
+            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(6, 671);
             this.chkHttpRequestByWebBrowser.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkHttpRequestByWebBrowser.Name = "chkHttpRequestByWebBrowser";
             this.chkHttpRequestByWebBrowser.Size = new System.Drawing.Size(401, 28);
@@ -419,7 +420,7 @@
             // chkCheckPornEnabled
             // 
             this.chkCheckPornEnabled.AutoSize = true;
-            this.chkCheckPornEnabled.Location = new System.Drawing.Point(6, 872);
+            this.chkCheckPornEnabled.Location = new System.Drawing.Point(6, 906);
             this.chkCheckPornEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkCheckPornEnabled.Name = "chkCheckPornEnabled";
             this.chkCheckPornEnabled.Size = new System.Drawing.Size(162, 28);
@@ -439,7 +440,7 @@
             this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
             this.pnlDebugMode.Controls.Add(this.txbAddDebugGroup);
             this.pnlDebugMode.Enabled = false;
-            this.pnlDebugMode.Location = new System.Drawing.Point(2, 1494);
+            this.pnlDebugMode.Location = new System.Drawing.Point(2, 1528);
             this.pnlDebugMode.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlDebugMode.Name = "pnlDebugMode";
             this.pnlDebugMode.Size = new System.Drawing.Size(952, 216);
@@ -555,7 +556,7 @@
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudAPPID);
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudSecretKey);
             this.pnlCheckPorn.Enabled = false;
-            this.pnlCheckPorn.Location = new System.Drawing.Point(2, 910);
+            this.pnlCheckPorn.Location = new System.Drawing.Point(2, 944);
             this.pnlCheckPorn.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlCheckPorn.Name = "pnlCheckPorn";
             this.pnlCheckPorn.Size = new System.Drawing.Size(952, 226);
@@ -665,7 +666,7 @@
             // chkDebugMode
             // 
             this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(0, 1499);
+            this.chkDebugMode.Location = new System.Drawing.Point(0, 1533);
             this.chkDebugMode.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(108, 28);
@@ -865,7 +866,7 @@
             // chkSplitTextAndImageMessage
             // 
             this.chkSplitTextAndImageMessage.AutoSize = true;
-            this.chkSplitTextAndImageMessage.Location = new System.Drawing.Point(6, 759);
+            this.chkSplitTextAndImageMessage.Location = new System.Drawing.Point(6, 793);
             this.chkSplitTextAndImageMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkSplitTextAndImageMessage.Name = "chkSplitTextAndImageMessage";
             this.chkSplitTextAndImageMessage.Size = new System.Drawing.Size(540, 28);
@@ -873,12 +874,24 @@
             this.chkSplitTextAndImageMessage.Text = "搜图和色图把文字消息和图片消息拆分开（合并转发模式无效）";
             this.chkSplitTextAndImageMessage.UseVisualStyleBackColor = true;
             // 
+            // chkLeaveGroupAfterBeMushin
+            // 
+            this.chkLeaveGroupAfterBeMushin.AutoSize = true;
+            this.chkLeaveGroupAfterBeMushin.Location = new System.Drawing.Point(6, 635);
+            this.chkLeaveGroupAfterBeMushin.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.chkLeaveGroupAfterBeMushin.Name = "chkLeaveGroupAfterBeMushin";
+            this.chkLeaveGroupAfterBeMushin.Size = new System.Drawing.Size(198, 28);
+            this.chkLeaveGroupAfterBeMushin.TabIndex = 92;
+            this.chkLeaveGroupAfterBeMushin.Text = "自动退出被禁言的群";
+            this.chkLeaveGroupAfterBeMushin.UseVisualStyleBackColor = true;
+            // 
             // CtrlBot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.chkLeaveGroupAfterBeMushin);
             this.Controls.Add(this.lblWorkingTime);
             this.Controls.Add(this.chkWorkingTimeEnabled);
             this.Controls.Add(this.pnlWorkingTime);
@@ -919,7 +932,7 @@
             this.Controls.Add(this.lblBanGroup);
             this.Controls.Add(this.lstBannedGroup);
             this.Name = "CtrlBot";
-            this.Size = new System.Drawing.Size(938, 880);
+            this.Size = new System.Drawing.Size(912, 854);
             this.pnlWorkingTime.ResumeLayout(false);
             this.pnlWorkingTime.PerformLayout();
             this.pnlAutoConnect.ResumeLayout(false);
@@ -1006,5 +1019,6 @@
         private Label lblBanGroup;
         private ListView lstBannedGroup;
         private CheckBox chkSplitTextAndImageMessage;
+        private CheckBox chkLeaveGroupAfterBeMushin;
     }
 }

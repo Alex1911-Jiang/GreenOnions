@@ -3,6 +3,7 @@ using GreenOnions.RSS;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Sora;
+using Sora.Entities.Base;
 using Sora.Entities.Info;
 using Sora.Interfaces;
 using Sora.Net.Config;
@@ -28,6 +29,7 @@ namespace GreenOnions.BotMain.CqHttp
                     service.Event.OnGroupMessage += MessageEvents.Event_OnGroupMessage;
                     service.Event.OnPrivateMessage += MessageEvents.Event_OnPrivateMessage;
                     service.Event.OnGroupMemberChange += MessageEvents.Event_OnGroupMemberChange;
+                    service.Event.OnGroupMemberMute += MessageEvents.Event_OnGroupMemberMute;
 
                     bool connectCancel = false;
                     BotInfo.IsLogin = false;
@@ -48,8 +50,11 @@ namespace GreenOnions.BotMain.CqHttp
                         return;
                     }
 
+                    SoraApi api = null;
+
                     service.Event.OnClientConnect += async (eventType, eventArgs) =>
                     {
+                        api = eventArgs.SoraApi;
                         BotInfo.Config.QQId = eventArgs.SoraApi.GetLoginUserId();
 
                         List<FriendInfo> IFriendInfos = (await eventArgs.SoraApi.GetFriendList()).friendList;
@@ -87,6 +92,20 @@ namespace GreenOnions.BotMain.CqHttp
 
                     while (true)
                     {
+                        if (BotInfo.Config.LeaveGroupAfterBeMushin)  //自动退出被禁言的群
+                        {
+                            if (api is not null)
+                            {
+                                var groups = await api.GetGroupList();
+                                foreach (var group in groups.groupList)
+                                {
+                                    var selfInfo = await api.GetGroupMemberInfo(group.GroupId, BotInfo.Config.QQId);
+                                    if (selfInfo.memberInfo.ShutUpTime > DateTime.Now)
+                                        await api.LeaveGroup(group.GroupId);
+                                }
+                            }
+                        }
+
                         BotInfo.IsLogin = true;
                         if (Console.ReadLine() == "exit")
                         {

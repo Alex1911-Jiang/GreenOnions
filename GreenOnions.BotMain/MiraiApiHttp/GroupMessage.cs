@@ -16,10 +16,14 @@ namespace GreenOnions.BotMain.MiraiApiHttp
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMemberJoinedEventArgs, GroupMemberJoinedEventArgs>))]
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMemberPositiveLeaveEventArgs, GroupMemberPositiveLeaveEventArgs>))]
     [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMemberKickedEventArgs, GroupMemberKickedEventArgs>))]
+    [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IGroupMuteAllChangedEventArgs, GroupMuteAllChangedEventArgs>))]
+    [RegisterMiraiHttpParser(typeof(DefaultMappableMiraiHttpMessageParser<IBotMutedEventArgs, BotMutedEventArgs>))]
     public class GroupMessage : IMiraiHttpMessageHandler<IGroupMessageEventArgs>,
                                 IMiraiHttpMessageHandler<IGroupMemberJoinedEventArgs>,
                                 IMiraiHttpMessageHandler<IGroupMemberPositiveLeaveEventArgs>,
-                                IMiraiHttpMessageHandler<IGroupMemberKickedEventArgs>
+                                IMiraiHttpMessageHandler<IGroupMemberKickedEventArgs>,
+                                IMiraiHttpMessageHandler<IGroupMuteAllChangedEventArgs>,
+                                IMiraiHttpMessageHandler<IBotMutedEventArgs>
     {
         public async Task HandleMessageAsync(IMiraiHttpSession session, IGroupMessageEventArgs e)
         {
@@ -165,6 +169,18 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             }
             builder.AddPlainMessage(remainMessage);
             return builder;
+        }
+
+        public async Task HandleMessageAsync(IMiraiHttpSession client, IGroupMuteAllChangedEventArgs message)
+        {
+            if (BotInfo.Config.LeaveGroupAfterBeMushin && message.Current)
+                await client.LeaveGroupAsync(message.Group.Id);
+        }
+
+        public async Task HandleMessageAsync(IMiraiHttpSession client, IBotMutedEventArgs message)
+        {
+            if (BotInfo.Config.LeaveGroupAfterBeMushin && message.Duration > TimeSpan.FromSeconds(1))
+                await client.LeaveGroupAsync(message.Operator.Group.Id);
         }
     }
 }

@@ -64,6 +64,12 @@ namespace GreenOnions.Interface.Configs
         public HashSet<long> BannedUser { get; }
 
         /// <summary>
+        /// 是否自动退出被禁言的群
+        /// </summary>
+        [PropertyChineseName("自动退出被禁言的群", "核心")]
+        public bool LeaveGroupAfterBeMushin { get; }
+
+        /// <summary>
         /// 是否启用调试模式
         /// </summary>
         [PropertyChineseName("调试模式", "核心")]

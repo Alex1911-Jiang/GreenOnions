@@ -41,6 +41,11 @@ namespace GreenOnions.Utility
         public HashSet<long> BannedUser { get; set; } = new HashSet<long>();
 
         /// <summary>
+        /// 是否自动退出被禁言的群
+        /// </summary>
+        public bool LeaveGroupAfterBeMushin { get; set; } = false;
+
+        /// <summary>
         /// 是否启用调试模式
         /// </summary>
         public bool DebugMode { get; set; } = false;

@@ -39,6 +39,8 @@ namespace GreenOnions.BotManagerWindows.Controls
                 lstBannedUser.Items.Add(item.ToString());
             }
 
+            chkLeaveGroupAfterBeMushin.Checked = BotInfo.Config.LeaveGroupAfterBeMushin;
+
             chkDebugMode.Checked = BotInfo.Config.DebugMode;
             foreach (var item in BotInfo.Config.DebugGroups)
             {
@@ -97,6 +99,8 @@ namespace GreenOnions.BotManagerWindows.Controls
                 tempBannedUser.Add(Convert.ToInt64(item.SubItems[0].Text));
             }
             BotInfo.Config.BannedUser = tempBannedUser;
+
+            BotInfo.Config.LeaveGroupAfterBeMushin = chkLeaveGroupAfterBeMushin.Checked;
 
             BotInfo.Config.DebugMode = chkDebugMode.Checked;
             HashSet<long> tempDebugGroups = new HashSet<long>();
