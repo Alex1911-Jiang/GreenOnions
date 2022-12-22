@@ -94,15 +94,21 @@ namespace GreenOnions.BotMain.CqHttp
                     {
                         if (BotInfo.Config.LeaveGroupAfterBeMushin)  //自动退出被禁言的群
                         {
-                            if (api is not null)
+                            try
                             {
-                                var groups = await api.GetGroupList();
-                                foreach (var group in groups.groupList)
+                                if (api is not null)
                                 {
-                                    var selfInfo = await api.GetGroupMemberInfo(group.GroupId, BotInfo.Config.QQId);
-                                    if (selfInfo.memberInfo.ShutUpTime > DateTime.Now)
-                                        await api.LeaveGroup(group.GroupId);
+                                    var groups = await api.GetGroupList();
+                                    foreach (var group in groups.groupList)
+                                    {
+                                        var selfInfo = await api.GetGroupMemberInfo(group.GroupId, BotInfo.Config.QQId);
+                                        if (selfInfo.memberInfo.ShutUpTime > DateTime.Now)
+                                            await api.LeaveGroup(group.GroupId);
+                                    }
                                 }
+                            }
+                            catch  //在被禁言事件中退群后可能引发异常
+                            {
                             }
                         }
 

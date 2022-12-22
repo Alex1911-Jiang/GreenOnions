@@ -99,12 +99,18 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 {
                     if (BotInfo.Config.LeaveGroupAfterBeMushin)  //自动退出被禁言的群
                     {
-                        var groups = await session.GetGroupListAsync();
-                        foreach (var group in groups)
+                        try
                         {
-                            var selfInfo = await session.GetGroupMemberInfoAsync(session.QQNumber!.Value, group.Id);
-                            if (selfInfo.MuteTimeRemaining > TimeSpan.FromSeconds(1))
-                                await session.LeaveGroupAsync(group.Id);
+                            var groups = await session.GetGroupListAsync();
+                            foreach (var group in groups)
+                            {
+                                var selfInfo = await session.GetGroupMemberInfoAsync(session.QQNumber!.Value, group.Id);
+                                if (selfInfo.MuteTimeRemaining > TimeSpan.FromSeconds(1))
+                                    await session.LeaveGroupAsync(group.Id);
+                            }
+                        }
+                        catch  //在被禁言事件中退群后可能引发异常
+                        {
                         }
                     }
 
