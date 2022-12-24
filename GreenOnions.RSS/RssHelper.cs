@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -115,7 +116,7 @@ namespace GreenOnions.RSS
             {
                 LogInfo($"{item.Url}开始抓取");
                 bool hasUpdate = false;
-                foreach (var rss in ReadRss(item.Url))  //每条订阅地址可能获取到若干条更新
+                await foreach (var rss in ReadRss(item.Url, item.Headers))  //每条订阅地址可能获取到若干条更新
                 {
                     if (rss.pubDate > BotInfo.LastOneSendRssTime[item.Url])
                     {
@@ -369,99 +370,106 @@ namespace GreenOnions.RSS
             return url;
         }
 
-        private static IEnumerable<(string title, string description, string[] imgsSrc, string[] videosSrc, string[] iframseSrc, DateTime pubDate, string link)> ReadRss(string url)
+        private static async IAsyncEnumerable<(string title, string description, string[] imgsSrc, string[] videosSrc, string[] iframseSrc, DateTime pubDate, string link)> ReadRss(string url, Dictionary<string, string> headers)
         {
-            if (url != string.Empty)
+            if (!string.IsNullOrWhiteSpace(url))
             {
                 LogInfo($"{url}抓取内容");
-                XmlDocument doc = new XmlDocument();
-                doc.Load(url);
-                string title = doc.GetElementsByTagName("title")[0].InnerText;
-                XmlNodeList nodeList = doc.GetElementsByTagName("item");
-                if (nodeList.Count == 0)
-                    nodeList = doc.GetElementsByTagName("entry");
-
-                if (doc.HasChildNodes)
+                using (HttpClient client = new HttpClient())
                 {
-                    LogInfo($"{url}抓取成功");
-                    foreach (XmlNode node in nodeList)
+                    foreach (var header in headers)
+                        client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    var resp = await client.GetAsync(url);
+                    var xml = await resp.Content.ReadAsStringAsync();
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml(xml);
+                    string title = doc.GetElementsByTagName("title")[0].InnerText;
+                    XmlNodeList nodeList = doc.GetElementsByTagName("item");
+                    if (nodeList.Count == 0)
+                        nodeList = doc.GetElementsByTagName("entry");
+
+                    if (doc.HasChildNodes)
                     {
-                        if (node.HasChildNodes)
+                        LogInfo($"{url}抓取成功");
+                        foreach (XmlNode node in nodeList)
                         {
-                            string description = string.Empty, link = string.Empty;
-                            DateTime pubDate = DateTime.MinValue;
-                            XmlNodeList subNodeList = node.ChildNodes;
-                            string[] imgsSrc = null;
-                            string[] videosSrc = null;
-                            string[] iframesSrc = null;
-                            foreach (XmlNode subNode in subNodeList)
+                            if (node.HasChildNodes)
                             {
-                                switch (subNode.Name.ToLower())
+                                string description = string.Empty, link = string.Empty;
+                                DateTime pubDate = DateTime.MinValue;
+                                XmlNodeList subNodeList = node.ChildNodes;
+                                string[] imgsSrc = null;
+                                string[] videosSrc = null;
+                                string[] iframesSrc = null;
+                                foreach (XmlNode subNode in subNodeList)
                                 {
-                                    case "description":
-                                    case "content":
-                                        description = subNode.InnerText;
+                                    switch (subNode.Name.ToLower())
+                                    {
+                                        case "description":
+                                        case "content":
+                                            description = subNode.InnerText;
 
-                                        #region -- img ---
-                                        MatchCollection imgMatches = new Regex(@"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
-                                        int iImage = 0;
-                                        imgsSrc = new string[imgMatches.Count];
-                                        foreach (Match match in imgMatches)
-                                        {
-                                            description = description.Replace(match.Groups[0].Value, "");
-                                            imgsSrc[iImage++] = match.Groups["imgUrl"].Value.ReplaceHtmlTags();
-                                        }
-                                        #endregion -- img --
-
-                                        #region -- video --
-                                        MatchCollection videoMatches = new Regex(@"<video\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<videoUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
-                                        int iVideo = 0;
-                                        videosSrc = new string[videoMatches.Count];
-                                        foreach (Match match in videoMatches)
-                                        {
-                                            description = description.Replace(match.Groups[0].Value, "");
-                                            videosSrc[iVideo++] = match.Groups["videoUrl"].Value.ReplaceHtmlTags();
-                                        }
-                                        #endregion -- video --
-
-                                        #region -- iframe --
-                                        MatchCollection iframeMatches = new Regex(@"<iframe\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<iframeUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
-                                        int iIframe = 0;
-                                        iframesSrc = new string[iframeMatches.Count];
-                                        foreach (Match match in iframeMatches)
-                                        {
-                                            description = description.Replace(match.Groups[0].Value, "");
-                                            iframesSrc[iIframe++] = match.Groups["iframeUrl"].Value.ReplaceHtmlTags();
-                                        }
-                                        #endregion -- iframe --
-
-                                        MatchCollection aMatches = new Regex(@"<a\b[^<>]*?\bhref[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<aTag>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
-                                        foreach (Match match in aMatches)
-                                        {
-                                            if (match.Groups.Count > 1)
-                                                description = description.Replace(match.Groups[0].Value, match.Groups[1].Value);
-                                            else
+                                            #region -- img ---
+                                            MatchCollection imgMatches = new Regex(@"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
+                                            int iImage = 0;
+                                            imgsSrc = new string[imgMatches.Count];
+                                            foreach (Match match in imgMatches)
+                                            {
                                                 description = description.Replace(match.Groups[0].Value, "");
-                                        }
+                                                imgsSrc[iImage++] = match.Groups["imgUrl"].Value.ReplaceHtmlTags();
+                                            }
+                                            #endregion -- img --
 
-                                        description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</img>", "").Replace("</video>", "").Replace("</iframe>", "").Replace("<p>", "").Replace("</p>", "\r\n").ReplaceHtmlTags();
-                                        break;
-                                    case "link":
-                                        if (subNode.Attributes["href"] != null)
-                                            link = subNode.Attributes["href"].Value;
-                                        else
-                                            link = subNode.InnerText;
-                                        break;
-                                    case "pubdate":
-                                    case "updated":
-                                        pubDate = DateTime.Parse(subNode.InnerText);
+                                            #region -- video --
+                                            MatchCollection videoMatches = new Regex(@"<video\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<videoUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
+                                            int iVideo = 0;
+                                            videosSrc = new string[videoMatches.Count];
+                                            foreach (Match match in videoMatches)
+                                            {
+                                                description = description.Replace(match.Groups[0].Value, "");
+                                                videosSrc[iVideo++] = match.Groups["videoUrl"].Value.ReplaceHtmlTags();
+                                            }
+                                            #endregion -- video --
+
+                                            #region -- iframe --
+                                            MatchCollection iframeMatches = new Regex(@"<iframe\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<iframeUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
+                                            int iIframe = 0;
+                                            iframesSrc = new string[iframeMatches.Count];
+                                            foreach (Match match in iframeMatches)
+                                            {
+                                                description = description.Replace(match.Groups[0].Value, "");
+                                                iframesSrc[iIframe++] = match.Groups["iframeUrl"].Value.ReplaceHtmlTags();
+                                            }
+                                            #endregion -- iframe --
+
+                                            MatchCollection aMatches = new Regex(@"<a\b[^<>]*?\bhref[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<aTag>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
+                                            foreach (Match match in aMatches)
+                                            {
+                                                if (match.Groups.Count > 1)
+                                                    description = description.Replace(match.Groups[0].Value, match.Groups[1].Value);
+                                                else
+                                                    description = description.Replace(match.Groups[0].Value, "");
+                                            }
+
+                                            description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</img>", "").Replace("</video>", "").Replace("</iframe>", "").Replace("<p>", "").Replace("</p>", "\r\n").ReplaceHtmlTags();
+                                            break;
+                                        case "link":
+                                            if (subNode.Attributes["href"] != null)
+                                                link = subNode.Attributes["href"].Value;
+                                            else
+                                                link = subNode.InnerText;
+                                            break;
+                                        case "pubdate":
+                                        case "updated":
+                                            pubDate = DateTime.Parse(subNode.InnerText);
+                                            break;
+                                    }
+                                    if (description != string.Empty && link != string.Empty && pubDate != DateTime.MinValue)
                                         break;
                                 }
-                                if (description != string.Empty && link != string.Empty && pubDate != DateTime.MinValue)
-                                    break;
-                            }
 
-                            yield return (title, description, imgsSrc, videosSrc, iframesSrc, pubDate, link);
+                                yield return (title, description, imgsSrc, videosSrc, iframesSrc, pubDate, link);
+                            }
                         }
                     }
                 }

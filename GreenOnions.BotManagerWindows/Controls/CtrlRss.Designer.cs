@@ -159,9 +159,6 @@
         private Label lblReadRssInterval;
         private Panel pnlRssSettings;
         private Button btnRssLogViewer;
-        private Button button1;
-        private Button button2;
-        private Button button3;
         private CheckBox chkRssParallel;
     }
 }

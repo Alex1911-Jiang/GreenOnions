@@ -37,10 +37,13 @@
     <Compile Update="FrmPlugins.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FrmRssFilter.cs">
+    <Compile Update="ItemFroms\FrmRssFilter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FrmRssLogViewer.cs">
+    <Compile Update="ItemFroms\FrmRssLogViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ItemFroms\FrmRssHeders.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="WebBrowserForm.cs">

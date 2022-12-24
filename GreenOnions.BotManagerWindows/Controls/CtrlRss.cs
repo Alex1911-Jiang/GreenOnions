@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using GreenOnions.BotManagerWindows.ItemFroms;
 using GreenOnions.Interface.Items;
 using GreenOnions.Utility;
 
@@ -31,6 +32,7 @@ namespace GreenOnions.BotManagerWindows.Controls
                     ctrlRssItem.RssAtAll = item.AtAll;
                     ctrlRssItem.RssFilterMode = item.FilterMode;
                     ctrlRssItem.RssFilterKeyWords = item.FilterKeyWords;
+                    ctrlRssItem.RssHeders = item.Headers;
                     pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
                     ctrlRssItem.Width = ComputeRssItemWidth();
                 }
@@ -58,6 +60,7 @@ namespace GreenOnions.BotManagerWindows.Controls
                 SendByForward = i.RssSendByForward,
                 FilterMode = i.RssFilterMode,
                 FilterKeyWords = i.RssFilterKeyWords,
+                Headers = i.RssHeders,
             }).ToHashSet();
             BotInfo.Config.RssParallel = chkRssParallel.Checked;
             BotInfo.Config.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);

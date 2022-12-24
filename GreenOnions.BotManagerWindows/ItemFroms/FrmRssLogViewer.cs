@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Data;
 using GreenOnions.RSS;
 
-namespace GreenOnions.BotManagerWindows
+namespace GreenOnions.BotManagerWindows.ItemFroms
 {
     public partial class FrmRssLogViewer : Form
     {

@@ -186,10 +186,10 @@ namespace GreenOnions.BotManagerConsole
 			switch (platform)
 			{
 				case 0:
-					ConnectToMiraiApiHttp();
+					_ = ConnectToMiraiApiHttp();
 					break;
 				case 1:
-					ConnectToCqHttp();
+					_ = ConnectToCqHttp();
 					break;
 			}
 		}

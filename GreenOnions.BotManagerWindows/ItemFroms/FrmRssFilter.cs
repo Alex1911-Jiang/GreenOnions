@@ -1,4 +1,4 @@
-﻿namespace GreenOnions.BotManagerWindows
+﻿namespace GreenOnions.BotManagerWindows.ItemFroms
 {
     public partial class FrmRssFilter : Form
     {

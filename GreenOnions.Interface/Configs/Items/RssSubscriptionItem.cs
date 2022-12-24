@@ -53,5 +53,9 @@
         /// 过滤词
         /// </summary>
         public string[]? FilterKeyWords { get; set; }
+        /// <summary>
+        /// 请求头
+        /// </summary>
+        public Dictionary<string, string>? Headers { get; set; }
     }
 }

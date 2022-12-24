@@ -1,4 +1,5 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.BotManagerWindows.ItemFroms;
+using GreenOnions.Utility;
 
 namespace GreenOnions.BotManagerWindows.Controls
 {
@@ -63,6 +64,8 @@ namespace GreenOnions.BotManagerWindows.Controls
         }
         public int RssFilterMode { get; set; }
         public string[]? RssFilterKeyWords { get; set; }
+
+        public Dictionary<string,string>? RssHeders { get; set; }
 
         private void SetComboBoxIndex(ComboBox ctrl, string? value)
         {
@@ -155,6 +158,13 @@ namespace GreenOnions.BotManagerWindows.Controls
             frmFilter.ShowDialog();
             RssFilterMode = frmFilter.FilterMode;
             RssFilterKeyWords = frmFilter.FilterKeyWords;
+        }
+
+        private void btnHeaders_Click(object sender, EventArgs e)
+        {
+            FrmRssHeders frmRssHeders = new FrmRssHeders(RssHeders);
+            frmRssHeders.ShowDialog();
+            RssHeders = frmRssHeders.Headers;
         }
     }
 }
