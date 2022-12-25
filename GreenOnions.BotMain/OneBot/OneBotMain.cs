@@ -12,7 +12,7 @@ using YukariToolBox.LightLog;
 
 namespace GreenOnions.BotMain.CqHttp
 {
-    public class CqHttpMain
+    public class OneBotMain
     {
         public static async Task Connect(long qqId, string ip, ushort port, string accessToken, Action<bool, string> ConnectedEvent)
         {

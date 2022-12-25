@@ -37,6 +37,9 @@
     <Compile Update="FrmPlugins.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="ItemFroms\InputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="ItemFroms\FrmRssFilter.cs">
       <SubType>Form</SubType>
     </Compile>

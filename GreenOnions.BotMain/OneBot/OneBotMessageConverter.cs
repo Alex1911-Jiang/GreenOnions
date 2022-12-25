@@ -8,7 +8,7 @@ using Sora.Entities.Segment.DataModel;
 
 namespace GreenOnions.BotMain.CqHttp
 {
-    public static class CqHttpMessageConverter
+    public static class OneBotMessageConverter
     {
         public static async Task<GreenOnionsMessages> ToOnionsMessages(this MessageBody miraiMessage, long senderId, string senderName, long? senderGroup, SoraApi? api)
         {

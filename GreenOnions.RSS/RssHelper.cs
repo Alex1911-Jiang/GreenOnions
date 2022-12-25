@@ -408,7 +408,6 @@ namespace GreenOnions.RSS
                                         case "description":
                                         case "content":
                                             description = subNode.InnerText;
-
                                             #region -- img ---
                                             MatchCollection imgMatches = new Regex(@"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
                                             int iImage = 0;

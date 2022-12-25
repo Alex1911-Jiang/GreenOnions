@@ -1,7 +1,9 @@
 ﻿using GreenOnions.BotMain;
 using GreenOnions.BotMain.CqHttp;
+using GreenOnions.BotMain.KonataCore;
 using GreenOnions.BotMain.MiraiApiHttp;
 using GreenOnions.Interface;
+using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 
@@ -89,11 +91,11 @@ namespace GreenOnions.BotManagerWindows
 			}
         }
 
-		public void ConnectToMiraiApiHttp(long qqId, string ip, ushort port, string verifyKey)
+		public async void ConnectToMiraiApiHttp(long qqId, string ip, ushort port, string verifyKey)
 		{
             try
             {
-                MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 0, "mirai-api-http"))));
+                await MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 0, "mirai-api-http"))));
             }
             catch (Exception ex)
 			{
@@ -103,11 +105,11 @@ namespace GreenOnions.BotManagerWindows
 			_connecting = false;
 		}
 
-		public void ConnectToCqHttp(long qqId, string ip, ushort port, string verifyKey)
+		public async void ConnectToCqHttp(long qqId, string ip, ushort port, string verifyKey)
 		{
 			try
 			{
-                CqHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 1, "cqhttp"))));
+                await OneBotMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 1, "cqhttp"))));
 			}
 			catch (Exception ex)
 			{
@@ -128,46 +130,72 @@ namespace GreenOnions.BotManagerWindows
 			TextReader sr = new StringReader("exit");
 			Console.SetIn(sr);
 
-			btnConnectToMiraiApiHttp.Click -= btnDeconnect_Click;
-			btnConnectToMiraiApiHttp.Click += btnConnectToMiraiApiHttp_Click;
-
-			btnConnectToCqHttp.Click -= btnDeconnect_Click;
-			btnConnectToCqHttp.Click += btnConnectToCqHttp_Click;
+			btnConnect.Click -= btnDeconnect_Click;
+			btnConnect.Click += btnConnect_Click;
 		}
 
-		private void btnConnectToMiraiApiHttp_Click(object? sender, EventArgs e)
+		private async void btnConnect_Click(object? sender, EventArgs e)
 		{
 			WorkingTimeRecorder.DoWork = true;
-			ConnectToMiraiApiHttp();
+			if (rdoMiraiApiHttp.Checked)
+            {
+                ConnectToMiraiApiHttp();
+            }
+			else if (rdoOneBot.Checked)
+            {
+                ConnectToCqHttp();
+            }
+			else if (rdoKonata.Checked)
+			{
+                try
+                {
+					//await KonataCoreMain.Login(Convert.ToInt64(txbQQ.Text), txbPassword.Text, msg => 
+					//{ 
+					
+					//});
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage("连接到cqhttp发生异常", ex);
+                    MessageBox.Show("连接cqhttp失败" + ex.Message);
+                }
+                _connecting = false;
+            }
+			else
+			{
+				MessageBox.Show("请选择连接到的机器人平台");
+			}
 		}
+
+		private void LoginByKonata()
+		{
+
+			BotInfo.Config.BotProtocol = BotProtocolEnum.Konata_Core;
+        }
 
 		private void ConnectToMiraiApiHttp()
 		{
 			if (!_connecting)
 			{
-				if (CheckInfo())
+				if (CheckConnectInfo())
 				{
 					_connecting = true;
 					ConnectToMiraiApiHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text);
-				}
+                    BotInfo.Config.BotProtocol = BotProtocolEnum.mirai_api_http;
+                }
 			}
 		}
-
-		private void btnConnectToCqHttp_Click(object? sender, EventArgs e)
-		{
-			WorkingTimeRecorder.DoWork = true;
-			ConnectToCqHttp();
-        }
 
 		private void ConnectToCqHttp()
 		{
 			if (!_connecting)
 			{
-				if (CheckInfo())
+				if (CheckConnectInfo())
 				{
 					_connecting = true;
 					ConnectToCqHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text);
-				}
+                    BotInfo.Config.BotProtocol = BotProtocolEnum.OneBot;
+                }
 			}
 		}
 
@@ -190,13 +218,9 @@ namespace GreenOnions.BotManagerWindows
 				lblState.Text = $"连接状态: 已连接到{protocolName}, 登录昵称:{nickNameOrErrorMessage}";
 				lblState.ForeColor = Color.Black;
 
-				btnConnectToMiraiApiHttp.Text = "断开连接";
-				btnConnectToMiraiApiHttp.Click -= btnConnectToMiraiApiHttp_Click;
-				btnConnectToMiraiApiHttp.Click += btnDeconnect_Click;
-
-				btnConnectToCqHttp.Text = "断开连接";
-				btnConnectToCqHttp.Click -= btnConnectToCqHttp_Click;
-				btnConnectToCqHttp.Click += btnDeconnect_Click;
+				btnConnect.Text = "断开连接/注销";
+				btnConnect.Click -= btnConnect_Click;
+				btnConnect.Click += btnDeconnect_Click;
 
 				notifyIcon.Text = $"葱葱机器人:{nickNameOrErrorMessage}";
 
@@ -217,9 +241,8 @@ namespace GreenOnions.BotManagerWindows
 			}
 			else  //发生异常或主动断开连接
 			{
-				btnConnectToMiraiApiHttp.Text = "连接到mirai-api-http";
-				btnConnectToCqHttp.Text = "连接到cqhttp";
-				lblState.Text = $"连接状态: 未连接到机器人平台";
+				btnConnect.Text = "连接/登录";
+				lblState.Text = $"连接状态: 未连接到机器人平台/未登录";
 				lblState.ForeColor = Color.Red;
 				notifyIcon.Text = $"葱葱机器人";
 				if (nickNameOrErrorMessage.Length > 0)  //发生异常
@@ -227,7 +250,7 @@ namespace GreenOnions.BotManagerWindows
 			}
 		}
 
-		private bool CheckInfo()
+		private bool CheckConnectInfo()
         {
             if (BotInfo.IsLogin)
             {

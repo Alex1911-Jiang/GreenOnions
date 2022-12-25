@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GreenOnions.Interface;
 using GreenOnions.Interface.Configs;
 using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Interface.Items;
@@ -14,11 +13,15 @@ namespace GreenOnions.Utility
 
         public long QQId { get; set; } = 0;
 
+        public string Password { get; set; } = "";
+
         public string IP { get; set; } = "127.0.0.1";
 
         public ushort Port { get; set; } = 33111;
 
         public string VerifyKey { get; set; } = "Alex1911";
+
+        public BotProtocolEnum BotProtocol { get; set; } = BotProtocolEnum.None;
 
         /// <summary>
         /// 机器人名称
