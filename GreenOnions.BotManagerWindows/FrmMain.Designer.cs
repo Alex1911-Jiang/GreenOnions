@@ -220,6 +220,7 @@ namespace GreenOnions.BotManagerWindows
             this.rdoMiraiApiHttp.TabStop = true;
             this.rdoMiraiApiHttp.Text = "mirai-api-http";
             this.rdoMiraiApiHttp.UseVisualStyleBackColor = true;
+            this.rdoMiraiApiHttp.CheckedChanged += new System.EventHandler(this.rdoProtocol_CheckedChanged);
             // 
             // rdoOneBot
             // 
@@ -231,6 +232,7 @@ namespace GreenOnions.BotManagerWindows
             this.rdoOneBot.TabStop = true;
             this.rdoOneBot.Text = "OneBot(CqHttp)";
             this.rdoOneBot.UseVisualStyleBackColor = true;
+            this.rdoOneBot.CheckedChanged += new System.EventHandler(this.rdoProtocol_CheckedChanged);
             // 
             // rdoKonata
             // 
@@ -242,6 +244,7 @@ namespace GreenOnions.BotManagerWindows
             this.rdoKonata.TabStop = true;
             this.rdoKonata.Text = "Konata.Core";
             this.rdoKonata.UseVisualStyleBackColor = true;
+            this.rdoKonata.CheckedChanged += new System.EventHandler(this.rdoProtocol_CheckedChanged);
             // 
             // lblConnectProtocol
             // 

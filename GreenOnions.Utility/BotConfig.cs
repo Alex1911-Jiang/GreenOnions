@@ -21,7 +21,7 @@ namespace GreenOnions.Utility
 
         public string VerifyKey { get; set; } = "Alex1911";
 
-        public BotProtocolEnum BotProtocol { get; set; } = BotProtocolEnum.None;
+        public BotProtocol Protocol { get; set; } = BotProtocol.None;
 
         /// <summary>
         /// 机器人名称
@@ -126,15 +126,15 @@ namespace GreenOnions.Utility
 
         #endregion -- 腾讯云相关属性 --
 
-        /// <summary>
-        /// 是否启用自动连接到机器人平台
-        /// </summary>
-        public bool AutoConnectEnabled { get; set; } = false;
+        ///// <summary>
+        ///// 是否启用自动连接到机器人平台
+        ///// </summary>
+        //public bool AutoConnectEnabled { get; set; } = false;
 
-        /// <summary>
-        /// 自动连接的平台
-        /// </summary>
-        public int AutoConnectProtocol { get; set; } = 0;
+        ///// <summary>
+        ///// 自动连接的平台
+        ///// </summary>
+        //public BotProtocol AutoConnectProtocol { get; set; } =  BotProtocol.mirai_api_http;
 
         /// <summary>
         /// 连接前延时

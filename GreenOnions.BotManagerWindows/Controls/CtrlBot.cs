@@ -61,8 +61,8 @@ namespace GreenOnions.BotManagerWindows.Controls
             txbTencentCloudBucket.Text = BotInfo.Config.TencentCloudBucket;
             #endregion -- 腾讯云相关设置 --
 
-            chkAutoConnectEnabled.Checked = BotInfo.Config.AutoConnectEnabled;
-            cboAutoConnectProtocol.SelectedIndex = BotInfo.Config.AutoConnectProtocol;
+            //chkAutoConnectEnabled.Checked = BotInfo.Config.AutoConnectEnabled;
+            //cboAutoConnectProtocol.SelectedIndex = BotInfo.Config.AutoConnectProtocol;
             txbAutoConnectDelay.Text = BotInfo.Config.AutoConnectDelay.ToString();
             cboPixivProxy.Text = BotInfo.Config.PixivProxy;
 
@@ -115,8 +115,8 @@ namespace GreenOnions.BotManagerWindows.Controls
             BotInfo.Config.DownloadImage4Caching = chkDownloadImage4Caching.Checked;
             BotInfo.Config.SendImageByFile = chkSendImageByFile.Checked;
 
-            BotInfo.Config.AutoConnectEnabled = chkAutoConnectEnabled.Checked;
-            BotInfo.Config.AutoConnectProtocol = cboAutoConnectProtocol.SelectedIndex;
+            //BotInfo.Config.AutoConnectEnabled = chkAutoConnectEnabled.Checked;
+            //BotInfo.Config.AutoConnectProtocol = cboAutoConnectProtocol.SelectedIndex;
             BotInfo.Config.ReplaceImgRoute = cboReplaceImgRoute.SelectedIndex;
             BotInfo.Config.PixivProxy = cboPixivProxy.Text;
 

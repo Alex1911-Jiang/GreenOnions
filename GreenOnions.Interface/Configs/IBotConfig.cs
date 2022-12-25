@@ -162,17 +162,17 @@ namespace GreenOnions.Interface.Configs
 
         #endregion -- 腾讯云相关属性 --
 
-        /// <summary>
-        /// 是否启用自动连接到机器人平台
-        /// </summary>
-        [PropertyChineseName("自动连接到机器人平台", "核心", "是否在启用机器人后自动连接到机器人平台")]
-        public bool AutoConnectEnabled { get; }
+        ///// <summary>
+        ///// 是否启用自动连接到机器人平台
+        ///// </summary>
+        //[PropertyChineseName("自动连接到机器人平台", "核心", "是否在启用机器人后自动连接到机器人平台")]
+        //public bool AutoConnectEnabled { get; }
 
-        /// <summary>
-        /// 自动连接的平台
-        /// </summary>
-        [PropertyChineseName("自动连接平台", "核心", "选择自动连接到的平台, 0 = Mirai-Api-Http, 1 = CqHttp")]
-        public int AutoConnectProtocol { get; }
+        ///// <summary>
+        ///// 自动连接的平台
+        ///// </summary>
+        //[PropertyChineseName("自动连接平台", "核心", "选择自动连接到的平台, 1 = Mirai-Api-Http, 2 = CqHttp")]
+        //public BotProtocol AutoConnectProtocol { get; }
 
         /// <summary>
         /// 连接前延时

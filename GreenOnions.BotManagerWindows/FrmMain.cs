@@ -2,6 +2,7 @@
 using GreenOnions.BotMain.CqHttp;
 using GreenOnions.BotMain.KonataCore;
 using GreenOnions.BotMain.MiraiApiHttp;
+using GreenOnions.BotManagerWindows.ItemFroms;
 using GreenOnions.Interface;
 using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Utility;
@@ -51,16 +52,16 @@ namespace GreenOnions.BotManagerWindows
 				if (iLoadCount > 0)
 					Invoke(new Action(() => btnPlugins.Text = $"插件列表({iLoadCount})"));
 
-				//自动连接到机器人平台
-				if (BotInfo.Config.AutoConnectEnabled)
-				{
-					Task.Delay(BotInfo.Config.AutoConnectDelay * 1000).Wait();
-					WorkingTimeRecorder.DoWork = true;
-					if (BotInfo.Config.AutoConnectProtocol == 0)
-						ConnectToMiraiApiHttp();
-					else
-						ConnectToCqHttp();
-				}
+				////自动连接到机器人平台
+				//if (BotInfo.Config.AutoConnectEnabled)
+				//{
+				//	Task.Delay(BotInfo.Config.AutoConnectDelay * 1000).Wait();
+				//	WorkingTimeRecorder.DoWork = true;
+				//	if (BotInfo.Config.AutoConnectProtocol == 0)
+				//		ConnectToMiraiApiHttp();
+				//	else
+				//		ConnectToCqHttp();
+				//}
 			});
 		}
 
@@ -147,19 +148,7 @@ namespace GreenOnions.BotManagerWindows
             }
 			else if (rdoKonata.Checked)
 			{
-                try
-                {
-					//await KonataCoreMain.Login(Convert.ToInt64(txbQQ.Text), txbPassword.Text, msg => 
-					//{ 
-					
-					//});
-                }
-                catch (Exception ex)
-                {
-                    LogHelper.WriteErrorLogWithUserMessage("连接到cqhttp发生异常", ex);
-                    MessageBox.Show("连接cqhttp失败" + ex.Message);
-                }
-                _connecting = false;
+				LoginByKonata();
             }
 			else
 			{
@@ -167,10 +156,23 @@ namespace GreenOnions.BotManagerWindows
 			}
 		}
 
-		private void LoginByKonata()
+		private async void LoginByKonata()
 		{
+            try
+            {
+                await KonataCoreMain.Login(Convert.ToInt64(txbQQ.Text), txbPassword.Text,
+                    msg => InputBox.Show(msg),
+                    msg => MessageBox.Show(msg),
+                    msg => MessageBox.Show(msg));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteErrorLogWithUserMessage("使用Konata.Core登录QQ失败", ex);
+                MessageBox.Show("登录失败，" + ex.Message);
+            }
+            _connecting = false;
 
-			BotInfo.Config.BotProtocol = BotProtocolEnum.Konata_Core;
+            BotInfo.Config.Protocol = BotProtocol.Konata_Core;
         }
 
 		private void ConnectToMiraiApiHttp()
@@ -181,7 +183,7 @@ namespace GreenOnions.BotManagerWindows
 				{
 					_connecting = true;
 					ConnectToMiraiApiHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text);
-                    BotInfo.Config.BotProtocol = BotProtocolEnum.mirai_api_http;
+                    BotInfo.Config.Protocol = BotProtocol.mirai_api_http;
                 }
 			}
 		}
@@ -194,7 +196,7 @@ namespace GreenOnions.BotManagerWindows
 				{
 					_connecting = true;
 					ConnectToCqHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text);
-                    BotInfo.Config.BotProtocol = BotProtocolEnum.OneBot;
+                    BotInfo.Config.Protocol = BotProtocol.OneBot;
                 }
 			}
 		}
@@ -231,7 +233,7 @@ namespace GreenOnions.BotManagerWindows
 
                 BotInfo.SaveConfigFile();
 
-				WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnect);
+				//WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnect);  //指定时间段工作
 
 				webBrowserForm.Show();
 			}
@@ -288,5 +290,23 @@ namespace GreenOnions.BotManagerWindows
         {
 			new FrmPlugins().ShowDialog();
 		}
+
+        private void rdoProtocol_CheckedChanged(object sender, EventArgs e)
+        {
+			if (rdoKonata.Checked)
+			{
+				txbPassword.Enabled = true;
+				txbIP.Enabled = false;
+				txbPort.Enabled = false;
+				txbVerifyKey.Enabled = false;
+            }
+			else
+            {
+                txbPassword.Enabled = false;
+                txbIP.Enabled = true;
+                txbPort.Enabled = true;
+                txbVerifyKey.Enabled = true;
+            }
+        }
     }
 }

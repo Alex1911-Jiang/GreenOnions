@@ -11,11 +11,11 @@ namespace GreenOnions.BotMain.KonataCore
     public static class KonataCoreMain
     {
         public static event Func<string, string> CaptchaSms;
-        public static event Func<string, string> CaptchaSlider;
+        public static event Action<string> CaptchaSlider;
         public static event Action<string> CaptchaFail;
 
         private static Bot? _bot = null;
-        public static async Task Login(long qqId, string password, Func<string, string> captchaSms, Func<string, string> captchaSlider, Action<string> captchaFail)
+        public static async Task Login(long qqId, string password, Func<string, string> captchaSms, Action<string> captchaSlider, Action<string> captchaFail)
         {
             CaptchaSms = captchaSms;
             CaptchaSlider = captchaSlider;
@@ -44,8 +44,8 @@ namespace GreenOnions.BotMain.KonataCore
 
             _bot.OnCaptcha += Bot_OnCaptcha;
 
-            //// Handle messages from group
-            //_bot.OnGroupMessage += Command.OnGroupMessage;
+            _bot.OnFriendMessage += _bot_OnFriendMessage;
+            _bot.OnGroupMessage += _bot_OnGroupMessage;
 
             // Login the bot
             var result = await _bot.Login();
@@ -55,12 +55,24 @@ namespace GreenOnions.BotMain.KonataCore
             }
         }
 
-        public static async void LogOut()
+        private static void _bot_OnFriendMessage(Bot sender, FriendMessageEvent args)
         {
-            await _bot.Logout();
-            _bot.Dispose();
+
         }
 
+        private static void _bot_OnGroupMessage(Bot sender, GroupMessageEvent args)
+        {
+
+        }
+
+        public static async void LogOut()
+        {
+            if (_bot != null)
+            {
+                await _bot.Logout();
+                _bot.Dispose();
+            }
+        }
 
         /// <summary>
         /// Get bot config

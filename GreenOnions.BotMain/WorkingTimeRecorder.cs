@@ -1,4 +1,5 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.Interface.Configs.Enums;
+using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 
 namespace GreenOnions.BotMain
@@ -6,14 +7,14 @@ namespace GreenOnions.BotMain
     public static class WorkingTimeRecorder
     {
         private static bool _isRecording = false;
-        private static int _connectedPlatform = -1;
+        private static BotProtocol _connectedPlatform = 0;
         public static bool IsRecording => _isRecording;
         private static TimeOnly timeFrom;
         private static TimeOnly timeTo;
 
         public static bool DoWork { get; set; } = false;
 
-        public static void StartRecord(int connectedPlatform, Action<int> ConnectMethod, Action DisconnectMethod)
+        public static void StartRecord(BotProtocol connectedPlatform, Action<BotProtocol> ConnectMethod, Action DisconnectMethod)
         {
             _connectedPlatform = connectedPlatform;
             timeFrom = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute));
