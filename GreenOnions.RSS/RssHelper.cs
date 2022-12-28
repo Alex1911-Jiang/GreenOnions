@@ -110,7 +110,7 @@ namespace GreenOnions.RSS
             {
                 LogInfo($"{item.Url}没有记录, 添加当前时间作为比对时间");
                 BotInfo.LastOneSendRssTime.TryAdd(item.Url!, DateTime.Now);  //添加现在作为起始日期(避免把所有历史信息全都抓过来发送)
-                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime);
+                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText("rssCache.json", serRssCache);
                 return;
             }

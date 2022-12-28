@@ -228,14 +228,14 @@ namespace GreenOnions.Utility
         {
             lock (Config)
             {
-                string config = JsonConvert.SerializeObject(Config);
+                string config = JsonConvert.SerializeObject(Config, Formatting.Indented);
                 File.WriteAllText("config.json", config);
             }
         }
 
         public static void SavePluginsStatus()
         {
-            string pluginStatus = JsonConvert.SerializeObject(PluginStatus);
+            string pluginStatus = JsonConvert.SerializeObject(PluginStatus, Formatting.Indented);
             File.WriteAllText("plugin.json", pluginStatus);
         }
     }
