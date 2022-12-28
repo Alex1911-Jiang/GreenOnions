@@ -545,6 +545,24 @@ namespace GreenOnions.Interface.Configs
         public TranslateEngine TranslateEngineType { get; }
 
         /// <summary>
+        /// 云翻译接口的APP ID
+        /// </summary>
+        [PropertyChineseName("翻译接口APPID", "翻译")]
+        public string? TranslateAPPID { get; }
+
+        /// <summary>
+        /// 云翻译接口的密钥
+        /// </summary>
+        [PropertyChineseName("翻译接口密钥", "翻译")]
+        public string? TranslateAPPKey { get; }
+
+        /// <summary>
+        /// 是否显示所有支持的语种
+        /// </summary>
+        [PropertyChineseName("显示所有语种", "翻译","是否显示当前翻译引擎支持的所有语种，否为只显示常用语种")]
+        public bool TranslateShowAllLanguages { get; }
+
+        /// <summary>
         /// 翻译为中文命令(正则表达式)
         /// </summary>
         [PropertyChineseName("翻译引擎", "翻译", "0 = 谷歌, 1 = 有道")]
@@ -566,7 +584,7 @@ namespace GreenOnions.Interface.Configs
         /// 自动翻译群友QQ号(正则表达式)
         /// </summary>
         [PropertyChineseName("自动翻译群友QQ号", "翻译", "自动翻译指定群友的全部消息")]
-        public HashSet<long> AutoTranslateGroupMemoriesQQ { get; }
+        public HashSet<long> AutoTranslateGroupMembersQQ { get; }
 
         #endregion -- 翻译配置项 --
 

@@ -302,9 +302,9 @@ namespace GreenOnions.RSS
                 LogInfo($"{item.Url}本条RSS订阅启用了翻译");
                 string translatedText;
                 if (item.TranslateFromTo)
-                    translatedText = await YouDaoTranslateHelper.TranslateFromTo(description, item.TranslateFrom, item.TranslateTo);
+                    translatedText = await TranslateHandler.TranslateFromTo(description, item.TranslateFrom, item.TranslateTo);
                 else
-                    translatedText = await YouDaoTranslateHelper.TranslateToChinese(description);
+                    translatedText = await TranslateHandler.TranslateToChinese(description);
                 translateMsg = $"\r\n以下为翻译内容:\r\n{translatedText}\r\n";
                 LogInfo($"{item.Url}翻译成功");
             }

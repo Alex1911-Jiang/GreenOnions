@@ -11,6 +11,7 @@ using GreenOnions.Repeater;
 using GreenOnions.Translate;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace GreenOnions.BotMain
@@ -22,7 +23,7 @@ namespace GreenOnions.BotMain
         private static Regex regexSearch3DOn;
         private static Regex regexSearchOff;
         private static Regex regexTranslateToChinese;
-        //private static Regex regexTranslateTo;
+        private static Regex regexTranslateTo;
         private static Regex regexTranslateFromTo;
         private static Regex regexHPicture;
         private static Regex regexForgeMessage;
@@ -53,8 +54,8 @@ namespace GreenOnions.BotMain
                 regexName = "翻译为中文";
                 regexTranslateToChinese = new Regex(BotInfo.Config.TranslateToChineseCMD.ReplaceGreenOnionsStringTags());
                 regexName = "翻译";
-                //regexTranslateTo = new Regex(BotInfo.Config.TranslateToCMD.ReplaceGreenOnionsStringTags());
-                //regexName = "指定语言翻译";
+                regexTranslateTo = new Regex(BotInfo.Config.TranslateToCMD.ReplaceGreenOnionsStringTags());
+                regexName = "指定语言翻译";
                 regexTranslateFromTo = new Regex(BotInfo.Config.TranslateFromToCMD.ReplaceGreenOnionsStringTags());
                 regexName = "色图";
                 regexHPicture = new Regex(BotInfo.Config.HPictureCmd.ReplaceGreenOnionsStringTags());
@@ -190,19 +191,19 @@ namespace GreenOnions.BotMain
                     if (regexTranslateToChinese.IsMatch(firstValue))  //翻译为中文
                     {
                         LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发自动识别语言并翻译为中文");
-                        TranslateHandler.TranslateToChinese(regexTranslateToChinese, firstValue, SendMessage);
+                        SendMessage(await TranslateHandler.TranslateToChinese(regexTranslateToChinese, firstValue));
                         return true;
                     }
-                    //if (BotInfo.Config.TranslateEngineType == TranslateEngine.Google && regexTranslateTo.IsMatch(firstValue))  //翻译为指定语言(仅限谷歌)
-                    //{
-                    //    LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发自动识别语言并翻译为指定语言");
-                    //    TranslateHandler.TranslateTo(regexTranslateTo, firstValue, SendMessage);
-                    //    return true;
-                    //}
+                    if (BotInfo.Config.TranslateEngineType != TranslateEngine.YouDao && regexTranslateTo.IsMatch(firstValue))  //翻译为指定语言
+                    {
+                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发自动识别语言并翻译为指定语言");
+                        SendMessage(await TranslateHandler.TranslateTo(regexTranslateTo, firstValue));
+                        return true;
+                    }
                     if (regexTranslateFromTo.IsMatch(firstValue))  //从指定语言翻译为指定语言
                     {
                         LogHelper.WriteInfoLog($"{inMsg.SenderId}消息触发从指定语言翻译为指定语言");
-                        TranslateHandler.TranslateFromTo(regexTranslateFromTo, firstValue, SendMessage);
+                        SendMessage(await TranslateHandler.TranslateFromTo(regexTranslateFromTo, firstValue));
                         return true;
                     }
                 }
@@ -309,9 +310,10 @@ namespace GreenOnions.BotMain
                 #endregion -- 帮助 --
 
                 #region -- 自动翻译 --
-                if (BotInfo.Config.AutoTranslateGroupMemoriesQQ.Contains(inMsg.SenderId))
+                if (BotInfo.Config.AutoTranslateGroupMembersQQ.Contains(inMsg.SenderId))
                 {
-                    string tranStr = await YouDaoTranslateHelper.TranslateToChinese(string.Join('\n', inMsg.OfType<GreenOnionsTextMessage>().Select(m => m.Text)));
+                    string textToTranslate = string.Join('\n', inMsg.OfType<GreenOnionsTextMessage>().Select(m => m.Text));
+                    string tranStr = await TranslateHandler.TranslateToChinese(textToTranslate);
                     try
                     {
                         SendMessage(new GreenOnionsMessages(tranStr));

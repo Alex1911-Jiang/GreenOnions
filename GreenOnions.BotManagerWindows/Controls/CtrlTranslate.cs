@@ -12,22 +12,26 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         public void LoadConfig()
         {
-            int index = cboTranslateEngine.Items.IndexOf(BotInfo.Config.TranslateEngineType.ToString());
-            cboTranslateEngine.SelectedIndex = index;
+            cboTranslateEngine.SelectedIndex = (int)BotInfo.Config.TranslateEngineType;
+
+            txbTranslateAPPID.Text = BotInfo.Config.TranslateAPPID;
+            txbTranslateAPPKey.Text = BotInfo.Config.TranslateAPPKey;
+
             txbTranslateToChinese.Text = BotInfo.Config.TranslateToChineseCMD;
             txbTranslateTo.Text = BotInfo.Config.TranslateToCMD;
             txbTranslateFromToCMD.Text = BotInfo.Config.TranslateFromToCMD;
 
-            foreach (long item in BotInfo.Config.AutoTranslateGroupMemoriesQQ)
+            foreach (long item in BotInfo.Config.AutoTranslateGroupMembersQQ)
                 lstAutoTranslateGroupMemoriesQQ.Items.Add(item.ToString());
         }
 
         public void SaveConfig()
         {
-            if (string.IsNullOrEmpty(cboTranslateEngine.Text))
-                BotInfo.Config.TranslateEngineType = TranslateEngine.YouDao;
-            else
-                BotInfo.Config.TranslateEngineType = Enum.Parse<TranslateEngine>(cboTranslateEngine.Text);
+            BotInfo.Config.TranslateEngineType = (TranslateEngine)cboTranslateEngine.SelectedIndex;
+
+            BotInfo.Config.TranslateAPPID = txbTranslateAPPID.Text;
+            BotInfo.Config.TranslateAPPKey = txbTranslateAPPKey.Text;
+
             BotInfo.Config.TranslateToChineseCMD = txbTranslateToChinese.Text;
             BotInfo.Config.TranslateToCMD = txbTranslateTo.Text;
             BotInfo.Config.TranslateFromToCMD = txbTranslateFromToCMD.Text;
@@ -37,7 +41,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             {
                 tempAutoTranslateGroupMemoriesQQ.Add(Convert.ToInt64(item.SubItems[0].Text));
             }
-            BotInfo.Config.AutoTranslateGroupMemoriesQQ = tempAutoTranslateGroupMemoriesQQ;
+            BotInfo.Config.AutoTranslateGroupMembersQQ = tempAutoTranslateGroupMemoriesQQ;
         }
 
         public void UpdateCache()
@@ -45,15 +49,8 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         }
 
-
         private void btnAddAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => ((IConfigSetting)this).AddItemToListView(lstAutoTranslateGroupMemoriesQQ, txbAddAutoTranslateGroupMemoryQQ.Text);
 
         private void btnRemoveAutoTranslateGroupMemoryQQ_Click(object sender, EventArgs e) => ((IConfigSetting)this).RemoveItemFromListView(lstAutoTranslateGroupMemoriesQQ);
-
-        private void cboTranslateEngine_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txbTranslateTo.Enabled = cboTranslateEngine.SelectedIndex == (int)TranslateEngine.YouDao;
-            BotInfo.Config.TranslateEngineType = (TranslateEngine)cboTranslateEngine.SelectedIndex;
-        }
     }
 }

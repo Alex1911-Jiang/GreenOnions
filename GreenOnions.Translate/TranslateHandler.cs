@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using GreenOnions.Interface;
+using System.Threading.Tasks;
 using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Utility;
 
@@ -9,60 +9,103 @@ namespace GreenOnions.Translate
 {
     public static class TranslateHandler
     {
-        public async static void TranslateToChinese(Regex regexTranslateToChinese, string msg, Action<GreenOnionsMessages> SendMessage)
+        public async static Task<string> TranslateToChinese(string msg)
+        {
+            return BotInfo.Config.TranslateEngineType switch
+            {
+                TranslateEngine.YouDao => await YouDaoTranslateHelper.TranslateToChinese(msg),
+                TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateToChinese(msg),
+                TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateToChinese(msg),
+                _ => throw new NotImplementedException("翻译引擎设置有误，请联系机器人管理员"),
+            };
+        }
+
+        public static async Task<string> TranslateTo(string text, string toLanguageChineseName)
+        {
+            toLanguageChineseName = toLanguageChineseName.Replace("语", "文");
+            return BotInfo.Config.TranslateEngineType switch
+            {
+                TranslateEngine.YouDao => await YouDaoTranslateHelper.TranslateTo(text, toLanguageChineseName),
+                TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateTo(text, toLanguageChineseName),
+                TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateTo(text, toLanguageChineseName),
+                _ => throw new NotImplementedException("翻译引擎设置有误，请联系机器人管理员"),
+            };
+        }
+
+        public async static Task<string> TranslateFromTo(string text, string fromLanguageChineseName, string toLanguageChineseName)
+        {
+            fromLanguageChineseName = fromLanguageChineseName.Replace("语", "文");
+            toLanguageChineseName = toLanguageChineseName.Replace("语", "文");
+            return BotInfo.Config.TranslateEngineType switch
+            {
+                TranslateEngine.YouDao => await YouDaoTranslateHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
+                TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
+                TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
+                _ => throw new NotImplementedException("翻译引擎设置有误，请联系机器人管理员"),
+            };
+        }
+
+        public async static Task<string> TranslateToChinese(Regex regexTranslateToChinese, string msg)
         {
             try
             {
                 string text = msg.Substring(regexTranslateToChinese.Matches(msg).First().Value.Length);
-                string translateResult = await YouDaoTranslateHelper.TranslateToChinese(text);  //BotInfo.Config.TranslateEngineType
-                SendMessage(translateResult);
+                return await TranslateToChinese(text);
             }
             catch (Exception ex)
             {
-                SendMessage("翻译失败，" + ex.Message);
+                return "翻译失败，" + ex.Message;
             }
         }
 
-        [Obsolete("谷歌翻译已停用，有道翻译不支持该方式", true)]
-        public static void TranslateTo(Regex regexTranslateTo, string msg, Action<GreenOnionsMessages> SendMessage)
+        public static async Task<string> TranslateTo(Regex regexTranslateTo, string msg)
         {
-            throw new NotImplementedException("谷歌翻译已停用，有道翻译不支持该方式");
-            //Match match = regexTranslateTo.Matches(msg).First();
-            //if (match.Groups.Count > 1)
-            //{
-            //    try
-            //    {
-            //        SendMessage(await GoogleTranslateHelper.TranslateTo(msg.Substring(match.Value.Length), match.Groups[1].Value));
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        SendMessage("翻译失败，" + ex.Message);
-            //    }
-            //}
+            Match match = regexTranslateTo.Matches(msg).First();
+            if (match.Groups.Count > 1)
+            {
+                try
+                {
+                    string text = msg.Substring(match.Value.Length);
+                    if (match.Groups["to"].Success)
+                    {
+                        string toLanguageChineseName = match.Groups["to"].Value;
+                        return await TranslateTo(text, toLanguageChineseName);
+                    }
+                    else
+                    {
+                        string toLanguageChineseName = match.Groups[1].Value;
+                        return await TranslateTo(text, toLanguageChineseName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return "翻译失败，" + ex.Message;
+                }
+            }
+            return "翻译目标语言提取失败，请联系机器人管理员检查命令格式。";
         }
 
-        public async static void TranslateFromTo(Regex regexTranslateFromTo, string msg, Action<GreenOnionsMessages> SendMessage)
+        public async static Task<string> TranslateFromTo(Regex regexTranslateFromTo, string msg)
         {
             Match match = regexTranslateFromTo.Matches(msg).First();
             if (match.Groups.Count > 1)
             {
                 try
                 {
-                    string translateResult = "";
-                    string text = msg.Substring(match.Value.Length);
                     if (match.Groups["from"].Success && match.Groups["to"].Success)
                     {
-                        string from = match.Groups["from"].Value;
-                        string to = match.Groups["to"].Value;
-                        translateResult = await YouDaoTranslateHelper.TranslateFromTo(text, from, to);  //BotInfo.Config.TranslateEngineType
+                        string text = msg.Substring(match.Value.Length);
+                        string fromLanguageChineseName = match.Groups["from"].Value;
+                        string toLanguageChineseName = match.Groups["to"].Value;
+                        return await TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName);
                     }
-                    SendMessage(translateResult);
                 }
                 catch (Exception ex)
                 {
-                    SendMessage("翻译失败，" + ex.Message);
+                    return "翻译失败，" + ex.Message;
                 }
             }
+            return "翻译目标语言提取失败，请联系机器人管理员检查命令格式。";
         }
     }
 }

@@ -623,6 +623,21 @@ namespace GreenOnions.Utility
         public TranslateEngine TranslateEngineType { get; set; } = TranslateEngine.YouDao;
 
         /// <summary>
+        /// 云翻译接口的APP ID
+        /// </summary>
+        public string? TranslateAPPID { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 云翻译接口的密钥
+        /// </summary>
+        public string? TranslateAPPKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 是否显示所有支持的语种
+        /// </summary>
+        public bool TranslateShowAllLanguages { get; }
+
+        /// <summary>
         /// 翻译为中文命令(正则表达式)
         /// </summary>
         public string TranslateToChineseCMD { get; set; } = "<机器人名称>翻[译譯][:：]";
@@ -630,7 +645,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 翻译为指定语言命令(正则表达式)
         /// </summary>
-        public string TranslateToCMD { get; set; } = "<机器人名称>翻[译譯][成为為到至](.+[语語文])[:：]";
+        public string TranslateToCMD { get; set; } = "<机器人名称>翻[译譯][成为為到至](?<to>.+[语語文])[:：]";
 
         /// <summary>
         /// 从指定语言翻译为指定语言命令(正则表达式)
@@ -640,7 +655,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 自动翻译群友QQ
         /// </summary>
-        public HashSet<long> AutoTranslateGroupMemoriesQQ { get; set; } = new HashSet<long>();
+        public HashSet<long> AutoTranslateGroupMembersQQ { get; set; } = new HashSet<long>();
 
         #endregion -- 翻译配置项 --
 

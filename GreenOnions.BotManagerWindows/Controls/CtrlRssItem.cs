@@ -78,8 +78,8 @@ namespace GreenOnions.BotManagerWindows.Controls
                 //        cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
                 //        break;
                 //    case TranslateEngine.YouDao:
-                        cboTranslateFrom.DataSource = Constants.YouDaoLanguages.Keys.ToList();
-                        cboTranslateTo.DataSource = Constants.YouDaoLanguages.Keys.ToList();
+                        cboTranslateFrom.DataSource = Constants.YouDaoWebLanguages.Keys.ToList();
+                        cboTranslateTo.DataSource = Constants.YouDaoWebLanguages.Keys.ToList();
                 //        break;
                 //}
             }
@@ -145,8 +145,8 @@ namespace GreenOnions.BotManagerWindows.Controls
                 //        cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
                 //        break;
                 //    case TranslateEngine.YouDao:
-                        cboTranslateFrom.DataSource = Constants.YouDaoLanguages.Keys.ToList();
-                        cboTranslateTo.DataSource = Constants.YouDaoLanguages.Keys.ToList();
+                        cboTranslateFrom.DataSource = Constants.YouDaoWebLanguages.Keys.ToList();
+                        cboTranslateTo.DataSource = Constants.YouDaoWebLanguages.Keys.ToList();
                 //        break;
                 //}
             }
