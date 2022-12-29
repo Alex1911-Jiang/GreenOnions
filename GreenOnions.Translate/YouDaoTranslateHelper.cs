@@ -97,10 +97,10 @@ namespace GreenOnions.Translate
             }
         }
 
-        private static string ChineseToCode(string chs)
+        private static string ChineseToCode(string languageName)
         {
-            if (Constants.YouDaoWebLanguages.ContainsKey(chs))
-                return Constants.YouDaoWebLanguages[chs];
+            if (Constants.YouDaoWebLanguages.ContainsKey(languageName))
+                return Constants.YouDaoWebLanguages[languageName];
             return "AUTO";
         }
     }

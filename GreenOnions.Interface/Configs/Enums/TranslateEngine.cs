@@ -22,5 +22,9 @@
         /// 百度(Api方式)
         /// </summary>
         BaiduApi = 3,
+        /// <summary>
+        /// 腾讯云(Api方式)
+        /// </summary>
+        TencentApi = 4,
     }
 }

@@ -213,7 +213,7 @@ namespace GreenOnions.RSS
                     groupResultMsg.AddRange(rss.Messages);  //正文
 
                     if (!string.IsNullOrWhiteSpace(translateMsg))
-                        groupResultMsg.Add($"以下为翻译内容：\r\n{translateMsg}");  //翻译
+                        groupResultMsg.Add(translateMsg);  //翻译
 
                     if (thuImgUrl is not null)
                         groupResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(thuImgUrl)));  //B站封面
@@ -250,7 +250,7 @@ namespace GreenOnions.RSS
                     GreenOnionsMessages friendResultMsg = new() { titleMsg };  //标题
 
                     if (!string.IsNullOrWhiteSpace(translateMsg))
-                        friendResultMsg.Add($"以下为翻译内容：\r\n{translateMsg}");  //翻译
+                        friendResultMsg.Add(translateMsg);  //翻译
 
                     if (thuImgUrl is not null)
                         friendResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(thuImgUrl)));    //B站封面

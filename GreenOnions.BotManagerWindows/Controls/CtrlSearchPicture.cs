@@ -1,4 +1,5 @@
-﻿using GreenOnions.Utility;
+﻿using System.Diagnostics;
+using GreenOnions.Utility;
 
 namespace GreenOnions.BotManagerWindows.Controls
 {
@@ -125,9 +126,10 @@ namespace GreenOnions.BotManagerWindows.Controls
                 BotInfo.Cache.SetSauceNAOKey(SauceNAOKey);
         }
 
-        private void chkSearchSauceNAOEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchSauceNAO.Enabled = chkSearchSauceNAOEnabled.Checked;
-        private void chkSearchASCII2DEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchAscii2d.Enabled = chkSearchASCII2DEnabled.Checked;
-        private void chkSearchCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchCheckPorn.Enabled = chkSearchCheckPornEnabled.Checked;
-        private void chkSearchTraceMoeEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchTraceMoe.Enabled = chkSearchTraceMoeEnabled.Checked;
+        private void SearchSauceNAOEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchSauceNAO.Enabled = chkSearchSauceNAOEnabled.Checked;
+        private void SearchASCII2DEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchAscii2d.Enabled = chkSearchASCII2DEnabled.Checked;
+        private void SearchCheckPornEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchCheckPorn.Enabled = chkSearchCheckPornEnabled.Checked;
+        private void SearchTraceMoeEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchTraceMoe.Enabled = chkSearchTraceMoeEnabled.Checked;
+        private void SearchSauceNAORequestKey_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) => Process.Start("explorer.exe", "https://saucenao.com/user.php?page=search-api");
     }
 }

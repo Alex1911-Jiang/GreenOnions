@@ -47,6 +47,7 @@
             this.lblTranslateAPPID = new System.Windows.Forms.Label();
             this.txbTranslateAPPKey = new System.Windows.Forms.TextBox();
             this.lblTranslateAPPKey = new System.Windows.Forms.Label();
+            this.lnkTranslateGotoAPP = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // txbTranslateFromToCMD
@@ -73,11 +74,13 @@
             "谷歌网页翻译(已失效)",
             "有道网页翻译(爬虫)",
             "有道智云API",
-            "百度翻译API"});
+            "百度翻译API",
+            "腾讯云翻译API"});
             this.cboTranslateEngine.Location = new System.Drawing.Point(197, 13);
             this.cboTranslateEngine.Name = "cboTranslateEngine";
             this.cboTranslateEngine.Size = new System.Drawing.Size(425, 25);
             this.cboTranslateEngine.TabIndex = 27;
+            this.cboTranslateEngine.SelectedIndexChanged += new System.EventHandler(this.TranslateEngine_SelectedIndexChanged);
             // 
             // lblTranslateEngine
             // 
@@ -106,7 +109,7 @@
             this.btnRemoveAutoTranslateGroupMemoryQQ.TabIndex = 24;
             this.btnRemoveAutoTranslateGroupMemoryQQ.Text = ">>移除>>";
             this.btnRemoveAutoTranslateGroupMemoryQQ.UseVisualStyleBackColor = true;
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Click += new System.EventHandler(this.btnRemoveAutoTranslateGroupMemoryQQ_Click);
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Click += new System.EventHandler(this.RemoveAutoTranslateGroupMemoryQQ_Click);
             // 
             // btnAddAutoTranslateGroupMemoryQQ
             // 
@@ -117,7 +120,7 @@
             this.btnAddAutoTranslateGroupMemoryQQ.TabIndex = 25;
             this.btnAddAutoTranslateGroupMemoryQQ.Text = "<<添加<<";
             this.btnAddAutoTranslateGroupMemoryQQ.UseVisualStyleBackColor = true;
-            this.btnAddAutoTranslateGroupMemoryQQ.Click += new System.EventHandler(this.btnAddAutoTranslateGroupMemoryQQ_Click);
+            this.btnAddAutoTranslateGroupMemoryQQ.Click += new System.EventHandler(this.AddAutoTranslateGroupMemoryQQ_Click);
             // 
             // lstAutoTranslateGroupMemoriesQQ
             // 
@@ -187,9 +190,9 @@
             this.lblTranslateEngineHelp.AutoSize = true;
             this.lblTranslateEngineHelp.Location = new System.Drawing.Point(197, 41);
             this.lblTranslateEngineHelp.Name = "lblTranslateEngineHelp";
-            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(212, 17);
+            this.lblTranslateEngineHelp.Size = new System.Drawing.Size(312, 17);
             this.lblTranslateEngineHelp.TabIndex = 28;
-            this.lblTranslateEngineHelp.Text = "有道网页翻译（爬虫）只支持中英互译";
+            this.lblTranslateEngineHelp.Text = "有道网页翻译(爬虫)无需APPID和Key，但只支持中英互译";
             // 
             // txbTranslateAPPID
             // 
@@ -223,11 +226,25 @@
             this.lblTranslateAPPKey.TabIndex = 33;
             this.lblTranslateAPPKey.Text = "APPKey:";
             // 
+            // lnkTranslateGotoAPP
+            // 
+            this.lnkTranslateGotoAPP.AutoSize = true;
+            this.lnkTranslateGotoAPP.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.lnkTranslateGotoAPP.Location = new System.Drawing.Point(130, 79);
+            this.lnkTranslateGotoAPP.Name = "lnkTranslateGotoAPP";
+            this.lnkTranslateGotoAPP.Size = new System.Drawing.Size(61, 17);
+            this.lnkTranslateGotoAPP.TabIndex = 35;
+            this.lnkTranslateGotoAPP.TabStop = true;
+            this.lnkTranslateGotoAPP.Text = "申请/获取";
+            this.lnkTranslateGotoAPP.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lnkTranslateGotoAPP.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.TranslateGotoAPP_LinkClicked);
+            // 
             // CtrlTranslate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.lnkTranslateGotoAPP);
             this.Controls.Add(this.txbTranslateAPPKey);
             this.Controls.Add(this.lblTranslateAPPKey);
             this.Controls.Add(this.txbTranslateAPPID);
@@ -276,5 +293,6 @@
         private Label lblTranslateAPPID;
         private TextBox txbTranslateAPPKey;
         private Label lblTranslateAPPKey;
+        private LinkLabel lnkTranslateGotoAPP;
     }
 }

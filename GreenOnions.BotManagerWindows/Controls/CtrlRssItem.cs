@@ -1,4 +1,5 @@
 ﻿using GreenOnions.BotManagerWindows.ItemFroms;
+using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Utility;
 
 namespace GreenOnions.BotManagerWindows.Controls
@@ -67,22 +68,38 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         public Dictionary<string,string>? RssHeders { get; set; }
 
+        private void LoadLanguageList()
+        {
+            switch (BotInfo.Config.TranslateEngineType)
+            {
+                //case TranslateEngine.Google:
+                //    cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();
+                //    cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
+                //    break;
+                case TranslateEngine.YouDao:
+                    cboTranslateFrom.DataSource = Constants.YouDaoWebLanguages.Keys.ToList();
+                    cboTranslateTo.DataSource = Constants.YouDaoWebLanguages.Keys.ToList();
+                    break;
+                case TranslateEngine.YouDaoApi:
+                    cboTranslateFrom.DataSource = Constants.YouDaoLanguages.Keys.ToList();
+                    cboTranslateTo.DataSource = Constants.YouDaoLanguages.Keys.ToList();
+                    break;
+                case TranslateEngine.BaiduApi:
+                    cboTranslateFrom.DataSource = Constants.BaiduLanguages.Keys.ToList();
+                    cboTranslateTo.DataSource = Constants.BaiduLanguages.Keys.ToList();
+                    break;
+                case TranslateEngine.TencentApi:
+                    cboTranslateFrom.DataSource = Constants.TencentLanguages.Keys.ToList();
+                    cboTranslateTo.DataSource = Constants.TencentLanguages.Keys.ToList();
+                    break;
+            }
+        }
+
         private void SetComboBoxIndex(ComboBox ctrl, string? value)
         {
             if (ctrl.DataSource is null)
-            {
-                //switch (BotInfo.Config.TranslateEngineType)
-                //{
-                //    case TranslateEngine.Google:
-                //        cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();
-                //        cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
-                //        break;
-                //    case TranslateEngine.YouDao:
-                        cboTranslateFrom.DataSource = Constants.YouDaoWebLanguages.Keys.ToList();
-                        cboTranslateTo.DataSource = Constants.YouDaoWebLanguages.Keys.ToList();
-                //        break;
-                //}
-            }
+                LoadLanguageList();
+
             if (ctrl.DataSource is List<string> source)
             {
                 for (int i = 0; i < source.Count; i++)
@@ -137,19 +154,7 @@ namespace GreenOnions.BotManagerWindows.Controls
         {
             pnlTranslateFromTo.Enabled = chkTranslateFromTo.Checked;
             if (chkTranslateFromTo.Checked && BotInfo.Config.TranslateEnabled)
-            {
-                //switch (BotInfo.Config.TranslateEngineType)
-                //{
-                //    case TranslateEngine.Google:
-                //        cboTranslateFrom.DataSource = Constants.GoogleLanguages.Keys.ToList();
-                //        cboTranslateTo.DataSource = Constants.GoogleLanguages.Keys.ToList();
-                //        break;
-                //    case TranslateEngine.YouDao:
-                        cboTranslateFrom.DataSource = Constants.YouDaoWebLanguages.Keys.ToList();
-                        cboTranslateTo.DataSource = Constants.YouDaoWebLanguages.Keys.ToList();
-                //        break;
-                //}
-            }
+                LoadLanguageList();
         }
 
         private void btnFilters_Click(object sender, EventArgs e)

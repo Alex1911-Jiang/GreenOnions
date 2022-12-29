@@ -85,11 +85,11 @@ namespace GreenOnions.Translate
             return BitConverter.ToString(hashedBytes).Replace("-", "");
         }
 
-        private static string ChineseToCode(string chs)
+        private static string ChineseToCode(string languageName)
         {
-            if (Constants.YouDaoLanguages.ContainsKey(chs))
-                return Constants.YouDaoLanguages[chs];
-            return chs;
+            if (Constants.YouDaoLanguages.ContainsKey(languageName))
+                return Constants.YouDaoLanguages[languageName];
+            return languageName;
         }
     }
 }

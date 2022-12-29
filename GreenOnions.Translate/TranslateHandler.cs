@@ -9,13 +9,14 @@ namespace GreenOnions.Translate
 {
     public static class TranslateHandler
     {
-        public async static Task<string> TranslateToChinese(string msg)
+        public async static Task<string> TranslateToChinese(string text)
         {
             return BotInfo.Config.TranslateEngineType switch
             {
-                TranslateEngine.YouDao => await YouDaoTranslateHelper.TranslateToChinese(msg),
-                TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateToChinese(msg),
-                TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateToChinese(msg),
+                TranslateEngine.YouDao => await YouDaoTranslateHelper.TranslateToChinese(text),
+                TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateToChinese(text),
+                TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateToChinese(text),
+                TranslateEngine.TencentApi => await TencentTranslateApiHelper.TranslateToChinese(text),
                 _ => throw new NotImplementedException("翻译引擎设置有误，请联系机器人管理员"),
             };
         }
@@ -28,6 +29,7 @@ namespace GreenOnions.Translate
                 TranslateEngine.YouDao => await YouDaoTranslateHelper.TranslateTo(text, toLanguageChineseName),
                 TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateTo(text, toLanguageChineseName),
                 TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateTo(text, toLanguageChineseName),
+                TranslateEngine.TencentApi => await TencentTranslateApiHelper.TranslateTo(text, toLanguageChineseName),
                 _ => throw new NotImplementedException("翻译引擎设置有误，请联系机器人管理员"),
             };
         }
@@ -41,6 +43,7 @@ namespace GreenOnions.Translate
                 TranslateEngine.YouDao => await YouDaoTranslateHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
                 TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
                 TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
+                TranslateEngine.TencentApi => await TencentTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
                 _ => throw new NotImplementedException("翻译引擎设置有误，请联系机器人管理员"),
             };
         }

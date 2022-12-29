@@ -54,11 +54,11 @@ namespace GreenOnions.Translate
             }
         }
 
-        private static string ChineseToCode(string chs)
+        private static string ChineseToCode(string languageName)
         {
-            if (Constants.BaiduLanguages.ContainsKey(chs))
-                return Constants.BaiduLanguages[chs];
-            return chs;
+            if (Constants.BaiduLanguages.ContainsKey(languageName))
+                return Constants.BaiduLanguages[languageName];
+            return languageName;
         }
     }
 }

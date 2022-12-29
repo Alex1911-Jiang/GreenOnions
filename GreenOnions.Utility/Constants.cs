@@ -149,6 +149,7 @@ namespace GreenOnions.Utility
         {
             { "自动识别", "auto" },
             { "中文", "zh-CHS" },
+            { "简体中文", "zh-CHS" },
             { "繁体中文", "zh-CHT" },
             { "英文", "en" },
             { "日文", "ja" },
@@ -266,6 +267,7 @@ namespace GreenOnions.Utility
         {
             { "自动检测", "auto" },
             { "中文", "zh" },
+            { "简体中文", "zh" },
             { "英文", "en" },
             { "粤文", "yue" },
             { "文言文", "wyw" },
@@ -293,6 +295,30 @@ namespace GreenOnions.Utility
             { "匈牙利文", "hu" },
             { "繁体中文", "cht" },
             { "越南文", "vie" },
+        };
+
+        public static Dictionary<string, string> TencentLanguages { get; } = new()
+        {
+            { "自动识别", "auto" },
+            { "中文", "zh" },
+            { "简体中文", "zh" },
+            { "繁体中文", "zh-TW" },
+            { "英文", "en" },
+            { "日文", "ja" },
+            { "韩文", "ko" },
+            { "法文", "fr" },
+            { "西班牙文", "es" },
+            { "意大利文", "it" },
+            { "德文", "de" },
+            { "土耳其文", "tr" },
+            { "俄文", "ru" },
+            { "葡萄牙文", "pt" },
+            { "越南文", "vi" },
+            { "印尼文", "id" },
+            { "泰文", "th" },
+            { "马来西亚文", "ms" },
+            { "阿拉伯文", "ar" },
+            { "印地文", "hi" },
         };
     }
 }
