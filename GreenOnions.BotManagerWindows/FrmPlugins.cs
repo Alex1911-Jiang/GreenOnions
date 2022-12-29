@@ -1,7 +1,7 @@
 ﻿using System.Data;
+using System.Diagnostics;
 using GreenOnions.BotMain;
 using GreenOnions.Utility;
-using GreenOnions.Utility.Helper;
 
 namespace GreenOnions.BotManagerWindows
 {
@@ -46,5 +46,7 @@ namespace GreenOnions.BotManagerWindows
                 }
             }
         }
+
+        private void PluginsRepo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) => Process.Start("explorer.exe", "https://github.com/Alex1911-Jiang/GreenOnions.Plugins");
     }
 }
