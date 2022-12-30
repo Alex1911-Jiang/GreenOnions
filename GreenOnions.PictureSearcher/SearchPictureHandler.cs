@@ -539,7 +539,7 @@ namespace GreenOnions.PictureSearcher
                     else
                     {
                         LogHelper.WriteInfoLog("SauceNAO存在结果");
-                        string imgUrl = imgNode.Attributes["src"].Value.Replace("amp;", "");
+                        string imgUrl = HttpUtility.HtmlDecode(imgNode.Attributes["src"].Value);
                         string title = docSauceNAO.DocumentNode.SelectSingleNode(titleXPath).InnerText;
                         float similarity = Convert.ToSingle(docSauceNAO.DocumentNode.SelectSingleNode(resultSimilarity).InnerText.Replace("%", ""));
                         string strSimilarity = "相似度：" + docSauceNAO.DocumentNode.SelectSingleNode(resultSimilarity).InnerText;
@@ -551,7 +551,7 @@ namespace GreenOnions.PictureSearcher
                             if (node.Name == "br")
                                 continue;
                             else if (node.Name == "strong")
-                                key = node.InnerText.Replace("Creator(s): ", "作者：").Replace("Creator: ", "作者：").Replace("Member: ", "作者：").Replace("Characters: ", "角色：").Replace("Material: ", "所属：").ReplaceHtmlTags();
+                                key = HttpUtility.HtmlDecode(node.InnerText.Replace("Creator(s): ", "作者：").Replace("Creator: ", "作者：").Replace("Member: ", "作者：").Replace("Characters: ", "角色：").Replace("Material: ", "所属："));
                             else if (node.Name == "#text")
                             {
                                 if (!string.IsNullOrEmpty(key))
@@ -715,7 +715,7 @@ namespace GreenOnions.PictureSearcher
                             else
                             {
                                 for (int k = 0; k < SauceNAOItem.ext_urls.Count; k++)
-                                    strUrl += $"地址{k + 1}：{SauceNAOItem.ext_urls[k].ReplaceHtmlTags()}\r\n";
+                                    strUrl += $"地址{k + 1}：{HttpUtility.HtmlDecode(SauceNAOItem.ext_urls[k])}\r\n";
                             }
                             stringBuilder.AppendLine(strUrl);
                         }
@@ -968,29 +968,29 @@ namespace GreenOnions.PictureSearcher
                         }
                         else
                         {
-                            string img = nodeColorImg.Attributes["src"].Value.ReplaceHtmlTags();
+                            string img = HttpUtility.HtmlDecode(nodeColorImg.Attributes["src"].Value);
                             string hash = nodeColorHash.InnerText;
                             string title = nodeColorWorks.InnerText;
-                            string url = nodeColorWorks.Attributes["href"].Value.ReplaceHtmlTags();
+                            string url = HttpUtility.HtmlDecode(nodeColorWorks.Attributes["href"].Value);
                             string creator = nodeColorCreator.InnerText;
-                            string home = nodeColorCreator.Attributes["href"].Value.ReplaceHtmlTags();
+                            string home = HttpUtility.HtmlDecode(nodeColorCreator.Attributes["href"].Value);
                             string source = nodeColorSource.InnerText;
 
                             LogHelper.WriteInfoLog($"成功解析颜色搜索响应文");
                             StringBuilder stringBuilderColor = new StringBuilder();
                             stringBuilderColor.AppendLine("ASCII2D 颜色搜索");
                             stringBuilderColor.AppendLine($"标题:{nodeColorWorks.InnerText}");
-                            stringBuilderColor.AppendLine($"地址:{nodeColorWorks.Attributes["href"].Value.ReplaceHtmlTags()}");
+                            stringBuilderColor.AppendLine($"地址:{HttpUtility.HtmlDecode(nodeColorWorks.Attributes["href"].Value)}");
                             if (nodeColorCreator is not null)
                             {
                                 stringBuilderColor.AppendLine($"作者:{nodeColorCreator.InnerText}");
-                                stringBuilderColor.AppendLine($"主页:{nodeColorCreator.Attributes["href"].Value.ReplaceHtmlTags()}");
+                                stringBuilderColor.AppendLine($"主页:{HttpUtility.HtmlDecode(nodeColorCreator.Attributes["href"].Value)}");
                             }
                             outMessage.Add(stringBuilderColor);  //文字结果
 
                             if (BotInfo.Config.SearchSendThuImage)
                             {
-                                string imgUrl = "https://ascii2d.net" + nodeColorImg.Attributes["src"].Value.ReplaceHtmlTags();
+                                string imgUrl = "https://ascii2d.net" + HttpUtility.HtmlDecode(nodeColorImg.Attributes["src"].Value);
                                 string imgName = Path.Combine(ImageHelper.ImagePath, $"Ascii2D_{nodeColorHash.InnerHtml}.png");
                                 string notHealth = Path.Combine(ImageHelper.ImagePath, $"Ascii2D_{nodeColorHash.InnerHtml}_NotHealth.png");
                                 string healthed = Path.Combine(ImageHelper.ImagePath, $"Ascii2D_{nodeColorHash.InnerHtml}_Healthed.png");
@@ -1050,29 +1050,29 @@ namespace GreenOnions.PictureSearcher
                         }
                         else
                         {
-                            string img = nodeBovwImg.Attributes["src"].Value.ReplaceHtmlTags();
+                            string img = HttpUtility.HtmlDecode(nodeBovwImg.Attributes["src"].Value);
                             string hash = nodeBovwHash.InnerText;
                             string title = nodeBovwWorks.InnerText;
-                            string url = nodeBovwWorks.Attributes["href"].Value.ReplaceHtmlTags();
+                            string url = HttpUtility.HtmlDecode(nodeBovwWorks.Attributes["href"].Value);
                             string creator = nodeBovwCreator.InnerText;
-                            string home = nodeBovwCreator.Attributes["href"].Value.ReplaceHtmlTags();
+                            string home = HttpUtility.HtmlDecode(nodeBovwCreator.Attributes["href"].Value);
                             string source = nodeBovwSource.InnerText;
 
                             LogHelper.WriteInfoLog($"成功解析特征搜索响应文");
                             StringBuilder stringBuilderBovw = new StringBuilder();
                             stringBuilderBovw.AppendLine("ASCII2D 特征搜索");
                             stringBuilderBovw.AppendLine($"标题:{nodeBovwWorks.InnerText}");
-                            stringBuilderBovw.AppendLine($"地址:{nodeBovwWorks.Attributes["href"].Value.ReplaceHtmlTags()}");
+                            stringBuilderBovw.AppendLine($"地址:{HttpUtility.HtmlDecode(nodeBovwWorks.Attributes["href"].Value)}");
                             if (nodeBovwCreator is not null)
                             {
                                 stringBuilderBovw.AppendLine($"作者:{nodeBovwCreator.InnerText}");
-                                stringBuilderBovw.AppendLine($"主页:{nodeBovwCreator.Attributes["href"].Value.ReplaceHtmlTags()}");
+                                stringBuilderBovw.AppendLine($"主页:{HttpUtility.HtmlDecode(nodeBovwCreator.Attributes["href"].Value)}");
                             }
                             outMessage.Add(stringBuilderBovw);  //文字结果
 
                             if (BotInfo.Config.SearchSendThuImage)
                             {
-                                string imgUrl = "https://ascii2d.net" + nodeBovwImg.Attributes["src"].Value.ReplaceHtmlTags();
+                                string imgUrl = "https://ascii2d.net" + HttpUtility.HtmlDecode(nodeBovwImg.Attributes["src"].Value);
                                 string imgName = Path.Combine(ImageHelper.ImagePath, $"Ascii2D_{nodeBovwHash.InnerHtml}.png");
                                 string notHealth = Path.Combine(ImageHelper.ImagePath, $"Ascii2D_{nodeBovwHash.InnerHtml}_NotHealth.png");
                                 string healthed = Path.Combine(ImageHelper.ImagePath, $"Ascii2D_{nodeBovwHash.InnerHtml}_Healthed.png");

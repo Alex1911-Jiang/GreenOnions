@@ -246,22 +246,6 @@ namespace GreenOnions.Utility.Helper
             return result;
         }
 
-        public static string ReplaceHtmlTags(this string htmlText)
-        {
-            return htmlText
-                    .Replace("&nbsp;", " ")
-                    .Replace("&ensp;", " ")
-                    .Replace("&emsp;", "　")
-                    .Replace("&lt;", "<")
-                    .Replace("&gt;", ">")
-                    .Replace("&amp;", "&")
-                    .Replace("&quot;", "\"")
-                    .Replace("&copy;", "©")
-                    .Replace("&reg;", "®")
-                    .Replace("&times;", "×")
-            .Replace("&pide;", "÷");
-        }
-
         public static string ReplaceGreenOnionsStringTags(this string originalString, IDictionary<string, string> customTags = null)
         {
             originalString = originalString.ReplacePropertyChineseNameToValue();

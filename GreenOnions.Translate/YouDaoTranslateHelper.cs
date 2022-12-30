@@ -32,49 +32,21 @@ namespace GreenOnions.Translate
             return await Translate(text, $"{fromCode}2{toCode}");
         }
 
-        private static string RemoveEmoji(string source)
+        private static string UTF32ToUTF8(string utf32Str)
         {
-            char[] chars = source.ToCharArray();
-            for (int i = 0; i < chars.Length; i++)
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < utf32Str.Length; i++)
             {
-                int next = i + 1;
-                char hs = chars[i];
-                if (0xd800 <= hs && hs <= 0xdbff)
-                {
-                    if (chars.Length > 1)
-                    {
-                        char ls = chars[next];
-                        int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
-                        if (0x1d000 <= uc && uc <= 0x1f77f)
-                            chars[next] = ' ';
-                    }
-                }
-                else
-                {
-                    if (0x2100 <= hs && hs <= 0x27ff && hs != 0x263b)
-                        chars[i] = ' ';
-                    if (0x2B05 <= hs && hs <= 0x2b07)
-                        chars[i] = ' ';
-                    if (0x2934 <= hs && hs <= 0x2935)
-                        chars[i] = ' ';
-                    if (0x3297 <= hs && hs <= 0x3299)
-                        chars[i] = ' ';
-                    if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50 || hs == 0x231a)
-                        chars[i] = ' ';
-                    if (source.Length > 1 && i < source.Length - 1)
-                    {
-                        char ls = source[next];
-                        if (ls == 0x20e3)
-                            chars[next] = ' ';
-                    }
-                }
+                byte[] bts = Encoding.UTF32.GetBytes(utf32Str[i].ToString());
+                if (bts[0].ToString() != "253" || bts[1].ToString() != "255")
+                    sb.Append(utf32Str[i]);
             }
-            return new string(chars);
+            return sb.ToString();
         }
 
         private static async Task<string> Translate(string text, string languageType)
         {
-            text = RemoveEmoji(text);
+            text = UTF32ToUTF8(text);
             string url = $"http://fanyi.youdao.com/translate?&doctype=json&type={languageType}&i={text}";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";

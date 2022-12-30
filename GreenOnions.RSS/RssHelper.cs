@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml;
 using GreenOnions.Interface;
 using GreenOnions.Interface.Items;
@@ -287,7 +288,7 @@ namespace GreenOnions.RSS
                 else
                     BotInfo.LastOneSendRssTime.TryAdd(item.Url, rss.PubDate);  //群和好友均推送完毕后记录此地址的最后更新时间
                 BotInfo.LastOneSendRssTime = BotInfo.LastOneSendRssTime;
-                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime);
+                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText("rssCache.json", serRssCache);
 
                 LogInfo($"{item.Url}记录最后更新时间完毕");
@@ -409,11 +410,11 @@ namespace GreenOnions.RSS
             else
             {
                 if (node.Name == "img")
-                    return new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(node.Attributes["src"].Value));
+                    return new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(HttpUtility.HtmlDecode(node.Attributes["src"].Value)));
                 if (node.Name == "video")
-                    return "\r\n视频地址：" + node.Attributes["src"].Value + "\r\n";
+                    return "\r\n视频地址：" + HttpUtility.HtmlDecode(node.Attributes["src"].Value) + "\r\n";
                 if (node.Name == "iframe")
-                    return "\r\n内容地址：" + node.Attributes["src"].Value + "\r\n";
+                    return "\r\n内容地址：" + HttpUtility.HtmlDecode(node.Attributes["src"].Value) + "\r\n";
                 else if (!string.IsNullOrWhiteSpace(node.InnerText))
                     return node.InnerText;
                 else

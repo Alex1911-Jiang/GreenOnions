@@ -47,10 +47,21 @@ namespace GreenOnions.Translate
                 for (int i = 0; i < signBytes.Length; i++)
                     sbSign.Append(signBytes[i].ToString("x2"));
                 string sign = sbSign.ToString();
-                var tranResp = await client.GetAsync($"http://api.fanyi.baidu.com/api/trans/vip/translate?q={text}&from={from}&to={to}&appid={BotInfo.Config.TranslateAPPID}&salt={salt}&sign={sign}");
-                var resultJson = await tranResp.Content.ReadAsStringAsync();
-                JToken jResult = JsonConvert.DeserializeObject<JToken>(resultJson);
-                return jResult["trans_result"][0]["dst"].ToString();
+                using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, "http://api.fanyi.baidu.com/api/trans/vip/translate"))
+                {
+                    MultipartFormDataContent content = new MultipartFormDataContent();
+                    content.Add(new StringContent(text, Encoding.UTF8, "application/x-www-form-urlencoded"), "q");
+                    content.Add(new StringContent(from, Encoding.UTF8, "application/x-www-form-urlencoded"), "from");
+                    content.Add(new StringContent(to, Encoding.UTF8, "application/x-www-form-urlencoded"), "to");
+                    content.Add(new StringContent(BotInfo.Config.TranslateAPPID, Encoding.UTF8, "application/x-www-form-urlencoded"), "appid");
+                    content.Add(new StringContent(salt, Encoding.UTF8, "application/x-www-form-urlencoded"), "salt");
+                    content.Add(new StringContent(sign, Encoding.UTF8, "application/x-www-form-urlencoded"), "sign");
+                    req.Content = content;
+                    var tranResp = await client.SendAsync(req);
+                    var resultJson = await tranResp.Content.ReadAsStringAsync();
+                    JToken jResult = JsonConvert.DeserializeObject<JToken>(resultJson);
+                    return jResult["trans_result"][0]["dst"].ToString();
+                }
             }
         }
 
