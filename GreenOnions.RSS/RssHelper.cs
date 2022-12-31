@@ -284,10 +284,12 @@ namespace GreenOnions.RSS
                 }
 
                 if (BotInfo.LastOneSendRssTime.ContainsKey(item.Url))
-                    BotInfo.LastOneSendRssTime[item.Url] = rss.PubDate;
+                {
+                    if (rss.PubDate > BotInfo.LastOneSendRssTime[item.Url])
+                        BotInfo.LastOneSendRssTime[item.Url] = rss.PubDate;
+                }
                 else
                     BotInfo.LastOneSendRssTime.TryAdd(item.Url, rss.PubDate);  //群和好友均推送完毕后记录此地址的最后更新时间
-                BotInfo.LastOneSendRssTime = BotInfo.LastOneSendRssTime;
                 string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText("rssCache.json", serRssCache);
 
