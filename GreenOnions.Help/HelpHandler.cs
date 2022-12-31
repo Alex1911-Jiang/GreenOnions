@@ -111,28 +111,34 @@ namespace GreenOnions.Help
         {
             if (BotInfo.Config.TranslateEnabled)
             {
-                StringBuilder strTranslate = new StringBuilder($"发送\"{BotInfo.Config.TranslateToChineseCMD}翻译内容\" 以翻译成中文。");
+                StringBuilder strTranslate = new StringBuilder();
+                strTranslate.AppendLine($"发送\"{BotInfo.Config.TranslateToChineseCMD}翻译内容\" 以翻译成中文。");
                 strTranslate.AppendLine($"发送\"{BotInfo.Config.TranslateToCMD}翻译内容\"自动识别当前语言并翻译成指定语言。");
                 strTranslate.AppendLine($"发送\"{BotInfo.Config.TranslateFromToCMD}翻译内容\"从指定语言翻译成指定语言。");
                 if (BotInfo.Config.TranslateEngineType == TranslateEngine.YouDao)
                 {
                     strTranslate.AppendLine($"支持的语言:\r\n{string.Join("\r\n", Constants.YouDaoWebLanguages.Keys)}");
-                    strTranslate.AppendLine("接入的翻译引擎为:有道网页翻译");
+                    strTranslate.AppendLine("接入的翻译引擎为：有道网页翻译");
                 }
                 else if (BotInfo.Config.TranslateEngineType == TranslateEngine.YouDaoApi)
                 {
                     strTranslate.AppendLine($"支持的语言:\r\n{string.Join("\r\n", Constants.YouDaoLanguages.Keys)}");
-                    strTranslate.AppendLine("接入的翻译引擎为:有道智云");
+                    strTranslate.AppendLine("接入的翻译引擎为：有道智云");
                 }
                 else if (BotInfo.Config.TranslateEngineType == TranslateEngine.BaiduApi)
                 {
                     strTranslate.AppendLine($"支持的语言:\r\n{string.Join("\r\n", Constants.BaiduLanguages.Keys)}");
-                    strTranslate.AppendLine("接入的翻译引擎为:百度翻译");
+                    strTranslate.AppendLine("接入的翻译引擎为：百度翻译");
                 }
                 else if (BotInfo.Config.TranslateEngineType == TranslateEngine.TencentApi)
                 {
                     strTranslate.AppendLine($"支持的语言:\r\n{string.Join("\r\n", Constants.TencentLanguages.Keys)}");
-                    strTranslate.AppendLine("接入的翻译引擎为:腾讯云");
+                    strTranslate.AppendLine("接入的翻译引擎为：腾讯云");
+                }
+                else if (BotInfo.Config.TranslateEngineType == TranslateEngine.Google3rdPartyApi)
+                {
+                    strTranslate.AppendLine($"支持的语言:\r\n{string.Join("\r\n", Constants.GoogleLanguages.Keys)}");
+                    strTranslate.AppendLine("接入的翻译引擎为：谷歌网页翻译");
                 }
                 else
                 {

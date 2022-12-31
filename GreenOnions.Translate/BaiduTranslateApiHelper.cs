@@ -60,6 +60,8 @@ namespace GreenOnions.Translate
                     var tranResp = await client.SendAsync(req);
                     var resultJson = await tranResp.Content.ReadAsStringAsync();
                     JToken jResult = JsonConvert.DeserializeObject<JToken>(resultJson);
+                    if (jResult["trans_result"] is null)
+                        throw new Exception($"百度翻译API返回错误，错误代码：{jResult["error_code"]}，错误内容：{jResult["error_msg"]}");
                     return jResult["trans_result"][0]["dst"].ToString();
                 }
             }

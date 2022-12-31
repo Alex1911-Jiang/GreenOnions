@@ -17,6 +17,7 @@ namespace GreenOnions.Translate
                 TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateToChinese(text),
                 TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateToChinese(text),
                 TranslateEngine.TencentApi => await TencentTranslateApiHelper.TranslateToChinese(text),
+                TranslateEngine.Google3rdPartyApi => await Google3rdPartyApiHelper.TranslateToChinese(text),
                 _ => throw new NotImplementedException("翻译引擎设置有误，请联系机器人管理员"),
             };
         }
@@ -30,6 +31,7 @@ namespace GreenOnions.Translate
                 TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateTo(text, toLanguageChineseName),
                 TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateTo(text, toLanguageChineseName),
                 TranslateEngine.TencentApi => await TencentTranslateApiHelper.TranslateTo(text, toLanguageChineseName),
+                TranslateEngine.Google3rdPartyApi => await Google3rdPartyApiHelper.TranslateTo(text, toLanguageChineseName),
                 _ => throw new NotImplementedException("翻译引擎设置有误，请联系机器人管理员"),
             };
         }
@@ -44,6 +46,7 @@ namespace GreenOnions.Translate
                 TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
                 TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
                 TranslateEngine.TencentApi => await TencentTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
+                TranslateEngine.Google3rdPartyApi => await Google3rdPartyApiHelper.TranslateFromTo(text, toLanguageChineseName, toLanguageChineseName),
                 _ => throw new NotImplementedException("翻译引擎设置有误，请联系机器人管理员"),
             };
         }

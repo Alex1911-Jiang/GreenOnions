@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using GreenOnions.Utility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TencentCloud.Apigateway.V20180808.Models;
 
 namespace GreenOnions.Translate
 {
@@ -65,6 +66,8 @@ namespace GreenOnions.Translate
                     HttpResponseMessage resp = await client.SendAsync(request);
                     string resultText = await resp.Content.ReadAsStringAsync();
                     JToken jt = JsonConvert.DeserializeObject<JToken>(resultText);
+                    if (jt["translation"] is null)
+                        throw new Exception($"有道智云API返回错误，错误代码：{jt["errorCode"]}");
                     return jt["translation"].First.ToString();
                 }
             }

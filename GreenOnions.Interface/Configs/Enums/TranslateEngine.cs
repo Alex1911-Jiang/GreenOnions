@@ -26,5 +26,9 @@
         /// 腾讯云(Api方式)
         /// </summary>
         TencentApi = 4,
+        /// <summary>
+        /// 谷歌网页翻译第三方API
+        /// </summary>
+        Google3rdPartyApi = 5,
     }
 }

@@ -21,6 +21,8 @@ namespace GreenOnions.BotManagerWindows.Controls
             txbRefuseForgeAdminReply.Text = BotInfo.Config.RefuseForgeAdminReply;
             chkRefuseForgeBot.Checked = BotInfo.Config.RefuseForgeBot;
             txbRefuseForgeBotReply.Text = BotInfo.Config.RefuseForgeBotReply;
+
+            txbForgeMessageCmd.Text = $"{txbForgeMessageCmdBegin.Text}<@QQ><伪造内容>";
         }
 
         public void SaveConfig()
