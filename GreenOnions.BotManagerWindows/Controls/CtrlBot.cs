@@ -41,6 +41,8 @@ namespace GreenOnions.BotManagerWindows.Controls
 
             chkLeaveGroupAfterBeMushin.Checked = BotInfo.Config.LeaveGroupAfterBeMushin;
 
+            chkMessageTransferEnabled.Checked = BotInfo.Config.MessageTransferEnabled;
+
             chkDebugMode.Checked = BotInfo.Config.DebugMode;
             foreach (var item in BotInfo.Config.DebugGroups)
             {
@@ -102,12 +104,15 @@ namespace GreenOnions.BotManagerWindows.Controls
 
             BotInfo.Config.LeaveGroupAfterBeMushin = chkLeaveGroupAfterBeMushin.Checked;
 
+            BotInfo.Config.MessageTransferEnabled = chkMessageTransferEnabled.Checked;
+
             BotInfo.Config.DebugMode = chkDebugMode.Checked;
             HashSet<long> tempDebugGroups = new HashSet<long>();
             foreach (ListViewItem item in lstDebugGroups.Items)
             {
                 tempDebugGroups.Add(Convert.ToInt64(item.SubItems[0].Text));
             }
+
             BotInfo.Config.DebugGroups = tempDebugGroups;
             BotInfo.Config.OnlyReplyDebugGroup = chkOnlyReplyDebugGroup.Checked;
             BotInfo.Config.DebugReplyAdminOnly = chkDebugReplyAdminOnly.Checked;

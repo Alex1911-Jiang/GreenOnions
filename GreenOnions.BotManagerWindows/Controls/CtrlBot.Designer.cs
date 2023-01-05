@@ -100,6 +100,7 @@
             this.lstBannedGroup = new System.Windows.Forms.ListView();
             this.chkSplitTextAndImageMessage = new System.Windows.Forms.CheckBox();
             this.chkLeaveGroupAfterBeMushin = new System.Windows.Forms.CheckBox();
+            this.chkMessageTransferEnabled = new System.Windows.Forms.CheckBox();
             this.pnlWorkingTime.SuspendLayout();
             this.pnlAutoConnect.SuspendLayout();
             this.pnlDebugMode.SuspendLayout();
@@ -109,7 +110,7 @@
             // lblWorkingTime
             // 
             this.lblWorkingTime.AutoSize = true;
-            this.lblWorkingTime.Location = new System.Drawing.Point(133, 929);
+            this.lblWorkingTime.Location = new System.Drawing.Point(132, 957);
             this.lblWorkingTime.Name = "lblWorkingTime";
             this.lblWorkingTime.Size = new System.Drawing.Size(431, 17);
             this.lblWorkingTime.TabIndex = 91;
@@ -118,7 +119,7 @@
             // chkWorkingTimeEnabled
             // 
             this.chkWorkingTimeEnabled.AutoSize = true;
-            this.chkWorkingTimeEnabled.Location = new System.Drawing.Point(4, 927);
+            this.chkWorkingTimeEnabled.Location = new System.Drawing.Point(3, 955);
             this.chkWorkingTimeEnabled.Name = "chkWorkingTimeEnabled";
             this.chkWorkingTimeEnabled.Size = new System.Drawing.Size(123, 21);
             this.chkWorkingTimeEnabled.TabIndex = 90;
@@ -139,7 +140,7 @@
             this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeToMinute);
             this.pnlWorkingTime.Controls.Add(this.cboWorkingTimeFromMinute);
             this.pnlWorkingTime.Enabled = false;
-            this.pnlWorkingTime.Location = new System.Drawing.Point(1, 954);
+            this.pnlWorkingTime.Location = new System.Drawing.Point(0, 982);
             this.pnlWorkingTime.Name = "pnlWorkingTime";
             this.pnlWorkingTime.Size = new System.Drawing.Size(600, 64);
             this.pnlWorkingTime.TabIndex = 89;
@@ -241,7 +242,7 @@
             "pixiv.re",
             "pixiv.cat",
             "pixiv.nl"});
-            this.cboPixivProxy.Location = new System.Drawing.Point(122, 533);
+            this.cboPixivProxy.Location = new System.Drawing.Point(121, 561);
             this.cboPixivProxy.Name = "cboPixivProxy";
             this.cboPixivProxy.Size = new System.Drawing.Size(282, 25);
             this.cboPixivProxy.TabIndex = 88;
@@ -249,7 +250,7 @@
             // lblPixivProxy
             // 
             this.lblPixivProxy.AutoSize = true;
-            this.lblPixivProxy.Location = new System.Drawing.Point(4, 536);
+            this.lblPixivProxy.Location = new System.Drawing.Point(3, 564);
             this.lblPixivProxy.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPixivProxy.Name = "lblPixivProxy";
             this.lblPixivProxy.Size = new System.Drawing.Size(93, 17);
@@ -264,7 +265,7 @@
             "不替换",
             "替换为 c2cpicdw.qpic.cn/offpic_new",
             "替换为 gchat.qpic.cn/gchatpic_new"});
-            this.cboReplaceImgRoute.Location = new System.Drawing.Point(122, 502);
+            this.cboReplaceImgRoute.Location = new System.Drawing.Point(121, 530);
             this.cboReplaceImgRoute.Name = "cboReplaceImgRoute";
             this.cboReplaceImgRoute.Size = new System.Drawing.Size(282, 25);
             this.cboReplaceImgRoute.TabIndex = 86;
@@ -272,7 +273,7 @@
             // lblReplaceImgRoute
             // 
             this.lblReplaceImgRoute.AutoSize = true;
-            this.lblReplaceImgRoute.Location = new System.Drawing.Point(4, 505);
+            this.lblReplaceImgRoute.Location = new System.Drawing.Point(3, 533);
             this.lblReplaceImgRoute.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblReplaceImgRoute.Name = "lblReplaceImgRoute";
             this.lblReplaceImgRoute.Size = new System.Drawing.Size(116, 17);
@@ -282,7 +283,7 @@
             // chkDownloadImage4Caching
             // 
             this.chkDownloadImage4Caching.AutoSize = true;
-            this.chkDownloadImage4Caching.Location = new System.Drawing.Point(4, 587);
+            this.chkDownloadImage4Caching.Location = new System.Drawing.Point(3, 615);
             this.chkDownloadImage4Caching.Name = "chkDownloadImage4Caching";
             this.chkDownloadImage4Caching.Size = new System.Drawing.Size(183, 21);
             this.chkDownloadImage4Caching.TabIndex = 84;
@@ -292,7 +293,7 @@
             // chkSendImageByFile
             // 
             this.chkSendImageByFile.AutoSize = true;
-            this.chkSendImageByFile.Location = new System.Drawing.Point(4, 614);
+            this.chkSendImageByFile.Location = new System.Drawing.Point(3, 642);
             this.chkSendImageByFile.Name = "chkSendImageByFile";
             this.chkSendImageByFile.Size = new System.Drawing.Size(532, 21);
             this.chkSendImageByFile.TabIndex = 83;
@@ -306,7 +307,7 @@
             this.pnlAutoConnect.Controls.Add(this.lblAutoConnectDelay);
             this.pnlAutoConnect.Controls.Add(this.lblAutoConnectProtocol);
             this.pnlAutoConnect.Enabled = false;
-            this.pnlAutoConnect.Location = new System.Drawing.Point(1, 859);
+            this.pnlAutoConnect.Location = new System.Drawing.Point(0, 887);
             this.pnlAutoConnect.Name = "pnlAutoConnect";
             this.pnlAutoConnect.Size = new System.Drawing.Size(600, 62);
             this.pnlAutoConnect.TabIndex = 82;
@@ -351,7 +352,7 @@
             // chkAutoConnectEnabled
             // 
             this.chkAutoConnectEnabled.AutoSize = true;
-            this.chkAutoConnectEnabled.Location = new System.Drawing.Point(4, 832);
+            this.chkAutoConnectEnabled.Location = new System.Drawing.Point(3, 860);
             this.chkAutoConnectEnabled.Name = "chkAutoConnectEnabled";
             this.chkAutoConnectEnabled.Size = new System.Drawing.Size(147, 21);
             this.chkAutoConnectEnabled.TabIndex = 81;
@@ -367,7 +368,7 @@
             "消息",
             "警告",
             "错误"});
-            this.cboLogLevel.Location = new System.Drawing.Point(117, 1024);
+            this.cboLogLevel.Location = new System.Drawing.Point(116, 1052);
             this.cboLogLevel.Name = "cboLogLevel";
             this.cboLogLevel.Size = new System.Drawing.Size(190, 25);
             this.cboLogLevel.TabIndex = 80;
@@ -375,7 +376,7 @@
             // lblLogLevel
             // 
             this.lblLogLevel.AutoSize = true;
-            this.lblLogLevel.Location = new System.Drawing.Point(4, 1027);
+            this.lblLogLevel.Location = new System.Drawing.Point(3, 1055);
             this.lblLogLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLogLevel.Name = "lblLogLevel";
             this.lblLogLevel.Size = new System.Drawing.Size(68, 17);
@@ -385,7 +386,7 @@
             // chkHttpRequestByWebBrowser
             // 
             this.chkHttpRequestByWebBrowser.AutoSize = true;
-            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(4, 475);
+            this.chkHttpRequestByWebBrowser.Location = new System.Drawing.Point(3, 503);
             this.chkHttpRequestByWebBrowser.Name = "chkHttpRequestByWebBrowser";
             this.chkHttpRequestByWebBrowser.Size = new System.Drawing.Size(269, 21);
             this.chkHttpRequestByWebBrowser.TabIndex = 78;
@@ -395,7 +396,7 @@
             // chkCheckPornEnabled
             // 
             this.chkCheckPornEnabled.AutoSize = true;
-            this.chkCheckPornEnabled.Location = new System.Drawing.Point(4, 642);
+            this.chkCheckPornEnabled.Location = new System.Drawing.Point(3, 670);
             this.chkCheckPornEnabled.Name = "chkCheckPornEnabled";
             this.chkCheckPornEnabled.Size = new System.Drawing.Size(111, 21);
             this.chkCheckPornEnabled.TabIndex = 76;
@@ -414,7 +415,7 @@
             this.pnlDebugMode.Controls.Add(this.btnRemoveDebugGroup);
             this.pnlDebugMode.Controls.Add(this.txbAddDebugGroup);
             this.pnlDebugMode.Enabled = false;
-            this.pnlDebugMode.Location = new System.Drawing.Point(1, 1088);
+            this.pnlDebugMode.Location = new System.Drawing.Point(0, 1116);
             this.pnlDebugMode.Name = "pnlDebugMode";
             this.pnlDebugMode.Size = new System.Drawing.Size(600, 153);
             this.pnlDebugMode.TabIndex = 75;
@@ -433,7 +434,7 @@
             // 
             this.lstDebugGroups.FullRowSelect = true;
             this.lstDebugGroups.Location = new System.Drawing.Point(116, 9);
-            this.lstDebugGroups.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstDebugGroups.Margin = new System.Windows.Forms.Padding(4);
             this.lstDebugGroups.Name = "lstDebugGroups";
             this.lstDebugGroups.Size = new System.Drawing.Size(190, 85);
             this.lstDebugGroups.TabIndex = 3;
@@ -472,7 +473,7 @@
             // btnAddDebugGroup
             // 
             this.btnAddDebugGroup.Location = new System.Drawing.Point(314, 30);
-            this.btnAddDebugGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddDebugGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddDebugGroup.Name = "btnAddDebugGroup";
             this.btnAddDebugGroup.Size = new System.Drawing.Size(88, 23);
             this.btnAddDebugGroup.TabIndex = 4;
@@ -483,7 +484,7 @@
             // btnRemoveDebugGroup
             // 
             this.btnRemoveDebugGroup.Location = new System.Drawing.Point(314, 61);
-            this.btnRemoveDebugGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRemoveDebugGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveDebugGroup.Name = "btnRemoveDebugGroup";
             this.btnRemoveDebugGroup.Size = new System.Drawing.Size(88, 23);
             this.btnRemoveDebugGroup.TabIndex = 4;
@@ -494,7 +495,7 @@
             // txbAddDebugGroup
             // 
             this.txbAddDebugGroup.Location = new System.Drawing.Point(410, 30);
-            this.txbAddDebugGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txbAddDebugGroup.Margin = new System.Windows.Forms.Padding(4);
             this.txbAddDebugGroup.Name = "txbAddDebugGroup";
             this.txbAddDebugGroup.ShortcutsEnabled = false;
             this.txbAddDebugGroup.Size = new System.Drawing.Size(186, 23);
@@ -505,7 +506,7 @@
             // txbBanUser
             // 
             this.txbBanUser.Location = new System.Drawing.Point(412, 330);
-            this.txbBanUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txbBanUser.Margin = new System.Windows.Forms.Padding(4);
             this.txbBanUser.Name = "txbBanUser";
             this.txbBanUser.ShortcutsEnabled = false;
             this.txbBanUser.Size = new System.Drawing.Size(186, 23);
@@ -526,7 +527,7 @@
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudAPPID);
             this.pnlCheckPorn.Controls.Add(this.txbTencentCloudSecretKey);
             this.pnlCheckPorn.Enabled = false;
-            this.pnlCheckPorn.Location = new System.Drawing.Point(1, 669);
+            this.pnlCheckPorn.Location = new System.Drawing.Point(0, 697);
             this.pnlCheckPorn.Name = "pnlCheckPorn";
             this.pnlCheckPorn.Size = new System.Drawing.Size(600, 160);
             this.pnlCheckPorn.TabIndex = 77;
@@ -614,7 +615,7 @@
             // txbBanGroup
             // 
             this.txbBanGroup.Location = new System.Drawing.Point(412, 184);
-            this.txbBanGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txbBanGroup.Margin = new System.Windows.Forms.Padding(4);
             this.txbBanGroup.Name = "txbBanGroup";
             this.txbBanGroup.ShortcutsEnabled = false;
             this.txbBanGroup.Size = new System.Drawing.Size(186, 23);
@@ -625,7 +626,7 @@
             // chkDebugMode
             // 
             this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(3, 1059);
+            this.chkDebugMode.Location = new System.Drawing.Point(2, 1087);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(75, 21);
             this.chkDebugMode.TabIndex = 74;
@@ -636,7 +637,7 @@
             // txbAddAdmin
             // 
             this.txbAddAdmin.Location = new System.Drawing.Point(412, 56);
-            this.txbAddAdmin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txbAddAdmin.Margin = new System.Windows.Forms.Padding(4);
             this.txbAddAdmin.Name = "txbAddAdmin";
             this.txbAddAdmin.ShortcutsEnabled = false;
             this.txbAddAdmin.Size = new System.Drawing.Size(186, 23);
@@ -657,7 +658,7 @@
             // btnRemoveBanUser
             // 
             this.btnRemoveBanUser.Location = new System.Drawing.Point(316, 371);
-            this.btnRemoveBanUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRemoveBanUser.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveBanUser.Name = "btnRemoveBanUser";
             this.btnRemoveBanUser.Size = new System.Drawing.Size(88, 23);
             this.btnRemoveBanUser.TabIndex = 73;
@@ -668,7 +669,7 @@
             // btnRemoveBanGroup
             // 
             this.btnRemoveBanGroup.Location = new System.Drawing.Point(316, 225);
-            this.btnRemoveBanGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRemoveBanGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveBanGroup.Name = "btnRemoveBanGroup";
             this.btnRemoveBanGroup.Size = new System.Drawing.Size(88, 23);
             this.btnRemoveBanGroup.TabIndex = 72;
@@ -679,7 +680,7 @@
             // txbBotName
             // 
             this.txbBotName.Location = new System.Drawing.Point(122, 3);
-            this.txbBotName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txbBotName.Margin = new System.Windows.Forms.Padding(4);
             this.txbBotName.Name = "txbBotName";
             this.txbBotName.Size = new System.Drawing.Size(476, 23);
             this.txbBotName.TabIndex = 55;
@@ -687,7 +688,7 @@
             // btnRemoveAdmin
             // 
             this.btnRemoveAdmin.Location = new System.Drawing.Point(316, 87);
-            this.btnRemoveAdmin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRemoveAdmin.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveAdmin.Name = "btnRemoveAdmin";
             this.btnRemoveAdmin.Size = new System.Drawing.Size(88, 23);
             this.btnRemoveAdmin.TabIndex = 68;
@@ -708,7 +709,7 @@
             // btnAddBanUser
             // 
             this.btnAddBanUser.Location = new System.Drawing.Point(316, 330);
-            this.btnAddBanUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddBanUser.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddBanUser.Name = "btnAddBanUser";
             this.btnAddBanUser.Size = new System.Drawing.Size(88, 23);
             this.btnAddBanUser.TabIndex = 71;
@@ -729,7 +730,7 @@
             // btnAddBanGroup
             // 
             this.btnAddBanGroup.Location = new System.Drawing.Point(316, 184);
-            this.btnAddBanGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddBanGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddBanGroup.Name = "btnAddBanGroup";
             this.btnAddBanGroup.Size = new System.Drawing.Size(88, 23);
             this.btnAddBanGroup.TabIndex = 70;
@@ -750,7 +751,7 @@
             // btnAddAdmin
             // 
             this.btnAddAdmin.Location = new System.Drawing.Point(316, 56);
-            this.btnAddAdmin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddAdmin.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddAdmin.Name = "btnAddAdmin";
             this.btnAddAdmin.Size = new System.Drawing.Size(88, 23);
             this.btnAddAdmin.TabIndex = 69;
@@ -762,7 +763,7 @@
             // 
             this.lstAdmins.FullRowSelect = true;
             this.lstAdmins.Location = new System.Drawing.Point(122, 34);
-            this.lstAdmins.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstAdmins.Margin = new System.Windows.Forms.Padding(4);
             this.lstAdmins.Name = "lstAdmins";
             this.lstAdmins.Size = new System.Drawing.Size(186, 85);
             this.lstAdmins.TabIndex = 66;
@@ -773,7 +774,7 @@
             // 
             this.lstBannedUser.FullRowSelect = true;
             this.lstBannedUser.Location = new System.Drawing.Point(122, 308);
-            this.lstBannedUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstBannedUser.Margin = new System.Windows.Forms.Padding(4);
             this.lstBannedUser.Name = "lstBannedUser";
             this.lstBannedUser.Size = new System.Drawing.Size(186, 136);
             this.lstBannedUser.TabIndex = 65;
@@ -814,7 +815,7 @@
             // 
             this.lstBannedGroup.FullRowSelect = true;
             this.lstBannedGroup.Location = new System.Drawing.Point(122, 162);
-            this.lstBannedGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstBannedGroup.Margin = new System.Windows.Forms.Padding(4);
             this.lstBannedGroup.Name = "lstBannedGroup";
             this.lstBannedGroup.Size = new System.Drawing.Size(186, 136);
             this.lstBannedGroup.TabIndex = 67;
@@ -824,7 +825,7 @@
             // chkSplitTextAndImageMessage
             // 
             this.chkSplitTextAndImageMessage.AutoSize = true;
-            this.chkSplitTextAndImageMessage.Location = new System.Drawing.Point(4, 562);
+            this.chkSplitTextAndImageMessage.Location = new System.Drawing.Point(3, 590);
             this.chkSplitTextAndImageMessage.Name = "chkSplitTextAndImageMessage";
             this.chkSplitTextAndImageMessage.Size = new System.Drawing.Size(363, 21);
             this.chkSplitTextAndImageMessage.TabIndex = 84;
@@ -834,12 +835,22 @@
             // chkLeaveGroupAfterBeMushin
             // 
             this.chkLeaveGroupAfterBeMushin.AutoSize = true;
-            this.chkLeaveGroupAfterBeMushin.Location = new System.Drawing.Point(4, 450);
+            this.chkLeaveGroupAfterBeMushin.Location = new System.Drawing.Point(3, 478);
             this.chkLeaveGroupAfterBeMushin.Name = "chkLeaveGroupAfterBeMushin";
             this.chkLeaveGroupAfterBeMushin.Size = new System.Drawing.Size(135, 21);
             this.chkLeaveGroupAfterBeMushin.TabIndex = 92;
             this.chkLeaveGroupAfterBeMushin.Text = "自动退出被禁言的群";
             this.chkLeaveGroupAfterBeMushin.UseVisualStyleBackColor = true;
+            // 
+            // chkMessageTransferEnabled
+            // 
+            this.chkMessageTransferEnabled.AutoSize = true;
+            this.chkMessageTransferEnabled.Location = new System.Drawing.Point(3, 451);
+            this.chkMessageTransferEnabled.Name = "chkMessageTransferEnabled";
+            this.chkMessageTransferEnabled.Size = new System.Drawing.Size(435, 21);
+            this.chkMessageTransferEnabled.TabIndex = 93;
+            this.chkMessageTransferEnabled.Text = "启用消息中转功能（如果私聊消息没有命中命令，则会转发给机器人管理员）";
+            this.chkMessageTransferEnabled.UseVisualStyleBackColor = true;
             // 
             // CtrlBot
             // 
@@ -847,6 +858,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.chkMessageTransferEnabled);
             this.Controls.Add(this.chkLeaveGroupAfterBeMushin);
             this.Controls.Add(this.lblWorkingTime);
             this.Controls.Add(this.chkWorkingTimeEnabled);
@@ -887,9 +899,9 @@
             this.Controls.Add(this.lblBanUser);
             this.Controls.Add(this.lblBanGroup);
             this.Controls.Add(this.lstBannedGroup);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "CtrlBot";
-            this.Size = new System.Drawing.Size(563, 588);
+            this.Size = new System.Drawing.Size(609, 805);
             this.pnlWorkingTime.ResumeLayout(false);
             this.pnlWorkingTime.PerformLayout();
             this.pnlAutoConnect.ResumeLayout(false);
@@ -977,5 +989,6 @@
         private ListView lstBannedGroup;
         private CheckBox chkSplitTextAndImageMessage;
         private CheckBox chkLeaveGroupAfterBeMushin;
+        private CheckBox chkMessageTransferEnabled;
     }
 }

@@ -22,7 +22,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             LogHelper.WriteInfoLog($"收到来自{e.Sender.Id}的私聊消息");
 
             int quoteId = (e.Chain[0] as SourceMessage)!.Id;
-            bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToOnionsMessages(e.Sender.Id, e.Sender.Name), null, async outMsg =>
+            bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToGreenOnionsMessages(e.Sender.Id, e.Sender.Name), null, async outMsg =>
              {
                 if (outMsg is not null && outMsg.Count > 0)
                 {

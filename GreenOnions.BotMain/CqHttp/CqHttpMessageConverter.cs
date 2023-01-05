@@ -10,14 +10,14 @@ namespace GreenOnions.BotMain.CqHttp
 {
     public static class CqHttpMessageConverter
     {
-        public static async Task<GreenOnionsMessages> ToOnionsMessages(this MessageBody miraiMessage, long senderId, string senderName, long? senderGroup, SoraApi? api)
+        public static async Task<GreenOnionsMessages> ToGreenOnionsMessages(this MessageContext miraiMessage, long senderId, string senderName, long? senderGroup, SoraApi? api)
         {
             GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
-            for (int i = 0; i < miraiMessage.Count; i++)
+            for (int i = 0; i < miraiMessage.MessageBody.Count; i++)
             {
                 try
                 {
-                    if (miraiMessage[i].Data is AtSegment atMsg && senderGroup != null)
+                    if (miraiMessage.MessageBody[i].Data is AtSegment atMsg && senderGroup != null)
                     {
                         //获取@群名片
                         if (long.TryParse(atMsg.Target, out long atId))
@@ -39,11 +39,11 @@ namespace GreenOnions.BotMain.CqHttp
                             greenOnionsMessages.Add(new GreenOnionsAtMessage(atId, atMsg.Name));
                         }
                     }
-                    else if (miraiMessage[i].Data is TextSegment textMsg)
+                    else if (miraiMessage.MessageBody[i].Data is TextSegment textMsg)
                         greenOnionsMessages.Add(textMsg.Content);
-                    else if (miraiMessage[i].Data is ImageSegment imageMsg)
+                    else if (miraiMessage.MessageBody[i].Data is ImageSegment imageMsg)
                         greenOnionsMessages.Add(new GreenOnionsImageMessage(ImageHelper.ReplaceGroupUrl(imageMsg.Url)));
-                    else if (miraiMessage[i].Data is FaceSegment faceMsg)
+                    else if (miraiMessage.MessageBody[i].Data is FaceSegment faceMsg)
                         greenOnionsMessages.Add(new GreenOnionsFaceMessage(faceMsg.Id, faceMsg.ToString()));
                 }
                 catch (Exception ex)
@@ -55,6 +55,7 @@ namespace GreenOnions.BotMain.CqHttp
                 }
             }
 
+            greenOnionsMessages.Id = miraiMessage.MessageId;
             greenOnionsMessages.SenderId = senderId;
             greenOnionsMessages.SenderName = senderName;
             return greenOnionsMessages;
@@ -79,7 +80,7 @@ namespace GreenOnions.BotMain.CqHttp
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsImageMessage imgMsg)
                     {
-                        string data = string.IsNullOrEmpty(imgMsg.Url) ? ("base64://" + imgMsg.Base64Str) : imgMsg.Url;
+                        string data = string.IsNullOrEmpty(imgMsg.Url) ? ("base64://" + imgMsg.Base64Str) : imgMsg.Url.Replace("//","/").Replace("http:/", "http://").Replace("https:/", "https://");
                         cqHttpMessages.Add(SoraSegment.Image(data));
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsAtMessage atMsg)

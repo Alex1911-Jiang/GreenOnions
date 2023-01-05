@@ -5,13 +5,12 @@ using GreenOnions.Help;
 using GreenOnions.HPicture;
 using GreenOnions.Interface;
 using GreenOnions.Interface.Configs.Enums;
-using GreenOnions.Interface.Helpers;
+using GreenOnions.MessageTransfer;
 using GreenOnions.PictureSearcher;
 using GreenOnions.Repeater;
 using GreenOnions.Translate;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
-using static System.Net.Mime.MediaTypeNames;
 
 
 namespace GreenOnions.BotMain
@@ -30,8 +29,11 @@ namespace GreenOnions.BotMain
         private static Regex regexDownloadPixivOriginalPicture;
         private static Regex regexHelp;
 
+        private static Transfer _transfer;
+
         static MessageHandler()
         {
+            _transfer = new Transfer();
             regexHelp = new Regex($"{BotInfo.Config.BotName}帮助");
             UpdateRegexs();
         }
@@ -329,16 +331,29 @@ namespace GreenOnions.BotMain
                 LogHelper.WriteInfoLog($"{inMsg.SenderId}消息没有命中任何逻辑命令");
             }
 
+            //插件
             if (PluginManager.Message(inMsg, senderGroup, SendMessage))
                 return true;
 
             if (BotInfo.Config.PmAutoSearch && senderGroup is null && BotInfo.Config.SearchEnabled)  //私聊自动搜图
             {
+                bool containImg = false;
                 for (int i = 0; i < inMsg.Count; i++)
                 {
                     if (inMsg[i] is GreenOnionsImageMessage imgMsg)
+                    {
+                        containImg = true;
                         SearchPictureHandler.SearchPicture(imgMsg, SendMessage, SearchMode.Picture | SearchMode.Anime | SearchMode.ThreeD);
+                    }
                 }
+                if (containImg)
+                    return true;
+            }
+
+            //消息中转
+            if (senderGroup == null)
+            {
+                _transfer.PrivateMessage(inMsg);
             }
 
             #region -- 复读 --

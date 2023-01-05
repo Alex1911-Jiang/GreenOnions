@@ -43,11 +43,18 @@
             if (messages != null)
                 AddRange(messages);
         }
-
+        /// <summary>
+        /// [接收消息时]QQ消息的ID
+        /// </summary>
+        public int Id { get; set; }
         /// <summary>
         /// [发送消息时]是否以回复的方式发送消息
         /// </summary>
         public bool Reply { get; set; } = true;
+        /// <summary>
+        /// [发送消息时]指定回复引用的消息ID，null则会自动处理
+        /// </summary>
+        public long? ReplyId { get; set; } = null;
         /// <summary>
         /// [发送消息时]撤回时间, 单位:秒, 为0时不撤回, 超过120会撤回失败
         /// </summary>

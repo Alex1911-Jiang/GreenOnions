@@ -8,7 +8,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 {
     public static class MiraiApiHttpMessageConverter
     {
-        public static GreenOnionsMessages ToOnionsMessages(this IChatMessage[] miraiMessage, long senderId, string senderName)
+        public static GreenOnionsMessages ToGreenOnionsMessages(this IChatMessage[] miraiMessage, long senderId, string senderName)
         {
             GreenOnionsMessages greenOnionsMessages = new GreenOnionsMessages();
             for (int i = 0; i < miraiMessage.Length; i++)
@@ -30,6 +30,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 }
             }
 
+            greenOnionsMessages.Id = (miraiMessage[0] as Mirai.CSharp.HttpApi.Models.ChatMessages.SourceMessage)!.Id;
             greenOnionsMessages.SenderId = senderId;
             greenOnionsMessages.SenderName = senderName;
             return greenOnionsMessages;

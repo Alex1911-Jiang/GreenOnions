@@ -75,13 +75,33 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 BotInfo.IsLogin = true;
 
                 GreenOnionsApi greenOnionsApi = new GreenOnionsApi(
-                    async (targetId, msg) => await session.SendFriendMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend)),
-                    async (targetId, msg) => await session.SendGroupMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Group)),
-                    async (targetId, targetGroup, msg) => await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp)),
+                    async (targetId, msg) => 
+                    {
+                        int sendedFriendMessageId = await session.SendFriendMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend));
+                        if (msg.RevokeTime > 0)
+                            _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(sendedFriendMessageId, targetId));
+                        return sendedFriendMessageId;
+                    },
+                    async (targetId, msg) =>
+                    {
+                        int sendedGroupMessageId = await session.SendGroupMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Group));
+                        if (msg.RevokeTime > 0)
+                            _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(sendedGroupMessageId, targetId));
+                        return sendedGroupMessageId;
+                    },
+                    async (targetId, targetGroup, msg) => 
+                    {
+                        int sendedTempMessageId = await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp));
+                        if (msg.RevokeTime > 0)
+                            _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(sendedTempMessageId, targetId));
+                        return sendedTempMessageId;
+                    },
                     async () => (await session.GetFriendListAsync()).Select(f => new GreenOnionsFriendInfo(f.Id, f.Name, f.Remark)).ToList(),
                     async () => (await session.GetGroupListAsync()).Select(g => new GreenOnionsGroupInfo(g.Id, g.Name)).ToList(),
                     async (groupId) => (await session.GetGroupMemberListAsync(groupId)).Select(m => m.ToGreenOnionsMemberInfo()).ToList(),
                     async (groupId, memberId) => (await session.GetGroupMemberInfoAsync(groupId, memberId)).ToGreenOnionsMemberInfo());
+
+                BotInfo.API = greenOnionsApi;
 
                 try
                 {

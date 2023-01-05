@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GreenOnions.Interface;
 using GreenOnions.Interface.Configs;
 using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Interface.Items;
@@ -44,6 +43,11 @@ namespace GreenOnions.Utility
         /// 是否自动退出被禁言的群
         /// </summary>
         public bool LeaveGroupAfterBeMushin { get; set; } = false;
+
+        /// <summary>
+        /// 是否启用消息中转功能
+        /// </summary>
+        public bool MessageTransferEnabled { get; set; } = true;
 
         /// <summary>
         /// 是否启用调试模式
@@ -631,11 +635,6 @@ namespace GreenOnions.Utility
         /// 云翻译接口的密钥
         /// </summary>
         public string? TranslateAPPKey { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 是否显示所有支持的语种
-        /// </summary>
-        public bool TranslateShowAllLanguages { get; }
 
         /// <summary>
         /// 翻译为中文命令(正则表达式)

@@ -24,7 +24,7 @@ namespace GreenOnions.BotMain.CqHttp
 
             LogHelper.WriteInfoLog($"收到来自{eventArgs.Sender.Id}的群消息");
             int quoteId = eventArgs.Message.MessageId;
-            bool isHandle = await MessageHandler.HandleMesage(await eventArgs.Message.MessageBody.ToOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick, eventArgs.SourceGroup, eventArgs.SoraApi), eventArgs.SourceGroup.Id, outMsg =>
+            bool isHandle = await MessageHandler.HandleMesage(await eventArgs.Message.ToGreenOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick, eventArgs.SourceGroup, eventArgs.SoraApi), eventArgs.SourceGroup.Id, outMsg =>
             {
                 if (outMsg is not null && outMsg.Count > 0)
                 {
@@ -32,7 +32,7 @@ namespace GreenOnions.BotMain.CqHttp
                     if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
                         result = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.SourceGroup.Id, outMsg.ToCqHttpForwardMessage());
                     else
-                        result = eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, outMsg.ToCqHttpMessages(quoteId));
+                        result = eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, outMsg.ToCqHttpMessages(outMsg.Reply ? quoteId : null));
                     if (outMsg.RevokeTime > 0)
                     {
                         _ = result.AsTask().ContinueWith(async t =>
@@ -60,7 +60,7 @@ namespace GreenOnions.BotMain.CqHttp
             LogHelper.WriteInfoLog($"收到来自{eventArgs.Sender.Id}的私聊消息");
 
             int quoteId = eventArgs.Message.MessageId;
-            bool isHandle = await MessageHandler.HandleMesage(await eventArgs.Message.MessageBody.ToOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick, null, eventArgs.SoraApi), null, outMsg =>
+            bool isHandle = await MessageHandler.HandleMesage(await eventArgs.Message.ToGreenOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick, null, eventArgs.SoraApi), null, outMsg =>
             {
                 if (outMsg is not null && outMsg.Count > 0)
                 {
@@ -70,7 +70,7 @@ namespace GreenOnions.BotMain.CqHttp
                     }
                     else
                     {
-                        ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendPrivateMessage(eventArgs.Sender.Id, outMsg.ToCqHttpMessages(quoteId));
+                        ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendPrivateMessage(eventArgs.Sender.Id, outMsg.ToCqHttpMessages(outMsg.Reply ? quoteId : null));
                         if (outMsg.RevokeTime > 0)
                         {
                             _ = result.AsTask().ContinueWith(async t =>

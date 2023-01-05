@@ -70,6 +70,12 @@ namespace GreenOnions.Interface.Configs
         public bool LeaveGroupAfterBeMushin { get; }
 
         /// <summary>
+        /// 是否启用消息中转功能
+        /// </summary>
+        [PropertyChineseName("启用消息中转", "核心", "收到私聊消息且没命中任何命令时转发给机器人管理员")]
+        public bool MessageTransferEnabled { get; }
+
+        /// <summary>
         /// 是否启用调试模式
         /// </summary>
         [PropertyChineseName("调试模式", "核心")]
@@ -555,12 +561,6 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         [PropertyChineseName("翻译接口密钥", "翻译")]
         public string? TranslateAPPKey { get; }
-
-        /// <summary>
-        /// 是否显示所有支持的语种
-        /// </summary>
-        [PropertyChineseName("显示所有语种", "翻译","是否显示当前翻译引擎支持的所有语种，否为只显示常用语种")]
-        public bool TranslateShowAllLanguages { get; }
 
         /// <summary>
         /// 翻译为中文命令(正则表达式)

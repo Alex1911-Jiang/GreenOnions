@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using GreenOnions.Interface;
 using GreenOnions.Interface.Items;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -20,6 +21,9 @@ namespace GreenOnions.Utility
         /// </summary>
         public static BotConfig Config { get; private set; }
 
+        /// <summary>
+        /// 运行中的缓存
+        /// </summary>
         public static BotCache Cache { get; } = new BotCache();
 
         /// <summary>
@@ -36,6 +40,11 @@ namespace GreenOnions.Utility
         /// 是否登录
         /// </summary>
         public static bool IsLogin { get; set; } = false;
+
+        /// <summary>
+        /// 葱葱API接口
+        /// </summary>
+        public static IGreenOnionsApi API { get; set; }
 
 
         static BotInfo()
@@ -133,6 +142,25 @@ namespace GreenOnions.Utility
             }
         }
 
+        public static void Init()  //空方法，目的是为了触发构造函数
+        { 
+        
+        }
+
+        public static void LoadConfig()
+        {
+            if (File.Exists("config.json"))
+            {
+                string strConfig = File.ReadAllText("config.json");
+
+                Config = JsonConvert.DeserializeObject<BotConfig>(strConfig);
+                if (Config.QQId == 0)
+                {
+                    Config = UpdateOldConfig(strConfig);
+                }
+            }
+        }
+
         private static BotConfig UpdateOldConfig(string strConfig)
         {
             JToken jt = JsonConvert.DeserializeObject<JToken>(strConfig);
@@ -216,12 +244,6 @@ namespace GreenOnions.Utility
                 return type.GetGenericArguments().First();
             var iface = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)).FirstOrDefault();
             return GetEnumerableType(iface); 
-        }
-
-        public static void CreateConfig()
-        {
-            Config = new BotConfig();
-            SaveConfigFile();
         }
 
         public static void SaveConfigFile()
