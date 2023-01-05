@@ -20,9 +20,23 @@ namespace GreenOnions.BotManagerConsole
 
 			if (!File.Exists("config.json"))
 			{
-				BotInfo.CreateConfig();
-				Console.WriteLine("初次使用本机器人，请先设置config.json相关参数后继续以下步骤。");
+				BotInfo.Init();
+
+				Console.WriteLine("初次使用本机器人，请先输入机器人管理员的QQ：（方便后续通过消息修改配置，如果不想设置可以直接回车跳过）");
+			IL_SetAdminQQ:;
+				string strAdminQQ = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(strAdminQQ))
+                {
+					if (!long.TryParse(strAdminQQ, out long adminQQ))
+					{
+						Console.WriteLine("输入错误，请重试或留空跳过");
+						goto IL_SetAdminQQ;
+					}
+				}
+				Console.WriteLine("请先修改config.json相关参数后继续以下步骤，或直接回车以默认参数启动。");
+				Console.ReadLine();
 			}
+			BotInfo.LoadConfig();
 
 			Console.WriteLine("有任何疑问，意见或建议欢迎到 https://github.com/Alex1911-Jiang/GreenOnions 提Issue");
 
