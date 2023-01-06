@@ -54,7 +54,7 @@
         /// <summary>
         /// [发送消息时]指定回复引用的消息ID，null则会自动处理
         /// </summary>
-        public long? ReplyId { get; set; } = null;
+        public int? ReplyId { get; set; } = null;
         /// <summary>
         /// [发送消息时]撤回时间, 单位:秒, 为0时不撤回, 超过120会撤回失败
         /// </summary>

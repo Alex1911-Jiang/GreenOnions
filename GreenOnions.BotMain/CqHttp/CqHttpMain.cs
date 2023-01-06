@@ -71,21 +71,21 @@ namespace GreenOnions.BotMain.CqHttp
                         GreenOnionsApi greenOnionsApi = new GreenOnionsApi(
                             async (targetId, msg) => 
                             {
-                                int sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateMessage(targetId, msg.ToCqHttpMessages(null))).messageId;
+                                int sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateMessage(targetId, msg.ToCqHttpMessages())).messageId;
                                 if (msg.RevokeTime > 0)
                                     _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => eventArgs.SoraApi.RecallMessage(sendedFriendMessageId));
                                 return sendedFriendMessageId;
                             },
                             async (targetId, msg) => 
                             {
-                                int sendedGroupMessageId = (await eventArgs.SoraApi.SendGroupMessage(targetId, msg.ToCqHttpMessages(null))).messageId;
+                                int sendedGroupMessageId = (await eventArgs.SoraApi.SendGroupMessage(targetId, msg.ToCqHttpMessages())).messageId;
                                 if (msg.RevokeTime > 0)
                                     _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => eventArgs.SoraApi.RecallMessage(sendedGroupMessageId));
                                 return sendedGroupMessageId;
                             },
                             async (targetId, targetGroup, msg) => 
                             {
-                                int sendedTempMessageId = (await eventArgs.SoraApi.SendTemporaryMessage(targetId, targetGroup, msg.ToCqHttpMessages(null))).messageId;
+                                int sendedTempMessageId = (await eventArgs.SoraApi.SendTemporaryMessage(targetId, targetGroup, msg.ToCqHttpMessages())).messageId;
                                 if (msg.RevokeTime > 0)
                                     _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => eventArgs.SoraApi.RecallMessage(sendedTempMessageId));
                                 return sendedTempMessageId;

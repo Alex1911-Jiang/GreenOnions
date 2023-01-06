@@ -61,14 +61,17 @@ namespace GreenOnions.BotMain.CqHttp
             return greenOnionsMessages;
         }
 
-        public static MessageBody ToCqHttpMessages(this GreenOnionsMessages greenOnionsMessage, int? RelpyId)
+        public static MessageBody ToCqHttpMessages(this GreenOnionsMessages greenOnionsMessage, int? coverReplyId = null)
         {
             if (!greenOnionsMessage.IsGreenOnionsCommand)
                 greenOnionsMessage.ReplaceGreenOnionsStringTags();
 
+            if (coverReplyId is not null)
+                greenOnionsMessage.ReplyId = coverReplyId;
+
             MessageBody cqHttpMessages = new MessageBody();
-            if (greenOnionsMessage.Reply && RelpyId is not null)
-                cqHttpMessages.Add(SoraSegment.Reply(RelpyId.Value));
+            if (greenOnionsMessage.Reply && greenOnionsMessage.ReplyId is not null)
+                cqHttpMessages.Add(SoraSegment.Reply(greenOnionsMessage.ReplyId.Value));
 
             for (int i = 0; i < greenOnionsMessage.Count; i++)
             {
@@ -94,7 +97,7 @@ namespace GreenOnions.BotMain.CqHttp
                     {
                         for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                         {
-                            var itemMsg = ToCqHttpMessages(forwardMsg.ItemMessages[i].itemMessage, RelpyId);
+                            var itemMsg = ToCqHttpMessages(forwardMsg.ItemMessages[i].itemMessage);
                             if (itemMsg is not null)
                                 cqHttpMessages.AddRange(itemMsg);
                         }
@@ -124,7 +127,7 @@ namespace GreenOnions.BotMain.CqHttp
                 {
                     for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                     {
-                        nodes.Add(new CustomNode(forwardMsg.ItemMessages[j].NickName, forwardMsg.ItemMessages[j].QQid, forwardMsg.ItemMessages[j].itemMessage.ToCqHttpMessages(null)));
+                        nodes.Add(new CustomNode(forwardMsg.ItemMessages[j].NickName, forwardMsg.ItemMessages[j].QQid, forwardMsg.ItemMessages[j].itemMessage.ToCqHttpMessages()));
                     }
                 }
             }
