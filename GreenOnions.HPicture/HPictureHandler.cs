@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GreenOnions.HPicture.Items;
 using GreenOnions.Interface;
 using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Interface.Helpers;

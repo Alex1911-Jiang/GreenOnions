@@ -81,6 +81,11 @@ namespace GreenOnions.BotMain
         /// <returns></returns>
         public static async Task<bool> HandleMesage(GreenOnionsMessages inMsg, long? senderGroup, Action<GreenOnionsMessages> SendMessage)
         {
+            if (BotInfo.Config.BannedUser.Contains(inMsg.SenderId))
+                return false;
+            if (senderGroup is not null && BotInfo.Config.BannedGroup.Contains(senderGroup.Value))
+                return false;
+
             if (inMsg is null || inMsg.Count == 0)
             {
                 return false;
