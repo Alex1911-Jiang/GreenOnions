@@ -9,6 +9,7 @@ using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Interface.Modules;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
+using Yande.re.Api;
 
 namespace GreenOnions.HPicture
 {
@@ -37,23 +38,161 @@ namespace GreenOnions.HPicture
                 await BotInfo.API.SendGroupMessageAsync(targetGroup.Value, msgs);
         }
 
+        /// <summary>
+        /// 处理消息
+        /// </summary>
+        /// <param name="msgs">传入的消息</param>
+        /// <param name="targetGroupId">回复目标群</param>
+        /// <returns>消息是否已被处理</returns>
         public async Task<bool> HandleMessageAsync(GreenOnionsMessages msgs, long? targetGroupId)
         {
             if (msgs.FirstOrDefault() is not GreenOnionsTextMessage textMsg)
                 return false;
 
-            if (_userCmds.Contains(textMsg.Text))  //自定义色图命令
+            if (_userCmds.Contains(textMsg.Text))  //命中自定义色图命令
             {
+                LogHelper.WriteInfoLog($"{msgs.SenderId}的消息命中了自定义色图命令");
+                if (!await CheckPermissions(msgs.SenderId, targetGroupId, msgs.Id))  //检查权限
+                {
+                    LogHelper.WriteInfoLog($"{msgs.SenderId}无权使用色图");
+                    return true;
+                }
                 bool success = await SendOnecHPictures(msgs.SenderId, targetGroupId, msgs.Id);
                 if (success)
                     RecordLimit(msgs.SenderId, targetGroupId, LimitType.Frequency);
                 return true;
             }
-            else if (false)  //通用色图命令
-            {
 
+            return false; //TODO
+
+            //常规色图命令
+            Match matchHPcitureCmd = ModuleRegex.Match(textMsg.Text);
+            if (matchHPcitureCmd is not null)  //命中常规色图命令
+            {
+                LogHelper.WriteInfoLog($"{msgs.SenderId}的消息命中了常规色图命令");
+                if (!await CheckPermissions(msgs.SenderId, targetGroupId, msgs.Id))  //检查权限
+                {
+                    LogHelper.WriteInfoLog($"{msgs.SenderId}无权使用色图");
+                    return true;
+                }
+
+                (string keyword, int num, bool r18) = ExtractParameter(matchHPcitureCmd);
+
+                if (BotInfo.Config.HPictureShieldingWords.Contains(keyword))  //屏蔽词
+                    return true;
+
+                if (num < 1) //请求0张图
+                    return true;
+
+                if (r18)
+                {
+                    if (!BotInfo.Config.HPictureAllowR18)  //不允许R18
+                        return true;
+
+                    if (targetGroupId is long lGroupId && BotInfo.Config.HPictureR18WhiteOnly && !BotInfo.Config.HPictureWhiteGroup.Contains(lGroupId))
+                        return true;  //仅限白名单但此群不在白名单中, 不响应R18命令
+                }
+                //TODO请求
             }
+
             return false;
+        }
+
+        private int ExtractNum(Match matchHPictureCmd)
+        {
+            if (!matchHPictureCmd.Groups["数量"].Success)
+                return 1;
+
+            if (string.IsNullOrWhiteSpace(matchHPictureCmd.Groups["数量"].Value))
+                return 1;
+
+            if (int.TryParse(matchHPictureCmd.Groups["数量"].Value, out int iNum))
+                return iNum;
+
+            long lNum = StringHelper.Chinese2Num(matchHPictureCmd.Groups["数量"].Value);
+
+            if (lNum > BotInfo.Config.HPictureOnceMessageMaxImageCount)
+                lNum = BotInfo.Config.HPictureOnceMessageMaxImageCount;
+
+            if (lNum > 20)
+                lNum = 20;
+
+            return (int)lNum;
+        }
+
+        private string ExtractKeyword(Match matchHPictureCmd)
+        {
+            if (matchHPictureCmd.Groups["关键词"].Success)
+                return matchHPictureCmd.Groups["关键词"].Value;
+            return string.Empty;
+        }
+
+        private (string keyword, int num, bool r18) ExtractParameter(Match matchHPictureCmd)
+        {
+            string keyword = ExtractKeyword(matchHPictureCmd);
+            int num = ExtractNum(matchHPictureCmd);
+            bool bR18 = matchHPictureCmd.Groups["r18"].Success;
+            return (keyword, num, bR18);
+        }
+
+        /// <summary>
+        /// 检查是否有权限使用色图
+        /// </summary>
+        /// <param name="qqId">QQ号</param>
+        /// <param name="groupId">群号</param>
+        /// <param name="replyMessageId">回复引用消息ID</param>
+        /// <returns></returns>
+        private async Task<bool> CheckPermissions(long qqId, long? groupId, int replyMessageId)
+        {
+            if (!BotInfo.Config.HPictureEnabled)  //没有启用色图
+            {
+                LogHelper.WriteInfoLog($"没有启动色图，不响应命令");
+                return false;
+            }
+
+            if (groupId is null)
+            {
+                if (!BotInfo.Config.HPictureAllowPM) //不允许私聊
+                {
+                    LogHelper.WriteInfoLog($"没有启动私聊色图，不响应私聊色图命令");
+                    return false;
+                }
+
+                if (BotInfo.Cache.CheckPMLimit(qqId))
+                {
+                    LogHelper.WriteInfoLog($"{qqId}私聊色图次数耗尽");
+                    await SendMessageAsync(qqId, groupId, BotInfo.Config.HPictureOutOfLimitReply, replyMessageId);  //次数用尽
+                    return false;
+                }
+                if (BotInfo.Cache.CheckPMCD(qqId))
+                {
+                    LogHelper.WriteInfoLog($"{qqId}私聊色图冷却中");
+                    await SendMessageAsync(qqId, groupId, BotInfo.Config.HPictureCDUnreadyReply, replyMessageId);  //冷却中
+                    return false;
+                }
+            }
+            else
+            {
+                if (BotInfo.Config.HPictureWhiteOnly && !BotInfo.Config.HPictureWhiteGroup.Contains(groupId.Value))  //仅限白名单但当前群不在白名单中
+                {
+                    LogHelper.WriteInfoLog($"启用了仅限白名单但{groupId.Value}不在白名单中");
+                    return false;
+                }
+
+                if (BotInfo.Cache.CheckGroupLimit(qqId, groupId.Value))
+                {
+                    LogHelper.WriteInfoLog($"{qqId}群色图次数耗尽");
+                    await SendMessageAsync(qqId, groupId, BotInfo.Config.HPictureOutOfLimitReply, replyMessageId);  //次数用尽
+                    return false;
+                }
+                if (BotInfo.Cache.CheckGroupCD(qqId, groupId.Value))
+                {
+                    LogHelper.WriteInfoLog($"{qqId}群色图冷却中");
+                    await SendMessageAsync(qqId, groupId, BotInfo.Config.HPictureCDUnreadyReply, replyMessageId);  //冷却中
+                    return false;
+                }
+            }
+            return true;
         }
 
         private async Task<bool> SendOnecHPictures(long senderId, long? senderGroup, int? replyMsgId)
@@ -78,16 +217,17 @@ namespace GreenOnions.HPicture
                         LoliconHPictureItem loliconItem = await LoliconClient.GetOnceLoliconItem();
                         onceHPictureMsg = await MessageCreater.CreateMessageByLoliconItemAsync(loliconItem);
                         break;
-                    //case PictureSource.Yande_re:
-
-                    //    break;
+                    case PictureSource.Yande_re:
+                        YandeItem yandeItem = await YandeApi.GetOnceYandeItem();
+                        onceHPictureMsg = await MessageCreater.CreateMessageByYandeItemAsync(yandeItem);
+                        break;
                     default:
-                        throw new Exception();
+                        throw new Exception("没有连接到任何图库，请联系机器人管理员");
                 }
             }
             catch (Exception ex)
             {
-                await SendMessageAsync(senderId, senderGroup, ex.Message, replyMsgId);
+                await SendMessageAsync(senderId, senderGroup, BotInfo.Config.HPictureErrorReply + ex.Message, replyMsgId);
                 return false;
             }
             
@@ -139,13 +279,11 @@ namespace GreenOnions.HPicture
         {
             if (senderGroup is null)
                 return BotInfo.Config.HPicturePMRevoke;  //私聊撤回
+
+            if (BotInfo.Config.HPictureWhiteGroup.Contains(senderGroup.Value))  //白名单群撤回
+                return BotInfo.Config.HPictureWhiteRevoke;
             else
-            {
-                if (BotInfo.Config.HPictureWhiteGroup.Contains(senderGroup.Value))  //白名单群撤回
-                    return BotInfo.Config.HPictureWhiteRevoke;
-                else
-                    return BotInfo.Config.HPictureRevoke;  //普通群撤回
-            }
+                return BotInfo.Config.HPictureRevoke;  //普通群撤回
         }
 
         /// <summary>

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>GreenOnions.HPicture</RootNamespace>
+    <Nullable>enable</Nullable>
     <BaseOutputPath>..\bin\</BaseOutputPath>
   </PropertyGroup>
 

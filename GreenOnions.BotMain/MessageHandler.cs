@@ -29,10 +29,12 @@ namespace GreenOnions.BotMain
         private static Regex regexDownloadPixivOriginalPicture;
         private static Regex regexHelp;
 
+        private static HPictureCmdHandler _hPciture2;
         private static Transfer _transfer;
 
         static MessageHandler()
         {
+            _hPciture2 = new HPictureCmdHandler();
             _transfer = new Transfer();
             regexHelp = new Regex($"{BotInfo.Config.BotName}帮助");
             UpdateRegexs();
@@ -61,6 +63,7 @@ namespace GreenOnions.BotMain
                 regexTranslateFromTo = new Regex(BotInfo.Config.TranslateFromToCMD.ReplaceGreenOnionsStringTags());
                 regexName = "色图";
                 regexHPicture = new Regex(BotInfo.Config.HPictureCmd.ReplaceGreenOnionsStringTags());
+                _hPciture2.UpdateRegex();
                 regexName = "伪造消息";
                 regexForgeMessage = new Regex(BotInfo.Config.ForgeMessageCmdBegin.ReplaceGreenOnionsStringTags());
                 regexName = null;
@@ -217,9 +220,13 @@ namespace GreenOnions.BotMain
                 #endregion -- 翻译 --
 
                 #region -- 色图 --
+
+                if (await _hPciture2.HandleMessageAsync(inMsg, senderGroup))
+                    return true;
+
                 if (BotInfo.Config.HPictureEnabled)
                 {
-                    if (regexHPicture.IsMatch(firstValue) || BotInfo.Config.HPictureUserCmd.Contains(firstValue))
+                    if (regexHPicture.IsMatch(firstValue))
                     {
                         LogHelper.WriteInfoLog($"{inMsg.SenderId}消息命中色图命令");
                         if (senderGroup is not null)  //群消息
@@ -241,11 +248,7 @@ namespace GreenOnions.BotMain
                                     return true;
                                 }
 
-                                if (BotInfo.Config.EnabledHPictureSource.Count > 0 && BotInfo.Config.HPictureUserCmd.Contains(firstValue))
-                                {
-                                    HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
-                                }
-                                else if (BotInfo.Config.EnabledHPictureSource.Count > 0 || BotInfo.Config.EnabledBeautyPictureSource.Count > 0)
+                                if (BotInfo.Config.EnabledHPictureSource.Count > 0 || BotInfo.Config.EnabledBeautyPictureSource.Count > 0)
                                 {
                                     LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入群色图处理事件");
                                     HPictureHandler.SendHPictures(inMsg.SenderId, senderGroup, regexHPicture.Match(firstValue), SendMessage);
@@ -270,11 +273,7 @@ namespace GreenOnions.BotMain
                                     return true;
                                 }
 
-                                if (BotInfo.Config.EnabledHPictureSource.Count > 0 && BotInfo.Config.HPictureUserCmd.Contains(firstValue))
-                                {
-                                    HPictureHandler.SendOnlyOneHPictures(inMsg.SenderId, senderGroup, SendMessage);
-                                }
-                                else if (BotInfo.Config.EnabledHPictureSource.Count > 0 || BotInfo.Config.EnabledBeautyPictureSource.Count > 0)
+                                if (BotInfo.Config.EnabledHPictureSource.Count > 0 || BotInfo.Config.EnabledBeautyPictureSource.Count > 0)
                                 {
                                     LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入私聊色图处理事件");
                                     HPictureHandler.SendHPictures(inMsg.SenderId, null, regexHPicture.Match(firstValue), SendMessage);

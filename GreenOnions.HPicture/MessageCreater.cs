@@ -5,6 +5,7 @@ using GreenOnions.HPicture.Items;
 using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
+using Yande.re.Api;
 
 namespace GreenOnions.HPicture
 {
@@ -33,8 +34,25 @@ namespace GreenOnions.HPicture
             string size = BotInfo.Config.HPictureSize1200 ? "_1200" : "";
             string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{size}{extension}");
             GreenOnionsImageMessage imgMsg = await CreateImageMessageByUrlAsync(item.URL, imgCacheName);
-
             outMessage.Add(imgMsg);
+
+            return outMessage;
+        }
+
+        internal static async Task<GreenOnionsMessages> CreateMessageByYandeItemAsync(YandeItem item)
+        {
+            GreenOnionsMessages outMessage = new();
+            StringBuilder sb = new();
+            if (BotInfo.Config.HPictureSendUrl)
+                sb.AppendLine($"http://yande.re{item.ShowPageUrl}");
+            if (BotInfo.Config.HPictureSendTags)
+                sb.AppendLine($"标签:{string.Join(", ", item.Tags)}");
+            outMessage.Add(sb);
+
+            string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ShowPageUrl.Substring("/post/show/".Length)}.png");
+            GreenOnionsImageMessage imgMsg = await CreateImageMessageByUrlAsync(item.BigImgUrl, imgCacheName);
+            outMessage.Add(imgMsg);
+
             return outMessage;
         }
 

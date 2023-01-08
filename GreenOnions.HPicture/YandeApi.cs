@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using GreenOnions.Utility;
 using Yande.re.Api;
-using System.Linq;
 
 namespace GreenOnions.HPicture
 {
@@ -17,6 +18,13 @@ namespace GreenOnions.HPicture
             }
             return await _api.GetRandom(r18 ? Rating.Explicit : Rating.Safe);
         }
-    }
 
+        public static async Task<YandeItem> GetOnceYandeItem()
+        {
+            YandeItem item = await GetRandomHPictrue(string.Empty, false);
+            if (item is null)
+                throw new Exception(BotInfo.Config.HPictureNoResultReply);  //没有结果
+            return item;
+        }
+    }
 }
