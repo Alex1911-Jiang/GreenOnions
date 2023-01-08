@@ -162,7 +162,7 @@
 
 ### 短期计划(TODO):
 
-1.群友要求的自定义 API 请求和解析（青春版Postman？）<br>
+1.重构屎山色图模块，方便适配新图库<br>
 2.E-Hentai关键词色图<br>
 3.适配几个群友提的图库<br>
 4.适配 [Konata.Core](https://github.com/KonataDev/Konata.Core) 平台
@@ -170,5 +170,4 @@
 ### 长期计划(GUDO):
 1.把 System.Drawing 替换为其他~~更轻量~~的跨平台图形库, 取消Linux系统下对Mono的依赖<br>
 2.把内嵌浏览器 ([CefSharp](https://github.com/cefsharp/CefSharp)) 搬出到独立的仓库里, 改为插件式加载<br>
-3.添加一个 RSS 监控功能(沙雕群友自己网络有问题整天怪在我头上)<br>
-4.添加一个网站管理端?<br>
+3.添加一个网站管理端?<br>
