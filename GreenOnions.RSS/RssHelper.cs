@@ -418,7 +418,7 @@ namespace GreenOnions.RSS
                 if (node.Name == "iframe")
                     return "\r\n内容地址：" + HttpUtility.HtmlDecode(node.Attributes["src"].Value) + "\r\n";
                 else if (!string.IsNullOrWhiteSpace(node.InnerText))
-                    return node.InnerText;
+                    return HttpUtility.HtmlDecode(node.InnerText);
                 else
                     return "\r\n";
             }
