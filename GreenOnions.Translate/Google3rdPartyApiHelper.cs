@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using GreenOnions.Utility;
@@ -31,7 +31,8 @@ namespace GreenOnions.Translate
         {
             using (HttpClient client = new HttpClient())
             {
-                var resp = await client.GetAsync($"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={text}");
+                var textUrl = System.Uri.EscapeDataString(text);
+                var resp = await client.GetAsync($"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={textUrl}");
                 string result = await resp.Content.ReadAsStringAsync();
                 JArray arr = JsonConvert.DeserializeObject<JArray>(result);
                 StringBuilder sb = new StringBuilder();
