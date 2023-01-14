@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -250,6 +250,8 @@ namespace GreenOnions.RSS
                 {
                     GreenOnionsMessages friendResultMsg = new() { titleMsg };  //标题
 
+                    //friendResultMsg.AddRange(rss.Messages);  //正文
+
                     if (!string.IsNullOrWhiteSpace(translateMsg))
                         friendResultMsg.Add(translateMsg);  //翻译
 
@@ -418,7 +420,7 @@ namespace GreenOnions.RSS
                 if (node.Name == "iframe")
                     return "\r\n内容地址：" + HttpUtility.HtmlDecode(node.Attributes["src"].Value) + "\r\n";
                 else if (!string.IsNullOrWhiteSpace(node.InnerText))
-                    return node.InnerText;
+                    return HttpUtility.HtmlDecode(node.InnerText);
                 else
                     return "\r\n";
             }
@@ -456,7 +458,7 @@ namespace GreenOnions.RSS
                                         {
                                             outMsg.AddRange(await HtmlToMessageAsync(itemNode));
                                         }
-                                        description = htmlDoc.DocumentNode.InnerText;
+                                        description = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
                                         break;
                                     case "description":
                                     case "content":
@@ -464,7 +466,7 @@ namespace GreenOnions.RSS
                                         {
                                             htmlDoc = new HtmlDocument();
                                             htmlDoc.LoadHtml(subNode.InnerText);
-                                            description = htmlDoc.DocumentNode.InnerText;
+                                            description = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
                                             outMsg.Add(description);
                                         }
                                         break;
@@ -512,7 +514,7 @@ namespace GreenOnions.RSS
                                     case "content":
                                         HtmlDocument htmlDoc = new();
                                         htmlDoc.LoadHtml(subNode.InnerText);
-                                        description = htmlDoc.DocumentNode.InnerText;
+                                        description = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
                                         outMsg.AddRange(await HtmlToMessageAsync(htmlDoc.DocumentNode));
 
                                         #region -- 暴力正则 --
