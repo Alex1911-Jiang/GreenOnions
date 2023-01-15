@@ -593,25 +593,13 @@ namespace GreenOnions.Interface.Configs
         /// <summary>
         /// 默认色图命令
         /// </summary>
-        public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18的?)?(?<关键词>.+?)?((?<色图后缀>[的得地滴の]?[色瑟涩铯啬渋][图圖図])|(?<美图后缀>[的得地滴の]?美[图圖図]))";
+        public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18的?)?(?<关键词>.+?)?(?<色图后缀>[的得地滴の]?[色瑟涩铯啬渋][图圖図])";
 
         /// <summary>
-        /// 色图/美图完整命令(正则表达式)
+        /// 色图完整命令(正则表达式)
         /// </summary>
-        [PropertyChineseName("色图/美图命令", "色图", "支持正则表达式")]
+        [PropertyChineseName("色图命令", "色图", "支持正则表达式")]
         public string HPictureCmd { get; }
-
-        /// <summary>
-        /// 是否撤回美图(撤回时间跟随色图撤回时间设置)
-        /// </summary>
-        [PropertyChineseName("撤回美图", "色图")]
-        public bool RevokeBeautyPicture { get; }
-
-        /// <summary>
-        /// 启用的美图图库
-        /// </summary>
-        [PropertyChineseName("美图图库", "色图", "启用的美图图库, 1 = ELF图库")]
-        public HashSet<PictureSource> EnabledBeautyPictureSource { get; }
 
         /// <summary>
         /// 启用的色图图库
@@ -624,12 +612,6 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         [PropertyChineseName("自定义色图命令", "色图")]
         public HashSet<string> HPictureUserCmd { get; }
-
-        /// <summary>
-        /// 如果命令不含后缀，默认图库为
-        /// </summary>
-        [PropertyChineseName("默认图库", "色图")]
-        public PictureSource HPictureDefaultSource { get; }
 
         /// <summary>
         /// 白名单群

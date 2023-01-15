@@ -24,17 +24,16 @@ namespace GreenOnions.BotMain
         private static Regex regexTranslateToChinese;
         private static Regex regexTranslateTo;
         private static Regex regexTranslateFromTo;
-        private static Regex regexHPicture;
         private static Regex regexForgeMessage;
         private static Regex regexDownloadPixivOriginalPicture;
         private static Regex regexHelp;
 
-        private static HPictureCmdHandler _hPciture2;
+        private static HPictureCmdHandler _hPciture;
         private static Transfer _transfer;
 
         static MessageHandler()
         {
-            _hPciture2 = new HPictureCmdHandler();
+            _hPciture = new HPictureCmdHandler();
             _transfer = new Transfer();
             regexHelp = new Regex($"{BotInfo.Config.BotName}帮助");
             UpdateRegexs();
@@ -62,8 +61,7 @@ namespace GreenOnions.BotMain
                 regexName = "指定语言翻译";
                 regexTranslateFromTo = new Regex(BotInfo.Config.TranslateFromToCMD.ReplaceGreenOnionsStringTags());
                 regexName = "色图";
-                regexHPicture = new Regex(BotInfo.Config.HPictureCmd.ReplaceGreenOnionsStringTags());
-                _hPciture2.UpdateRegex();
+                _hPciture.UpdateRegex();
                 regexName = "伪造消息";
                 regexForgeMessage = new Regex(BotInfo.Config.ForgeMessageCmdBegin.ReplaceGreenOnionsStringTags());
                 regexName = null;
@@ -221,68 +219,9 @@ namespace GreenOnions.BotMain
 
                 #region -- 色图 --
 
-                if (await _hPciture2.HandleMessageAsync(inMsg, senderGroup))
+                if (await _hPciture.HandleMessageAsync(inMsg, senderGroup))
                     return true;
 
-                if (BotInfo.Config.HPictureEnabled)
-                {
-                    if (regexHPicture.IsMatch(firstValue))
-                    {
-                        LogHelper.WriteInfoLog($"{inMsg.SenderId}消息命中色图命令");
-                        if (senderGroup is not null)  //群消息
-                        {
-                            if (!BotInfo.Config.HPictureWhiteOnly || BotInfo.Config.HPictureWhiteGroup.Contains(senderGroup.Value))
-                            {
-                                LogHelper.WriteInfoLog($"{inMsg.SenderId}有权限使用群色图");
-
-                                if (BotInfo.Cache.CheckGroupLimit(inMsg.SenderId, senderGroup.Value))
-                                {
-                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}群色图次数耗尽");
-                                    SendMessage(new GreenOnionsMessages(BotInfo.Config.HPictureOutOfLimitReply));  //次数用尽
-                                    return true;
-                                }
-                                if (BotInfo.Cache.CheckGroupCD(inMsg.SenderId, senderGroup.Value))
-                                {
-                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}群色图冷却中");
-                                    SendMessage(new GreenOnionsMessages(BotInfo.Config.HPictureCDUnreadyReply));  //冷却中
-                                    return true;
-                                }
-
-                                if (BotInfo.Config.EnabledHPictureSource.Count > 0 || BotInfo.Config.EnabledBeautyPictureSource.Count > 0)
-                                {
-                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入群色图处理事件");
-                                    HPictureHandler.SendHPictures(inMsg.SenderId, senderGroup, regexHPicture.Match(firstValue), SendMessage);
-                                }
-                            }
-                        }
-                        else  //私聊消息
-                        {
-                            if (BotInfo.Config.HPictureAllowPM)  //允许私聊使用色图
-                            {
-                                LogHelper.WriteInfoLog($"{inMsg.SenderId}有权限使用私聊色图");
-                                if (BotInfo.Cache.CheckPMLimit(inMsg.SenderId))
-                                {
-                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}私聊色图次数耗尽");
-                                    SendMessage(new GreenOnionsMessages(BotInfo.Config.HPictureOutOfLimitReply));  //次数用尽
-                                    return true;
-                                }
-                                if (BotInfo.Cache.CheckPMCD(inMsg.SenderId))
-                                {
-                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}私聊色图冷却中");
-                                    SendMessage(new GreenOnionsMessages(BotInfo.Config.HPictureCDUnreadyReply));  //冷却中
-                                    return true;
-                                }
-
-                                if (BotInfo.Config.EnabledHPictureSource.Count > 0 || BotInfo.Config.EnabledBeautyPictureSource.Count > 0)
-                                {
-                                    LogHelper.WriteInfoLog($"{inMsg.SenderId}消息进入私聊色图处理事件");
-                                    HPictureHandler.SendHPictures(inMsg.SenderId, null, regexHPicture.Match(firstValue), SendMessage);
-                                }
-                            }
-                        }
-                        return true;
-                    }
-                }
                 #endregion -- 色图 --
 
                 #region -- 下载Pixiv原图 --

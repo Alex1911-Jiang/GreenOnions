@@ -23,17 +23,9 @@ namespace GreenOnions.BotManagerWindows.Controls
                 if (hSource == PictureSource.Yande_re)
                     chkHPictureYande_reSource.Checked = true;
             }
-            foreach (var beautySource in BotInfo.Config.EnabledBeautyPictureSource)
-            {
-                if (beautySource == PictureSource.ELF)
-                    chkBeautyPictureEnabledELFSource.Checked = true;
-            }
-            cboHPictureDefaultSource.DataSource = Enum.GetNames<PictureSource>();
-            cboHPictureDefaultSource.SelectedIndex = (int)BotInfo.Config.HPictureDefaultSource;
 
             txbHPictureOnceMessageMaxImageCount.Text = BotInfo.Config.HPictureOnceMessageMaxImageCount.ToString();
             txbHPictureCmd.Text = BotInfo.Config.HPictureCmd;
-            chkRevokeBeautyPicture.Checked = BotInfo.Config.RevokeBeautyPicture;
             if (BotInfo.Config.HPictureUserCmd is not null)
             {
                 foreach (var item in BotInfo.Config.HPictureUserCmd)
@@ -89,14 +81,9 @@ namespace GreenOnions.BotManagerWindows.Controls
                 EnabledHPictureSource.Add(PictureSource.Lolicon);
             if (chkHPictureYande_reSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.Yande_re);
-            if (chkBeautyPictureEnabledELFSource.Checked)
-                EnabledBeautyPictureSource.Add(PictureSource.ELF);
             BotInfo.Config.EnabledHPictureSource = EnabledHPictureSource;
-            BotInfo.Config.EnabledBeautyPictureSource = EnabledBeautyPictureSource;
-            BotInfo.Config.HPictureDefaultSource = (PictureSource)cboHPictureDefaultSource.SelectedIndex;
             BotInfo.Config.HPictureCmd = txbHPictureCmd.Text;
             BotInfo.Config.HPictureOnceMessageMaxImageCount = string.IsNullOrEmpty(txbHPictureOnceMessageMaxImageCount.Text) ? 10 : Convert.ToInt32(txbHPictureOnceMessageMaxImageCount.Text);
-            BotInfo.Config.RevokeBeautyPicture = chkRevokeBeautyPicture.Checked;
             HashSet<string> tempHPictureUserCmd = new HashSet<string>();
             foreach (ListViewItem item in lstHPictureUserCmd.Items)
                 tempHPictureUserCmd.Add(item.SubItems[0].Text);

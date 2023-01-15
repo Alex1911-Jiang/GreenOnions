@@ -428,19 +428,9 @@ namespace GreenOnions.Utility
         #region -- 色图配置项 --
 
         /// <summary>
-        /// 色图/美图完整命令(正则表达式)
+        /// 色图完整命令(正则表达式)
         /// </summary>
         public string HPictureCmd { get; set; } = IBotConfig.DefaultHPictureCmd;
-
-        /// <summary>
-        /// 是否撤回美图(撤回时间跟随色图撤回时间设置)
-        /// </summary>
-        public bool RevokeBeautyPicture { get; set; } = true;
-
-        /// <summary>
-        /// 启用的美图图库
-        /// </summary>
-        public HashSet<PictureSource> EnabledBeautyPictureSource { get; set; } = new HashSet<PictureSource>();
 
         /// <summary>
         /// 启用的色图图库
@@ -451,11 +441,6 @@ namespace GreenOnions.Utility
         /// 自定义色图命令
         /// </summary>
         public HashSet<string> HPictureUserCmd { get; set; } = new HashSet<string>() { "--setu" };
-
-        /// <summary>
-        /// 如果命令不含后缀，默认图库为
-        /// </summary>
-        public PictureSource HPictureDefaultSource { get; set; } = PictureSource.Lolicon;
 
         /// <summary>
         /// 白名单群

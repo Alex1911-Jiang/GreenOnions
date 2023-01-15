@@ -7,7 +7,7 @@ namespace GreenOnions.Interface.Modules
     /// </summary>
     public interface IRegexModule
     {
-        protected Regex ModuleRegex { get; }
+        protected Regex? ModuleRegex { get; }
         public void UpdateRegex();
         public Task<bool> HandleMessageAsync(GreenOnionsMessages msgs, long? targetGroupId);
         protected Task SendMessageAsync(long targetId, long? targetGroup, GreenOnionsMessages msgs, int? replyMsgId = null);
