@@ -442,6 +442,7 @@ namespace GreenOnions.RSS
                         DateTime pubDate = pubDate = DateTime.Parse(noteDate.InnerText);
                         if (pubDate > lastUpdateTime)
                         {
+                            LogInfo($"抓取到的内容更新时间 {pubDate} 晚于记录的时间 {lastUpdateTime} 需要发送");
                             foreach (XmlNode subNode in node.ChildNodes)
                             {
                                 switch (subNode.Name.ToLower())
@@ -479,7 +480,10 @@ namespace GreenOnions.RSS
                             yield return new(outMsg, description, pubDate, link, creator);
                         }
                         else
+                        {
+                            LogInfo($"抓取到的内容更新时间 {pubDate} 早于记录的时间 {lastUpdateTime} 无需发送");
                             yield break;
+                        }
                     }
                 }
             }
