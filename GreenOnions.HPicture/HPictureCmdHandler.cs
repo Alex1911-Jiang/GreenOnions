@@ -56,59 +56,58 @@ namespace GreenOnions.HPicture
                     LogHelper.WriteInfoLog($"{msgs.SenderId}无权使用色图");
                     return true;
                 }
-                bool success = await SendOnceHPicture(msgs.SenderId, targetGroupId, msgs.Id);
-                if (success)
+                if (await SendOnceHPicture(msgs.SenderId, targetGroupId, msgs.Id))
                     RecordLimit(msgs.SenderId, targetGroupId, LimitType.Frequency);  //记录次数限制
                 return true;
             }
 
             //常规色图命令
+            if (!ModuleRegex!.IsMatch(textMsg.Text))  //命中常规色图命令
+                return false;
+
             Match matchHPcitureCmd = ModuleRegex!.Match(textMsg.Text);
-            if (matchHPcitureCmd is not null)  //命中常规色图命令
+
+            LogHelper.WriteInfoLog($"{msgs.SenderId}的消息命中了常规色图命令");
+            if (!await CheckPermissions(msgs.SenderId, targetGroupId, msgs.Id))  //检查权限
             {
-                LogHelper.WriteInfoLog($"{msgs.SenderId}的消息命中了常规色图命令");
-                if (!await CheckPermissions(msgs.SenderId, targetGroupId, msgs.Id))  //检查权限
-                {
-                    LogHelper.WriteInfoLog($"{msgs.SenderId}无权使用色图");
-                    return true;
-                }
-
-                (string keyword, int num, bool r18) = MatchHelper.ExtractParameter(matchHPcitureCmd);
-
-                if (num < 1) //请求0张图
-                {
-                    LogHelper.WriteInfoLog($"{msgs.SenderId}请求了少于1张色图，不响应命令");
-                    return true;
-                }
-
-                num = BotInfo.Cache.GetHPictureQuota(num, msgs.SenderId, targetGroupId);  //剩余次数
-
-                if (num < 1) //请求大于等于1张，但次数已耗尽
-                {
-                    LogHelper.WriteInfoLog($"{msgs.SenderId}色图次数耗尽");
-                    await SendMessageAsync(msgs.SenderId, targetGroupId, BotInfo.Config.HPictureOutOfLimitReply, msgs.Id);  //次数用尽
-                    return true;
-                }
-
-                if (BotInfo.Config.HPictureShieldingWords.Contains(keyword))  //屏蔽词
-                {
-                    LogHelper.WriteInfoLog($"{msgs.SenderId}的色图命令中包含屏蔽词，不响应该命令");
-                    return true;
-                }
-
-                if (r18)
-                {
-                    if (!BotInfo.Config.HPictureAllowR18)  //不允许R18
-                        return true;
-
-                    if (targetGroupId is long lGroupId && BotInfo.Config.HPictureR18WhiteOnly && !BotInfo.Config.HPictureWhiteGroup.Contains(lGroupId))
-                        return true;  //仅限白名单但此群不在白名单中, 不响应R18命令
-                }
-
-                bool success = await SendHPictures(keyword, num, r18, msgs.SenderId, targetGroupId, msgs.Id);
-                if (success)
-                    RecordLimit(msgs.SenderId, targetGroupId, LimitType.Frequency);  //记录次数限制
+                LogHelper.WriteInfoLog($"{msgs.SenderId}无权使用色图");
+                return true;
             }
+
+            (string keyword, int num, bool r18) = MatchHelper.ExtractParameter(matchHPcitureCmd);
+
+            if (num < 1) //请求0张图
+            {
+                LogHelper.WriteInfoLog($"{msgs.SenderId}请求了少于1张色图，不响应命令");
+                return true;
+            }
+
+            num = BotInfo.Cache.GetHPictureQuota(num, msgs.SenderId, targetGroupId);  //剩余次数
+
+            if (num < 1) //请求大于等于1张，但次数已耗尽
+            {
+                LogHelper.WriteInfoLog($"{msgs.SenderId}色图次数耗尽");
+                await SendMessageAsync(msgs.SenderId, targetGroupId, BotInfo.Config.HPictureOutOfLimitReply, msgs.Id);  //次数用尽
+                return true;
+            }
+
+            if (BotInfo.Config.HPictureShieldingWords.Contains(keyword))  //屏蔽词
+            {
+                LogHelper.WriteInfoLog($"{msgs.SenderId}的色图命令中包含屏蔽词，不响应该命令");
+                return true;
+            }
+
+            if (r18)
+            {
+                if (!BotInfo.Config.HPictureAllowR18)  //不允许R18
+                    return true;
+
+                if (targetGroupId is long lGroupId && BotInfo.Config.HPictureR18WhiteOnly && !BotInfo.Config.HPictureWhiteGroup.Contains(lGroupId))
+                    return true;  //仅限白名单但此群不在白名单中, 不响应R18命令
+            }
+
+            if (await SendHPictures(keyword, num, r18, msgs.SenderId, targetGroupId, msgs.Id))
+                RecordLimit(msgs.SenderId, targetGroupId, LimitType.Frequency);  //记录次数限制
 
             return false;
         }
