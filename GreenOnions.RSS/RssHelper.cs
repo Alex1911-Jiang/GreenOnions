@@ -47,7 +47,7 @@ namespace GreenOnions.RSS
                                 if (BotInfo.Config.RssParallel)
                                     _rssTasks.Add(item.Url, RssInnerAsync(item, api));
                                 else
-                                    _rssTasks.Add(item.Url, RssInner(item, api));
+                                    RssInnerAsync(item, api).GetAwaiter().GetResult();
                             }
                         }
                         Task.WaitAll(_rssTasks.Values.ToArray());
@@ -93,7 +93,7 @@ namespace GreenOnions.RSS
             return result;
         }
 
-        private static async Task RssInner(RssSubscriptionItem item, IGreenOnionsApi api)
+        private static async Task RssInnerAsync(RssSubscriptionItem item, IGreenOnionsApi api)
         {
             //如果在调试模式并且转发的QQ和群组均不在管理员和调试群组集合中时不去请求
             if (BotInfo.Config.DebugMode && ((BotInfo.Config.DebugReplyAdminOnly && item.ForwardQQs?.Intersect(BotInfo.Config.AdminQQ).Count() == 0) || (BotInfo.Config.OnlyReplyDebugGroup && item.ForwardGroups?.Intersect(BotInfo.Config.DebugGroups).Count() == 0)))
@@ -130,9 +130,11 @@ namespace GreenOnions.RSS
                             client.DefaultRequestHeaders.Add(header.Key, header.Value);
                     }
                     var resp = await client.GetAsync(item.Url);
+                    LogInfo($"{item.Url}抓取{resp.StatusCode}");
                     var xml = await resp.Content.ReadAsStringAsync();
                     XmlDocument xmlDoc = new();
                     xmlDoc.LoadXml(xml);
+                    LogInfo($"{item.Url}加载XML成功");
 
                     bool isContent = xmlDoc.GetElementsByTagName("rss")?[0]?.Attributes?["xmlns:content"] is not null;
                     bool isAtom = xmlDoc.GetElementsByTagName("rss")?[0]?.Attributes?["xmlns:atom"] is not null;
@@ -366,11 +368,6 @@ namespace GreenOnions.RSS
             }
 
             return bSend;
-        }
-
-        private static Task RssInnerAsync(RssSubscriptionItem item, IGreenOnionsApi api)
-        {
-            return Task.Run(() => RssInner(item, api));
         }
 
         private static async Task<string> GetImgUrlOrFileNameAsync(string url)
