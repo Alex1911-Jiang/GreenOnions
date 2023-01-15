@@ -118,8 +118,6 @@ namespace GreenOnions.RSS
 
             try
             {
-                LogInfo($"{item.Url}开始抓取");
-
                 if (!string.IsNullOrWhiteSpace(item.Url))
                 {
                     LogInfo($"{item.Url}抓取内容");
@@ -130,10 +128,22 @@ namespace GreenOnions.RSS
                             client.DefaultRequestHeaders.Add(header.Key, header.Value);
                     }
                     var resp = await client.GetAsync(item.Url);
-                    LogInfo($"{item.Url}抓取{resp.StatusCode}");
+                    LogInfo($"{item.Url}抓取结果：{resp.StatusCode}");
                     var xml = await resp.Content.ReadAsStringAsync();
                     XmlDocument xmlDoc = new();
-                    xmlDoc.LoadXml(xml);
+                    try
+                    {
+                        xmlDoc.LoadXml(xml);
+                    }
+                    catch (Exception ex)
+                    {
+                        string? saveName = item.Remark;
+                        if (string.IsNullOrWhiteSpace(saveName))
+                            saveName = "Rss抓取异常保存(请添加备注)";
+                        File.WriteAllText($"{saveName}.html", xml);
+                        LogError($"{item.Url}加载XML失败", ex, $"抓取内容已保存在{saveName}.html");
+                        throw;
+                    }
                     LogInfo($"{item.Url}加载XML成功");
 
                     bool isContent = xmlDoc.GetElementsByTagName("rss")?[0]?.Attributes?["xmlns:content"] is not null;
