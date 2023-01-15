@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -120,8 +121,15 @@ namespace GreenOnions.RSS
             {
                 if (!string.IsNullOrWhiteSpace(item.Url))
                 {
-                    LogInfo($"{item.Url}抓取内容");
-                    using HttpClient client = new();
+                    HttpClientHandler httpClientHandler = new HttpClientHandler();
+                    if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
+                    {
+                        httpClientHandler.UseProxy = true;
+                        httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
+                    }
+
+                    LogInfo($"{item.Url}开始抓取内容");
+                    using HttpClient client = new(httpClientHandler);
                     if (item.Headers is not null)
                     {
                         foreach (var header in item.Headers)

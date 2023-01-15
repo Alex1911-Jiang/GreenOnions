@@ -10,6 +10,8 @@ namespace GreenOnions.Interface.Configs
     {
         #region -- 核心配置项 --
 
+        public string ProxyUrl { get; }
+
         /// <summary>
         /// 日志等级 0 = 信息， 1 = 警告， 2 = 错误
         /// </summary>

@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -30,7 +31,13 @@ namespace GreenOnions.Translate
 
         private static async Task<string> Translate(string text, string from, string to)
         {
-            using (HttpClient client = new HttpClient())
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
+            {
+                httpClientHandler.UseProxy = true;
+                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
+            }
+            using (HttpClient client = new HttpClient(httpClientHandler))
             {
                 text  = HttpUtility.UrlEncode(text);
                 var resp = await client.GetAsync($"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={text}");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -55,7 +56,13 @@ namespace GreenOnions.Translate
 
         private static async Task<string> Post(string url, Dictionary<string, string> dic)
         {
-            using (HttpClient client = new HttpClient())
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
+            {
+                httpClientHandler.UseProxy = true;
+                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
+            }
+            using (HttpClient client = new HttpClient(httpClientHandler))
             {
                 using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url))
                 {

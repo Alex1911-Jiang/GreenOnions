@@ -19,77 +19,48 @@ namespace GreenOnions.Utility.Helper
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
         }
 
-        public async static Task<(string document, string jumpUrl)> GetHttpResponseStringAndJumpUrlAsync(string url, IDictionary<string, string> headers = null)
+        public async static Task<(string document, string jumpUrl)> GetHttpResponseStringAndJumpUrlAsync(string url)
         {
-            Stream stream = GetHttpResponseStream(url, out string jumpUrl, headers);
-            using (StreamReader streamReader = new StreamReader(stream))
-                return (await streamReader.ReadToEndAsync(), jumpUrl);
-        }
-
-        public static async Task<string> GetHttpResponseStringAsync(string url, IDictionary<string, string> headers = null)
-        {
-            try
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
             {
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    if (headers is not null)
-                    {
-                        foreach (var header in headers)
-                            httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
-                    }
-                    return await httpClient.GetStringAsync(url);
-                }
+                httpClientHandler.UseProxy = true;
+                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
             }
-            catch (Exception ex)
+            using (HttpClient client = new(httpClientHandler))
             {
-                LogHelper.WriteErrorLog(ex);
-                throw;
+                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url))
+                {
+                    request.Content.Headers.TryAddWithoutValidation("ContentType", "text/html;charset=UTF-8");
+                    request.Content.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+                    request.Content.Headers.TryAddWithoutValidation("UserAgent", "Mozilla/5.0 (Windows NT 5.2; rv:12.0) Gecko/20100101 Firefox/12.0");
+                    var resp = await client.SendAsync(request);
+                    return  (await resp.Content.ReadAsStringAsync(), request.RequestUri.ToString());
+                }
             }
         }
 
-        /// <summary>
-        /// get方法
-        /// </summary>
-        /// <param name="url">地址</param>
-        /// <param name="headers">头部信息的键值对</param>
-        /// <param name="timeout">超时时间，默认为60000毫秒（1分钟）</param>
-        /// <returns></returns>
-        public static Stream GetHttpResponseStream(string url, out string jumpUrl, IDictionary<string, string> headers = null, int timeout = 60000)
+        public static async Task<string> GetHttpResponseStringAsync(string url)
         {
             try
             {
-                ServicePointManager.DefaultConnectionLimit = 50;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-
-                request.KeepAlive = false;
-                request.ContentType = "text/html;charset=UTF-8";
-                request.Timeout = timeout;
-                request.Method = "GET";
-                request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-                //request.Headers.Add("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3");
-                request.UserAgent = "Mozilla/5.0 (Windows NT 5.2; rv:12.0) Gecko/20100101 Firefox/12.0";
-
-                //request.ContentType = "application/x-www-form-urlencoded";
-
-                //往头部加入自定义验证信息 Authorization
-                if (headers is not null)
+                HttpClientHandler httpClientHandler = new HttpClientHandler();
+                if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
                 {
-                    var property = typeof(WebHeaderCollection).GetProperty("InnerCollection", BindingFlags.Instance | BindingFlags.NonPublic);
-
-                    if (property is not null)
+                    httpClientHandler.UseProxy = true;
+                    httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
+                }
+                using (HttpClient client = new (httpClientHandler))
+                {
+                    using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url))
                     {
-                        //往头部加信息
-                        foreach (KeyValuePair<string, string> header in headers)
-                        {
-                            if (property.GetValue(header, null) is NameValueCollection collection)
-                                collection[header.Key] = header.Value;
-                        }
+                        request.Content.Headers.TryAddWithoutValidation("ContentType", "text/html;charset=UTF-8");
+                        request.Content.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+                        request.Content.Headers.TryAddWithoutValidation("UserAgent", "Mozilla/5.0 (Windows NT 5.2; rv:12.0) Gecko/20100101 Firefox/12.0");
+                        var resp = await client.SendAsync(request);
+                        return await resp.Content.ReadAsStringAsync();
                     }
                 }
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                jumpUrl = response.ResponseUri.ToString();
-                return response.GetResponseStream();
             }
             catch (Exception ex)
             {
@@ -104,7 +75,13 @@ namespace GreenOnions.Utility.Helper
         {
             bool retry = true;
         IL_Retry:;
-            using (HttpClient httpClient = new HttpClient())
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
+            {
+                httpClientHandler.UseProxy = true;
+                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
+            }
+            using (HttpClient httpClient = new HttpClient(httpClientHandler))
             {
                 try
                 {
@@ -140,7 +117,13 @@ namespace GreenOnions.Utility.Helper
 
         public static async Task DownloadImageFileAsync(string url, string fileName)
         {
-            using (HttpClient client = new HttpClient())
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
+            {
+                httpClientHandler.UseProxy = true;
+                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
+            }
+            using (HttpClient client = new HttpClient(httpClientHandler))
             {
                 byte[] file = await client.GetByteArrayAsync(url);
                 string cacheDir = Path.GetDirectoryName(fileName);

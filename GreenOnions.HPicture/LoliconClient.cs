@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GreenOnions.HPicture.Items;
@@ -87,7 +88,13 @@ namespace GreenOnions.HPicture
 
         private static async Task<JToken> RequestLolicon(string strUrl)
         {
-            using HttpClient client = new();
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
+            {
+                httpClientHandler.UseProxy = true;
+                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
+            }
+            using HttpClient client = new(httpClientHandler);
             HttpResponseMessage resp = await client.GetAsync(strUrl);
             string resultValue = await resp.Content.ReadAsStringAsync();
 

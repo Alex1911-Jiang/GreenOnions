@@ -9,6 +9,9 @@ namespace GreenOnions.Utility
     {
 
         #region -- 核心配置项 --
+
+        public string ProxyUrl { get; set; } = "";
+
         public int LogLevel { get; set; } = 2;
 
         public long QQId { get; set; } = 0;

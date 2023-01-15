@@ -1106,7 +1106,13 @@ namespace GreenOnions.PictureSearcher
         [Obsolete]
         private static async Task<string> CheckCatRoute(long id, int p = -1)
         {
-            using (var httpClient = new HttpClient())
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
+            {
+                httpClientHandler.UseProxy = true;
+                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
+            }
+            using (HttpClient httpClient = new (httpClientHandler))
             {
                 string index = "";
                 if (p != -1)
