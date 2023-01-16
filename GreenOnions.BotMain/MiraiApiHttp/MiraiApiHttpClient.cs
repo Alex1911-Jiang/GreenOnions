@@ -78,9 +78,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 BotInfo.Config.QQId = session.QQNumber!.Value;
 
-                BotInfo.IsLogin = true;
-
-                GreenOnionsApi greenOnionsApi = new GreenOnionsApi(
+                GreenOnionsApi greenOnionsApi = new (
                     async (targetId, msg) => 
                     {
                         int sendedFriendMessageId = await session.SendFriendMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend));

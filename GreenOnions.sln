@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Utility", "Gree
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Translate", "GreenOnions.Translate\GreenOnions.Translate.csproj", "{FBF75ADA-8754-44A2-8B40-EFCB352B036E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotManagerConsole", "GreenOnions.BotManagerConsole\GreenOnions.BotManagerConsole.csproj", "{219D4C6E-2799-4780-9BD5-F42AD10857B4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Repeater", "GreenOnions.Repeater\GreenOnions.Repeater.csproj", "{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.RSS", "GreenOnions.RSS\GreenOnions.RSS.csproj", "{74B0D271-D77D-494E-9DDC-F7E8538C2241}"
@@ -29,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.Command", "Gree
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotManagerWindows", "GreenOnions.BotManagerWindows\GreenOnions.BotManagerWindows.csproj", "{A1F5AFF4-53B6-4D5F-A37E-2F4C7C208C26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.MessageTransfer", "GreenOnions.MessageTransfer\GreenOnions.MessageTransfer.csproj", "{C7CAE0B9-4EE8-41B0-87ED-CD31B6A6D92D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.MessageTransfer", "GreenOnions.MessageTransfer\GreenOnions.MessageTransfer.csproj", "{C7CAE0B9-4EE8-41B0-87ED-CD31B6A6D92D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.BotManagerConsole", "GreenOnions.BotManagerConsole\GreenOnions.BotManagerConsole.csproj", "{D91E4A47-BB9A-4DF5-B0A6-2F8F66F4739A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,6 @@ Global
 		{FBF75ADA-8754-44A2-8B40-EFCB352B036E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBF75ADA-8754-44A2-8B40-EFCB352B036E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBF75ADA-8754-44A2-8B40-EFCB352B036E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{219D4C6E-2799-4780-9BD5-F42AD10857B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{219D4C6E-2799-4780-9BD5-F42AD10857B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{219D4C6E-2799-4780-9BD5-F42AD10857B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{219D4C6E-2799-4780-9BD5-F42AD10857B4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CD8B2EC-015B-42CE-B0E2-020A9C98313D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,6 +89,10 @@ Global
 		{C7CAE0B9-4EE8-41B0-87ED-CD31B6A6D92D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7CAE0B9-4EE8-41B0-87ED-CD31B6A6D92D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7CAE0B9-4EE8-41B0-87ED-CD31B6A6D92D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D91E4A47-BB9A-4DF5-B0A6-2F8F66F4739A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D91E4A47-BB9A-4DF5-B0A6-2F8F66F4739A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D91E4A47-BB9A-4DF5-B0A6-2F8F66F4739A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D91E4A47-BB9A-4DF5-B0A6-2F8F66F4739A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
