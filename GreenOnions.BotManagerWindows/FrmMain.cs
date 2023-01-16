@@ -145,46 +145,49 @@ namespace GreenOnions.BotManagerWindows
 
 		private void Connecting(bool bConnect, long qqId, string ip, ushort port, string verifyKey, string nickNameOrErrorMessage, int platform, string protocolName)
 		{
-			if (bConnect)
+			Invoke(() =>
 			{
-				lblState.Text = $"连接状态: 已连接到{protocolName}, 登录昵称:{nickNameOrErrorMessage}";
-				lblState.ForeColor = Color.Black;
+				if (bConnect)
+				{
+					lblState.Text = $"连接状态: 已连接到{protocolName}, 登录昵称:{nickNameOrErrorMessage}";
+					lblState.ForeColor = Color.Black;
 
-				btnConnectToMiraiApiHttp.Text = "断开连接";
-				btnConnectToMiraiApiHttp.Click -= btnConnectToMiraiApiHttp_Click;
-				btnConnectToMiraiApiHttp.Click += btnDeconnect_Click;
+					btnConnectToMiraiApiHttp.Text = "断开连接";
+					btnConnectToMiraiApiHttp.Click -= btnConnectToMiraiApiHttp_Click;
+					btnConnectToMiraiApiHttp.Click += btnDeconnect_Click;
 
-				btnConnectToCqHttp.Text = "断开连接";
-				btnConnectToCqHttp.Click -= btnConnectToCqHttp_Click;
-				btnConnectToCqHttp.Click += btnDeconnect_Click;
+					btnConnectToCqHttp.Text = "断开连接";
+					btnConnectToCqHttp.Click -= btnConnectToCqHttp_Click;
+					btnConnectToCqHttp.Click += btnDeconnect_Click;
 
-				notifyIcon.Text = $"葱葱机器人:{nickNameOrErrorMessage}";
+					notifyIcon.Text = $"葱葱机器人:{nickNameOrErrorMessage}";
 
-				BotInfo.Config.QQId = qqId;
-				BotInfo.Config.IP = ip;
-				BotInfo.Config.Port = port;
-				BotInfo.Config.VerifyKey = verifyKey;
+					BotInfo.Config.QQId = qqId;
+					BotInfo.Config.IP = ip;
+					BotInfo.Config.Port = port;
+					BotInfo.Config.VerifyKey = verifyKey;
 
-				BotInfo.SaveConfigFile();
+					BotInfo.SaveConfigFile();
 
-				WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnect);
+					WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnect);
 
-				webBrowserForm.Show();
-			}
-			else if (nickNameOrErrorMessage is null)  //连接失败且没有异常
-			{
-				MessageBox.Show($"连接失败，请检查{protocolName}是否已经正常启动并已配置IP端口相关参数, 以及机器人QQ是否成功登录。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-			}
-			else  //发生异常或主动断开连接
-			{
-				btnConnectToMiraiApiHttp.Text = "连接到mirai-api-http";
-				btnConnectToCqHttp.Text = "连接到cqhttp";
-				lblState.Text = $"连接状态: 未连接到机器人平台";
-				lblState.ForeColor = Color.Red;
-				notifyIcon.Text = $"葱葱机器人";
-				if (nickNameOrErrorMessage.Length > 0)  //发生异常
-					MessageBox.Show("连接失败，" + nickNameOrErrorMessage, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+					webBrowserForm.Show();
+				}
+				else if (nickNameOrErrorMessage is null)  //连接失败且没有异常
+				{
+					MessageBox.Show($"连接失败，请检查{protocolName}是否已经正常启动并已配置IP端口相关参数, 以及机器人QQ是否成功登录。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				}
+				else  //发生异常或主动断开连接
+				{
+					btnConnectToMiraiApiHttp.Text = "连接到mirai-api-http";
+					btnConnectToCqHttp.Text = "连接到cqhttp";
+					lblState.Text = $"连接状态: 未连接到机器人平台";
+					lblState.ForeColor = Color.Red;
+					notifyIcon.Text = $"葱葱机器人";
+					if (nickNameOrErrorMessage.Length > 0)  //发生异常
+						MessageBox.Show("连接失败，" + nickNameOrErrorMessage, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			});
 		}
 
 		private bool CheckInfo()

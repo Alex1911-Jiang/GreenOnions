@@ -67,9 +67,7 @@ namespace GreenOnions.BotMain.CqHttp
 
                     ConnectedEvent?.Invoke(true, nickname);
 
-                    BotInfo.IsLogin = true;
-
-                    GreenOnionsApi greenOnionsApi = new GreenOnionsApi(
+                    GreenOnionsApi greenOnionsApi = new (
                         async (targetId, msg) =>
                         {
                             int sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateMessage(targetId, msg.ToCqHttpMessages())).messageId;
@@ -97,6 +95,8 @@ namespace GreenOnions.BotMain.CqHttp
                         async (groupId, memberId) => (await eventArgs.SoraApi.GetGroupMemberInfo(groupId, memberId)).memberInfo.ToGreenOnionsMemberInfo());
 
                     BotInfo.API = greenOnionsApi;
+
+                    BotInfo.IsLogin = true;
 
                     try
                     {
