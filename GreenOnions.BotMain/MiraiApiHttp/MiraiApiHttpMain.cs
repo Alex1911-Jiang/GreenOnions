@@ -14,9 +14,16 @@ using Mirai_CSharp.VoiceConverter.DependencyInjection;
 
 namespace GreenOnions.BotMain.MiraiApiHttp
 {
-    public static class MiraiApiHttpMain
+    public class MiraiApiHttpClient : MiraiClient
     {
-        public static async Task Connect(long qqId, string ip, ushort port, string authKey, Action<bool, string> ConnectedEvent)
+        private CancellationTokenSource? _ts;
+
+        public MiraiApiHttpClient(Action<bool, string> connectedEvent) : base(connectedEvent)
+        { 
+        
+        }
+
+        public override async Task Connect(long qqId, string ip, ushort port, string authKey)
         {
             try
             {
@@ -55,9 +62,8 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 IMiraiHttpSession session = services.GetRequiredService<IMiraiHttpSession>(); // 大部分服务都基于接口注册, 请使用接口作为类型解析
 
-                CancellationTokenSource ts = new CancellationTokenSource();
-
-                await session.ConnectAsync(qqId, ts.Token); // 填入期望连接到的机器人QQ号
+                _ts = new CancellationTokenSource();
+                await session.ConnectAsync(qqId, _ts.Token); // 填入期望连接到的机器人QQ号
 
                 BotInfo.Cache.SetTaskAtFixedTime();
 
@@ -103,6 +109,8 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 BotInfo.API = greenOnionsApi;
 
+                BotInfo.IsLogin = session.Connected;
+
                 try
                 {
                     RssHelper.StartRssTask(greenOnionsApi);
@@ -115,35 +123,15 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
                 PluginManager.Connected(BotInfo.Config.QQId, greenOnionsApi);
 
-                while (true)
+                if (BotInfo.Config.LeaveGroupAfterBeMushin)  //自动退出被禁言的群
                 {
-                    if (BotInfo.Config.LeaveGroupAfterBeMushin)  //自动退出被禁言的群
+                    var groups = await session.GetGroupListAsync();
+                    foreach (var group in groups)
                     {
-                        try
-                        {
-                            var groups = await session.GetGroupListAsync();
-                            foreach (var group in groups)
-                            {
-                                var selfInfo = await session.GetGroupMemberInfoAsync(session.QQNumber!.Value, group.Id);
-                                if (selfInfo.MuteTimeRemaining > TimeSpan.FromSeconds(1))
-                                    await session.LeaveGroupAsync(group.Id);
-                            }
-                        }
-                        catch  //在被禁言事件中退群后可能引发异常
-                        {
-                        }
+                        var selfInfo = await session.GetGroupMemberInfoAsync(session.QQNumber!.Value, group.Id);
+                        if (selfInfo.MuteTimeRemaining > TimeSpan.FromSeconds(1))
+                            await session.LeaveGroupAsync(group.Id);
                     }
-
-                    BotInfo.IsLogin = true;
-                    if (Console.ReadLine() == "exit")
-                    {
-                        BotInfo.IsLogin = false;
-                        PluginManager.Disconnected();
-                        ts.Cancel();
-                        ConnectedEvent?.Invoke(false, "");
-                        break;
-                    }
-                    await Task.Delay(100);
                 }
             }
             catch (Exception ex)
@@ -151,6 +139,15 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 LogHelper.WriteErrorLog(ex);
                 ConnectedEvent?.Invoke(false, ex.Message);
             }
+        }
+
+        public override Task Disconnect()
+        {
+            BotInfo.IsLogin = false;
+            PluginManager.Disconnected();
+            _ts?.Cancel();
+            ConnectedEvent?.Invoke(false, "");
+            return Task.CompletedTask;
         }
     }
 }

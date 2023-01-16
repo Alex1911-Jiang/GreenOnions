@@ -1,22 +1,23 @@
 ﻿using GreenOnions.BotMain;
 using GreenOnions.BotMain.CqHttp;
 using GreenOnions.BotMain.MiraiApiHttp;
-using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 
 namespace GreenOnions.BotManagerWindows
 {
-    public partial class FrmMain : Form
+	public partial class FrmMain : Form
 	{
 		private WebBrowserForm webBrowserForm;
 		private bool _connecting;
+		private MiraiClient _miraiClient;
+
 		public FrmMain()
 		{
 			InitializeComponent();
 
-            webBrowserForm = new WebBrowserForm();
-            EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocument;
+			webBrowserForm = new WebBrowserForm();
+			EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocument;
 
 			#region -- 读取配置 --
 			try
@@ -39,9 +40,9 @@ namespace GreenOnions.BotManagerWindows
 			#endregion -- 读取配置 --
 		}
 
-        protected override void OnShown(EventArgs e)
-        {
-            base.OnShown(e);
+		protected override void OnShown(EventArgs e)
+		{
+			base.OnShown(e);
 
 			Task.Run(() =>
 			{
@@ -54,17 +55,14 @@ namespace GreenOnions.BotManagerWindows
 				{
 					Task.Delay(BotInfo.Config.AutoConnectDelay * 1000).Wait();
 					WorkingTimeRecorder.DoWork = true;
-					if (BotInfo.Config.AutoConnectProtocol == 0)
-						ConnectToMiraiApiHttp();
-					else
-						ConnectToCqHttp();
+					ConnectToPlatform(BotInfo.Config.AutoConnectProtocol);
 				}
 			});
 		}
 
-        protected override void OnSizeChanged(EventArgs e)
-        {
-            base.OnSizeChanged(e);
+		protected override void OnSizeChanged(EventArgs e)
+		{
+			base.OnSizeChanged(e);
 			if (WindowState == FormWindowState.Minimized)
 			{
 				if (chkMinimizeToTray.Checked)
@@ -76,45 +74,34 @@ namespace GreenOnions.BotManagerWindows
 			}
 		}
 
-		private void ConnectToPlatform(int platform)
+		private async void ConnectToPlatform(int platform)
 		{
-            switch (platform)
-            {
-                case 0:
-					ConnectToMiraiApiHttp();
-					break;
-				case 1:
-					ConnectToCqHttp();
-					break;
-			}
-        }
+			WorkingTimeRecorder.DoWork = true;
+			if (_connecting)
+				return;
 
-		public void ConnectToMiraiApiHttp(long qqId, string ip, ushort port, string verifyKey)
-		{
-            try
-            {
-                MiraiApiHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 0, "mirai-api-http"))));
-            }
-            catch (Exception ex)
-			{
-				LogHelper.WriteErrorLogWithUserMessage("连接到mirai-api-http发生异常", ex);
-                MessageBox.Show("连接mirai-api-http失败" + ex.Message);
-            }
-			_connecting = false;
-		}
+			_connecting = true;
+			if (!CheckInfo())
+				return;
 
-		public void ConnectToCqHttp(long qqId, string ip, ushort port, string verifyKey)
-		{
 			try
 			{
-                CqHttpMain.Connect(qqId, ip, port, verifyKey, (bConnect, nickNameOrErrorMessage) => Invoke(new Action(() => Connecting(bConnect, qqId, ip, port, verifyKey, nickNameOrErrorMessage, 1, "cqhttp"))));
+				_miraiClient = platform switch
+				{
+					0 => new MiraiApiHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, nickNameOrErrorMessage, 0, "mirai-api-http")),
+					1 => new CqHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, nickNameOrErrorMessage, 1, "cqhttp")),
+					_ => throw new NotImplementedException(),
+				};
+				await _miraiClient.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey);
 			}
 			catch (Exception ex)
 			{
-				LogHelper.WriteErrorLogWithUserMessage("连接到cqhttp发生异常", ex);
-                MessageBox.Show("连接cqhttp失败" + ex.Message);
-            }
-			_connecting = false;
+				MessageBox.Show($"连接失败：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			finally
+			{
+				_connecting = false;
+			}
 		}
 
 		private void btnDeconnect_Click(object? sender, EventArgs e)
@@ -123,10 +110,9 @@ namespace GreenOnions.BotManagerWindows
 			Disconnect();
 		}
 
-		private void Disconnect()
-        {
-			TextReader sr = new StringReader("exit");
-			Console.SetIn(sr);
+		private async void Disconnect()
+		{
+			await _miraiClient.Disconnect();
 
 			btnConnectToMiraiApiHttp.Click -= btnDeconnect_Click;
 			btnConnectToMiraiApiHttp.Click += btnConnectToMiraiApiHttp_Click;
@@ -137,46 +123,20 @@ namespace GreenOnions.BotManagerWindows
 
 		private void btnConnectToMiraiApiHttp_Click(object? sender, EventArgs e)
 		{
-			WorkingTimeRecorder.DoWork = true;
-			ConnectToMiraiApiHttp();
-		}
-
-		private void ConnectToMiraiApiHttp()
-		{
-			if (!_connecting)
-			{
-				if (CheckInfo())
-				{
-					_connecting = true;
-					ConnectToMiraiApiHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text);
-				}
-			}
+			ConnectToPlatform(0);
 		}
 
 		private void btnConnectToCqHttp_Click(object? sender, EventArgs e)
 		{
-			WorkingTimeRecorder.DoWork = true;
-			ConnectToCqHttp();
-        }
-
-		private void ConnectToCqHttp()
-		{
-			if (!_connecting)
-			{
-				if (CheckInfo())
-				{
-					_connecting = true;
-					ConnectToCqHttp(Convert.ToInt64(txbQQ.Text), txbIP.Text, Convert.ToUInt16(txbPort.Text), txbVerifyKey.Text);
-				}
-			}
+			ConnectToPlatform(1);
 		}
 
 		private void btnBotSettings_Click(object sender, EventArgs e) => OpenSetting();
 
-        private void OpenSetting() => new FrmAppSetting().ShowDialog();
+		private void OpenSetting() => new FrmAppSetting().ShowDialog();
 
-        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
+		private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
 			Visible = true;
 			ShowInTaskbar = true;
 			WindowState = FormWindowState.Normal;
@@ -184,7 +144,7 @@ namespace GreenOnions.BotManagerWindows
 		}
 
 		private void Connecting(bool bConnect, long qqId, string ip, ushort port, string verifyKey, string nickNameOrErrorMessage, int platform, string protocolName)
-        {
+		{
 			if (bConnect)
 			{
 				lblState.Text = $"连接状态: 已连接到{protocolName}, 登录昵称:{nickNameOrErrorMessage}";
@@ -200,12 +160,12 @@ namespace GreenOnions.BotManagerWindows
 
 				notifyIcon.Text = $"葱葱机器人:{nickNameOrErrorMessage}";
 
-                BotInfo.Config.QQId = qqId;
-                BotInfo.Config.IP = ip;
-                BotInfo.Config.Port = port;
-                BotInfo.Config.VerifyKey = verifyKey;
+				BotInfo.Config.QQId = qqId;
+				BotInfo.Config.IP = ip;
+				BotInfo.Config.Port = port;
+				BotInfo.Config.VerifyKey = verifyKey;
 
-                BotInfo.SaveConfigFile();
+				BotInfo.SaveConfigFile();
 
 				WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnect);
 
@@ -228,11 +188,11 @@ namespace GreenOnions.BotManagerWindows
 		}
 
 		private bool CheckInfo()
-        {
-            if (BotInfo.IsLogin)
-            {
+		{
+			if (BotInfo.IsLogin)
+			{
 				return false;
-            }
+			}
 			if (string.IsNullOrEmpty(txbQQ.Text))
 			{
 				MessageBox.Show("请先输入机器人QQ号。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -252,18 +212,18 @@ namespace GreenOnions.BotManagerWindows
 			{
 				MessageBox.Show("请先输入机器人平台连接凭证。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				return false;
-            }
+			}
 
-            BotInfo.Config.QQId = Convert.ToInt64(txbQQ.Text);
-            BotInfo.Config.IP = txbIP.Text;
-            BotInfo.Config.Port = Convert.ToUInt16(txbPort.Text);
-            BotInfo.Config.VerifyKey = txbVerifyKey.Text;
+			BotInfo.Config.QQId = Convert.ToInt64(txbQQ.Text);
+			BotInfo.Config.IP = txbIP.Text;
+			BotInfo.Config.Port = Convert.ToUInt16(txbPort.Text);
+			BotInfo.Config.VerifyKey = txbVerifyKey.Text;
 			return true;
 		}
 
-        private void btnPlugins_Click(object sender, EventArgs e)
-        {
+		private void btnPlugins_Click(object sender, EventArgs e)
+		{
 			new FrmPlugins().ShowDialog();
 		}
-    }
+	}
 }
