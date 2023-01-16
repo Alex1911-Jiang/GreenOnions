@@ -1,4 +1,5 @@
-﻿using GreenOnions.Interface;
+﻿using System.Net.Sockets;
+using GreenOnions.Interface;
 using GreenOnions.RSS;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
@@ -48,7 +49,7 @@ namespace GreenOnions.BotMain.CqHttp
                 });
                 if (connectCancel)
                 {
-                    return;
+                    throw new SocketException(10061);
                 }
 
                 SoraApi api = null;
@@ -128,7 +129,7 @@ namespace GreenOnions.BotMain.CqHttp
             catch (Exception ex)
             {
                 LogHelper.WriteErrorLog(ex);
-                ConnectedEvent(false, ex.Message);
+                ConnectedEvent(false, $"{ex.Message} ({ip}:{port}) OneBot/Cqhttp");
             }
         }
 

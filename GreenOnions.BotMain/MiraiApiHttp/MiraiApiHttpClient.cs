@@ -135,7 +135,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             catch (Exception ex)
             {
                 LogHelper.WriteErrorLog(ex);
-                ConnectedEvent?.Invoke(false, ex.Message);
+                ConnectedEvent?.Invoke(false, $"{ex.Message} mirai-api-http");
             }
         }
 
