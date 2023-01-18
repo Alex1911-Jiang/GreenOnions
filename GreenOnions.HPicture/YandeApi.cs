@@ -39,7 +39,7 @@ namespace GreenOnions.HPicture
             if (tag != _lastTag)
             {
                 _lastTag = tag;
-                _api = await YandeClient.CreateNew(false, true, tag);
+                _api = await YandeClient.CreateNew(false, true, tag, BotInfo.Config.ProxyUrl);
             }
         }
     }
