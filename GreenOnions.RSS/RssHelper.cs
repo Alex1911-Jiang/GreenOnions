@@ -182,7 +182,6 @@ namespace GreenOnions.RSS
                         LogInfo($"{item.Url}的Rss规范类型为Content");
                         await foreach (var rss in ReadRssContent(nodeList, BotInfo.LastOneSendRssTime[item.Url]))  //每条订阅地址可能获取到若干条更新
                         {
-                            LogInfo($"{item.Url}更新时间晚于记录时间, 需要推送消息");
                             if (!FilterMessage(item, rss.Description))
                                 continue;
                             await SendRssMessage(item, api, title, thuImgUrl, rss);
@@ -193,7 +192,6 @@ namespace GreenOnions.RSS
                         LogInfo($"{item.Url}的Rss规范类型为Atom");
                         await foreach (var rss in ReadRssAtom(nodeList, BotInfo.LastOneSendRssTime[item.Url]))  //每条订阅地址可能获取到若干条更新
                         {
-                            LogInfo($"{item.Url}更新时间晚于记录时间, 需要推送消息");
                             if (!FilterMessage(item, rss.Description))
                                 continue;
                             await SendRssMessage(item, api, title, thuImgUrl, rss);
@@ -269,6 +267,8 @@ namespace GreenOnions.RSS
                 if (item.ForwardQQs?.Length > 0)
                 {
                     GreenOnionsMessages friendResultMsg = new() { titleMsg };  //标题
+
+                    friendResultMsg.AddRange(rss.Messages);  //正文
 
                     if (!string.IsNullOrWhiteSpace(translateMsg))
                         friendResultMsg.Add(translateMsg);  //翻译
@@ -522,6 +522,7 @@ namespace GreenOnions.RSS
                         DateTime pubDate = DateTime.Parse(noteDate.InnerText);
                         if (pubDate > lastUpdateTime)
                         {
+                            LogInfo($"抓取到的内容更新时间 {pubDate} 晚于记录的时间 {lastUpdateTime} 需要发送");
                             string description = string.Empty, link = string.Empty, author = string.Empty;
                             foreach (XmlNode subNode in node.ChildNodes)
                             {
@@ -626,7 +627,10 @@ namespace GreenOnions.RSS
                             yield return new(outMsg, description, pubDate, link, author);
                         }
                         else
+                        {
+                            LogInfo($"抓取到的内容更新时间 {pubDate} 早于记录的时间 {lastUpdateTime} 无需发送");
                             yield break;
+                        }
                     }
                 }
             }
