@@ -20,14 +20,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.9-preview.1" />
-    <PackageReference Include="Mirai-CSharp.ImageConverter" Version="2.1.9-preview.1" />
+    <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.9" />
+    <PackageReference Include="Mirai-CSharp.ImageConverter" Version="2.1.9" />
     <PackageReference Include="Mirai-CSharp.NativeAssets.LinuxArm" Version="1.0.2" />
     <PackageReference Include="Mirai-CSharp.NativeAssets.Win32" Version="1.0.2" />
     <PackageReference Include="Mirai-CSharp.NativeAssets.Linux" Version="1.0.2" />
-    <PackageReference Include="Mirai-CSharp.VoiceConverter" Version="2.1.9-preview.1" />
+    <PackageReference Include="Mirai-CSharp.VoiceConverter" Version="2.1.9" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3" />
-    <PackageReference Include="Sora" Version="1.0.0-rc.78" />
+    <PackageReference Include="Sora" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GreenOnions.Command\GreenOnions.Command.csproj" />

@@ -45,19 +45,31 @@ namespace GreenOnions.Interface
         {
             try
             {
-                byte[] arr = new byte[stream.Length];
-                stream.Position = 0;
-                stream.Read(arr, 0, (int)stream.Length);
-                stream.Close();
-                string base64Img = Convert.ToBase64String(arr);
-                if (dispose)
-                    stream.Dispose();
-                return base64Img;
+                using (MemoryStream ms = StreamToMemoryStream(stream))
+                {
+                    string base64Img = Convert.ToBase64String(ms.ToArray());
+                    if (dispose)
+                        stream.Dispose();
+                    return base64Img;
+                }
             }
             catch
             {
                 return null;
             }
+        }
+
+        private static MemoryStream StreamToMemoryStream(Stream instream)
+        {
+            MemoryStream outstream = new MemoryStream();
+            const int bufferLen = 4096;
+            byte[] buffer = new byte[bufferLen];
+            int count;
+            while ((count = instream.Read(buffer, 0, bufferLen)) > 0)
+            {
+                outstream.Write(buffer, 0, count);
+            }
+            return outstream;
         }
 
         /// <summary>

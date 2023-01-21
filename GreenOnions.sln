@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotManagerWindo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.MessageTransfer", "GreenOnions.MessageTransfer\GreenOnions.MessageTransfer.csproj", "{C7CAE0B9-4EE8-41B0-87ED-CD31B6A6D92D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.BotManagerConsole", "GreenOnions.BotManagerConsole\GreenOnions.BotManagerConsole.csproj", "{D91E4A47-BB9A-4DF5-B0A6-2F8F66F4739A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOnions.BotManagerConsole", "GreenOnions.BotManagerConsole\GreenOnions.BotManagerConsole.csproj", "{D91E4A47-BB9A-4DF5-B0A6-2F8F66F4739A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

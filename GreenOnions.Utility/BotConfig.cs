@@ -88,11 +88,6 @@ namespace GreenOnions.Utility
         public string PixivProxy { get; set; } = "pixiv.re";
 
         /// <summary>
-        /// 保留所有下载的图片用于缓存
-        /// </summary>
-        public bool DownloadImage4Caching { get; set; } = true;
-
-        /// <summary>
         /// 所有图片下载到本地再发送文件
         /// </summary>
         public bool SendImageByFile { get; set; } = false;

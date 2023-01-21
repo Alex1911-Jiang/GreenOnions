@@ -29,13 +29,8 @@ namespace GreenOnions.HPicture
             if (BotInfo.Config.HPictureSendTags)
                 sb.AppendLine($"标签:{item.Tags}");
             outMessage.Add(sb);
-
-            string extension = Path.GetExtension(item.URL);
-            string size = BotInfo.Config.HPictureSize1200 ? "_1200" : "";
-            string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ID}_{item.P}{size}{extension}");
-            GreenOnionsImageMessage imgMsg = await CreateImageMessageByUrlAsync(item.URL, imgCacheName);
+            GreenOnionsImageMessage imgMsg = await ImageHelper.CreateImageMessageByUrlAsync(item.URL);
             outMessage.Add(imgMsg);
-
             return outMessage;
         }
 
@@ -49,42 +44,10 @@ namespace GreenOnions.HPicture
                 sb.AppendLine($"标签:{string.Join(", ", item.Tags)}");
             outMessage.Add(sb);
 
-            string imgCacheName = Path.Combine(ImageHelper.ImagePath, $"{item.ShowPageUrl.Substring("/post/show/".Length)}.png");
-            GreenOnionsImageMessage imgMsg = await CreateImageMessageByUrlAsync(item.BigImgUrl, imgCacheName);
+            GreenOnionsImageMessage imgMsg = await ImageHelper.CreateImageMessageByUrlAsync(item.BigImgUrl);
             outMessage.Add(imgMsg);
 
             return outMessage;
-        }
-
-        /// <summary>
-        /// 根据图片URL创建一个图片消息
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="cacheName"></param>
-        /// <returns></returns>
-        private static async Task<GreenOnionsImageMessage> CreateImageMessageByUrlAsync(string url, string cacheName)
-        {
-            GreenOnionsImageMessage imageMsg = null;
-            if (File.Exists(cacheName) && new FileInfo(cacheName).Length > 0) //存在本地缓存时优先使用缓存
-            {
-                imageMsg = new GreenOnionsImageMessage(cacheName);
-            }
-            else
-            {
-                if (BotInfo.Config.SendImageByFile)  //下载完成后发送文件
-                {
-                    await HttpHelper.DownloadImageFileAsync(url, cacheName);
-                    if (File.Exists(cacheName))
-                        imageMsg = new GreenOnionsImageMessage(cacheName);
-                }
-                else  //直接发送地址
-                {
-                    imageMsg = new GreenOnionsImageMessage(url);
-                    if (BotInfo.Config.DownloadImage4Caching)
-                        _ = HttpHelper.DownloadImageFileAsync(url, cacheName);  //下载图片用于缓存
-                }
-            }
-            return imageMsg;
         }
     }
 }

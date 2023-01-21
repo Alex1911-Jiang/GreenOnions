@@ -94,49 +94,10 @@ namespace GreenOnions.Utility.Helper
             Error = 2,
         }
 
-        public CheckedPornStatus CheckImageHealth(string localFileName, out string errorMessage)
+        public async Task<CheckedPornStatus> CheckImageHealth(Stream stream)
         {
-            errorMessage = "";
-            try
-            {
-                string strScore = CheckImagePornScore(localFileName, null, null).Result;
-                return CheckHealthed(strScore);
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return CheckedPornStatus.Error;
-            }
-        }
-
-        public CheckedPornStatus CheckImageHealth(byte[] file, out string errorMessage)
-        {
-            errorMessage = "";
-            try
-            {
-                string strScore = CheckImagePornScore(null,file,null).Result;
-                return CheckHealthed(strScore);
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return CheckedPornStatus.Error;
-            }
-        }
-
-        public CheckedPornStatus CheckImageHealth(Stream stream, out string errorMessage)
-        {
-            errorMessage = "";
-            try
-            {
-                string strScore = CheckImagePornScore(null, null, stream).Result;
-                return CheckHealthed(strScore);
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return CheckedPornStatus.Error;
-            }
+            string strScore = await CheckImagePornScore(null, null, stream);
+            return CheckHealthed(strScore);
         }
 
         private CheckedPornStatus CheckHealthed(string strScore)

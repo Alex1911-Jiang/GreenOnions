@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TencentCloud.Apigateway.V20180808.Models;
@@ -56,28 +57,18 @@ namespace GreenOnions.Translate
 
         private static async Task<string> Post(string url, Dictionary<string, string> dic)
         {
-            HttpClientHandler httpClientHandler = new HttpClientHandler();
-            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
-            {
-                httpClientHandler.UseProxy = true;
-                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
-            }
-            using (HttpClient client = new HttpClient(httpClientHandler))
-            {
-                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url))
-                {
-                    MultipartFormDataContent form = new MultipartFormDataContent();
-                    foreach (var item in dic)
-                        form.Add(new StringContent(item.Value, Encoding.UTF8, "application/x-www-form-urlencoded"), item.Key);
-                    request.Content = form;
-                    HttpResponseMessage resp = await client.SendAsync(request);
-                    string resultText = await resp.Content.ReadAsStringAsync();
-                    JToken jt = JsonConvert.DeserializeObject<JToken>(resultText);
-                    if (jt["translation"] is null)
-                        throw new Exception($"有道智云API返回错误，错误代码：{jt["errorCode"]}");
-                    return jt["translation"].First.ToString();
-                }
-            }
+            using HttpClient client = HttpHelper.CreateClient();
+            using HttpRequestMessage request = new(HttpMethod.Post, url);
+            MultipartFormDataContent form = new MultipartFormDataContent();
+            foreach (var item in dic)
+                form.Add(new StringContent(item.Value, Encoding.UTF8, "application/x-www-form-urlencoded"), item.Key);
+            request.Content = form;
+            HttpResponseMessage resp = await client.SendAsync(request);
+            string resultText = await resp.Content.ReadAsStringAsync();
+            JToken jt = JsonConvert.DeserializeObject<JToken>(resultText);
+            if (jt["translation"] is null)
+                throw new Exception($"有道智云API返回错误，错误代码：{jt["errorCode"]}");
+            return jt["translation"].First.ToString();
         }
 
         private static string Truncate(string q)

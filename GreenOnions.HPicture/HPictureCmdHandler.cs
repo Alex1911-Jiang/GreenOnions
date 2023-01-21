@@ -29,6 +29,10 @@ namespace GreenOnions.HPicture
 
         public async Task SendMessageAsync(long targetId, long? targetGroup, GreenOnionsMessages msgs, int? replyMsgId = null)
         {
+            if (msgs.Count == 0 || (msgs.First() is GreenOnionsTextMessage txm && string.IsNullOrWhiteSpace(txm.Text)))
+            {
+
+            }
             msgs.ReplyId = replyMsgId;
             if (targetGroup is null)
                 await BotInfo.API.SendFriendMessageAsync(targetId, msgs);
@@ -213,6 +217,7 @@ namespace GreenOnions.HPicture
         /// </summary>
         private async Task<bool> SendHPictures(string keyword, int num, bool r18, long senderId, long? senderGroup, int? replyMsgId)
         {
+            GreenOnionsMessages? onceHPictureMsg = null;
             try
             {
                 PictureSource pictureSource = await RandomHPictureSource(senderId, senderGroup, replyMsgId);
@@ -220,10 +225,7 @@ namespace GreenOnions.HPicture
                 {
                     case PictureSource.Lolicon:
                         await foreach (var item in LoliconClient.GetLoliconItems(keyword, num, r18))
-                        {
-                            GreenOnionsMessages onceHPictureMsg = await MessageCreater.CreateMessageByLoliconItemAsync(item);
-                            await SendOnceHPictureInner(onceHPictureMsg, senderId, senderGroup, replyMsgId);
-                        }
+                            onceHPictureMsg = await MessageCreater.CreateMessageByLoliconItemAsync(item);
                         break;
                     case PictureSource.Yande_re:
                         int sendCount = 0;
@@ -231,14 +233,14 @@ namespace GreenOnions.HPicture
                         {
                             if (sendCount >= num)
                                 break;
-                            GreenOnionsMessages onceHPictureMsg = await MessageCreater.CreateMessageByYandeItemAsync(item);
-                            await SendOnceHPictureInner(onceHPictureMsg, senderId, senderGroup, replyMsgId);
+                            onceHPictureMsg = await MessageCreater.CreateMessageByYandeItemAsync(item);
                             sendCount++;
                         }
                         break;
                     default:
                         throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员");  //应该不会来到这里
                 }
+                await SendOnceHPictureInner(onceHPictureMsg, senderId, senderGroup, replyMsgId);
             }
             catch (Exception ex)
             {

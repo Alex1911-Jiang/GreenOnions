@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using GreenOnions.Interface;
+using System.Threading.Tasks;
 
 namespace GreenOnions.Utility.Helper
 {
@@ -43,7 +45,7 @@ namespace GreenOnions.Utility.Helper
             return imageUrl;
         }
 
-        public static MemoryStream StreamAntiShielding(this MemoryStream ms)
+        public static Stream StreamAntiShielding(this Stream ms)
         {
             Bitmap bmp = new Bitmap(ms);
             ImageFormat format = bmp.RawFormat;
@@ -54,22 +56,22 @@ namespace GreenOnions.Utility.Helper
             return ms;
         }
 
-        public static MemoryStream RewindGifStream(this MemoryStream ms)
+        public static Stream RewindGifStream(this Stream ms)
         {
             return ms.MirrorImageStream(MirrorImageDirection.Time);
         }
 
-        public static MemoryStream HorizontalMirrorImageStream(this MemoryStream ms)
+        public static Stream HorizontalMirrorImageStream(this Stream ms)
         {
             return ms.MirrorImageStream(MirrorImageDirection.Horizontal);
         }
 
-        public static MemoryStream VerticalMirrorImageStream(this MemoryStream ms)
+        public static Stream VerticalMirrorImageStream(this Stream ms)
         {
             return ms.MirrorImageStream(MirrorImageDirection.Vertical);
         }
 
-        private static MemoryStream MirrorImageStream(this MemoryStream ms, MirrorImageDirection mirrorImageDirection )
+        private static Stream MirrorImageStream(this Stream ms, MirrorImageDirection mirrorImageDirection)
         {
             using (Bitmap img = new Bitmap(ms))
             {
@@ -184,7 +186,7 @@ namespace GreenOnions.Utility.Helper
                             img.VerticalFlip();
                             break;
                     }
-                    MemoryStream result = ms = new MemoryStream();
+                    MemoryStream result = new MemoryStream();
                     img.Save(ms, ImageFormat.Png);
                     ms.Dispose();
                     return result;
@@ -271,6 +273,20 @@ namespace GreenOnions.Utility.Helper
             Horizontal,
             Vertical,
             Time,
+        }
+
+        /// <summary>
+        /// 根据图片URL创建一个图片消息
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="cacheName"></param>
+        /// <returns></returns>
+        public static async Task<GreenOnionsImageMessage> CreateImageMessageByUrlAsync(string url)
+        {
+            if (BotInfo.Config.SendImageByFile)  //下载完成后发送文件
+                return new GreenOnionsImageMessage(await HttpHelper.GetStreamAsync(url));
+            else  //直接发送地址
+                return new GreenOnionsImageMessage(url);
         }
     }
 

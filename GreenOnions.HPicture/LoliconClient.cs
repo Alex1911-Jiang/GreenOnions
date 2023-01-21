@@ -74,7 +74,7 @@ namespace GreenOnions.HPicture
 
         private static string KeyworkToParams(string keyword)
         {
-            if (!string.IsNullOrWhiteSpace(keyword))
+            if (string.IsNullOrWhiteSpace(keyword))
                 return string.Empty;
 
             if (keyword.Contains('&') || keyword.Contains('|'))
@@ -88,15 +88,7 @@ namespace GreenOnions.HPicture
 
         private static async Task<JToken> RequestLolicon(string strUrl)
         {
-            HttpClientHandler httpClientHandler = new HttpClientHandler();
-            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
-            {
-                httpClientHandler.UseProxy = true;
-                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
-            }
-            using HttpClient client = new(httpClientHandler);
-            HttpResponseMessage resp = await client.GetAsync(strUrl);
-            string resultValue = await resp.Content.ReadAsStringAsync();
+            string resultValue = await HttpHelper.GetStringAsync(strUrl);
 
             JObject jo = JsonConvert.DeserializeObject<JObject>(resultValue);
             string err = jo["error"].ToString();

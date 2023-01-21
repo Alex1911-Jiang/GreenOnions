@@ -120,12 +120,6 @@ namespace GreenOnions.Interface.Configs
         public string PixivProxy { get; }
 
         /// <summary>
-        /// 保留所有下载的图片用于缓存
-        /// </summary>
-        [PropertyChineseName("保留所有下载的图片用于缓存", "核心")]
-        public bool DownloadImage4Caching { get; }
-
-        /// <summary>
         /// 所有图片下载到本地再发送文件
         /// </summary>
         [PropertyChineseName("所有图片下载到本地再发送文件", "核心")]

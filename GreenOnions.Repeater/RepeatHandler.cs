@@ -17,8 +17,8 @@ namespace GreenOnions.Repeater
             MessageItem tempMessageItem;
             if (message is GreenOnionsImageMessage imgMsg)
             {
-                using (MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStreamAsync(imgMsg.Url))
-                    tempMessageItem = new MessageItem(imgMsg.GetType(), ms.ToBase64());
+                using (Stream img = await HttpHelper.GetStreamAsync(imgMsg.Url))
+                    tempMessageItem = new MessageItem(imgMsg.GetType(), img.ToBase64());
             }
             else if (message is GreenOnionsTextMessage txtMsg)
                 tempMessageItem = new MessageItem(txtMsg.GetType(), txtMsg.Text);
@@ -96,16 +96,16 @@ namespace GreenOnions.Repeater
             else if (message is GreenOnionsImageMessage imageMessage)
             {
                 messageItem.IsRepeated = true;
-                MemoryStream ms = await MirrorImage(ImageHelper.ReplaceGroupUrl(imageMessage.Url));
-                if (ms is not null)
-                    return new GreenOnionsImageMessage(ms);
+                Stream img = await MirrorImage(ImageHelper.ReplaceGroupUrl(imageMessage.Url));
+                if (img is not null)
+                    return new GreenOnionsImageMessage(img);
                 else
                     return new GreenOnionsImageMessage(imageMessage.Url);
             }
             return null;
         }
 
-        private static async Task<MemoryStream> MirrorImage(string url)
+        private static async Task<Stream> MirrorImage(string url)
         {
             bool bRewind = false;
             bool bHorizontalMirror = false;
@@ -122,20 +122,20 @@ namespace GreenOnions.Repeater
             
             if (bRewind || bHorizontalMirror || bVerticalMirror)
             {
-                MemoryStream ms = await HttpHelper.DownloadImageAsMemoryStreamAsync(url);
+                Stream img = await HttpHelper.GetStreamAsync(url);
 
-                if (ms is not null)
+                if (img is not null)
                 {
                     try
                     {
                         //倒放和镜像不会同时发生且倒放优先级高于镜像, 但水平镜像和垂直镜像可能同时发生
                         if (bRewind)
-                            ms = ms.RewindGifStream();
+                            img = img.RewindGifStream();
                         if (bHorizontalMirror)
-                            ms = ms.HorizontalMirrorImageStream();
+                            img = img.HorizontalMirrorImageStream();
                         if (bVerticalMirror)
-                            ms = ms.VerticalMirrorImageStream();
-                        return ms;
+                            img = img.VerticalMirrorImageStream();
+                        return img;
                     }
                     catch (Exception ex)
                     {
