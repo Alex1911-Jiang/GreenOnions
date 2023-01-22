@@ -29,10 +29,6 @@ namespace GreenOnions.HPicture
 
         public async Task SendMessageAsync(long targetId, long? targetGroup, GreenOnionsMessages msgs, int? replyMsgId = null)
         {
-            if (msgs.Count == 0 || (msgs.First() is GreenOnionsTextMessage txm && string.IsNullOrWhiteSpace(txm.Text)))
-            {
-
-            }
             msgs.ReplyId = replyMsgId;
             if (targetGroup is null)
                 await BotInfo.API.SendFriendMessageAsync(targetId, msgs);
@@ -190,25 +186,72 @@ namespace GreenOnions.HPicture
         /// <summary>
         /// 构建并发送一条色图消息
         /// </summary>
+        /// <returns>是否发送成功</returns>
         private async Task<bool> SendOnceHPicture(long senderId, long? senderGroup, int? replyMsgId)
         {
-            GreenOnionsMessages onceHPictureMsg;
+            PictureSource pictureSource = await RandomHPictureSource(senderId, senderGroup, replyMsgId);
+            object pictureSourceItem = pictureSource switch
+            {
+                PictureSource.Lolicon => await LoliconClient.GetOnceLoliconItem(),
+                PictureSource.Yande_re => await YandeApi.GetOnceYandeItem(),
+                _ => throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员")  //应该不会来到这里
+            };
+            return await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, pictureSourceItem);
+        }
+
+        private async Task<bool> SendOnceHPictureInner(long senderId, long? senderGroup, int? replyMsgId, object pictureSourceItem)
+        {
+            GreenOnionsMessages? onceHPictureMsgs = new GreenOnionsMessages();  //文字+图片的单条消息
+            List<GreenOnionsForwardMessage>? forwardMessages = new List<GreenOnionsForwardMessage>();  //合并转发消息
+
             try
             {
-                PictureSource pictureSource = await RandomHPictureSource(senderId, senderGroup, replyMsgId);
-                onceHPictureMsg = pictureSource switch
-                {
-                    PictureSource.Lolicon => await MessageCreater.CreateMessageByLoliconItemAsync(await LoliconClient.GetOnceLoliconItem()),
-                    PictureSource.Yande_re => await MessageCreater.CreateMessageByYandeItemAsync(await YandeApi.GetOnceYandeItem()),
-                    _ => throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员")  //应该不会来到这里
-                };
+                GreenOnionsTextMessage onceHPictureTextMsg = MessageCreater.CreateTextMessageByItem(pictureSourceItem);
+                if (BotInfo.Config.SplitTextAndImageMessage && BotInfo.Config.HPictureSendByForward)  //文字和图片分别发+合并转发
+                    forwardMessages.Add(new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, onceHPictureTextMsg));  //将文字消息添加进合并转发
+                else if (BotInfo.Config.SplitTextAndImageMessage)  //文字和图片分别发
+                    await SendMessageAsync(senderId, senderGroup, onceHPictureTextMsg, replyMsgId);  //发送文字消息
+                else
+                    onceHPictureMsgs.Add(onceHPictureTextMsg);  //将文字添加进单条消息中
             }
             catch (Exception ex)
             {
-                await SendMessageAsync(senderId, senderGroup, ex.Message, replyMsgId);
+                await SendMessageAsync(senderId, senderGroup, BotInfo.Config.HPictureErrorReply.ReplaceGreenOnionsStringTags(("<错误信息>", ex.Message)), replyMsgId);
                 return false;
             }
-            await SendOnceHPictureInner(onceHPictureMsg, senderId, senderGroup, replyMsgId);
+
+            try
+            {
+                GreenOnionsImageMessage onceHPictureImageMsg = await MessageCreater.CreateImageMessageByItemAsync(pictureSourceItem);
+                if (BotInfo.Config.SplitTextAndImageMessage && BotInfo.Config.HPictureSendByForward)  //文字和图片分别发+合并转发
+                    forwardMessages.Add(new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, onceHPictureImageMsg));  //将图片消息添加进合并转发
+                else if (BotInfo.Config.SplitTextAndImageMessage)  //文字和图片分别发
+                    await SendMessageAsync(senderId, senderGroup, new GreenOnionsMessages(onceHPictureImageMsg) { RevokeTime = GetRevokeTime(senderGroup) }, replyMsgId);  //发送图片消息
+                else
+                    onceHPictureMsgs.Add(onceHPictureImageMsg);  //将图片添加进单条消息中
+            }
+            catch (Exception ex)
+            {
+                await SendMessageAsync(senderId, senderGroup, BotInfo.Config.HPictureErrorReply.ReplaceGreenOnionsStringTags(("<错误信息>", ex.Message)), replyMsgId);
+                return false;
+            }
+
+            if (BotInfo.Config.HPictureSendByForward)  //合并转发
+            {
+                forwardMessages.Add(new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, onceHPictureMsgs));
+                await SendMessageAsync(senderId, senderGroup, forwardMessages.ToArray(), replyMsgId);  //发送文字+图片的单条合并转发消息
+                RecordLimit(senderId, senderGroup, LimitType.Count);  //记录张数限制
+                return true;
+            }
+
+            if (BotInfo.Config.SplitTextAndImageMessage)  //已经单独发送了文字和图片
+            {
+                RecordLimit(senderId, senderGroup, LimitType.Count);  //记录张数限制
+                return true;
+            }
+
+            await SendMessageAsync(senderId, senderGroup, onceHPictureMsgs, replyMsgId);  //发送文字+图片的单条消息
+            RecordLimit(senderId, senderGroup, LimitType.Count);  //记录张数限制
             return true;
         }
 
@@ -217,7 +260,6 @@ namespace GreenOnions.HPicture
         /// </summary>
         private async Task<bool> SendHPictures(string keyword, int num, bool r18, long senderId, long? senderGroup, int? replyMsgId)
         {
-            GreenOnionsMessages? onceHPictureMsg = null;
             try
             {
                 PictureSource pictureSource = await RandomHPictureSource(senderId, senderGroup, replyMsgId);
@@ -225,7 +267,7 @@ namespace GreenOnions.HPicture
                 {
                     case PictureSource.Lolicon:
                         await foreach (var item in LoliconClient.GetLoliconItems(keyword, num, r18))
-                            onceHPictureMsg = await MessageCreater.CreateMessageByLoliconItemAsync(item);
+                            await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
                         break;
                     case PictureSource.Yande_re:
                         int sendCount = 0;
@@ -233,65 +275,20 @@ namespace GreenOnions.HPicture
                         {
                             if (sendCount >= num)
                                 break;
-                            onceHPictureMsg = await MessageCreater.CreateMessageByYandeItemAsync(item);
+                            await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
                             sendCount++;
                         }
                         break;
                     default:
                         throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员");  //应该不会来到这里
                 }
-                await SendOnceHPictureInner(onceHPictureMsg, senderId, senderGroup, replyMsgId);
             }
             catch (Exception ex)
             {
-                await SendMessageAsync(senderId, senderGroup, ex.Message, replyMsgId);
+                await SendMessageAsync(senderId, senderGroup, BotInfo.Config.HPictureErrorReply.ReplaceGreenOnionsStringTags(("<错误信息>", ex.Message)), replyMsgId);
                 return false;
             }
             return true;
-        }
-
-        /// <summary>
-        /// 发送一条色图消息
-        /// </summary>
-        private async Task SendOnceHPictureInner(GreenOnionsMessages onceHPictureMsg, long senderId, long? senderGroup, int? replyMsgId)
-        {
-            onceHPictureMsg.RevokeTime = GetRevokeTime(senderGroup);
-            if (BotInfo.Config.SplitTextAndImageMessage && (onceHPictureMsg.OfType<GreenOnionsTextMessage>().Any() && onceHPictureMsg.OfType<GreenOnionsImageMessage>().Any()))  //把文字和图片拆成两条消息
-            {
-                GreenOnionsMessages outTextMessage = onceHPictureMsg.OfType<GreenOnionsTextMessage>().ToArray();
-                GreenOnionsMessages outImageMessage = onceHPictureMsg.OfType<GreenOnionsImageMessage>().ToArray();
-                if (BotInfo.Config.HPictureSendByForward)
-                {
-                    GreenOnionsForwardMessage[] forwardMessages = new[]
-                    {
-                        new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, outTextMessage),
-                        new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, outImageMessage),
-                    };
-                    GreenOnionsMessages outForwardMsg = forwardMessages;
-                    outForwardMsg.Reply = false;  //合并转发不能回复
-                    outForwardMsg.RevokeTime = onceHPictureMsg.RevokeTime;
-                    await SendMessageAsync(senderId, senderGroup, outForwardMsg);  //拆成两条子消息的单条合并转发
-                }
-                else
-                {
-                    await SendMessageAsync(senderId, senderGroup, outTextMessage, replyMsgId);  //文字消息
-                    await SendMessageAsync(senderId, senderGroup, outImageMessage, replyMsgId); //图片消息
-                }
-            }
-            else
-            {
-                if (BotInfo.Config.HPictureSendByForward)
-                {
-                    GreenOnionsForwardMessage forwardMsg = new(BotInfo.Config.QQId, BotInfo.Config.BotName, onceHPictureMsg);
-                    GreenOnionsMessages outForwardMsg = forwardMsg;
-                    outForwardMsg.Reply = false;  //合并转发不能回复
-                    outForwardMsg.RevokeTime = onceHPictureMsg.RevokeTime;
-                    await SendMessageAsync(senderId, senderGroup, outForwardMsg);  //单条合并转发
-                }
-                else
-                    await SendMessageAsync(senderId, senderGroup, onceHPictureMsg, replyMsgId);  //单条普通消息
-            }
-            RecordLimit(senderId, senderGroup, LimitType.Count);  //记录张数限制
         }
 
         /// <summary>

@@ -164,7 +164,7 @@
             this.pageSearchPicture.Location = new System.Drawing.Point(4, 33);
             this.pageSearchPicture.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pageSearchPicture.Name = "pageSearchPicture";
-            this.pageSearchPicture.Size = new System.Drawing.Size(192, 63);
+            this.pageSearchPicture.Size = new System.Drawing.Size(1004, 981);
             this.pageSearchPicture.TabIndex = 3;
             this.pageSearchPicture.Text = "搜图设置";
             this.pageSearchPicture.UseVisualStyleBackColor = true;
@@ -178,7 +178,7 @@
             this.pnlSearchPicture.Enabled = false;
             this.pnlSearchPicture.Location = new System.Drawing.Point(0, 40);
             this.pnlSearchPicture.Name = "pnlSearchPicture";
-            this.pnlSearchPicture.Size = new System.Drawing.Size(192, 23);
+            this.pnlSearchPicture.Size = new System.Drawing.Size(1004, 941);
             this.pnlSearchPicture.TabIndex = 18;
             // 
             // pnlSearchPictureEnabled
@@ -187,7 +187,7 @@
             this.pnlSearchPictureEnabled.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSearchPictureEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlSearchPictureEnabled.Name = "pnlSearchPictureEnabled";
-            this.pnlSearchPictureEnabled.Size = new System.Drawing.Size(192, 40);
+            this.pnlSearchPictureEnabled.Size = new System.Drawing.Size(1004, 40);
             this.pnlSearchPictureEnabled.TabIndex = 17;
             // 
             // chkSearchPictureEnabled
@@ -484,7 +484,7 @@
             this.pageRss.Location = new System.Drawing.Point(4, 33);
             this.pageRss.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageRss.Name = "pageRss";
-            this.pageRss.Size = new System.Drawing.Size(1004, 981);
+            this.pageRss.Size = new System.Drawing.Size(192, 63);
             this.pageRss.TabIndex = 8;
             this.pageRss.Text = "RSS转发";
             this.pageRss.UseVisualStyleBackColor = true;
@@ -497,7 +497,7 @@
             this.pnlRss.Enabled = false;
             this.pnlRss.Location = new System.Drawing.Point(0, 40);
             this.pnlRss.Name = "pnlRss";
-            this.pnlRss.Size = new System.Drawing.Size(1004, 941);
+            this.pnlRss.Size = new System.Drawing.Size(192, 23);
             this.pnlRss.TabIndex = 2;
             // 
             // pnlRssEnabled
@@ -507,7 +507,7 @@
             this.pnlRssEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlRssEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRssEnabled.Name = "pnlRssEnabled";
-            this.pnlRssEnabled.Size = new System.Drawing.Size(1004, 40);
+            this.pnlRssEnabled.Size = new System.Drawing.Size(192, 40);
             this.pnlRssEnabled.TabIndex = 1;
             // 
             // chkRssEnabled

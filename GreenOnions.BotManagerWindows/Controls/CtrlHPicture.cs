@@ -23,7 +23,6 @@ namespace GreenOnions.BotManagerWindows.Controls
                 if (hSource == PictureSource.Yande_re)
                     chkHPictureYande_reSource.Checked = true;
             }
-
             txbHPictureOnceMessageMaxImageCount.Text = BotInfo.Config.HPictureOnceMessageMaxImageCount.ToString();
             txbHPictureCmd.Text = BotInfo.Config.HPictureCmd;
             if (BotInfo.Config.HPictureUserCmd is not null)
@@ -41,6 +40,8 @@ namespace GreenOnions.BotManagerWindows.Controls
                 foreach (var item in BotInfo.Config.HPictureWhiteGroup)
                     lstHPictureWhiteGroup.Items.Add(item.ToString());
             }
+            chkHPictureAntiShielding.Checked = BotInfo.Config.HPictureAntiShielding;
+            chkLoliconRequestByBrowser.Checked = BotInfo.Config.HPictureLoliconRequestByWebBrowser;
             chkHPictureWhiteOnly.Checked = BotInfo.Config.HPictureWhiteOnly;
             chkHPictureAllowR18.Checked = BotInfo.Config.HPictureAllowR18;
             chkHPictureR18WhiteOnly.Checked = BotInfo.Config.HPictureR18WhiteOnly;
@@ -76,12 +77,13 @@ namespace GreenOnions.BotManagerWindows.Controls
         public void SaveConfig()
         {
             HashSet<PictureSource> EnabledHPictureSource = new HashSet<PictureSource>();
-            HashSet<PictureSource> EnabledBeautyPictureSource = new HashSet<PictureSource>();
             if (chkHPictureEnabledLoliconSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.Lolicon);
             if (chkHPictureYande_reSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.Yande_re);
             BotInfo.Config.EnabledHPictureSource = EnabledHPictureSource;
+            BotInfo.Config.HPictureAntiShielding = chkHPictureAntiShielding.Checked;
+            BotInfo.Config.HPictureLoliconRequestByWebBrowser = chkLoliconRequestByBrowser.Checked;
             BotInfo.Config.HPictureCmd = txbHPictureCmd.Text;
             BotInfo.Config.HPictureOnceMessageMaxImageCount = string.IsNullOrEmpty(txbHPictureOnceMessageMaxImageCount.Text) ? 10 : Convert.ToInt32(txbHPictureOnceMessageMaxImageCount.Text);
             HashSet<string> tempHPictureUserCmd = new HashSet<string>();

@@ -431,6 +431,16 @@ namespace GreenOnions.Utility
         public string HPictureCmd { get; set; } = IBotConfig.DefaultHPictureCmd;
 
         /// <summary>
+        /// 使用浏览器请求Lolicon Api
+        /// </summary>
+        public bool HPictureLoliconRequestByWebBrowser { get; set; } = false;
+
+        /// <summary>
+        /// 反和谐（仅限Windows，且需要先开启 所有图片下载到本地发送文件 功能）
+        /// </summary>
+        public bool HPictureAntiShielding { get; set; } = false;
+
+        /// <summary>
         /// 启用的色图图库
         /// </summary>
         public HashSet<PictureSource> EnabledHPictureSource { get; set; } = new HashSet<PictureSource>() { PictureSource.Lolicon };
@@ -568,7 +578,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 发生错误回复
         /// </summary>
-        public string HPictureErrorReply { get; set; } = "色图服务器爆炸惹_(:3」∠)_";
+        public string HPictureErrorReply { get; set; } = "色图服务器爆炸惹_(:3」∠)_ <错误信息>";
 
         /// <summary>
         /// 没有结果回复

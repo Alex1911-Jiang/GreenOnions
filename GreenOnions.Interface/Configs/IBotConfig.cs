@@ -604,6 +604,18 @@ namespace GreenOnions.Interface.Configs
         public HashSet<PictureSource> EnabledHPictureSource { get; }
 
         /// <summary>
+        /// 使用浏览器请求Lolicon Api
+        /// </summary>
+        [PropertyChineseName("使用浏览器请求Lolicon", "色图", "解决 Windows Server 2012 R2 不支持 TLS 1.3 协议导致 SSL 错误问题")]
+        public bool HPictureLoliconRequestByWebBrowser { get; }
+
+        /// <summary>
+        /// 反和谐（仅限Windows，且需要先开启 所有图片下载到本地发送文件 功能）
+        /// </summary>
+        [PropertyChineseName("反和谐", "色图", "仅限Windows，且需要先开启 所有图片下载到本地发送文件 功能")]
+        public bool HPictureAntiShielding { get; }
+
+        /// <summary>
         /// 自定义色图命令
         /// </summary>
         [PropertyChineseName("自定义色图命令", "色图")]

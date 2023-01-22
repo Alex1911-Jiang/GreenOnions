@@ -71,7 +71,8 @@ namespace GreenOnions.BotMain.CqHttp
                     GreenOnionsApi greenOnionsApi = new (
                         async (targetId, msg) =>
                         {
-                            int sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateMessage(targetId, msg.ToCqHttpMessages())).messageId;
+                            var soramsg = msg.ToCqHttpMessages();
+                            int sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateMessage(targetId, soramsg)).messageId;
                             if (msg.RevokeTime > 0)
                                 _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => eventArgs.SoraApi.RecallMessage(sendedFriendMessageId));
                             return sendedFriendMessageId;

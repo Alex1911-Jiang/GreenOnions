@@ -50,15 +50,27 @@ namespace GreenOnions.HPicture
 
             JToken jt = await RequestLolicon(strUrl);
 
-            IEnumerable<LoliconHPictureItem> loliconItems = jt.Select(i => new LoliconHPictureItem(
-                i["p"].ToString(),
-                i["pid"].ToString(),
-                i["urls"][sizeName].ToString(),
-                i["title"].ToString(),
-                i["author"].ToString(),
-                string.Join(",", (i["tags"] as JArray)),
-                @$"https://www.pixiv.net/artworks/{i["pid"]}(p{i["p"]})")
-            );
+            IEnumerable<LoliconHPictureItem> loliconItems = jt.Select(item =>
+            {
+                string strPid = item["pid"].ToString();
+                string strP = item["p"].ToString();
+                string url = item["urls"][sizeName].ToString();
+                if (!BotInfo.Config.HPictureSize1200)
+                {
+                    int numP = Convert.ToInt32(strP);
+                    string strIndex = numP > 0 ? $"-{numP + 1}" : string.Empty;
+                    string ext = url.Substring(url.LastIndexOf('.'));
+                    url = $"https://{BotInfo.Config.PixivProxy}/{strPid}{strIndex}{ext}";  //似乎使用id路由比日期路由速度快不少？？
+                }
+                return new LoliconHPictureItem(
+                    strP,
+                    strPid,
+                    url,
+                    item["title"].ToString(),
+                    item["author"].ToString(),
+                    string.Join(",", (item["tags"] as JArray)!),
+                    @$"https://www.pixiv.net/artworks/{strPid}(p{strP})");
+            });
 
             if (loliconItems is null)
             {
@@ -88,7 +100,14 @@ namespace GreenOnions.HPicture
 
         private static async Task<JToken> RequestLolicon(string strUrl)
         {
-            string resultValue = await HttpHelper.GetStringAsync(strUrl);
+            string resultValue;
+            if (EventHelper.GetDocumentByBrowserEvent is not null && BotInfo.Config.HttpRequestByWebBrowser && BotInfo.Config.HPictureLoliconRequestByWebBrowser)
+            {
+                string doc = EventHelper.GetDocumentByBrowserEvent(strUrl).document;
+                resultValue = doc[doc.IndexOf("{")..(doc.LastIndexOf("}") + 1)];
+            }
+            else
+                resultValue = await HttpHelper.GetStringAsync(strUrl);
 
             JObject jo = JsonConvert.DeserializeObject<JObject>(resultValue);
             string err = jo["error"].ToString();

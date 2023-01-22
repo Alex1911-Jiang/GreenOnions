@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
 using GreenOnions.HPicture.Items;
@@ -11,14 +11,31 @@ namespace GreenOnions.HPicture
 {
     internal static class MessageCreater
     {
+        internal static GreenOnionsTextMessage CreateTextMessageByItem(object item)
+        {
+            if (item is LoliconHPictureItem loliConItem)
+                return CreateTextMessageByLoliconItem(loliConItem);
+            else if (item is YandeItem yandeItem)
+                return CreateTextMessageByYandeItem(yandeItem);
+            throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员");
+        }
+
+        internal static async Task<GreenOnionsImageMessage> CreateImageMessageByItemAsync(object item)
+        {
+            if (item is LoliconHPictureItem loliConItem)
+                return await CreateImageMessageByLoliconItemAsync(loliConItem);
+            else if (item is YandeItem yandeItem)
+                return await CreateImageMessageByYandeItemAsync(yandeItem);
+            throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员");
+        }
+
         /// <summary>
         /// 根据Lolicon对象创建消息
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        internal static async Task<GreenOnionsMessages> CreateMessageByLoliconItemAsync(LoliconHPictureItem item)
+        internal static GreenOnionsTextMessage CreateTextMessageByLoliconItem(LoliconHPictureItem item)
         {
-            GreenOnionsMessages outMessage = new GreenOnionsMessages();
             StringBuilder sb = new StringBuilder();
             if (BotInfo.Config.HPictureSendUrl)
                 sb.AppendLine($"作品页：https://www.pixiv.net/artworks/{item.ID} (p{item.P})");
@@ -28,26 +45,27 @@ namespace GreenOnions.HPicture
                 sb.AppendLine($"标题:{item.Title}\r\n作者:{item.Author}");
             if (BotInfo.Config.HPictureSendTags)
                 sb.AppendLine($"标签:{item.Tags}");
-            outMessage.Add(sb);
-            GreenOnionsImageMessage imgMsg = await ImageHelper.CreateImageMessageByUrlAsync(item.URL);
-            outMessage.Add(imgMsg);
-            return outMessage;
+            return new GreenOnionsTextMessage(sb);
         }
 
-        internal static async Task<GreenOnionsMessages> CreateMessageByYandeItemAsync(YandeItem item)
+        internal static async Task<GreenOnionsImageMessage> CreateImageMessageByLoliconItemAsync(LoliconHPictureItem item)
         {
-            GreenOnionsMessages outMessage = new();
+            return await ImageHelper.CreateImageMessageByUrlAsync(item.URL);
+        }
+
+        internal static GreenOnionsTextMessage CreateTextMessageByYandeItem(YandeItem item)
+        {
             StringBuilder sb = new();
             if (BotInfo.Config.HPictureSendUrl)
                 sb.AppendLine($"http://yande.re{item.ShowPageUrl}");
-            if (BotInfo.Config.HPictureSendTags)
+            if (BotInfo.Config.HPictureSendTags && item.Tags is not null)
                 sb.AppendLine($"标签:{string.Join(", ", item.Tags)}");
-            outMessage.Add(sb);
+            return new GreenOnionsTextMessage(sb);
+        }
 
-            GreenOnionsImageMessage imgMsg = await ImageHelper.CreateImageMessageByUrlAsync(item.BigImgUrl);
-            outMessage.Add(imgMsg);
-
-            return outMessage;
+        internal static async Task<GreenOnionsImageMessage> CreateImageMessageByYandeItemAsync(YandeItem item)
+        {
+           return await ImageHelper.CreateImageMessageByUrlAsync(item.BigImgUrl);
         }
     }
 }

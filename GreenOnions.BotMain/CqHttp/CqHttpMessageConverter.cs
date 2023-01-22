@@ -113,7 +113,6 @@ namespace GreenOnions.BotMain.CqHttp
                     LogHelper.WriteErrorLogWithUserMessage($"转换为CqHttp消息失败!!! 消息类型为：{greenOnionsMessage[i].GetType()}", ex);
                     continue;
                 }
-                
             }
             return cqHttpMessages;
         }

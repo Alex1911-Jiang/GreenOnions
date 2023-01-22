@@ -860,9 +860,9 @@
             this.chkSplitTextAndImageMessage.Location = new System.Drawing.Point(5, 870);
             this.chkSplitTextAndImageMessage.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkSplitTextAndImageMessage.Name = "chkSplitTextAndImageMessage";
-            this.chkSplitTextAndImageMessage.Size = new System.Drawing.Size(540, 28);
+            this.chkSplitTextAndImageMessage.Size = new System.Drawing.Size(360, 28);
             this.chkSplitTextAndImageMessage.TabIndex = 84;
-            this.chkSplitTextAndImageMessage.Text = "搜图和色图把文字消息和图片消息拆分开（合并转发模式无效）";
+            this.chkSplitTextAndImageMessage.Text = "搜图和色图把文字消息和图片消息拆分开";
             this.chkSplitTextAndImageMessage.UseVisualStyleBackColor = true;
             // 
             // chkLeaveGroupAfterBeMushin
@@ -953,7 +953,7 @@
             this.Controls.Add(this.lblBanGroup);
             this.Controls.Add(this.lstBannedGroup);
             this.Name = "CtrlBot";
-            this.Size = new System.Drawing.Size(962, 1110);
+            this.Size = new System.Drawing.Size(936, 1084);
             this.pnlWorkingTime.ResumeLayout(false);
             this.pnlWorkingTime.PerformLayout();
             this.pnlAutoConnect.ResumeLayout(false);

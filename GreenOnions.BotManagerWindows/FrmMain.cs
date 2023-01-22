@@ -8,16 +8,24 @@ namespace GreenOnions.BotManagerWindows
 {
 	public partial class FrmMain : Form
 	{
-		private WebBrowserForm webBrowserForm;
+		private WebBrowserForm? webBrowserForm;
 		private bool _connecting;
-		private MiraiClient _miraiClient;
+		private MiraiClient? _miraiClient;
 
 		public FrmMain()
 		{
 			InitializeComponent();
 
-			webBrowserForm = new WebBrowserForm();
-			EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocument;
+			try
+            {
+                webBrowserForm = new WebBrowserForm();
+                EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocument;
+            }
+			catch (Exception ex)
+			{
+				LogHelper.WriteErrorLogWithUserMessage("初始化浏览器组件失败！请检查 VC++2015-2019 是否已安装", ex);
+				MessageBox.Show("初始化浏览器组件失败！请检查 VC++2015-2019 是否已安装");
+			}
 
 			#region -- 读取配置 --
 			try
@@ -112,7 +120,8 @@ namespace GreenOnions.BotManagerWindows
 
 		private async void Disconnect()
 		{
-			await _miraiClient.Disconnect();
+			if (_miraiClient is not null)
+                await _miraiClient.Disconnect();
 
 			btnConnectToMiraiApiHttp.Click -= btnDeconnect_Click;
 			btnConnectToMiraiApiHttp.Click += btnConnectToMiraiApiHttp_Click;
@@ -171,7 +180,7 @@ namespace GreenOnions.BotManagerWindows
 
 					WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnect);
 
-					webBrowserForm.Show();
+					webBrowserForm?.Show();
 				}
 				else if (nickNameOrErrorMessage is null)  //连接失败且没有异常
 				{

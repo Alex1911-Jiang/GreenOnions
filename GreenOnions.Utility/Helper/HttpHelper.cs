@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -8,7 +9,7 @@ namespace GreenOnions.Utility.Helper
 {
     public static class HttpHelper
     {
-        public static HttpClient CreateClient(bool useProxy = true)
+        public static HttpClient CreateClient(bool useProxy = false)
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler();
             if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
@@ -39,7 +40,8 @@ namespace GreenOnions.Utility.Helper
         public static async Task<Stream> GetStreamAsync(string url)
         {
             using HttpClient httpClient = CreateClient();
-            return await httpClient.GetStreamAsync(url);
+            var resp = await httpClient.GetAsync(url);
+            return resp.Content.ReadAsStream();
         }
     }
 }
