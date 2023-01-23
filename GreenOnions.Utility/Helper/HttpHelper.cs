@@ -9,7 +9,7 @@ namespace GreenOnions.Utility.Helper
 {
     public static class HttpHelper
     {
-        public static HttpClient CreateClient(bool useProxy = false)
+        public static HttpClient CreateClient(bool useProxy)
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler();
             if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
@@ -20,9 +20,8 @@ namespace GreenOnions.Utility.Helper
             return new HttpClient(httpClientHandler) { Timeout = Timeout.InfiniteTimeSpan };
         }
 
-        public async static Task<(string document, string jumpUrl)> GetHttpResponseStringAndJumpUrlAsync(string url)
+        public async static Task<(string document, string redirectUrl)> GetHttpResponseStringAndRedirectUrlAsync(HttpClient client, string url)
         {
-            using HttpClient client = CreateClient();
             using HttpRequestMessage request = new(HttpMethod.Get, url);
             request.Content.Headers.TryAddWithoutValidation("ContentType", "text/html;charset=UTF-8");
             request.Content.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
@@ -31,16 +30,27 @@ namespace GreenOnions.Utility.Helper
             return (await resp.Content.ReadAsStringAsync(), request.RequestUri.ToString());
         }
 
-        public static async Task<string> GetStringAsync(string url)
+        public static async Task<string> GetStringAsync(string url, bool useProxy)
         {
-            using HttpClient client = CreateClient();
+            using HttpClient client = CreateClient(useProxy);
             return await client.GetStringAsync(url);
         }
 
-        public static async Task<Stream> GetStreamAsync(string url)
+        public static async Task<Stream> GetStreamAsync(string url, bool useProxy)
         {
-            using HttpClient httpClient = CreateClient();
-            var resp = await httpClient.GetAsync(url);
+            using HttpClient client = CreateClient(useProxy);
+            var resp = await client.GetAsync(url);
+            return resp.Content.ReadAsStream();
+        }
+
+        public static async Task<string> GetStringAsync(HttpClient client, string url)
+        {
+            return await client.GetStringAsync(url);
+        }
+
+        public static async Task<Stream> GetStreamAsync(HttpClient client, string url)
+        {
+            var resp = await client.GetAsync(url);
             return resp.Content.ReadAsStream();
         }
     }

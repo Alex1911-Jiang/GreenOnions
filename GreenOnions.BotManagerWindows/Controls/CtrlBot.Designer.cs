@@ -268,9 +268,9 @@
             this.lblPixivProxy.Location = new System.Drawing.Point(5, 833);
             this.lblPixivProxy.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblPixivProxy.Name = "lblPixivProxy";
-            this.lblPixivProxy.Size = new System.Drawing.Size(139, 24);
+            this.lblPixivProxy.Size = new System.Drawing.Size(103, 24);
             this.lblPixivProxy.TabIndex = 87;
-            this.lblPixivProxy.Text = "Pixiv代理地址：";
+            this.lblPixivProxy.Text = "Pixiv代理：";
             // 
             // cboReplaceImgRoute
             // 
@@ -953,7 +953,7 @@
             this.Controls.Add(this.lblBanGroup);
             this.Controls.Add(this.lstBannedGroup);
             this.Name = "CtrlBot";
-            this.Size = new System.Drawing.Size(936, 1084);
+            this.Size = new System.Drawing.Size(910, 1058);
             this.pnlWorkingTime.ResumeLayout(false);
             this.pnlWorkingTime.PerformLayout();
             this.pnlAutoConnect.ResumeLayout(false);

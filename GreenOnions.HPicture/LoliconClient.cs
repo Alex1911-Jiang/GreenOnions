@@ -107,7 +107,7 @@ namespace GreenOnions.HPicture
                 resultValue = doc[doc.IndexOf("{")..(doc.LastIndexOf("}") + 1)];
             }
             else
-                resultValue = await HttpHelper.GetStringAsync(strUrl);
+                resultValue = await HttpHelper.GetStringAsync(strUrl, BotInfo.Config.HPictureUseProxy);
 
             JObject jo = JsonConvert.DeserializeObject<JObject>(resultValue);
             string err = jo["error"].ToString();

@@ -16,6 +16,8 @@ namespace GreenOnions.BotManagerWindows.Controls
         {
             cboTranslateEngine.SelectedIndex = (int)BotInfo.Config.TranslateEngineType;
 
+            chkTranslateUseProxy.Checked = BotInfo.Config.TranslateUseProxy;
+
             txbTranslateAPPID.Text = BotInfo.Config.TranslateAPPID;
             txbTranslateAPPKey.Text = BotInfo.Config.TranslateAPPKey;
 
@@ -32,6 +34,8 @@ namespace GreenOnions.BotManagerWindows.Controls
         public void SaveConfig()
         {
             BotInfo.Config.TranslateEngineType = (TranslateEngine)cboTranslateEngine.SelectedIndex;
+
+            BotInfo.Config.TranslateUseProxy = chkTranslateUseProxy.Checked;
 
             BotInfo.Config.TranslateAPPID = txbTranslateAPPID.Text;
             BotInfo.Config.TranslateAPPKey = txbTranslateAPPKey.Text;

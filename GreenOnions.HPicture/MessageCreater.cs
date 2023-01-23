@@ -50,7 +50,7 @@ namespace GreenOnions.HPicture
 
         internal static async Task<GreenOnionsImageMessage> CreateImageMessageByLoliconItemAsync(LoliconHPictureItem item)
         {
-            return await ImageHelper.CreateImageMessageByUrlAsync(item.URL);
+            return await ImageHelper.CreateImageMessageByUrlAsync(item.URL, BotInfo.Config.HPictureUseProxy);
         }
 
         internal static GreenOnionsTextMessage CreateTextMessageByYandeItem(YandeItem item)
@@ -65,7 +65,7 @@ namespace GreenOnions.HPicture
 
         internal static async Task<GreenOnionsImageMessage> CreateImageMessageByYandeItemAsync(YandeItem item)
         {
-           return await ImageHelper.CreateImageMessageByUrlAsync(item.BigImgUrl);
+           return await ImageHelper.CreateImageMessageByUrlAsync(item.BigImgUrl, BotInfo.Config.HPictureUseProxy);
         }
     }
 }

@@ -57,7 +57,7 @@ namespace GreenOnions.Translate
 
         private static async Task<string> Post(string url, Dictionary<string, string> dic)
         {
-            using HttpClient client = HttpHelper.CreateClient();
+            using HttpClient client = HttpHelper.CreateClient(BotInfo.Config.TranslateUseProxy);
             using HttpRequestMessage request = new(HttpMethod.Post, url);
             MultipartFormDataContent form = new MultipartFormDataContent();
             foreach (var item in dic)

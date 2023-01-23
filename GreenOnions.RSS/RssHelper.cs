@@ -122,7 +122,7 @@ namespace GreenOnions.RSS
                 if (!string.IsNullOrWhiteSpace(item.Url))
                 {
                     LogInfo($"{item.Url}开始抓取内容");
-                    using HttpClient client = HttpHelper.CreateClient();
+                    using HttpClient client = HttpHelper.CreateClient(BotInfo.Config.RssUseProxy);
                     if (item.Headers is not null)
                     {
                         foreach (var header in item.Headers)
@@ -164,7 +164,7 @@ namespace GreenOnions.RSS
                         if (item.Url.Contains("bilibili") && item.Url.Contains("/room/"))
                         {
                             string roomId = item.Url[(item.Url.LastIndexOf("/room/") + "/room/".Length)..];
-                            string apiResult = await HttpHelper.GetStringAsync($@"https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id={roomId}");
+                            string apiResult = await HttpHelper.GetStringAsync(client, $@"https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id={roomId}");
                             JObject jo = JsonConvert.DeserializeObject<JObject>(apiResult);
                             thuImgUrl = jo?["data"]?["room_info"]?["cover"]?.ToString();
                         }
@@ -228,7 +228,7 @@ namespace GreenOnions.RSS
                         groupResultMsg.Add(translateMsg);  //翻译
 
                     if (thuImgUrl is not null)
-                        groupResultMsg.Add(await ImageHelper.CreateImageMessageByUrlAsync(thuImgUrl));  //B站封面
+                        groupResultMsg.Add(await ImageHelper.CreateImageMessageByUrlAsync(thuImgUrl, BotInfo.Config.RssUseProxy));  //B站封面
 
                     if (!string.IsNullOrWhiteSpace(rss.Author))
                         groupResultMsg.Add($"\r\n作者:{rss.Author}");  //作者
@@ -267,7 +267,7 @@ namespace GreenOnions.RSS
                         friendResultMsg.Add(translateMsg);  //翻译
 
                     if (thuImgUrl is not null)
-                        friendResultMsg.Add(await ImageHelper.CreateImageMessageByUrlAsync(thuImgUrl));    //B站封面
+                        friendResultMsg.Add(await ImageHelper.CreateImageMessageByUrlAsync(thuImgUrl, BotInfo.Config.RssUseProxy));    //B站封面
 
                     if (!string.IsNullOrWhiteSpace(rss.Author))
                         friendResultMsg.Add($"\r\n作者:{rss.Author}");  //作者
@@ -393,7 +393,7 @@ namespace GreenOnions.RSS
             else
             {
                 if (node.Name == "img")
-                    return await ImageHelper.CreateImageMessageByUrlAsync(HttpUtility.HtmlDecode(node.Attributes["src"].Value));
+                    return await ImageHelper.CreateImageMessageByUrlAsync(HttpUtility.HtmlDecode(node.Attributes["src"].Value), BotInfo.Config.RssUseProxy);
                 if (node.Name == "video")
                     return "\r\n视频地址：" + HttpUtility.HtmlDecode(node.Attributes["src"].Value) + "\r\n";
                 if (node.Name == "iframe")

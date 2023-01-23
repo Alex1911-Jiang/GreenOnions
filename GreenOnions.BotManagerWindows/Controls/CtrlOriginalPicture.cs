@@ -15,6 +15,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             txbOriginalPictureCommand.Text = BotInfo.Config.OriginalPictureCommand;
             txbOriginalPictureDownloadingReply.Text = BotInfo.Config.OriginalPictureDownloadingReply;
             chkOriginalPictureCheckPornEnabled.Checked = BotInfo.Config.OriginalPictureCheckPornEnabled;  //是否在下载原图启用鉴黄
+            chkOriginalPictureUseProxy.Checked = BotInfo.Config.OriginalPictureUseProxy;
             switch (BotInfo.Config.OriginalPictureCheckPornEvent)  //鉴黄不通过的行为
             {
                 case 0:
@@ -36,6 +37,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             BotInfo.Config.OriginalPictureCommand = txbOriginalPictureCommand.Text;
             BotInfo.Config.OriginalPictureDownloadingReply = txbOriginalPictureDownloadingReply.Text;
             BotInfo.Config.OriginalPictureCheckPornEnabled = chkOriginalPictureCheckPornEnabled.Checked;  //是否在搜图启用鉴黄
+            BotInfo.Config.OriginalPictureUseProxy = chkOriginalPictureUseProxy.Checked;
             BotInfo.Config.OriginalPictureCheckPornEvent = Convert.ToInt32(pnlOriginalPictureCheckPornEvent.Controls.OfType<RadioButton>().Where(x => x.Checked).First().Tag);
             BotInfo.Config.OriginalPictureCheckPornIllegalReply = txbOriginalPictureCheckPornIllegalReply.Text;
             BotInfo.Config.OriginalPictureCheckPornErrorReply = txbOriginalPictureCheckPornErrorReply.Text;

@@ -165,6 +165,11 @@ namespace GreenOnions.Utility
         public bool SearchEnabled { get; set; } = true;
 
         /// <summary>
+        /// 搜图是否使用代理
+        /// </summary>
+        public bool SearchUseProxy { get; set; } = false;
+
+        /// <summary>
         /// 私聊时是否自动搜图
         /// </summary>
         public bool PmAutoSearch { get; set; } = true;
@@ -398,6 +403,11 @@ namespace GreenOnions.Utility
         public string OriginalPictureCommand { get; set; } = "<机器人名称>下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]";
 
         /// <summary>
+        /// 下载原图是否使用代理
+        /// </summary>
+        public bool OriginalPictureUseProxy { get; set; } = false;
+
+        /// <summary>
         /// 开始下载原图回复语
         /// </summary>
         public string OriginalPictureDownloadingReply { get; set; } = "正在下载，请稍候...";
@@ -429,6 +439,11 @@ namespace GreenOnions.Utility
         /// 色图完整命令(正则表达式)
         /// </summary>
         public string HPictureCmd { get; set; } = IBotConfig.DefaultHPictureCmd;
+
+        /// <summary>
+        /// 色图是否使用代理
+        /// </summary>
+        public bool HPictureUseProxy { get; set; } = false;
 
         /// <summary>
         /// 使用浏览器请求Lolicon Api
@@ -618,6 +633,11 @@ namespace GreenOnions.Utility
         /// 翻译引擎
         /// </summary>
         public TranslateEngine TranslateEngineType { get; set; } = TranslateEngine.YouDao;
+
+        /// <summary>
+        /// 翻译是否使用代理
+        /// </summary>
+        public bool TranslateUseProxy { get; set; } = false;
 
         /// <summary>
         /// 云翻译接口的APP ID
@@ -812,6 +832,11 @@ namespace GreenOnions.Utility
         public bool RssEnabled { get; set; } = false;
 
         /// <summary>
+        /// RSS是否使用代理
+        /// </summary>
+        public bool RssUseProxy { get; set; } = false;
+
+        /// <summary>
         /// 抓取RSS间隔时间(分钟)
         /// </summary>
         public double ReadRssInterval { get; set; } = 10.0;
@@ -830,6 +855,7 @@ namespace GreenOnions.Utility
         /// 获取B站直播封面
         /// </summary>
         public bool RssSendLiveCover { get; set; } = true;
+
         #endregion -- RSS 配置项 --
     }
 }

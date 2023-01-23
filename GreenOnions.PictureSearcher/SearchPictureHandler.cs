@@ -260,7 +260,7 @@ namespace GreenOnions.PictureSearcher
             try
             {
                 LogHelper.WriteInfoLog($"请求TraceMoe, 地址为:{TraceMoeUrl}");
-                string strSauceTraceMoe = await HttpHelper.GetStringAsync(TraceMoeUrl);
+                string strSauceTraceMoe = await HttpHelper.GetStringAsync(TraceMoeUrl, BotInfo.Config.SearchUseProxy);
                 LogHelper.WriteInfoLog($"请求TraceMoe成功");
                 JToken json = JsonConvert.DeserializeObject<JToken>(strSauceTraceMoe);
                 JArray jResults = json["result"] as JArray;
@@ -296,7 +296,7 @@ namespace GreenOnions.PictureSearcher
                             try
                             {
                                 if (!isAdult || BotInfo.Config.TraceMoeSendAdultThuImg)
-                                    await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, outMessage);
+                                    await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, BotInfo.Config.SearchUseProxy, outMessage);
                             }
                             catch (Exception ex)
                             {
@@ -325,13 +325,13 @@ namespace GreenOnions.PictureSearcher
             }
         }
 
-        private static async Task AddImageMessageAfterCheckPornAsync(bool checkPorn, string imgUrl, GreenOnionsMessages message)
+        private static async Task AddImageMessageAfterCheckPornAsync(bool checkPorn, string imgUrl, bool useProxy, GreenOnionsMessages message)
         {
             try
             {
                 if (checkPorn)  //鉴黄
                 {
-                    using (Stream stream = await HttpHelper.GetStreamAsync(imgUrl))
+                    using (Stream stream = await HttpHelper.GetStreamAsync(imgUrl, useProxy))
                     {
                         if (stream is null)
                         {
@@ -367,7 +367,7 @@ namespace GreenOnions.PictureSearcher
                 else  //不鉴黄
                 {
                     if (BotInfo.Config.SendImageByFile)  //下载完成后发送文件
-                        message.Add(new GreenOnionsImageMessage(await HttpHelper.GetStreamAsync(imgUrl)));
+                        message.Add(new GreenOnionsImageMessage(await HttpHelper.GetStreamAsync(imgUrl, useProxy)));
                     else
                         message.Add(new GreenOnionsImageMessage(imgUrl));
                 }
@@ -416,7 +416,7 @@ namespace GreenOnions.PictureSearcher
                             }
                             else  //鉴黄
                             {
-                                await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, thuImgUrl, outMessage);
+                                await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, thuImgUrl, BotInfo.Config.SearchUseProxy, outMessage);
                             }
                         }
                         return outMessage;
@@ -537,7 +537,7 @@ namespace GreenOnions.PictureSearcher
                             {
                                 LogHelper.WriteInfoLog($"SauceNAO相似度大于发图设定值");
                                 //鉴黄
-                                AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, outMessage);
+                                await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, BotInfo.Config.SearchUseProxy, outMessage);
                                 LogHelper.WriteInfoLog($"SauceNAO(浏览器)搜图完成, 相似度高于发图设定值");
                                 return (outMessage, similarity < BotInfo.Config.SearchSauceNAOHighSimilarity);  //发缩略图, 判断相似度是否继续使用Ascii2D搜索
                             }
@@ -556,7 +556,7 @@ namespace GreenOnions.PictureSearcher
                     SauceNAOUrl = @$"https://SauceNAO.com/search.php?db=999&output_type=2{apiKeyStr}&testmode=1&numres=16&url={qqImgUrl}";
 
                     LogHelper.WriteInfoLog($"请求SauceNAO搜图, 地址为:{SauceNAOUrl}");
-                    strSauceNAOResult = await HttpHelper.GetStringAsync(SauceNAOUrl);
+                    strSauceNAOResult = await HttpHelper.GetStringAsync(SauceNAOUrl, BotInfo.Config.SearchUseProxy);
                     LogHelper.WriteInfoLog($"请求SauceNAO成功");
 
                     JToken json = JsonConvert.DeserializeObject<JToken>(strSauceNAOResult);
@@ -663,7 +663,7 @@ namespace GreenOnions.PictureSearcher
                                 LogHelper.WriteInfoLog($"相似度大于发图设定值");
                                 try
                                 {
-                                    await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, SauceNAOItem.thumbnail, outMessage);
+                                    await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, SauceNAOItem.thumbnail, BotInfo.Config.SearchUseProxy, outMessage);
                                 }
                                 catch (Exception ex)
                                 {
@@ -689,12 +689,12 @@ namespace GreenOnions.PictureSearcher
                                                 if (BotInfo.Config.SearchSendByForward)  //合并转发
                                                 {
                                                     string imgUrlNoP = $"https://{BotInfo.Config.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
-                                                    outMessage.Add(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlNoP));
+                                                    outMessage.Add(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlNoP, BotInfo.Config.OriginalPictureUseProxy));
                                                 }
                                                 else
                                                 {
                                                     string imgUrlNoP = $"https://{BotInfo.Config.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
-                                                    SendMessage(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlNoP));
+                                                    SendMessage(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlNoP, BotInfo.Config.OriginalPictureUseProxy));
                                                 }
                                             }
                                             else  //地址有P且>0
@@ -703,7 +703,7 @@ namespace GreenOnions.PictureSearcher
                                                     outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
                                                 else
                                                 {
-                                                    SendMessage(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlHasP));
+                                                    SendMessage(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlHasP, BotInfo.Config.OriginalPictureUseProxy));
                                                 }
                                             }
                                         }
@@ -791,13 +791,14 @@ namespace GreenOnions.PictureSearcher
                 try
                 {
                     LogHelper.WriteInfoLog($"请求ASCII2D颜色识别, 地址为:{colorUrl}");
-                    var response = await HttpHelper.GetHttpResponseStringAndJumpUrlAsync(colorUrl);
+                    HttpClient client = HttpHelper.CreateClient(BotInfo.Config.SearchUseProxy);
+                    var response = await HttpHelper.GetHttpResponseStringAndRedirectUrlAsync(client, colorUrl);
                     strAscii2dColorResult = response.document;
                     LogHelper.WriteInfoLog($"ASCII2D颜色识别请求成功, 跳转地址到特征识别");
                     try
                     {
-                        bovwUrl = response.jumpUrl.Replace("/color/", "/bovw/");
-                        strAscii2dBovwResult = await HttpHelper.GetStringAsync(bovwUrl);
+                        bovwUrl = response.redirectUrl.Replace("/color/", "/bovw/");
+                        strAscii2dBovwResult = await HttpHelper.GetStringAsync(client, bovwUrl);
                         LogHelper.WriteInfoLog($"ASCII2D特征识别请求成功");
                     }
                     catch (Exception ex)
@@ -870,7 +871,7 @@ namespace GreenOnions.PictureSearcher
                                 string imgUrl = "https://ascii2d.net" + HttpUtility.HtmlDecode(nodeColorImg.Attributes["src"].Value);
                                 try
                                 {
-                                    await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, outMessage);
+                                    await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, BotInfo.Config.SearchUseProxy, outMessage);
                                 }
                                 catch (Exception ex)
                                 {
@@ -949,7 +950,7 @@ namespace GreenOnions.PictureSearcher
                                 string imgUrl = "https://ascii2d.net" + HttpUtility.HtmlDecode(nodeBovwImg.Attributes["src"].Value);
                                 try
                                 {
-                                    await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, outMessage);
+                                    await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.SearchCheckPornEnabled, imgUrl, BotInfo.Config.SearchUseProxy, outMessage);
                                 }
                                 catch (Exception ex)
                                 {
@@ -1044,7 +1045,7 @@ namespace GreenOnions.PictureSearcher
 
             string url = $"https://{BotInfo.Config.PixivProxy}/{id}{index}.png";
 
-            await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.OriginalPictureCheckPornEnabled, url, outMessage);
+            await AddImageMessageAfterCheckPornAsync(BotInfo.Config.CheckPornEnabled && BotInfo.Config.OriginalPictureCheckPornEnabled, url, BotInfo.Config.OriginalPictureUseProxy, outMessage);
 
             return outMessage;
         }

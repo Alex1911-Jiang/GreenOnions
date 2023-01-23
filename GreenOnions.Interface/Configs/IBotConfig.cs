@@ -234,6 +234,12 @@ namespace GreenOnions.Interface.Configs
         public bool PmAutoSearch { get; }
 
         /// <summary>
+        /// 搜图是否使用代理
+        /// </summary>
+        [PropertyChineseName("搜图 使用代理", "搜图")]
+        public bool SearchUseProxy { get; }
+
+        /// <summary>
         /// 是否发送缩略图
         /// </summary>
         [PropertyChineseName("发送缩略图", "搜图")]
@@ -502,6 +508,12 @@ namespace GreenOnions.Interface.Configs
         public string OriginalPictureCommand { get; }
 
         /// <summary>
+        /// 下载原图是否使用代理
+        /// </summary>
+        [PropertyChineseName("下载原图 使用代理", "搜图")]
+        public bool OriginalPictureUseProxy { get; }
+
+        /// <summary>
         /// 开始下载原图回复语
         /// </summary>
         [PropertyChineseName("下载原图 开始下载回复语", "搜图")]
@@ -545,6 +557,12 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         [PropertyChineseName("翻译引擎", "翻译", "0 = 谷歌, 1 = 有道")]
         public TranslateEngine TranslateEngineType { get; }
+
+        /// <summary>
+        /// 翻译是否使用代理
+        /// </summary>
+        [PropertyChineseName("翻译 使用代理", "翻译")]
+        public bool TranslateUseProxy { get; }
 
         /// <summary>
         /// 云翻译接口的APP ID
@@ -596,6 +614,12 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         [PropertyChineseName("色图命令", "色图", "支持正则表达式")]
         public string HPictureCmd { get; }
+
+        /// <summary>
+        /// 色图是否使用代理
+        /// </summary>
+        [PropertyChineseName("色图 使用代理", "色图")]
+        public bool HPictureUseProxy { get; }
 
         /// <summary>
         /// 启用的色图图库
@@ -997,6 +1021,12 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         [PropertyChineseName("启用RSS订阅转发", "RSS订阅转发")]
         public bool RssEnabled { get; }
+
+        /// <summary>
+        /// RSS是否使用代理
+        /// </summary>
+        [PropertyChineseName("RSS订阅转发 使用代理", "RSS订阅转发")]
+        public bool RssUseProxy { get; }
 
         /// <summary>
         /// 抓取RSS间隔时间(分钟)

@@ -17,7 +17,7 @@ namespace GreenOnions.Repeater
             MessageItem tempMessageItem;
             if (message is GreenOnionsImageMessage imgMsg)
             {
-                using (Stream img = await HttpHelper.GetStreamAsync(imgMsg.Url))
+                using (Stream img = await HttpHelper.GetStreamAsync(imgMsg.Url, false))
                     tempMessageItem = new MessageItem(imgMsg.GetType(), img.ToBase64());
             }
             else if (message is GreenOnionsTextMessage txtMsg)
@@ -122,25 +122,23 @@ namespace GreenOnions.Repeater
             
             if (bRewind || bHorizontalMirror || bVerticalMirror)
             {
-                Stream img = await HttpHelper.GetStreamAsync(url);
-
-                if (img is not null)
+                Stream img = await HttpHelper.GetStreamAsync(url, false);
+                if (img is null)
+                    return null;
+                try
                 {
-                    try
-                    {
-                        //倒放和镜像不会同时发生且倒放优先级高于镜像, 但水平镜像和垂直镜像可能同时发生
-                        if (bRewind)
-                            img = img.RewindGifStream();
-                        if (bHorizontalMirror)
-                            img = img.HorizontalMirrorImageStream();
-                        if (bVerticalMirror)
-                            img = img.VerticalMirrorImageStream();
-                        return img;
-                    }
-                    catch (Exception ex)
-                    {
-                        LogHelper.WriteErrorLogWithUserMessage("镜像图片失败", ex);
-                    }
+                    //倒放和镜像不会同时发生且倒放优先级高于镜像, 但水平镜像和垂直镜像可能同时发生
+                    if (bRewind)
+                        img = img.RewindGifStream();
+                    if (bHorizontalMirror)
+                        img = img.HorizontalMirrorImageStream();
+                    if (bVerticalMirror)
+                        img = img.VerticalMirrorImageStream();
+                    return img;
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage("镜像图片失败", ex);
                 }
             }
             return null;

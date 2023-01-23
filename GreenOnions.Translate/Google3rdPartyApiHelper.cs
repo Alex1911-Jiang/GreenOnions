@@ -33,7 +33,7 @@ namespace GreenOnions.Translate
         private static async Task<string> Translate(string text, string from, string to)
         {
             text = HttpUtility.UrlEncode(text);
-            string result = await HttpHelper.GetStringAsync($"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={text}");
+            string result = await HttpHelper.GetStringAsync($"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={text}", BotInfo.Config.TranslateUseProxy);
             JArray arr = JsonConvert.DeserializeObject<JArray>(result);
             StringBuilder sb = new StringBuilder();
             string resStr = string.Empty;

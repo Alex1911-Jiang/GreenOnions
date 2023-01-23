@@ -40,6 +40,7 @@ namespace GreenOnions.BotManagerWindows.Controls
                 foreach (var item in BotInfo.Config.HPictureWhiteGroup)
                     lstHPictureWhiteGroup.Items.Add(item.ToString());
             }
+            chkHPictureUseProxy.Checked = BotInfo.Config.HPictureUseProxy;
             chkHPictureAntiShielding.Checked = BotInfo.Config.HPictureAntiShielding;
             chkLoliconRequestByBrowser.Checked = BotInfo.Config.HPictureLoliconRequestByWebBrowser;
             chkHPictureWhiteOnly.Checked = BotInfo.Config.HPictureWhiteOnly;
@@ -97,6 +98,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             HashSet<long> tempHPictureWhiteGroup = new HashSet<long>();
             foreach (ListViewItem item in lstHPictureWhiteGroup.Items)
                 tempHPictureWhiteGroup.Add(Convert.ToInt64(item.SubItems[0].Text));
+            BotInfo.Config.HPictureUseProxy = chkHPictureUseProxy.Checked;
             BotInfo.Config.HPictureWhiteGroup = tempHPictureWhiteGroup;
             BotInfo.Config.HPictureWhiteOnly = chkHPictureWhiteOnly.Checked;
             BotInfo.Config.HPictureAllowR18 = chkHPictureAllowR18.Checked;

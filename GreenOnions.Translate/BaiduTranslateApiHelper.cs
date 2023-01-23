@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -56,7 +55,7 @@ namespace GreenOnions.Translate
                 { new StringContent(salt, Encoding.UTF8, "application/x-www-form-urlencoded"), "salt" },
                 { new StringContent(sign, Encoding.UTF8, "application/x-www-form-urlencoded"), "sign" }
             };
-            using HttpClient client = HttpHelper.CreateClient();
+            using HttpClient client = HttpHelper.CreateClient(BotInfo.Config.TranslateUseProxy);
             var tranResp = await client.PostAsync("http://api.fanyi.baidu.com/api/trans/vip/translate", content);
             var resultJson = await tranResp.Content.ReadAsStringAsync();
             JToken jResult = JsonConvert.DeserializeObject<JToken>(resultJson);

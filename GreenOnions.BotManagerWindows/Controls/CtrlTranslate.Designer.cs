@@ -50,11 +50,12 @@
             this.lnkTranslateGotoAPP = new System.Windows.Forms.LinkLabel();
             this.btnShowSupportedLanguages = new System.Windows.Forms.Button();
             this.btnTranslateTest = new System.Windows.Forms.Button();
+            this.chkTranslateUseProxy = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // txbTranslateFromToCMD
             // 
-            this.txbTranslateFromToCMD.Location = new System.Drawing.Point(310, 263);
+            this.txbTranslateFromToCMD.Location = new System.Drawing.Point(310, 266);
             this.txbTranslateFromToCMD.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbTranslateFromToCMD.Name = "txbTranslateFromToCMD";
             this.txbTranslateFromToCMD.Size = new System.Drawing.Size(666, 30);
@@ -63,7 +64,7 @@
             // lblTranslateFromTo
             // 
             this.lblTranslateFromTo.AutoSize = true;
-            this.lblTranslateFromTo.Location = new System.Drawing.Point(19, 268);
+            this.lblTranslateFromTo.Location = new System.Drawing.Point(19, 271);
             this.lblTranslateFromTo.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblTranslateFromTo.Name = "lblTranslateFromTo";
             this.lblTranslateFromTo.Size = new System.Drawing.Size(266, 24);
@@ -100,7 +101,7 @@
             // 
             // txbAddAutoTranslateGroupMemoryQQ
             // 
-            this.txbAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(715, 371);
+            this.txbAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(715, 374);
             this.txbAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(6);
             this.txbAddAutoTranslateGroupMemoryQQ.Name = "txbAddAutoTranslateGroupMemoryQQ";
             this.txbAddAutoTranslateGroupMemoryQQ.ShortcutsEnabled = false;
@@ -109,7 +110,7 @@
             // 
             // btnRemoveAutoTranslateGroupMemoryQQ
             // 
-            this.btnRemoveAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(545, 414);
+            this.btnRemoveAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(545, 417);
             this.btnRemoveAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(6);
             this.btnRemoveAutoTranslateGroupMemoryQQ.Name = "btnRemoveAutoTranslateGroupMemoryQQ";
             this.btnRemoveAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(138, 32);
@@ -120,7 +121,7 @@
             // 
             // btnAddAutoTranslateGroupMemoryQQ
             // 
-            this.btnAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(545, 371);
+            this.btnAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(545, 374);
             this.btnAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(6);
             this.btnAddAutoTranslateGroupMemoryQQ.Name = "btnAddAutoTranslateGroupMemoryQQ";
             this.btnAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(138, 32);
@@ -132,7 +133,7 @@
             // lstAutoTranslateGroupMemoriesQQ
             // 
             this.lstAutoTranslateGroupMemoriesQQ.FullRowSelect = true;
-            this.lstAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(245, 341);
+            this.lstAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(245, 344);
             this.lstAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(6);
             this.lstAutoTranslateGroupMemoriesQQ.Name = "lstAutoTranslateGroupMemoriesQQ";
             this.lstAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(260, 118);
@@ -143,7 +144,7 @@
             // lblAddAutoTranslateGroupMemoryQQ
             // 
             this.lblAddAutoTranslateGroupMemoryQQ.AutoSize = true;
-            this.lblAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(712, 341);
+            this.lblAddAutoTranslateGroupMemoryQQ.Location = new System.Drawing.Point(712, 344);
             this.lblAddAutoTranslateGroupMemoryQQ.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblAddAutoTranslateGroupMemoryQQ.Name = "lblAddAutoTranslateGroupMemoryQQ";
             this.lblAddAutoTranslateGroupMemoryQQ.Size = new System.Drawing.Size(238, 24);
@@ -153,7 +154,7 @@
             // lblAutoTranslateGroupMemoriesQQ
             // 
             this.lblAutoTranslateGroupMemoriesQQ.AutoSize = true;
-            this.lblAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(19, 341);
+            this.lblAutoTranslateGroupMemoriesQQ.Location = new System.Drawing.Point(19, 344);
             this.lblAutoTranslateGroupMemoriesQQ.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblAutoTranslateGroupMemoriesQQ.Name = "lblAutoTranslateGroupMemoriesQQ";
             this.lblAutoTranslateGroupMemoriesQQ.Size = new System.Drawing.Size(202, 24);
@@ -162,7 +163,7 @@
             // 
             // txbTranslateTo
             // 
-            this.txbTranslateTo.Location = new System.Drawing.Point(310, 222);
+            this.txbTranslateTo.Location = new System.Drawing.Point(310, 225);
             this.txbTranslateTo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbTranslateTo.Name = "txbTranslateTo";
             this.txbTranslateTo.Size = new System.Drawing.Size(666, 30);
@@ -170,7 +171,7 @@
             // 
             // txbTranslateToChinese
             // 
-            this.txbTranslateToChinese.Location = new System.Drawing.Point(310, 182);
+            this.txbTranslateToChinese.Location = new System.Drawing.Point(310, 185);
             this.txbTranslateToChinese.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbTranslateToChinese.Name = "txbTranslateToChinese";
             this.txbTranslateToChinese.Size = new System.Drawing.Size(666, 30);
@@ -179,7 +180,7 @@
             // lblTranslateTo
             // 
             this.lblTranslateTo.AutoSize = true;
-            this.lblTranslateTo.Location = new System.Drawing.Point(19, 227);
+            this.lblTranslateTo.Location = new System.Drawing.Point(19, 230);
             this.lblTranslateTo.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblTranslateTo.Name = "lblTranslateTo";
             this.lblTranslateTo.Size = new System.Drawing.Size(176, 24);
@@ -189,7 +190,7 @@
             // lblTranslateToChinese
             // 
             this.lblTranslateToChinese.AutoSize = true;
-            this.lblTranslateToChinese.Location = new System.Drawing.Point(19, 186);
+            this.lblTranslateToChinese.Location = new System.Drawing.Point(19, 189);
             this.lblTranslateToChinese.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblTranslateToChinese.Name = "lblTranslateToChinese";
             this.lblTranslateToChinese.Size = new System.Drawing.Size(140, 24);
@@ -199,7 +200,7 @@
             // lblTranslateEngineHelp
             // 
             this.lblTranslateEngineHelp.AutoSize = true;
-            this.lblTranslateEngineHelp.Location = new System.Drawing.Point(310, 58);
+            this.lblTranslateEngineHelp.Location = new System.Drawing.Point(310, 61);
             this.lblTranslateEngineHelp.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblTranslateEngineHelp.Name = "lblTranslateEngineHelp";
             this.lblTranslateEngineHelp.Size = new System.Drawing.Size(574, 24);
@@ -208,7 +209,7 @@
             // 
             // txbTranslateAPPID
             // 
-            this.txbTranslateAPPID.Location = new System.Drawing.Point(310, 86);
+            this.txbTranslateAPPID.Location = new System.Drawing.Point(310, 89);
             this.txbTranslateAPPID.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbTranslateAPPID.Name = "txbTranslateAPPID";
             this.txbTranslateAPPID.Size = new System.Drawing.Size(544, 30);
@@ -217,7 +218,7 @@
             // lblTranslateAPPID
             // 
             this.lblTranslateAPPID.AutoSize = true;
-            this.lblTranslateAPPID.Location = new System.Drawing.Point(19, 90);
+            this.lblTranslateAPPID.Location = new System.Drawing.Point(19, 93);
             this.lblTranslateAPPID.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblTranslateAPPID.Name = "lblTranslateAPPID";
             this.lblTranslateAPPID.Size = new System.Drawing.Size(68, 24);
@@ -226,7 +227,7 @@
             // 
             // txbTranslateAPPKey
             // 
-            this.txbTranslateAPPKey.Location = new System.Drawing.Point(310, 127);
+            this.txbTranslateAPPKey.Location = new System.Drawing.Point(310, 130);
             this.txbTranslateAPPKey.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbTranslateAPPKey.Name = "txbTranslateAPPKey";
             this.txbTranslateAPPKey.Size = new System.Drawing.Size(544, 30);
@@ -235,7 +236,7 @@
             // lblTranslateAPPKey
             // 
             this.lblTranslateAPPKey.AutoSize = true;
-            this.lblTranslateAPPKey.Location = new System.Drawing.Point(19, 131);
+            this.lblTranslateAPPKey.Location = new System.Drawing.Point(19, 134);
             this.lblTranslateAPPKey.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblTranslateAPPKey.Name = "lblTranslateAPPKey";
             this.lblTranslateAPPKey.Size = new System.Drawing.Size(80, 24);
@@ -246,7 +247,7 @@
             // 
             this.lnkTranslateGotoAPP.AutoSize = true;
             this.lnkTranslateGotoAPP.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.lnkTranslateGotoAPP.Location = new System.Drawing.Point(204, 112);
+            this.lnkTranslateGotoAPP.Location = new System.Drawing.Point(204, 115);
             this.lnkTranslateGotoAPP.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lnkTranslateGotoAPP.Name = "lnkTranslateGotoAPP";
             this.lnkTranslateGotoAPP.Size = new System.Drawing.Size(90, 24);
@@ -268,7 +269,7 @@
             // 
             // btnTranslateTest
             // 
-            this.btnTranslateTest.Location = new System.Drawing.Point(862, 85);
+            this.btnTranslateTest.Location = new System.Drawing.Point(862, 115);
             this.btnTranslateTest.Name = "btnTranslateTest";
             this.btnTranslateTest.Size = new System.Drawing.Size(114, 72);
             this.btnTranslateTest.TabIndex = 37;
@@ -276,11 +277,22 @@
             this.btnTranslateTest.UseVisualStyleBackColor = true;
             this.btnTranslateTest.Click += new System.EventHandler(this.btnTranslateTest_Click);
             // 
+            // chkTranslateUseProxy
+            // 
+            this.chkTranslateUseProxy.AutoSize = true;
+            this.chkTranslateUseProxy.Location = new System.Drawing.Point(19, 57);
+            this.chkTranslateUseProxy.Name = "chkTranslateUseProxy";
+            this.chkTranslateUseProxy.Size = new System.Drawing.Size(108, 28);
+            this.chkTranslateUseProxy.TabIndex = 38;
+            this.chkTranslateUseProxy.Text = "使用代理";
+            this.chkTranslateUseProxy.UseVisualStyleBackColor = true;
+            // 
             // CtrlTranslate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.chkTranslateUseProxy);
             this.Controls.Add(this.btnTranslateTest);
             this.Controls.Add(this.btnShowSupportedLanguages);
             this.Controls.Add(this.lnkTranslateGotoAPP);
@@ -334,5 +346,6 @@
         private LinkLabel lnkTranslateGotoAPP;
         private Button btnShowSupportedLanguages;
         private Button btnTranslateTest;
+        private CheckBox chkTranslateUseProxy;
     }
 }
