@@ -254,9 +254,9 @@
             this.chkASCII2DRequestByWebBrowser.Location = new System.Drawing.Point(24, 4);
             this.chkASCII2DRequestByWebBrowser.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkASCII2DRequestByWebBrowser.Name = "chkASCII2DRequestByWebBrowser";
-            this.chkASCII2DRequestByWebBrowser.Size = new System.Drawing.Size(535, 28);
+            this.chkASCII2DRequestByWebBrowser.Size = new System.Drawing.Size(557, 28);
             this.chkASCII2DRequestByWebBrowser.TabIndex = 41;
-            this.chkASCII2DRequestByWebBrowser.Text = "ASCII2D 优先使用浏览器进行 Http 请求 (以应对近期403问题)";
+            this.chkASCII2DRequestByWebBrowser.Text = "ASCII2D 优先使用浏览器进行 Http 请求 (绕过CF盾导致403问题)";
             this.chkASCII2DRequestByWebBrowser.UseVisualStyleBackColor = true;
             // 
             // cboSearchShowAscii2dCount
@@ -459,9 +459,9 @@
             this.chkSauceNAORequestByWebBrowser.Location = new System.Drawing.Point(24, 4);
             this.chkSauceNAORequestByWebBrowser.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkSauceNAORequestByWebBrowser.Name = "chkSauceNAORequestByWebBrowser";
-            this.chkSauceNAORequestByWebBrowser.Size = new System.Drawing.Size(582, 28);
+            this.chkSauceNAORequestByWebBrowser.Size = new System.Drawing.Size(492, 28);
             this.chkSauceNAORequestByWebBrowser.TabIndex = 49;
-            this.chkSauceNAORequestByWebBrowser.Text = "SauceNAO 使用爬虫而非API (轻量服务器403再开, 不支持下载原图)";
+            this.chkSauceNAORequestByWebBrowser.Text = "SauceNAO 使用爬虫而非API (403再开, 不支持下载原图)";
             this.chkSauceNAORequestByWebBrowser.UseVisualStyleBackColor = true;
             // 
             // lblSearchSauceNAOLowSimilarityInfo
@@ -929,7 +929,7 @@
             this.Controls.Add(this.chkSearchASCII2DEnabled);
             this.Controls.Add(this.chkSearchSauceNAOEnabled);
             this.Name = "CtrlSearchPicture";
-            this.Size = new System.Drawing.Size(1035, 832);
+            this.Size = new System.Drawing.Size(992, 1823);
             this.pnlSearchIqdb.ResumeLayout(false);
             this.pnlSearchIqdb.PerformLayout();
             this.pnlSearchAscii2d.ResumeLayout(false);

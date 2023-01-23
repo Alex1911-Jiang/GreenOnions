@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -22,12 +21,16 @@ namespace GreenOnions.Utility.Helper
 
         public async static Task<(string document, string redirectUrl)> GetHttpResponseStringAndRedirectUrlAsync(HttpClient client, string url)
         {
-            using HttpRequestMessage request = new(HttpMethod.Get, url);
-            request.Content.Headers.TryAddWithoutValidation("ContentType", "text/html;charset=UTF-8");
-            request.Content.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-            request.Content.Headers.TryAddWithoutValidation("UserAgent", "Mozilla/5.0 (Windows NT 5.2; rv:12.0) Gecko/20100101 Firefox/12.0");
+            HttpRequestMessage request = new(HttpMethod.Get, url);
+            client.DefaultRequestHeaders.TryAddWithoutValidation("ContentType", "text/html;charset=UTF-8");
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+            client.DefaultRequestHeaders.TryAddWithoutValidation("UserAgent", "Mozilla/5.0 (Windows NT 5.2; rv:12.0) Gecko/20100101 Firefox/12.0");
             var resp = await client.SendAsync(request);
-            return (await resp.Content.ReadAsStringAsync(), request.RequestUri.ToString());
+            if (resp.StatusCode == HttpStatusCode.Forbidden)
+                throw new HttpRequestException(" 访问被拒绝", null, resp.StatusCode);
+            string document = await resp.Content.ReadAsStringAsync();
+            string redirectUrl = request.RequestUri.ToString();
+            return (document, redirectUrl);
         }
 
         public static async Task<string> GetStringAsync(string url, bool useProxy)

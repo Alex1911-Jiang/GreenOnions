@@ -804,13 +804,13 @@ namespace GreenOnions.PictureSearcher
                     catch (Exception ex)
                     {
                         LogHelper.WriteErrorLogWithUserMessage("ASCII2D特征(后端)搜索失败", ex, $"请求地址为：{colorUrl}");
-                        outMessage.Add(BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(("搜索类型", "ASCII2D特征")) + ex.Message);
+                        outMessage.Add(BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(("搜索类型", "ASCII2D特征")) + ex.Message);
                     }
                 }
                 catch (Exception ex)
                 {
                     LogHelper.WriteErrorLogWithUserMessage("ASCII2D颜色(后端)搜索失败", ex, $"请求地址为：{colorUrl}");
-                    outMessage.Add(BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(("搜索类型", "ASCII2D颜色")) + ex.Message);
+                    outMessage.Add(BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(("搜索类型", "ASCII2D颜色")) + ex.Message);
                 }
             }
 
