@@ -36,10 +36,10 @@ namespace GreenOnions.HPicture
 
         private static async Task CreateNewApiIfTagChange(string tag)
         {
-            if (tag != _lastTag)
+            if (_api is null || tag != _lastTag)
             {
                 _lastTag = tag;
-                _api = await YandeClient.CreateNew(false, true, tag, BotInfo.Config.ProxyUrl);
+                _api = await YandeClient.CreateNew(false, true, tag, BotInfo.Config.HPictureUseProxy ? BotInfo.Config.ProxyUrl : null);
             }
         }
     }
