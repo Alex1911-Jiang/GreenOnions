@@ -8,17 +8,17 @@ namespace GreenOnions.HPicture
 {
     public static class YandeApi
     {
-        private static YandeClient _api = null;
+        private static YandeClient? _api = null;
         private static string _lastTag = string.Empty;
-        public static async Task<YandeItem> GetRandomHPictrue(string tag, bool r18)
+        public static async Task<YandeItem?> GetRandomHPictrue(string tag, bool r18)
         {
             await CreateNewApiIfTagChange(tag);
-            return await _api.GetRandom(r18 ? Rating.Explicit : Rating.Safe);
+            return await _api!.GetRandom(r18 ? Rating.Explicit : Rating.Safe);
         }
 
         public static async Task<YandeItem> GetOnceYandeItem()
         {
-            YandeItem item = await GetRandomHPictrue(string.Empty, false);
+            YandeItem? item = await GetRandomHPictrue(string.Empty, false);
             if (item is null)
                 throw new Exception(BotInfo.Config.HPictureNoResultReply);  //没有结果
             return item;
@@ -27,7 +27,7 @@ namespace GreenOnions.HPicture
         public static async IAsyncEnumerable<YandeItem> GetYandeItems(string tag, bool r18)
         {
             await CreateNewApiIfTagChange(tag);
-            foreach (var item in _api.PictureList)
+            foreach (var item in _api!.PictureList)
             {
                 if (item.Rating == (r18 ? Rating.Explicit : Rating.Safe))
                     yield return item;
