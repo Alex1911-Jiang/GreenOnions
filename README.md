@@ -12,17 +12,15 @@
 
 ### 功能介绍
 
-- [x] 1. [SauceNao](https://saucenao.com/) 搜图<br>
-- [x] 2. [ascii2d](https://ascii2d.net/) 搜图<br>
-- [x] 3. [trace.moe](https://trace.moe/) 搜番<br>
-- [x] 4. [lolicon](https://api.lolicon.app/#/setu) setu<br>
-- [x] 5. 群友 [Quan](https://github.com/Quan666) 的 [ELF图库](http://img.shab.fun:5000/) 美图<br>
-- [x] 6. 翻译(有道)<br>
-- [x] 7. 随机复读, 连续复读, 镜像复读图片和倒带gif(可配置触发几率)<br>
-- [x] 8. 新人入群/退群/被踢提醒<br>
-- [x] 9. RSS订阅转发<br>
-- [x] 10. 下载Pixiv原图(通过[pixiv.cat](https://pixiv.cat/))<br>
-- [x] 11. [yande](yande.re/post) setu
+- [x] 1. [SauceNao](https://saucenao.com/)、[ascii2d](https://ascii2d.net/)、[Iqdb](http://iqdb.org/)、[Iqdb3D](http://3d.iqdb.org/)、 [trace.moe](https://trace.moe/)搜图<br>
+- [x] 2. [lolicon](https://api.lolicon.app/#/setu)、[Lolisuki](https://lolisuki.cc/#/)、[Yuban10703](https://github.com/yuban10703/SetuAPI)、[yande](https://yande.re/post)、[Konachan](https://konachan.net/post)、[Lolibooru](https://lolibooru.moe/post) setu<br>
+- [x] 3. ~~群友 [Quan](https://github.com/Quan666) 的 [ELF图库](http://img.shab.fun:5000/) 美图~~(大部分图失效，外加作者已经说不更新了，砍掉了)<br>
+- [x] 4. 有道、百度、腾讯、谷歌翻译<br>
+- [x] 5. 随机复读, 连续复读, 镜像复读图片和倒带gif<br>
+- [x] 6. 新人入群/退群/被踢提醒<br>
+- [x] 7. RSS订阅转发<br>
+- [x] 8. 下载Pixiv原图(通过[pixiv.cat](https://pixiv.cat/))<br>
+- [x] 9. 合并转发的伪造消息<br>
 #### 更多功能请移步: [插件仓库](https://github.com/Alex1911-Jiang/GreenOnions.Plugins)
 
 ### 项目优势:
@@ -162,12 +160,10 @@
 
 ### 短期计划(TODO):
 
-1.重构屎山色图模块，方便适配新图库<br>
-2.E-Hentai关键词色图<br>
-3.适配几个群友提的图库<br>
-4.适配 [Konata.Core](https://github.com/KonataDev/Konata.Core) 平台
+1.E-Hentai关键词色图<br>
+2.适配 [Konata.Core](https://github.com/KonataDev/Konata.Core) 平台（或许会通过[KnifeHub](https://github.com/yiyungent/KnifeHub)）
 
 ### 长期计划(GUDO):
 1.把 System.Drawing 替换为其他~~更轻量~~的跨平台图形库, 取消Linux系统下对Mono的依赖<br>
 2.把内嵌浏览器 ([CefSharp](https://github.com/cefsharp/CefSharp)) 搬出到独立的仓库里, 改为插件式加载<br>
-3.添加一个网站管理端?<br>
+3.添加一个网站管理端（有生之年一定）<br>
