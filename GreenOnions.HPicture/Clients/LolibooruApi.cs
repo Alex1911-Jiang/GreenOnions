@@ -6,7 +6,7 @@ using Yande.re.Api;
 
 namespace GreenOnions.HPicture.Clients
 {
-    public static class YandeApi
+    public static class LolibooruApi
     {
         private static BaseClient? _api = null;
         private static string _lastTag = string.Empty;
@@ -39,7 +39,7 @@ namespace GreenOnions.HPicture.Clients
             if (_api is null || tag != _lastTag)
             {
                 _lastTag = tag;
-                _api = await YandeClient.CreateNew(true, true, tag, BotInfo.Config.HPictureUseProxy ? BotInfo.Config.ProxyUrl : null);
+                _api = await Lolibooru.CreateNew(true, true, tag, BotInfo.Config.HPictureUseProxy ? BotInfo.Config.ProxyUrl : null);
             }
         }
     }

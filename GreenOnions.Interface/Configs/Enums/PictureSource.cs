@@ -9,7 +9,5 @@
         Yuban10703 = 10703,
         Lolibooru = 4,
         Konachan_net = 5,
-        Gelbooru = 6,
-        wjcodes = 7,
     }
 }

@@ -52,7 +52,7 @@ namespace GreenOnions.BotMain.CqHttp
                     throw new SocketException(10061);
                 }
 
-                SoraApi api = null;
+                SoraApi? api = null;
 
                 _service.Event.OnClientConnect += async (eventType, eventArgs) =>
                 {

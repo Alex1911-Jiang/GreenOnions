@@ -109,6 +109,8 @@
             this.chkHPictureEnabledLolisukiSource = new System.Windows.Forms.CheckBox();
             this.pnlHPictureSource = new System.Windows.Forms.Panel();
             this.chkHPictureEnabledYuban10703Source = new System.Windows.Forms.CheckBox();
+            this.chkHPictureKonachan_netSource = new System.Windows.Forms.CheckBox();
+            this.chkHPictureLolibooruSource = new System.Windows.Forms.CheckBox();
             this.pnlHPictureCheckBoxes.SuspendLayout();
             this.pnlHPictureCmd.SuspendLayout();
             this.pnlHPictureSource.SuspendLayout();
@@ -326,7 +328,7 @@
             // lblHPictureSource
             // 
             this.lblHPictureSource.AutoSize = true;
-            this.lblHPictureSource.Location = new System.Drawing.Point(6, 243);
+            this.lblHPictureSource.Location = new System.Drawing.Point(6, 229);
             this.lblHPictureSource.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblHPictureSource.Name = "lblHPictureSource";
             this.lblHPictureSource.Size = new System.Drawing.Size(50, 24);
@@ -924,6 +926,8 @@
             // pnlHPictureSource
             // 
             this.pnlHPictureSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlHPictureSource.Controls.Add(this.chkHPictureLolibooruSource);
+            this.pnlHPictureSource.Controls.Add(this.chkHPictureKonachan_netSource);
             this.pnlHPictureSource.Controls.Add(this.chkHPictureEnabledYuban10703Source);
             this.pnlHPictureSource.Controls.Add(this.chkHPictureEnabledLoliconSource);
             this.pnlHPictureSource.Controls.Add(this.chkHPictureEnabledLolisukiSource);
@@ -943,6 +947,28 @@
             this.chkHPictureEnabledYuban10703Source.TabIndex = 123;
             this.chkHPictureEnabledYuban10703Source.Text = "Yuban10703图库";
             this.chkHPictureEnabledYuban10703Source.UseVisualStyleBackColor = true;
+            // 
+            // chkHPictureKonachan_netSource
+            // 
+            this.chkHPictureKonachan_netSource.AutoSize = true;
+            this.chkHPictureKonachan_netSource.Location = new System.Drawing.Point(227, 40);
+            this.chkHPictureKonachan_netSource.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.chkHPictureKonachan_netSource.Name = "chkHPictureKonachan_netSource";
+            this.chkHPictureKonachan_netSource.Size = new System.Drawing.Size(152, 28);
+            this.chkHPictureKonachan_netSource.TabIndex = 124;
+            this.chkHPictureKonachan_netSource.Text = "Konachan.net";
+            this.chkHPictureKonachan_netSource.UseVisualStyleBackColor = true;
+            // 
+            // chkHPictureLolibooruSource
+            // 
+            this.chkHPictureLolibooruSource.AutoSize = true;
+            this.chkHPictureLolibooruSource.Location = new System.Drawing.Point(389, 40);
+            this.chkHPictureLolibooruSource.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.chkHPictureLolibooruSource.Name = "chkHPictureLolibooruSource";
+            this.chkHPictureLolibooruSource.Size = new System.Drawing.Size(160, 28);
+            this.chkHPictureLolibooruSource.TabIndex = 125;
+            this.chkHPictureLolibooruSource.Text = "Lolibooru.moe";
+            this.chkHPictureLolibooruSource.UseVisualStyleBackColor = true;
             // 
             // CtrlHPicture
             // 
@@ -1121,5 +1147,7 @@
         private CheckBox chkHPictureEnabledLolisukiSource;
         private Panel pnlHPictureSource;
         private CheckBox chkHPictureEnabledYuban10703Source;
+        private CheckBox chkHPictureKonachan_netSource;
+        private CheckBox chkHPictureLolibooruSource;
     }
 }

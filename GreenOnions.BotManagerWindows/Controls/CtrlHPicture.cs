@@ -23,6 +23,10 @@ namespace GreenOnions.BotManagerWindows.Controls
                     chkHPictureEnabledLolisukiSource.Checked = true;
                 if (hSource == PictureSource.Yuban10703)
                     chkHPictureEnabledYuban10703Source.Checked = true;
+                if (hSource == PictureSource.Konachan_net)
+                    chkHPictureKonachan_netSource.Checked = true;
+                if (hSource == PictureSource.Lolibooru)
+                    chkHPictureLolibooruSource.Checked = true;
             }
             txbHPictureOnceMessageMaxImageCount.Text = BotInfo.Config.HPictureOnceMessageMaxImageCount.ToString();
             txbHPictureCmd.Text = BotInfo.Config.HPictureCmd;
@@ -86,6 +90,10 @@ namespace GreenOnions.BotManagerWindows.Controls
                 EnabledHPictureSource.Add(PictureSource.Lolisuki);
             if (chkHPictureEnabledYuban10703Source.Checked)
                 EnabledHPictureSource.Add(PictureSource.Yuban10703);
+            if (chkHPictureKonachan_netSource.Checked)
+                EnabledHPictureSource.Add(PictureSource.Konachan_net);
+            if (chkHPictureLolibooruSource.Checked)
+                EnabledHPictureSource.Add(PictureSource.Lolibooru);
 
             BotInfo.Config.EnabledHPictureSource = EnabledHPictureSource;
             BotInfo.Config.HPictureAntiShielding = chkHPictureAntiShielding.Checked;

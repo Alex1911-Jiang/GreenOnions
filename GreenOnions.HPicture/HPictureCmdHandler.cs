@@ -194,7 +194,9 @@ namespace GreenOnions.HPicture
             object pictureSourceItem = pictureSource switch
             {
                 PictureSource.Lolicon => new LoliconClient().GetOnceLoliItem(),
-                PictureSource.Yande_re => await YandeApi.GetOnceYandeItem(),
+                PictureSource.Yande_re => await YandeApi.GetOnceItem(),
+                PictureSource.Konachan_net => await KonachanApi.GetOnceItem(),
+                PictureSource.Lolibooru => await LolibooruApi.GetOnceItem(),
                 PictureSource.Lolisuki => await new LolisukiClient().GetOnceLoliItem(),
                 PictureSource.Yuban10703 => await new Yuban10703Client().GetOnceLoliItem(),
                 _ => throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员")  //应该不会来到这里
@@ -263,6 +265,7 @@ namespace GreenOnions.HPicture
         /// </summary>
         private async Task<bool> SendHPictures(string keyword, int num, bool r18, long senderId, long? senderGroup, int? replyMsgId)
         {
+            int sendCount = 0;
             try
             {
                 PictureSource pictureSource = await RandomHPictureSource(senderId, senderGroup, replyMsgId);
@@ -273,8 +276,7 @@ namespace GreenOnions.HPicture
                             await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
                         break;
                     case PictureSource.Yande_re:
-                        int sendCount = 0;
-                        await foreach (var item in YandeApi.GetYandeItems(keyword, r18))
+                        await foreach (var item in YandeApi.GetItems(keyword, r18))
                         {
                             if (sendCount >= num)
                                 break;
@@ -289,6 +291,24 @@ namespace GreenOnions.HPicture
                     case PictureSource.Yuban10703:
                         await foreach (var item in new Yuban10703Client().GetLoliItems(keyword, num, r18))
                             await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
+                        break;
+                    case PictureSource.Konachan_net:
+                        await foreach (var item in KonachanApi.GetItems(keyword, r18))
+                        {
+                            if (sendCount >= num)
+                                break;
+                            await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
+                            sendCount++;
+                        }
+                        break;
+                    case PictureSource.Lolibooru:
+                        await foreach (var item in LolibooruApi.GetItems(keyword, r18))
+                        {
+                            if (sendCount >= num)
+                                break;
+                            await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
+                            sendCount++;
+                        }
                         break;
                     default:
                         throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员");  //应该不会来到这里

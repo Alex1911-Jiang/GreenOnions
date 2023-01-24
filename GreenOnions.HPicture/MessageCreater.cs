@@ -15,8 +15,8 @@ namespace GreenOnions.HPicture
         {
             if (item is LoliHPictureItem loliConItem)
                 return CreateTextMessageByLoliconItem(loliConItem);
-            else if (item is YandeItem yandeItem)
-                return CreateTextMessageByYandeItem(yandeItem);
+            else if (item is PictureItem webItem)
+                return CreateTextMessageByWebItem(webItem);
             throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员");
         }
 
@@ -24,8 +24,8 @@ namespace GreenOnions.HPicture
         {
             if (item is LoliHPictureItem loliItem)
                 return await CreateImageMessageByLoliItemAsync(loliItem);
-            else if (item is YandeItem yandeItem)
-                return await CreateImageMessageByYandeItemAsync(yandeItem);
+            else if (item is PictureItem yandeItem)
+                return await CreateImageMessageByWebItemAsync(yandeItem);
             throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员");
         }
 
@@ -53,17 +53,17 @@ namespace GreenOnions.HPicture
             return await ImageHelper.CreateImageMessageByUrlAsync(item.URL, BotInfo.Config.HPictureUseProxy);
         }
 
-        internal static GreenOnionsTextMessage CreateTextMessageByYandeItem(YandeItem item)
+        internal static GreenOnionsTextMessage CreateTextMessageByWebItem(PictureItem item)
         {
             StringBuilder sb = new();
             if (BotInfo.Config.HPictureSendUrl)
-                sb.AppendLine($"http://yande.re{item.ShowPageUrl}");
+                sb.AppendLine($"https://{item.Host}/{item.ShowPageUrl}");
             if (BotInfo.Config.HPictureSendTags && item.Tags is not null)
                 sb.AppendLine($"标签:{string.Join(", ", item.Tags)}");
             return new GreenOnionsTextMessage(sb);
         }
 
-        internal static async Task<GreenOnionsImageMessage> CreateImageMessageByYandeItemAsync(YandeItem item)
+        internal static async Task<GreenOnionsImageMessage> CreateImageMessageByWebItemAsync(PictureItem item)
         {
            return await ImageHelper.CreateImageMessageByUrlAsync(item.BigImgUrl, BotInfo.Config.HPictureUseProxy);
         }
