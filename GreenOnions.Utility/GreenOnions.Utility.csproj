@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>GreenOnions.Utility</RootNamespace>
-    <Nullable>annotations</Nullable>
+    <Nullable>enable</Nullable>
     <BaseOutputPath>..\bin\</BaseOutputPath>
   </PropertyGroup>
 

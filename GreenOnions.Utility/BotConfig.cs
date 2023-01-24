@@ -7,6 +7,12 @@ namespace GreenOnions.Utility
 {
     public class BotConfig : IBotConfig
     {
+        public void CreateDefaultValue()
+        {
+            EnabledHPictureSource.Add(PictureSource.Lolicon);
+            EnabledHPictureSource.Add(PictureSource.Lolisuki);
+            HPictureUserCmd.Add("--setu");
+        }
 
         #region -- 核心配置项 --
 
@@ -458,12 +464,12 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 启用的色图图库
         /// </summary>
-        public HashSet<PictureSource> EnabledHPictureSource { get; set; } = new HashSet<PictureSource>() { PictureSource.Lolicon };
+        public HashSet<PictureSource> EnabledHPictureSource { get; set; } = new HashSet<PictureSource>();
 
         /// <summary>
         /// 自定义色图命令
         /// </summary>
-        public HashSet<string> HPictureUserCmd { get; set; } = new HashSet<string>() { "--setu" };
+        public HashSet<string> HPictureUserCmd { get; set; } = new HashSet<string>();
 
         /// <summary>
         /// 白名单群
@@ -494,11 +500,6 @@ namespace GreenOnions.Utility
         /// 允许私聊
         /// </summary>
         public bool HPictureAllowPM { get; set; } = true;
-
-        /// <summary>
-        /// 1200像素模式
-        /// </summary>
-        public bool HPictureSize1200 { get; set; } = false;
 
         /// <summary>
         /// 冷却时间
@@ -849,7 +850,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
-        public HashSet<RssSubscriptionItem> RssSubscription { get; set; } = null;
+        public HashSet<RssSubscriptionItem>? RssSubscription { get; set; } = null;
 
         /// <summary>
         /// 获取B站直播封面

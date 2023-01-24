@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using GreenOnions.HPicture.Items;
 using GreenOnions.Utility;
@@ -12,57 +10,56 @@ using Newtonsoft.Json.Linq;
 
 namespace GreenOnions.HPicture
 {
-    public static class LoliconClient
+    internal class LoliconClient
     {
+        protected virtual string ApiName => "Lolicon";
+        protected virtual string ApiUrl => "https://api.lolicon.app/setu/v2";
+
         /// <summary>
-        /// 请求Lolicon图库获取单张图片并反序列化成结构
+        /// 请求Api图库获取单张图片并反序列化成结构
         /// </summary>
-        /// <returns>解析后的单个Lolicon结果</returns>
-        public static async Task<LoliconHPictureItem> GetOnceLoliconItem()
+        /// <returns>解析后的单个Api结果</returns>
+        internal async Task<LoliHPictureItem> GetOnceLoliItem()
         {
-            await foreach (var item in GetLoliconItems(string.Empty, 1, false))
+            await foreach (var item in GetLoliItems(string.Empty, 1, false))
                 return item;
             throw new Exception(BotInfo.Config.HPictureNoResultReply);  //没有结果
         }
 
         /// <summary>
-        /// 请求Lolicon图库获取一组图片并反序列化成结构
+        /// 请求Api图库获取一组图片并反序列化成结构
         /// </summary>
         /// <param name="keyword">关键词</param>
         /// <param name="imgCount">请求图片数量</param>
         /// <param name="r18">是否R18</param>
-        /// <returns>解析后的Lolicon结果</returns>
-        public static async IAsyncEnumerable<LoliconHPictureItem> GetLoliconItems(string keyword, int imgCount, bool r18)
+        /// <returns>解析后的Api结果</returns>
+        internal async IAsyncEnumerable<LoliHPictureItem> GetLoliItems(string keyword, int imgCount, bool r18)
         {
-            string sizeName = BotInfo.Config.HPictureSize1200 ? "regular" : "original";
-
             string keywordParam = KeyworkToParams(keyword);
             string numParam = $"num={imgCount}";
-            string sizeParam = $"size={sizeName}";
             string proxyParam = $"proxy=i.{BotInfo.Config.PixivProxy}";
             string r18Param = $"r18={(r18 ? 1 : 0)}";
-            List<string> requestParams = new(5) { numParam, sizeParam, proxyParam, r18Param };
+            List<string> requestParams = new(3) { numParam, proxyParam, r18Param };
             if (!string.IsNullOrEmpty(keywordParam))
                 requestParams.Add(keywordParam);
             string paramUrl = string.Join('&', requestParams);
 
-            string strUrl = $@"https://api.lolicon.app/setu/v2?{paramUrl}";
+            string strUrl = $@"{ApiUrl}?{paramUrl}";
 
-            JToken jt = await RequestLolicon(strUrl);
+            JToken jt = await RequestLoli(strUrl);
 
-            IEnumerable<LoliconHPictureItem> loliconItems = jt.Select(item =>
+            IEnumerable<LoliHPictureItem> loliItems = jt.Select(item =>
             {
                 string strPid = item["pid"].ToString();
                 string strP = item["p"].ToString();
-                string url = item["urls"][sizeName].ToString();
-                if (!BotInfo.Config.HPictureSize1200)
-                {
-                    int numP = Convert.ToInt32(strP);
-                    string strIndex = numP > 0 ? $"-{numP + 1}" : string.Empty;
-                    string ext = url.Substring(url.LastIndexOf('.'));
-                    url = $"https://{BotInfo.Config.PixivProxy}/{strPid}{strIndex}{ext}";  //似乎使用id路由比日期路由速度快不少？？
-                }
-                return new LoliconHPictureItem(
+                string url = item["urls"]["original"].ToString();
+
+                int numP = Convert.ToInt32(strP);
+                string strIndex = numP > 0 ? $"-{numP + 1}" : string.Empty;
+                string ext = url.Substring(url.LastIndexOf('.'));
+                url = $"https://{BotInfo.Config.PixivProxy}/{strPid}{strIndex}{ext}";  //似乎使用id路由比日期路由速度快不少？？
+
+                return new LoliHPictureItem(
                     strP,
                     strPid,
                     url,
@@ -72,19 +69,19 @@ namespace GreenOnions.HPicture
                     @$"https://www.pixiv.net/artworks/{strPid}(p{strP})");
             });
 
-            if (loliconItems is null)
+            if (loliItems is null)
             {
-                LogHelper.WriteErrorLog("Lolicon 响应解析失败");
+                LogHelper.WriteErrorLog($"{ApiName} 响应解析失败");
                 throw new Exception(BotInfo.Config.HPictureErrorReply);
             }
 
-            foreach (LoliconHPictureItem loliconItem in loliconItems)
+            foreach (LoliHPictureItem loliItem in loliItems)
             {
-                yield return loliconItem;
+                yield return loliItem;
             }
         }
 
-        private static string KeyworkToParams(string keyword)
+        protected string KeyworkToParams(string keyword)
         {
             if (string.IsNullOrWhiteSpace(keyword))
                 return string.Empty;
@@ -95,15 +92,17 @@ namespace GreenOnions.HPicture
                 return "tag=" + string.Join("&tag=", ands);
             }
             else
-                return "keyword=" + keyword;
+                return "&tag=" + keyword;
         }
 
-        private static async Task<JToken> RequestLolicon(string strUrl)
+        protected async Task<JToken> RequestLoli(string strUrl)
         {
+            bool bRequestByWebBrowser = ApiName == "Lolicon" && EventHelper.GetDocumentByBrowserEvent is not null && BotInfo.Config.HttpRequestByWebBrowser && BotInfo.Config.HPictureLoliconRequestByWebBrowser;
+
             string resultValue;
-            if (EventHelper.GetDocumentByBrowserEvent is not null && BotInfo.Config.HttpRequestByWebBrowser && BotInfo.Config.HPictureLoliconRequestByWebBrowser)
+            if (bRequestByWebBrowser)
             {
-                string doc = EventHelper.GetDocumentByBrowserEvent(strUrl).document;
+                string doc = EventHelper.GetDocumentByBrowserEvent!(strUrl).document;
                 resultValue = doc[doc.IndexOf("{")..(doc.LastIndexOf("}") + 1)];
             }
             else
@@ -113,14 +112,14 @@ namespace GreenOnions.HPicture
             string err = jo["error"].ToString();
             if (!string.IsNullOrWhiteSpace(err))
             {
-                LogHelper.WriteErrorLog($"Lolicon 服务器返回了错误消息：{err}");
+                LogHelper.WriteErrorLog($"{ApiName} 服务器返回了错误消息：{err}");
                 throw new Exception(BotInfo.Config.HPictureErrorReply + err);    //Api返回错误
             }
 
             JToken jt = jo["data"];
             if (!jt.Any())//没找到对应词条的色图;
             {
-                LogHelper.WriteInfoLog($"Lolicon 服务器返回了空数组");
+                LogHelper.WriteInfoLog($"{ApiName} 服务器返回了空数组");
                 throw new Exception(BotInfo.Config.HPictureNoResultReply);  //没有结果
             }
             return jt;

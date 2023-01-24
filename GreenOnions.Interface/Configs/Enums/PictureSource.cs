@@ -5,5 +5,6 @@
         Lolicon = 0,
         //ELF = 1,
         Yande_re = 2,
+        Lolisuki = 3,
     }
 }

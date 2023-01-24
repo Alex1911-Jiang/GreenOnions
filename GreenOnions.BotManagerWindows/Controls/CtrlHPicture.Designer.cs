@@ -45,7 +45,6 @@
             this.chkHPictureSendUrl = new System.Windows.Forms.CheckBox();
             this.pnlHPictureCheckBoxes = new System.Windows.Forms.Panel();
             this.lnkResetHPicture = new System.Windows.Forms.LinkLabel();
-            this.chkHPictureSize1200 = new System.Windows.Forms.CheckBox();
             this.lblHPictureOnceMessageMaxImageCountReadme = new System.Windows.Forms.Label();
             this.txbHPictureOnceMessageMaxImageCount = new System.Windows.Forms.TextBox();
             this.lblHPictureOnceMessageMaxImageCount = new System.Windows.Forms.Label();
@@ -107,6 +106,7 @@
             this.chkLoliconRequestByBrowser = new System.Windows.Forms.CheckBox();
             this.chkHPictureAntiShielding = new System.Windows.Forms.CheckBox();
             this.chkHPictureUseProxy = new System.Windows.Forms.CheckBox();
+            this.chkHPictureEnabledLolisukiSource = new System.Windows.Forms.CheckBox();
             this.pnlHPictureCheckBoxes.SuspendLayout();
             this.pnlHPictureCmd.SuspendLayout();
             this.SuspendLayout();
@@ -291,17 +291,6 @@
             this.lnkResetHPicture.Text = "还原";
             this.lnkResetHPicture.VisitedLinkColor = System.Drawing.Color.Blue;
             this.lnkResetHPicture.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkResetHPicture_LinkClicked);
-            // 
-            // chkHPictureSize1200
-            // 
-            this.chkHPictureSize1200.AutoSize = true;
-            this.chkHPictureSize1200.Location = new System.Drawing.Point(361, 302);
-            this.chkHPictureSize1200.Margin = new System.Windows.Forms.Padding(6);
-            this.chkHPictureSize1200.Name = "chkHPictureSize1200";
-            this.chkHPictureSize1200.Size = new System.Drawing.Size(191, 28);
-            this.chkHPictureSize1200.TabIndex = 7;
-            this.chkHPictureSize1200.Text = "Pixiv1200像素模式";
-            this.chkHPictureSize1200.UseVisualStyleBackColor = true;
             // 
             // lblHPictureOnceMessageMaxImageCountReadme
             // 
@@ -918,17 +907,28 @@
             this.chkHPictureUseProxy.Text = "使用代理";
             this.chkHPictureUseProxy.UseVisualStyleBackColor = true;
             // 
+            // chkHPictureEnabledLolisukiSource
+            // 
+            this.chkHPictureEnabledLolisukiSource.AutoSize = true;
+            this.chkHPictureEnabledLolisukiSource.Location = new System.Drawing.Point(583, 200);
+            this.chkHPictureEnabledLolisukiSource.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.chkHPictureEnabledLolisukiSource.Name = "chkHPictureEnabledLolisukiSource";
+            this.chkHPictureEnabledLolisukiSource.Size = new System.Drawing.Size(136, 28);
+            this.chkHPictureEnabledLolisukiSource.TabIndex = 122;
+            this.chkHPictureEnabledLolisukiSource.Text = "Lolisuki图库";
+            this.chkHPictureEnabledLolisukiSource.UseVisualStyleBackColor = true;
+            // 
             // CtrlHPicture
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.chkHPictureEnabledLolisukiSource);
             this.Controls.Add(this.chkHPictureUseProxy);
             this.Controls.Add(this.chkHPictureAntiShielding);
             this.Controls.Add(this.chkLoliconRequestByBrowser);
             this.Controls.Add(this.pnlHPictureCmd);
-            this.Controls.Add(this.chkHPictureSize1200);
             this.Controls.Add(this.lblHPictureDownloadingReply);
             this.Controls.Add(this.txbHPictureDownloadingReply);
             this.Controls.Add(this.chkHPictureSendProxyUrl);
@@ -1002,7 +1002,7 @@
             this.Controls.Add(this.lblUserCmd);
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.Name = "CtrlHPicture";
-            this.Size = new System.Drawing.Size(899, 1433);
+            this.Size = new System.Drawing.Size(847, 1381);
             this.pnlHPictureCheckBoxes.ResumeLayout(false);
             this.pnlHPictureCheckBoxes.PerformLayout();
             this.pnlHPictureCmd.ResumeLayout(false);
@@ -1031,7 +1031,6 @@
         private CheckBox chkHPictureSendUrl;
         private Panel pnlHPictureCheckBoxes;
         private LinkLabel lnkResetHPicture;
-        private CheckBox chkHPictureSize1200;
         private Label lblHPictureOnceMessageMaxImageCountReadme;
         private TextBox txbHPictureOnceMessageMaxImageCount;
         private Label lblHPictureOnceMessageMaxImageCount;
@@ -1093,5 +1092,6 @@
         private CheckBox chkLoliconRequestByBrowser;
         private CheckBox chkHPictureAntiShielding;
         private CheckBox chkHPictureUseProxy;
+        private CheckBox chkHPictureEnabledLolisukiSource;
     }
 }

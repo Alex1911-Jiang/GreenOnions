@@ -768,7 +768,7 @@ namespace GreenOnions.PictureSearcher
 
                     try
                     {
-                        bovwUrl = responseColor.jumpUrl.Replace("/color/", "/bovw/");
+                        bovwUrl = responseColor.redirectUrl.Replace("/color/", "/bovw/");
                         LogHelper.WriteInfoLog($"调用浏览器请求ASCII2D特征识别, 地址为:{bovwUrl}");
                         var responseBovw = EventHelper.GetDocumentByBrowserEvent(bovwUrl);
                         strAscii2dBovwResult = responseBovw.document;

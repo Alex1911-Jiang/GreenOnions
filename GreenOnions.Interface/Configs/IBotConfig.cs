@@ -10,11 +10,16 @@ namespace GreenOnions.Interface.Configs
     {
         #region -- 核心配置项 --
 
+        /// <summary>
+        /// 代理地址
+        /// </summary>
+        [PropertyChineseName("代理地址", "核心")]
         public string ProxyUrl { get; }
 
         /// <summary>
         /// 日志等级 0 = 信息， 1 = 警告， 2 = 错误
         /// </summary>
+        [PropertyChineseName("日志级别", "核心")]
         public int LogLevel { get; }
 
         /// <summary>
@@ -682,12 +687,6 @@ namespace GreenOnions.Interface.Configs
         public bool HPictureAllowPM { get; }
 
         /// <summary>
-        /// 1200像素模式
-        /// </summary>
-        [PropertyChineseName("色图 1200像素模式", "色图")]
-        public bool HPictureSize1200 { get; }
-
-        /// <summary>
         /// 冷却时间
         /// </summary>
         [PropertyChineseName("色图 群冷却时间", "色图", "s")]
@@ -1038,7 +1037,7 @@ namespace GreenOnions.Interface.Configs
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
         [PropertyChineseName("RSS订阅项", "RSS订阅转发")]
-        public HashSet<RssSubscriptionItem> RssSubscription { get; }
+        public HashSet<RssSubscriptionItem>? RssSubscription { get; }
 
         /// <summary>
         /// 获取B站直播封面

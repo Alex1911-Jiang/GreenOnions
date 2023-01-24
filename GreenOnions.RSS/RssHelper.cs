@@ -16,6 +16,7 @@ using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 namespace GreenOnions.RSS
@@ -112,7 +113,7 @@ namespace GreenOnions.RSS
             {
                 LogInfo($"{item.Url}没有记录, 添加当前时间作为比对时间");
                 BotInfo.LastOneSendRssTime.TryAdd(item.Url!, DateTime.Now);  //添加现在作为起始日期(避免把所有历史信息全都抓过来发送)
-                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented);
+                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter());
                 File.WriteAllText("rssCache.json", serRssCache);
                 return;
             }
@@ -303,7 +304,7 @@ namespace GreenOnions.RSS
                 }
                 else
                     BotInfo.LastOneSendRssTime.TryAdd(item.Url, rss.PubDate);  //群和好友均推送完毕后记录此地址的最后更新时间
-                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented);
+                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter());
                 File.WriteAllText("rssCache.json", serRssCache);
 
                 LogInfo($"{item.Url}记录最后更新时间完毕");

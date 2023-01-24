@@ -27,7 +27,7 @@ namespace GreenOnions.Utility.Helper
             client.DefaultRequestHeaders.TryAddWithoutValidation("UserAgent", "Mozilla/5.0 (Windows NT 5.2; rv:12.0) Gecko/20100101 Firefox/12.0");
             var resp = await client.SendAsync(request);
             if (resp.StatusCode == HttpStatusCode.Forbidden)
-                throw new HttpRequestException(" 访问被拒绝", null, resp.StatusCode);
+                throw new HttpRequestException(" 访问被拒绝", null, resp.StatusCode);  //403
             string document = await resp.Content.ReadAsStringAsync();
             string redirectUrl = request.RequestUri.ToString();
             return (document, redirectUrl);
@@ -43,6 +43,8 @@ namespace GreenOnions.Utility.Helper
         {
             using HttpClient client = CreateClient(useProxy);
             var resp = await client.GetAsync(url);
+            if (resp.StatusCode == HttpStatusCode.ServiceUnavailable)
+                throw new HttpRequestException(" API速率限制 请稍后再试", null, resp.StatusCode);  //503
             return resp.Content.ReadAsStream();
         }
 

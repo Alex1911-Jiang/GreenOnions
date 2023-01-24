@@ -13,7 +13,7 @@ namespace GreenOnions.HPicture
     {
         internal static GreenOnionsTextMessage CreateTextMessageByItem(object item)
         {
-            if (item is LoliconHPictureItem loliConItem)
+            if (item is LoliHPictureItem loliConItem)
                 return CreateTextMessageByLoliconItem(loliConItem);
             else if (item is YandeItem yandeItem)
                 return CreateTextMessageByYandeItem(yandeItem);
@@ -22,7 +22,7 @@ namespace GreenOnions.HPicture
 
         internal static async Task<GreenOnionsImageMessage> CreateImageMessageByItemAsync(object item)
         {
-            if (item is LoliconHPictureItem loliConItem)
+            if (item is LoliHPictureItem loliConItem)
                 return await CreateImageMessageByLoliconItemAsync(loliConItem);
             else if (item is YandeItem yandeItem)
                 return await CreateImageMessageByYandeItemAsync(yandeItem);
@@ -34,7 +34,7 @@ namespace GreenOnions.HPicture
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        internal static GreenOnionsTextMessage CreateTextMessageByLoliconItem(LoliconHPictureItem item)
+        internal static GreenOnionsTextMessage CreateTextMessageByLoliconItem(LoliHPictureItem item)
         {
             StringBuilder sb = new StringBuilder();
             if (BotInfo.Config.HPictureSendUrl)
@@ -48,7 +48,7 @@ namespace GreenOnions.HPicture
             return new GreenOnionsTextMessage(sb);
         }
 
-        internal static async Task<GreenOnionsImageMessage> CreateImageMessageByLoliconItemAsync(LoliconHPictureItem item)
+        internal static async Task<GreenOnionsImageMessage> CreateImageMessageByLoliconItemAsync(LoliHPictureItem item)
         {
             return await ImageHelper.CreateImageMessageByUrlAsync(item.URL, BotInfo.Config.HPictureUseProxy);
         }

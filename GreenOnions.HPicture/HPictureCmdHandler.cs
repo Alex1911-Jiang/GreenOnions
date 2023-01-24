@@ -192,8 +192,9 @@ namespace GreenOnions.HPicture
             PictureSource pictureSource = await RandomHPictureSource(senderId, senderGroup, replyMsgId);
             object pictureSourceItem = pictureSource switch
             {
-                PictureSource.Lolicon => await LoliconClient.GetOnceLoliconItem(),
+                PictureSource.Lolicon => new LoliconClient().GetOnceLoliItem(),
                 PictureSource.Yande_re => await YandeApi.GetOnceYandeItem(),
+                PictureSource.Lolisuki => await new LolisukiClient().GetOnceLoliItem(),
                 _ => throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员")  //应该不会来到这里
             };
             return await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, pictureSourceItem);
@@ -266,7 +267,7 @@ namespace GreenOnions.HPicture
                 switch (pictureSource)
                 {
                     case PictureSource.Lolicon:
-                        await foreach (var item in LoliconClient.GetLoliconItems(keyword, num, r18))
+                        await foreach (var item in new LoliconClient().GetLoliItems(keyword, num, r18))
                             await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
                         break;
                     case PictureSource.Yande_re:
@@ -278,6 +279,10 @@ namespace GreenOnions.HPicture
                             await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
                             sendCount++;
                         }
+                        break;
+                    case PictureSource.Lolisuki:
+                        await foreach (var item in new LolisukiClient().GetLoliItems(keyword, num, r18))
+                            await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
                         break;
                     default:
                         throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员");  //应该不会来到这里

@@ -36,7 +36,6 @@
                 Console.WriteLine("请先修改config.json相关参数后继续以下步骤，或直接回车以默认参数启动。");
                 Console.ReadLine();
             }
-            BotInfo.LoadConfig();
 
             Console.WriteLine("有任何疑问，意见或建议欢迎到 https://github.com/Alex1911-Jiang/GreenOnions 提Issue");
 
