@@ -8,18 +8,18 @@ using GreenOnions.Utility.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace GreenOnions.HPicture
+namespace GreenOnions.HPicture.Clients
 {
-    internal class LoliconClient
+    internal abstract class BaseLoliClient
     {
-        protected virtual string ApiName => "Lolicon";
-        protected virtual string ApiUrl => "https://api.lolicon.app/setu/v2";
+        protected abstract string ApiName { get;}
+        protected abstract string ApiUrl{ get;}
 
         /// <summary>
         /// 请求Api图库获取单张图片并反序列化成结构
         /// </summary>
         /// <returns>解析后的单个Api结果</returns>
-        internal async Task<LoliHPictureItem> GetOnceLoliItem()
+        internal virtual async Task<LoliHPictureItem> GetOnceLoliItem()
         {
             await foreach (var item in GetLoliItems(string.Empty, 1, false))
                 return item;
@@ -33,13 +33,12 @@ namespace GreenOnions.HPicture
         /// <param name="imgCount">请求图片数量</param>
         /// <param name="r18">是否R18</param>
         /// <returns>解析后的Api结果</returns>
-        internal async IAsyncEnumerable<LoliHPictureItem> GetLoliItems(string keyword, int imgCount, bool r18)
+        internal virtual async IAsyncEnumerable<LoliHPictureItem> GetLoliItems(string keyword, int imgCount, bool r18)
         {
             string keywordParam = KeyworkToParams(keyword);
             string numParam = $"num={imgCount}";
-            string proxyParam = $"proxy=i.{BotInfo.Config.PixivProxy}";
             string r18Param = $"r18={(r18 ? 1 : 0)}";
-            List<string> requestParams = new(3) { numParam, proxyParam, r18Param };
+            List<string> requestParams = new(2) { numParam, r18Param };
             if (!string.IsNullOrEmpty(keywordParam))
                 requestParams.Add(keywordParam);
             string paramUrl = string.Join('&', requestParams);
@@ -47,8 +46,37 @@ namespace GreenOnions.HPicture
             string strUrl = $@"{ApiUrl}?{paramUrl}";
 
             JToken jt = await RequestLoli(strUrl);
+            IEnumerable<LoliHPictureItem> loliItems = JTokenToItem(jt);
 
-            IEnumerable<LoliHPictureItem> loliItems = jt.Select(item =>
+            if (loliItems is null)
+            {
+                LogHelper.WriteErrorLog($"{ApiName} 响应解析失败");
+                throw new Exception(BotInfo.Config.HPictureErrorReply);
+            }
+
+            foreach (LoliHPictureItem loliItem in loliItems)
+            {
+                yield return loliItem;
+            }
+        }
+
+        protected virtual IEnumerable<LoliHPictureItem> JTokenToItem(JToken jt)
+        {
+            string err = jt["error"].ToString();
+            if (!string.IsNullOrWhiteSpace(err))
+            {
+                LogHelper.WriteErrorLog($"{ApiName} 服务器返回了错误消息：{err}");
+                throw new Exception(BotInfo.Config.HPictureErrorReply + err);    //Api返回错误
+            }
+
+            JToken data = jt["data"];
+            if (!data.Any())//没找到对应词条的色图;
+            {
+                LogHelper.WriteInfoLog($"{ApiName} 服务器返回了空数组");
+                throw new Exception(BotInfo.Config.HPictureNoResultReply);  //没有结果
+            }
+
+            return data.Select(item =>
             {
                 string strPid = item["pid"].ToString();
                 string strP = item["p"].ToString();
@@ -68,20 +96,9 @@ namespace GreenOnions.HPicture
                     string.Join(",", (item["tags"] as JArray)!),
                     @$"https://www.pixiv.net/artworks/{strPid}(p{strP})");
             });
-
-            if (loliItems is null)
-            {
-                LogHelper.WriteErrorLog($"{ApiName} 响应解析失败");
-                throw new Exception(BotInfo.Config.HPictureErrorReply);
-            }
-
-            foreach (LoliHPictureItem loliItem in loliItems)
-            {
-                yield return loliItem;
-            }
         }
 
-        protected string KeyworkToParams(string keyword)
+        protected virtual string KeyworkToParams(string keyword)
         {
             if (string.IsNullOrWhiteSpace(keyword))
                 return string.Empty;
@@ -95,34 +112,9 @@ namespace GreenOnions.HPicture
                 return "&tag=" + keyword;
         }
 
-        protected async Task<JToken> RequestLoli(string strUrl)
+        protected virtual async Task<JToken> RequestLoli(string strUrl)
         {
-            bool bRequestByWebBrowser = ApiName == "Lolicon" && EventHelper.GetDocumentByBrowserEvent is not null && BotInfo.Config.HttpRequestByWebBrowser && BotInfo.Config.HPictureLoliconRequestByWebBrowser;
-
-            string resultValue;
-            if (bRequestByWebBrowser)
-            {
-                string doc = EventHelper.GetDocumentByBrowserEvent!(strUrl).document;
-                resultValue = doc[doc.IndexOf("{")..(doc.LastIndexOf("}") + 1)];
-            }
-            else
-                resultValue = await HttpHelper.GetStringAsync(strUrl, BotInfo.Config.HPictureUseProxy);
-
-            JObject jo = JsonConvert.DeserializeObject<JObject>(resultValue);
-            string err = jo["error"].ToString();
-            if (!string.IsNullOrWhiteSpace(err))
-            {
-                LogHelper.WriteErrorLog($"{ApiName} 服务器返回了错误消息：{err}");
-                throw new Exception(BotInfo.Config.HPictureErrorReply + err);    //Api返回错误
-            }
-
-            JToken jt = jo["data"];
-            if (!jt.Any())//没找到对应词条的色图;
-            {
-                LogHelper.WriteInfoLog($"{ApiName} 服务器返回了空数组");
-                throw new Exception(BotInfo.Config.HPictureNoResultReply);  //没有结果
-            }
-            return jt;
+            return JsonConvert.DeserializeObject<JObject>(await HttpHelper.GetStringAsync(strUrl, BotInfo.Config.HPictureUseProxy));
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using GreenOnions.Utility;
 using Yande.re.Api;
 
-namespace GreenOnions.HPicture
+namespace GreenOnions.HPicture.Clients
 {
     public static class YandeApi
     {

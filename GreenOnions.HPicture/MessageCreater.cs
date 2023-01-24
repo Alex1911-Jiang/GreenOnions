@@ -22,8 +22,8 @@ namespace GreenOnions.HPicture
 
         internal static async Task<GreenOnionsImageMessage> CreateImageMessageByItemAsync(object item)
         {
-            if (item is LoliHPictureItem loliConItem)
-                return await CreateImageMessageByLoliconItemAsync(loliConItem);
+            if (item is LoliHPictureItem loliItem)
+                return await CreateImageMessageByLoliItemAsync(loliItem);
             else if (item is YandeItem yandeItem)
                 return await CreateImageMessageByYandeItemAsync(yandeItem);
             throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员");
@@ -48,7 +48,7 @@ namespace GreenOnions.HPicture
             return new GreenOnionsTextMessage(sb);
         }
 
-        internal static async Task<GreenOnionsImageMessage> CreateImageMessageByLoliconItemAsync(LoliHPictureItem item)
+        internal static async Task<GreenOnionsImageMessage> CreateImageMessageByLoliItemAsync(LoliHPictureItem item)
         {
             return await ImageHelper.CreateImageMessageByUrlAsync(item.URL, BotInfo.Config.HPictureUseProxy);
         }

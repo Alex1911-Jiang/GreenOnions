@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GreenOnions.HPicture.Clients;
 using GreenOnions.Interface;
 using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Interface.Modules;
@@ -195,6 +196,7 @@ namespace GreenOnions.HPicture
                 PictureSource.Lolicon => new LoliconClient().GetOnceLoliItem(),
                 PictureSource.Yande_re => await YandeApi.GetOnceYandeItem(),
                 PictureSource.Lolisuki => await new LolisukiClient().GetOnceLoliItem(),
+                PictureSource.Yuban10703 => await new Yuban10703Client().GetOnceLoliItem(),
                 _ => throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员")  //应该不会来到这里
             };
             return await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, pictureSourceItem);
@@ -233,7 +235,7 @@ namespace GreenOnions.HPicture
             }
             catch (Exception ex)
             {
-                await SendMessageAsync(senderId, senderGroup, BotInfo.Config.HPictureErrorReply.ReplaceGreenOnionsStringTags(("<错误信息>", ex.Message)), replyMsgId);
+                await SendMessageAsync(senderId, senderGroup, BotInfo.Config.HPictureDownloadFailReply.ReplaceGreenOnionsStringTags(("<错误信息>", ex.Message)), replyMsgId);
                 return false;
             }
 
@@ -282,6 +284,10 @@ namespace GreenOnions.HPicture
                         break;
                     case PictureSource.Lolisuki:
                         await foreach (var item in new LolisukiClient().GetLoliItems(keyword, num, r18))
+                            await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
+                        break;
+                    case PictureSource.Yuban10703:
+                        await foreach (var item in new Yuban10703Client().GetLoliItems(keyword, num, r18))
                             await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, item);
                         break;
                     default:

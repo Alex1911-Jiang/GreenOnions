@@ -604,7 +604,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 下载失败回复
         /// </summary>
-        public string HPictureDownloadFailReply { get; set; } = "地址为:<URL>的色图不见了，可能是色图服务器下载失败或图真的没了o(╥﹏╥)o (如连续出现时请检查<机器人名称>网络/代理/墙问题。)";
+        public string HPictureDownloadFailReply { get; set; } = "图片下载失败o(╥﹏╥)o  <错误信息>";
 
         /// <summary>
         /// 色图次数限制记录类型

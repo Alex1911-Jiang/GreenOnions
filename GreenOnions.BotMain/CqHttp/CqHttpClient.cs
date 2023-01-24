@@ -137,7 +137,16 @@ namespace GreenOnions.BotMain.CqHttp
         public override async Task Disconnect()
         {
             if (_service is not null)
-                await _service.StopService();
+            {
+                try
+                {
+                    await _service.StopService();
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLogWithUserMessage($"断开OneBot连接失败",ex);
+                }
+            }
             BotInfo.IsLogin = false;
             PluginManager.Disconnected();
             ConnectedEvent?.Invoke(false, "");
