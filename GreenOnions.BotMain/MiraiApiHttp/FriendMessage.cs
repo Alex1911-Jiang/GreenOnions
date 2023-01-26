@@ -23,24 +23,24 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
             int quoteId = (e.Chain[0] as SourceMessage)!.Id;
             bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToGreenOnionsMessages(e.Sender.Id, e.Sender.Name), null, async outMsg =>
-             {
-                if (outMsg is not null && outMsg.Count > 0)
-                {
-                    int iRevokeTime = outMsg.RevokeTime;
-                    var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Friend);
-
-                     _ = session.SendFriendMessageAsync(e.Sender.Id, msg, outMsg.Reply ? quoteId : null).ContinueWith(async sendedCallBack =>
-                    {
-                        if (!sendedCallBack.IsFaulted && !sendedCallBack.IsCanceled)
-                        {
-                            if (iRevokeTime > 0)
-                            {
-                                await Task.Delay(1000 * iRevokeTime);
-                                await session.RevokeMessageAsync(sendedCallBack.Result, e.Sender.Id);
-                            }
-                        }
-                    });
-                }
+            {
+                if (outMsg is null || outMsg.Count == 0)
+                    return;
+                int iRevokeTime = outMsg.RevokeTime;
+                var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Friend);
+                if (msg is null || msg.Length == 0)
+                    return ;
+                _ = session.SendFriendMessageAsync(e.Sender.Id, msg, outMsg.Reply ? quoteId : null).ContinueWith(async sendedCallBack =>
+               {
+                   if (!sendedCallBack.IsFaulted && !sendedCallBack.IsCanceled)
+                   {
+                       if (iRevokeTime > 0)
+                       {
+                           await Task.Delay(1000 * iRevokeTime);
+                           await session.RevokeMessageAsync(sendedCallBack.Result, e.Sender.Id);
+                       }
+                   }
+               });
             });
             e.BlockRemainingHandlers = isHandle;
         }

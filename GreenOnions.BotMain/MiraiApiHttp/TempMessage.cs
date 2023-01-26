@@ -24,22 +24,23 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             int quoteId = (e.Chain[0] as SourceMessage)!.Id;
             bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToGreenOnionsMessages(e.Sender.Id, e.Sender.Name), e.Sender.Group.Id, async outMsg =>  //临时消息按群设置记撤回时间
             {
-                if (outMsg is not null && outMsg.Count > 0)
+                if (outMsg is null || outMsg.Count == 0)
+                    return;
+                int iRevokeTime = outMsg.RevokeTime;
+                var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Temp);
+                if (msg is null || msg.Length == 0)
+                    return;
+                _ = session.SendTempMessageAsync(e.Sender.Id, e.Sender.Group.Id, msg, outMsg.Reply ? quoteId : null).ContinueWith(async sendedCallBack =>
                 {
-                    int iRevokeTime = outMsg.RevokeTime;
-                    var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Temp);
-                    _ = session.SendTempMessageAsync(e.Sender.Id, e.Sender.Group.Id, msg, outMsg.Reply ? quoteId : null).ContinueWith(async sendedCallBack =>
+                    if (!sendedCallBack.IsFaulted && !sendedCallBack.IsCanceled)
                     {
-                        if (!sendedCallBack.IsFaulted && !sendedCallBack.IsCanceled)
+                        if (iRevokeTime > 0)
                         {
-                            if (iRevokeTime > 0)
-                            {
-                                await Task.Delay(1000 * iRevokeTime);
-                                await session.RevokeMessageAsync(sendedCallBack.Result, e.Sender.Id);
-                            }
+                            await Task.Delay(1000 * iRevokeTime);
+                            await session.RevokeMessageAsync(sendedCallBack.Result, e.Sender.Id);
                         }
-                    });
-                }
+                    }
+                });
             });
             e.BlockRemainingHandlers = isHandle;
         }

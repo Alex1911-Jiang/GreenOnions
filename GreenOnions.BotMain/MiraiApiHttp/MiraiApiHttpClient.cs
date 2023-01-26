@@ -85,21 +85,30 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     GreenOnionsApi greenOnionsApi = new(
                         async (targetId, msg) =>
                         {
-                            int sendedFriendMessageId = await session.SendFriendMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend));
+                            var miraiMsg = await msg.ToMiraiApiHttpMessages(session, UploadTarget.Friend);
+                            if (miraiMsg is null || miraiMsg.Length == 0)
+                                return -1;
+                            int sendedFriendMessageId = await session.SendFriendMessageAsync(targetId, miraiMsg);
                             if (msg.RevokeTime > 0)
                                 _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(sendedFriendMessageId, targetId));
                             return sendedFriendMessageId;
                         },
                         async (targetId, msg) =>
                         {
-                            int sendedGroupMessageId = await session.SendGroupMessageAsync(targetId, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Group));
+                            var miraiMsg = await msg.ToMiraiApiHttpMessages(session, UploadTarget.Group);
+                            if (miraiMsg is null || miraiMsg.Length == 0)
+                                return -1;
+                            int sendedGroupMessageId = await session.SendGroupMessageAsync(targetId, miraiMsg);
                             if (msg.RevokeTime > 0)
                                 _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(sendedGroupMessageId, targetId));
                             return sendedGroupMessageId;
                         },
                         async (targetId, targetGroup, msg) =>
                         {
-                            int sendedTempMessageId = await session.SendTempMessageAsync(targetId, targetGroup, await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp));
+                            var miraiMsg = await msg.ToMiraiApiHttpMessages(session, UploadTarget.Temp);
+                            if (miraiMsg is null || miraiMsg.Length == 0)
+                                return -1;
+                            int sendedTempMessageId = await session.SendTempMessageAsync(targetId, targetGroup, miraiMsg);
                             if (msg.RevokeTime > 0)
                                 _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(sendedTempMessageId, targetId));
                             return sendedTempMessageId;

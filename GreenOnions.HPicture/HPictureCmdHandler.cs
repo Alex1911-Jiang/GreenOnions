@@ -211,13 +211,16 @@ namespace GreenOnions.HPicture
 
             try
             {
-                GreenOnionsTextMessage onceHPictureTextMsg = MessageCreater.CreateTextMessageByItem(pictureSourceItem);
-                if (BotInfo.Config.SplitTextAndImageMessage && BotInfo.Config.HPictureSendByForward)  //文字和图片分别发+合并转发
-                    forwardMessages.Add(new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, onceHPictureTextMsg));  //将文字消息添加进合并转发
-                else if (BotInfo.Config.SplitTextAndImageMessage)  //文字和图片分别发
-                    await SendMessageAsync(senderId, senderGroup, onceHPictureTextMsg, replyMsgId);  //发送文字消息
-                else
-                    onceHPictureMsgs.Add(onceHPictureTextMsg);  //将文字添加进单条消息中
+                GreenOnionsTextMessage? onceHPictureTextMsg = MessageCreater.CreateTextMessageByItem(pictureSourceItem);
+                if (onceHPictureTextMsg is not null)
+                {
+                    if (BotInfo.Config.SplitTextAndImageMessage && BotInfo.Config.HPictureSendByForward)  //文字和图片分别发+合并转发
+                        forwardMessages.Add(new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, onceHPictureTextMsg));  //将文字消息添加进合并转发
+                    else if (BotInfo.Config.SplitTextAndImageMessage)  //文字和图片分别发
+                        await SendMessageAsync(senderId, senderGroup, onceHPictureTextMsg, replyMsgId);  //发送文字消息
+                    else
+                        onceHPictureMsgs.Add(onceHPictureTextMsg);  //将文字添加进单条消息中
+                }
             }
             catch (Exception ex)
             {

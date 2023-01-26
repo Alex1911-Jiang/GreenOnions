@@ -274,7 +274,7 @@ namespace GreenOnions.Command
                             $"    ForwardQQs(转发到好友)=\"{string.Join(';', rssSubscriptionItem.ForwardQQs is null ? new long[0] : rssSubscriptionItem.ForwardQQs!)}\",\r\n" +
                             $"    Translate(是否翻译)=\"{rssSubscriptionItem.Translate}\",\r\n" +
                             $"    TranslateFromTo(是否指定翻译语言)=\"{rssSubscriptionItem.TranslateFromTo}\",\r\n" +
-                            $"    TranslateFrom(从什么语言翻译)=\"{rssSubscriptionItem.TranslateFromTo}\",\r\n" +
+                            $"    TranslateFrom(从什么语言翻译)=\"{rssSubscriptionItem.TranslateFrom}\",\r\n" +
                             $"    TranslateTo(翻译为什么语言)=\"{rssSubscriptionItem.TranslateTo}\",\r\n" +
                             $"    AtAll(是否@所有人)=\"{rssSubscriptionItem.AtAll}\",\r\n" +
                             $"    SendByForward(是否以合并转发方式发送)=\"{rssSubscriptionItem.SendByForward}\",\r\n" +

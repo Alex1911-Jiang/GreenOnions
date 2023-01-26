@@ -26,31 +26,33 @@ namespace GreenOnions.BotMain.CqHttp
             int quoteId = eventArgs.Message.MessageId;
             bool isHandle = await MessageHandler.HandleMesage(await eventArgs.Message.ToGreenOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick, eventArgs.SourceGroup, eventArgs.SoraApi), eventArgs.SourceGroup.Id, outMsg =>
             {
-                if (outMsg is not null && outMsg.Count > 0)
+                if (outMsg is null || outMsg.Count == 0)
+                    return;
+                if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
                 {
-                    if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
+                    ValueTask<(ApiStatus apiStatus, int messageId, string forwardId)> result = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.SourceGroup.Id, outMsg.ToCqHttpForwardMessage());
+                    if (outMsg.RevokeTime > 0)
                     {
-                        ValueTask<(ApiStatus apiStatus, int messageId, string forwardId)> result = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.SourceGroup.Id, outMsg.ToCqHttpForwardMessage());
-                        if (outMsg.RevokeTime > 0)
+                        _ = result.AsTask().ContinueWith(async t =>
                         {
-                            _ = result.AsTask().ContinueWith(async t =>
-                            {
-                                await Task.Delay(1000 * outMsg.RevokeTime);
-                                _ = eventArgs.SoraApi.RecallMessage(result.Result.messageId);
-                            });
-                        }
+                            await Task.Delay(1000 * outMsg.RevokeTime);
+                            _ = eventArgs.SoraApi.RecallMessage(result.Result.messageId);
+                        });
                     }
-                    else
+                }
+                else
+                {
+                    var soraMsg = outMsg.ToCqHttpMessages(outMsg.Reply ? quoteId : null);
+                    if (soraMsg is null || soraMsg.Count == 0)
+                        return;
+                    ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, soraMsg);
+                    if (outMsg.RevokeTime > 0)
                     {
-                        ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, outMsg.ToCqHttpMessages(outMsg.Reply ? quoteId : null));
-                        if (outMsg.RevokeTime > 0)
+                        _ = result.AsTask().ContinueWith(async t =>
                         {
-                            _ = result.AsTask().ContinueWith(async t =>
-                            {
-                                await Task.Delay(1000 * outMsg.RevokeTime);
-                                _ = eventArgs.SoraApi.RecallMessage(result.Result.messageId);
-                            });
-                        }
+                            await Task.Delay(1000 * outMsg.RevokeTime);
+                            _ = eventArgs.SoraApi.RecallMessage(result.Result.messageId);
+                        });
                     }
                 }
             });
@@ -73,23 +75,25 @@ namespace GreenOnions.BotMain.CqHttp
             int quoteId = eventArgs.Message.MessageId;
             bool isHandle = await MessageHandler.HandleMesage(await eventArgs.Message.ToGreenOnionsMessages(eventArgs.SenderInfo.UserId, eventArgs.SenderInfo.Nick, null, eventArgs.SoraApi), null, outMsg =>
             {
-                if (outMsg is not null && outMsg.Count > 0)
+                if (outMsg is null || outMsg.Count == 0)
+                    return;
+                if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
                 {
-                    if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
+                    _ = eventArgs.SoraApi.SendPrivateForwardMsg(eventArgs.Sender.Id, outMsg.ToCqHttpForwardMessage());
+                }
+                else
+                {
+                    var soraMsg = outMsg.ToCqHttpMessages(outMsg.Reply ? quoteId : null);
+                    if (soraMsg is null || soraMsg.Count == 0)
+                        return;
+                    ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendPrivateMessage(eventArgs.Sender.Id, soraMsg);
+                    if (outMsg.RevokeTime > 0)
                     {
-                        _ = eventArgs.SoraApi.SendPrivateForwardMsg(eventArgs.Sender.Id, outMsg.ToCqHttpForwardMessage());
-                    }
-                    else
-                    {
-                        ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendPrivateMessage(eventArgs.Sender.Id, outMsg.ToCqHttpMessages(outMsg.Reply ? quoteId : null));
-                        if (outMsg.RevokeTime > 0)
+                        _ = result.AsTask().ContinueWith(async t =>
                         {
-                            _ = result.AsTask().ContinueWith(async t =>
-                            {
-                                await Task.Delay(1000 * outMsg.RevokeTime);
-                                _ = eventArgs.SoraApi.RecallMessage(result.Result.messageId);
-                            });
-                        }
+                            await Task.Delay(1000 * outMsg.RevokeTime);
+                            _ = eventArgs.SoraApi.RecallMessage(result.Result.messageId);
+                        });
                     }
                 }
             });

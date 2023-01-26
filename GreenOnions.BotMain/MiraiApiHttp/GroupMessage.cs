@@ -49,22 +49,23 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
             bool isHandle = await MessageHandler.HandleMesage(e.Chain.ToGreenOnionsMessages(e.Sender.Id, e.Sender.Name), e.Sender.Group.Id, async outMsg =>
             {
-                if (outMsg is not null && outMsg.Count > 0)
+                if (outMsg is null || outMsg.Count == 0)
+                    return;
+                int iRevokeTime = outMsg.RevokeTime;
+                var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Group);
+                if (msg is null || msg.Length == 0)
+                    return;
+                _ = session.SendGroupMessageAsync(e.Sender.Group.Id, msg, outMsg.Reply ? quoteId : null).ContinueWith(async sendedCallBack =>
                 {
-                    int iRevokeTime = outMsg.RevokeTime;
-                    var msg = await outMsg.ToMiraiApiHttpMessages(session, UploadTarget.Group);
-                    _ = session.SendGroupMessageAsync(e.Sender.Group.Id, msg, outMsg.Reply ? quoteId : null).ContinueWith(async sendedCallBack =>
+                    if (!sendedCallBack.IsFaulted && !sendedCallBack.IsCanceled)
                     {
-                        if (!sendedCallBack.IsFaulted && !sendedCallBack.IsCanceled)
+                        if (iRevokeTime > 0)
                         {
-                            if (iRevokeTime > 0)
-                            {
-                                await Task.Delay(1000 * iRevokeTime);
-                                await session.RevokeMessageAsync(sendedCallBack.Result, e.Sender.Group.Id);
-                            }
+                            await Task.Delay(1000 * iRevokeTime);
+                            await session.RevokeMessageAsync(sendedCallBack.Result, e.Sender.Group.Id);
                         }
-                    });
-                }
+                    }
+                });
             });
             e.BlockRemainingHandlers = isHandle;
         }

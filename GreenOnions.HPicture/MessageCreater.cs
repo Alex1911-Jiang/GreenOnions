@@ -11,7 +11,7 @@ namespace GreenOnions.HPicture
 {
     internal static class MessageCreater
     {
-        internal static GreenOnionsTextMessage CreateTextMessageByItem(object item)
+        internal static GreenOnionsTextMessage? CreateTextMessageByItem(object item)
         {
             if (item is LoliHPictureItem loliConItem)
                 return CreateTextMessageByLoliconItem(loliConItem);
@@ -34,7 +34,7 @@ namespace GreenOnions.HPicture
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        internal static GreenOnionsTextMessage CreateTextMessageByLoliconItem(LoliHPictureItem item)
+        internal static GreenOnionsTextMessage? CreateTextMessageByLoliconItem(LoliHPictureItem item)
         {
             StringBuilder sb = new StringBuilder();
             if (BotInfo.Config.HPictureSendUrl)
@@ -45,7 +45,7 @@ namespace GreenOnions.HPicture
                 sb.AppendLine($"标题:{item.Title}\r\n作者:{item.Author}");
             if (BotInfo.Config.HPictureSendTags)
                 sb.AppendLine($"标签:{item.Tags}");
-            return new GreenOnionsTextMessage(sb);
+            return string.IsNullOrEmpty(sb.ToString()) ? null : new GreenOnionsTextMessage(sb);
         }
 
         internal static async Task<GreenOnionsImageMessage> CreateImageMessageByLoliItemAsync(LoliHPictureItem item)
@@ -53,14 +53,14 @@ namespace GreenOnions.HPicture
             return await ImageHelper.CreateImageMessageByUrlAsync(item.URL, BotInfo.Config.HPictureUseProxy);
         }
 
-        internal static GreenOnionsTextMessage CreateTextMessageByWebItem(PictureItem item)
+        internal static GreenOnionsTextMessage? CreateTextMessageByWebItem(PictureItem item)
         {
             StringBuilder sb = new();
             if (BotInfo.Config.HPictureSendUrl)
                 sb.AppendLine($"https://{item.Host}/{item.ShowPageUrl}");
             if (BotInfo.Config.HPictureSendTags && item.Tags is not null)
                 sb.AppendLine($"标签:{string.Join(", ", item.Tags)}");
-            return new GreenOnionsTextMessage(sb);
+            return string.IsNullOrEmpty(sb.ToString()) ? null : new GreenOnionsTextMessage(sb);
         }
 
         internal static async Task<GreenOnionsImageMessage> CreateImageMessageByWebItemAsync(PictureItem item)

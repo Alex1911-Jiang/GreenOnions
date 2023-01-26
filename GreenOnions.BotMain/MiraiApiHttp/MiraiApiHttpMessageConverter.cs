@@ -49,7 +49,8 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 {
                     if (greenOnionsMessage[i] is GreenOnionsTextMessage txtMsg)
                     {
-                        miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(txtMsg.Text));
+                        if (!string.IsNullOrEmpty(txtMsg.Text))
+                            miraiApiHttpMessages.Add(new Mirai.CSharp.HttpApi.Models.ChatMessages.PlainMessage(txtMsg.Text));
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsImageMessage imgMsg)
                     {

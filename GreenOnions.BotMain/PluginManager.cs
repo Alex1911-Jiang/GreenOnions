@@ -35,43 +35,41 @@ namespace GreenOnions.BotMain
                 {
                     string dllPath = Path.GetDirectoryName(dll)!;
                     string pluginFileName = Path.GetFileNameWithoutExtension(dll);
-                    string pluginDescriptionFileName = Path.Combine(dllPath, $"{pluginFileName}.deps.json");
-                    if (pluginFileName != "GreenOnions.Interface" && File.Exists(pluginDescriptionFileName))
+                    if (pluginFileName == "GreenOnions.Interface")
+                        continue;
+                    try
                     {
-                        try
+                        AssemblyLoadContext assemblyLoadContext = new AssemblyLoadContext(pluginFileName);
+                        Assembly pluginAssembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
+                        dependPath.Add(pluginFileName, dllPath);
+                        assemblyLoadContext.Resolving += (context, assemblyName) =>
                         {
-                            AssemblyLoadContext assemblyLoadContext = new AssemblyLoadContext(pluginFileName);
-                            Assembly pluginAssembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
-                            dependPath.Add(pluginFileName, dllPath);
-                            assemblyLoadContext.Resolving += (context, assemblyName) =>
-                            {
-                                string filename = $@"{Path.Combine(dependPath[context.Name!], $"{assemblyName.Name}.dll")}";
-                                if (File.Exists(filename))
-                                    return context.LoadFromAssemblyPath(filename);
-                                return null;
-                            };
+                            string filename = $@"{Path.Combine(dependPath[context.Name!], $"{assemblyName.Name}.dll")}";
+                            if (File.Exists(filename))
+                                return context.LoadFromAssemblyPath(filename);
+                            return null;
+                        };
 
-                            Type[] types = pluginAssembly.GetTypes();
-                            foreach (Type type in types)
-                            {
-                                if (type.GetInterface("IPlugin") is not null)
-                                {
-                                    IPlugin? plugin = (IPlugin?)Activator.CreateInstance(type);
-                                    if (plugin is not null)
-                                    {
-                                        loadedPlugins.Add(dllPath.Substring(dllPath.LastIndexOf(@"\") + 1), plugin);
-                                        if (!BotInfo.PluginStatus.ContainsKey(plugin.Name))
-                                            pluginStatus.Add(plugin.Name, true);
-                                        else
-                                            pluginStatus.Add(plugin.Name, BotInfo.PluginStatus[plugin.Name]);
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
+                        Type[] types = pluginAssembly.GetTypes();
+                        foreach (Type type in types)
                         {
-                            LogHelper.WriteWarningLog($"插件{pluginFileName}加载失败, {ex.Message}");
+                            if (type.GetInterface("IPlugin") is null)
+                                continue;
+
+                            IPlugin? plugin = (IPlugin?)Activator.CreateInstance(type);
+                            if (plugin is null)
+                                continue;
+
+                            loadedPlugins.Add(dllPath.Substring(dllPath.LastIndexOf(@"\") + 1), plugin);
+                            if (!BotInfo.PluginStatus.ContainsKey(plugin.Name))
+                                pluginStatus.Add(plugin.Name, true);
+                            else
+                                pluginStatus.Add(plugin.Name, BotInfo.PluginStatus[plugin.Name]);
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.WriteErrorLogWithUserMessage($"插件{pluginFileName}加载失败", ex);
                     }
                 }
             }

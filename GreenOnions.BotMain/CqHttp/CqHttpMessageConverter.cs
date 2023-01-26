@@ -79,7 +79,8 @@ namespace GreenOnions.BotMain.CqHttp
                 {
                     if (greenOnionsMessage[i] is GreenOnionsTextMessage txtMsg)
                     {
-                        cqHttpMessages.Add(SoraSegment.Text(txtMsg.Text));
+                        if (!string.IsNullOrEmpty( txtMsg.Text))
+                            cqHttpMessages.Add(SoraSegment.Text(txtMsg.Text));
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsImageMessage imgMsg)
                     {
