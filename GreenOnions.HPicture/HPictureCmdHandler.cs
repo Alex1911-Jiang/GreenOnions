@@ -193,7 +193,7 @@ namespace GreenOnions.HPicture
             PictureSource pictureSource = await RandomHPictureSource(senderId, senderGroup, replyMsgId);
             object pictureSourceItem = pictureSource switch
             {
-                PictureSource.Lolicon => new LoliconClient().GetOnceLoliItem(),
+                PictureSource.Lolicon => await new LoliconClient().GetOnceLoliItem(),
                 PictureSource.Yande_re => await YandeApi.GetOnceItem(),
                 PictureSource.Konachan_net => await KonachanApi.GetOnceItem(),
                 PictureSource.Lolibooru => await LolibooruApi.GetOnceItem(),

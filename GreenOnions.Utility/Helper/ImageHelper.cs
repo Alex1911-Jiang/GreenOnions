@@ -53,7 +53,7 @@ namespace GreenOnions.Utility.Helper
             bmp.AntiShielding();
             stream.Dispose();
             stream = new MemoryStream();
-            bmp.Save(stream, format);
+            bmp.Save(stream, ImageFormat.Png);
             return stream;
         }
 
@@ -257,7 +257,7 @@ namespace GreenOnions.Utility.Helper
             int y = r.Next(0, bmp.Height);
             int offset = r.Next(1, 6);
             Color c = bmp.GetPixel(x, y);
-            bmp.SetPixel(x, y, Color.FromArgb(c.A + c.A > 128 ? -offset : offset, c.R, c.G, c.B));
+            bmp.SetPixel(x, y, Color.FromArgb(c.A + (c.A > 128 ? -offset : offset), c.R, c.G, c.B));
         }
 
         private enum MirrorImageDirection
