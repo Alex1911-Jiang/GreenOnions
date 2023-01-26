@@ -25,14 +25,16 @@ namespace GreenOnions.BotManagerWindows.ItemFroms
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            dgvHeader.EndEdit();
+            if (Headers is null)
+                Headers = new Dictionary<string, string>();
             for (int i = 0; i < dgvHeader.Rows.Count; i++)
             {
                 string? headerKey = dgvHeader.Rows[i].Cells[0].Value?.ToString();
                 if (headerKey is not null)
                 {
-                    Headers = new Dictionary<string, string>();
                     string? headerValue = dgvHeader.Rows[i].Cells[1].Value?.ToString();
-                    Headers.Add(headerKey, headerValue ?? string.Empty);
+                    Headers[headerKey] =  headerValue ?? string.Empty;
                 }
             }
             base.OnClosing(e);

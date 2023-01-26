@@ -284,7 +284,7 @@ namespace GreenOnions.Utility.Helper
 
         private static string ReplacePropertyChineseNameToValue(this string str)
         {
-            PropertyInfo[] PropertyInfos = typeof(IBotConfig).GetProperties();
+            PropertyInfo[] PropertyInfos = typeof(BotConfig).GetProperties();
             if (PropertyInfos is null)
             {
                 LogHelper.WriteWarningLog("获取配置信息失败");
