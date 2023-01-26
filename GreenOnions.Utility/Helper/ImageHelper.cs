@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using GreenOnions.Interface;
 
 namespace GreenOnions.Utility.Helper
 {
@@ -15,9 +18,7 @@ namespace GreenOnions.Utility.Helper
             get
             {
                 if (!Directory.Exists(_imagePath))
-                {
                     Directory.CreateDirectory(_imagePath);
-                }
                 return _imagePath;
             }
         }
@@ -43,44 +44,48 @@ namespace GreenOnions.Utility.Helper
             return imageUrl;
         }
 
-        public static MemoryStream StreamAntiShielding(this MemoryStream ms)
+        public static Stream ImageStreamAntiShielding(this Stream stream)
         {
-            Bitmap bmp = new Bitmap(ms);
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return stream;
+            Bitmap bmp = new Bitmap(stream);
             ImageFormat format = bmp.RawFormat;
             bmp.AntiShielding();
-            ms.Dispose();
-            ms = new MemoryStream();
-            bmp.Save(ms, format);
-            return ms;
+            stream.Dispose();
+            stream = new MemoryStream();
+            bmp.Save(stream, format);
+            return stream;
         }
 
-        public static MemoryStream RewindGifStream(this MemoryStream ms)
+        public static Stream RewindGifStream(this Stream ms)
         {
             return ms.MirrorImageStream(MirrorImageDirection.Time);
         }
 
-        public static MemoryStream HorizontalMirrorImageStream(this MemoryStream ms)
+        public static Stream HorizontalMirrorImageStream(this Stream ms)
         {
             return ms.MirrorImageStream(MirrorImageDirection.Horizontal);
         }
 
-        public static MemoryStream VerticalMirrorImageStream(this MemoryStream ms)
+        public static Stream VerticalMirrorImageStream(this Stream ms)
         {
             return ms.MirrorImageStream(MirrorImageDirection.Vertical);
         }
 
-        private static MemoryStream MirrorImageStream(this MemoryStream ms, MirrorImageDirection mirrorImageDirection )
+        private static Stream MirrorImageStream(this Stream stream, MirrorImageDirection mirrorImageDirection)
         {
-            using (Bitmap img = new Bitmap(ms))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return stream;
+            using (Bitmap img = new Bitmap(stream))
             {
-                if (img.RawFormat == ImageFormat.Gif || String.Equals(img.RawFormat.ToString(), "Gif", StringComparison.CurrentCultureIgnoreCase))
+                if (img.RawFormat == ImageFormat.Gif || string.Equals(img.RawFormat.ToString(), "Gif", StringComparison.CurrentCultureIgnoreCase))
                 {
                     string tempGifFileName = Path.Combine(ImagePath, "倒放.gif");
                     Bitmap gif = new Bitmap(img.Width, img.Height);
                     Bitmap frame = new Bitmap(img.Width, img.Height);
-                    Graphics g = Graphics.FromImage(gif);
+                    using Graphics g = Graphics.FromImage(gif);
                     Rectangle rg = new Rectangle(0, 0, img.Width, img.Height);
-                    Graphics gFrame = Graphics.FromImage(frame);
+                    using Graphics gFrame = Graphics.FromImage(frame);
 
                     switch (mirrorImageDirection)
                     {
@@ -110,16 +115,12 @@ namespace GreenOnions.Utility.Helper
                         if (mirrorImageDirection == MirrorImageDirection.Time)
                         {
                             for (int i = count - 1; i >= 0; i--)
-                            {
                                 SetFrameToGif(i);
-                            }
                         }
                         else
                         {
                             for (int i = 0; i < count; i++)
-                            {
                                 SetFrameToGif(i);
-                            }
                         }
 
                         void SetFrameToGif(int frameId)
@@ -156,7 +157,7 @@ namespace GreenOnions.Utility.Helper
                     }
                     MemoryStream result = new MemoryStream(File.ReadAllBytes(tempGifFileName));
                     File.Delete(tempGifFileName);
-                    ms.Dispose();
+                    stream.Dispose();
                     return result;
                 }
                 else
@@ -184,43 +185,39 @@ namespace GreenOnions.Utility.Helper
                             img.VerticalFlip();
                             break;
                     }
-                    MemoryStream result = ms = new MemoryStream();
-                    img.Save(ms, ImageFormat.Png);
-                    ms.Dispose();
+                    MemoryStream result = new MemoryStream();
+                    img.Save(stream, ImageFormat.Png);
+                    stream.Dispose();
                     return result;
                 }
             }
-        }
 
-        private static void BindProperty(Image originalImage, Image copyImage)
-        {
-            for (int i = 0; i < originalImage.PropertyItems.Length; i++)
+            ImageCodecInfo GetEncoder(ImageFormat format)
             {
-                copyImage.SetPropertyItem(originalImage.PropertyItems[i]);
-            }
-        }
-
-        private static ImageCodecInfo GetEncoder(ImageFormat format)
-        {
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
-            foreach (ImageCodecInfo codec in codecs)
-            {
-                if (codec.FormatID == format.Guid)
+                ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+                foreach (ImageCodecInfo codec in codecs)
                 {
-                    return codec;
+                    if (codec.FormatID == format.Guid)
+                        return codec;
                 }
+                return null;
             }
-            return null;
+
+            void BindProperty(Image originalImage, Image copyImage)
+            {
+                for (int i = 0; i < originalImage.PropertyItems.Length; i++)
+                    copyImage.SetPropertyItem(originalImage.PropertyItems[i]);
+            }
         }
 
         public static Image HorizontalFlip(this Image img)
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return img;
             try
             {
-                var width = img.Width;
-                var height = img.Height;
-                Graphics g = Graphics.FromImage(img);
-                Rectangle rect = new Rectangle(0, 0, width, height);
+                using Graphics g = Graphics.FromImage(img);
+                Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
                 img.RotateFlip(RotateFlipType.RotateNoneFlipX);
                 g.DrawImage(img, rect);
                 return img;
@@ -234,6 +231,8 @@ namespace GreenOnions.Utility.Helper
 
         public static Image VerticalFlip(this Image img)
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return img;
             try
             {
                 Graphics g = Graphics.FromImage(img);
@@ -251,19 +250,14 @@ namespace GreenOnions.Utility.Helper
 
         public static void AntiShielding(this Bitmap bmp)
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return;
             Random r = new Random(Guid.NewGuid().GetHashCode());
             int x = r.Next(0, bmp.Width);
             int y = r.Next(0, bmp.Height);
-
+            int offset = r.Next(1, 6);
             Color c = bmp.GetPixel(x, y);
-            if (c.A > 128)
-            {
-                bmp.SetPixel(x, y, Color.FromArgb(c.A - 1, c.R, c.G, c.B));
-            }
-            else
-            {
-                bmp.SetPixel(x, y, Color.FromArgb(c.A + 1, c.R, c.G, c.B));
-            }
+            bmp.SetPixel(x, y, Color.FromArgb(c.A + c.A > 128 ? -offset : offset, c.R, c.G, c.B));
         }
 
         private enum MirrorImageDirection
@@ -272,16 +266,29 @@ namespace GreenOnions.Utility.Helper
             Vertical,
             Time,
         }
-    }
 
-    public class TencentJianHuangResponse
-    {
-        public List<ImgInfo> result_list = new List<ImgInfo>();
+        /// <summary>
+        /// 根据图片URL下载图片并创建一个图片消息
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="cacheName"></param>
+        /// <returns></returns>
+        public static async Task<GreenOnionsImageMessage> CreateImageMessageByUrlAsync(string url, bool useProxy)
+        {
+            if (BotInfo.Config.SendImageByFile)  //下载完成后发送文件
+            {
+                Stream imgStream = await HttpHelper.GetStreamAsync(url, useProxy);
+                if (BotInfo.Config.HPictureAntiShielding)  //反和谐
+                    imgStream = ImageStreamAntiShielding(imgStream);
+                return new GreenOnionsImageMessage(imgStream);
+            }
+            else  //直接发送地址
+                return new GreenOnionsImageMessage(url);
+        }
     }
 
     public class ImgInfo
     {
-
         /// <summary>
         /// 错误码，0 为成功
         /// </summary>

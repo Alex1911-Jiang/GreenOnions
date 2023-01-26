@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GreenOnions.Interface.Configs.Enums;
 
 namespace GreenOnions.Utility
 {
@@ -84,7 +85,7 @@ namespace GreenOnions.Utility
             SetTaskAtFixedTime();
         }
 
-        public void RecordLimit(long qqId)
+        public void RecordHPictureLimit(long qqId)
         {
             if (LimitDic.ContainsKey(qqId))
                 LimitDic[qqId] += 1;
@@ -93,111 +94,121 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 检查群聊次数限制 true为超过限制
+        /// 检查色图次数限制 true 为超过限制
         /// </summary>
-        /// <param name="qqId"></param>
-        /// <param name="groupId"></param>
-        /// <returns></returns>
-        public bool CheckGroupLimit(long qqId, long groupId)
+        public bool CheckHPictureLimit(long qqId, long? groupId = null)
         {
-            if (BotInfo.Config.HPictureLimit == 0)
-                return false;
-
-            if (BotInfo.Config.AdminQQ.Contains(qqId) && BotInfo.Config.HPictureAdminNoLimit) return false;
-            if (BotInfo.Config.HPictureWhiteGroup.Contains(groupId) && BotInfo.Config.HPictureWhiteNoLimit) return false;
-            if (LimitDic.ContainsKey(qqId))
-            {
-                if (LimitDic[qqId] >= BotInfo.Config.HPictureLimit)
-                    return true;  //超过限制
-            }
+            if (BotInfo.Config.HPictureLimit > 0 && LimitDic.ContainsKey(qqId))
+                return LimitDic[qqId] >= BotInfo.Config.HPictureLimit;
             return false;
         }
 
         /// <summary>
-        /// 检查私聊次数限制 true 为超过限制
+        /// 获取色图剩余配额
         /// </summary>
-        /// <param name="qqId"></param>
-        /// <returns></returns>
-        public bool CheckPMLimit(long qqId)
+        public int GetHPictureQuota(int num, long qqId, long? groupId)
         {
-            if (BotInfo.Config.HPictureLimit == 0)
-                return false;
+            if (BotInfo.Config.HPictureLimit == 0)  //无限制
+                return num;
 
-            if (BotInfo.Config.AdminQQ.Contains(qqId) && BotInfo.Config.HPictureAdminNoLimit) return false;
-            if (BotInfo.Config.HPicturePMNoLimit) return false;
-            if (LimitDic.ContainsKey(qqId))
+            if (BotInfo.Config.AdminQQ.Contains(qqId) && BotInfo.Config.HPictureAdminNoLimit)  //机器人管理员无限制
+                return num;
+
+            if (groupId is null)  //私聊
             {
-                if (LimitDic[qqId] >= BotInfo.Config.HPictureLimit)
-                    return true;  //超过限制
+                if (BotInfo.Config.HPicturePMNoLimit)  //私聊无限制
+                    return num;
             }
-            return false;
+            else  //群
+            {
+                if (BotInfo.Config.HPictureWhiteGroup.Contains(groupId.Value) && BotInfo.Config.HPictureWhiteNoLimit)  //白名单群无限制
+                    return num;
+            }
+
+            if (BotInfo.Config.HPictureLimitType == LimitType.Count)
+            {
+                if (LimitDic.ContainsKey(qqId))
+                    return Math.Min(num, BotInfo.Config.HPictureLimit - LimitDic[qqId]);
+                return Math.Min(num, BotInfo.Config.HPictureLimit);
+            }
+            return num;
         }
 
         /// <summary>
-        /// 检查群冷却时间 true 为冷却中
+        /// 检查冷却时间，true为冷却中
         /// </summary>
-        /// <param name="qqId"></param>
-        /// <param name="groupId"></param>
-        /// <returns></returns>
-        public bool CheckGroupCD(long qqId, long groupId)
+        public bool CheckHPictureCD(long qqId, long? groupId = null)
         {
-            if (BotInfo.Config.AdminQQ.Contains(qqId) && BotInfo.Config.HPictureAdminNoLimit) return false;
-            if (BotInfo.Config.HPictureWhiteGroup.Contains(groupId))
-            {
-                if (BotInfo.Config.HPictureWhiteNoLimit) return false;
-                if (HPictureWhiteCDDic.ContainsKey(qqId))
-                    if (DateTime.Now < HPictureWhiteCDDic[qqId]) return true;  //还在冷却中
+            if (BotInfo.Config.AdminQQ.Contains(qqId) && BotInfo.Config.HPictureAdminNoLimit)  //机器人管理员无限制
                 return false;
-            }
-            else
-            {
-                if (HPictureCDDic.ContainsKey(qqId))
-                    if (DateTime.Now < HPictureCDDic[qqId]) return true;  //还在冷却中
-                return false;
-            }
-        }
 
-        public bool CheckPMCD(long qqId)
-        {
-            if (BotInfo.Config.AdminQQ.Contains(qqId) && BotInfo.Config.HPictureAdminNoLimit) return false;
-            if (BotInfo.Config.HPicturePMNoLimit) return false;
-            if (HPicturePMCDDic.ContainsKey(qqId))
-                if (DateTime.Now < HPicturePMCDDic[qqId]) return true;  //还在冷却中
-            return false;
-        }
-
-        public void RecordGroupCD(long qqId, long groupId)
-        {
-            if (BotInfo.Config.HPictureWhiteGroup.Contains(groupId))
+            if (groupId is null)  //私聊
             {
-                if (BotInfo.Config.HPictureWhiteCD > 0)
+                if (BotInfo.Config.HPicturePMNoLimit)  //私聊无限制
+                    return false;
+
+                if (HPicturePMCDDic.ContainsKey(qqId))
+                    if (DateTime.Now < HPicturePMCDDic[qqId]) 
+                        return true;  //还在冷却中
+            }
+            else  //群
+            {
+                if (BotInfo.Config.HPictureWhiteGroup.Contains(groupId.Value))
                 {
+                    if (BotInfo.Config.HPictureWhiteNoLimit)  //白名单群无限制
+                        return false;
+
                     if (HPictureWhiteCDDic.ContainsKey(qqId))
-                        HPictureWhiteCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.Config.HPictureWhiteCD);
-                    else
-                        HPictureWhiteCDDic.TryAdd(qqId, DateTime.Now.AddSeconds(BotInfo.Config.HPictureWhiteCD));
+                        if (DateTime.Now < HPictureWhiteCDDic[qqId]) return true;  //还在冷却中
+                    return false;
                 }
-            }
-            else
-            {
-                if (BotInfo.Config.HPictureCD > 0)
+                else
                 {
                     if (HPictureCDDic.ContainsKey(qqId))
-                        HPictureCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.Config.HPictureCD);
-                    else
-                        HPictureCDDic.TryAdd(qqId, DateTime.Now.AddSeconds(BotInfo.Config.HPictureCD));
+                        if (DateTime.Now < HPictureCDDic[qqId]) return true;  //还在冷却中
+                    return false;
                 }
             }
+            return false;
         }
 
-        public void RecordFriendCD(long qqId)
+        /// <summary>
+        /// 记录色图冷却时间
+        /// </summary>
+        public void RecordHPictureCD(long qqId, long? groupId = null)
         {
-            if (BotInfo.Config.HPicturePMCD > 0)
+            if (groupId is null)
             {
-                if (HPicturePMCDDic.ContainsKey(qqId))
-                    HPicturePMCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.Config.HPicturePMCD);
+                if (BotInfo.Config.HPicturePMCD > 0)
+                {
+                    if (HPicturePMCDDic.ContainsKey(qqId))
+                        HPicturePMCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.Config.HPicturePMCD);
+                    else
+                        HPicturePMCDDic.TryAdd(qqId, DateTime.Now.AddSeconds(BotInfo.Config.HPicturePMCD));
+                }
+            }
+            else
+            {
+                if (BotInfo.Config.HPictureWhiteGroup.Contains(groupId.Value))
+                {
+                    if (BotInfo.Config.HPictureWhiteCD > 0)
+                    {
+                        if (HPictureWhiteCDDic.ContainsKey(qqId))
+                            HPictureWhiteCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.Config.HPictureWhiteCD);
+                        else
+                            HPictureWhiteCDDic.TryAdd(qqId, DateTime.Now.AddSeconds(BotInfo.Config.HPictureWhiteCD));
+                    }
+                }
                 else
-                    HPicturePMCDDic.TryAdd(qqId, DateTime.Now.AddSeconds(BotInfo.Config.HPicturePMCD));
+                {
+                    if (BotInfo.Config.HPictureCD > 0)
+                    {
+                        if (HPictureCDDic.ContainsKey(qqId))
+                            HPictureCDDic[qqId] = DateTime.Now.AddSeconds(BotInfo.Config.HPictureCD);
+                        else
+                            HPictureCDDic.TryAdd(qqId, DateTime.Now.AddSeconds(BotInfo.Config.HPictureCD));
+                    }
+                }
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System.Buffers.Text;
+using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace GreenOnions.Interface
@@ -43,21 +45,37 @@ namespace GreenOnions.Interface
         /// <returns></returns>
         public static string? ToBase64(this Stream stream, bool dispose = true)
         {
+            string base64Img;
             try
             {
                 byte[] arr = new byte[stream.Length];
                 stream.Position = 0;
                 stream.Read(arr, 0, (int)stream.Length);
                 stream.Close();
-                string base64Img = Convert.ToBase64String(arr);
-                if (dispose)
-                    stream.Dispose();
-                return base64Img;
+                base64Img = Convert.ToBase64String(arr);
             }
             catch
             {
-                return null;
+                using (MemoryStream ms = StreamToMemoryStream(stream))
+                {
+                    base64Img = Convert.ToBase64String(ms.ToArray());
+                }
             }
+            if (dispose)
+                stream.Dispose();
+            return base64Img;
+        }
+
+        private static MemoryStream StreamToMemoryStream(Stream instream)
+        {
+            MemoryStream outstream = new MemoryStream();
+            const int bufferLen = 4096;
+            byte[] buffer = new byte[bufferLen];
+            int count;
+            instream.Position = 0;
+            while ((count = instream.Read(buffer, 0, bufferLen)) > 0)
+                outstream.Write(buffer, 0, count);
+            return outstream;
         }
 
         /// <summary>

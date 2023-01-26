@@ -1,5 +1,8 @@
-﻿namespace GreenOnions.HPicture.Items
+﻿using System;
+
+namespace GreenOnions.HPicture.Items
 {
+    [Obsolete("ELF图库大部分图片已失效，作者也不再维护，R.I.P", true)]
     public struct ELFHPictureItem
     {
         public string ID { get; private set; }

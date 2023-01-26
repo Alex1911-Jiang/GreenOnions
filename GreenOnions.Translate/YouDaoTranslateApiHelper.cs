@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TencentCloud.Apigateway.V20180808.Models;
@@ -55,22 +57,18 @@ namespace GreenOnions.Translate
 
         private static async Task<string> Post(string url, Dictionary<string, string> dic)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url))
-                {
-                    MultipartFormDataContent form = new MultipartFormDataContent();
-                    foreach (var item in dic)
-                        form.Add(new StringContent(item.Value, Encoding.UTF8, "application/x-www-form-urlencoded"), item.Key);
-                    request.Content = form;
-                    HttpResponseMessage resp = await client.SendAsync(request);
-                    string resultText = await resp.Content.ReadAsStringAsync();
-                    JToken jt = JsonConvert.DeserializeObject<JToken>(resultText);
-                    if (jt["translation"] is null)
-                        throw new Exception($"有道智云API返回错误，错误代码：{jt["errorCode"]}");
-                    return jt["translation"].First.ToString();
-                }
-            }
+            using HttpClient client = HttpHelper.CreateClient(BotInfo.Config.TranslateUseProxy);
+            using HttpRequestMessage request = new(HttpMethod.Post, url);
+            MultipartFormDataContent form = new MultipartFormDataContent();
+            foreach (var item in dic)
+                form.Add(new StringContent(item.Value, Encoding.UTF8, "application/x-www-form-urlencoded"), item.Key);
+            request.Content = form;
+            HttpResponseMessage resp = await client.SendAsync(request);
+            string resultText = await resp.Content.ReadAsStringAsync();
+            JToken jt = JsonConvert.DeserializeObject<JToken>(resultText);
+            if (jt["translation"] is null)
+                throw new Exception($"有道智云API返回错误，错误代码：{jt["errorCode"]}");
+            return jt["translation"].First.ToString();
         }
 
         private static string Truncate(string q)

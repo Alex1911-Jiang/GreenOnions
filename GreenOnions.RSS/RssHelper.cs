@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 namespace GreenOnions.RSS
@@ -47,7 +49,7 @@ namespace GreenOnions.RSS
                                 if (BotInfo.Config.RssParallel)
                                     _rssTasks.Add(item.Url, RssInnerAsync(item, api));
                                 else
-                                    _rssTasks.Add(item.Url, RssInner(item, api));
+                                    RssInnerAsync(item, api).GetAwaiter().GetResult();
                             }
                         }
                         Task.WaitAll(_rssTasks.Values.ToArray());
@@ -93,7 +95,7 @@ namespace GreenOnions.RSS
             return result;
         }
 
-        private static async Task RssInner(RssSubscriptionItem item, IGreenOnionsApi api)
+        private static async Task RssInnerAsync(RssSubscriptionItem item, IGreenOnionsApi api)
         {
             //如果在调试模式并且转发的QQ和群组均不在管理员和调试群组集合中时不去请求
             if (BotInfo.Config.DebugMode && ((BotInfo.Config.DebugReplyAdminOnly && item.ForwardQQs?.Intersect(BotInfo.Config.AdminQQ).Count() == 0) || (BotInfo.Config.OnlyReplyDebugGroup && item.ForwardGroups?.Intersect(BotInfo.Config.DebugGroups).Count() == 0)))
@@ -111,28 +113,40 @@ namespace GreenOnions.RSS
             {
                 LogInfo($"{item.Url}没有记录, 添加当前时间作为比对时间");
                 BotInfo.LastOneSendRssTime.TryAdd(item.Url!, DateTime.Now);  //添加现在作为起始日期(避免把所有历史信息全都抓过来发送)
-                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented);
+                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter());
                 File.WriteAllText("rssCache.json", serRssCache);
                 return;
             }
 
             try
             {
-                LogInfo($"{item.Url}开始抓取");
-
                 if (!string.IsNullOrWhiteSpace(item.Url))
                 {
-                    LogInfo($"{item.Url}抓取内容");
-                    using HttpClient client = new();
+                    LogInfo($"{item.Url}开始抓取内容");
+                    using HttpClient client = HttpHelper.CreateClient(BotInfo.Config.RssUseProxy);
                     if (item.Headers is not null)
                     {
                         foreach (var header in item.Headers)
                             client.DefaultRequestHeaders.Add(header.Key, header.Value);
                     }
                     var resp = await client.GetAsync(item.Url);
+                    LogInfo($"{item.Url}抓取结果：{resp.StatusCode}");
                     var xml = await resp.Content.ReadAsStringAsync();
                     XmlDocument xmlDoc = new();
-                    xmlDoc.LoadXml(xml);
+                    try
+                    {
+                        xmlDoc.LoadXml(xml);
+                    }
+                    catch (Exception ex)
+                    {
+                        string? saveName = item.Remark;
+                        if (string.IsNullOrWhiteSpace(saveName))
+                            saveName = "Rss抓取异常保存(请添加备注)";
+                        File.WriteAllText($"{saveName}.html", xml);
+                        LogError($"{item.Url}加载XML失败", ex, $"抓取内容已保存在{saveName}.html");
+                        throw;
+                    }
+                    LogInfo($"{item.Url}加载XML成功");
 
                     bool isContent = xmlDoc.GetElementsByTagName("rss")?[0]?.Attributes?["xmlns:content"] is not null;
                     bool isAtom = xmlDoc.GetElementsByTagName("rss")?[0]?.Attributes?["xmlns:atom"] is not null;
@@ -151,7 +165,7 @@ namespace GreenOnions.RSS
                         if (item.Url.Contains("bilibili") && item.Url.Contains("/room/"))
                         {
                             string roomId = item.Url[(item.Url.LastIndexOf("/room/") + "/room/".Length)..];
-                            string apiResult = await HttpHelper.GetHttpResponseStringAsync($@"https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id={roomId}");
+                            string apiResult = await HttpHelper.GetStringAsync(client, $@"https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id={roomId}");
                             JObject jo = JsonConvert.DeserializeObject<JObject>(apiResult);
                             thuImgUrl = jo?["data"]?["room_info"]?["cover"]?.ToString();
                         }
@@ -162,7 +176,6 @@ namespace GreenOnions.RSS
                         LogInfo($"{item.Url}的Rss规范类型为Content");
                         await foreach (var rss in ReadRssContent(nodeList, BotInfo.LastOneSendRssTime[item.Url]))  //每条订阅地址可能获取到若干条更新
                         {
-                            LogInfo($"{item.Url}更新时间晚于记录时间, 需要推送消息");
                             if (!FilterMessage(item, rss.Description))
                                 continue;
                             await SendRssMessage(item, api, title, thuImgUrl, rss);
@@ -173,7 +186,6 @@ namespace GreenOnions.RSS
                         LogInfo($"{item.Url}的Rss规范类型为Atom");
                         await foreach (var rss in ReadRssAtom(nodeList, BotInfo.LastOneSendRssTime[item.Url]))  //每条订阅地址可能获取到若干条更新
                         {
-                            LogInfo($"{item.Url}更新时间晚于记录时间, 需要推送消息");
                             if (!FilterMessage(item, rss.Description))
                                 continue;
                             await SendRssMessage(item, api, title, thuImgUrl, rss);
@@ -217,7 +229,7 @@ namespace GreenOnions.RSS
                         groupResultMsg.Add(translateMsg);  //翻译
 
                     if (thuImgUrl is not null)
-                        groupResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(thuImgUrl)));  //B站封面
+                        groupResultMsg.Add(await ImageHelper.CreateImageMessageByUrlAsync(thuImgUrl, BotInfo.Config.RssUseProxy));  //B站封面
 
                     if (!string.IsNullOrWhiteSpace(rss.Author))
                         groupResultMsg.Add($"\r\n作者:{rss.Author}");  //作者
@@ -250,13 +262,13 @@ namespace GreenOnions.RSS
                 {
                     GreenOnionsMessages friendResultMsg = new() { titleMsg };  //标题
 
-                    //friendResultMsg.AddRange(rss.Messages);  //正文
+                    friendResultMsg.AddRange(rss.Messages);  //正文
 
                     if (!string.IsNullOrWhiteSpace(translateMsg))
                         friendResultMsg.Add(translateMsg);  //翻译
 
                     if (thuImgUrl is not null)
-                        friendResultMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(thuImgUrl)));    //B站封面
+                        friendResultMsg.Add(await ImageHelper.CreateImageMessageByUrlAsync(thuImgUrl, BotInfo.Config.RssUseProxy));    //B站封面
 
                     if (!string.IsNullOrWhiteSpace(rss.Author))
                         friendResultMsg.Add($"\r\n作者:{rss.Author}");  //作者
@@ -292,7 +304,7 @@ namespace GreenOnions.RSS
                 }
                 else
                     BotInfo.LastOneSendRssTime.TryAdd(item.Url, rss.PubDate);  //群和好友均推送完毕后记录此地址的最后更新时间
-                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented);
+                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter());
                 File.WriteAllText("rssCache.json", serRssCache);
 
                 LogInfo($"{item.Url}记录最后更新时间完毕");
@@ -370,38 +382,6 @@ namespace GreenOnions.RSS
             return bSend;
         }
 
-        private static Task RssInnerAsync(RssSubscriptionItem item, IGreenOnionsApi api)
-        {
-            return Task.Run(() => RssInner(item, api));
-        }
-
-        private static async Task<string> GetImgUrlOrFileNameAsync(string url)
-        {
-            if (BotInfo.Config.SendImageByFile)  //下载完成后发送文件
-            {
-                string fileName;
-                if (url.Contains("twimg"))
-                {
-                    string extSubStart = url[(url.IndexOf("?format=") + "?format=".Length)..];
-                    string ext = extSubStart[..extSubStart.IndexOf('&')];
-
-                    string nameSubToEnd = url[..url.IndexOf("?format")];
-                    string nameSub = nameSubToEnd[(nameSubToEnd.LastIndexOf('/') + 1)..];
-
-                    fileName = $"{nameSub}.{ext}";
-                }
-                else
-                {
-                    fileName = Path.GetFileName(url);
-                }
-                string imgName = Path.Combine(ImageHelper.ImagePath, $"RSS_{fileName}");
-                await HttpHelper.DownloadImageFileAsync(url, imgName);
-                if (File.Exists(imgName))
-                    return imgName;
-            }
-            return url;
-        }
-
         private static async Task<GreenOnionsMessages> HtmlToMessageAsync(HtmlNode node)
         {
             if (node.ChildNodes.Count > 0)
@@ -414,7 +394,7 @@ namespace GreenOnions.RSS
             else
             {
                 if (node.Name == "img")
-                    return new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(HttpUtility.HtmlDecode(node.Attributes["src"].Value)));
+                    return await ImageHelper.CreateImageMessageByUrlAsync(HttpUtility.HtmlDecode(node.Attributes["src"].Value), BotInfo.Config.RssUseProxy);
                 if (node.Name == "video")
                     return "\r\n视频地址：" + HttpUtility.HtmlDecode(node.Attributes["src"].Value) + "\r\n";
                 if (node.Name == "iframe")
@@ -447,6 +427,7 @@ namespace GreenOnions.RSS
                         DateTime pubDate = pubDate = DateTime.Parse(noteDate.InnerText);
                         if (pubDate > lastUpdateTime)
                         {
+                            LogInfo($"抓取到的内容更新时间 {pubDate} 晚于记录的时间 {lastUpdateTime} 需要发送");
                             foreach (XmlNode subNode in node.ChildNodes)
                             {
                                 switch (subNode.Name.ToLower())
@@ -484,7 +465,10 @@ namespace GreenOnions.RSS
                             yield return new(outMsg, description, pubDate, link, creator);
                         }
                         else
+                        {
+                            LogInfo($"抓取到的内容更新时间 {pubDate} 早于记录的时间 {lastUpdateTime} 无需发送");
                             yield break;
+                        }
                     }
                 }
             }
@@ -505,6 +489,7 @@ namespace GreenOnions.RSS
                         DateTime pubDate = DateTime.Parse(noteDate.InnerText);
                         if (pubDate > lastUpdateTime)
                         {
+                            LogInfo($"抓取到的内容更新时间 {pubDate} 晚于记录的时间 {lastUpdateTime} 需要发送");
                             string description = string.Empty, link = string.Empty, author = string.Empty;
                             foreach (XmlNode subNode in node.ChildNodes)
                             {
@@ -609,7 +594,10 @@ namespace GreenOnions.RSS
                             yield return new(outMsg, description, pubDate, link, author);
                         }
                         else
+                        {
+                            LogInfo($"抓取到的内容更新时间 {pubDate} 早于记录的时间 {lastUpdateTime} 无需发送");
                             yield break;
+                        }
                     }
                 }
             }

@@ -16,6 +16,8 @@ namespace GreenOnions.BotManagerWindows.Controls
 
             chkSearchSendThuImage.Checked = BotInfo.Config.SearchSendThuImage;
 
+            chkSeachUseProxy.Checked = BotInfo.Config.SearchUseProxy;
+
             chkSearchTraceMoeEnabled.Checked = BotInfo.Config.SearchEnabledTraceMoe;  //是否启用TraceMoe搜番
             txbTraceMoeSendThreshold.Text = BotInfo.Config.TraceMoeSendThreshold.ToString();
             chkTraceMoeSendAdultThuImg.Checked = BotInfo.Config.TraceMoeSendAdultThuImg;
@@ -66,6 +68,8 @@ namespace GreenOnions.BotManagerWindows.Controls
             BotInfo.Config.PmAutoSearch = chkPmAutoSearch.Checked;
 
             BotInfo.Config.SearchSendThuImage = chkSearchSendThuImage.Checked;
+
+            BotInfo.Config.SearchUseProxy = chkSeachUseProxy.Checked;
 
             BotInfo.Config.SearchEnabledTraceMoe = chkSearchTraceMoeEnabled.Checked;  //是否启用TraceMoe搜番
             int iTraceMoeSendThreshold;

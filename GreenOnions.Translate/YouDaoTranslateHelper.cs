@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -48,25 +47,16 @@ namespace GreenOnions.Translate
         {
             text = UTF32ToUTF8(text);
             string url = $"http://fanyi.youdao.com/translate?&doctype=json&type={languageType}&i={text}";
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.ContentType = "text/html, application/xhtml+xml, */*";
-            HttpWebResponse response = (HttpWebResponse)(await request.GetResponseAsync());
-            using (Stream rs = response.GetResponseStream())
+            string translatedText = await HttpHelper.GetStringAsync(url, BotInfo.Config.TranslateUseProxy);
+            JToken json = JsonConvert.DeserializeObject<JToken>(translatedText);
+            if (json["translateResult"] is JArray jResult)
             {
-                using (StreamReader sr = new StreamReader(rs, Encoding.UTF8))
-                {
-                    string translatedText = await sr.ReadToEndAsync();
-                    if (translatedText.Contains("\"type\":null"))
-                        return "";
-                    JToken json = JsonConvert.DeserializeObject<JToken>(translatedText);
-                    JArray jResult = json["translateResult"] as JArray;
-                    List<string> resultList = new List<string>();
-                    foreach (JArray innerArray in jResult)
-                        resultList.AddRange(innerArray.Select(j => j["tgt"].ToString()));
-                    return string.Join("\r\n", resultList).ToString();
-                }
+                List<string> resultList = new List<string>();
+                foreach (JArray innerArray in jResult)
+                    resultList.AddRange(innerArray.Select(j => j["tgt"].ToString()));
+                return string.Join("\r\n", resultList).ToString();
             }
+            return text;
         }
 
         private static string ChineseToCode(string languageName)

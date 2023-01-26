@@ -9,9 +9,6 @@ namespace GreenOnions.BotManagerWindows.Controls
         public CtrlHPicture()
         {
             InitializeComponent();
-
-            if (pnlHPictureCheckBoxes.Left < 519)  //狗屎设计器整天有Bug自动移动位置
-                pnlHPictureCheckBoxes.Left = 519;
         }
 
         public void LoadConfig()
@@ -22,18 +19,17 @@ namespace GreenOnions.BotManagerWindows.Controls
                     chkHPictureEnabledLoliconSource.Checked = true;
                 if (hSource == PictureSource.Yande_re)
                     chkHPictureYande_reSource.Checked = true;
+                if (hSource == PictureSource.Lolisuki)
+                    chkHPictureEnabledLolisukiSource.Checked = true;
+                if (hSource == PictureSource.Yuban10703)
+                    chkHPictureEnabledYuban10703Source.Checked = true;
+                if (hSource == PictureSource.Konachan_net)
+                    chkHPictureKonachan_netSource.Checked = true;
+                if (hSource == PictureSource.Lolibooru)
+                    chkHPictureLolibooruSource.Checked = true;
             }
-            foreach (var beautySource in BotInfo.Config.EnabledBeautyPictureSource)
-            {
-                if (beautySource == PictureSource.ELF)
-                    chkBeautyPictureEnabledELFSource.Checked = true;
-            }
-            cboHPictureDefaultSource.DataSource = Enum.GetNames<PictureSource>();
-            cboHPictureDefaultSource.SelectedIndex = (int)BotInfo.Config.HPictureDefaultSource;
-
             txbHPictureOnceMessageMaxImageCount.Text = BotInfo.Config.HPictureOnceMessageMaxImageCount.ToString();
             txbHPictureCmd.Text = BotInfo.Config.HPictureCmd;
-            chkRevokeBeautyPicture.Checked = BotInfo.Config.RevokeBeautyPicture;
             if (BotInfo.Config.HPictureUserCmd is not null)
             {
                 foreach (var item in BotInfo.Config.HPictureUserCmd)
@@ -49,11 +45,13 @@ namespace GreenOnions.BotManagerWindows.Controls
                 foreach (var item in BotInfo.Config.HPictureWhiteGroup)
                     lstHPictureWhiteGroup.Items.Add(item.ToString());
             }
+            chkHPictureUseProxy.Checked = BotInfo.Config.HPictureUseProxy;
+            chkHPictureAntiShielding.Checked = BotInfo.Config.HPictureAntiShielding;
+            chkLoliconRequestByBrowser.Checked = BotInfo.Config.HPictureLoliconRequestByWebBrowser;
             chkHPictureWhiteOnly.Checked = BotInfo.Config.HPictureWhiteOnly;
             chkHPictureAllowR18.Checked = BotInfo.Config.HPictureAllowR18;
             chkHPictureR18WhiteOnly.Checked = BotInfo.Config.HPictureR18WhiteOnly;
             chkHPictureAllowPM.Checked = BotInfo.Config.HPictureAllowPM;
-            chkHPictureSize1200.Checked = BotInfo.Config.HPictureSize1200;
             txbHPictureLimit.Text = BotInfo.Config.HPictureLimit.ToString();
             chkHPicturePMNoLimit.Checked = BotInfo.Config.HPicturePMNoLimit;
             chkHPictureAdminNoLimit.Checked = BotInfo.Config.HPictureAdminNoLimit;
@@ -84,19 +82,24 @@ namespace GreenOnions.BotManagerWindows.Controls
         public void SaveConfig()
         {
             HashSet<PictureSource> EnabledHPictureSource = new HashSet<PictureSource>();
-            HashSet<PictureSource> EnabledBeautyPictureSource = new HashSet<PictureSource>();
             if (chkHPictureEnabledLoliconSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.Lolicon);
             if (chkHPictureYande_reSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.Yande_re);
-            if (chkBeautyPictureEnabledELFSource.Checked)
-                EnabledBeautyPictureSource.Add(PictureSource.ELF);
+            if (chkHPictureEnabledLolisukiSource.Checked)
+                EnabledHPictureSource.Add(PictureSource.Lolisuki);
+            if (chkHPictureEnabledYuban10703Source.Checked)
+                EnabledHPictureSource.Add(PictureSource.Yuban10703);
+            if (chkHPictureKonachan_netSource.Checked)
+                EnabledHPictureSource.Add(PictureSource.Konachan_net);
+            if (chkHPictureLolibooruSource.Checked)
+                EnabledHPictureSource.Add(PictureSource.Lolibooru);
+
             BotInfo.Config.EnabledHPictureSource = EnabledHPictureSource;
-            BotInfo.Config.EnabledBeautyPictureSource = EnabledBeautyPictureSource;
-            BotInfo.Config.HPictureDefaultSource = (PictureSource)cboHPictureDefaultSource.SelectedIndex;
+            BotInfo.Config.HPictureAntiShielding = chkHPictureAntiShielding.Checked;
+            BotInfo.Config.HPictureLoliconRequestByWebBrowser = chkLoliconRequestByBrowser.Checked;
             BotInfo.Config.HPictureCmd = txbHPictureCmd.Text;
             BotInfo.Config.HPictureOnceMessageMaxImageCount = string.IsNullOrEmpty(txbHPictureOnceMessageMaxImageCount.Text) ? 10 : Convert.ToInt32(txbHPictureOnceMessageMaxImageCount.Text);
-            BotInfo.Config.RevokeBeautyPicture = chkRevokeBeautyPicture.Checked;
             HashSet<string> tempHPictureUserCmd = new HashSet<string>();
             foreach (ListViewItem item in lstHPictureUserCmd.Items)
                 tempHPictureUserCmd.Add(item.SubItems[0].Text);
@@ -108,12 +111,12 @@ namespace GreenOnions.BotManagerWindows.Controls
             HashSet<long> tempHPictureWhiteGroup = new HashSet<long>();
             foreach (ListViewItem item in lstHPictureWhiteGroup.Items)
                 tempHPictureWhiteGroup.Add(Convert.ToInt64(item.SubItems[0].Text));
+            BotInfo.Config.HPictureUseProxy = chkHPictureUseProxy.Checked;
             BotInfo.Config.HPictureWhiteGroup = tempHPictureWhiteGroup;
             BotInfo.Config.HPictureWhiteOnly = chkHPictureWhiteOnly.Checked;
             BotInfo.Config.HPictureAllowR18 = chkHPictureAllowR18.Checked;
             BotInfo.Config.HPictureR18WhiteOnly = chkHPictureR18WhiteOnly.Checked;
             BotInfo.Config.HPictureAllowPM = chkHPictureAllowPM.Checked;
-            BotInfo.Config.HPictureSize1200 = chkHPictureSize1200.Checked;
             BotInfo.Config.HPictureLimit = string.IsNullOrEmpty(txbHPictureLimit.Text) ? 0 : Convert.ToInt32(txbHPictureLimit.Text);
             BotInfo.Config.HPicturePMNoLimit = chkHPicturePMNoLimit.Checked;
             BotInfo.Config.HPictureAdminNoLimit = chkHPictureAdminNoLimit.Checked;
@@ -146,7 +149,8 @@ namespace GreenOnions.BotManagerWindows.Controls
         {
             txbHPictureCmd.Text = IBotConfig.DefaultHPictureCmd;
             chkHPictureEnabledLoliconSource.Checked = true;
-            chkHPictureYande_reSource.Checked = true;
+            chkHPictureYande_reSource.Checked = false;
+            chkHPictureEnabledLolisukiSource.Checked = true;
         }
 
         private void btnAddUserHPictureCmd_Click(object sender, EventArgs e) => ((IConfigSetting)this).AddItemToListView(lstHPictureUserCmd, txbUserHPictureCmd.Text);

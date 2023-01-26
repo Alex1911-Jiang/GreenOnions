@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using GreenOnions.Interface;
 using GreenOnions.Interface.Items;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 namespace GreenOnions.Utility
@@ -52,7 +53,6 @@ namespace GreenOnions.Utility
             if (File.Exists("config.json"))
             {
                 string strConfig = File.ReadAllText("config.json");
-
                 Config = JsonConvert.DeserializeObject<BotConfig>(strConfig);
                 if (Config.QQId == 0)
                 {
@@ -67,9 +67,9 @@ namespace GreenOnions.Utility
             {
                 Console.WriteLine("生成新的配置文件");
                 Config = new BotConfig() { QQId = -1 };
+                Config.CreateDefaultValue();
             }
             SaveConfigFile();
-
 
             Cache.SauceNAOKeysAndLongRemaining = new ConcurrentDictionary<string, int>();
             foreach (var key in Config.SauceNAOApiKey)
@@ -147,20 +147,6 @@ namespace GreenOnions.Utility
         
         }
 
-        public static void LoadConfig()
-        {
-            if (File.Exists("config.json"))
-            {
-                string strConfig = File.ReadAllText("config.json");
-
-                Config = JsonConvert.DeserializeObject<BotConfig>(strConfig);
-                if (Config.QQId == 0)
-                {
-                    Config = UpdateOldConfig(strConfig);
-                }
-            }
-        }
-
         private static BotConfig UpdateOldConfig(string strConfig)
         {
             JToken jt = JsonConvert.DeserializeObject<JToken>(strConfig);
@@ -231,9 +217,9 @@ namespace GreenOnions.Utility
                 lstType = _assembly_mscorlib.GetType($"System.Collections.Generic.List`1[[{elementTypeName}, {elementType.Assembly}]]");
             else
                 lstType = _assembly_mscorlib.GetType($"System.Collections.Generic.List`1[{elementTypeName}]");
+            object lst = Activator.CreateInstance(lstType);
             MethodInfo tMethodToHashSet = typeof(Enumerable).GetMethods(BindingFlags.Static | BindingFlags.Public).Where(m => m.Name == "ToHashSet").First();
             MethodInfo methodToHashSet = tMethodToHashSet.MakeGenericMethod(elementType);
-            object lst = Activator.CreateInstance(lstType);
             object hash = methodToHashSet.Invoke(null, new[] { lst });
             return (hash, elementType);
         }
@@ -250,14 +236,14 @@ namespace GreenOnions.Utility
         {
             lock (Config)
             {
-                string config = JsonConvert.SerializeObject(Config, Formatting.Indented);
+                string config = JsonConvert.SerializeObject(Config, Formatting.Indented, new StringEnumConverter());
                 File.WriteAllText("config.json", config);
             }
         }
 
         public static void SavePluginsStatus()
         {
-            string pluginStatus = JsonConvert.SerializeObject(PluginStatus, Formatting.Indented);
+            string pluginStatus = JsonConvert.SerializeObject(PluginStatus, Formatting.Indented, new StringEnumConverter());
             File.WriteAllText("plugin.json", pluginStatus);
         }
     }

@@ -11,8 +11,15 @@ namespace GreenOnions.Interface.Configs
         #region -- 核心配置项 --
 
         /// <summary>
+        /// 代理地址
+        /// </summary>
+        [PropertyChineseName("代理地址", "核心")]
+        public string ProxyUrl { get; }
+
+        /// <summary>
         /// 日志等级 0 = 信息， 1 = 警告， 2 = 错误
         /// </summary>
+        [PropertyChineseName("日志级别", "核心")]
         public int LogLevel { get; }
 
         /// <summary>
@@ -116,12 +123,6 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         [PropertyChineseName("Pixiv代理地址", "核心")]
         public string PixivProxy { get; }
-
-        /// <summary>
-        /// 保留所有下载的图片用于缓存
-        /// </summary>
-        [PropertyChineseName("保留所有下载的图片用于缓存", "核心")]
-        public bool DownloadImage4Caching { get; }
 
         /// <summary>
         /// 所有图片下载到本地再发送文件
@@ -236,6 +237,12 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         [PropertyChineseName("私聊时自动搜图", "搜图")]
         public bool PmAutoSearch { get; }
+
+        /// <summary>
+        /// 搜图是否使用代理
+        /// </summary>
+        [PropertyChineseName("搜图 使用代理", "搜图")]
+        public bool SearchUseProxy { get; }
 
         /// <summary>
         /// 是否发送缩略图
@@ -506,6 +513,12 @@ namespace GreenOnions.Interface.Configs
         public string OriginalPictureCommand { get; }
 
         /// <summary>
+        /// 下载原图是否使用代理
+        /// </summary>
+        [PropertyChineseName("下载原图 使用代理", "搜图")]
+        public bool OriginalPictureUseProxy { get; }
+
+        /// <summary>
         /// 开始下载原图回复语
         /// </summary>
         [PropertyChineseName("下载原图 开始下载回复语", "搜图")]
@@ -551,6 +564,12 @@ namespace GreenOnions.Interface.Configs
         public TranslateEngine TranslateEngineType { get; }
 
         /// <summary>
+        /// 翻译是否使用代理
+        /// </summary>
+        [PropertyChineseName("翻译 使用代理", "翻译")]
+        public bool TranslateUseProxy { get; }
+
+        /// <summary>
         /// 云翻译接口的APP ID
         /// </summary>
         [PropertyChineseName("翻译接口APPID", "翻译")]
@@ -593,25 +612,19 @@ namespace GreenOnions.Interface.Configs
         /// <summary>
         /// 默认色图命令
         /// </summary>
-        public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18的?)?(?<关键词>.+?)?((?<色图后缀>[的得地滴の]?[色瑟涩铯啬渋][图圖図])|(?<美图后缀>[的得地滴の]?美[图圖図]))";
+        public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18的?)?(?<关键词>.+?)?(?<色图后缀>[的得地滴の]?[色瑟涩铯啬渋][图圖図])";
 
         /// <summary>
-        /// 色图/美图完整命令(正则表达式)
+        /// 色图完整命令(正则表达式)
         /// </summary>
-        [PropertyChineseName("色图/美图命令", "色图", "支持正则表达式")]
+        [PropertyChineseName("色图命令", "色图", "支持正则表达式")]
         public string HPictureCmd { get; }
 
         /// <summary>
-        /// 是否撤回美图(撤回时间跟随色图撤回时间设置)
+        /// 色图是否使用代理
         /// </summary>
-        [PropertyChineseName("撤回美图", "色图")]
-        public bool RevokeBeautyPicture { get; }
-
-        /// <summary>
-        /// 启用的美图图库
-        /// </summary>
-        [PropertyChineseName("美图图库", "色图", "启用的美图图库, 1 = ELF图库")]
-        public HashSet<PictureSource> EnabledBeautyPictureSource { get; }
+        [PropertyChineseName("色图 使用代理", "色图")]
+        public bool HPictureUseProxy { get; }
 
         /// <summary>
         /// 启用的色图图库
@@ -620,16 +633,22 @@ namespace GreenOnions.Interface.Configs
         public HashSet<PictureSource> EnabledHPictureSource { get; }
 
         /// <summary>
+        /// 使用浏览器请求Lolicon Api
+        /// </summary>
+        [PropertyChineseName("使用浏览器请求Lolicon", "色图", "解决 Windows Server 2012 R2 不支持 TLS 1.3 协议导致 SSL 错误问题")]
+        public bool HPictureLoliconRequestByWebBrowser { get; }
+
+        /// <summary>
+        /// 反和谐（仅限Windows，且需要先开启 所有图片下载到本地发送文件 功能）
+        /// </summary>
+        [PropertyChineseName("反和谐", "色图", "仅限Windows，且需要先开启 所有图片下载到本地发送文件 功能")]
+        public bool HPictureAntiShielding { get; }
+
+        /// <summary>
         /// 自定义色图命令
         /// </summary>
         [PropertyChineseName("自定义色图命令", "色图")]
         public HashSet<string> HPictureUserCmd { get; }
-
-        /// <summary>
-        /// 如果命令不含后缀，默认图库为
-        /// </summary>
-        [PropertyChineseName("默认图库", "色图")]
-        public PictureSource HPictureDefaultSource { get; }
 
         /// <summary>
         /// 白名单群
@@ -666,12 +685,6 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         [PropertyChineseName("色图 允许私聊", "色图")]
         public bool HPictureAllowPM { get; }
-
-        /// <summary>
-        /// 1200像素模式
-        /// </summary>
-        [PropertyChineseName("色图 1200像素模式", "色图")]
-        public bool HPictureSize1200 { get; }
 
         /// <summary>
         /// 冷却时间
@@ -1009,6 +1022,12 @@ namespace GreenOnions.Interface.Configs
         public bool RssEnabled { get; }
 
         /// <summary>
+        /// RSS是否使用代理
+        /// </summary>
+        [PropertyChineseName("RSS订阅转发 使用代理", "RSS订阅转发")]
+        public bool RssUseProxy { get; }
+
+        /// <summary>
         /// 抓取RSS间隔时间(分钟)
         /// </summary>
         [PropertyChineseName("获取内容时间间隔", "RSS订阅转发", "分钟")]
@@ -1018,7 +1037,7 @@ namespace GreenOnions.Interface.Configs
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
         [PropertyChineseName("RSS订阅项", "RSS订阅转发")]
-        public HashSet<RssSubscriptionItem> RssSubscription { get; }
+        public HashSet<RssSubscriptionItem>? RssSubscription { get; }
 
         /// <summary>
         /// 获取B站直播封面

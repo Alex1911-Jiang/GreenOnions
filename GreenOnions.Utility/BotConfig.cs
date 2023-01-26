@@ -7,8 +7,17 @@ namespace GreenOnions.Utility
 {
     public class BotConfig : IBotConfig
     {
+        public void CreateDefaultValue()
+        {
+            EnabledHPictureSource.Add(PictureSource.Lolicon);
+            EnabledHPictureSource.Add(PictureSource.Lolisuki);
+            HPictureUserCmd.Add("--setu");
+        }
 
         #region -- 核心配置项 --
+
+        public string ProxyUrl { get; set; } = "";
+
         public int LogLevel { get; set; } = 2;
 
         public long QQId { get; set; } = 0;
@@ -83,11 +92,6 @@ namespace GreenOnions.Utility
         /// Pixiv代理地址
         /// </summary>
         public string PixivProxy { get; set; } = "pixiv.re";
-
-        /// <summary>
-        /// 保留所有下载的图片用于缓存
-        /// </summary>
-        public bool DownloadImage4Caching { get; set; } = true;
 
         /// <summary>
         /// 所有图片下载到本地再发送文件
@@ -165,6 +169,11 @@ namespace GreenOnions.Utility
         /// 是否启用搜图功能
         /// </summary>
         public bool SearchEnabled { get; set; } = true;
+
+        /// <summary>
+        /// 搜图是否使用代理
+        /// </summary>
+        public bool SearchUseProxy { get; set; } = false;
 
         /// <summary>
         /// 私聊时是否自动搜图
@@ -400,6 +409,11 @@ namespace GreenOnions.Utility
         public string OriginalPictureCommand { get; set; } = "<机器人名称>下[載载][Pp]([Ii][Xx][Ii][Vv]|站)原[圖图][:：]";
 
         /// <summary>
+        /// 下载原图是否使用代理
+        /// </summary>
+        public bool OriginalPictureUseProxy { get; set; } = false;
+
+        /// <summary>
         /// 开始下载原图回复语
         /// </summary>
         public string OriginalPictureDownloadingReply { get; set; } = "正在下载，请稍候...";
@@ -428,34 +442,34 @@ namespace GreenOnions.Utility
         #region -- 色图配置项 --
 
         /// <summary>
-        /// 色图/美图完整命令(正则表达式)
+        /// 色图完整命令(正则表达式)
         /// </summary>
         public string HPictureCmd { get; set; } = IBotConfig.DefaultHPictureCmd;
 
         /// <summary>
-        /// 是否撤回美图(撤回时间跟随色图撤回时间设置)
+        /// 色图是否使用代理
         /// </summary>
-        public bool RevokeBeautyPicture { get; set; } = true;
+        public bool HPictureUseProxy { get; set; } = false;
 
         /// <summary>
-        /// 启用的美图图库
+        /// 使用浏览器请求Lolicon Api
         /// </summary>
-        public HashSet<PictureSource> EnabledBeautyPictureSource { get; set; } = new HashSet<PictureSource>();
+        public bool HPictureLoliconRequestByWebBrowser { get; set; } = false;
+
+        /// <summary>
+        /// 反和谐（仅限Windows，且需要先开启 所有图片下载到本地发送文件 功能）
+        /// </summary>
+        public bool HPictureAntiShielding { get; set; } = false;
 
         /// <summary>
         /// 启用的色图图库
         /// </summary>
-        public HashSet<PictureSource> EnabledHPictureSource { get; set; } = new HashSet<PictureSource>() { PictureSource.Lolicon };
+        public HashSet<PictureSource> EnabledHPictureSource { get; set; } = new HashSet<PictureSource>();
 
         /// <summary>
         /// 自定义色图命令
         /// </summary>
-        public HashSet<string> HPictureUserCmd { get; set; } = new HashSet<string>() { "--setu" };
-
-        /// <summary>
-        /// 如果命令不含后缀，默认图库为
-        /// </summary>
-        public PictureSource HPictureDefaultSource { get; set; } = PictureSource.Lolicon;
+        public HashSet<string> HPictureUserCmd { get; set; } = new HashSet<string>();
 
         /// <summary>
         /// 白名单群
@@ -486,11 +500,6 @@ namespace GreenOnions.Utility
         /// 允许私聊
         /// </summary>
         public bool HPictureAllowPM { get; set; } = true;
-
-        /// <summary>
-        /// 1200像素模式
-        /// </summary>
-        public bool HPictureSize1200 { get; set; } = false;
 
         /// <summary>
         /// 冷却时间
@@ -585,7 +594,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 发生错误回复
         /// </summary>
-        public string HPictureErrorReply { get; set; } = "色图服务器爆炸惹_(:3」∠)_";
+        public string HPictureErrorReply { get; set; } = "色图服务器爆炸惹_(:3」∠)_ <错误信息>";
 
         /// <summary>
         /// 没有结果回复
@@ -595,7 +604,7 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 下载失败回复
         /// </summary>
-        public string HPictureDownloadFailReply { get; set; } = "地址为:<URL>的色图不见了，可能是色图服务器下载失败或图真的没了o(╥﹏╥)o (如连续出现时请检查<机器人名称>网络/代理/墙问题。)";
+        public string HPictureDownloadFailReply { get; set; } = "图片下载失败o(╥﹏╥)o  <错误信息>";
 
         /// <summary>
         /// 色图次数限制记录类型
@@ -625,6 +634,11 @@ namespace GreenOnions.Utility
         /// 翻译引擎
         /// </summary>
         public TranslateEngine TranslateEngineType { get; set; } = TranslateEngine.YouDao;
+
+        /// <summary>
+        /// 翻译是否使用代理
+        /// </summary>
+        public bool TranslateUseProxy { get; set; } = false;
 
         /// <summary>
         /// 云翻译接口的APP ID
@@ -819,6 +833,11 @@ namespace GreenOnions.Utility
         public bool RssEnabled { get; set; } = false;
 
         /// <summary>
+        /// RSS是否使用代理
+        /// </summary>
+        public bool RssUseProxy { get; set; } = false;
+
+        /// <summary>
         /// 抓取RSS间隔时间(分钟)
         /// </summary>
         public double ReadRssInterval { get; set; } = 10.0;
@@ -831,12 +850,13 @@ namespace GreenOnions.Utility
         /// <summary>
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
-        public HashSet<RssSubscriptionItem> RssSubscription { get; set; } = null;
+        public HashSet<RssSubscriptionItem>? RssSubscription { get; set; } = null;
 
         /// <summary>
         /// 获取B站直播封面
         /// </summary>
         public bool RssSendLiveCover { get; set; } = true;
+
         #endregion -- RSS 配置项 --
     }
 }

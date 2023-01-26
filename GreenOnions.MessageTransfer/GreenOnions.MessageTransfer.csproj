@@ -6,6 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\GreenOnions.Interface\GreenOnions.Interface.csproj" />
     <ProjectReference Include="..\GreenOnions.Utility\GreenOnions.Utility.csproj" />

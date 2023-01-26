@@ -39,6 +39,8 @@ namespace GreenOnions.BotManagerWindows.Controls
                 lstBannedUser.Items.Add(item.ToString());
             }
 
+            txbProxy.Text = BotInfo.Config.ProxyUrl;
+
             chkLeaveGroupAfterBeMushin.Checked = BotInfo.Config.LeaveGroupAfterBeMushin;
 
             chkMessageTransferEnabled.Checked = BotInfo.Config.MessageTransferEnabled;
@@ -51,7 +53,6 @@ namespace GreenOnions.BotManagerWindows.Controls
             chkOnlyReplyDebugGroup.Checked = BotInfo.Config.OnlyReplyDebugGroup;
             chkDebugReplyAdminOnly.Checked = BotInfo.Config.DebugReplyAdminOnly;
             chkHttpRequestByWebBrowser.Checked = BotInfo.Config.HttpRequestByWebBrowser;
-            chkDownloadImage4Caching.Checked = BotInfo.Config.DownloadImage4Caching;
             chkSendImageByFile.Checked = BotInfo.Config.SendImageByFile;
             chkCheckPornEnabled.Checked = BotInfo.Config.CheckPornEnabled; //是否启用腾讯云鉴黄
 
@@ -102,6 +103,8 @@ namespace GreenOnions.BotManagerWindows.Controls
             }
             BotInfo.Config.BannedUser = tempBannedUser;
 
+            BotInfo.Config.ProxyUrl = txbProxy.Text;
+
             BotInfo.Config.LeaveGroupAfterBeMushin = chkLeaveGroupAfterBeMushin.Checked;
 
             BotInfo.Config.MessageTransferEnabled = chkMessageTransferEnabled.Checked;
@@ -117,7 +120,6 @@ namespace GreenOnions.BotManagerWindows.Controls
             BotInfo.Config.OnlyReplyDebugGroup = chkOnlyReplyDebugGroup.Checked;
             BotInfo.Config.DebugReplyAdminOnly = chkDebugReplyAdminOnly.Checked;
             BotInfo.Config.HttpRequestByWebBrowser = chkHttpRequestByWebBrowser.Checked;
-            BotInfo.Config.DownloadImage4Caching = chkDownloadImage4Caching.Checked;
             BotInfo.Config.SendImageByFile = chkSendImageByFile.Checked;
 
             BotInfo.Config.AutoConnectEnabled = chkAutoConnectEnabled.Checked;

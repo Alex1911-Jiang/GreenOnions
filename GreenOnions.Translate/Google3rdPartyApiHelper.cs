@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -30,18 +31,14 @@ namespace GreenOnions.Translate
 
         private static async Task<string> Translate(string text, string from, string to)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                text  = HttpUtility.UrlEncode(text);
-                var resp = await client.GetAsync($"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={text}");
-                string result = await resp.Content.ReadAsStringAsync();
-                JArray arr = JsonConvert.DeserializeObject<JArray>(result);
-                StringBuilder sb = new StringBuilder();
-                string resStr = string.Empty;
-                foreach (var jt in arr[0])
-                    sb.Append(jt[0]);
-                return sb.ToString();
-            }
+            text = HttpUtility.UrlEncode(text);
+            string result = await HttpHelper.GetStringAsync($"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={text}", BotInfo.Config.TranslateUseProxy);
+            JArray arr = JsonConvert.DeserializeObject<JArray>(result);
+            StringBuilder sb = new StringBuilder();
+            string resStr = string.Empty;
+            foreach (var jt in arr[0])
+                sb.Append(jt[0]);
+            return sb.ToString();
         }
 
         private static string ChineseToCode(string languageName)

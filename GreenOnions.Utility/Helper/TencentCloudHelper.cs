@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using System.Net.Http;
+using System.Net;
+using System.Security.Policy;
 using COSXML;
 using COSXML.Auth;
 using COSXML.Model.Object;
 using COSXML.Model.Tag;
+using System.Threading.Tasks;
 
 namespace GreenOnions.Utility.Helper
 {
@@ -54,7 +58,7 @@ namespace GreenOnions.Utility.Helper
         /// <param name="key">对象键</param>
         /// <param name="param">额外参数</param>
         /// <returns>返回XML</returns>
-        public Stream TencentCOSGetHttpResponse(string appid, string region, string bucket, string key, string param = "")
+        public async Task<Stream> TencentCOSGetHttpResponseAsync(string appid, string region, string bucket, string key, string param = "")
         {
             if (!param.StartsWith("&")) param = "&" + param;
 
@@ -70,7 +74,17 @@ namespace GreenOnions.Utility.Helper
             preSignatureStruct.queryParameters = null; //签名中需要校验的 URL 中请求参数
             string requestSignURL = _cosXml.GenerateSignURL(preSignatureStruct) + param;
 
-            return HttpHelper.GetHttpResponseStream(requestSignURL, out _);
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
+            {
+                httpClientHandler.UseProxy = true;
+                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
+            }
+            using (HttpClient client = new(httpClientHandler))
+            {
+                var resp = await client.GetAsync(requestSignURL);
+                return resp.Content.ReadAsStream();
+            }
         }
 
         public enum CheckedPornStatus
@@ -80,49 +94,10 @@ namespace GreenOnions.Utility.Helper
             Error = 2,
         }
 
-        public CheckedPornStatus CheckImageHealth(string localFileName, out string errorMessage)
+        public async Task<CheckedPornStatus> CheckImageHealth(Stream stream)
         {
-            errorMessage = "";
-            try
-            {
-                string strScore = CheckImagePornScore(localFileName, null, null);
-                return CheckHealthed(strScore);
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return CheckedPornStatus.Error;
-            }
-        }
-
-        public CheckedPornStatus CheckImageHealth(byte[] file, out string errorMessage)
-        {
-            errorMessage = "";
-            try
-            {
-                string strScore = CheckImagePornScore(null,file,null);
-                return CheckHealthed(strScore);
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return CheckedPornStatus.Error;
-            }
-        }
-
-        public CheckedPornStatus CheckImageHealth(Stream stream, out string errorMessage)
-        {
-            errorMessage = "";
-            try
-            {
-                string strScore = CheckImagePornScore(null, null, stream);
-                return CheckHealthed(strScore);
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return CheckedPornStatus.Error;
-            }
+            string strScore = await CheckImagePornScore(null, null, stream);
+            return CheckHealthed(strScore);
         }
 
         private CheckedPornStatus CheckHealthed(string strScore)
@@ -145,18 +120,18 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        private string CheckImagePornScore(string localFileName, byte[] file, Stream stream)
+        private async Task<string> CheckImagePornScore(string localFileName, byte[] file, Stream stream)
         {
             if (SaveFileToTencentCOS(localFileName, file, stream, _bucket, "CheckPorn.png"))
             {
-                return CheckPornScoreInner();
+                return await CheckPornScoreInnerAsync();
             }
             throw new Exception("鉴黄失败，未能成功上传图片到云端。");
         }
 
-        private string CheckPornScoreInner()
+        private async Task< string> CheckPornScoreInnerAsync()
         {
-            using (Stream stream = TencentCOSGetHttpResponse(_appid, _region, _bucket, "CheckPorn.png", "&ci-process=sensitive-content-recognition&detect-type=porn"))
+            using (Stream stream = await TencentCOSGetHttpResponseAsync(_appid, _region, _bucket, "CheckPorn.png", "&ci-process=sensitive-content-recognition&detect-type=porn"))
             {
                 DataSet ds = new DataSet();
                 ds.ReadXml(stream);

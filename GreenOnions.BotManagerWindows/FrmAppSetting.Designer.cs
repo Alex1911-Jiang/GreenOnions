@@ -164,7 +164,7 @@
             this.pageSearchPicture.Location = new System.Drawing.Point(4, 33);
             this.pageSearchPicture.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pageSearchPicture.Name = "pageSearchPicture";
-            this.pageSearchPicture.Size = new System.Drawing.Size(192, 63);
+            this.pageSearchPicture.Size = new System.Drawing.Size(1004, 981);
             this.pageSearchPicture.TabIndex = 3;
             this.pageSearchPicture.Text = "搜图设置";
             this.pageSearchPicture.UseVisualStyleBackColor = true;
@@ -178,7 +178,7 @@
             this.pnlSearchPicture.Enabled = false;
             this.pnlSearchPicture.Location = new System.Drawing.Point(0, 40);
             this.pnlSearchPicture.Name = "pnlSearchPicture";
-            this.pnlSearchPicture.Size = new System.Drawing.Size(192, 23);
+            this.pnlSearchPicture.Size = new System.Drawing.Size(1004, 941);
             this.pnlSearchPicture.TabIndex = 18;
             // 
             // pnlSearchPictureEnabled
@@ -187,7 +187,7 @@
             this.pnlSearchPictureEnabled.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSearchPictureEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlSearchPictureEnabled.Name = "pnlSearchPictureEnabled";
-            this.pnlSearchPictureEnabled.Size = new System.Drawing.Size(192, 40);
+            this.pnlSearchPictureEnabled.Size = new System.Drawing.Size(1004, 40);
             this.pnlSearchPictureEnabled.TabIndex = 17;
             // 
             // chkSearchPictureEnabled
@@ -209,7 +209,7 @@
             this.pageOriginalPicture.Location = new System.Drawing.Point(4, 33);
             this.pageOriginalPicture.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pageOriginalPicture.Name = "pageOriginalPicture";
-            this.pageOriginalPicture.Size = new System.Drawing.Size(192, 63);
+            this.pageOriginalPicture.Size = new System.Drawing.Size(1004, 981);
             this.pageOriginalPicture.TabIndex = 9;
             this.pageOriginalPicture.Text = "下载原图";
             this.pageOriginalPicture.UseVisualStyleBackColor = true;
@@ -222,7 +222,7 @@
             this.pnlOriginalPicture.Enabled = false;
             this.pnlOriginalPicture.Location = new System.Drawing.Point(0, 40);
             this.pnlOriginalPicture.Name = "pnlOriginalPicture";
-            this.pnlOriginalPicture.Size = new System.Drawing.Size(192, 23);
+            this.pnlOriginalPicture.Size = new System.Drawing.Size(1004, 941);
             this.pnlOriginalPicture.TabIndex = 3;
             // 
             // pnlOriginalPictureEnabled
@@ -231,7 +231,7 @@
             this.pnlOriginalPictureEnabled.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlOriginalPictureEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlOriginalPictureEnabled.Name = "pnlOriginalPictureEnabled";
-            this.pnlOriginalPictureEnabled.Size = new System.Drawing.Size(192, 40);
+            this.pnlOriginalPictureEnabled.Size = new System.Drawing.Size(1004, 40);
             this.pnlOriginalPictureEnabled.TabIndex = 2;
             // 
             // chkOriginalPictureEnabled
@@ -254,7 +254,7 @@
             this.pageHPicture.Location = new System.Drawing.Point(4, 33);
             this.pageHPicture.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageHPicture.Name = "pageHPicture";
-            this.pageHPicture.Size = new System.Drawing.Size(192, 63);
+            this.pageHPicture.Size = new System.Drawing.Size(1004, 981);
             this.pageHPicture.TabIndex = 0;
             this.pageHPicture.Text = "色图设置";
             this.pageHPicture.UseVisualStyleBackColor = true;
@@ -269,7 +269,7 @@
             this.pnlHPicture.Location = new System.Drawing.Point(0, 40);
             this.pnlHPicture.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pnlHPicture.Name = "pnlHPicture";
-            this.pnlHPicture.Size = new System.Drawing.Size(192, 23);
+            this.pnlHPicture.Size = new System.Drawing.Size(1004, 941);
             this.pnlHPicture.TabIndex = 10;
             // 
             // pnlHPictureEnabled
@@ -279,7 +279,7 @@
             this.pnlHPictureEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlHPictureEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlHPictureEnabled.Name = "pnlHPictureEnabled";
-            this.pnlHPictureEnabled.Size = new System.Drawing.Size(192, 40);
+            this.pnlHPictureEnabled.Size = new System.Drawing.Size(1004, 40);
             this.pnlHPictureEnabled.TabIndex = 9;
             // 
             // chkHPictureEnabled
@@ -301,7 +301,7 @@
             this.pageTranslate.Location = new System.Drawing.Point(4, 33);
             this.pageTranslate.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.pageTranslate.Name = "pageTranslate";
-            this.pageTranslate.Size = new System.Drawing.Size(192, 63);
+            this.pageTranslate.Size = new System.Drawing.Size(1004, 981);
             this.pageTranslate.TabIndex = 4;
             this.pageTranslate.Text = "翻译设置";
             this.pageTranslate.UseVisualStyleBackColor = true;
@@ -314,7 +314,7 @@
             this.pnlTranslate.Enabled = false;
             this.pnlTranslate.Location = new System.Drawing.Point(0, 40);
             this.pnlTranslate.Name = "pnlTranslate";
-            this.pnlTranslate.Size = new System.Drawing.Size(192, 23);
+            this.pnlTranslate.Size = new System.Drawing.Size(1004, 941);
             this.pnlTranslate.TabIndex = 2;
             // 
             // pnlTranslateEnabled
@@ -324,7 +324,7 @@
             this.pnlTranslateEnabled.Location = new System.Drawing.Point(0, 0);
             this.pnlTranslateEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlTranslateEnabled.Name = "pnlTranslateEnabled";
-            this.pnlTranslateEnabled.Size = new System.Drawing.Size(192, 40);
+            this.pnlTranslateEnabled.Size = new System.Drawing.Size(1004, 40);
             this.pnlTranslateEnabled.TabIndex = 1;
             // 
             // chkTranslateEnabled

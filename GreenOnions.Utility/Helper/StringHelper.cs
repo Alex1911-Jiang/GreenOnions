@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using GreenOnions.Interface;
 using GreenOnions.Interface.Configs;
 using TencentCloud.Kms.V20190118.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace GreenOnions.Utility.Helper
 {
@@ -246,13 +247,18 @@ namespace GreenOnions.Utility.Helper
             return result;
         }
 
-        public static string ReplaceGreenOnionsStringTags(this string originalString, IDictionary<string, string> customTags = null)
+        public static string ReplaceGreenOnionsStringTags(this string originalString, params (string Key, string Value)[] customTags)
         {
             originalString = originalString.ReplacePropertyChineseNameToValue();
             if (customTags is not null)
             {
                 foreach (var tag in customTags)
-                    originalString = originalString.Replace($"<{tag.Key}>", tag.Value);
+                {
+                    if (tag.Key.StartsWith('<') && tag.Key.EndsWith('>'))
+                        originalString = originalString.Replace($"{tag.Key}", tag.Value);
+                    else
+                        originalString = originalString.Replace($"<{tag.Key}>", tag.Value);
+                }
             }
             return originalString;
         }

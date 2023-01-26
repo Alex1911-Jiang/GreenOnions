@@ -73,8 +73,6 @@ namespace GreenOnions.Help
             {
                 if (BotInfo.Config.EnabledHPictureSource.Contains(PictureSource.Lolicon))
                     lstEnabledFeatures.Add("GHS");
-                if (BotInfo.Config.EnabledHPictureSource.Contains(PictureSource.ELF))
-                    lstEnabledFeatures.Add("美图");
             }
             if (BotInfo.Config.RandomRepeatEnabled || BotInfo.Config.SuccessiveRepeatEnabled)
                 lstEnabledFeatures.Add("复读");

@@ -1,153 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GreenOnions.Utility.Helper
 {
     public static class HttpHelper
     {
-        #region -- Https请求 --
-
-        static HttpHelper()
+        public static HttpClient CreateClient(bool useProxy)
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.ProxyUrl))
+            {
+                httpClientHandler.UseProxy = useProxy;
+                httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
+            }
+            return new HttpClient(httpClientHandler) { Timeout = Timeout.InfiniteTimeSpan };
         }
 
-        public async static Task<(string document, string jumpUrl)> GetHttpResponseStringAndJumpUrlAsync(string url, IDictionary<string, string> headers = null)
+        public async static Task<(string document, string redirectUrl)> GetHttpResponseStringAndRedirectUrlAsync(HttpClient client, string url)
         {
-            Stream stream = GetHttpResponseStream(url, out string jumpUrl, headers);
-            using (StreamReader streamReader = new StreamReader(stream))
-                return (await streamReader.ReadToEndAsync(), jumpUrl);
+            HttpRequestMessage request = new(HttpMethod.Get, url);
+            client.DefaultRequestHeaders.TryAddWithoutValidation("ContentType", "text/html;charset=UTF-8");
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+            client.DefaultRequestHeaders.TryAddWithoutValidation("UserAgent", "Mozilla/5.0 (Windows NT 5.2; rv:12.0) Gecko/20100101 Firefox/12.0");
+            var resp = await client.SendAsync(request);
+            if (resp.StatusCode == HttpStatusCode.Forbidden)
+                throw new HttpRequestException(" 访问被拒绝", null, resp.StatusCode);  //403
+            string document = await resp.Content.ReadAsStringAsync();
+            string redirectUrl = request.RequestUri.ToString();
+            return (document, redirectUrl);
         }
 
-        public static async Task<string> GetHttpResponseStringAsync(string url, IDictionary<string, string> headers = null)
+        public static async Task<string> GetStringAsync(string url, bool useProxy)
         {
-            try
-            {
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    if (headers is not null)
-                    {
-                        foreach (var header in headers)
-                            httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
-                    }
-                    return await httpClient.GetStringAsync(url);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.WriteErrorLog(ex);
-                throw;
-            }
+            using HttpClient client = CreateClient(useProxy);
+            return await client.GetStringAsync(url);
         }
 
-        /// <summary>
-        /// get方法
-        /// </summary>
-        /// <param name="url">地址</param>
-        /// <param name="headers">头部信息的键值对</param>
-        /// <param name="timeout">超时时间，默认为60000毫秒（1分钟）</param>
-        /// <returns></returns>
-        public static Stream GetHttpResponseStream(string url, out string jumpUrl, IDictionary<string, string> headers = null, int timeout = 60000)
+        public static async Task<Stream> GetStreamAsync(string url, bool useProxy)
         {
-            try
-            {
-                ServicePointManager.DefaultConnectionLimit = 50;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-
-                request.KeepAlive = false;
-                request.ContentType = "text/html;charset=UTF-8";
-                request.Timeout = timeout;
-                request.Method = "GET";
-                request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-                //request.Headers.Add("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3");
-                request.UserAgent = "Mozilla/5.0 (Windows NT 5.2; rv:12.0) Gecko/20100101 Firefox/12.0";
-
-                //request.ContentType = "application/x-www-form-urlencoded";
-
-                //往头部加入自定义验证信息 Authorization
-                if (headers is not null)
-                {
-                    var property = typeof(WebHeaderCollection).GetProperty("InnerCollection", BindingFlags.Instance | BindingFlags.NonPublic);
-
-                    if (property is not null)
-                    {
-                        //往头部加信息
-                        foreach (KeyValuePair<string, string> header in headers)
-                        {
-                            if (property.GetValue(header, null) is NameValueCollection collection)
-                                collection[header.Key] = header.Value;
-                        }
-                    }
-                }
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                jumpUrl = response.ResponseUri.ToString();
-                return response.GetResponseStream();
-            }
-            catch (Exception ex)
-            {
-                LogHelper.WriteErrorLog(ex);
-                throw;
-            }
+            using HttpClient client = CreateClient(useProxy);
+            var resp = await client.GetAsync(url);
+            if (resp.StatusCode == HttpStatusCode.ServiceUnavailable)
+                throw new HttpRequestException(" API速率限制 请稍后再试", null, resp.StatusCode);  //503
+            return resp.Content.ReadAsStream();
         }
 
-        #endregion -- Https请求 --
-
-        public static async Task<MemoryStream> DownloadImageAsMemoryStreamAsync(string url)
+        public static async Task<string> GetStringAsync(HttpClient client, string url)
         {
-            bool retry = true;
-        IL_Retry:;
-            using (HttpClient httpClient = new HttpClient())
-            {
-                try
-                {
-                    var t = await httpClient.GetAsync(url);
-                    byte[] bytes = await t.Content.ReadAsByteArrayAsync();
-                    MemoryStream ms = new MemoryStream(bytes);
-                    if (ms.Length == 0)
-                    {
-                        if (retry)
-                        {
-                            retry = false;
-                            goto IL_Retry;
-                        }
-                        else
-                        {
-                            ms.Dispose();
-                            ms = null;
-                        }
-                    }
-                    return ms;
-                }
-                catch (Exception)
-                {
-                    if (retry)
-                    {
-                        retry = false;
-                        goto IL_Retry;
-                    }
-                    return null;
-                }
-            }
+            return await client.GetStringAsync(url);
         }
 
-        public static async Task DownloadImageFileAsync(string url, string fileName)
+        public static async Task<Stream> GetStreamAsync(HttpClient client, string url)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                byte[] file = await client.GetByteArrayAsync(url);
-                string cacheDir = Path.GetDirectoryName(fileName);
-                if (!string.IsNullOrEmpty(cacheDir) && !Directory.Exists(cacheDir))
-                    Directory.CreateDirectory(cacheDir);
-                await File.WriteAllBytesAsync(fileName, file);
-            }
+            var resp = await client.GetAsync(url);
+            return resp.Content.ReadAsStream();
         }
     }
 }
