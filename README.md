@@ -144,16 +144,20 @@
 
 ### 命令说明:
 
-所有命令均以"<机器人名称>命令+空格"开头, 尖括号中代表要替换的值(不含尖括号, 带有问号的代表可选参数), 修改集合类型属性时多个元素以分号分隔<br>
+所有命令均以"<机器人名称>命令+空格"开头, 尖括号中代表要替换的值(不含尖括号, 带有问号的代表可选参数), 修改集合类型属性时应以Json数组的形式，如：[1,2,3])<br>
 1. 　--list #列出所有的属性功能分组名称<br>
 2. 　--list <分组名> #列出该分组下的所有属性名称和中文别名<br>
 3. 　--get <属性名/别名> #获取属性的值和描述<br>
 4. 　--set <属性名/别名> <值> #修改改属性的值<br>
 5. 　--description <属性名/别名> #获取改属性的描述信息, 如果是枚举还会列出允许设置的值<br>
 6. 　--rss #列出所有的RSS订阅项<br>
-7. 　--addrss Url="<订阅地址>" remark="<?备注名>" ForwardGroups=<?转发群> ForwardQQs=<?转发好友> Translate=<?是否翻译> TranslateFromTo=<?是否指定翻译语言> TranslateFrom=<?从什么语言翻译> TranslateTo=<?翻译到什么语言> AtAll=<?是否@所有人> SendByForward=<?是否以合并转发方式发送> FilterMode=<?过滤模式*> FilterKeyWords=<?过滤词> #添加一个RSS订阅项<br>
+7. 　--addrss Url="<订阅地址>" remark="<?备注名>" ForwardGroups="<?转发群*1>" ForwardQQs="<?转发好友*1>" Translate="<?是否翻译>" TranslateFromTo="<?是否指定翻译语言>" TranslateFrom="<?从什么语言翻译>" TranslateTo="<?翻译到什么语言>" AtAll="<?是否@所有人>" SendByForward="<?是否以合并转发方式发送>" FilterMode="<?过滤模式*2>" FilterKeyWords="<?过滤词>" Headers="<?请求头>*3" #添加一个RSS订阅项<br>
 8. 　--removerss <备注名/Url> #移除一个RSS订阅项<br>
-*过滤模式: 0=不过滤, 1=包含任一, 2=包含所有, 3=不包含
+
+*注意添加RSS的命令等号后的参数均要加双引号
+*1应为Json数组的形式输入，如："[1,2,3]"
+*2过滤模式: 0=不过滤, 1=包含任一, 2=包含所有, 3=不包含
+*3应为Json键值对的形式输入，如："{"aa": "11","bb": "22"}"
 
 
 ###### 至于为什么叫葱葱, ~~一是一开始是给某初音群用的, 叫这个名字可以打压某助手~~(屠龙者终成恶龙, 现在葱葱小助手2.0也是我写的了, 不信对它发/GreenOnions试试), 二是早期没自己开发的时候使用 [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot) 的机器人叫竹竹, 就想找个类似的名字<br>
