@@ -154,10 +154,10 @@
 7. 　--addrss Url="<订阅地址>" remark="<?备注名>" ForwardGroups="<?转发群*1>" ForwardQQs="<?转发好友*1>" Translate="<?是否翻译>" TranslateFromTo="<?是否指定翻译语言>" TranslateFrom="<?从什么语言翻译>" TranslateTo="<?翻译到什么语言>" AtAll="<?是否@所有人>" SendByForward="<?是否以合并转发方式发送>" FilterMode="<?过滤模式*2>" FilterKeyWords="<?过滤词>" Headers="<?请求头>*3" #添加一个RSS订阅项<br>
 8. 　--removerss <备注名/Url> #移除一个RSS订阅项<br>
 
-*注意添加RSS的命令等号后的参数均要加双引号
-*1应为Json数组的形式输入，如："[1,2,3]"
-*2过滤模式: 0=不过滤, 1=包含任一, 2=包含所有, 3=不包含
-*3应为Json键值对的形式输入，如："{"aa": "11","bb": "22"}"
+*注意添加RSS的命令等号后的参数均要加双引号<br>
+*1应为Json数组的形式输入，如："[1,2,3]"<br>
+*2过滤模式: 0=不过滤, 1=包含任一, 2=包含所有, 3=不包含<br>
+*3应为Json键值对的形式输入，如："{"aa": "11","bb": "22"}"<br>
 
 
 ###### 至于为什么叫葱葱, ~~一是一开始是给某初音群用的, 叫这个名字可以打压某助手~~(屠龙者终成恶龙, 现在葱葱小助手2.0也是我写的了, 不信对它发/GreenOnions试试), 二是早期没自己开发的时候使用 [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot) 的机器人叫竹竹, 就想找个类似的名字<br>
