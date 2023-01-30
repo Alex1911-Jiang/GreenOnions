@@ -46,7 +46,7 @@ namespace GreenOnions.Translate
                 TranslateEngine.YouDaoApi => await YouDaoTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
                 TranslateEngine.BaiduApi => await BaiduTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
                 TranslateEngine.TencentApi => await TencentTranslateApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
-                TranslateEngine.Google3rdPartyApi => await Google3rdPartyApiHelper.TranslateFromTo(text, toLanguageChineseName, toLanguageChineseName),
+                TranslateEngine.Google3rdPartyApi => await Google3rdPartyApiHelper.TranslateFromTo(text, fromLanguageChineseName, toLanguageChineseName),
                 _ => throw new NotImplementedException("翻译引擎设置有误，请联系机器人管理员"),
             };
         }
