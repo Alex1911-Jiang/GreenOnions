@@ -130,6 +130,7 @@
                     {
                         LogHelper.WriteErrorLogWithUserMessage("连接mirai-api-http发生异常", ex);
                         Console.WriteLine("连接mirai-api-http发生异常" + ex.Message);
+                        Environment.Exit(0);
                     }
                 }
                 else
@@ -152,6 +153,7 @@
                     {
                         LogHelper.WriteErrorLogWithUserMessage("连接cqhttp发生异常", ex);
                         Console.WriteLine("连接cqhttp失败，" + ex.Message);
+                        Environment.Exit(0);
                     }
                 }
                 BotInfo.SaveConfigFile();
@@ -162,7 +164,7 @@
                 string? cmd = Console.ReadLine();
                 if (string.Equals(cmd, "exit", StringComparison.OrdinalIgnoreCase))
                 {
-                    _miraiClient?.Disconnect();
+                    Exit();
                     return;
                 }
                 await Task.Delay(100);
@@ -170,15 +172,20 @@
         }
         private static void Console_CancelKeyPress(object? sender, ConsoleCancelEventArgs e)
         {
+            Exit();
+        }
+
+        private static void Exit()
+        {
             Disconnected();
-            e.Cancel = true;
+            Environment.Exit(0);
         }
 
         private static void Connecting(bool bConnect, string nickNameOrErrorMessage, int platform, string protocol)
         {
             if (bConnect)
             {
-                Console.WriteLine($"连接状态: 已连接到{protocol}, 登录昵称:{nickNameOrErrorMessage}");
+                Console.WriteLine($"已连接到{protocol}, 登录昵称:{nickNameOrErrorMessage}, 如果要断开连接, 请输入exit");
                 WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnected);
             }
             else if (nickNameOrErrorMessage is null)  //连接失败且没有异常
@@ -192,6 +199,7 @@
         {
             WorkingTimeRecorder.DoWork = false;
             _miraiClient?.Disconnect();
+            Console.WriteLine($"已断开连接");
         }
 
         private static async void ConnectToPlatform(int platform)
