@@ -130,7 +130,7 @@ namespace GreenOnions.RSS
                             client.DefaultRequestHeaders.Add(header.Key, header.Value);
                     }
                     var resp = await client.GetAsync(item.Url);
-                    LogInfo($"{item.Url}抓取结果：{resp.StatusCode}");
+                    LogInfo($"{item.Url}抓取结果：{(int)resp.StatusCode} {resp.StatusCode}");
                     var xml = await resp.Content.ReadAsStringAsync();
                     XmlDocument xmlDoc = new();
                     try
@@ -624,7 +624,7 @@ namespace GreenOnions.RSS
             while (Logs!.Count > 5000)
                 Logs.TryDequeue(out _);
             Logs.Enqueue($"错误：{logMessageStart}，{ex.Message}");
-            LogHelper.WriteErrorLogWithUserMessage(logMessageStart, ex, logMessageEnd);
+            LogHelper.WriteErrorLog(logMessageStart, ex, logMessageEnd);
         }
 
         private struct RssResult

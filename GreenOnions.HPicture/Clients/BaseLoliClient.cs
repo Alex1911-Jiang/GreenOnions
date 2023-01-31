@@ -50,7 +50,7 @@ namespace GreenOnions.HPicture.Clients
 
             if (loliItems is null)
             {
-                LogHelper.WriteErrorLog($"{ApiName} 响应解析失败");
+                LogHelper.WriteWarningLog($"{ApiName} 响应解析失败");
                 throw new Exception(BotInfo.Config.HPictureErrorReply);
             }
 
@@ -65,7 +65,7 @@ namespace GreenOnions.HPicture.Clients
             string err = jt["error"].ToString();
             if (!string.IsNullOrWhiteSpace(err))
             {
-                LogHelper.WriteErrorLog($"{ApiName} 服务器返回了错误消息：{err}");
+                LogHelper.WriteErrorLog($"{ApiName} 服务器返回了错误消息", new Exception(err));
                 throw new Exception(BotInfo.Config.HPictureErrorReply + err);    //Api返回错误
             }
 

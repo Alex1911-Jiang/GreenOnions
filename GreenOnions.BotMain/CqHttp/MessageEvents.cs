@@ -16,7 +16,7 @@ namespace GreenOnions.BotMain.CqHttp
         {
             if (eventArgs.SoraApi == null)
             {
-                LogHelper.WriteErrorLogWithUserMessage("SoraApi为空", null);
+                LogHelper.WriteErrorLog("SoraApi为空", null);
                 return;
             }
             if (!CheckPreconditionsGroup(eventArgs))
@@ -63,7 +63,7 @@ namespace GreenOnions.BotMain.CqHttp
         {
             if (eventArgs.SoraApi == null)
             {
-                LogHelper.WriteErrorLogWithUserMessage("SoraApi为空", null);
+                LogHelper.WriteErrorLog("SoraApi为空", null);
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace GreenOnions.BotMain.CqHttp
         {
             if (eventArgs.SoraApi == null)
             {
-                LogHelper.WriteErrorLogWithUserMessage("SoraApi为空", null);
+                LogHelper.WriteErrorLog("SoraApi为空", null);
                 return;
             }
 

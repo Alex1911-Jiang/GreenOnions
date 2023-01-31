@@ -138,7 +138,7 @@ namespace GreenOnions.Repeater
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage("镜像图片失败", ex);
+                    LogHelper.WriteErrorLog("镜像图片失败", ex);
                 }
             }
             return null;

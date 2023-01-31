@@ -26,7 +26,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage($"转换为GreenOnions消息失败, 原消息类型为:{miraiMessage[i].GetType()}", ex);
+                    LogHelper.WriteErrorLog($"转换为GreenOnions消息失败, 原消息类型为:{miraiMessage[i].GetType()}", ex);
                 }
             }
 
@@ -117,7 +117,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage("转换为MiraiApiHttp消息失败!!!", ex);
+                    LogHelper.WriteErrorLog("转换为MiraiApiHttp消息失败!!!", ex);
                     continue;
                 }
             }

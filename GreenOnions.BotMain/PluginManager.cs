@@ -25,7 +25,7 @@ namespace GreenOnions.BotMain
             Dictionary<string, bool> pluginStatus = new Dictionary<string, bool>();
             foreach (string pluginItem in pluginItemPath)
             {
-                File.Copy("GreenOnions.Interface.dll", Path.Combine(pluginItem, "GreenOnions.Interface.dll") , true);
+                File.Copy("GreenOnions.Interface.dll", Path.Combine(pluginItem, "GreenOnions.Interface.dll"), true);
 #if DEBUG
                 File.Copy("GreenOnions.Interface.pdb", Path.Combine(pluginItem, "GreenOnions.Interface.pdb"), true);
 #endif
@@ -69,7 +69,7 @@ namespace GreenOnions.BotMain
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLogWithUserMessage($"插件{pluginFileName}加载失败", ex);
+                        LogHelper.WriteErrorLog($"插件{pluginFileName}加载失败", ex);
                     }
                 }
             }
@@ -86,7 +86,7 @@ namespace GreenOnions.BotMain
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage($"插件{theOtherPlugins.Value.Name}加载失败", ex);
+                    LogHelper.WriteErrorLog($"插件{theOtherPlugins.Value.Name}加载失败", ex);
                 }
             }
             return Plugins.Count;
@@ -113,7 +113,7 @@ namespace GreenOnions.BotMain
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLog($"插件{Plugins[i].Name}连接方法调用发生异常，" + ex.Message);
+                    LogHelper.WriteErrorLog($"插件{Plugins[i].Name}连接方法调用发生异常", ex);
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace GreenOnions.BotMain
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLog($"插件{Plugins[i].Name}断开连接方法调用发生异常，" + ex.Message);
+                    LogHelper.WriteErrorLog($"插件{Plugins[i].Name}断开连接方法调用发生异常", ex);
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace GreenOnions.BotMain
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLog($"插件{Plugins[i].Name}处理消息方法调用发生异常，" + ex.Message);
+                    LogHelper.WriteErrorLog($"插件{Plugins[i].Name}处理消息方法调用发生异常", ex);
                 }
             }
             return false;

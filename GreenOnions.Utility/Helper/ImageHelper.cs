@@ -224,7 +224,7 @@ namespace GreenOnions.Utility.Helper
             }
             catch (Exception ex)
             {
-                LogHelper.WriteErrorLogWithUserMessage("水平镜像图片错误", ex.Message);
+                LogHelper.WriteErrorLog("水平镜像图片错误", ex.Message);
                 return img;
             }
         }
@@ -243,7 +243,7 @@ namespace GreenOnions.Utility.Helper
             }
             catch (Exception ex)
             {
-                LogHelper.WriteErrorLogWithUserMessage("垂直镜像图片错误", ex.Message);
+                LogHelper.WriteErrorLog("垂直镜像图片错误", ex.Message);
                 return img;
             }
         }

@@ -68,7 +68,7 @@ namespace GreenOnions.BotMain
             }
             catch (Exception ex)
             {
-                LogHelper.WriteErrorLogWithUserMessage($"更新{regexName}正则命令发生异常", ex);
+                LogHelper.WriteErrorLog($"更新{regexName}正则命令发生异常", ex);
             }
             return regexName;
         }
@@ -265,7 +265,7 @@ namespace GreenOnions.BotMain
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLogWithUserMessage("自动翻译失败", ex);
+                        LogHelper.WriteErrorLog("自动翻译失败", ex);
                     }
                     return true;
                 };

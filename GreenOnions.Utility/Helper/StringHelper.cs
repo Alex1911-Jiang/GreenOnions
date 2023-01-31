@@ -306,7 +306,7 @@ namespace GreenOnions.Utility.Helper
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage($"属性特性转换为属性值时发生异常, 属性为:{item.Name}", ex);
+                    LogHelper.WriteErrorLog($"属性特性转换为属性值时发生异常, 属性为:{item.Name}", ex);
                 }
             }
             return str;

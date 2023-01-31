@@ -49,9 +49,9 @@ namespace GreenOnions.BotMain.CqHttp
                 catch (Exception ex)
                 {
                     if (api == null)
-                        LogHelper.WriteErrorLogWithUserMessage($"转换为GreenOnions消息失败, SoraApi为空, 原消息类型为:{miraiMessage[i].Data.GetType()}", ex);
+                        LogHelper.WriteErrorLog($"转换为GreenOnions消息失败, SoraApi为空, 原消息类型为:{miraiMessage[i].Data.GetType()}", ex);
                     else
-                        LogHelper.WriteErrorLogWithUserMessage($"转换为GreenOnions消息失败, 原消息类型为:{miraiMessage[i].Data.GetType()}", ex);
+                        LogHelper.WriteErrorLog($"转换为GreenOnions消息失败, 原消息类型为:{miraiMessage[i].Data.GetType()}", ex);
                 }
             }
 
@@ -111,7 +111,7 @@ namespace GreenOnions.BotMain.CqHttp
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage($"转换为CqHttp消息失败!!! 消息类型为：{greenOnionsMessage[i].GetType()}", ex);
+                    LogHelper.WriteErrorLog($"转换为CqHttp消息失败!!! 消息类型为：{greenOnionsMessage[i].GetType()}", ex);
                     continue;
                 }
             }

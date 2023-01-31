@@ -18,7 +18,7 @@ namespace GreenOnions.HPicture.Clients
             string err = jt["detail"].ToString();
             if (!string.IsNullOrWhiteSpace(err))
             {
-                LogHelper.WriteErrorLog($"{ApiName} 服务器返回了错误消息：{err}");
+                LogHelper.WriteErrorLog($"{ApiName} 服务器返回了错误消息", new Exception(err));
                 throw new Exception(BotInfo.Config.HPictureErrorReply + err);    //Api返回错误
             }
 

@@ -25,7 +25,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
 
         public override async Task Connect(long qqId, string ip, ushort port, string authKey)
         {
-            Exception innerException = null;
+            Exception? innerException = null;
             bool? bConnected = null;
             _ = Task.Run(async () =>
             {
@@ -61,11 +61,11 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                         })
                         .AddLogging()
                         .BuildServiceProvider();
-                    await using AsyncServiceScope scope = services.CreateAsyncScope(); // 自 .NET 6.0 起才可以如此操作代替上边两句
+                    await using AsyncServiceScope scope = services.CreateAsyncScope();
                     services = scope.ServiceProvider;
 
                     IMiraiHttpSession session = services.GetRequiredService<IMiraiHttpSession>(); // 大部分服务都基于接口注册, 请使用接口作为类型解析
-
+                    GC.KeepAlive(session);
                     _ts = new CancellationTokenSource();
                     await session.ConnectAsync(qqId, _ts.Token); // 填入期望连接到的机器人QQ号
 
@@ -128,7 +128,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLogWithUserMessage("启动RSS抓取线程发生错误", ex);
+                        LogHelper.WriteErrorLog("启动RSS抓取线程发生错误", ex);
                         throw;
                     }
 
@@ -155,7 +155,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 {
                     bConnected = false;
                     innerException = ex;
-                    LogHelper.WriteErrorLog(ex);
+                    LogHelper.WriteErrorLog("连接到Mirai-Api-Http失败", ex);
                     ConnectedEvent?.Invoke(false, $"{ex.Message} mirai-api-http");
                 }
             });
@@ -165,7 +165,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             }
             if (bConnected != true)
             {
-                throw innerException;
+                throw innerException ?? new Exception("Mirai-Api-Http连接实例已被释放");
             }
         }
 

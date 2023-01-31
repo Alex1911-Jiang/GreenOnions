@@ -23,7 +23,7 @@ namespace GreenOnions.BotManagerWindows
             }
 			catch (Exception ex)
 			{
-				LogHelper.WriteErrorLogWithUserMessage("初始化浏览器组件失败！请检查 VC++2015-2019 是否已安装", ex);
+				LogHelper.WriteErrorLog("初始化浏览器组件失败！请检查 VC++2015-2019 是否已安装", ex);
 				MessageBox.Show("初始化浏览器组件失败！请检查 VC++2015-2019 是否已安装");
 			}
 

@@ -115,7 +115,7 @@ namespace GreenOnions.Utility.Helper
             }
             else
             {
-                LogHelper.WriteErrorLog($"鉴黄分值非数字");
+                LogHelper.WriteWarningLog($"鉴黄分值非数字");
                 return CheckedPornStatus.Error;  //失败
             }
         }

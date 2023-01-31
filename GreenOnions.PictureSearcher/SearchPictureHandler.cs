@@ -244,7 +244,7 @@ namespace GreenOnions.PictureSearcher
             }
             catch (Exception ex)
             {
-                LogHelper.WriteErrorLog(ex);
+                LogHelper.WriteErrorLog("搜图发生错误", ex);
                 SendMessage("搜图服务器爆炸惹_(:3」∠)_ " + ex.Message);
             }
         }
@@ -300,7 +300,7 @@ namespace GreenOnions.PictureSearcher
                             }
                             catch (Exception ex)
                             {
-                                LogHelper.WriteErrorLog(ex);
+                                LogHelper.WriteErrorLog("下载TraceMoe缩略图错误", ex);
                                 outMessage.Add(BotInfo.Config.SearchDownloadThuImageFailReply);
                             }
                         }
@@ -320,7 +320,7 @@ namespace GreenOnions.PictureSearcher
             }
             catch (Exception ex)
             {
-                LogHelper.WriteErrorLogWithUserMessage("TraceMoe搜番失败, 内容解析错误", ex, $"请求地址为：{TraceMoeUrl}");
+                LogHelper.WriteErrorLog("TraceMoe搜番失败, 内容解析错误", ex, $"请求地址为：{TraceMoeUrl}");
                 return BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(("搜索类型", "TraceMoe")) + ex.Message;
             }
         }
@@ -347,7 +347,7 @@ namespace GreenOnions.PictureSearcher
                         }
                         catch (Exception ex)
                         {
-                            LogHelper.WriteErrorLogWithUserMessage("腾讯云鉴黄异常", ex);
+                            LogHelper.WriteErrorLog("腾讯云鉴黄异常", ex);
                             checkedPornStatus = CheckedPornStatus.Error;
                         }
                         switch (checkedPornStatus)
@@ -429,7 +429,7 @@ namespace GreenOnions.PictureSearcher
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage($"Iqdb搜索失败, 搜索地址为：{qqImgUrl}", ex);
+                    LogHelper.WriteErrorLog($"Iqdb搜索失败, 搜索地址为：{qqImgUrl}", ex);
                     return (BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(("搜索类型", "Iqdb")));
                 }
             }
@@ -667,7 +667,7 @@ namespace GreenOnions.PictureSearcher
                                 }
                                 catch (Exception ex)
                                 {
-                                    LogHelper.WriteErrorLog(ex);
+                                    LogHelper.WriteErrorLog("下载SauceNAO缩略图错误", ex);
                                     outMessage.Add(BotInfo.Config.SearchDownloadThuImageFailReply.ReplaceGreenOnionsStringTags(("错误信息", ex.Message)));
                                 }
 
@@ -738,7 +738,7 @@ namespace GreenOnions.PictureSearcher
                     outMessage.Add("SauceNAO搜索次数已耗尽。");
                 }
 
-                LogHelper.WriteErrorLogWithUserMessage("SauceNAO搜图失败", ex, $"请求地址为：{SauceNAOUrl}");
+                LogHelper.WriteErrorLog("SauceNAO搜图失败", ex, $"请求地址为：{SauceNAOUrl}");
                 return (outMessage, true);
             }
 
@@ -776,13 +776,13 @@ namespace GreenOnions.PictureSearcher
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLogWithUserMessage("ASCII2D特征(浏览器)搜索失败", ex, $"请求地址为：{bovwUrl}");
+                        LogHelper.WriteErrorLog("ASCII2D特征(浏览器)搜索失败", ex, $"请求地址为：{bovwUrl}");
                         outMessage.Add(BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(("搜索类型", "ASCII2D特征")) + ex.Message);
                     }
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage("ASCII2D颜色(浏览器)搜索失败", ex, $"请求地址为：{colorUrl}");
+                    LogHelper.WriteErrorLog("ASCII2D颜色(浏览器)搜索失败", ex, $"请求地址为：{colorUrl}");
                     outMessage.Add(BotInfo.Config.SearchNoResultReply.ReplaceGreenOnionsStringTags(("搜索类型", "ASCII2D颜色")) + ex.Message);
                 }
             }
@@ -803,13 +803,13 @@ namespace GreenOnions.PictureSearcher
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLogWithUserMessage("ASCII2D特征(后端)搜索失败", ex, $"请求地址为：{colorUrl}");
+                        LogHelper.WriteErrorLog("ASCII2D特征(后端)搜索失败", ex, $"请求地址为：{colorUrl}");
                         outMessage.Add(BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(("搜索类型", "ASCII2D特征")) + ex.Message);
                     }
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage("ASCII2D颜色(后端)搜索失败", ex, $"请求地址为：{colorUrl}");
+                    LogHelper.WriteErrorLog("ASCII2D颜色(后端)搜索失败", ex, $"请求地址为：{colorUrl}");
                     outMessage.Add(BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(("搜索类型", "ASCII2D颜色")) + ex.Message);
                 }
             }
@@ -875,7 +875,7 @@ namespace GreenOnions.PictureSearcher
                                 }
                                 catch (Exception ex)
                                 {
-                                    LogHelper.WriteErrorLog(ex);
+                                    LogHelper.WriteErrorLog("下载Ascii2D颜色缩略图错误", ex);
                                 }
                             }
                             outMessage.Add("\r\n");
@@ -887,7 +887,7 @@ namespace GreenOnions.PictureSearcher
             }
             catch (Exception ex)
             {
-                LogHelper.WriteErrorLogWithUserMessage("ASCII2D颜色搜索解析错误", ex, $"请求地址为:{colorUrl}\r\n请求结果为：{strAscii2dColorResult}");
+                LogHelper.WriteErrorLog("ASCII2D颜色搜索解析错误", ex, $"请求地址为:{colorUrl}\r\n请求结果为：{strAscii2dColorResult}");
                 outMessage.Add(BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(("搜索类型", "ASCII2D颜色")) + ex.Message);
             }
 
@@ -954,7 +954,7 @@ namespace GreenOnions.PictureSearcher
                                 }
                                 catch (Exception ex)
                                 {
-                                    LogHelper.WriteErrorLog(ex);
+                                    LogHelper.WriteErrorLog("下载Ascii2D特征缩略图错误", ex);
                                 }
                             }
                             outMessage.Add("\r\n");
@@ -966,7 +966,7 @@ namespace GreenOnions.PictureSearcher
             }
             catch (Exception ex)
             {
-                LogHelper.WriteErrorLogWithUserMessage("ASCII2D特征搜索解析错误", ex, $"请求地址为:{bovwUrl}\r\n请求结果为：{strAscii2dBovwResult}");
+                LogHelper.WriteErrorLog("ASCII2D特征搜索解析错误", ex, $"请求地址为:{bovwUrl}\r\n请求结果为：{strAscii2dBovwResult}");
                 outMessage.Add(BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(("搜索类型", "ASCII2D特征")) + ex.Message);
             }
             return outMessage;

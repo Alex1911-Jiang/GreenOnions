@@ -14,7 +14,7 @@
         private static MiraiClient? _miraiClient;
         static async Task Main()
         {
-            AppDomain.CurrentDomain.UnhandledException += (_, e) => LogHelper.WriteErrorLog(e.ExceptionObject);
+            AppDomain.CurrentDomain.UnhandledException += (_, e) => LogHelper.WriteErrorLog("全局捕获异常", e.ExceptionObject);
 
             Console.WriteLine("葱葱机器人");
 
@@ -57,7 +57,7 @@
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLogWithUserMessage("连接到mirai-api-http发生异常", ex);
+                        LogHelper.WriteErrorLog("连接到mirai-api-http发生异常", ex);
                         Console.WriteLine("连接mirai-api-http失败，" + ex.Message);
                     }
                 }
@@ -70,7 +70,7 @@
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLogWithUserMessage("连接到cqhttp发生异常", ex);
+                        LogHelper.WriteErrorLog("连接到cqhttp发生异常", ex);
                         Console.WriteLine("连接cqhttp失败，" + ex.Message);
                     }
                 }
@@ -128,7 +128,7 @@
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLogWithUserMessage("连接mirai-api-http发生异常", ex);
+                        LogHelper.WriteErrorLog("连接mirai-api-http发生异常", ex);
                         Console.WriteLine("连接mirai-api-http发生异常" + ex.Message);
                         Environment.Exit(0);
                     }
@@ -151,7 +151,7 @@
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLogWithUserMessage("连接cqhttp发生异常", ex);
+                        LogHelper.WriteErrorLog("连接cqhttp发生异常", ex);
                         Console.WriteLine("连接cqhttp失败，" + ex.Message);
                         Environment.Exit(0);
                     }
@@ -198,6 +198,7 @@
         private static void Disconnected()
         {
             WorkingTimeRecorder.DoWork = false;
+            Console.WriteLine($"主动调用断开连接");
             _miraiClient?.Disconnect();
             Console.WriteLine($"已断开连接");
         }

@@ -26,7 +26,7 @@ namespace GreenOnions.BotMain.CqHttp
             try
             {
                 //实例化Sora服务
-                _service = SoraServiceFactory.CreateService(new ClientConfig() { Host = ip, Port = port, AccessToken = accessToken }, ex => LogHelper.WriteErrorLogWithUserMessage("Sora连接异常", ex));
+                _service = SoraServiceFactory.CreateService(new ClientConfig() { Host = ip, Port = port, AccessToken = accessToken }, ex => LogHelper.WriteErrorLog("Sora连接异常", ex));
 
                 _service.Event.OnGroupMessage += MessageEvents.Event_OnGroupMessage;
                 _service.Event.OnPrivateMessage += MessageEvents.Event_OnPrivateMessage;
@@ -45,7 +45,9 @@ namespace GreenOnions.BotMain.CqHttp
                 await _service.StartService().RunCatch(e =>
                 {
                     connectCancel = true;
-                    Log.Error("Sora _service", Log.ErrorLogBuilder(e));
+                    if (e is not null)
+                        LogHelper.WriteErrorLog("Sora服务异常", e);
+                    //Log.Error("Sora _service", Log.ErrorLogBuilder(e));
                 });
                 if (connectCancel)
                 {
@@ -114,7 +116,7 @@ namespace GreenOnions.BotMain.CqHttp
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLogWithUserMessage("启动RSS抓取线程发生错误", ex);
+                        LogHelper.WriteErrorLog("启动RSS抓取线程发生错误", ex);
                         throw;
                     }
 
@@ -137,7 +139,7 @@ namespace GreenOnions.BotMain.CqHttp
             }
             catch (Exception ex)
             {
-                LogHelper.WriteErrorLog(ex);
+                LogHelper.WriteErrorLog("连接到OneBot失败", ex);
                 ConnectedEvent(false, $"{ex.Message} ({ip}:{port}) OneBot/Cqhttp");
             }
         }
@@ -152,7 +154,7 @@ namespace GreenOnions.BotMain.CqHttp
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLogWithUserMessage($"断开OneBot连接失败",ex);
+                    LogHelper.WriteErrorLog($"断开OneBot连接失败",ex);
                 }
             }
             BotInfo.IsLogin = false;

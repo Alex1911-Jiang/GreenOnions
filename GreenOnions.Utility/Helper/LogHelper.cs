@@ -49,33 +49,7 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        public static void WriteErrorLog(Exception ex)
-        {
-            if (BotInfo.Config.LogLevel <= 2)
-            {
-                WriteErrorLogInner(ex);
-            }
-        }
-
-        public static void WriteErrorLog(object exObj)
-        {
-            if (BotInfo.Config.LogLevel <= 2)
-            {
-                Exception ex = exObj as Exception;
-                if (ex is null)
-                    AppendErrorText(exObj?.ToString());
-                else if (ex is AggregateException)
-                {
-                    AggregateException aex = ex as AggregateException;
-                    foreach (var iex in aex.InnerExceptions)
-                        WriteErrorLogInner(iex);
-                }
-                else
-                    WriteErrorLogInner(ex);
-            }
-        }
-
-        public static void WriteErrorLogWithUserMessage(string messageStart, object? exObj, string messageEnd = "")
+        public static void WriteErrorLog(string messageStart, object? exObj, string messageEnd = "")
         {
             if (BotInfo.Config.LogLevel <= 2)
             {
