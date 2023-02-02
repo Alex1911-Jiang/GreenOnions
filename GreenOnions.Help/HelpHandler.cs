@@ -8,6 +8,7 @@ using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Interface.Helpers;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace GreenOnions.Help
 {
@@ -34,20 +35,13 @@ namespace GreenOnions.Help
                 };
                 foreach (IPlugin plugin in plugins)
                 {
-                    if (strFeatures.Equals("--" + plugin.Name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (BotInfo.PluginStatus[plugin.Name])
-                        {
-                            GreenOnionsMessages helpMsg = plugin.HelpMessage;
-                            if (helpMsg is null || helpMsg.Count == 0)
-                                helpMsg = $"功能<{plugin.Name}>没有帮助信息。";
-                            return helpMsg;
-                        }
-                        else
-                        {
-                            return $"功能<{plugin.Name}>没有启用。";
-                        }
-                    }
+                    if (!strFeatures.Equals("--" + plugin.Name, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    if (!BotInfo.PluginStatus[plugin.Name])
+                        return null;
+                    if (plugin is IPluginHelp help)
+                        return help.HelpMessage;
+                    return $"功能<{plugin.Name}>没有帮助信息。";
                 }
                 GreenOnionsBaseMessage[] DefaultHelp()
                 {
@@ -83,7 +77,7 @@ namespace GreenOnions.Help
 
             foreach (IPlugin plugin in plugins)
             {
-                if (BotInfo.PluginStatus[plugin.Name] && plugin.DisplayedInTheHelp)
+                if (BotInfo.PluginStatus[plugin.Name] && plugin is IPluginHelp)
                     lstEnabledFeatures.Add(plugin.Name);
             }
 

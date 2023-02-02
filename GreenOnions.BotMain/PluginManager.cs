@@ -95,8 +95,8 @@ namespace GreenOnions.BotMain
         public static GreenOnionsMessages? GetHelpMessage(string pluginName)
         {
             IPlugin? plugin = Plugins.Where(p => p.Name == pluginName).FirstOrDefault();
-            if (plugin is not null && BotInfo.PluginStatus[plugin.Name])
-                return plugin.HelpMessage;
+            if ( BotInfo.PluginStatus[plugin.Name] && plugin is IPluginHelp pluginHelp)
+                return pluginHelp.HelpMessage;
             return string.Empty;
         }
 
@@ -141,8 +141,8 @@ namespace GreenOnions.BotMain
             {
                 try
                 {
-                    if (BotInfo.PluginStatus[Plugins[i].Name])
-                        if (Plugins[i].OnMessage(msgs, senderGroup, Response))
+                    if (BotInfo.PluginStatus[Plugins[i].Name] && Plugins[i] is IMessagePlugin msgPlugin)
+                        if (msgPlugin.OnMessage(msgs, senderGroup, Response))
                             return true;  //命中插件
                 }
                 catch (Exception ex)

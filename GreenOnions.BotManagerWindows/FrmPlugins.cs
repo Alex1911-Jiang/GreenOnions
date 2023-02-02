@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Diagnostics;
 using GreenOnions.BotMain;
+using GreenOnions.Interface;
 using GreenOnions.Utility;
 
 namespace GreenOnions.BotManagerWindows
@@ -30,9 +31,8 @@ namespace GreenOnions.BotManagerWindows
             {
                 if (dgv.CurrentCell.OwningColumn is DataGridViewButtonColumn btnCol)
                 {
-                    if (btnCol.Name == "colSetting")
-                        if (!PluginManager.Plugins[e.RowIndex].WindowSetting())
-                            PluginManager.Plugins[e.RowIndex].ConsoleSetting();
+                    if (btnCol.Name == "colSetting" && PluginManager.Plugins[e.RowIndex] is IPluginSetting plugin)
+                        plugin.Setting();
                 }
                 else if (dgv.CurrentCell.OwningColumn is DataGridViewCheckBoxColumn chkCol)
                 {
