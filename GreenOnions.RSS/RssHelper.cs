@@ -15,6 +15,7 @@ using GreenOnions.Translate;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using HtmlAgilityPack;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -394,7 +395,19 @@ namespace GreenOnions.RSS
             else
             {
                 if (node.Name == "img")
-                    return await ImageHelper.CreateImageMessageByUrlAsync(HttpUtility.HtmlDecode(node.Attributes["src"].Value), BotInfo.Config.RssUseProxy);
+                {
+                    string imgUrl = HttpUtility.HtmlDecode(node.Attributes["src"].Value);
+                    LogInfo($"下载图片：{imgUrl}");
+                    
+                    try
+                    {
+                        return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy);
+                    }
+                    catch
+                    {
+                        return $"图片下载失败，地址：{imgUrl}";
+                    }
+                }
                 if (node.Name == "video")
                     return "\r\n视频地址：" + HttpUtility.HtmlDecode(node.Attributes["src"].Value) + "\r\n";
                 if (node.Name == "iframe")
