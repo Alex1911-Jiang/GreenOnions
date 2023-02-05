@@ -247,9 +247,11 @@ namespace GreenOnions.Utility.Helper
             return result;
         }
 
-        public static string ReplaceGreenOnionsStringTags(this string originalString, params (string Key, string Value)[] customTags)
+        public static string? ReplaceGreenOnionsStringTags(this string? originalString, params (string Key, string Value)[] customTags)
         {
             originalString = originalString.ReplacePropertyChineseNameToValue();
+            if (originalString is null)
+                return null;
             if (customTags is not null)
             {
                 foreach (var tag in customTags)
@@ -269,7 +271,12 @@ namespace GreenOnions.Utility.Helper
             {
                 if (originalMessage[i] is GreenOnionsTextMessage textMessage)
                 {
-                    string text = textMessage.Text.ReplacePropertyChineseNameToValue();
+                    string? text = textMessage.Text.ReplacePropertyChineseNameToValue();
+                    if (text is null)
+                    {
+                        originalMessage[i] = null;
+                        continue;
+                    }
                     if (customTags is not null)
                     {
                         foreach (var tag in customTags)
@@ -282,8 +289,12 @@ namespace GreenOnions.Utility.Helper
         }
 
 
-        private static string ReplacePropertyChineseNameToValue(this string str)
+        private static string? ReplacePropertyChineseNameToValue(this string? str)
         {
+            if (str is null)
+            {
+                return null;
+            }
             PropertyInfo[] PropertyInfos = typeof(BotConfig).GetProperties();
             if (PropertyInfos is null)
             {

@@ -4,18 +4,24 @@
     /// 表示一条消息的组
     /// 如果是一组合并转发消息, 则是多条消息, 否则是一条消息(一条消息中包含文字消息, 图片消息, @消息等)
     /// </summary>
-    public class GreenOnionsMessages : List<GreenOnionsBaseMessage>
+    public class GreenOnionsMessages : List<GreenOnionsBaseMessage?>
     {
-        public static implicit operator GreenOnionsMessages(GreenOnionsBaseMessage onceMsg)
+        public static implicit operator GreenOnionsMessages?(GreenOnionsBaseMessage? onceMsg)
         {
+            if (onceMsg is null)
+                return null;
             return new GreenOnionsMessages(onceMsg);
         }
-        public static implicit operator GreenOnionsMessages(GreenOnionsBaseMessage[] arrMsg)
+        public static implicit operator GreenOnionsMessages?(GreenOnionsBaseMessage[]? arrMsg)
         {
+            if (arrMsg is null)
+                return null;
             return new GreenOnionsMessages(arrMsg);
         }
-        public static implicit operator GreenOnionsMessages(string text)
+        public static implicit operator GreenOnionsMessages?(string? text)
         {
+            if (text is null)
+                return null;
             return new GreenOnionsTextMessage(text);
         }
         /// <summary>

@@ -48,15 +48,9 @@ namespace GreenOnions.Utility.Helper
             return resp.Content.ReadAsStream();
         }
 
-        public static async Task<string> GetStringAsync(HttpClient client, string url)
+        public static Task<string> GetStringAsync(HttpClient client, string url)
         {
-            return await client.GetStringAsync(url);
-        }
-
-        public static async Task<Stream> GetStreamAsync(HttpClient client, string url)
-        {
-            var resp = await client.GetAsync(url);
-            return resp.Content.ReadAsStream();
+            return client.GetStringAsync(url);
         }
     }
 }

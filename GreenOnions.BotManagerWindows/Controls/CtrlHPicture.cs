@@ -47,6 +47,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             }
             chkHPictureUseProxy.Checked = BotInfo.Config.HPictureUseProxy;
             chkHPictureAntiShielding.Checked = BotInfo.Config.HPictureAntiShielding;
+            chkLoliconRequestByPlugin.Checked = BotInfo.Config.HPictureLoliconRequestByPlugin;
             chkLoliconRequestByBrowser.Checked = BotInfo.Config.HPictureLoliconRequestByWebBrowser;
             chkHPictureWhiteOnly.Checked = BotInfo.Config.HPictureWhiteOnly;
             chkHPictureAllowR18.Checked = BotInfo.Config.HPictureAllowR18;
@@ -97,6 +98,7 @@ namespace GreenOnions.BotManagerWindows.Controls
 
             BotInfo.Config.EnabledHPictureSource = EnabledHPictureSource;
             BotInfo.Config.HPictureAntiShielding = chkHPictureAntiShielding.Checked;
+            BotInfo.Config.HPictureLoliconRequestByPlugin = chkLoliconRequestByPlugin.Checked;
             BotInfo.Config.HPictureLoliconRequestByWebBrowser = chkLoliconRequestByBrowser.Checked;
             BotInfo.Config.HPictureCmd = txbHPictureCmd.Text;
             BotInfo.Config.HPictureOnceMessageMaxImageCount = string.IsNullOrEmpty(txbHPictureOnceMessageMaxImageCount.Text) ? 10 : Convert.ToInt32(txbHPictureOnceMessageMaxImageCount.Text);

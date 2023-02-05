@@ -85,7 +85,10 @@ namespace GreenOnions.HPicture.Clients
                 int numP = Convert.ToInt32(strP);
                 string strIndex = numP > 0 ? $"-{numP + 1}" : string.Empty;
                 string ext = url.Substring(url.LastIndexOf('.'));
-                url = $"https://{BotInfo.Config.PixivProxy}/{strPid}{strIndex}{ext}";  //似乎使用id路由比日期路由速度快不少？？
+                if (BotInfo.Config.ReplacePixivDateToIdRoute)
+                {
+                    url = $"https://{BotInfo.Config.PixivProxy}/{strPid}{strIndex}{ext}";  //似乎使用id路由比日期路由速度快不少？？
+                }
 
                 return new LoliHPictureItem(
                     strP,
@@ -114,7 +117,7 @@ namespace GreenOnions.HPicture.Clients
 
         protected virtual async Task<JToken> RequestLoli(string strUrl)
         {
-            return JsonConvert.DeserializeObject<JObject>(await HttpHelper.GetStringAsync(strUrl, BotInfo.Config.HPictureUseProxy));
+            return JsonConvert.DeserializeObject<JToken>(await HttpHelper.GetStringAsync(strUrl, BotInfo.Config.HPictureUseProxy));
         }
     }
 }

@@ -9,9 +9,9 @@ namespace GreenOnions.BotMain
     /// </summary>
     public sealed class GreenOnionsApi : IGreenOnionsApi
     {
-        public Func<long, GreenOnionsMessages, Task<int>> _sendFriendMessageAsync { get; init; }
-        public Func<long, GreenOnionsMessages, Task<int>> _sendGroupMessageAsync { get; init; }
-        public Func<long, long, GreenOnionsMessages, Task<int>> _sendTempMessageAsync { get; init; }
+        public Func<long, GreenOnionsMessages?, Task<int>> _sendFriendMessageAsync { get; init; }
+        public Func<long, GreenOnionsMessages?, Task<int>> _sendGroupMessageAsync { get; init; }
+        public Func<long, long, GreenOnionsMessages?, Task<int>> _sendTempMessageAsync { get; init; }
         public Func<Task<List<GreenOnionsFriendInfo>>> _getFriendListAsync { get; init; }
         public Func<Task<List<GreenOnionsGroupInfo>>> _getGroupListAsync { get; init; }
         public Func<long, Task<List<GreenOnionsMemberInfo>>> _getMemberListAsync { get; init; }
@@ -21,9 +21,9 @@ namespace GreenOnions.BotMain
         /// 此类不应被用户构造
         /// </summary>
         public GreenOnionsApi(
-            in Func<long, GreenOnionsMessages, Task<int>> sendFriendMessageAsync,
-            in Func<long, GreenOnionsMessages, Task<int>> sendGroupMessageAsync,
-            in Func<long, long, GreenOnionsMessages, Task<int>> sendTempMessageAsync,
+            in Func<long, GreenOnionsMessages?, Task<int>> sendFriendMessageAsync,
+            in Func<long, GreenOnionsMessages?, Task<int>> sendGroupMessageAsync,
+            in Func<long, long, GreenOnionsMessages?, Task<int>> sendTempMessageAsync,
             in Func<Task<List<GreenOnionsFriendInfo>>> getFriendListAsync,
             in Func<Task<List<GreenOnionsGroupInfo>>> getGroupListAsync,
             in Func<long, Task<List<GreenOnionsMemberInfo>>> getMemberListAsync,
@@ -125,9 +125,11 @@ namespace GreenOnions.BotMain
         /// </summary>
         /// <param name="originalString">目标文本</param>
         /// <returns>替换标签为变量的完整文本</returns>
-        public string ReplaceGreenOnionsStringTags(string originalString, params (string Key, string Value)[] customTags)
+        public string? ReplaceGreenOnionsStringTags(string? originalString, params (string Key, string Value)[] customTags)
         {
-            string text = originalString.ReplaceGreenOnionsStringTags();
+            string? text = originalString.ReplaceGreenOnionsStringTags();
+            if (text is null)
+                return null;
             if (customTags is not null)
             {
                 foreach (var tag in customTags)

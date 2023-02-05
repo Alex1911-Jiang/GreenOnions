@@ -106,6 +106,11 @@ namespace GreenOnions.Interface.Configs
         public string PixivProxy { get; }
 
         /// <summary>
+        /// Pixiv使用Id路由替代日期路由
+        /// </summary>
+        public bool ReplacePixivDateToIdRoute { get; }
+
+        /// <summary>
         /// 所有图片下载到本地再发送文件
         /// </summary>
         public bool SendImageByFile { get; }
@@ -539,7 +544,12 @@ namespace GreenOnions.Interface.Configs
         /// <summary>
         /// 使用浏览器请求Lolicon Api
         /// </summary>
-       public bool HPictureLoliconRequestByWebBrowser { get; }
+        public bool HPictureLoliconRequestByWebBrowser { get; }
+
+        /// <summary>
+        /// 使用插件替代系统请求Lolicon（取决于安装的插件）
+        /// </summary>
+        public bool HPictureLoliconRequestByPlugin { get; }
 
         /// <summary>
         /// 反和谐（仅限Windows，且需要先开启 所有图片下载到本地发送文件 功能）

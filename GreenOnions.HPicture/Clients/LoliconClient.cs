@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using GreenOnions.Interface.DispatchCenter;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using Newtonsoft.Json;
@@ -13,16 +14,17 @@ namespace GreenOnions.HPicture.Clients
 
         protected override async Task<JToken> RequestLoli(string strUrl)
         {
-            string resultValue;
-            if (EventHelper.GetDocumentByBrowserEvent is not null && BotInfo.Config.HttpRequestByWebBrowser && BotInfo.Config.HPictureLoliconRequestByWebBrowser)
+            if (BotInfo.Config.HPictureLoliconRequestByPlugin && HttpClientSubstitutes.GetStringAsync is not null)
+            {
+                return JsonConvert.DeserializeObject<JToken>(await HttpClientSubstitutes.GetStringAsync(strUrl, null));
+            }
+            else  if (EventHelper.GetDocumentByBrowserEvent is not null && BotInfo.Config.HttpRequestByWebBrowser && BotInfo.Config.HPictureLoliconRequestByWebBrowser)
             {
                 string doc = EventHelper.GetDocumentByBrowserEvent!(strUrl).document;
-                resultValue = doc[doc.IndexOf("{")..(doc.LastIndexOf("}") + 1)];
+                return JsonConvert.DeserializeObject<JObject>(doc[doc.IndexOf("{")..(doc.LastIndexOf("}") + 1)]);
             }
             else
-                resultValue = await HttpHelper.GetStringAsync(strUrl, BotInfo.Config.HPictureUseProxy);
-
-            return JsonConvert.DeserializeObject<JObject>(resultValue);
+                return await base.RequestLoli(strUrl);
         }
     }
 }

@@ -12,6 +12,8 @@ namespace GreenOnions.BotManagerWindows
         {
             InitializeComponent();
 
+            dgvPlugins.RowPrePaint += DgvPlugins_RowPrePaint;
+
             DataTable dtPlugins = new DataTable();
             dtPlugins.Columns.Add("Index");
             dtPlugins.Columns.Add("Name");
@@ -24,25 +26,46 @@ namespace GreenOnions.BotManagerWindows
             dgvPlugins.DataSource = dtPlugins;
         }
 
+        private void DgvPlugins_RowPrePaint(object? sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            if (PluginManager.Plugins[e.RowIndex] is not IPluginSetting)
+            {
+                dgvPlugins["colSetting", e.RowIndex] = new DataGridViewTextBoxCell();
+                dgvPlugins["colSetting", e.RowIndex].ReadOnly = true;
+                dgvPlugins["colSetting", e.RowIndex].Value = string.Empty;
+                dgvPlugins["colSetting", e.RowIndex].ToolTipText = string.Empty;
+            }
+        }
+
         private void dgvPlugins_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridView dgv = (DataGridView)sender;
-            if (e.RowIndex > -1 && e.ColumnIndex > -1)
+            if (e.RowIndex <= -1 || e.ColumnIndex <= -1)
+                return;
+            if (sender is not DataGridView dgv)
+                return;
+
+            if (dgv.CurrentCell.OwningColumn is DataGridViewButtonColumn btnCol)
             {
-                if (dgv.CurrentCell.OwningColumn is DataGridViewButtonColumn btnCol)
+                if (btnCol.Name == "colSetting" && PluginManager.Plugins[e.RowIndex] is IPluginSetting plugin)
                 {
-                    if (btnCol.Name == "colSetting" && PluginManager.Plugins[e.RowIndex] is IPluginSetting plugin)
-                        plugin.Setting();
-                }
-                else if (dgv.CurrentCell.OwningColumn is DataGridViewCheckBoxColumn chkCol)
-                {
-                    if (chkCol.Name == "colEnabled" && dgv.CurrentCell is DataGridViewCheckBoxCell chkCell)
+                    try
                     {
-                        Dictionary<string, bool> dicPluginStatus = BotInfo.PluginStatus;
-                        dicPluginStatus[PluginManager.Plugins[e.RowIndex].Name] = Convert.ToBoolean(chkCell.EditingCellFormattedValue);
-                        BotInfo.PluginStatus = dicPluginStatus;
-                        BotInfo.SavePluginsStatus();
+                        plugin.Setting();
                     }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "错误");
+                    }
+                }
+            }
+            else if (dgv.CurrentCell.OwningColumn is DataGridViewCheckBoxColumn chkCol)
+            {
+                if (chkCol.Name == "colEnabled" && dgv.CurrentCell is DataGridViewCheckBoxCell chkCell)
+                {
+                    Dictionary<string, bool> dicPluginStatus = BotInfo.PluginStatus;
+                    dicPluginStatus[PluginManager.Plugins[e.RowIndex].Name] = Convert.ToBoolean(chkCell.EditingCellFormattedValue);
+                    BotInfo.PluginStatus = dicPluginStatus;
+                    BotInfo.SavePluginsStatus();
                 }
             }
         }

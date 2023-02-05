@@ -114,6 +114,12 @@ namespace GreenOnions.Utility
         public string PixivProxy { get; set; } = "pixiv.re";
 
         /// <summary>
+        /// Pixiv使用Id路由替代日期路由
+        /// </summary>
+        [PropertyChineseName("Pixiv使用Id路由替代日期路由", "核心", "加载速度比较快，但有API速率限制")]
+        public bool ReplacePixivDateToIdRoute { get; set; } = false;
+
+        /// <summary>
         /// 所有图片下载到本地再发送文件
         /// </summary>
         [PropertyChineseName("所有图片下载到本地再发送文件", "核心")]
@@ -607,6 +613,12 @@ namespace GreenOnions.Utility
         /// </summary>
         [PropertyChineseName("使用浏览器请求Lolicon", "色图", "解决 Windows Server 2012 R2 不支持 TLS 1.3 协议导致 SSL 错误问题")]
         public bool HPictureLoliconRequestByWebBrowser { get; set; } = false;
+
+        /// <summary>
+        /// 使用插件请求Lolicon（取决于安装的插件）
+        /// </summary>
+        [PropertyChineseName("使用插件请求Lolicon", "色图", "解决 Windows Server 2012 R2 不支持 TLS 1.3 协议导致 SSL 错误问题")]
+        public bool HPictureLoliconRequestByPlugin { get; set; }
 
         /// <summary>
         /// 反和谐（仅限Windows，且需要先开启 所有图片下载到本地发送文件 功能）

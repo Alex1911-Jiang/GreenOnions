@@ -7,9 +7,9 @@ namespace GreenOnions.Interface
     /// </summary>
     public interface IGreenOnionsApi
     {
-        public Func<long, GreenOnionsMessages, Task<int>> _sendFriendMessageAsync { get; init; }
-        public Func<long, GreenOnionsMessages, Task<int>> _sendGroupMessageAsync { get; init; }
-        public Func<long, long, GreenOnionsMessages, Task<int>> _sendTempMessageAsync { get; init; }
+        public Func<long, GreenOnionsMessages?, Task<int>> _sendFriendMessageAsync { get; init; }
+        public Func<long, GreenOnionsMessages?, Task<int>> _sendGroupMessageAsync { get; init; }
+        public Func<long, long, GreenOnionsMessages?, Task<int>> _sendTempMessageAsync { get; init; }
         public Func<Task<List<GreenOnionsFriendInfo>>> _getFriendListAsync { get; init; }
         public Func<Task<List<GreenOnionsGroupInfo>>> _getGroupListAsync { get; init; }
         public Func<long, Task<List<GreenOnionsMemberInfo>>> _getMemberListAsync { get; init; }
@@ -21,7 +21,7 @@ namespace GreenOnions.Interface
         /// <param name="qqId">好友QQ</param>
         /// <param name="message">要发送的消息</param>
         /// <returns>消息ID</returns>
-        public Task<int> SendFriendMessageAsync(long qqId, GreenOnionsMessages message) => _sendFriendMessageAsync(qqId, message);
+        public Task<int> SendFriendMessageAsync(long qqId, GreenOnionsMessages? message) => _sendFriendMessageAsync(qqId, message);
 
         /// <summary>
         /// 发送群消息
@@ -29,7 +29,7 @@ namespace GreenOnions.Interface
         /// <param name="groupId">目标群号</param>
         /// <param name="message">要发送的消息</param>
         /// <returns>消息ID</returns>
-        public Task<int> SendGroupMessageAsync(long groupId, GreenOnionsMessages message) => _sendGroupMessageAsync(groupId, message);
+        public Task<int> SendGroupMessageAsync(long groupId, GreenOnionsMessages? message) => _sendGroupMessageAsync(groupId, message);
 
         /// <summary>
         /// 发送临时消息
@@ -38,7 +38,7 @@ namespace GreenOnions.Interface
         /// <param name="groupId">目标群号</param>
         /// <param name="message">要发送的消息</param>
         /// <returns>消息ID</returns>
-        public Task<int> SendTempMessageAsync(long qqId, long groupId, GreenOnionsMessages message) => _sendTempMessageAsync(qqId, groupId, message);
+        public Task<int> SendTempMessageAsync(long qqId, long groupId, GreenOnionsMessages? message) => _sendTempMessageAsync(qqId, groupId, message);
 
         /// <summary>
         /// 获取好友列表
@@ -104,7 +104,7 @@ namespace GreenOnions.Interface
         /// <param name="originalString">目标文本</param>
         /// <param name="customTags">自定义替换标签/文本对</param>
         /// <returns>替换标签为变量的完整文本</returns>
-        public string ReplaceGreenOnionsStringTags(string originalString, params (string Key, string Value)[] customTags);
+        public string? ReplaceGreenOnionsStringTags(string? originalString, params (string Key, string Value)[] customTags);
 
         #endregion -- 方法 --
     }
