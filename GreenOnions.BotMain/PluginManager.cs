@@ -22,7 +22,6 @@ namespace GreenOnions.BotMain
             string[] pluginItemPath = Directory.GetDirectories(_pluginsPath);
 
             Dictionary<string, IPlugin> loadedPlugins = new Dictionary<string, IPlugin>();
-            Dictionary<string, string> dependPath = new Dictionary<string, string>();
 
             foreach (string pluginItem in pluginItemPath)
             {
@@ -31,6 +30,7 @@ namespace GreenOnions.BotMain
                 File.Copy("GreenOnions.Interface.pdb", Path.Combine(pluginItem, "GreenOnions.Interface.pdb"), true);
 #endif
 
+                Dictionary<string, string> dependPath = new Dictionary<string, string>();
                 string[] dlls = Directory.GetFiles(pluginItem, "*.dll", SearchOption.TopDirectoryOnly);
                 foreach (string dll in dlls)
                 {
