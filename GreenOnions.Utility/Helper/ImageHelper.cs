@@ -49,7 +49,6 @@ namespace GreenOnions.Utility.Helper
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return stream;
             Bitmap bmp = new Bitmap(stream);
-            ImageFormat format = bmp.RawFormat;
             bmp.AntiShielding();
             stream.Dispose();
             stream = new MemoryStream();
