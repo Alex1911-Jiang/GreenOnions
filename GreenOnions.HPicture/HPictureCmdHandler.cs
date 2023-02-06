@@ -28,8 +28,10 @@ namespace GreenOnions.HPicture
             ModuleRegex = new Regex(BotInfo.Config.HPictureCmd.ReplaceGreenOnionsStringTags());
         }
 
-        public async Task SendMessageAsync(long targetId, long? targetGroup, GreenOnionsMessages msgs, int? replyMsgId = null)
+        public async Task SendMessageAsync(long targetId, long? targetGroup, GreenOnionsMessages? msgs, int? replyMsgId = null)
         {
+            if (msgs is null)
+                return;
             msgs.ReplyId = replyMsgId;
             if (targetGroup is null)
                 await BotInfo.API.SendFriendMessageAsync(targetId, msgs);
@@ -57,8 +59,15 @@ namespace GreenOnions.HPicture
                     LogHelper.WriteInfoLog($"{msgs.SenderId}无权使用色图");
                     return true;
                 }
-                if (await SendOnceHPicture(msgs.SenderId, targetGroupId, msgs.Id))
-                    RecordLimit(msgs.SenderId, targetGroupId, LimitType.Frequency);  //记录次数限制
+                try
+                {
+                    if (await SendOnceHPicture(msgs.SenderId, targetGroupId, msgs.Id))
+                        RecordLimit(msgs.SenderId, targetGroupId, LimitType.Frequency);  //记录次数限制
+                }
+                catch (Exception ex)
+                {
+                    await SendMessageAsync(msgs.SenderId, targetGroupId, BotInfo.Config.HPictureErrorReply.ReplaceGreenOnionsStringTags(("<错误信息>", ex.Message)), msgs.Id);
+                }
                 return true;
             }
 
@@ -107,8 +116,15 @@ namespace GreenOnions.HPicture
                     return true;  //仅限白名单但此群不在白名单中, 不响应R18命令
             }
 
-            if (await SendHPictures(keyword, num, r18, msgs.SenderId, targetGroupId, msgs.Id))
-                RecordLimit(msgs.SenderId, targetGroupId, LimitType.Frequency);  //记录次数限制
+            try
+            {
+                if (await SendHPictures(keyword, num, r18, msgs.SenderId, targetGroupId, msgs.Id))
+                    RecordLimit(msgs.SenderId, targetGroupId, LimitType.Frequency);  //记录次数限制
+            }
+            catch (Exception ex)
+            {
+                await SendMessageAsync(msgs.SenderId, targetGroupId, BotInfo.Config.HPictureErrorReply.ReplaceGreenOnionsStringTags(("<错误信息>", ex.Message)), msgs.Id);
+            }
 
             return false;
         }
