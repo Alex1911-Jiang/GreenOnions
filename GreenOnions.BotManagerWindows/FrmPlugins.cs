@@ -54,7 +54,7 @@ namespace GreenOnions.BotManagerWindows
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "错误");
+                        MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
                     }
                 }
             }
