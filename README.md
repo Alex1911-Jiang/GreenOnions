@@ -66,7 +66,7 @@
 
 #### 三、安装本项目
 
-1. 到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的 win-x86x64arm-windows.zip 下<br>
+1. 到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的 win-x64.zip 下<br>
 2. 解压到任意目录, 运行 GreenOnions.BotManagerWindow.exe<br>
 3. 输入机器人QQ号和 config.yml 对应的 ip(127.0.0.1)、端口 (33111) 和 access-token, 点击连接到 cq-http<br>
 
@@ -98,7 +98,7 @@
 
 #### 三、安装本项目
 
-1. 到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的 win-x86x64arm-windows.zip 下<br>
+1. 到 [Release](https://github.com/Alex1911-Jiang/GreenOnions/releases) 下载本项目的发行版本, 找最新的 win-x64.zip 下<br>
 2. 解压到任意目录, 运行 GreenOnions.BotManagerWindow.exe<br>
 3. 输入机器人QQ号和 setting.yml 对应的 ip(host)、端口 (port) 和 VerifyKey, 点击连接到 mirai-api-http<br>
 
