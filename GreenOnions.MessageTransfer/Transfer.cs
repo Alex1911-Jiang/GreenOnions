@@ -5,10 +5,10 @@ namespace GreenOnions.MessageTransfer
 {
     public class Transfer
     {
-        private Dictionary<int,long> _msgIds;
+        private Dictionary<long,long> _msgIds;  //消息ID:发送者ID
         public Transfer()
         {
-            _msgIds = new Dictionary<int, long>();
+            _msgIds = new Dictionary<long, long>();
         }
 
         public async void PrivateMessage(GreenOnionsMessages msgs)

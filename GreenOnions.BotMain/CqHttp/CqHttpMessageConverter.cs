@@ -71,7 +71,7 @@ namespace GreenOnions.BotMain.CqHttp
 
             MessageBody cqHttpMessages = new MessageBody();
             if (greenOnionsMessage.Reply && greenOnionsMessage.ReplyId is not null)
-                cqHttpMessages.Add(SoraSegment.Reply(greenOnionsMessage.ReplyId.Value));
+                cqHttpMessages.Add(SoraSegment.Reply((int)greenOnionsMessage.ReplyId.Value));
 
             for (int i = 0; i < greenOnionsMessage.Count; i++)
             {

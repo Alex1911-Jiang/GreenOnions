@@ -10,6 +10,6 @@ namespace GreenOnions.Interface.Modules
         protected Regex? ModuleRegex { get; }
         public void UpdateRegex();
         public Task<bool> HandleMessageAsync(GreenOnionsMessages msgs, long? targetGroupId);
-        protected Task SendMessageAsync(long targetId, long? targetGroup, GreenOnionsMessages msgs, int? replyMsgId = null);
+        protected Task SendMessageAsync(long targetId, long? targetGroup, GreenOnionsMessages msgs, long? replyMsgId = null);
     }
 }

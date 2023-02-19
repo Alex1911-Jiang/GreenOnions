@@ -28,7 +28,7 @@ namespace GreenOnions.HPicture
             ModuleRegex = new Regex(BotInfo.Config.HPictureCmd.ReplaceGreenOnionsStringTags());
         }
 
-        public async Task SendMessageAsync(long targetId, long? targetGroup, GreenOnionsMessages? msgs, int? replyMsgId = null)
+        public async Task SendMessageAsync(long targetId, long? targetGroup, GreenOnionsMessages? msgs, long? replyMsgId = null)
         {
             if (msgs is null)
                 return;
@@ -132,7 +132,7 @@ namespace GreenOnions.HPicture
         /// <summary>
         /// 检查是否有权限使用色图
         /// </summary>
-        private async Task<bool> CheckPermissions(long qqId, long? groupId, int replyMessageId)
+        private async Task<bool> CheckPermissions(long qqId, long? groupId, long? replyMessageId)
         {
             if (!BotInfo.Config.HPictureEnabled)  //没有启用色图
             {
@@ -176,7 +176,7 @@ namespace GreenOnions.HPicture
         /// <summary>
         /// 根据设置中启用的色图图库随机一个图库
         /// </summary>
-        private async Task<PictureSource> RandomHPictureSource(long senderId, long? senderGroup, int? replyMsgId)
+        private async Task<PictureSource> RandomHPictureSource(long senderId, long? senderGroup, long? replyMsgId)
         {
             if (BotInfo.Config.EnabledHPictureSource.Count == 0)
             {
@@ -204,7 +204,7 @@ namespace GreenOnions.HPicture
         /// 构建并发送一条色图消息
         /// </summary>
         /// <returns>是否发送成功</returns>
-        private async Task<bool> SendOnceHPicture(long senderId, long? senderGroup, int? replyMsgId)
+        private async Task<bool> SendOnceHPicture(long senderId, long? senderGroup, long? replyMsgId)
         {
             PictureSource pictureSource = await RandomHPictureSource(senderId, senderGroup, replyMsgId);
             object pictureSourceItem = pictureSource switch
@@ -220,7 +220,7 @@ namespace GreenOnions.HPicture
             return await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, pictureSourceItem);
         }
 
-        private async Task<bool> SendOnceHPictureInner(long senderId, long? senderGroup, int? replyMsgId, object pictureSourceItem)
+        private async Task<bool> SendOnceHPictureInner(long senderId, long? senderGroup, long? replyMsgId, object pictureSourceItem)
         {
             GreenOnionsMessages? onceHPictureMsgs = new GreenOnionsMessages();  //文字+图片的单条消息
             List<GreenOnionsForwardMessage>? forwardMessages = new List<GreenOnionsForwardMessage>();  //合并转发消息
@@ -282,7 +282,7 @@ namespace GreenOnions.HPicture
         /// <summary>
         /// 构建并发送多条色图消息
         /// </summary>
-        private async Task<bool> SendHPictures(string keyword, int num, bool r18, long senderId, long? senderGroup, int? replyMsgId)
+        private async Task<bool> SendHPictures(string keyword, int num, bool r18, long senderId, long? senderGroup, long? replyMsgId)
         {
             int sendCount = 0;
             try
