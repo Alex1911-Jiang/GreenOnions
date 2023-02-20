@@ -1,6 +1,8 @@
-﻿using GreenOnions.BotManagerWindows.ItemFroms;
+﻿using System.Xml;
+using GreenOnions.BotManagerWindows.ItemFroms;
 using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 
 namespace GreenOnions.BotManagerWindows.Controls
 {
@@ -170,6 +172,37 @@ namespace GreenOnions.BotManagerWindows.Controls
             FrmRssHeders frmRssHeders = new FrmRssHeders(RssHeders);
             frmRssHeders.ShowDialog();
             RssHeders = frmRssHeders.Headers;
+        }
+
+        private async void btnTest_Click(object sender, EventArgs e)
+        {
+            XmlDocument xmlDoc = new();
+            string? xml;
+            try
+            {
+                using HttpClient client = HttpHelper.CreateClient(BotInfo.Config.RssUseProxy);
+                if (RssHeders is not null)
+                {
+                    foreach (var header in RssHeders)
+                        client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                }
+                var resp = await client.GetAsync(txbRssSubscriptionUrl.Text);
+                xml = await resp.Content.ReadAsStringAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"地址访问失败，{ex.Message}", "失败");
+                return;
+            }
+            try
+            {
+                xmlDoc.LoadXml(xml);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"解析失败，内容可能不是XML。\r\n{ex.Message}", "失败");
+            }
+            MessageBox.Show(xmlDoc.InnerText, "成功");
         }
     }
 }

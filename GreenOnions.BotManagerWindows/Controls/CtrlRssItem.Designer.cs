@@ -48,13 +48,14 @@
             this.chkTranslateFromTo = new System.Windows.Forms.CheckBox();
             this.chkRssAtAll = new System.Windows.Forms.CheckBox();
             this.btnHeaders = new System.Windows.Forms.Button();
+            this.btnTest = new System.Windows.Forms.Button();
             this.pnlTranslateFromTo.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblRssSubscriptionUrl
             // 
             this.lblRssSubscriptionUrl.AutoSize = true;
-            this.lblRssSubscriptionUrl.Location = new System.Drawing.Point(27, 8);
+            this.lblRssSubscriptionUrl.Location = new System.Drawing.Point(27, 13);
             this.lblRssSubscriptionUrl.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblRssSubscriptionUrl.Name = "lblRssSubscriptionUrl";
             this.lblRssSubscriptionUrl.Size = new System.Drawing.Size(86, 24);
@@ -65,10 +66,10 @@
             // 
             this.txbRssSubscriptionUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbRssSubscriptionUrl.Location = new System.Drawing.Point(129, 4);
+            this.txbRssSubscriptionUrl.Location = new System.Drawing.Point(129, 10);
             this.txbRssSubscriptionUrl.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbRssSubscriptionUrl.Name = "txbRssSubscriptionUrl";
-            this.txbRssSubscriptionUrl.Size = new System.Drawing.Size(669, 30);
+            this.txbRssSubscriptionUrl.Size = new System.Drawing.Size(549, 30);
             this.txbRssSubscriptionUrl.TabIndex = 1;
             // 
             // lblRssForwardGroup
@@ -142,7 +143,7 @@
             // 
             this.txbRssRemark.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbRssRemark.Location = new System.Drawing.Point(129, 45);
+            this.txbRssRemark.Location = new System.Drawing.Point(129, 49);
             this.txbRssRemark.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbRssRemark.Name = "txbRssRemark";
             this.txbRssRemark.Size = new System.Drawing.Size(669, 30);
@@ -151,7 +152,7 @@
             // lblRssRemark
             // 
             this.lblRssRemark.AutoSize = true;
-            this.lblRssRemark.Location = new System.Drawing.Point(27, 49);
+            this.lblRssRemark.Location = new System.Drawing.Point(33, 52);
             this.lblRssRemark.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblRssRemark.Name = "lblRssRemark";
             this.lblRssRemark.Size = new System.Drawing.Size(80, 24);
@@ -273,11 +274,23 @@
             this.btnHeaders.UseVisualStyleBackColor = true;
             this.btnHeaders.Click += new System.EventHandler(this.btnHeaders_Click);
             // 
+            // btnTest
+            // 
+            this.btnTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTest.Location = new System.Drawing.Point(686, 8);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(112, 34);
+            this.btnTest.TabIndex = 13;
+            this.btnTest.Text = "测试抓取";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
             // CtrlRssItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.btnTest);
             this.Controls.Add(this.btnHeaders);
             this.Controls.Add(this.btnFilters);
             this.Controls.Add(this.chkRssAtAll);
@@ -326,5 +339,6 @@
         private System.Windows.Forms.CheckBox chkRssAtAll;
         private System.Windows.Forms.Button btnFilters;
         private Button btnHeaders;
+        private Button btnTest;
     }
 }

@@ -19,6 +19,7 @@ using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using TencentCloud.Ecm.V20190719.Models;
 
 namespace GreenOnions.RSS
 {
@@ -181,21 +182,29 @@ namespace GreenOnions.RSS
                                 continue;
                             await SendRssMessage(item, api, title, thuImgUrl, rss);
                         }
+                        return;
                     }
-                    else if (isAtom)
+                    if (isAtom)
                     {
                         LogInfo($"{item.Url}的Rss规范类型为Atom");
-                        await foreach (var rss in ReadRssAtom(nodeList, BotInfo.LastOneSendRssTime[item.Url]))  //每条订阅地址可能获取到若干条更新
-                        {
-                            if (!FilterMessage(item, rss.Description))
-                                continue;
-                            await SendRssMessage(item, api, title, thuImgUrl, rss);
-                        }
                     }
                     else
                     {
-                        LogWarn($"{item.Url}的Rss规范类型没有支持，请联系机器人作者");
+                        string xmlns = "未知";
+                        if (xmlDoc.GetElementsByTagName("rss")?[0]?.Attributes?["xmlns:dc"] is not null)
+                            xmlns = "Dc";
+                        else if (xmlDoc.GetElementsByTagName("rss")?[0]?.Attributes?["xmlns:media"] is not null)
+                            xmlns = "Media";
+                        LogWarn($"{item.Url}的Rss规范类型\"{xmlns}\"没有支持，尝试视为Atom解析，如果解析内容有误请联系机器人作者");
                     }
+                    //Atom
+                    await foreach (var rss in ReadRssAtom(nodeList, BotInfo.LastOneSendRssTime[item.Url]))  //每条订阅地址可能获取到若干条更新
+                    {
+                        if (!FilterMessage(item, rss.Description))
+                            continue;
+                        await SendRssMessage(item, api, title, thuImgUrl, rss);
+                    }
+                    return;
                 }
             }
             catch (Exception ex)
@@ -383,6 +392,18 @@ namespace GreenOnions.RSS
             return bSend;
         }
 
+        private static async Task<GreenOnionsBaseMessage> RssDownloadImage(string imgUrl)
+        {
+            try
+            {
+                return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy);
+            }
+            catch
+            {
+                return $"图片下载失败，地址：{imgUrl}";
+            }
+        }
+
         private static async Task<GreenOnionsMessages> HtmlToMessageAsync(HtmlNode node)
         {
             if (node.ChildNodes.Count > 0)
@@ -398,15 +419,7 @@ namespace GreenOnions.RSS
                 {
                     string imgUrl = HttpUtility.HtmlDecode(node.Attributes["src"].Value);
                     LogInfo($"下载图片：{imgUrl}");
-                    
-                    try
-                    {
-                        return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy);
-                    }
-                    catch
-                    {
-                        return $"图片下载失败，地址：{imgUrl}";
-                    }
+                    return await RssDownloadImage(imgUrl);
                 }
                 if (node.Name == "video")
                     return "\r\n视频地址：" + HttpUtility.HtmlDecode(node.Attributes["src"].Value) + "\r\n";
@@ -423,67 +436,73 @@ namespace GreenOnions.RSS
         {
             foreach (XmlNode node in nodeList)
             {
-                if (node.HasChildNodes)
+                if (!node.HasChildNodes)
+                    continue;
+
+                XmlNode? noteDate = node.ChildNodes.OfType<XmlNode>().Where(n => n.Name.ToLower() == "pubdate").FirstOrDefault();
+                if (noteDate is null)
+                    continue;
+
+                GreenOnionsMessages outMsg = new();
+                string description = string.Empty, link = string.Empty, creator = string.Empty;
+
+                bool bHasEncoded = false;
+                if (node.ChildNodes.OfType<XmlNode>().Any(n => n.Name == "content:encoded"))
+                    bHasEncoded = true;
+
+                HtmlDocument htmlDoc;
+                DateTime pubDate = pubDate = DateTime.Parse(noteDate.InnerText);
+                if (pubDate <= lastUpdateTime)
                 {
-                    XmlNode? noteDate = node.ChildNodes.OfType<XmlNode>().Where(n => n.Name.ToLower() == "pubdate").FirstOrDefault();
-                    if (noteDate is not null)
+                    LogInfo($"抓取到的内容更新时间 {pubDate} 早于记录的时间 {lastUpdateTime} 无需发送");
+                    yield break;
+                }
+
+                LogInfo($"抓取到的内容更新时间 {pubDate} 晚于记录的时间 {lastUpdateTime} 需要发送");
+                foreach (XmlNode subNode in node.ChildNodes)
+                {
+                    switch (subNode.Name.ToLower())
                     {
-                        GreenOnionsMessages outMsg = new();
-                        string description = string.Empty, link = string.Empty, creator = string.Empty;
-
-                        bool bHasEncoded = false;
-
-                        if (node.ChildNodes.OfType<XmlNode>().Any(n => n.Name == "content:encoded"))
-                            bHasEncoded = true;
-
-                        HtmlDocument htmlDoc;
-                        DateTime pubDate = pubDate = DateTime.Parse(noteDate.InnerText);
-                        if (pubDate > lastUpdateTime)
-                        {
-                            LogInfo($"抓取到的内容更新时间 {pubDate} 晚于记录的时间 {lastUpdateTime} 需要发送");
-                            foreach (XmlNode subNode in node.ChildNodes)
+                        case "content:encoded":
+                            htmlDoc = new HtmlDocument();
+                            htmlDoc.LoadHtml(subNode.InnerText);
+                            foreach (var itemNode in htmlDoc.DocumentNode.ChildNodes)
                             {
-                                switch (subNode.Name.ToLower())
-                                {
-                                    case "content:encoded":
-                                        htmlDoc = new HtmlDocument();
-                                        htmlDoc.LoadHtml(subNode.InnerText);
-                                        foreach (var itemNode in htmlDoc.DocumentNode.ChildNodes)
-                                        {
-                                            outMsg.AddRange(await HtmlToMessageAsync(itemNode));
-                                        }
-                                        description = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
-                                        break;
-                                    case "description":
-                                    case "content":
-                                        if (!bHasEncoded)
-                                        {
-                                            htmlDoc = new HtmlDocument();
-                                            htmlDoc.LoadHtml(subNode.InnerText);
-                                            description = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
-                                            outMsg.Add(description);
-                                        }
-                                        break;
-                                    case "link":
-                                        if (subNode.Attributes?["href"] is not null)
-                                            link = subNode.Attributes["href"]!.Value;
-                                        else
-                                            link = subNode.InnerText;
-                                        break;
-                                    case "dc:creator":
-                                        creator = subNode.InnerText;
-                                        break;
-                                }
+                                outMsg.AddRange(await HtmlToMessageAsync(itemNode));
                             }
-                            yield return new(outMsg, description, pubDate, link, creator);
-                        }
-                        else
-                        {
-                            LogInfo($"抓取到的内容更新时间 {pubDate} 早于记录的时间 {lastUpdateTime} 无需发送");
-                            yield break;
-                        }
+                            description = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
+                            break;
+                        case "description":
+                        case "content":
+                            if (!bHasEncoded)
+                            {
+                                htmlDoc = new HtmlDocument();
+                                htmlDoc.LoadHtml(subNode.InnerText);
+                                description = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
+                                outMsg.Add(description);
+                            }
+                            break;
+                        case "link":
+                            if (subNode.Attributes?["href"] is not null)
+                                link = subNode.Attributes["href"]!.Value;
+                            else
+                                link = subNode.InnerText;
+                            break;
+                        case "dc:creator":
+                            creator = subNode.InnerText;
+                            break;
+                        case "media:content":
+                            if (subNode.Attributes["url"] is null || subNode.Attributes["medium"] is null)
+                                continue;
+                            string mediaUrl = subNode.Attributes["url"].Value;
+                            if (subNode.Attributes["medium"].Value == "image")
+                                outMsg.Add(await RssDownloadImage(mediaUrl));
+                            else
+                                outMsg.Add($"{subNode.Attributes["medium"].Value}: {mediaUrl}");
+                            break;
                     }
                 }
+                yield return new(outMsg, description, pubDate, link, creator);
             }
         }
 
@@ -491,128 +510,135 @@ namespace GreenOnions.RSS
         {
             foreach (XmlNode node in nodeList)
             {
-                if (node.HasChildNodes)
+                if (!node.HasChildNodes)
+                    continue;
+
+                XmlNode? noteDate = node.ChildNodes.OfType<XmlNode>().Where(n => n.Name.ToLower() == "pubdate").FirstOrDefault();
+                noteDate ??= node.ChildNodes.OfType<XmlNode>().Where(n => n.Name.ToLower() == "updated").FirstOrDefault();
+
+                if (noteDate is null)
+                    continue;
+
+                GreenOnionsMessages outMsg = new();
+                DateTime pubDate = DateTime.Parse(noteDate.InnerText);
+                if (pubDate <= lastUpdateTime)
                 {
-                    XmlNode? noteDate = node.ChildNodes.OfType<XmlNode>().Where(n => n.Name.ToLower() == "pubdate").FirstOrDefault();
-                    noteDate ??= node.ChildNodes.OfType<XmlNode>().Where(n => n.Name.ToLower() == "updated").FirstOrDefault();
+                    LogInfo($"抓取到的内容更新时间 {pubDate} 早于记录的时间 {lastUpdateTime} 无需发送");
+                    yield break;
+                }
 
-                    if (noteDate is not null)
+                LogInfo($"抓取到的内容更新时间 {pubDate} 晚于记录的时间 {lastUpdateTime} 需要发送");
+                string description = string.Empty, link = string.Empty, author = string.Empty;
+                foreach (XmlNode subNode in node.ChildNodes)
+                {
+                    switch (subNode.Name.ToLower())
                     {
-                        GreenOnionsMessages outMsg = new();
-                        DateTime pubDate = DateTime.Parse(noteDate.InnerText);
-                        if (pubDate > lastUpdateTime)
-                        {
-                            LogInfo($"抓取到的内容更新时间 {pubDate} 晚于记录的时间 {lastUpdateTime} 需要发送");
-                            string description = string.Empty, link = string.Empty, author = string.Empty;
-                            foreach (XmlNode subNode in node.ChildNodes)
-                            {
-                                switch (subNode.Name.ToLower())
-                                {
-                                    case "description":
-                                    case "content":
-                                        HtmlDocument htmlDoc = new();
-                                        htmlDoc.LoadHtml(subNode.InnerText);
-                                        description = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
-                                        outMsg.AddRange(await HtmlToMessageAsync(htmlDoc.DocumentNode));
+                        case "description":
+                        case "content":
+                            HtmlDocument htmlDoc = new();
+                            htmlDoc.LoadHtml(subNode.InnerText);
+                            description = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
+                            outMsg.AddRange(await HtmlToMessageAsync(htmlDoc.DocumentNode));
 
-                                        #region -- 暴力正则 --
-                                        //string[]? imgsSrc = null;
-                                        //string[]? videosSrc = null;
-                                        //string[]? iframesSrc = null;
-                                        //description = subNode.InnerText;
-                                        //#region -- img ---
-                                        //MatchCollection imgMatches = new Regex(@"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
-                                        //int iImage = 0;
-                                        //imgsSrc = new string[imgMatches.Count];
-                                        //foreach (Match match in imgMatches)
-                                        //{
-                                        //    description = description.Replace(match.Groups[0].Value, "");
-                                        //    imgsSrc[iImage++] = match.Groups["imgUrl"].Value.ReplaceHtmlTags();
-                                        //}
-                                        //#endregion -- img --
+                            #region -- 暴力正则 --
+                            //string[]? imgsSrc = null;
+                            //string[]? videosSrc = null;
+                            //string[]? iframesSrc = null;
+                            //description = subNode.InnerText;
+                            //#region -- img ---
+                            //MatchCollection imgMatches = new Regex(@"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
+                            //int iImage = 0;
+                            //imgsSrc = new string[imgMatches.Count];
+                            //foreach (Match match in imgMatches)
+                            //{
+                            //    description = description.Replace(match.Groups[0].Value, "");
+                            //    imgsSrc[iImage++] = match.Groups["imgUrl"].Value.ReplaceHtmlTags();
+                            //}
+                            //#endregion -- img --
 
-                                        //#region -- video --
-                                        //MatchCollection videoMatches = new Regex(@"<video\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<videoUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
-                                        //int iVideo = 0;
-                                        //videosSrc = new string[videoMatches.Count];
-                                        //foreach (Match match in videoMatches)
-                                        //{
-                                        //    description = description.Replace(match.Groups[0].Value, "");
-                                        //    videosSrc[iVideo++] = match.Groups["videoUrl"].Value.ReplaceHtmlTags();
-                                        //}
-                                        //#endregion -- video --
+                            //#region -- video --
+                            //MatchCollection videoMatches = new Regex(@"<video\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<videoUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
+                            //int iVideo = 0;
+                            //videosSrc = new string[videoMatches.Count];
+                            //foreach (Match match in videoMatches)
+                            //{
+                            //    description = description.Replace(match.Groups[0].Value, "");
+                            //    videosSrc[iVideo++] = match.Groups["videoUrl"].Value.ReplaceHtmlTags();
+                            //}
+                            //#endregion -- video --
 
-                                        //#region -- iframe --
-                                        //MatchCollection iframeMatches = new Regex(@"<iframe\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<iframeUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
-                                        //int iIframe = 0;
-                                        //iframesSrc = new string[iframeMatches.Count];
-                                        //foreach (Match match in iframeMatches)
-                                        //{
-                                        //    description = description.Replace(match.Groups[0].Value, "");
-                                        //    iframesSrc[iIframe++] = match.Groups["iframeUrl"].Value.ReplaceHtmlTags();
-                                        //}
-                                        //#endregion -- iframe --
+                            //#region -- iframe --
+                            //MatchCollection iframeMatches = new Regex(@"<iframe\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<iframeUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
+                            //int iIframe = 0;
+                            //iframesSrc = new string[iframeMatches.Count];
+                            //foreach (Match match in iframeMatches)
+                            //{
+                            //    description = description.Replace(match.Groups[0].Value, "");
+                            //    iframesSrc[iIframe++] = match.Groups["iframeUrl"].Value.ReplaceHtmlTags();
+                            //}
+                            //#endregion -- iframe --
 
-                                        //MatchCollection aMatches = new Regex(@"<a\b[^<>]*?\bhref[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<aTag>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
-                                        //foreach (Match match in aMatches)
-                                        //{
-                                        //    if (match.Groups.Count > 1)
-                                        //        description = description.Replace(match.Groups[0].Value, match.Groups[1].Value);
-                                        //    else
-                                        //        description = description.Replace(match.Groups[0].Value, "");
-                                        //}
+                            //MatchCollection aMatches = new Regex(@"<a\b[^<>]*?\bhref[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<aTag>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase).Matches(subNode.InnerXml);
+                            //foreach (Match match in aMatches)
+                            //{
+                            //    if (match.Groups.Count > 1)
+                            //        description = description.Replace(match.Groups[0].Value, match.Groups[1].Value);
+                            //    else
+                            //        description = description.Replace(match.Groups[0].Value, "");
+                            //}
 
-                                        //description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</img>", "").Replace("</video>", "").Replace("</iframe>", "").Replace("<p>", "").Replace("</p>", "\r\n").ReplaceHtmlTags();
+                            //description = description.Replace("<br>", "\r\n").Replace("</a>", "").Replace("</img>", "").Replace("</video>", "").Replace("</iframe>", "").Replace("<p>", "").Replace("</p>", "\r\n").ReplaceHtmlTags();
 
-                                        //outMsg.Add(description);
+                            //outMsg.Add(description);
 
-                                        //for (int i = 0; i < imgsSrc?.Length; i++)
-                                        //{
-                                        //    try
-                                        //    {
-                                        //        outMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(imgsSrc[i])));
-                                        //    }
-                                        //    catch (Exception ex)
-                                        //    {
-                                        //        LogWarn($"{imgsSrc[i]}图片下载失败，{ex.Message}");
-                                        //    }
-                                        //}
+                            //for (int i = 0; i < imgsSrc?.Length; i++)
+                            //{
+                            //    try
+                            //    {
+                            //        outMsg.Add(new GreenOnionsImageMessage(await GetImgUrlOrFileNameAsync(imgsSrc[i])));
+                            //    }
+                            //    catch (Exception ex)
+                            //    {
+                            //        LogWarn($"{imgsSrc[i]}图片下载失败，{ex.Message}");
+                            //    }
+                            //}
 
-                                        //if (videosSrc?.Length > 0)
-                                        //{
-                                        //    outMsg.Add("视频地址:\r\n");
-                                        //    for (int i = 0; i < videosSrc.Length; i++)
-                                        //    {
-                                        //        outMsg.Add(videosSrc[i]);
-                                        //    }
-                                        //}
-                                        #endregion -- 暴力正则 --
+                            //if (videosSrc?.Length > 0)
+                            //{
+                            //    outMsg.Add("视频地址:\r\n");
+                            //    for (int i = 0; i < videosSrc.Length; i++)
+                            //    {
+                            //        outMsg.Add(videosSrc[i]);
+                            //    }
+                            //}
+                            #endregion -- 暴力正则 --
 
-                                        break;
-                                    case "link":
-                                        if (subNode.Attributes?["href"] is not null)
-                                            link = subNode.Attributes["href"]!.Value;
-                                        else
-                                            link = subNode.InnerText;
-                                        break;
-                                    case "pubdate":
-                                    case "updated":
-                                        pubDate = DateTime.Parse(subNode.InnerText);
-                                        break;
-                                    case "author":
-                                        author = subNode.InnerText;
-                                        break;
-                                }
-                            }
-                            yield return new(outMsg, description, pubDate, link, author);
-                        }
-                        else
-                        {
-                            LogInfo($"抓取到的内容更新时间 {pubDate} 早于记录的时间 {lastUpdateTime} 无需发送");
-                            yield break;
-                        }
+                            break;
+                        case "link":
+                            if (subNode.Attributes?["href"] is not null)
+                                link = subNode.Attributes["href"]!.Value;
+                            else
+                                link = subNode.InnerText;
+                            break;
+                        case "pubdate":
+                        case "updated":
+                            pubDate = DateTime.Parse(subNode.InnerText);
+                            break;
+                        case "author":
+                            author = subNode.InnerText;
+                            break;
+                        case "media:content":
+                            if (subNode.Attributes["url"] is null || subNode.Attributes["medium"] is null)
+                                continue;
+                            string mediaUrl = subNode.Attributes["url"].Value;
+                            if (subNode.Attributes["medium"].Value == "image")
+                                outMsg.Add(await RssDownloadImage(mediaUrl));
+                            else
+                                outMsg.Add($"{subNode.Attributes["medium"].Value}: {mediaUrl}");
+                            break;
                     }
                 }
+                yield return new(outMsg, description, pubDate, link, author);
             }
         }
 
@@ -638,23 +664,6 @@ namespace GreenOnions.RSS
                 Logs.TryDequeue(out _);
             Logs.Enqueue($"错误：{logMessageStart}，{ex.Message}");
             LogHelper.WriteErrorLog(logMessageStart, ex, logMessageEnd);
-        }
-
-        private struct RssResult
-        {
-            public RssResult(GreenOnionsMessages messages, string description, DateTime pubDate, string link, string author)
-            {
-                Messages = messages;
-                Description = description;
-                PubDate = pubDate;
-                Link = link;
-                Author = author;
-            }
-            public GreenOnionsMessages Messages { get; private set; }
-            public string Description { get; private set; }
-            public DateTime PubDate { get; private set; }
-            public string Link { get; private set; }
-            public string Author { get; private set; }
         }
     }
 }
