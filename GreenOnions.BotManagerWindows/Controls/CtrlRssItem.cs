@@ -13,7 +13,7 @@ namespace GreenOnions.BotManagerWindows.Controls
         {
             RemoveClick = removeClick;
             InitializeComponent();
-            this.btnRssRemoveItem.Click += (_, _) => RemoveClick(this);
+            btnRssRemoveItem.Click += (_, _) => RemoveClick(this);
         }
         public string? RssSubscriptionUrl
         {
@@ -60,15 +60,10 @@ namespace GreenOnions.BotManagerWindows.Controls
             get => chkRssSendByForward.Checked;
             set => chkRssSendByForward.Checked = value;
         }
-        public bool RssAtAll
-        {
-            get => chkRssAtAll.Checked;
-            set => chkRssAtAll.Checked = value;
-        }
         public int RssFilterMode { get; set; }
         public string[]? RssFilterKeyWords { get; set; }
-
         public Dictionary<string,string>? RssHeders { get; set; }
+        public string[] RssFormat { get; set; }
 
         private void LoadLanguageList()
         {
@@ -203,6 +198,13 @@ namespace GreenOnions.BotManagerWindows.Controls
                 MessageBox.Show($"解析失败，内容可能不是XML。\r\n{ex.Message}", "失败");
             }
             MessageBox.Show(xmlDoc.InnerText, "成功");
+        }
+
+        private void btnFormat_Click(object sender, EventArgs e)
+        {
+            FrmRssFromat frmFormat = new FrmRssFromat(RssFormat);
+            frmFormat.ShowDialog();
+            RssFormat = frmFormat.Format;
         }
     }
 }

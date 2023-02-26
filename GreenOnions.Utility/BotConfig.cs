@@ -1026,12 +1026,6 @@ namespace GreenOnions.Utility
         [PropertyChineseName("RSS订阅项", "RSS订阅转发")]
         public HashSet<RssSubscriptionItem>? RssSubscription { get; set; } = null;
 
-        /// <summary>
-        /// 获取B站直播封面
-        /// </summary>
-        [PropertyChineseName("获取B站直播间封面", "RSS订阅转发")]
-        public bool RssSendLiveCover { get; set; } = true;
-
         #endregion -- RSS 配置项 --
     }
 }

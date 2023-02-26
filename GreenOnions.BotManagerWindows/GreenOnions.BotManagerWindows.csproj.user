@@ -43,6 +43,9 @@
     <Compile Update="ItemFroms\FrmRssFilter.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="ItemFroms\FrmRssFromat.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="ItemFroms\FrmRssLogViewer.cs">
       <SubType>Form</SubType>
     </Compile>

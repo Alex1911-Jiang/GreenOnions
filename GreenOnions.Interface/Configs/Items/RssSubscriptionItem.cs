@@ -42,10 +42,6 @@
         /// </summary>
         public bool SendByForward { get; set; }
         /// <summary>
-        /// At所有人
-        /// </summary>
-        public bool AtAll { get; set; }
-        /// <summary>
         /// 过滤模式 (0=不过滤, 1=包含任一, 2=包含所有, 3=不包含)
         /// </summary>
         public int FilterMode { get; set; }
@@ -57,5 +53,20 @@
         /// 请求头
         /// </summary>
         public Dictionary<string, string>? Headers { get; set; }
+        /// <summary>
+        /// 排版格式
+        /// </summary>
+        public string[] Format { get; set; } = new string[] 
+        {
+            "<标题>更新啦：",
+            "<正文>",
+            "?视频：<视频地址>",
+            "?内容：<嵌入页面地址>",
+            "<B站直播封面>",
+            "作者：<作者>",
+            "发布时间：<发布时间>",
+            "原文地址：<原文地址>",
+            "<媒体内容>",
+        };
     }
 }

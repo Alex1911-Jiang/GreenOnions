@@ -29,10 +29,10 @@ namespace GreenOnions.BotManagerWindows.Controls
                     ctrlRssItem.RssTranslateFrom = item.TranslateFrom;
                     ctrlRssItem.RssTranslateTo = item.TranslateTo;
                     ctrlRssItem.RssSendByForward = item.SendByForward;
-                    ctrlRssItem.RssAtAll = item.AtAll;
                     ctrlRssItem.RssFilterMode = item.FilterMode;
                     ctrlRssItem.RssFilterKeyWords = item.FilterKeyWords;
                     ctrlRssItem.RssHeders = item.Headers;
+                    ctrlRssItem.RssFormat = item.Format;
                     pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
                     ctrlRssItem.Width = ComputeRssItemWidth();
                 }
@@ -41,7 +41,6 @@ namespace GreenOnions.BotManagerWindows.Controls
             }
             chkRssParallel.Checked = BotInfo.Config.RssParallel;
             chkRssUseProxy.Checked = BotInfo.Config.RssUseProxy;
-            chkRssSendLiveCover.Checked = BotInfo.Config.RssSendLiveCover;
             txbReadRssInterval.Text = BotInfo.Config.ReadRssInterval.ToString();
         }
 
@@ -57,16 +56,15 @@ namespace GreenOnions.BotManagerWindows.Controls
                 TranslateFromTo = i.RssTranslateFromTo,
                 TranslateFrom = i.RssTranslateFrom,
                 TranslateTo = i.RssTranslateTo,
-                AtAll = i.RssAtAll,
                 SendByForward = i.RssSendByForward,
                 FilterMode = i.RssFilterMode,
                 FilterKeyWords = i.RssFilterKeyWords,
                 Headers = i.RssHeders,
+                Format = i.RssFormat,
             }).ToHashSet();
             BotInfo.Config.RssParallel = chkRssParallel.Checked;
             BotInfo.Config.RssUseProxy = chkRssUseProxy.Checked;
             BotInfo.Config.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
-            BotInfo.Config.RssSendLiveCover = chkRssSendLiveCover.Checked;
         }
 
         public void UpdateCache()

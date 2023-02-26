@@ -46,9 +46,9 @@
             this.cboTranslateFrom = new System.Windows.Forms.ComboBox();
             this.btnFilters = new System.Windows.Forms.Button();
             this.chkTranslateFromTo = new System.Windows.Forms.CheckBox();
-            this.chkRssAtAll = new System.Windows.Forms.CheckBox();
             this.btnHeaders = new System.Windows.Forms.Button();
             this.btnTest = new System.Windows.Forms.Button();
+            this.btnFormat = new System.Windows.Forms.Button();
             this.pnlTranslateFromTo.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -179,7 +179,7 @@
             this.pnlTranslateFromTo.Controls.Add(this.cboTranslateTo);
             this.pnlTranslateFromTo.Controls.Add(this.cboTranslateFrom);
             this.pnlTranslateFromTo.Enabled = false;
-            this.pnlTranslateFromTo.Location = new System.Drawing.Point(294, 171);
+            this.pnlTranslateFromTo.Location = new System.Drawing.Point(263, 171);
             this.pnlTranslateFromTo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlTranslateFromTo.Name = "pnlTranslateFromTo";
             this.pnlTranslateFromTo.Size = new System.Drawing.Size(406, 42);
@@ -228,7 +228,7 @@
             // btnFilters
             // 
             this.btnFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFilters.Location = new System.Drawing.Point(809, 172);
+            this.btnFilters.Location = new System.Drawing.Point(809, 166);
             this.btnFilters.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.btnFilters.Name = "btnFilters";
             this.btnFilters.Size = new System.Drawing.Size(90, 38);
@@ -241,7 +241,7 @@
             // 
             this.chkTranslateFromTo.AutoSize = true;
             this.chkTranslateFromTo.Enabled = false;
-            this.chkTranslateFromTo.Location = new System.Drawing.Point(129, 176);
+            this.chkTranslateFromTo.Location = new System.Drawing.Point(109, 176);
             this.chkTranslateFromTo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkTranslateFromTo.Name = "chkTranslateFromTo";
             this.chkTranslateFromTo.Size = new System.Drawing.Size(144, 28);
@@ -250,22 +250,10 @@
             this.chkTranslateFromTo.UseVisualStyleBackColor = true;
             this.chkTranslateFromTo.CheckedChanged += new System.EventHandler(this.chkTranslateFromTo_CheckedChanged);
             // 
-            // chkRssAtAll
-            // 
-            this.chkRssAtAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkRssAtAll.AutoSize = true;
-            this.chkRssAtAll.Location = new System.Drawing.Point(817, 138);
-            this.chkRssAtAll.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.chkRssAtAll.Name = "chkRssAtAll";
-            this.chkRssAtAll.Size = new System.Drawing.Size(91, 28);
-            this.chkRssAtAll.TabIndex = 11;
-            this.chkRssAtAll.Text = "@全员";
-            this.chkRssAtAll.UseVisualStyleBackColor = true;
-            // 
             // btnHeaders
             // 
             this.btnHeaders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHeaders.Location = new System.Drawing.Point(708, 172);
+            this.btnHeaders.Location = new System.Drawing.Point(809, 131);
             this.btnHeaders.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.btnHeaders.Name = "btnHeaders";
             this.btnHeaders.Size = new System.Drawing.Size(90, 38);
@@ -285,15 +273,26 @@
             this.btnTest.UseVisualStyleBackColor = true;
             this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
+            // btnFormat
+            // 
+            this.btnFormat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFormat.Location = new System.Drawing.Point(677, 174);
+            this.btnFormat.Name = "btnFormat";
+            this.btnFormat.Size = new System.Drawing.Size(124, 34);
+            this.btnFormat.TabIndex = 14;
+            this.btnFormat.Text = "自定义排版";
+            this.btnFormat.UseVisualStyleBackColor = true;
+            this.btnFormat.Click += new System.EventHandler(this.btnFormat_Click);
+            // 
             // CtrlRssItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.btnFormat);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.btnHeaders);
             this.Controls.Add(this.btnFilters);
-            this.Controls.Add(this.chkRssAtAll);
             this.Controls.Add(this.chkTranslateFromTo);
             this.Controls.Add(this.pnlTranslateFromTo);
             this.Controls.Add(this.chkRssSendByForward);
@@ -336,9 +335,9 @@
         private System.Windows.Forms.ComboBox cboTranslateTo;
         private System.Windows.Forms.ComboBox cboTranslateFrom;
         private System.Windows.Forms.CheckBox chkTranslateFromTo;
-        private System.Windows.Forms.CheckBox chkRssAtAll;
         private System.Windows.Forms.Button btnFilters;
         private Button btnHeaders;
         private Button btnTest;
+        private Button btnFormat;
     }
 }

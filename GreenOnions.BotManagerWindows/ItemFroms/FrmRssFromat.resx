@@ -1,0 +1,89 @@
+﻿<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lblHelp.Text" xml:space="preserve">
+    <value>说明：RSS功能支持一些特殊标签，葱葱会将标签替换为RSS对应抓取到的内容。
+
+RSS特殊标签及补充说明：
+&lt;@全体成员&gt; #私聊消息中会被忽略
+&lt;订阅地址&gt;
+&lt;备注&gt;
+&lt;标题&gt;
+&lt;备注&gt;
+&lt;正文&gt; #包含了文字和图片的内容，且排版和页面一致
+&lt;正文:文本&gt; #仅抽取文字内容
+&lt;正文:图片&gt; #仅抽取图片内容
+&lt;正文:图片地址&gt; #仅抽取图片地址
+&lt;视频地址&gt; 内容中的视频抽取出的地址
+&lt;嵌入页面地址&gt; 内容中嵌入页面的地址（如B站转发他人动态）
+&lt;翻译文本&gt;
+&lt;B站直播封面&gt;
+&lt;作者&gt;
+&lt;发布时间&gt;
+&lt;原文地址&gt;
+&lt;媒体内容&gt; #一般是推文末尾的一张大图，不在正文中
+
+特殊说明：在行开头添加英文问号，则会在本行标签无内容时忽略整行。
+例：
+'视频：&lt;视频地址&gt;' #如果订阅内容不含视频地址，开头的 '视频地址：' 几个字也会被发出去。
+'?视频：&lt;视频地址&gt;' #如果订阅内容不含视频地址，则整行被忽略，不会发送 '视频地址：'。
+
+同时，也支持葱葱默认的标签，如：&lt;机器人名称&gt; 等。</value>
+  </data>
+</root>

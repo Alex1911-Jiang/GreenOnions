@@ -892,11 +892,6 @@ namespace GreenOnions.Interface.Configs
         /// </summary>
         public HashSet<RssSubscriptionItem>? RssSubscription { get; }
 
-        /// <summary>
-        /// 获取B站直播封面
-        /// </summary>
-       public bool RssSendLiveCover { get; }
-
         #endregion -- RSS 配置项 --
     }
 }

@@ -276,10 +276,10 @@ namespace GreenOnions.Command
                             $"    TranslateFromTo(是否指定翻译语言)=\"{rssSubscriptionItem.TranslateFromTo}\",\r\n" +
                             $"    TranslateFrom(从什么语言翻译)=\"{rssSubscriptionItem.TranslateFrom}\",\r\n" +
                             $"    TranslateTo(翻译为什么语言)=\"{rssSubscriptionItem.TranslateTo}\",\r\n" +
-                            $"    AtAll(是否@所有人)=\"{rssSubscriptionItem.AtAll}\",\r\n" +
                             $"    SendByForward(是否以合并转发方式发送)=\"{rssSubscriptionItem.SendByForward}\",\r\n" +
                             $"    FilterMode(过滤模式 0=不过滤, 1=包含任一, 2=包含所有, 3=不包含)=\"{rssSubscriptionItem.FilterMode}\",\r\n" +
-                            $"    FilterKeyWords(过滤关键词)=\"{string.Join(';', rssSubscriptionItem.FilterKeyWords is null ? new string[0] : rssSubscriptionItem.FilterKeyWords!)}\"," +
+                            $"    FilterKeyWords(过滤关键词)=\"{JsonConvert.SerializeObject(rssSubscriptionItem.FilterKeyWords)}\"," +
+                            $"    Format(排版格式)=\"{string.Join("\r\n", rssSubscriptionItem.Format)}\"," +
                             $"\r\n}}");
                     }
                     return $"当前存在以下RSS订阅项:\r\n{string.Join(",\r\n", lstRss)}";
@@ -343,8 +343,8 @@ namespace GreenOnions.Command
                         rssItem.TranslateTo = matchTranslateTo.Groups["TranslateTo"].Value;
 
                     Match matchAtAll = regexAtAll.Match(commandBody);
-                    if (matchAtAll.Groups["AtAll"].Success)
-                        rssItem.AtAll = Convert.ToBoolean(matchAtAll.Groups["AtAll"].Value);
+                    if (matchAtAll.Groups["Format"].Success)
+                        rssItem.Format = matchAtAll.Groups["Format"].Value.Replace('\r','\n').Replace("\n\n","\n").Split('\n');
 
                     Match matchSendByForward = regexSendByForward.Match(commandBody);
                     if (matchSendByForward.Groups["SendByForward"].Success)
