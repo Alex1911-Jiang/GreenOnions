@@ -187,15 +187,29 @@ namespace GreenOnions.RSS
                 }
                 else
                 {
+                    LogInfo($"准备抓取 {item.Url}， 是否使用代理={BotInfo.Config.RssUseProxy}");
                     using HttpClient client = HttpHelper.CreateClient(BotInfo.Config.RssUseProxy);
                     if (item.Headers is not null)
                     {
                         foreach (var header in item.Headers)
                             client.DefaultRequestHeaders.Add(header.Key, header.Value);
                     }
-                    var resp = await client.GetAsync(item.Url);
+                    HttpResponseMessage resp= await client.GetAsync(item.Url);
                     LogInfo($"{item.Url}抓取结果：{(int)resp.StatusCode} {resp.StatusCode}");
-                    string xml = await resp.Content.ReadAsStringAsync();
+                    string xml;
+                    if (item.SourceIsStream)
+                    {
+                        LogInfo($"作为流读取数据源");
+                        byte[] bs = await resp.Content.ReadAsByteArrayAsync();
+                        xml = Encoding.UTF8.GetString(bs);
+                        LogInfo($"解码成功");
+                    }
+                    else
+                    {
+                        LogInfo($"作为文本读取数据源");
+                        xml = await resp.Content.ReadAsStringAsync();
+                    }
+                    LogInfo($"开始加载xml");
                     xmlDoc.LoadXml(xml);
                 }
             }

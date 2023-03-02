@@ -33,6 +33,7 @@ namespace GreenOnions.BotManagerWindows.Controls
                     ctrlRssItem.RssFilterKeyWords = item.FilterKeyWords;
                     ctrlRssItem.RssHeders = item.Headers;
                     ctrlRssItem.RssFormat = item.Format;
+                    ctrlRssItem.RssSourceIsStream = item.SourceIsStream;
                     pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
                     ctrlRssItem.Width = ComputeRssItemWidth();
                 }
@@ -61,6 +62,7 @@ namespace GreenOnions.BotManagerWindows.Controls
                 FilterKeyWords = i.RssFilterKeyWords,
                 Headers = i.RssHeders,
                 Format = i.RssFormat,
+                SourceIsStream = i.RssSourceIsStream,
             }).ToHashSet();
             BotInfo.Config.RssParallel = chkRssParallel.Checked;
             BotInfo.Config.RssUseProxy = chkRssUseProxy.Checked;

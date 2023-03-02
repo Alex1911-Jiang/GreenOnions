@@ -49,6 +49,7 @@
             this.btnHeaders = new System.Windows.Forms.Button();
             this.btnTest = new System.Windows.Forms.Button();
             this.btnFormat = new System.Windows.Forms.Button();
+            this.chkSourceIsStream = new System.Windows.Forms.CheckBox();
             this.pnlTranslateFromTo.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -146,7 +147,7 @@
             this.txbRssRemark.Location = new System.Drawing.Point(129, 49);
             this.txbRssRemark.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbRssRemark.Name = "txbRssRemark";
-            this.txbRssRemark.Size = new System.Drawing.Size(669, 30);
+            this.txbRssRemark.Size = new System.Drawing.Size(549, 30);
             this.txbRssRemark.TabIndex = 7;
             // 
             // lblRssRemark
@@ -228,10 +229,10 @@
             // btnFilters
             // 
             this.btnFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFilters.Location = new System.Drawing.Point(809, 166);
+            this.btnFilters.Location = new System.Drawing.Point(809, 174);
             this.btnFilters.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.btnFilters.Name = "btnFilters";
-            this.btnFilters.Size = new System.Drawing.Size(90, 38);
+            this.btnFilters.Size = new System.Drawing.Size(90, 34);
             this.btnFilters.TabIndex = 3;
             this.btnFilters.Text = "过滤...";
             this.btnFilters.UseVisualStyleBackColor = true;
@@ -284,11 +285,23 @@
             this.btnFormat.UseVisualStyleBackColor = true;
             this.btnFormat.Click += new System.EventHandler(this.btnFormat_Click);
             // 
+            // chkSourceIsStream
+            // 
+            this.chkSourceIsStream.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkSourceIsStream.AutoSize = true;
+            this.chkSourceIsStream.Location = new System.Drawing.Point(686, 51);
+            this.chkSourceIsStream.Name = "chkSourceIsStream";
+            this.chkSourceIsStream.Size = new System.Drawing.Size(126, 28);
+            this.chkSourceIsStream.TabIndex = 15;
+            this.chkSourceIsStream.Text = "作为流解析";
+            this.chkSourceIsStream.UseVisualStyleBackColor = true;
+            // 
             // CtrlRssItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.chkSourceIsStream);
             this.Controls.Add(this.btnFormat);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.btnHeaders);
@@ -339,5 +352,6 @@
         private Button btnHeaders;
         private Button btnTest;
         private Button btnFormat;
+        private CheckBox chkSourceIsStream;
     }
 }

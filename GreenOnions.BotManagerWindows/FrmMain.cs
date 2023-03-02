@@ -1,4 +1,5 @@
-﻿using GreenOnions.BotMain;
+﻿using System.Windows.Forms;
+using GreenOnions.BotMain;
 using GreenOnions.BotMain.CqHttp;
 using GreenOnions.BotMain.MiraiApiHttp;
 using GreenOnions.Utility;
@@ -33,7 +34,7 @@ namespace GreenOnions.BotManagerWindows
 				if (!File.Exists("config.json"))
 				{
 					MessageBox.Show("初次使用本机器人，请先配置相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-					OpenSetting();
+                    new FrmAppSetting().ShowDialog();
 				}
 
 				txbQQ.Text = BotInfo.Config.QQId.ToString();
@@ -140,10 +141,14 @@ namespace GreenOnions.BotManagerWindows
 			ConnectToPlatform(1);
 		}
 
-		private void btnBotSettings_Click(object sender, EventArgs e) => OpenSetting();
-
-		private void OpenSetting() => new FrmAppSetting().ShowDialog();
-
+		private void btnBotSettings_Click(object sender, EventArgs e)
+		{
+			btnBotSettings.Enabled = false;
+            FrmAppSetting frmSetting = new FrmAppSetting();
+			frmSetting.FormClosed += (_, _) => btnBotSettings.Enabled = true;
+			frmSetting.Show();
+		}
+		
 		private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			Visible = true;

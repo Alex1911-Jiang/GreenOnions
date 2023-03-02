@@ -60,6 +60,13 @@ namespace GreenOnions.BotManagerWindows.Controls
             get => chkRssSendByForward.Checked;
             set => chkRssSendByForward.Checked = value;
         }
+
+        public bool RssSourceIsStream
+        {
+            get => chkSourceIsStream.Checked;
+            set => chkSourceIsStream.Checked = value;
+        }
+
         public int RssFilterMode { get; set; }
         public string[]? RssFilterKeyWords { get; set; }
         public Dictionary<string,string>? RssHeders { get; set; }

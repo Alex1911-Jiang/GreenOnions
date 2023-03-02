@@ -68,5 +68,10 @@
             "原文地址：<原文地址>",
             "<媒体内容>",
         };
+
+        /// <summary>
+        /// 是否把RSS订阅源返回值作为一个流下载后再解析
+        /// </summary>
+        public bool SourceIsStream { get; set; }
     }
 }
