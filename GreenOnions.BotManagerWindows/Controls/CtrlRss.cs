@@ -19,21 +19,7 @@ namespace GreenOnions.BotManagerWindows.Controls
                 pnlRssSubscriptionList.Controls.Remove(btnAddRssSubscription);
                 foreach (RssSubscriptionItem item in BotInfo.Config.RssSubscription)
                 {
-                    CtrlRssItem ctrlRssItem = new CtrlRssItem(pnlRssSubscriptionList.Controls.Remove);
-                    ctrlRssItem.RssSubscriptionUrl = item.Url;
-                    ctrlRssItem.RssRemark = item.Remark;
-                    ctrlRssItem.RssForwardGroups = item.ForwardGroups is null ? new long[0] : item.ForwardGroups;
-                    ctrlRssItem.RssForwardQQs = item.ForwardQQs is null ? new long[0] : item.ForwardQQs;
-                    ctrlRssItem.RssTranslate = item.Translate;
-                    ctrlRssItem.RssTranslateFromTo = item.TranslateFromTo;
-                    ctrlRssItem.RssTranslateFrom = item.TranslateFrom;
-                    ctrlRssItem.RssTranslateTo = item.TranslateTo;
-                    ctrlRssItem.RssSendByForward = item.SendByForward;
-                    ctrlRssItem.RssFilterMode = item.FilterMode;
-                    ctrlRssItem.RssFilterKeyWords = item.FilterKeyWords;
-                    ctrlRssItem.RssHeders = item.Headers;
-                    ctrlRssItem.RssFormat = item.Format;
-                    ctrlRssItem.RssSourceIsStream = item.SourceIsStream;
+                    CtrlRssItem ctrlRssItem = new CtrlRssItem(item, pnlRssSubscriptionList.Controls.Remove);
                     pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
                     ctrlRssItem.Width = ComputeRssItemWidth();
                 }
@@ -76,7 +62,7 @@ namespace GreenOnions.BotManagerWindows.Controls
         private void btnAddRssSubscription_Click(object sender, EventArgs e)
         {
             pnlRssSubscriptionList.Controls.Remove(btnAddRssSubscription);
-            CtrlRssItem ctrlRssItem = new CtrlRssItem(pnlRssSubscriptionList.Controls.Remove);
+            CtrlRssItem ctrlRssItem = new CtrlRssItem(new RssSubscriptionItem(), pnlRssSubscriptionList.Controls.Remove);
             pnlRssSubscriptionList.Controls.Add(ctrlRssItem);
             pnlRssSubscriptionList.Controls.Add(btnAddRssSubscription);
             ctrlRssItem.Width = ComputeRssItemWidth();

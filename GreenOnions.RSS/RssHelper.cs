@@ -481,8 +481,9 @@ namespace GreenOnions.RSS
                 }
                 else if (!string.IsNullOrWhiteSpace(node.InnerText))
                 {
-                    body.Message.Add(node.InnerText);
-                    body.Text.Append(node.InnerText);
+                    string htmlText = HttpUtility.HtmlDecode(node.InnerText);
+                    body.Message.Add(htmlText);
+                    body.Text.Append(htmlText);
                 }
                 else
                 {

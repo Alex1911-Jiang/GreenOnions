@@ -1,6 +1,7 @@
 ﻿using System.Xml;
 using GreenOnions.BotManagerWindows.ItemFroms;
 using GreenOnions.Interface.Configs.Enums;
+using GreenOnions.Interface.Items;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 
@@ -9,11 +10,26 @@ namespace GreenOnions.BotManagerWindows.Controls
     public partial class CtrlRssItem : UserControl
     {
         private event Action<Control> RemoveClick;
-        public CtrlRssItem(Action<Control> removeClick )
+        public CtrlRssItem(RssSubscriptionItem item, Action<Control> removeClick)
         {
             RemoveClick = removeClick;
             InitializeComponent();
             btnRssRemoveItem.Click += (_, _) => RemoveClick(this);
+
+            RssSubscriptionUrl = item.Url;
+            RssRemark = item.Remark;
+            RssForwardGroups = item.ForwardGroups is null ? new long[0] : item.ForwardGroups;
+            RssForwardQQs = item.ForwardQQs is null ? new long[0] : item.ForwardQQs;
+            RssTranslate = item.Translate;
+            RssTranslateFromTo = item.TranslateFromTo;
+            RssTranslateFrom = item.TranslateFrom;
+            RssTranslateTo = item.TranslateTo;
+            RssSendByForward = item.SendByForward;
+            RssFilterMode = item.FilterMode;
+            RssFilterKeyWords = item.FilterKeyWords;
+            RssHeders = item.Headers;
+            RssFormat = item.Format;
+            RssSourceIsStream = item.SourceIsStream;
         }
         public string? RssSubscriptionUrl
         {
