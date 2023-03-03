@@ -19,6 +19,10 @@ namespace GreenOnions.RSS
         /// </summary>
         internal string Title { get; set; }
         /// <summary>
+        /// 文章标题
+        /// </summary>
+        internal string InnerTitle { get; set; }
+        /// <summary>
         /// 原始排版完整正文
         /// </summary>
         internal GreenOnionsMessages Body { get; set; } = new GreenOnionsMessages();

@@ -277,6 +277,7 @@ namespace GreenOnions.RSS
                 { "<标题>", () => result.Title},
                 { "<订阅地址>", () => item.Url},
                 { "<备注>", () => item.Remark},
+                { "<文章标题>", () => result.InnerTitle},
                 { "<正文>",() => result.Body},
                 { "<正文:文本>",() => result.Text},
                 { "<正文:图片>", () => result.Images()?.Result?.ToArray()},
@@ -527,6 +528,9 @@ namespace GreenOnions.RSS
                 {
                     switch (subNode.Name.ToLower())
                     {
+                        case "title":
+                            result.InnerTitle = HttpUtility.HtmlDecode(subNode.InnerText);
+                            break;
                         case "content:encoded":
                             htmlDoc = new HtmlDocument();
                             htmlDoc.LoadHtml(subNode.InnerText);
@@ -607,6 +611,9 @@ namespace GreenOnions.RSS
                 {
                     switch (subNode.Name.ToLower())
                     {
+                        case "title":
+                            result.InnerTitle = HttpUtility.HtmlDecode(subNode.InnerText);
+                            break;
                         case "description":
                         case "content":
                             HtmlDocument htmlDoc = new HtmlDocument();

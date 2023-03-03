@@ -81,7 +81,7 @@
             this.lblHelp.Dock = System.Windows.Forms.DockStyle.Right;
             this.lblHelp.Location = new System.Drawing.Point(578, 0);
             this.lblHelp.Name = "lblHelp";
-            this.lblHelp.Size = new System.Drawing.Size(766, 648);
+            this.lblHelp.Size = new System.Drawing.Size(766, 672);
             this.lblHelp.TabIndex = 0;
             this.lblHelp.Text = resources.GetString("lblHelp.Text");
             // 
