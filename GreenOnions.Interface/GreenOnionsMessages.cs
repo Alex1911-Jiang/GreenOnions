@@ -20,7 +20,7 @@
         }
         public static implicit operator GreenOnionsMessages?(string? text)
         {
-            if (text is null)
+            if (string.IsNullOrEmpty(text))
                 return null;
             return new GreenOnionsTextMessage(text);
         }

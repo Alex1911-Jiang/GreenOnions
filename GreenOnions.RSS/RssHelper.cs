@@ -459,9 +459,9 @@ namespace GreenOnions.RSS
                     RssBody itemBody = await HtmlToRssBodyAsync(itemNode);
                     body.Message.AddRange(itemBody.Message);
                     body.Text.Append(itemBody.Text);
-                    body.ImageUrls.AddRange(body.ImageUrls);
-                    body.VideoUrls.AddRange(body.VideoUrls);
-                    body.IFrameUrls.AddRange(body.IFrameUrls);
+                    body.ImageUrls.AddRange(itemBody.ImageUrls);
+                    body.VideoUrls.AddRange(itemBody.VideoUrls);
+                    body.IFrameUrls.AddRange(itemBody.IFrameUrls);
                 }
             }
             else
@@ -538,9 +538,9 @@ namespace GreenOnions.RSS
                             {
                                 RssBody body = await HtmlToRssBodyAsync(itemNode);
                                 result.Body.AddRange(body.Message);
-                                result.ImageUrls = body.ImageUrls;
-                                result.VideoUrls = body.VideoUrls;
-                                result.IFrameUrls = body.IFrameUrls;
+                                result.ImageUrls.AddRange(body.ImageUrls);
+                                result.VideoUrls.AddRange(body.VideoUrls);
+                                result.IFrameUrls.AddRange(body.IFrameUrls);
                             }
                             result.Text = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
                             break;
@@ -621,6 +621,9 @@ namespace GreenOnions.RSS
                             RssBody body = await HtmlToRssBodyAsync(htmlDoc.DocumentNode);
                             result.Body = body.Message;
                             result.Text = HttpUtility.HtmlDecode(htmlDoc.DocumentNode.InnerText);
+                            result.ImageUrls = body.ImageUrls;
+                            result.VideoUrls = body.VideoUrls;
+                            result.IFrameUrls = body.IFrameUrls;
                             break;
                         case "link":
                             if (subNode.Attributes?["href"] is not null)
