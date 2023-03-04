@@ -1,4 +1,5 @@
-﻿using GreenOnions.Interface;
+﻿using Google.Protobuf.WellKnownTypes;
+using GreenOnions.Interface;
 using GreenOnions.RSS;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
@@ -65,7 +66,12 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                     services = scope.ServiceProvider;
 
                     IMiraiHttpSession session = services.GetRequiredService<IMiraiHttpSession>(); // 大部分服务都基于接口注册, 请使用接口作为类型解析
-                    GC.KeepAlive(session);
+
+                    void RecallMessage(int messageId, long targetId, int revokeTime)
+                    {
+                        Task.Delay(revokeTime).ContinueWith(_ => session.RevokeMessageAsync(messageId, targetId));
+                    }
+                    //GC.KeepAlive(session);
                     _ts = new CancellationTokenSource();
                     await session.ConnectAsync(qqId, _ts.Token); // 填入期望连接到的机器人QQ号
 
@@ -92,7 +98,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                                 return 0;
                             int sendedFriendMessageId = await session.SendFriendMessageAsync(targetId, miraiMsg);
                             if (msg.RevokeTime > 0)
-                                _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(sendedFriendMessageId, targetId));
+                                RecallMessage(sendedFriendMessageId, targetId, msg.RevokeTime * 1000);
                             return sendedFriendMessageId;
                         },
                         async (targetId, msg) =>
@@ -104,7 +110,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                                 return 0;
                             int sendedGroupMessageId = await session.SendGroupMessageAsync(targetId, miraiMsg);
                             if (msg.RevokeTime > 0)
-                                _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(sendedGroupMessageId, targetId));
+                                RecallMessage(sendedGroupMessageId, targetId, msg.RevokeTime * 1000);
                             return sendedGroupMessageId;
                         },
                         async (targetId, targetGroup, msg) =>
@@ -116,7 +122,7 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                                 return 0;
                             int sendedTempMessageId = await session.SendTempMessageAsync(targetId, targetGroup, miraiMsg);
                             if (msg.RevokeTime > 0)
-                                _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => session.RevokeMessageAsync(sendedTempMessageId, targetId));
+                                RecallMessage(sendedTempMessageId, targetId, msg.RevokeTime * 1000);
                             return sendedTempMessageId;
                         },
                         async () => (await session.GetFriendListAsync()).Select(f => new GreenOnionsFriendInfo(f.Id, f.Name, f.Remark)).ToList(),

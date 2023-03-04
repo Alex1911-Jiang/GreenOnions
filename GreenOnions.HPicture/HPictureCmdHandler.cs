@@ -263,7 +263,7 @@ namespace GreenOnions.HPicture
             if (BotInfo.Config.HPictureSendByForward)  //合并转发
             {
                 forwardMessages.Add(new GreenOnionsForwardMessage(BotInfo.Config.QQId, BotInfo.Config.BotName, onceHPictureMsgs));
-                await SendMessageAsync(senderId, senderGroup, forwardMessages.ToArray(), replyMsgId);  //发送文字+图片的单条合并转发消息
+                await SendMessageAsync(senderId, senderGroup, new GreenOnionsMessages(forwardMessages.ToArray()) { RevokeTime = GetRevokeTime(senderGroup) }, replyMsgId);  //发送文字+图片的单条合并转发消息
                 RecordLimit(senderId, senderGroup, LimitType.Count);  //记录张数限制
                 return true;
             }
@@ -274,6 +274,7 @@ namespace GreenOnions.HPicture
                 return true;
             }
 
+            onceHPictureMsgs.RevokeTime = GetRevokeTime(senderGroup);
             await SendMessageAsync(senderId, senderGroup, onceHPictureMsgs, replyMsgId);  //发送文字+图片的单条消息
             RecordLimit(senderId, senderGroup, LimitType.Count);  //记录张数限制
             return true;

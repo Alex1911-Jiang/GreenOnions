@@ -94,15 +94,6 @@ namespace GreenOnions.BotMain.CqHttp
                         else
                             cqHttpMessages.Add(SoraSegment.At(atMsg.AtId));
                     }
-                    else if (greenOnionsMessage[i] is GreenOnionsForwardMessage forwardMsg)
-                    {
-                        for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
-                        {
-                            var itemMsg = ToCqHttpMessages(forwardMsg.ItemMessages[i].itemMessage);
-                            if (itemMsg is not null)
-                                cqHttpMessages.AddRange(itemMsg);
-                        }
-                    }
                     else if (greenOnionsMessage[i] is GreenOnionsVoiceMessage voiceMsg)
                     {
                         string data = string.IsNullOrEmpty(voiceMsg.Url) ? ("base64://" + voiceMsg.Base64Str) : voiceMsg.Url;
@@ -123,12 +114,14 @@ namespace GreenOnions.BotMain.CqHttp
             List<CustomNode> nodes = new List<CustomNode>();
             for (int i = 0; i < msgs.Count; i++)
             {
-                if (msgs[i] is GreenOnionsForwardMessage forwardMsg)
+                if (msgs[i] is not GreenOnionsForwardMessage forwardMsg)
+                    continue;
+                for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                 {
-                    for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
-                    {
-                        nodes.Add(new CustomNode(forwardMsg.ItemMessages[j].NickName, forwardMsg.ItemMessages[j].QQid, forwardMsg.ItemMessages[j].itemMessage.ToCqHttpMessages()));
-                    }
+                    var innerMsg = forwardMsg.ItemMessages[j].itemMessage.ToCqHttpMessages();
+                    if (innerMsg.Count == 0)
+                        continue;
+                    nodes.Add(new CustomNode(forwardMsg.ItemMessages[j].NickName, forwardMsg.ItemMessages[j].QQid, innerMsg));
                 }
             }
             return nodes;

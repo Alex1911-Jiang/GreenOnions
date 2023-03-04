@@ -38,7 +38,8 @@ namespace GreenOnions.HPicture.Clients
             string keywordParam = KeyworkToParams(keyword);
             string numParam = $"num={imgCount}";
             string r18Param = $"r18={(r18 ? 1 : 0)}";
-            List<string> requestParams = new(2) { numParam, r18Param };
+            string proxyParam = $"proxy=i.{BotInfo.Config.PixivProxy}";
+            List<string> requestParams = new(3) { numParam, r18Param, proxyParam };
             if (!string.IsNullOrEmpty(keywordParam))
                 requestParams.Add(keywordParam);
             string paramUrl = string.Join('&', requestParams);

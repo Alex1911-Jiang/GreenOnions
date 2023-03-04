@@ -1,4 +1,6 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
+using Google.Protobuf.WellKnownTypes;
 using GreenOnions.Interface;
 using GreenOnions.RSS;
 using GreenOnions.Utility;
@@ -59,6 +61,12 @@ namespace GreenOnions.BotMain.CqHttp
                 _service.Event.OnClientConnect += async (eventType, eventArgs) =>
                 {
                     api = eventArgs.SoraApi;
+
+                    void RecallMessage(int messageId, int revokeTime)
+                    {
+                        Task.Delay(revokeTime).ContinueWith(_ => api.RecallMessage(messageId));
+                    }
+
                     BotInfo.Config.QQId = eventArgs.SoraApi.GetLoginUserId();
 
                     List<FriendInfo> IFriendInfos = (await eventArgs.SoraApi.GetFriendList()).friendList;
@@ -73,26 +81,45 @@ namespace GreenOnions.BotMain.CqHttp
                     GreenOnionsApi greenOnionsApi = new (
                         async (targetId, msg) =>
                         {
-                            if (msg is null)
+                            if (msg is null || msg.Count == 0)
                                 return 0;
-                            var soraMsg = msg.ToCqHttpMessages();
-                            if (soraMsg is null || soraMsg.Count == 0)
-                                return 0;
-                            int sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateMessage(targetId, soraMsg)).messageId;
-                            if (msg.RevokeTime > 0)
-                                _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => eventArgs.SoraApi.RecallMessage(sendedFriendMessageId));
+
+                            int sendedFriendMessageId = 0;
+                            if (msg.First() is GreenOnionsForwardMessage)
+                            {
+                                var soraMsg = msg.ToCqHttpForwardMessage();
+                                sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateForwardMsg(targetId, soraMsg)).messageId;
+                            }
+                            else
+                            {
+                                var soraMsg = msg.ToCqHttpMessages();
+                                if (soraMsg is null || soraMsg.Count == 0)
+                                    return 0;
+                                sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateMessage(targetId, soraMsg)).messageId;
+                            }
+                            if (msg.RevokeTime > 0 && sendedFriendMessageId != -1)
+                                RecallMessage(sendedFriendMessageId, msg.RevokeTime * 1000);
                             return sendedFriendMessageId;
                         },
                         async (targetId, msg) =>
                         {
                             if (msg is null)
                                 return 0;
-                            var soraMsg = msg.ToCqHttpMessages();
-                            if (soraMsg is null || soraMsg.Count == 0)
-                                return 0;
-                            int sendedGroupMessageId = (await eventArgs.SoraApi.SendGroupMessage(targetId, soraMsg)).messageId;
-                            if (msg.RevokeTime > 0)
-                                _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => eventArgs.SoraApi.RecallMessage(sendedGroupMessageId));
+                            int sendedGroupMessageId = 0;
+                            if (msg.First() is GreenOnionsForwardMessage)
+                            {
+                                var soraMsg = msg.ToCqHttpForwardMessage();
+                                sendedGroupMessageId = (await eventArgs.SoraApi.SendGroupForwardMsg(targetId, soraMsg)).messageId;
+                            }
+                            else
+                            {
+                                var soraMsg = msg.ToCqHttpMessages();
+                                if (soraMsg is null || soraMsg.Count == 0)
+                                    return 0;
+                                sendedGroupMessageId = (await eventArgs.SoraApi.SendGroupMessage(targetId, soraMsg)).messageId;
+                            }
+                            if (msg.RevokeTime > 0 && sendedGroupMessageId != -1)
+                                RecallMessage(sendedGroupMessageId, msg.RevokeTime * 1000);
                             return sendedGroupMessageId;
                         },
                         async (targetId, targetGroup, msg) =>
@@ -103,8 +130,8 @@ namespace GreenOnions.BotMain.CqHttp
                             if (soraMsg is null || soraMsg.Count == 0)
                                 return 0;
                             int sendedTempMessageId = (await eventArgs.SoraApi.SendTemporaryMessage(targetId, targetGroup, soraMsg)).messageId;
-                            if (msg.RevokeTime > 0)
-                                _ = Task.Delay(msg.RevokeTime * 1000).ContinueWith(_ => eventArgs.SoraApi.RecallMessage(sendedTempMessageId));
+                            if (msg.RevokeTime > 0 && sendedTempMessageId != -1)
+                                RecallMessage(sendedTempMessageId, msg.RevokeTime * 1000);
                             return sendedTempMessageId;
                         },
                         async () => (await eventArgs.SoraApi.GetFriendList()).friendList.Select(f => new GreenOnionsFriendInfo(f.UserId, f.Nick, f.Remark)).ToList(),
