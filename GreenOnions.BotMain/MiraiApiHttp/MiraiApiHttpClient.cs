@@ -166,8 +166,11 @@ namespace GreenOnions.BotMain.MiraiApiHttp
             BotInfo.IsLogin = false;
             PluginManager.Disconnected();
             _ts?.Cancel();
-            _session?.Dispose();
-            _scope.Dispose();
+            Task.Run(() =>
+            {
+                _scope.Dispose();
+                _session?.Dispose();
+            });
             ConnectedEvent?.Invoke(false, "");
             return Task.CompletedTask;
         }

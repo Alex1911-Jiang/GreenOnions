@@ -561,6 +561,7 @@ namespace GreenOnions.RSS
                             else
                                 result.Link = subNode.InnerText;
                             break;
+                        case "author":
                         case "dc:creator":
                             result.Author = subNode.InnerText;
                             break;
@@ -632,6 +633,7 @@ namespace GreenOnions.RSS
                                 result.Link = subNode.InnerText;
                             break;
                         case "author":
+                        case "dc:creator":
                             result.Author = subNode.InnerText;
                             break;
                         case "media:content":
