@@ -124,7 +124,7 @@ namespace GreenOnions.RSS
             {
                 if (rssResult is null)
                     continue;
-                if (!FilterMessage(item, rssResult.Text))  //过滤词
+                if (!FilterMessage(item, rssResult.InnerTitle, rssResult.Text))  //过滤词
                     continue;
 
                 try
@@ -390,7 +390,7 @@ namespace GreenOnions.RSS
             LogInfo($"{item.Url}全部好友消息发送完毕");
         }
 
-        private static bool FilterMessage(RssSubscriptionItem item, string description)
+        private static bool FilterMessage(RssSubscriptionItem item, string innerTitle, string description)
         {
             bool bSend = false;
             int bContainCount = 0;
@@ -402,6 +402,11 @@ namespace GreenOnions.RSS
                 case 1:  //包含任意发送
                     for (int i = 0; i < item.FilterKeyWords?.Length; i++)
                     {
+                        if (innerTitle.Contains(item.FilterKeyWords[i]))
+                        {
+                            bSend = true;
+                            break;
+                        }
                         if (description.Contains(item.FilterKeyWords[i]))
                         {
                             bSend = true;
@@ -410,6 +415,16 @@ namespace GreenOnions.RSS
                     }
                     break;
                 case 2:  //包含所有发送
+                    for (int i = 0; i < item.FilterKeyWords?.Length; i++)
+                    {
+                        if (innerTitle.Contains(item.FilterKeyWords[i]))
+                            bContainCount++;
+                    }
+                    if (bContainCount == item.FilterKeyWords?.Length)
+                    {
+                        bSend = true;
+                        break;
+                    }
                     for (int i = 0; i < item.FilterKeyWords?.Length; i++)
                     {
                         if (description.Contains(item.FilterKeyWords[i]))
@@ -422,6 +437,11 @@ namespace GreenOnions.RSS
                     bSend = true;
                     for (int i = 0; i < item.FilterKeyWords?.Length; i++)
                     {
+                        if (innerTitle.Contains(item.FilterKeyWords[i]))
+                        {
+                            bSend = false;
+                            break;
+                        }
                         if (description.Contains(item.FilterKeyWords[i]))
                         {
                             bSend = false;
@@ -431,6 +451,16 @@ namespace GreenOnions.RSS
                     break;
                 case 4:  //包含所有不发送
                     bSend = true;
+                    for (int i = 0; i < item.FilterKeyWords?.Length; i++)
+                    {
+                        if (innerTitle.Contains(item.FilterKeyWords[i]))
+                            bContainCount++;
+                    }
+                    if (bContainCount == item.FilterKeyWords?.Length)
+                    {
+                        bSend = false;
+                        break;
+                    }
                     for (int i = 0; i < item.FilterKeyWords?.Length; i++)
                     {
                         if (description.Contains(item.FilterKeyWords[i]))
