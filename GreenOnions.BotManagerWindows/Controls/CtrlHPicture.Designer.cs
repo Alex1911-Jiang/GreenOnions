@@ -113,6 +113,11 @@
             this.chkHPictureEnabledYuban10703Source = new System.Windows.Forms.CheckBox();
             this.chkLoliconRequestByPlugin = new System.Windows.Forms.CheckBox();
             this.lblLoliconRequestInfo = new System.Windows.Forms.Label();
+            this.txbLocalHPictureDirect = new System.Windows.Forms.TextBox();
+            this.lblLocalHPictureDirect = new System.Windows.Forms.Label();
+            this.lblLocalHPictureDirectInfo = new System.Windows.Forms.Label();
+            this.lblHPicturePMCD_s = new System.Windows.Forms.Label();
+            this.lblHPicturePMRevoke_s = new System.Windows.Forms.Label();
             this.pnlHPictureCheckBoxes.SuspendLayout();
             this.pnlHPictureCmd.SuspendLayout();
             this.pnlHPictureSource.SuspendLayout();
@@ -121,7 +126,7 @@
             // chkHPictureSendTitle
             // 
             this.chkHPictureSendTitle.AutoSize = true;
-            this.chkHPictureSendTitle.Location = new System.Drawing.Point(380, 992);
+            this.chkHPictureSendTitle.Location = new System.Drawing.Point(380, 1035);
             this.chkHPictureSendTitle.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureSendTitle.Name = "chkHPictureSendTitle";
             this.chkHPictureSendTitle.Size = new System.Drawing.Size(162, 28);
@@ -131,17 +136,17 @@
             // 
             // txbShieldingWords
             // 
-            this.txbShieldingWords.Location = new System.Drawing.Point(665, 677);
+            this.txbShieldingWords.Location = new System.Drawing.Point(665, 720);
             this.txbShieldingWords.Margin = new System.Windows.Forms.Padding(6);
             this.txbShieldingWords.Name = "txbShieldingWords";
             this.txbShieldingWords.ShortcutsEnabled = false;
-            this.txbShieldingWords.Size = new System.Drawing.Size(281, 30);
+            this.txbShieldingWords.Size = new System.Drawing.Size(282, 30);
             this.txbShieldingWords.TabIndex = 108;
             // 
             // lstShieldingWords
             // 
             this.lstShieldingWords.FullRowSelect = true;
-            this.lstShieldingWords.Location = new System.Drawing.Point(207, 651);
+            this.lstShieldingWords.Location = new System.Drawing.Point(207, 694);
             this.lstShieldingWords.Margin = new System.Windows.Forms.Padding(6);
             this.lstShieldingWords.Name = "lstShieldingWords";
             this.lstShieldingWords.Size = new System.Drawing.Size(295, 137);
@@ -152,7 +157,7 @@
             // lblShieldingWords
             // 
             this.lblShieldingWords.AutoSize = true;
-            this.lblShieldingWords.Location = new System.Drawing.Point(6, 680);
+            this.lblShieldingWords.Location = new System.Drawing.Point(6, 723);
             this.lblShieldingWords.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblShieldingWords.Name = "lblShieldingWords";
             this.lblShieldingWords.Size = new System.Drawing.Size(104, 24);
@@ -162,7 +167,7 @@
             // lblAddShieldingWords
             // 
             this.lblAddShieldingWords.AutoSize = true;
-            this.lblAddShieldingWords.Location = new System.Drawing.Point(669, 651);
+            this.lblAddShieldingWords.Location = new System.Drawing.Point(669, 694);
             this.lblAddShieldingWords.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblAddShieldingWords.Name = "lblAddShieldingWords";
             this.lblAddShieldingWords.Size = new System.Drawing.Size(158, 24);
@@ -171,7 +176,7 @@
             // 
             // btnRemoveShieldingWords
             // 
-            this.btnRemoveShieldingWords.Location = new System.Drawing.Point(515, 720);
+            this.btnRemoveShieldingWords.Location = new System.Drawing.Point(515, 763);
             this.btnRemoveShieldingWords.Margin = new System.Windows.Forms.Padding(6);
             this.btnRemoveShieldingWords.Name = "btnRemoveShieldingWords";
             this.btnRemoveShieldingWords.Size = new System.Drawing.Size(138, 32);
@@ -182,7 +187,7 @@
             // 
             // btnAddShieldingWords
             // 
-            this.btnAddShieldingWords.Location = new System.Drawing.Point(515, 677);
+            this.btnAddShieldingWords.Location = new System.Drawing.Point(515, 720);
             this.btnAddShieldingWords.Margin = new System.Windows.Forms.Padding(6);
             this.btnAddShieldingWords.Name = "btnAddShieldingWords";
             this.btnAddShieldingWords.Size = new System.Drawing.Size(138, 32);
@@ -205,7 +210,7 @@
             // lblHPictureWhiteRevoke_s
             // 
             this.lblHPictureWhiteRevoke_s.AutoSize = true;
-            this.lblHPictureWhiteRevoke_s.Location = new System.Drawing.Point(602, 1160);
+            this.lblHPictureWhiteRevoke_s.Location = new System.Drawing.Point(602, 1203);
             this.lblHPictureWhiteRevoke_s.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblHPictureWhiteRevoke_s.Name = "lblHPictureWhiteRevoke_s";
             this.lblHPictureWhiteRevoke_s.Size = new System.Drawing.Size(30, 24);
@@ -215,7 +220,7 @@
             // lblHPictureWhiteCD_s
             // 
             this.lblHPictureWhiteCD_s.AutoSize = true;
-            this.lblHPictureWhiteCD_s.Location = new System.Drawing.Point(602, 1117);
+            this.lblHPictureWhiteCD_s.Location = new System.Drawing.Point(602, 1160);
             this.lblHPictureWhiteCD_s.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblHPictureWhiteCD_s.Name = "lblHPictureWhiteCD_s";
             this.lblHPictureWhiteCD_s.Size = new System.Drawing.Size(30, 24);
@@ -225,7 +230,7 @@
             // lblHPictureRevoke_s
             // 
             this.lblHPictureRevoke_s.AutoSize = true;
-            this.lblHPictureRevoke_s.Location = new System.Drawing.Point(258, 1160);
+            this.lblHPictureRevoke_s.Location = new System.Drawing.Point(258, 1203);
             this.lblHPictureRevoke_s.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblHPictureRevoke_s.Name = "lblHPictureRevoke_s";
             this.lblHPictureRevoke_s.Size = new System.Drawing.Size(30, 24);
@@ -235,7 +240,7 @@
             // HPictureCD_s
             // 
             this.HPictureCD_s.AutoSize = true;
-            this.HPictureCD_s.Location = new System.Drawing.Point(258, 1117);
+            this.HPictureCD_s.Location = new System.Drawing.Point(258, 1160);
             this.HPictureCD_s.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.HPictureCD_s.Name = "HPictureCD_s";
             this.HPictureCD_s.Size = new System.Drawing.Size(30, 24);
@@ -245,7 +250,7 @@
             // chkHPictureSendByForward
             // 
             this.chkHPictureSendByForward.AutoSize = true;
-            this.chkHPictureSendByForward.Location = new System.Drawing.Point(413, 1032);
+            this.chkHPictureSendByForward.Location = new System.Drawing.Point(413, 1075);
             this.chkHPictureSendByForward.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureSendByForward.Name = "chkHPictureSendByForward";
             this.chkHPictureSendByForward.Size = new System.Drawing.Size(216, 28);
@@ -256,7 +261,7 @@
             // chkHPictureSendTags
             // 
             this.chkHPictureSendTags.AutoSize = true;
-            this.chkHPictureSendTags.Location = new System.Drawing.Point(567, 992);
+            this.chkHPictureSendTags.Location = new System.Drawing.Point(567, 1035);
             this.chkHPictureSendTags.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureSendTags.Name = "chkHPictureSendTags";
             this.chkHPictureSendTags.Size = new System.Drawing.Size(108, 28);
@@ -267,7 +272,7 @@
             // chkHPictureSendUrl
             // 
             this.chkHPictureSendUrl.AutoSize = true;
-            this.chkHPictureSendUrl.Location = new System.Drawing.Point(6, 992);
+            this.chkHPictureSendUrl.Location = new System.Drawing.Point(6, 1035);
             this.chkHPictureSendUrl.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureSendUrl.Name = "chkHPictureSendUrl";
             this.chkHPictureSendUrl.Size = new System.Drawing.Size(144, 28);
@@ -279,7 +284,7 @@
             // 
             this.pnlHPictureCheckBoxes.Controls.Add(this.lnkResetHPicture);
             this.pnlHPictureCheckBoxes.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlHPictureCheckBoxes.Location = new System.Drawing.Point(567, 0);
+            this.pnlHPictureCheckBoxes.Location = new System.Drawing.Point(566, 0);
             this.pnlHPictureCheckBoxes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlHPictureCheckBoxes.Name = "pnlHPictureCheckBoxes";
             this.pnlHPictureCheckBoxes.Size = new System.Drawing.Size(173, 188);
@@ -351,7 +356,7 @@
             // rodHPictureLimitCount
             // 
             this.rodHPictureLimitCount.AutoSize = true;
-            this.rodHPictureLimitCount.Location = new System.Drawing.Point(362, 1200);
+            this.rodHPictureLimitCount.Location = new System.Drawing.Point(362, 1243);
             this.rodHPictureLimitCount.Margin = new System.Windows.Forms.Padding(6);
             this.rodHPictureLimitCount.Name = "rodHPictureLimitCount";
             this.rodHPictureLimitCount.Size = new System.Drawing.Size(71, 28);
@@ -363,7 +368,7 @@
             // rdoHPictureLimitFrequency
             // 
             this.rdoHPictureLimitFrequency.AutoSize = true;
-            this.rdoHPictureLimitFrequency.Location = new System.Drawing.Point(266, 1200);
+            this.rdoHPictureLimitFrequency.Location = new System.Drawing.Point(266, 1243);
             this.rdoHPictureLimitFrequency.Margin = new System.Windows.Forms.Padding(6);
             this.rdoHPictureLimitFrequency.Name = "rdoHPictureLimitFrequency";
             this.rdoHPictureLimitFrequency.Size = new System.Drawing.Size(71, 28);
@@ -374,11 +379,11 @@
             // 
             // txbWhiteGroup
             // 
-            this.txbWhiteGroup.Location = new System.Drawing.Point(665, 826);
+            this.txbWhiteGroup.Location = new System.Drawing.Point(665, 869);
             this.txbWhiteGroup.Margin = new System.Windows.Forms.Padding(6);
             this.txbWhiteGroup.Name = "txbWhiteGroup";
             this.txbWhiteGroup.ShortcutsEnabled = false;
-            this.txbWhiteGroup.Size = new System.Drawing.Size(281, 30);
+            this.txbWhiteGroup.Size = new System.Drawing.Size(282, 30);
             this.txbWhiteGroup.TabIndex = 63;
             // 
             // txbUserHPictureCmd
@@ -391,7 +396,7 @@
             // 
             // txbHPicturePMCD
             // 
-            this.txbHPicturePMCD.Location = new System.Drawing.Point(797, 1112);
+            this.txbHPicturePMCD.Location = new System.Drawing.Point(797, 1155);
             this.txbHPicturePMCD.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPicturePMCD.Name = "txbHPicturePMCD";
             this.txbHPicturePMCD.ShortcutsEnabled = false;
@@ -400,7 +405,7 @@
             // 
             // txbHPictureWhiteCD
             // 
-            this.txbHPictureWhiteCD.Location = new System.Drawing.Point(474, 1112);
+            this.txbHPictureWhiteCD.Location = new System.Drawing.Point(474, 1155);
             this.txbHPictureWhiteCD.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureWhiteCD.Name = "txbHPictureWhiteCD";
             this.txbHPictureWhiteCD.ShortcutsEnabled = false;
@@ -409,7 +414,7 @@
             // 
             // txbHPicturePMRevoke
             // 
-            this.txbHPicturePMRevoke.Location = new System.Drawing.Point(797, 1156);
+            this.txbHPicturePMRevoke.Location = new System.Drawing.Point(797, 1199);
             this.txbHPicturePMRevoke.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPicturePMRevoke.Name = "txbHPicturePMRevoke";
             this.txbHPicturePMRevoke.ShortcutsEnabled = false;
@@ -418,7 +423,7 @@
             // 
             // txbHPictureWhiteRevoke
             // 
-            this.txbHPictureWhiteRevoke.Location = new System.Drawing.Point(474, 1156);
+            this.txbHPictureWhiteRevoke.Location = new System.Drawing.Point(474, 1199);
             this.txbHPictureWhiteRevoke.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureWhiteRevoke.Name = "txbHPictureWhiteRevoke";
             this.txbHPictureWhiteRevoke.ShortcutsEnabled = false;
@@ -439,7 +444,7 @@
             // lstHPictureWhiteGroup
             // 
             this.lstHPictureWhiteGroup.FullRowSelect = true;
-            this.lstHPictureWhiteGroup.Location = new System.Drawing.Point(207, 801);
+            this.lstHPictureWhiteGroup.Location = new System.Drawing.Point(207, 844);
             this.lstHPictureWhiteGroup.Margin = new System.Windows.Forms.Padding(6);
             this.lstHPictureWhiteGroup.Name = "lstHPictureWhiteGroup";
             this.lstHPictureWhiteGroup.Size = new System.Drawing.Size(295, 137);
@@ -450,7 +455,7 @@
             // lblHPicturePMRevoke
             // 
             this.lblHPicturePMRevoke.AutoSize = true;
-            this.lblHPicturePMRevoke.Location = new System.Drawing.Point(654, 1160);
+            this.lblHPicturePMRevoke.Location = new System.Drawing.Point(654, 1203);
             this.lblHPicturePMRevoke.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblHPicturePMRevoke.Name = "lblHPicturePMRevoke";
             this.lblHPicturePMRevoke.Size = new System.Drawing.Size(122, 24);
@@ -460,7 +465,7 @@
             // lblHPictureWhiteRevoke
             // 
             this.lblHPictureWhiteRevoke.AutoSize = true;
-            this.lblHPictureWhiteRevoke.Location = new System.Drawing.Point(312, 1160);
+            this.lblHPictureWhiteRevoke.Location = new System.Drawing.Point(312, 1203);
             this.lblHPictureWhiteRevoke.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblHPictureWhiteRevoke.Name = "lblHPictureWhiteRevoke";
             this.lblHPictureWhiteRevoke.Size = new System.Drawing.Size(140, 24);
@@ -470,7 +475,7 @@
             // lblHPicturePMCD
             // 
             this.lblHPicturePMCD.AutoSize = true;
-            this.lblHPicturePMCD.Location = new System.Drawing.Point(654, 1117);
+            this.lblHPicturePMCD.Location = new System.Drawing.Point(654, 1160);
             this.lblHPicturePMCD.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblHPicturePMCD.Name = "lblHPicturePMCD";
             this.lblHPicturePMCD.Size = new System.Drawing.Size(122, 24);
@@ -480,7 +485,7 @@
             // lblHPictureWhiteCD
             // 
             this.lblHPictureWhiteCD.AutoSize = true;
-            this.lblHPictureWhiteCD.Location = new System.Drawing.Point(312, 1117);
+            this.lblHPictureWhiteCD.Location = new System.Drawing.Point(312, 1160);
             this.lblHPictureWhiteCD.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblHPictureWhiteCD.Name = "lblHPictureWhiteCD";
             this.lblHPictureWhiteCD.Size = new System.Drawing.Size(140, 24);
@@ -490,7 +495,7 @@
             // lblHPictureCD
             // 
             this.lblHPictureCD.AutoSize = true;
-            this.lblHPictureCD.Location = new System.Drawing.Point(5, 1129);
+            this.lblHPictureCD.Location = new System.Drawing.Point(5, 1172);
             this.lblHPictureCD.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblHPictureCD.Name = "lblHPictureCD";
             this.lblHPictureCD.Size = new System.Drawing.Size(104, 24);
@@ -500,7 +505,7 @@
             // lblDownloadFail
             // 
             this.lblDownloadFail.AutoSize = true;
-            this.lblDownloadFail.Location = new System.Drawing.Point(4, 1478);
+            this.lblDownloadFail.Location = new System.Drawing.Point(4, 1521);
             this.lblDownloadFail.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblDownloadFail.Name = "lblDownloadFail";
             this.lblDownloadFail.Size = new System.Drawing.Size(176, 24);
@@ -510,7 +515,7 @@
             // lblNoResult
             // 
             this.lblNoResult.AutoSize = true;
-            this.lblNoResult.Location = new System.Drawing.Point(4, 1436);
+            this.lblNoResult.Location = new System.Drawing.Point(4, 1479);
             this.lblNoResult.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblNoResult.Name = "lblNoResult";
             this.lblNoResult.Size = new System.Drawing.Size(140, 24);
@@ -520,7 +525,7 @@
             // lblErrorReply
             // 
             this.lblErrorReply.AutoSize = true;
-            this.lblErrorReply.Location = new System.Drawing.Point(4, 1393);
+            this.lblErrorReply.Location = new System.Drawing.Point(4, 1436);
             this.lblErrorReply.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblErrorReply.Name = "lblErrorReply";
             this.lblErrorReply.Size = new System.Drawing.Size(140, 24);
@@ -530,7 +535,7 @@
             // lblOutOfLimitReply
             // 
             this.lblOutOfLimitReply.AutoSize = true;
-            this.lblOutOfLimitReply.Location = new System.Drawing.Point(4, 1351);
+            this.lblOutOfLimitReply.Location = new System.Drawing.Point(4, 1394);
             this.lblOutOfLimitReply.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblOutOfLimitReply.Name = "lblOutOfLimitReply";
             this.lblOutOfLimitReply.Size = new System.Drawing.Size(140, 24);
@@ -540,7 +545,7 @@
             // lblCDUnreadyReply
             // 
             this.lblCDUnreadyReply.AutoSize = true;
-            this.lblCDUnreadyReply.Location = new System.Drawing.Point(4, 1310);
+            this.lblCDUnreadyReply.Location = new System.Drawing.Point(4, 1353);
             this.lblCDUnreadyReply.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblCDUnreadyReply.Name = "lblCDUnreadyReply";
             this.lblCDUnreadyReply.Size = new System.Drawing.Size(158, 24);
@@ -550,7 +555,7 @@
             // lblHPictureLimit
             // 
             this.lblHPictureLimit.AutoSize = true;
-            this.lblHPictureLimit.Location = new System.Drawing.Point(5, 1216);
+            this.lblHPictureLimit.Location = new System.Drawing.Point(5, 1259);
             this.lblHPictureLimit.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblHPictureLimit.Name = "lblHPictureLimit";
             this.lblHPictureLimit.Size = new System.Drawing.Size(86, 24);
@@ -560,7 +565,7 @@
             // lblHPictureRevoke
             // 
             this.lblHPictureRevoke.AutoSize = true;
-            this.lblHPictureRevoke.Location = new System.Drawing.Point(5, 1172);
+            this.lblHPictureRevoke.Location = new System.Drawing.Point(5, 1215);
             this.lblHPictureRevoke.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblHPictureRevoke.Name = "lblHPictureRevoke";
             this.lblHPictureRevoke.Size = new System.Drawing.Size(104, 24);
@@ -570,7 +575,7 @@
             // lblWhiteGroup
             // 
             this.lblWhiteGroup.AutoSize = true;
-            this.lblWhiteGroup.Location = new System.Drawing.Point(6, 830);
+            this.lblWhiteGroup.Location = new System.Drawing.Point(6, 873);
             this.lblWhiteGroup.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblWhiteGroup.Name = "lblWhiteGroup";
             this.lblWhiteGroup.Size = new System.Drawing.Size(86, 24);
@@ -579,7 +584,7 @@
             // 
             // txbDownloadFailReply
             // 
-            this.txbDownloadFailReply.Location = new System.Drawing.Point(214, 1474);
+            this.txbDownloadFailReply.Location = new System.Drawing.Point(214, 1517);
             this.txbDownloadFailReply.Margin = new System.Windows.Forms.Padding(6);
             this.txbDownloadFailReply.Multiline = true;
             this.txbDownloadFailReply.Name = "txbDownloadFailReply";
@@ -588,43 +593,43 @@
             // 
             // txbHPictureNoResultReply
             // 
-            this.txbHPictureNoResultReply.Location = new System.Drawing.Point(214, 1431);
+            this.txbHPictureNoResultReply.Location = new System.Drawing.Point(214, 1474);
             this.txbHPictureNoResultReply.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureNoResultReply.Multiline = true;
             this.txbHPictureNoResultReply.Name = "txbHPictureNoResultReply";
-            this.txbHPictureNoResultReply.Size = new System.Drawing.Size(730, 31);
+            this.txbHPictureNoResultReply.Size = new System.Drawing.Size(732, 31);
             this.txbHPictureNoResultReply.TabIndex = 65;
             // 
             // txbHPictureErrorReplyReply
             // 
-            this.txbHPictureErrorReplyReply.Location = new System.Drawing.Point(214, 1389);
+            this.txbHPictureErrorReplyReply.Location = new System.Drawing.Point(214, 1432);
             this.txbHPictureErrorReplyReply.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureErrorReplyReply.Multiline = true;
             this.txbHPictureErrorReplyReply.Name = "txbHPictureErrorReplyReply";
-            this.txbHPictureErrorReplyReply.Size = new System.Drawing.Size(730, 31);
+            this.txbHPictureErrorReplyReply.Size = new System.Drawing.Size(732, 31);
             this.txbHPictureErrorReplyReply.TabIndex = 66;
             // 
             // txbHPictureOutOfLimitReply
             // 
-            this.txbHPictureOutOfLimitReply.Location = new System.Drawing.Point(214, 1347);
+            this.txbHPictureOutOfLimitReply.Location = new System.Drawing.Point(214, 1390);
             this.txbHPictureOutOfLimitReply.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureOutOfLimitReply.Multiline = true;
             this.txbHPictureOutOfLimitReply.Name = "txbHPictureOutOfLimitReply";
-            this.txbHPictureOutOfLimitReply.Size = new System.Drawing.Size(730, 31);
+            this.txbHPictureOutOfLimitReply.Size = new System.Drawing.Size(732, 31);
             this.txbHPictureOutOfLimitReply.TabIndex = 67;
             // 
             // txbHPictureCDUnreadyReply
             // 
-            this.txbHPictureCDUnreadyReply.Location = new System.Drawing.Point(214, 1304);
+            this.txbHPictureCDUnreadyReply.Location = new System.Drawing.Point(214, 1347);
             this.txbHPictureCDUnreadyReply.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureCDUnreadyReply.Multiline = true;
             this.txbHPictureCDUnreadyReply.Name = "txbHPictureCDUnreadyReply";
-            this.txbHPictureCDUnreadyReply.Size = new System.Drawing.Size(730, 31);
+            this.txbHPictureCDUnreadyReply.Size = new System.Drawing.Size(732, 31);
             this.txbHPictureCDUnreadyReply.TabIndex = 68;
             // 
             // txbHPictureCD
             // 
-            this.txbHPictureCD.Location = new System.Drawing.Point(129, 1112);
+            this.txbHPictureCD.Location = new System.Drawing.Point(129, 1155);
             this.txbHPictureCD.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureCD.Name = "txbHPictureCD";
             this.txbHPictureCD.ShortcutsEnabled = false;
@@ -633,7 +638,7 @@
             // 
             // txbHPictureLimit
             // 
-            this.txbHPictureLimit.Location = new System.Drawing.Point(129, 1200);
+            this.txbHPictureLimit.Location = new System.Drawing.Point(129, 1243);
             this.txbHPictureLimit.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureLimit.Name = "txbHPictureLimit";
             this.txbHPictureLimit.ShortcutsEnabled = false;
@@ -642,7 +647,7 @@
             // 
             // txbHPictureRevoke
             // 
-            this.txbHPictureRevoke.Location = new System.Drawing.Point(129, 1156);
+            this.txbHPictureRevoke.Location = new System.Drawing.Point(129, 1199);
             this.txbHPictureRevoke.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureRevoke.Name = "txbHPictureRevoke";
             this.txbHPictureRevoke.ShortcutsEnabled = false;
@@ -652,7 +657,7 @@
             // chkHPictureAllowR18
             // 
             this.chkHPictureAllowR18.AutoSize = true;
-            this.chkHPictureAllowR18.Location = new System.Drawing.Point(156, 951);
+            this.chkHPictureAllowR18.Location = new System.Drawing.Point(156, 994);
             this.chkHPictureAllowR18.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureAllowR18.Name = "chkHPictureAllowR18";
             this.chkHPictureAllowR18.Size = new System.Drawing.Size(114, 28);
@@ -663,7 +668,7 @@
             // chkHPictureAdminNoLimit
             // 
             this.chkHPictureAdminNoLimit.AutoSize = true;
-            this.chkHPictureAdminNoLimit.Location = new System.Drawing.Point(6, 1032);
+            this.chkHPictureAdminNoLimit.Location = new System.Drawing.Point(6, 1075);
             this.chkHPictureAdminNoLimit.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureAdminNoLimit.Name = "chkHPictureAdminNoLimit";
             this.chkHPictureAdminNoLimit.Size = new System.Drawing.Size(198, 28);
@@ -674,7 +679,7 @@
             // chkHPictureWhiteNoLimit
             // 
             this.chkHPictureWhiteNoLimit.AutoSize = true;
-            this.chkHPictureWhiteNoLimit.Location = new System.Drawing.Point(231, 1032);
+            this.chkHPictureWhiteNoLimit.Location = new System.Drawing.Point(231, 1075);
             this.chkHPictureWhiteNoLimit.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureWhiteNoLimit.Name = "chkHPictureWhiteNoLimit";
             this.chkHPictureWhiteNoLimit.Size = new System.Drawing.Size(162, 28);
@@ -685,7 +690,7 @@
             // chkHPicturePMNoLimit
             // 
             this.chkHPicturePMNoLimit.AutoSize = true;
-            this.chkHPicturePMNoLimit.Location = new System.Drawing.Point(613, 951);
+            this.chkHPicturePMNoLimit.Location = new System.Drawing.Point(613, 994);
             this.chkHPicturePMNoLimit.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPicturePMNoLimit.Name = "chkHPicturePMNoLimit";
             this.chkHPicturePMNoLimit.Size = new System.Drawing.Size(126, 28);
@@ -696,7 +701,7 @@
             // chkHPictureR18WhiteOnly
             // 
             this.chkHPictureR18WhiteOnly.AutoSize = true;
-            this.chkHPictureR18WhiteOnly.Location = new System.Drawing.Point(291, 951);
+            this.chkHPictureR18WhiteOnly.Location = new System.Drawing.Point(291, 994);
             this.chkHPictureR18WhiteOnly.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureR18WhiteOnly.Name = "chkHPictureR18WhiteOnly";
             this.chkHPictureR18WhiteOnly.Size = new System.Drawing.Size(168, 28);
@@ -707,7 +712,7 @@
             // chkHPictureWhiteOnly
             // 
             this.chkHPictureWhiteOnly.AutoSize = true;
-            this.chkHPictureWhiteOnly.Location = new System.Drawing.Point(6, 951);
+            this.chkHPictureWhiteOnly.Location = new System.Drawing.Point(6, 994);
             this.chkHPictureWhiteOnly.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureWhiteOnly.Name = "chkHPictureWhiteOnly";
             this.chkHPictureWhiteOnly.Size = new System.Drawing.Size(126, 28);
@@ -718,7 +723,7 @@
             // chkHPictureAllowPM
             // 
             this.chkHPictureAllowPM.AutoSize = true;
-            this.chkHPictureAllowPM.Location = new System.Drawing.Point(482, 951);
+            this.chkHPictureAllowPM.Location = new System.Drawing.Point(482, 994);
             this.chkHPictureAllowPM.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureAllowPM.Name = "chkHPictureAllowPM";
             this.chkHPictureAllowPM.Size = new System.Drawing.Size(108, 28);
@@ -739,7 +744,7 @@
             // lblAddWhiteGroup
             // 
             this.lblAddWhiteGroup.AutoSize = true;
-            this.lblAddWhiteGroup.Location = new System.Drawing.Point(669, 801);
+            this.lblAddWhiteGroup.Location = new System.Drawing.Point(669, 844);
             this.lblAddWhiteGroup.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblAddWhiteGroup.Name = "lblAddWhiteGroup";
             this.lblAddWhiteGroup.Size = new System.Drawing.Size(176, 24);
@@ -758,7 +763,7 @@
             // 
             // btnRemoveWhiteGroup
             // 
-            this.btnRemoveWhiteGroup.Location = new System.Drawing.Point(515, 870);
+            this.btnRemoveWhiteGroup.Location = new System.Drawing.Point(515, 913);
             this.btnRemoveWhiteGroup.Margin = new System.Windows.Forms.Padding(6);
             this.btnRemoveWhiteGroup.Name = "btnRemoveWhiteGroup";
             this.btnRemoveWhiteGroup.Size = new System.Drawing.Size(138, 32);
@@ -769,7 +774,7 @@
             // 
             // btnAddWhiteGroup
             // 
-            this.btnAddWhiteGroup.Location = new System.Drawing.Point(515, 826);
+            this.btnAddWhiteGroup.Location = new System.Drawing.Point(515, 869);
             this.btnAddWhiteGroup.Margin = new System.Windows.Forms.Padding(6);
             this.btnAddWhiteGroup.Name = "btnAddWhiteGroup";
             this.btnAddWhiteGroup.Size = new System.Drawing.Size(138, 32);
@@ -813,7 +818,7 @@
             // lblLimitType
             // 
             this.lblLimitType.AutoSize = true;
-            this.lblLimitType.Location = new System.Drawing.Point(474, 1203);
+            this.lblLimitType.Location = new System.Drawing.Point(474, 1246);
             this.lblLimitType.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblLimitType.Name = "lblLimitType";
             this.lblLimitType.Size = new System.Drawing.Size(385, 24);
@@ -838,13 +843,13 @@
             this.txbHPictureCmd.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureCmd.Multiline = true;
             this.txbHPictureCmd.Name = "txbHPictureCmd";
-            this.txbHPictureCmd.Size = new System.Drawing.Size(567, 188);
+            this.txbHPictureCmd.Size = new System.Drawing.Size(566, 188);
             this.txbHPictureCmd.TabIndex = 46;
             // 
             // chkHPictureSendProxyUrl
             // 
             this.chkHPictureSendProxyUrl.AutoSize = true;
-            this.chkHPictureSendProxyUrl.Location = new System.Drawing.Point(174, 992);
+            this.chkHPictureSendProxyUrl.Location = new System.Drawing.Point(174, 1035);
             this.chkHPictureSendProxyUrl.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureSendProxyUrl.Name = "chkHPictureSendProxyUrl";
             this.chkHPictureSendProxyUrl.Size = new System.Drawing.Size(180, 28);
@@ -855,7 +860,7 @@
             // lblHPictureDownloadingReply
             // 
             this.lblHPictureDownloadingReply.AutoSize = true;
-            this.lblHPictureDownloadingReply.Location = new System.Drawing.Point(4, 1266);
+            this.lblHPictureDownloadingReply.Location = new System.Drawing.Point(4, 1309);
             this.lblHPictureDownloadingReply.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblHPictureDownloadingReply.Name = "lblHPictureDownloadingReply";
             this.lblHPictureDownloadingReply.Size = new System.Drawing.Size(176, 24);
@@ -864,11 +869,11 @@
             // 
             // txbHPictureDownloadingReply
             // 
-            this.txbHPictureDownloadingReply.Location = new System.Drawing.Point(214, 1262);
+            this.txbHPictureDownloadingReply.Location = new System.Drawing.Point(214, 1305);
             this.txbHPictureDownloadingReply.Margin = new System.Windows.Forms.Padding(6);
             this.txbHPictureDownloadingReply.Multiline = true;
             this.txbHPictureDownloadingReply.Name = "txbHPictureDownloadingReply";
-            this.txbHPictureDownloadingReply.Size = new System.Drawing.Size(730, 31);
+            this.txbHPictureDownloadingReply.Size = new System.Drawing.Size(732, 31);
             this.txbHPictureDownloadingReply.TabIndex = 116;
             // 
             // pnlHPictureCmd
@@ -878,7 +883,7 @@
             this.pnlHPictureCmd.Location = new System.Drawing.Point(207, 4);
             this.pnlHPictureCmd.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlHPictureCmd.Name = "pnlHPictureCmd";
-            this.pnlHPictureCmd.Size = new System.Drawing.Size(740, 188);
+            this.pnlHPictureCmd.Size = new System.Drawing.Size(739, 188);
             this.pnlHPictureCmd.TabIndex = 118;
             // 
             // chkLoliconRequestByBrowser
@@ -895,7 +900,7 @@
             // chkHPictureAntiShielding
             // 
             this.chkHPictureAntiShielding.AutoSize = true;
-            this.chkHPictureAntiShielding.Location = new System.Drawing.Point(6, 1072);
+            this.chkHPictureAntiShielding.Location = new System.Drawing.Point(6, 1115);
             this.chkHPictureAntiShielding.Margin = new System.Windows.Forms.Padding(6);
             this.chkHPictureAntiShielding.Name = "chkHPictureAntiShielding";
             this.chkHPictureAntiShielding.Size = new System.Drawing.Size(496, 28);
@@ -992,12 +997,64 @@
             this.lblLoliconRequestInfo.TabIndex = 125;
             this.lblLoliconRequestInfo.Text = "解决 Windows Server 2012 R2\r\n不支持 TLS1.3 导致 SSL 错误问题";
             // 
+            // txbLocalHPictureDirect
+            // 
+            this.txbLocalHPictureDirect.Location = new System.Drawing.Point(207, 652);
+            this.txbLocalHPictureDirect.Margin = new System.Windows.Forms.Padding(6);
+            this.txbLocalHPictureDirect.Name = "txbLocalHPictureDirect";
+            this.txbLocalHPictureDirect.Size = new System.Drawing.Size(567, 30);
+            this.txbLocalHPictureDirect.TabIndex = 127;
+            // 
+            // lblLocalHPictureDirect
+            // 
+            this.lblLocalHPictureDirect.AutoSize = true;
+            this.lblLocalHPictureDirect.Location = new System.Drawing.Point(0, 658);
+            this.lblLocalHPictureDirect.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblLocalHPictureDirect.Name = "lblLocalHPictureDirect";
+            this.lblLocalHPictureDirect.Size = new System.Drawing.Size(176, 24);
+            this.lblLocalHPictureDirect.TabIndex = 126;
+            this.lblLocalHPictureDirect.Text = "用户本地色图库路径:";
+            // 
+            // lblLocalHPictureDirectInfo
+            // 
+            this.lblLocalHPictureDirectInfo.AutoSize = true;
+            this.lblLocalHPictureDirectInfo.Location = new System.Drawing.Point(783, 655);
+            this.lblLocalHPictureDirectInfo.Name = "lblLocalHPictureDirectInfo";
+            this.lblLocalHPictureDirectInfo.Size = new System.Drawing.Size(166, 24);
+            this.lblLocalHPictureDirectInfo.TabIndex = 128;
+            this.lblLocalHPictureDirectInfo.Text = "(仅自定义命令生效)";
+            // 
+            // lblHPicturePMCD_s
+            // 
+            this.lblHPicturePMCD_s.AutoSize = true;
+            this.lblHPicturePMCD_s.Location = new System.Drawing.Point(924, 1160);
+            this.lblHPicturePMCD_s.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblHPicturePMCD_s.Name = "lblHPicturePMCD_s";
+            this.lblHPicturePMCD_s.Size = new System.Drawing.Size(30, 24);
+            this.lblHPicturePMCD_s.TabIndex = 129;
+            this.lblHPicturePMCD_s.Text = "(s)";
+            // 
+            // lblHPicturePMRevoke_s
+            // 
+            this.lblHPicturePMRevoke_s.AutoSize = true;
+            this.lblHPicturePMRevoke_s.Location = new System.Drawing.Point(924, 1202);
+            this.lblHPicturePMRevoke_s.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblHPicturePMRevoke_s.Name = "lblHPicturePMRevoke_s";
+            this.lblHPicturePMRevoke_s.Size = new System.Drawing.Size(30, 24);
+            this.lblHPicturePMRevoke_s.TabIndex = 130;
+            this.lblHPicturePMRevoke_s.Text = "(s)";
+            // 
             // CtrlHPicture
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.lblHPicturePMRevoke_s);
+            this.Controls.Add(this.lblHPicturePMCD_s);
+            this.Controls.Add(this.lblLocalHPictureDirectInfo);
+            this.Controls.Add(this.txbLocalHPictureDirect);
+            this.Controls.Add(this.lblLocalHPictureDirect);
             this.Controls.Add(this.lblLoliconRequestInfo);
             this.Controls.Add(this.chkLoliconRequestByPlugin);
             this.Controls.Add(this.pnlHPictureSource);
@@ -1076,7 +1133,7 @@
             this.Controls.Add(this.lblUserCmd);
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.Name = "CtrlHPicture";
-            this.Size = new System.Drawing.Size(964, 1504);
+            this.Size = new System.Drawing.Size(955, 1478);
             this.pnlHPictureCheckBoxes.ResumeLayout(false);
             this.pnlHPictureCheckBoxes.PerformLayout();
             this.pnlHPictureCmd.ResumeLayout(false);
@@ -1175,5 +1232,10 @@
         private CheckBox chkHPictureLolibooruSource;
         private CheckBox chkLoliconRequestByPlugin;
         private Label lblLoliconRequestInfo;
+        private TextBox txbLocalHPictureDirect;
+        private Label lblLocalHPictureDirect;
+        private Label lblLocalHPictureDirectInfo;
+        private Label lblHPicturePMCD_s;
+        private Label lblHPicturePMRevoke_s;
     }
 }

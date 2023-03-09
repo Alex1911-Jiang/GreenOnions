@@ -9,5 +9,6 @@
         Yuban10703 = 10703,
         Lolibooru = 4,
         Konachan_net = 5,
+        UserLocal = 5000,
     }
 }

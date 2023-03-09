@@ -591,6 +591,12 @@ namespace GreenOnions.Utility
         #region -- 色图配置项 --
 
         /// <summary>
+        /// 是否启用色图功能
+        /// </summary>
+        [PropertyChineseName("启用色图功能", "色图")]
+        public bool HPictureEnabled { get; set; } = true;
+
+        /// <summary>
         /// 色图完整命令(正则表达式)
         /// </summary>
         [PropertyChineseName("色图命令", "色图", "支持正则表达式")]
@@ -807,10 +813,10 @@ namespace GreenOnions.Utility
         public int HPictureOnceMessageMaxImageCount { get; set; } = 10;
 
         /// <summary>
-        /// 是否启用色图功能
+        /// 用户本地图库路径
         /// </summary>
-        [PropertyChineseName("启用色图功能", "色图")]
-        public bool HPictureEnabled { get; set; } = true;
+        [PropertyChineseName("用户本体图库路径", "色图")]
+        public string LocalHPictureDirect { get; set; } = string.Empty;
 
         #endregion -- 色图配置项 --
 

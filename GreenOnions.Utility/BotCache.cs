@@ -94,16 +94,6 @@ namespace GreenOnions.Utility
         }
 
         /// <summary>
-        /// 检查色图次数限制 true 为超过限制
-        /// </summary>
-        public bool CheckHPictureLimit(long qqId, long? groupId = null)
-        {
-            if (BotInfo.Config.HPictureLimit > 0 && LimitDic.ContainsKey(qqId))
-                return LimitDic[qqId] >= BotInfo.Config.HPictureLimit;
-            return false;
-        }
-
-        /// <summary>
         /// 获取色图剩余配额
         /// </summary>
         public int GetHPictureQuota(int num, long qqId, long? groupId)
@@ -130,6 +120,11 @@ namespace GreenOnions.Utility
                 if (LimitDic.ContainsKey(qqId))
                     return Math.Min(num, BotInfo.Config.HPictureLimit - LimitDic[qqId]);
                 return Math.Min(num, BotInfo.Config.HPictureLimit);
+            }
+            else
+            {
+                if (LimitDic.ContainsKey(qqId) && LimitDic[qqId] >= BotInfo.Config.HPictureLimit)
+                    return 0;
             }
             return num;
         }

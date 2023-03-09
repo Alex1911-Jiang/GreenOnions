@@ -187,7 +187,7 @@ namespace GreenOnions.BotMain.CqHttp
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLog($"断开OneBot连接失败",ex);
+                    LogHelper.WriteErrorLog($"断开OneBot连接发生错误，但已成功断开",ex);
                 }
             }
             BotInfo.IsLogin = false;

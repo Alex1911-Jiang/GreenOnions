@@ -13,7 +13,9 @@ namespace GreenOnions.HPicture
     {
         internal static GreenOnionsTextMessage? CreateTextMessageByItem(object item)
         {
-            if (item is LoliHPictureItem loliConItem)
+            if (item is LocalHPictureItem)
+                return null;
+            else if (item is LoliHPictureItem loliConItem)
                 return CreateTextMessageByLoliconItem(loliConItem);
             else if (item is PictureItem webItem)
                 return CreateTextMessageByWebItem(webItem);
@@ -26,6 +28,8 @@ namespace GreenOnions.HPicture
                 return await CreateImageMessageByLoliItemAsync(loliItem);
             else if (item is PictureItem yandeItem)
                 return await CreateImageMessageByWebItemAsync(yandeItem);
+            else if (item is LocalHPictureItem localItem && localItem.FileName is not null)
+                return new GreenOnionsImageMessage(localItem.FileName);
             throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员");
         }
 

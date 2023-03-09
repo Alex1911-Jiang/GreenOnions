@@ -78,10 +78,12 @@ namespace GreenOnions.BotManagerWindows.Controls
             chkHPictureSendTitle.Checked = BotInfo.Config.HPictureSendTitle;
             chkHPictureSendTags.Checked = BotInfo.Config.HPictureSendTags;
             chkHPictureSendByForward.Checked = BotInfo.Config.HPictureSendByForward;
+            txbLocalHPictureDirect.Text = BotInfo.Config.LocalHPictureDirect;
         }
 
         public void SaveConfig()
         {
+            BotInfo.Config.LocalHPictureDirect = txbLocalHPictureDirect.Text;
             HashSet<PictureSource> EnabledHPictureSource = new HashSet<PictureSource>();
             if (chkHPictureEnabledLoliconSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.Lolicon);
@@ -95,6 +97,8 @@ namespace GreenOnions.BotManagerWindows.Controls
                 EnabledHPictureSource.Add(PictureSource.Konachan_net);
             if (chkHPictureLolibooruSource.Checked)
                 EnabledHPictureSource.Add(PictureSource.Lolibooru);
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.LocalHPictureDirect) && Directory.Exists(BotInfo.Config.LocalHPictureDirect))
+                EnabledHPictureSource.Add(PictureSource.UserLocal);
 
             BotInfo.Config.EnabledHPictureSource = EnabledHPictureSource;
             BotInfo.Config.HPictureAntiShielding = chkHPictureAntiShielding.Checked;

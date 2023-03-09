@@ -522,6 +522,11 @@ namespace GreenOnions.Interface.Configs
         #region -- 色图配置项 --
 
         /// <summary>
+        /// 是否启用色图功能
+        /// </summary>
+        public bool HPictureEnabled { get; }
+
+        /// <summary>
         /// 默认色图命令
         /// </summary>
         public const string DefaultHPictureCmd = "(?<前缀><机器人名称>[我再]?[要来來发發给給])(?<数量>[0-9零一壹二两贰兩三叁四肆五伍六陆陸七柒八捌九玖十拾百佰千仟万萬亿億]+)?(?<单位>[张張个個幅份])(?<r18>[Rr]-?18的?)?(?<关键词>.+?)?(?<色图后缀>[的得地滴の]?[色瑟涩铯啬渋][图圖図])";
@@ -707,9 +712,9 @@ namespace GreenOnions.Interface.Configs
         public int HPictureOnceMessageMaxImageCount { get; }
 
         /// <summary>
-        /// 是否启用色图功能
+        /// 用户本地图库路径
         /// </summary>
-        public bool HPictureEnabled { get; }
+        public string LocalHPictureDirect { get; }
 
         #endregion -- 色图配置项 --
 

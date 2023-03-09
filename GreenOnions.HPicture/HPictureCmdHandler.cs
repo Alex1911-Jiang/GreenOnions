@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GreenOnions.HPicture.Clients;
+using GreenOnions.HPicture.Items;
 using GreenOnions.Interface;
 using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Interface.Modules;
@@ -140,7 +142,7 @@ namespace GreenOnions.HPicture
                 return false;
             }
 
-            if (BotInfo.Cache.CheckHPictureLimit(qqId, groupId))
+            if (BotInfo.Cache.GetHPictureQuota(1, qqId, groupId) <= 0)
             {
                 LogHelper.WriteInfoLog($"{qqId}色图次数耗尽");
                 await SendMessageAsync(qqId, groupId, BotInfo.Config.HPictureOutOfLimitReply, replyMessageId);  //次数用尽
@@ -178,15 +180,26 @@ namespace GreenOnions.HPicture
         /// </summary>
         private async Task<PictureSource> RandomHPictureSource(long senderId, long? senderGroup, long? replyMsgId)
         {
+            if (!string.IsNullOrWhiteSpace(BotInfo.Config.LocalHPictureDirect) && Directory.Exists(BotInfo.Config.LocalHPictureDirect))
+                BotInfo.Config.EnabledHPictureSource.Add(PictureSource.UserLocal);
+
             if (BotInfo.Config.EnabledHPictureSource.Count == 0)
             {
                 LogHelper.WriteWarningLog($"没有启用任何色图图库");
                 throw new Exception("没有连接到任何图库，请联系机器人管理员");
             }
 
-            Random rdm = new(Guid.NewGuid().GetHashCode());
-            int rdmIndex = rdm.Next(0, BotInfo.Config.EnabledHPictureSource.Count);
-            PictureSource pictureSource = BotInfo.Config.EnabledHPictureSource.ToArray()[rdmIndex];
+            PictureSource pictureSource;
+            if (BotInfo.Config.EnabledHPictureSource.Count == 1)
+            {
+                pictureSource = BotInfo.Config.EnabledHPictureSource.First();
+            }
+            else
+            {
+                Random rdm = new(Guid.NewGuid().GetHashCode());
+                int rdmIndex = rdm.Next(0, BotInfo.Config.EnabledHPictureSource.Count);
+                pictureSource = BotInfo.Config.EnabledHPictureSource.ToArray()[rdmIndex];
+            }
 
             if (!Enum.IsDefined(pictureSource))
             {
@@ -215,6 +228,7 @@ namespace GreenOnions.HPicture
                 PictureSource.Lolibooru => await LolibooruApi.GetOnceItem(),
                 PictureSource.Lolisuki => await new LolisukiClient().GetOnceLoliItem(),
                 PictureSource.Yuban10703 => await new Yuban10703Client().GetOnceLoliItem(),
+                PictureSource.UserLocal => new LocalHPictureItem(),
                 _ => throw new Exception("图库设置有误或指定图库已失效，请联系机器人管理员")  //应该不会来到这里
             };
             return await SendOnceHPictureInner(senderId, senderGroup, replyMsgId, pictureSourceItem);
@@ -288,7 +302,10 @@ namespace GreenOnions.HPicture
             int sendCount = 0;
             try
             {
+            IL_Rerandom:;
                 PictureSource pictureSource = await RandomHPictureSource(senderId, senderGroup, replyMsgId);
+                if (pictureSource == PictureSource.UserLocal)
+                    goto IL_Rerandom;
                 switch (pictureSource)
                 {
                     case PictureSource.Lolicon:
