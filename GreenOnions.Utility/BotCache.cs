@@ -18,8 +18,8 @@ namespace GreenOnions.Utility
         public ConcurrentDictionary<long, DateTime> SearchingAnimeUsers { get; set; } = new ConcurrentDictionary<long, DateTime>();
         public ConcurrentDictionary<long, DateTime> Searching3DUsers { get; set; } = new ConcurrentDictionary<long, DateTime>();
         public ConcurrentDictionary<long, DateTime>[] SearchingUserGroups { get; set; }
-        public ConcurrentDictionary<string, int> SauceNAOKeysAndLongRemaining { get; set; }  //Nao的key剩余每日可用次数
-        public ConcurrentDictionary<string, int> SauceNAOKeysAndShortRemaining { get; set; }  //Nao的key剩余30秒内可用次数
+        public ConcurrentDictionary<string, int> SauceNAOKeysAndLongRemaining { get; set; } = new ConcurrentDictionary<string, int>();  //Nao的key剩余每日可用次数
+        public ConcurrentDictionary<string, int> SauceNAOKeysAndShortRemaining { get; set; } = new ConcurrentDictionary<string, int>();  //Nao的key剩余30秒内可用次数
 
         public BotCache()
         {
@@ -28,6 +28,8 @@ namespace GreenOnions.Utility
 
         public void SetSauceNAOKey(string key)
         {
+            if (string.IsNullOrWhiteSpace(key))
+                return;
             if (!SauceNAOKeysAndLongRemaining.ContainsKey(key))
                 SauceNAOKeysAndLongRemaining.TryAdd(key, 200);
             if (!SauceNAOKeysAndShortRemaining.ContainsKey(key))

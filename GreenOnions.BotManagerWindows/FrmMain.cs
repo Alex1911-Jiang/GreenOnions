@@ -225,12 +225,6 @@ namespace GreenOnions.BotManagerWindows
 				MessageBox.Show("请先输入机器人平台端口号。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				return false;
 			}
-			if (string.IsNullOrEmpty(txbVerifyKey.Text))
-			{
-				MessageBox.Show("请先输入机器人平台连接凭证。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				return false;
-			}
-
 			BotInfo.Config.QQId = Convert.ToInt64(txbQQ.Text);
 			BotInfo.Config.IP = txbIP.Text;
 			BotInfo.Config.Port = Convert.ToUInt16(txbPort.Text);

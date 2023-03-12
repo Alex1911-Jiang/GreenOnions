@@ -170,5 +170,27 @@ namespace GreenOnions.BotManagerWindows.Controls
         private void btnAddShieldingWords_Click(object sender, EventArgs e) => ((IConfigSetting)this).AddItemToListView(lstShieldingWords, txbShieldingWords.Text);
 
         private void btnRemoveShieldingWords_Click(object sender, EventArgs e) => ((IConfigSetting)this).RemoveItemFromListView(lstShieldingWords);
+
+
+        private void checkNumber_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(char.IsNumber(e.KeyChar) || e.KeyChar == (char)8))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void checkNumber_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == (Keys.Control | Keys.V))
+            {
+                if (Clipboard.ContainsText())
+                {
+                    if (long.TryParse(Clipboard.GetText().Trim(), out long num))  //检查是否数字
+                        ((TextBox)sender).SelectedText = num.ToString();//Ctrl+V 粘贴
+                    e.Handled = true;
+                }
+            }
+        }
     }
 }

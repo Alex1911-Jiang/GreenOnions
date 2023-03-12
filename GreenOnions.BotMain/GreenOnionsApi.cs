@@ -1,4 +1,5 @@
 ﻿using GreenOnions.Interface;
+using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -141,6 +142,14 @@ namespace GreenOnions.BotMain
                 }
             }
             return text;
+        }
+
+        public async void SendMessageToAdmins(GreenOnionsMessages msg)
+        {
+            foreach (var item in BotInfo.Config.AdminQQ)
+            {
+                await SendFriendMessageAsync(item, msg);
+            }
         }
     }
 }

@@ -81,7 +81,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             BotInfo.Config.SearchEnabledSauceNAO = chkSearchSauceNAOEnabled.Checked;  //是否启用SauceNAO搜图
             BotInfo.Config.SearchSauceNAOSortByDesc = chkSearchSauceNAOSortByDesc.Checked;
             BotInfo.Config.SearchSauceNAOSendPixivOriginalPicture = chkSearchSauceNAOSendPixivOriginalPicture.Checked;
-            BotInfo.Config.SauceNAOApiKey = txbSearchSauceNAOApiKey.Text.Split("\r\n").ToHashSet();
+            BotInfo.Config.SauceNAOApiKey = txbSearchSauceNAOApiKey.Text.Split("\r\n").Where(k => !string.IsNullOrWhiteSpace(k)).ToHashSet();
             int iLowSauceNAOSimilarity;
             if (!int.TryParse(txbSearchSauceNAOLowSimilarity.Text, out iLowSauceNAOSimilarity))
                 iLowSauceNAOSimilarity = 60;
@@ -127,7 +127,11 @@ namespace GreenOnions.BotManagerWindows.Controls
         public void UpdateCache()
         {
             foreach (string SauceNAOKey in txbSearchSauceNAOApiKey.Text.Split("\r\n"))
+            {
+                if (string.IsNullOrWhiteSpace(SauceNAOKey))
+                    continue;
                 BotInfo.Cache.SetSauceNAOKey(SauceNAOKey);
+            }
         }
 
         private void SearchSauceNAOEnabled_CheckedChanged(object sender, EventArgs e) => pnlSearchSauceNAO.Enabled = chkSearchSauceNAOEnabled.Checked;

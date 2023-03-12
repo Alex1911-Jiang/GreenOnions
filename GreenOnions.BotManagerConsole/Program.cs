@@ -114,6 +114,8 @@
                 {
                     Console.WriteLine("请输入mirai-api-http verifyKey:");
                     string? verifyKey = Console.ReadLine();
+                    if (verifyKey is null)
+                        verifyKey = string.Empty;
                     try
                     {
                         BotInfo.Config.QQId = qqId;

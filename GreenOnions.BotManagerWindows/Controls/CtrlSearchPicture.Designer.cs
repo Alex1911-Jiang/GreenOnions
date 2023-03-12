@@ -598,7 +598,7 @@
             // chkSearchTraceMoeEnabled
             // 
             this.chkSearchTraceMoeEnabled.AutoSize = true;
-            this.chkSearchTraceMoeEnabled.Location = new System.Drawing.Point(30, 76);
+            this.chkSearchTraceMoeEnabled.Location = new System.Drawing.Point(30, 112);
             this.chkSearchTraceMoeEnabled.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkSearchTraceMoeEnabled.Name = "chkSearchTraceMoeEnabled";
             this.chkSearchTraceMoeEnabled.Size = new System.Drawing.Size(203, 28);
@@ -875,7 +875,7 @@
             // chkSeachUseProxy
             // 
             this.chkSeachUseProxy.AutoSize = true;
-            this.chkSeachUseProxy.Location = new System.Drawing.Point(30, 112);
+            this.chkSeachUseProxy.Location = new System.Drawing.Point(30, 76);
             this.chkSeachUseProxy.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.chkSeachUseProxy.Name = "chkSeachUseProxy";
             this.chkSeachUseProxy.Size = new System.Drawing.Size(108, 28);

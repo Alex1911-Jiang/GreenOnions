@@ -19,11 +19,11 @@ namespace GreenOnions.MessageTransfer
             }
             else
             {
-                await FriendOrTempMessage(msgs);
+                FriendOrTempMessage(msgs);
             }
         }
 
-        private async Task FriendOrTempMessage(GreenOnionsMessages msgs)
+        private void FriendOrTempMessage(GreenOnionsMessages msgs)
         {
             if (BotInfo.Config.MessageTransferEnabled)
             {
@@ -32,14 +32,8 @@ namespace GreenOnions.MessageTransfer
                 msgToAdmin.Add($"{msgs.SenderName}({msgs.SenderId})说：");
                 msgToAdmin.AddRange(msgs);
                 msgToAdmin.Add($"\r\n(消息ID：{msgs.Id})");
-                await SendMessageToAdmin(msgToAdmin);
+                BotInfo.API.SendMessageToAdmins(msgToAdmin);
             }
-        }
-
-        private async Task SendMessageToAdmin(GreenOnionsMessages msgs)
-        {
-            foreach (long adminQQ in BotInfo.Config.AdminQQ)
-                await BotInfo.API.SendFriendMessageAsync(adminQQ, msgs);
         }
 
         private async Task AdminMessage(GreenOnionsMessages msgs)

@@ -142,6 +142,8 @@
             this.txbShieldingWords.ShortcutsEnabled = false;
             this.txbShieldingWords.Size = new System.Drawing.Size(282, 30);
             this.txbShieldingWords.TabIndex = 108;
+            this.txbShieldingWords.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbShieldingWords.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // lstShieldingWords
             // 
@@ -385,6 +387,8 @@
             this.txbWhiteGroup.ShortcutsEnabled = false;
             this.txbWhiteGroup.Size = new System.Drawing.Size(282, 30);
             this.txbWhiteGroup.TabIndex = 63;
+            this.txbWhiteGroup.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumber_KeyPress);
+            this.txbWhiteGroup.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkNumber_KeyUp);
             // 
             // txbUserHPictureCmd
             // 
@@ -1133,7 +1137,7 @@
             this.Controls.Add(this.lblUserCmd);
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.Name = "CtrlHPicture";
-            this.Size = new System.Drawing.Size(955, 1478);
+            this.Size = new System.Drawing.Size(929, 1452);
             this.pnlHPictureCheckBoxes.ResumeLayout(false);
             this.pnlHPictureCheckBoxes.PerformLayout();
             this.pnlHPictureCmd.ResumeLayout(false);

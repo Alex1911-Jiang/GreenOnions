@@ -33,6 +33,14 @@ namespace GreenOnions.Utility.Helper
             return (document, redirectUrl);
         }
 
+
+        public static async Task<HttpResponseMessage> GetAsync(string url, bool useProxy)
+        {
+            using HttpClient client = CreateClient(useProxy);
+            return await client.GetAsync(url);
+        }
+
+
         public static async Task<string> GetStringAsync(string url, bool useProxy)
         {
             using HttpClient client = CreateClient(useProxy);

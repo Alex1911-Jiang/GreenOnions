@@ -71,25 +71,15 @@ namespace GreenOnions.Utility
             }
             SaveConfigFile();
 
-            Cache.SauceNAOKeysAndLongRemaining = new ConcurrentDictionary<string, int>();
-            foreach (var key in Config.SauceNAOApiKey)
-                Cache.SauceNAOKeysAndLongRemaining.TryAdd(key, 200);
-
-            Cache.SauceNAOKeysAndShortRemaining = new ConcurrentDictionary<string, int>();
-            foreach (var key in Config.SauceNAOApiKey)
-                Cache.SauceNAOKeysAndShortRemaining.TryAdd(key, 6);
+            foreach (string SauceNAOKey in Config.SauceNAOApiKey)
+                Cache.SetSauceNAOKey(SauceNAOKey);
 
             Task.Run(async () =>
             {
                 while (true)
                 {
-                    foreach (var key in Config.SauceNAOApiKey)
-                    {
-                        if (!Cache.SauceNAOKeysAndLongRemaining.ContainsKey(key))  //如果添加了新Key, 装进缓存
-                            Cache.SauceNAOKeysAndLongRemaining.TryAdd(key, 200);
-                        if (!Cache.SauceNAOKeysAndShortRemaining.ContainsKey(key))  //如果添加了新Key, 装进缓存
-                            Cache.SauceNAOKeysAndShortRemaining.TryAdd(key, 6);
-                    }
+                    foreach (string SauceNAOKey in Config.SauceNAOApiKey)
+                        Cache.SetSauceNAOKey(SauceNAOKey);
                     var removeLong = Cache.SauceNAOKeysAndLongRemaining.Keys.ToList().Except(Config.SauceNAOApiKey);
                     foreach (var item in removeLong)
                         Cache.SauceNAOKeysAndLongRemaining.TryRemove(item, out _);

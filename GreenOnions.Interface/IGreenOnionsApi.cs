@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using GreenOnions.Interface.Configs;
 
 namespace GreenOnions.Interface
 {
@@ -105,6 +106,12 @@ namespace GreenOnions.Interface
         /// <param name="customTags">自定义替换标签/文本对</param>
         /// <returns>替换标签为变量的完整文本</returns>
         public string? ReplaceGreenOnionsStringTags(string? originalString, params (string Key, string Value)[] customTags);
+
+        /// <summary>
+        /// 发送消息给机器人管理员
+        /// </summary>
+        /// <param name="msg"></param>
+        public void SendMessageToAdmins(GreenOnionsMessages msg);
 
         #endregion -- 方法 --
     }

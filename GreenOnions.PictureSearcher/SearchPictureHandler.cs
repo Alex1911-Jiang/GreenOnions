@@ -556,17 +556,28 @@ namespace GreenOnions.PictureSearcher
                     SauceNAOUrl = @$"https://SauceNAO.com/search.php?db=999&output_type=2{apiKeyStr}&testmode=1&numres=16&url={qqImgUrl}";
 
                     LogHelper.WriteInfoLog($"请求SauceNAO搜图, 地址为:{SauceNAOUrl}");
-                    strSauceNAOResult = await HttpHelper.GetStringAsync(SauceNAOUrl, BotInfo.Config.SearchUseProxy);
+                    var resp = await HttpHelper.GetAsync(SauceNAOUrl, BotInfo.Config.SearchUseProxy);
+                    strSauceNAOResult = await resp.Content.ReadAsStringAsync();
                     LogHelper.WriteInfoLog($"请求SauceNAO成功");
 
                     JToken json = JsonConvert.DeserializeObject<JToken>(strSauceNAOResult);
 
                     JToken jHeader = json["header"];
-                    if (jHeader is not null)
+                    if (jHeader is null)
                     {
-                        BotInfo.Cache.SauceNAOKeysAndLongRemaining[apiKey] = Convert.ToInt32(jHeader["long_remaining"]);
-                        BotInfo.Cache.SauceNAOKeysAndShortRemaining[apiKey] = Convert.ToInt32(jHeader["short_remaining"]);
+                        LogHelper.WriteWarningLog($"SauceNAO(后端)没有返回内容, 请求地址为：{SauceNAOUrl}");
+                        return (BotInfo.Config.SearchErrorReply.ReplaceGreenOnionsStringTags(("搜索类型", "SauceNAO")), true);  //没有返回内容
                     }
+
+                    if (jHeader["status"].ToString() == "-1")
+                    {
+                        LogHelper.WriteWarningLog($"SauceNAO(后端)没有配置API-Key");
+                        BotInfo.API.SendMessageToAdmins("SauceNAO 未配置API-Key");
+                        return ("SauceNAO 没有配置 API-Key，请联系机器人管理员。", true);  //没有返回内容
+                    }
+
+                    BotInfo.Cache.SauceNAOKeysAndLongRemaining[apiKey] = Convert.ToInt32(jHeader["long_remaining"]);
+                    BotInfo.Cache.SauceNAOKeysAndShortRemaining[apiKey] = Convert.ToInt32(jHeader["short_remaining"]);
 
                     JArray jResults = json["results"] as JArray;
 
