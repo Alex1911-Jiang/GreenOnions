@@ -6,9 +6,9 @@ using Sora.Entities.Info;
 using Sora.Entities.Segment;
 using Sora.Entities.Segment.DataModel;
 
-namespace GreenOnions.BotMain.CqHttp
+namespace GreenOnions.BotMain.OneBot
 {
-    public static class CqHttpMessageConverter
+    public static class OneBotMessageConverter
     {
         public static async Task<GreenOnionsMessages> ToGreenOnionsMessages(this MessageContext miraiMessage, long senderId, string senderName, long? senderGroup, SoraApi? api)
         {
@@ -61,7 +61,7 @@ namespace GreenOnions.BotMain.CqHttp
             return greenOnionsMessages;
         }
 
-        public static MessageBody ToCqHttpMessages(this GreenOnionsMessages greenOnionsMessage, int? coverReplyId = null)
+        public static MessageBody ToOneBotMessages(this GreenOnionsMessages greenOnionsMessage, int? coverReplyId = null)
         {
             if (!greenOnionsMessage.IsGreenOnionsCommand)
                 greenOnionsMessage.ReplaceGreenOnionsStringTags();
@@ -69,9 +69,9 @@ namespace GreenOnions.BotMain.CqHttp
             if (coverReplyId is not null)
                 greenOnionsMessage.ReplyId = coverReplyId;
 
-            MessageBody cqHttpMessages = new MessageBody();
+            MessageBody oneBotMessages = new MessageBody();
             if (greenOnionsMessage.Reply && greenOnionsMessage.ReplyId is not null)
-                cqHttpMessages.Add(SoraSegment.Reply((int)greenOnionsMessage.ReplyId.Value));
+                oneBotMessages.Add(SoraSegment.Reply((int)greenOnionsMessage.ReplyId.Value));
 
             for (int i = 0; i < greenOnionsMessage.Count; i++)
             {
@@ -80,36 +80,36 @@ namespace GreenOnions.BotMain.CqHttp
                     if (greenOnionsMessage[i] is GreenOnionsTextMessage txtMsg)
                     {
                         if (!string.IsNullOrEmpty( txtMsg.Text))
-                            cqHttpMessages.Add(SoraSegment.Text(txtMsg.Text));
+                            oneBotMessages.Add(SoraSegment.Text(txtMsg.Text));
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsImageMessage imgMsg)
                     {
                         string data = string.IsNullOrEmpty(imgMsg.Url) ? ("base64://" + imgMsg.Base64Str) : imgMsg.Url.Replace("//","/").Replace("http:/", "http://").Replace("https:/", "https://");
-                        cqHttpMessages.Add(SoraSegment.Image(data));
+                        oneBotMessages.Add(SoraSegment.Image(data));
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsAtMessage atMsg)
                     {
                         if (atMsg.AtId == -1)
-                            cqHttpMessages.Add(SoraSegment.AtAll());
+                            oneBotMessages.Add(SoraSegment.AtAll());
                         else
-                            cqHttpMessages.Add(SoraSegment.At(atMsg.AtId));
+                            oneBotMessages.Add(SoraSegment.At(atMsg.AtId));
                     }
                     else if (greenOnionsMessage[i] is GreenOnionsVoiceMessage voiceMsg)
                     {
                         string data = string.IsNullOrEmpty(voiceMsg.Url) ? ("base64://" + voiceMsg.Base64Str) : voiceMsg.Url;
-                        cqHttpMessages.Add(SoraSegment.Record(data));
+                        oneBotMessages.Add(SoraSegment.Record(data));
                     }
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteErrorLog($"转换为CqHttp消息失败!!! 消息类型为：{greenOnionsMessage[i].GetType()}", ex);
+                    LogHelper.WriteErrorLog($"转换为OneBot消息失败!!! 消息类型为：{greenOnionsMessage[i].GetType()}", ex);
                     continue;
                 }
             }
-            return cqHttpMessages;
+            return oneBotMessages;
         }
 
-        public static List<CustomNode> ToCqHttpForwardMessage(this GreenOnionsMessages msgs)
+        public static List<CustomNode> ToOneBotForwardMessage(this GreenOnionsMessages msgs)
         {
             List<CustomNode> nodes = new List<CustomNode>();
             for (int i = 0; i < msgs.Count; i++)
@@ -118,7 +118,7 @@ namespace GreenOnions.BotMain.CqHttp
                     continue;
                 for (int j = 0; j < forwardMsg.ItemMessages.Count; j++)
                 {
-                    var innerMsg = forwardMsg.ItemMessages[j].itemMessage.ToCqHttpMessages();
+                    var innerMsg = forwardMsg.ItemMessages[j].itemMessage.ToOneBotMessages();
                     if (innerMsg.Count == 0)
                         continue;
                     nodes.Add(new CustomNode(forwardMsg.ItemMessages[j].NickName, forwardMsg.ItemMessages[j].QQid, innerMsg));

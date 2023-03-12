@@ -335,7 +335,7 @@
             this.cboAutoConnectProtocol.FormattingEnabled = true;
             this.cboAutoConnectProtocol.Items.AddRange(new object[] {
             "Mirai-Api-Http",
-            "CqHttp"});
+            "OneBot"});
             this.cboAutoConnectProtocol.Location = new System.Drawing.Point(190, 4);
             this.cboAutoConnectProtocol.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.cboAutoConnectProtocol.Name = "cboAutoConnectProtocol";

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Sockets;
-using Google.Protobuf.WellKnownTypes;
+﻿using System.Net.Sockets;
 using GreenOnions.Interface;
 using GreenOnions.RSS;
 using GreenOnions.Utility;
@@ -11,15 +9,14 @@ using Sora.Entities.Info;
 using Sora.Interfaces;
 using Sora.Net.Config;
 using Sora.Util;
-using YukariToolBox.LightLog;
 
-namespace GreenOnions.BotMain.CqHttp
+namespace GreenOnions.BotMain.OneBot
 {
-    public class CqHttpClient : MiraiClient
+    public class OneBotClient : MiraiClient
     {
         private ISoraService? _service;
 
-        public CqHttpClient(Action<bool, string> connectedEvent) : base(connectedEvent)
+        public OneBotClient(Action<bool, string> connectedEvent) : base(connectedEvent)
         {
         }
 
@@ -87,12 +84,12 @@ namespace GreenOnions.BotMain.CqHttp
                             int sendedFriendMessageId = 0;
                             if (msg.First() is GreenOnionsForwardMessage)
                             {
-                                var soraMsg = msg.ToCqHttpForwardMessage();
+                                var soraMsg = msg.ToOneBotForwardMessage();
                                 sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateForwardMsg(targetId, soraMsg)).messageId;
                             }
                             else
                             {
-                                var soraMsg = msg.ToCqHttpMessages();
+                                var soraMsg = msg.ToOneBotMessages();
                                 if (soraMsg is null || soraMsg.Count == 0)
                                     return 0;
                                 sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateMessage(targetId, soraMsg)).messageId;
@@ -108,12 +105,12 @@ namespace GreenOnions.BotMain.CqHttp
                             int sendedGroupMessageId = 0;
                             if (msg.First() is GreenOnionsForwardMessage)
                             {
-                                var soraMsg = msg.ToCqHttpForwardMessage();
+                                var soraMsg = msg.ToOneBotForwardMessage();
                                 sendedGroupMessageId = (await eventArgs.SoraApi.SendGroupForwardMsg(targetId, soraMsg)).messageId;
                             }
                             else
                             {
-                                var soraMsg = msg.ToCqHttpMessages();
+                                var soraMsg = msg.ToOneBotMessages();
                                 if (soraMsg is null || soraMsg.Count == 0)
                                     return 0;
                                 sendedGroupMessageId = (await eventArgs.SoraApi.SendGroupMessage(targetId, soraMsg)).messageId;
@@ -126,7 +123,7 @@ namespace GreenOnions.BotMain.CqHttp
                         {
                             if (msg is null)
                                 return 0;
-                            var soraMsg = msg.ToCqHttpMessages();
+                            var soraMsg = msg.ToOneBotMessages();
                             if (soraMsg is null || soraMsg.Count == 0)
                                 return 0;
                             int sendedTempMessageId = (await eventArgs.SoraApi.SendTemporaryMessage(targetId, targetGroup, soraMsg)).messageId;
@@ -173,7 +170,7 @@ namespace GreenOnions.BotMain.CqHttp
             catch (Exception ex)
             {
                 LogHelper.WriteErrorLog("连接到OneBot失败", ex);
-                ConnectedEvent(false, $"{ex.Message} ({ip}:{port}) OneBot/Cqhttp");
+                ConnectedEvent(false, $"{ex.Message} ({ip}:{port}) OneBot");
             }
         }
 

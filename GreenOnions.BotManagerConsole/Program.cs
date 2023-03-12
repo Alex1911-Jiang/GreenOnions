@@ -4,7 +4,7 @@
     using System.IO;
     using System.Threading.Tasks;
     using GreenOnions.BotMain;
-    using GreenOnions.BotMain.CqHttp;
+    using GreenOnions.BotMain.OneBot;
     using GreenOnions.BotMain.MiraiApiHttp;
     using GreenOnions.Utility;
     using GreenOnions.Utility.Helper;
@@ -43,7 +43,7 @@
 
             if (BotInfo.Config.AutoConnectEnabled)
             {
-                Console.WriteLine($"启用了自动连接, {BotInfo.Config.AutoConnectDelay}秒后自动连接到{(BotInfo.Config.AutoConnectProtocol == 0 ? "Mirai-Api-Http" : "CqHttp")}平台");
+                Console.WriteLine($"启用了自动连接, {BotInfo.Config.AutoConnectDelay}秒后自动连接到{(BotInfo.Config.AutoConnectProtocol == 0 ? "Mirai-Api-Http" : "OneBot")}平台");
                 Console.WriteLine($"如果要取消自动连接, 请将 config.json 中 Bot.AutoConnectEnabled 修改为 False");
                 Task.Delay(BotInfo.Config.AutoConnectDelay * 1000).Wait();
 
@@ -63,21 +63,21 @@
                 }
                 else
                 {
-                    _miraiClient = new CqHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.Config.AutoConnectProtocol, "cqhttp"));
+                    _miraiClient = new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.Config.AutoConnectProtocol, "OneBot"));
                     try
                     {
                         await _miraiClient.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey);
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLog("连接到cqhttp发生异常", ex);
-                        Console.WriteLine("连接cqhttp失败，" + ex.Message);
+                        LogHelper.WriteErrorLog("连接到OneBot发生异常", ex);
+                        Console.WriteLine("连接OneBot失败，" + ex.Message);
                     }
                 }
             }
             else
             {
-                Console.WriteLine("请选择连接平台: 0 = mirai-api-http,  1 = cqhttp");
+                Console.WriteLine("请选择连接平台: 0 = mirai-api-http,  1 = OneBot");
             ILRetryProtocol:;
                 if (!int.TryParse(Console.ReadLine(), out int protocol) || protocol < 0 || protocol > 1)
                 {
@@ -137,7 +137,7 @@
                 }
                 else
                 {
-                    Console.WriteLine("请输入cqhttp access-token:");
+                    Console.WriteLine("请输入OneBot access-token:");
                     string? accessToken = Console.ReadLine();
                     try
                     {
@@ -148,13 +148,13 @@
                         WorkingTimeRecorder.DoWork = true;
                         Console.CancelKeyPress -= Console_CancelKeyPress;
                         Console.CancelKeyPress += Console_CancelKeyPress;
-                        _miraiClient = new CqHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 1, "cqhttp"));
+                        _miraiClient = new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 1, "OneBot"));
                         await _miraiClient.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey);
                     }
                     catch (Exception ex)
                     {
-                        LogHelper.WriteErrorLog("连接cqhttp发生异常", ex);
-                        Console.WriteLine("连接cqhttp失败，" + ex.Message);
+                        LogHelper.WriteErrorLog("连接OneBot发生异常", ex);
+                        Console.WriteLine("连接OneBot失败，" + ex.Message);
                         Environment.Exit(0);
                     }
                 }
@@ -210,7 +210,7 @@
             MiraiClient client = platform switch
             {
                 0 => new MiraiApiHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 0, "mirai-api-http")),
-                1 => new CqHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 1, "cqhttp")),
+                1 => new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 1, "OneBot")),
                 _ => throw new NotImplementedException(),
             };
             await client.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey);

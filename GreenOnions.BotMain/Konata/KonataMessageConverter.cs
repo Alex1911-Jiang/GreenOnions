@@ -1,9 +1,7 @@
 ﻿using GreenOnions.Interface;
 using GreenOnions.Utility.Helper;
-using Konata.Core.Common;
 using Konata.Core.Message;
 using Konata.Core.Message.Model;
-using Newtonsoft.Json;
 
 namespace GreenOnions.BotMain.Konata
 {

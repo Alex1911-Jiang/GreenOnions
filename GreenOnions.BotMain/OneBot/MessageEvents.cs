@@ -7,7 +7,7 @@ using Sora.Entities.Segment;
 using Sora.Enumeration.EventParamsType;
 using Sora.EventArgs.SoraEvent;
 
-namespace GreenOnions.BotMain.CqHttp
+namespace GreenOnions.BotMain.OneBot
 {
     public static class MessageEvents
     {
@@ -30,7 +30,7 @@ namespace GreenOnions.BotMain.CqHttp
                     return;
                 if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
                 {
-                    ValueTask<(ApiStatus apiStatus, int messageId, string forwardId)> result = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.SourceGroup.Id, outMsg.ToCqHttpForwardMessage());
+                    ValueTask<(ApiStatus apiStatus, int messageId, string forwardId)> result = eventArgs.SoraApi.SendGroupForwardMsg(eventArgs.SourceGroup.Id, outMsg.ToOneBotForwardMessage());
                     if (outMsg.RevokeTime > 0)
                     {
                         _ = result.AsTask().ContinueWith(async t =>
@@ -42,7 +42,7 @@ namespace GreenOnions.BotMain.CqHttp
                 }
                 else
                 {
-                    var soraMsg = outMsg.ToCqHttpMessages(outMsg.Reply ? quoteId : null);
+                    var soraMsg = outMsg.ToOneBotMessages(outMsg.Reply ? quoteId : null);
                     if (soraMsg is null || soraMsg.Count == 0)
                         return;
                     ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendGroupMessage(eventArgs.SourceGroup.Id, soraMsg);
@@ -79,11 +79,11 @@ namespace GreenOnions.BotMain.CqHttp
                     return;
                 if (outMsg.FirstOrDefault() is GreenOnionsForwardMessage)
                 {
-                    _ = eventArgs.SoraApi.SendPrivateForwardMsg(eventArgs.Sender.Id, outMsg.ToCqHttpForwardMessage());
+                    _ = eventArgs.SoraApi.SendPrivateForwardMsg(eventArgs.Sender.Id, outMsg.ToOneBotForwardMessage());
                 }
                 else
                 {
-                    var soraMsg = outMsg.ToCqHttpMessages(outMsg.Reply ? quoteId : null);
+                    var soraMsg = outMsg.ToOneBotMessages(outMsg.Reply ? quoteId : null);
                     if (soraMsg is null || soraMsg.Count == 0)
                         return;
                     ValueTask<(ApiStatus apiStatus, int messageId)> result = eventArgs.SoraApi.SendPrivateMessage(eventArgs.Sender.Id, soraMsg);

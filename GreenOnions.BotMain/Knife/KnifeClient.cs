@@ -8,12 +8,16 @@ using Newtonsoft.Json;
 
 namespace GreenOnions.BotMain.Knife
 {
-    public class KnifeClient
+    public class KnifeClient : MiraiClient
     {
         public ClientWebSocket? _client = null;
         public CancellationTokenSource? _ts = null;
 
-        public async Task Connect()
+        public KnifeClient(Action<bool, string> connectedEvent) : base(connectedEvent)
+        {
+        }
+
+        public override async Task Connect(long qqId, string ip, ushort port, string key)
         {
             if (_ts is not null)
             {
@@ -24,7 +28,7 @@ namespace GreenOnions.BotMain.Knife
                 _client.Dispose();
             _ts = new CancellationTokenSource();
             _client = new ClientWebSocket();
-            await _client.ConnectAsync(new Uri("127.0.0.1:33111"), _ts.Token);
+            await _client.ConnectAsync(new Uri($"ws://{ip}:{port}/"), _ts.Token);
             Receive();
         }
 
@@ -68,13 +72,13 @@ namespace GreenOnions.BotMain.Knife
         }
 
 
-        public void HandleMessage(string json)
+        public async void HandleMessage(string json)
         {
             KnifeMessage? knifeMsg = JsonToKnifeMessage(json);
             if (knifeMsg is null || knifeMsg.Message is null)
                 return;
             GreenOnionsMessages msgs = knifeMsg.Message.ToGreenOnionsMessages(knifeMsg.SenderId, knifeMsg.SenderName);
-            MessageHandler.HandleMesage(msgs, knifeMsg.SenderGroup, SendMessage);
+            await MessageHandler.HandleMesage(msgs, knifeMsg.SenderGroup, SendMessage);
         }
 
         private async void SendMessage(GreenOnionsMessages msg)
@@ -95,7 +99,7 @@ namespace GreenOnions.BotMain.Knife
             await _client.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
-        public async Task Disconnect()
+        public override async Task Disconnect()
         {
             if (_client is null)
                 return;
