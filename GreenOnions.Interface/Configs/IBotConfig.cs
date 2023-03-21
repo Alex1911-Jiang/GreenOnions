@@ -156,7 +156,7 @@ namespace GreenOnions.Interface.Configs
         /// <summary>
         /// 自动连接的平台
         /// </summary>
-        public int AutoConnectProtocol { get; }
+        public BotPlatform AutoConnectProtocol { get; }
 
         /// <summary>
         /// 连接前延时

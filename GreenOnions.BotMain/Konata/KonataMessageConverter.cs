@@ -57,8 +57,8 @@ namespace GreenOnions.BotMain.Konata
                         greenOnionsMessages.Add(new GreenOnionsImageMessage(ImageHelper.ReplaceGroupUrl(imageMsg.ImageUrl)));
                     else if (kqMessage.Chain[i] is QFaceChain qfaceMsg)
                         greenOnionsMessages.Add(new GreenOnionsFaceMessage(qfaceMsg.FaceId, qfaceMsg.FaceName));
-                    else if (kqMessage.Chain[i] is BFaceChain bfaceMsg)
-                        greenOnionsMessages.Add(new GreenOnionsFaceMessage((int)bfaceMsg.FaceId, bfaceMsg.Name));
+                    //else if (kqMessage.Chain[i] is BFaceChain bfaceMsg)
+                    //    greenOnionsMessages.Add(new GreenOnionsFaceMessage((int)bfaceMsg.FaceId, bfaceMsg.Name));
                     else if (kqMessage.Chain[i] is AtChain atMsg)
                         greenOnionsMessages.Add(new GreenOnionsAtMessage(atMsg.AtUin, null));
                 }

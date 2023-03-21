@@ -235,8 +235,6 @@ namespace GreenOnions.BotMain
                         {
                             string strId = firstValue.Substring(match.Groups[0].Length);
                             LogHelper.WriteInfoLog($"{inMsg.SenderId}下载id={strId}的原图");
-                            if (!string.IsNullOrWhiteSpace(BotInfo.Config.OriginalPictureDownloadingReply)) //回复下载中
-                                SendMessage(BotInfo.Config.OriginalPictureDownloadingReply);
                             GreenOnionsMessages msgOriginalPictureMsg = await SearchPictureHandler.SendPixivOriginalPictureWithIdAndP(strId, SendMessage);
                             SendMessage(msgOriginalPictureMsg);
                         }

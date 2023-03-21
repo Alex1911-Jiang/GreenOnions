@@ -47,6 +47,7 @@ namespace GreenOnions.BotManagerWindows
             this.btnConnectToOneBot = new System.Windows.Forms.Button();
             this.btnPlugins = new System.Windows.Forms.Button();
             this.btnConnectToKnife = new System.Windows.Forms.Button();
+            this.btnOicq = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblQQ
@@ -210,11 +211,23 @@ namespace GreenOnions.BotManagerWindows
             this.btnConnectToKnife.Visible = false;
             this.btnConnectToKnife.Click += new System.EventHandler(this.btnConnectToKnife_Click);
             // 
+            // btnOicq
+            // 
+            this.btnOicq.Location = new System.Drawing.Point(81, 4);
+            this.btnOicq.Name = "btnOicq";
+            this.btnOicq.Size = new System.Drawing.Size(112, 34);
+            this.btnOicq.TabIndex = 10;
+            this.btnOicq.Text = "Oicq";
+            this.btnOicq.UseVisualStyleBackColor = true;
+            this.btnOicq.Visible = false;
+            this.btnOicq.Click += new System.EventHandler(this.btnOicq_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 351);
+            this.Controls.Add(this.btnOicq);
             this.Controls.Add(this.btnConnectToKnife);
             this.Controls.Add(this.btnPlugins);
             this.Controls.Add(this.btnConnectToOneBot);
@@ -258,5 +271,6 @@ namespace GreenOnions.BotManagerWindows
         private System.Windows.Forms.Button btnConnectToOneBot;
         private System.Windows.Forms.Button btnPlugins;
         private Button btnConnectToKnife;
+        private Button btnOicq;
     }
 }

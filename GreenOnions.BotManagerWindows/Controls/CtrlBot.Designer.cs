@@ -333,9 +333,6 @@
             // 
             this.cboAutoConnectProtocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboAutoConnectProtocol.FormattingEnabled = true;
-            this.cboAutoConnectProtocol.Items.AddRange(new object[] {
-            "Mirai-Api-Http",
-            "OneBot"});
             this.cboAutoConnectProtocol.Location = new System.Drawing.Point(190, 4);
             this.cboAutoConnectProtocol.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.cboAutoConnectProtocol.Name = "cboAutoConnectProtocol";
@@ -966,7 +963,7 @@
             this.Controls.Add(this.lblBanGroup);
             this.Controls.Add(this.lstBannedGroup);
             this.Name = "CtrlBot";
-            this.Size = new System.Drawing.Size(858, 1006);
+            this.Size = new System.Drawing.Size(832, 980);
             this.pnlWorkingTime.ResumeLayout(false);
             this.pnlWorkingTime.PerformLayout();
             this.pnlAutoConnect.ResumeLayout(false);

@@ -1,4 +1,5 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.Interface.Configs.Enums;
+using GreenOnions.Utility;
 
 namespace GreenOnions.BotManagerWindows.Controls
 {
@@ -7,6 +8,8 @@ namespace GreenOnions.BotManagerWindows.Controls
         public CtrlBot()
         {
             InitializeComponent();
+
+            cboAutoConnectProtocol.DataSource = Enum.GetNames<BotPlatform>();
 
             for (int i = 0; i < 24; i++)
             {
@@ -65,7 +68,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             #endregion -- 腾讯云相关设置 --
 
             chkAutoConnectEnabled.Checked = BotInfo.Config.AutoConnectEnabled;
-            cboAutoConnectProtocol.SelectedIndex = BotInfo.Config.AutoConnectProtocol;
+            cboAutoConnectProtocol.SelectedIndex = (int)BotInfo.Config.AutoConnectProtocol;
             txbAutoConnectDelay.Text = BotInfo.Config.AutoConnectDelay.ToString();
             cboPixivProxy.Text = BotInfo.Config.PixivProxy;
 
@@ -124,7 +127,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             BotInfo.Config.SendImageByFile = chkSendImageByFile.Checked;
 
             BotInfo.Config.AutoConnectEnabled = chkAutoConnectEnabled.Checked;
-            BotInfo.Config.AutoConnectProtocol = cboAutoConnectProtocol.SelectedIndex;
+            BotInfo.Config.AutoConnectProtocol = (BotPlatform)cboAutoConnectProtocol.SelectedIndex;
             BotInfo.Config.ReplaceImgRoute = cboReplaceImgRoute.SelectedIndex;
             BotInfo.Config.PixivProxy = cboPixivProxy.Text;
 

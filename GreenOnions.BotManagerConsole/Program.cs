@@ -8,6 +8,7 @@
     using GreenOnions.BotMain.MiraiApiHttp;
     using GreenOnions.Utility;
     using GreenOnions.Utility.Helper;
+    using GreenOnions.Interface.Configs.Enums;
 
     public static class Program
     {
@@ -49,7 +50,7 @@
 
                 if (BotInfo.Config.AutoConnectProtocol == 0)
                 {
-                    _miraiClient = new MiraiApiHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.Config.AutoConnectProtocol, "mirai-api-http"));
+                    _miraiClient = new MiraiApiHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.Config.AutoConnectProtocol));
 
                     try
                     {
@@ -63,7 +64,7 @@
                 }
                 else
                 {
-                    _miraiClient = new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.Config.AutoConnectProtocol, "OneBot"));
+                    _miraiClient = new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotInfo.Config.AutoConnectProtocol));
                     try
                     {
                         await _miraiClient.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey);
@@ -122,10 +123,9 @@
                         BotInfo.Config.IP = ip;
                         BotInfo.Config.Port = port;
                         BotInfo.Config.VerifyKey = verifyKey;
-                        WorkingTimeRecorder.DoWork = true;
                         Console.CancelKeyPress -= Console_CancelKeyPress;
                         Console.CancelKeyPress += Console_CancelKeyPress;
-                        _miraiClient = new MiraiApiHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 0, "mirai-api-http"));
+                        _miraiClient = new MiraiApiHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotPlatform.Mirai_Api_Http));
                         await _miraiClient.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey);
                     }
                     catch (Exception ex)
@@ -145,10 +145,9 @@
                         BotInfo.Config.IP = ip;
                         BotInfo.Config.Port = port;
                         BotInfo.Config.VerifyKey = accessToken;
-                        WorkingTimeRecorder.DoWork = true;
                         Console.CancelKeyPress -= Console_CancelKeyPress;
                         Console.CancelKeyPress += Console_CancelKeyPress;
-                        _miraiClient = new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 1, "OneBot"));
+                        _miraiClient = new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, BotPlatform.OneBot));
                         await _miraiClient.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey);
                     }
                     catch (Exception ex)
@@ -183,15 +182,15 @@
             Environment.Exit(0);
         }
 
-        private static void Connecting(bool bConnect, string nickNameOrErrorMessage, int platform, string protocol)
+        private static void Connecting(bool bConnect, string nickNameOrErrorMessage, BotPlatform platform)
         {
             if (bConnect)
             {
-                Console.WriteLine($"已连接到{protocol}, 登录昵称:{nickNameOrErrorMessage}, 如果要断开连接, 请输入exit");
+                Console.WriteLine($"已连接到{platform}, 登录昵称:{nickNameOrErrorMessage}, 如果要断开连接, 请输入exit");
                 WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnected);
             }
             else if (nickNameOrErrorMessage is null)  //连接失败且没有异常
-                Console.WriteLine($"连接失败，请检查{protocol}是否已经正常启动并已配置IP端口相关参数, 以及机器人QQ是否成功登录。");
+                Console.WriteLine($"连接失败，请检查{platform}是否已经正常启动并已配置IP端口相关参数, 以及机器人QQ是否成功登录。");
             else  //发生异常
                 if (nickNameOrErrorMessage.Length > 0)
                 Console.WriteLine("连接失败，" + nickNameOrErrorMessage);
@@ -199,18 +198,17 @@
 
         private static void Disconnected()
         {
-            WorkingTimeRecorder.DoWork = false;
             Console.WriteLine($"主动调用断开连接");
             _miraiClient?.Disconnect();
             Console.WriteLine($"已断开连接");
         }
 
-        private static async void ConnectToPlatform(int platform)
+        private static async void ConnectToPlatform(BotPlatform platform)
         {
             MiraiClient client = platform switch
             {
-                0 => new MiraiApiHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 0, "mirai-api-http")),
-                1 => new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, 1, "OneBot")),
+                BotPlatform.Mirai_Api_Http => new MiraiApiHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, platform)),
+                BotPlatform.OneBot => new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, nickNameOrErrorMessage, platform)),
                 _ => throw new NotImplementedException(),
             };
             await client.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey);

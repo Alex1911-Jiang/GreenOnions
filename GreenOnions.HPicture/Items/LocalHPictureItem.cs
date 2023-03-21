@@ -1,18 +1,20 @@
 ﻿using System;
 using System.IO;
 using GreenOnions.Utility;
+using GreenOnions.Utility.Helper;
 
 namespace GreenOnions.HPicture.Items
 {
     internal class LocalHPictureItem
     {
-        public string? FileName { get; }
+        public Stream ImageStream { get; }
 
         public LocalHPictureItem()
         {
             string[] files = Directory.GetFiles(BotInfo.Config.LocalHPictureDirect, "*", SearchOption.AllDirectories);
             Random rdm = new Random(Guid.NewGuid().GetHashCode());
-            FileName = files[rdm.Next(files.Length)];
+            MemoryStream ms = new MemoryStream(File.ReadAllBytes(files[rdm.Next(files.Length)]));
+            ImageStream = BotInfo.Config.HPictureAntiShielding ? ms.ImageStreamAntiShielding() : ms;
         }
     }
 }
