@@ -1,88 +1,57 @@
-﻿using GreenOnions.Utility;
+﻿using GreenOnions.Interface.Configs.Enums;
+using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 
 namespace GreenOnions.BotMain
 {
     public static class WorkingTimeRecorder
     {
-        private static bool _isRecording = false;
-        private static int _connectedPlatform = -1;
-        public static bool IsRecording => _isRecording;
-        private static TimeOnly timeFrom;
-        private static TimeOnly timeTo;
+        private static BotPlatform _connectedPlatform = BotPlatform.Mirai_Api_Http;
+        private static TimeSpan timeFrom;
+        private static TimeSpan timeTo;
 
-        public static bool DoWork { get; set; } = false;
-
-        public static void StartRecord(int connectedPlatform, Action<int> ConnectMethod, Action DisconnectMethod)
+        public static async void StartRecord(BotPlatform connectedPlatform, Action<BotPlatform> ConnectMethod, Action DisconnectMethod)
         {
+            await Task.Delay(3000);
+
             _connectedPlatform = connectedPlatform;
-            timeFrom = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute));
-            timeTo = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute));
+            timeFrom = DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute).TimeOfDay;
+            timeTo = DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute).TimeOfDay;
 
             if (timeFrom == timeTo)
                 return;
 
+            //bool crossMidnight = timeTo < timeFrom;
+
             if (BotInfo.Config.WorkingTimeEnabled)
             {
-                if (IsRecording)
-                    return;
-                _isRecording = true;
-                Task.Run(() =>
+                while (BotInfo.Config.WorkingTimeEnabled)
                 {
-                    while (BotInfo.Config.WorkingTimeEnabled && DoWork)
+                    if (!BotInfo.IsLogin)
                     {
-                        if (timeFrom < timeTo)  //工作时间在当天内
+                        if (DateTime.Now.TimeOfDay >= timeFrom && DateTime.Now.TimeOfDay <= timeTo)
                         {
-                            if (BotInfo.IsLogin)
-                            {
-                                if (DateTime.Now >= DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute))
-                                {
-                                    LogHelper.WriteWarningLog("自动断开连接");
-                                    DisconnectMethod();
-                                }
-                            }
-                            else
-                            {
-                                if (DateTime.Now > DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute)
-                                && DateTime.Now < DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute))
-                                {
-                                    LogHelper.WriteWarningLog($"自动重新连接到平台{_connectedPlatform}");
-                                    ConnectMethod(_connectedPlatform);
-                                }
-                            }
+                            LogHelper.WriteWarningLog($"自动重新连接到平台{_connectedPlatform}");
+                            ConnectMethod(_connectedPlatform);
                         }
-                        else  //工作时间跨过0点
-                        {
-                            if (BotInfo.IsLogin)
-                            {
-                                if (DateTime.Now > DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute)
-                                && DateTime.Now < DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute))
-                                {
-                                    LogHelper.WriteWarningLog("自动断开连接");
-                                    DisconnectMethod();
-                                }
-                            }
-                            else
-                            {
-                                if (DateTime.Now >= DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute))
-                                {
-                                    LogHelper.WriteWarningLog($"自动重新连接到平台{_connectedPlatform}");
-                                    ConnectMethod(_connectedPlatform);
-                                }
-                            }
-                        }
-
-                        Task.Delay(1000 * 10).Wait();
                     }
-                    _isRecording = false;
-                });
+                    else
+                    {
+                        if (DateTime.Now.TimeOfDay > timeTo || DateTime.Now.TimeOfDay < timeFrom)
+                        {
+                            LogHelper.WriteWarningLog("自动断开连接");
+                            DisconnectMethod();
+                        }
+                    }
+                    await Task.Delay(1000);
+                }
             }
         }
 
         public static void UpdateWorkingTime()
         {
-            timeFrom = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute));
-            timeTo = TimeOnly.FromDateTime(DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute));
+            timeFrom = DateTime.Today.AddHours(BotInfo.Config.WorkingTimeFromHour).AddMinutes(BotInfo.Config.WorkingTimeFromMinute).TimeOfDay;
+            timeTo = DateTime.Today.AddHours(BotInfo.Config.WorkingTimeToHour).AddMinutes(BotInfo.Config.WorkingTimeToMinute).TimeOfDay;
         }
     }
 }
