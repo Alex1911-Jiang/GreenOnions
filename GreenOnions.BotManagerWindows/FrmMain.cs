@@ -145,7 +145,7 @@ namespace GreenOnions.BotManagerWindows
 
 		private void btnConnectToOneBot_Click(object? sender, EventArgs e)
 		{
-			ConnectToPlatform(BotPlatform.Mirai_Api_Http);
+			ConnectToPlatform(BotPlatform.OneBot);
 		}
 
         private void btnConnectToKnife_Click(object sender, EventArgs e)

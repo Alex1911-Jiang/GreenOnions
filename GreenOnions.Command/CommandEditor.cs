@@ -437,7 +437,7 @@ namespace GreenOnions.Command
         private static Dictionary<PropertyInfo, PropertyChineseNameAttribute> FindPropertysByNodeName(string? nodeName)
         {
             Dictionary<PropertyInfo, PropertyChineseNameAttribute> propertyInfos = new Dictionary<PropertyInfo, PropertyChineseNameAttribute>();
-            PropertyInfo[] props = typeof(IBotConfig).GetProperties();
+            PropertyInfo[] props = typeof(BotConfig).GetProperties();
             for (int i = 0; i < props.Length; i++)
             {
                 PropertyChineseNameAttribute? chnNameAttr = props[i].GetCustomAttribute<PropertyChineseNameAttribute>();
