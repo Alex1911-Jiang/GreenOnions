@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.Loader;
+using COSXML.Network;
 using GreenOnions.Interface;
 using GreenOnions.Interface.DispatchCenter;
 using GreenOnions.Interface.Subinterface;
@@ -143,6 +144,23 @@ namespace GreenOnions.BotMain
                 catch (Exception ex)
                 {
                     LogHelper.WriteErrorLog($"插件{Plugins[i].Name}断开连接方法调用发生异常", ex);
+                }
+            }
+        }
+
+        public static void ReloadAllPluginsConfig()
+        {
+            for (int i = 0; i < Plugins.Count; i++)
+            {
+                if (Plugins[i] is not IMessagePlugin msgPlugin) 
+                    continue;
+                try
+                {
+                    msgPlugin.ReloadConfig();
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLog($"插件{Plugins[i].Name}重新读取配置文件发生异常", ex);
                 }
             }
         }

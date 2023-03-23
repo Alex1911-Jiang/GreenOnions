@@ -168,9 +168,21 @@
                     Exit();
                     return;
                 }
+                ExecuteCommand(cmd);
                 await Task.Delay(100);
             }
         }
+
+        private static void ExecuteCommand(string cmd)
+        {
+            if (string.Equals(cmd,"ReloadConfig", StringComparison.OrdinalIgnoreCase))
+            {
+                PluginManager.ReloadAllPluginsConfig();
+                return;
+            }
+            Console.WriteLine(Command.CommandEditor.HandleCommand(cmd, MessageHandler.UpdateRegexs));
+        }
+
         private static void Console_CancelKeyPress(object? sender, ConsoleCancelEventArgs e)
         {
             Exit();

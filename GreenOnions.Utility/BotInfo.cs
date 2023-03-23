@@ -132,6 +132,12 @@ namespace GreenOnions.Utility
             }
         }
 
+        public static void ReloadConfig()
+        {
+            string strConfig = File.ReadAllText("config.json");
+            Config = JsonConvert.DeserializeObject<BotConfig>(strConfig);
+        }
+
         public static void Init()  //空方法，目的是为了触发构造函数
         { 
         
