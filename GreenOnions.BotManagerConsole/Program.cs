@@ -175,9 +175,12 @@
 
         private static void ExecuteCommand(string cmd)
         {
+            if (string.IsNullOrEmpty(cmd))
+                return;
             if (string.Equals(cmd,"ReloadConfig", StringComparison.OrdinalIgnoreCase))
             {
                 PluginManager.ReloadAllPluginsConfig();
+                Console.WriteLine("重新加载配置文件成功");
                 return;
             }
             Console.WriteLine(Command.CommandEditor.HandleCommand(cmd, MessageHandler.UpdateRegexs));
