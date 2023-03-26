@@ -5,6 +5,8 @@ using GreenOnions.Interface;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using TencentCloud.Cls.V20201016.Models;
+using TencentCloud.Mgobe.V20201014.Models;
 
 namespace GreenOnions.Utility.Helper
 {
@@ -26,43 +28,75 @@ namespace GreenOnions.Utility.Helper
             return imageUrl;
         }
 
-        public static void HorizontalFlip(this Stream stream)
+        public static Image ToImage(this Stream stream)
+        {
+            Image img = Image.Load(stream);
+            stream.Dispose();
+            return img;
+        }
+
+        public static Stream ToStream(this Image img)
+        {
+            MemoryStream ms = new MemoryStream();
+            if (img.Frames.Count > 1)
+                img.SaveAsGif(ms);
+            else
+                img.SaveAsPng(ms);
+            img.Dispose();
+            return ms;
+        }
+
+        public static Stream HorizontalFlip(this Stream stream)
         {
             using Image img = Image.Load(stream);
             HorizontalFlip(img);
             stream.Seek(0, SeekOrigin.Begin);
-            img.SaveAsPng(stream);
+            MemoryStream ms = new MemoryStream();
+            if (img.Frames.Count > 1)
+                img.SaveAsGif(ms);
+            else
+                img.SaveAsPng(ms);
+            return ms;
         }
 
-        public static void VerticalFlip(this Stream stream)
+        public static Stream VerticalFlip(this Stream stream)
         {
             using Image img = Image.Load(stream);
             VerticalFlip(img);
             stream.Seek(0, SeekOrigin.Begin);
-            img.SaveAsPng(stream);
+            MemoryStream ms = new MemoryStream();
+            if (img.Frames.Count > 1)
+                img.SaveAsGif(ms);
+            else
+                img.SaveAsPng(ms);
+            return ms;
         }
 
-        public static void RewindGif(this Stream stream)
+        public static Stream RewindGif(this Stream stream)
         {
             using Image img = Image.Load(stream);
             RewindGif(img);
             stream.Seek(0, SeekOrigin.Begin);
-            img.SaveAsGif(stream);
+            MemoryStream ms = new MemoryStream();
+            img.SaveAsGif(ms);
+            return ms;
         }
-
 
         public static void HorizontalFlip(this Image img)
         {
             img.Mutate(x => x.Flip(FlipMode.Horizontal));
         }
 
-        public static void VerticalFlip(Image img)
+        public static void VerticalFlip(this Image img)
         {
             img.Mutate(x => x.Flip(FlipMode.Vertical));
         }
 
         public static void RewindGif(this Image gif)
         {
+            if (gif.Frames.Count < 2)
+                return;
+
             for (int i = 0; i < gif.Frames.Count / 2; i++)
             {
                 int secondIndex = gif.Frames.Count - 1 - i;

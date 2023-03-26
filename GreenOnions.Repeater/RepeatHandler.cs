@@ -107,33 +107,33 @@ namespace GreenOnions.Repeater
 
         private static async Task<Stream> MirrorImage(string url)
         {
+            Stream img = await HttpHelper.GetStreamAsync(url, false);
+
+            if (img is null)
+                return null;
+
             bool bRewind = false;
             bool bHorizontalMirror = false;
             bool bVerticalMirror = false;
             if (BotInfo.Config.RewindGifEnabled)
                 bRewind = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.Config.RewindGifProbability;
-            if (!bRewind)
-            {
-                if (BotInfo.Config.HorizontalMirrorImageEnabled)
-                    bHorizontalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.Config.HorizontalMirrorImageProbability;
-                if (BotInfo.Config.VerticalMirrorImageEnabled)
-                    bVerticalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.Config.VerticalMirrorImageProbability;
-            }
-            
+            if (BotInfo.Config.HorizontalMirrorImageEnabled)
+                bHorizontalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.Config.HorizontalMirrorImageProbability;
+            if (BotInfo.Config.VerticalMirrorImageEnabled)
+                bVerticalMirror = new Random(Guid.NewGuid().GetHashCode()).Next(1, 101) < BotInfo.Config.VerticalMirrorImageProbability;
+
             if (bRewind || bHorizontalMirror || bVerticalMirror)
             {
-                Stream img = await HttpHelper.GetStreamAsync(url, false);
-                if (img is null)
-                    return null;
                 try
                 {
-                    //倒放和镜像不会同时发生且倒放优先级高于镜像, 但水平镜像和垂直镜像可能同时发生
+                    var bmp = img.ToImage();
                     if (bRewind)
-                        img.RewindGif();
+                        bmp.RewindGif();
                     if (bHorizontalMirror)
-                        img.HorizontalFlip();
+                        bmp.HorizontalFlip();
                     if (bVerticalMirror)
-                        img.VerticalFlip();
+                        bmp.VerticalFlip();
+                    img = bmp.ToStream();
                     return img;
                 }
                 catch (Exception ex)

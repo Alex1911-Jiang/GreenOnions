@@ -71,8 +71,9 @@ namespace GreenOnions.BotManagerWindows
 
 #if DEBUG
 			btnConnectToKnife.Visible = true;
+			btnConnectToOicq.Visible = true;
 #endif
-        }
+		}
 
 		protected override void OnSizeChanged(EventArgs e)
 		{
@@ -153,7 +154,7 @@ namespace GreenOnions.BotManagerWindows
 			ConnectToPlatform(BotPlatform.Kinfe);
         }
 
-        private void btnOicq_Click(object sender, EventArgs e)
+        private void btnConnectToOicq_Click(object sender, EventArgs e)
         {
             ConnectToPlatform(BotPlatform.Oicq);
         }
