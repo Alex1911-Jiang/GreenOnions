@@ -1,5 +1,4 @@
-﻿using GreenOnions.BotMain.Knife;
-using GreenOnions.BotMain.Konata;
+﻿using GreenOnions.BotMain.Konata;
 using GreenOnions.Interface;
 using Konata.Core.Message;
 using Newtonsoft.Json;

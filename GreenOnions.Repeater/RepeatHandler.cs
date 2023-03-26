@@ -129,11 +129,11 @@ namespace GreenOnions.Repeater
                 {
                     //倒放和镜像不会同时发生且倒放优先级高于镜像, 但水平镜像和垂直镜像可能同时发生
                     if (bRewind)
-                        img = img.RewindGifStream();
+                        img.RewindGif();
                     if (bHorizontalMirror)
-                        img = img.HorizontalMirrorImageStream();
+                        img.HorizontalFlip();
                     if (bVerticalMirror)
-                        img = img.VerticalMirrorImageStream();
+                        img.VerticalFlip();
                     return img;
                 }
                 catch (Exception ex)

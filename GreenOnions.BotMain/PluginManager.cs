@@ -27,6 +27,10 @@ namespace GreenOnions.BotMain
             foreach (string pluginItem in pluginItemPath)
             {
                 File.Copy("GreenOnions.Interface.dll", Path.Combine(pluginItem, "GreenOnions.Interface.dll"), true);
+                if (File.Exists("GreenOnions.Interface.xml"))
+                    File.Copy("GreenOnions.Interface.xml", Path.Combine(pluginItem, "GreenOnions.Interface.xml"), true);
+                if (File.Exists("GreenOnions.Interface.json"))
+                    File.Copy("GreenOnions.Interface.json", Path.Combine(pluginItem, "GreenOnions.Interface.json"), true);
 #if DEBUG
                 File.Copy("GreenOnions.Interface.pdb", Path.Combine(pluginItem, "GreenOnions.Interface.pdb"), true);
 #endif
