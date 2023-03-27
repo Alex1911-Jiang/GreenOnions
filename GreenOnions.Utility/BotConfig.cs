@@ -1027,6 +1027,12 @@ namespace GreenOnions.Utility
         public double ReadRssInterval { get; set; } = 10.0;
 
         /// <summary>
+        /// 推特图片反代地址
+        /// </summary>
+        [PropertyChineseName("推特图片反向代理地址", "RSS订阅转发")]
+        public string TwimgProxyUrl { get; set; } = string.Empty;
+
+        /// <summary>
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
         [PropertyChineseName("RSS订阅项", "RSS订阅转发")]

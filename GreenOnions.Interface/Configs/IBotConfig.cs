@@ -893,6 +893,11 @@ namespace GreenOnions.Interface.Configs
         public double ReadRssInterval { get; }
 
         /// <summary>
+        /// 推特图片反代地址
+        /// </summary>
+        public string TwimgProxyUrl { get;}
+
+        /// <summary>
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
         public HashSet<RssSubscriptionItem>? RssSubscription { get; }

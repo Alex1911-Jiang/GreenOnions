@@ -29,6 +29,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             chkRssParallel.Checked = BotInfo.Config.RssParallel;
             chkRssUseProxy.Checked = BotInfo.Config.RssUseProxy;
             txbReadRssInterval.Text = BotInfo.Config.ReadRssInterval.ToString();
+            txbTwimgProxyUrl.Text = BotInfo.Config.TwimgProxyUrl;
         }
 
         public void SaveConfig()
@@ -53,6 +54,7 @@ namespace GreenOnions.BotManagerWindows.Controls
             BotInfo.Config.RssParallel = chkRssParallel.Checked;
             BotInfo.Config.RssUseProxy = chkRssUseProxy.Checked;
             BotInfo.Config.ReadRssInterval = Convert.ToDouble(txbReadRssInterval.Text);
+            BotInfo.Config.TwimgProxyUrl = txbTwimgProxyUrl.Text;
         }
 
         public void UpdateCache()

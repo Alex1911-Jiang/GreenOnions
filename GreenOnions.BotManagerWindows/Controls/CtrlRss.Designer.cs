@@ -34,6 +34,8 @@
             this.txbReadRssInterval = new System.Windows.Forms.TextBox();
             this.lblReadRssInterval = new System.Windows.Forms.Label();
             this.pnlRssSettings = new System.Windows.Forms.Panel();
+            this.lblTwimgProxyUrl = new System.Windows.Forms.Label();
+            this.txbTwimgProxyUrl = new System.Windows.Forms.TextBox();
             this.chkRssUseProxy = new System.Windows.Forms.CheckBox();
             this.chkRssParallel = new System.Windows.Forms.CheckBox();
             this.btnRssLogViewer = new System.Windows.Forms.Button();
@@ -48,10 +50,10 @@
             this.pnlRssSubscriptionList.Controls.Add(this.btnAddRssSubscription);
             this.pnlRssSubscriptionList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlRssSubscriptionList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.pnlRssSubscriptionList.Location = new System.Drawing.Point(0, 41);
+            this.pnlRssSubscriptionList.Location = new System.Drawing.Point(0, 80);
             this.pnlRssSubscriptionList.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRssSubscriptionList.Name = "pnlRssSubscriptionList";
-            this.pnlRssSubscriptionList.Size = new System.Drawing.Size(990, 865);
+            this.pnlRssSubscriptionList.Size = new System.Drawing.Size(990, 826);
             this.pnlRssSubscriptionList.TabIndex = 7;
             this.pnlRssSubscriptionList.WrapContents = false;
             this.pnlRssSubscriptionList.SizeChanged += new System.EventHandler(this.pnlRssSubscriptionList_SizeChanged);
@@ -91,6 +93,8 @@
             // 
             // pnlRssSettings
             // 
+            this.pnlRssSettings.Controls.Add(this.lblTwimgProxyUrl);
+            this.pnlRssSettings.Controls.Add(this.txbTwimgProxyUrl);
             this.pnlRssSettings.Controls.Add(this.chkRssUseProxy);
             this.pnlRssSettings.Controls.Add(this.chkRssParallel);
             this.pnlRssSettings.Controls.Add(this.btnRssLogViewer);
@@ -100,8 +104,24 @@
             this.pnlRssSettings.Location = new System.Drawing.Point(0, 0);
             this.pnlRssSettings.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.pnlRssSettings.Name = "pnlRssSettings";
-            this.pnlRssSettings.Size = new System.Drawing.Size(990, 41);
+            this.pnlRssSettings.Size = new System.Drawing.Size(990, 80);
             this.pnlRssSettings.TabIndex = 9;
+            // 
+            // lblTwimgProxyUrl
+            // 
+            this.lblTwimgProxyUrl.AutoSize = true;
+            this.lblTwimgProxyUrl.Location = new System.Drawing.Point(6, 44);
+            this.lblTwimgProxyUrl.Name = "lblTwimgProxyUrl";
+            this.lblTwimgProxyUrl.Size = new System.Drawing.Size(172, 24);
+            this.lblTwimgProxyUrl.TabIndex = 13;
+            this.lblTwimgProxyUrl.Text = "推特图片代理服务：";
+            // 
+            // txbTwimgProxyUrl
+            // 
+            this.txbTwimgProxyUrl.Location = new System.Drawing.Point(184, 41);
+            this.txbTwimgProxyUrl.Name = "txbTwimgProxyUrl";
+            this.txbTwimgProxyUrl.Size = new System.Drawing.Size(799, 30);
+            this.txbTwimgProxyUrl.TabIndex = 12;
             // 
             // chkRssUseProxy
             // 
@@ -160,5 +180,7 @@
         private Button btnRssLogViewer;
         private CheckBox chkRssParallel;
         private CheckBox chkRssUseProxy;
+        private Label lblTwimgProxyUrl;
+        private TextBox txbTwimgProxyUrl;
     }
 }

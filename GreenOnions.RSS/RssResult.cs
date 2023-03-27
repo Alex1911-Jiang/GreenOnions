@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Threading.Tasks;
+using System.Web;
 using GreenOnions.Interface;
 using GreenOnions.Translate;
 using GreenOnions.Utility;
@@ -110,7 +113,16 @@ namespace GreenOnions.RSS
         {
             try
             {
-                return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy);
+                if (!string.IsNullOrWhiteSpace(BotInfo.Config.TwimgProxyUrl) && imgUrl.StartsWith("https://pbs.twimg.com/"))
+                {
+                    string urlParam = HttpUtility.UrlEncode(imgUrl);
+                    Stream imgStream = await HttpHelper.GetStreamAsync($"{BotInfo.Config.TwimgProxyUrl}{urlParam}", false);
+                    return new GreenOnionsImageMessage(imgStream);
+                }
+                else
+                {
+                    return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy);
+                }
             }
             catch
             {
