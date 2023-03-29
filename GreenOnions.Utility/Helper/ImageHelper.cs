@@ -115,7 +115,7 @@ namespace GreenOnions.Utility.Helper
             using Image<Rgba32> bmp = img.CloneAs<Rgba32>();
             bmp.AntiShielding();
             Stream ms = new MemoryStream();
-            bmp.SaveAsPng(stream);
+            bmp.SaveAsPng(ms);
             stream.Dispose();
             return ms;
         }

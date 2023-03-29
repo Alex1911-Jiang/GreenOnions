@@ -115,9 +115,17 @@ namespace GreenOnions.RSS
             {
                 if (!string.IsNullOrWhiteSpace(BotInfo.Config.TwimgProxyUrl) && imgUrl.StartsWith("https://pbs.twimg.com/"))
                 {
-                    string urlParam = HttpUtility.UrlEncode(imgUrl);
-                    Stream imgStream = await HttpHelper.GetStreamAsync($"{BotInfo.Config.TwimgProxyUrl}{urlParam}", false);
-                    return new GreenOnionsImageMessage(imgStream);
+                    try
+                    {
+                        string urlParam = HttpUtility.UrlEncode(imgUrl);
+                        Stream imgStream = await HttpHelper.GetStreamAsync($"{BotInfo.Config.TwimgProxyUrl}{urlParam}", false);
+                        return new GreenOnionsImageMessage(imgStream);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.WriteErrorLog("使用推特代理下载图片错误。", ex);
+                        return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy);
+                    }
                 }
                 else
                 {
