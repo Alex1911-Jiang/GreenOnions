@@ -54,7 +54,7 @@ namespace GreenOnions.HPicture
 
         internal static async Task<GreenOnionsImageMessage> CreateImageMessageByLoliItemAsync(LoliHPictureItem item)
         {
-            return await ImageHelper.CreateImageMessageByUrlAsync(item.URL, BotInfo.Config.HPictureUseProxy);
+            return await ImageHelper.CreateImageMessageByUrlAsync(item.URL, BotInfo.Config.HPictureUseProxy, BotInfo.Config.HPictureAntiShielding);
         }
 
         internal static GreenOnionsTextMessage? CreateTextMessageByWebItem(PictureItem item)
@@ -69,7 +69,7 @@ namespace GreenOnions.HPicture
 
         internal static async Task<GreenOnionsImageMessage> CreateImageMessageByWebItemAsync(PictureItem item)
         {
-           return await ImageHelper.CreateImageMessageByUrlAsync(item.BigImgUrl, BotInfo.Config.HPictureUseProxy);
+           return await ImageHelper.CreateImageMessageByUrlAsync(item.BigImgUrl, BotInfo.Config.HPictureUseProxy, BotInfo.Config.HPictureAntiShielding);
         }
     }
 }

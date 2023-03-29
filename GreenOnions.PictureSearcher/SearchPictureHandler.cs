@@ -700,12 +700,12 @@ namespace GreenOnions.PictureSearcher
                                                 if (BotInfo.Config.SearchSendByForward)  //合并转发
                                                 {
                                                     string imgUrlNoP = $"https://{BotInfo.Config.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
-                                                    outMessage.Add(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlNoP, BotInfo.Config.OriginalPictureUseProxy));
+                                                    outMessage.Add(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlNoP, BotInfo.Config.OriginalPictureUseProxy, false));
                                                 }
                                                 else
                                                 {
                                                     string imgUrlNoP = $"https://{BotInfo.Config.PixivProxy}/{SauceNAOItem.pixiv_id}.png";
-                                                    SendMessage(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlNoP, BotInfo.Config.OriginalPictureUseProxy));
+                                                    SendMessage(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlNoP, BotInfo.Config.OriginalPictureUseProxy, false));
                                                 }
                                             }
                                             else  //地址有P且>0
@@ -714,7 +714,7 @@ namespace GreenOnions.PictureSearcher
                                                     outMessage.Add(new GreenOnionsImageMessage(imgUrlHasP));
                                                 else
                                                 {
-                                                    SendMessage(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlHasP, BotInfo.Config.OriginalPictureUseProxy));
+                                                    SendMessage(await ImageHelper.CreateImageMessageByUrlAsync(imgUrlHasP, BotInfo.Config.OriginalPictureUseProxy, false));
                                                 }
                                             }
                                         }

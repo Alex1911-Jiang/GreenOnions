@@ -136,15 +136,12 @@ namespace GreenOnions.Utility.Helper
         /// <summary>
         /// 根据图片URL下载图片并创建一个图片消息
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="cacheName"></param>
-        /// <returns></returns>
-        public static async Task<GreenOnionsImageMessage> CreateImageMessageByUrlAsync(string url, bool useProxy)
+        public static async Task<GreenOnionsImageMessage> CreateImageMessageByUrlAsync(string url, bool useProxy, bool antiShielding)
         {
             if (BotInfo.Config.SendImageByFile)  //下载完成后发送文件
             {
                 Stream imgStream = await HttpHelper.GetStreamAsync(url, useProxy);
-                if (BotInfo.Config.HPictureAntiShielding)  //反和谐
+                if (antiShielding)  //反和谐
                     imgStream = AntiShielding(imgStream);
                 return new GreenOnionsImageMessage(imgStream);
             }

@@ -93,6 +93,10 @@ namespace GreenOnions.RSS
         /// </summary>
         internal GreenOnionsBaseMessage? Media { get; set; }
 
+        /// <summary>
+        /// 获取B站封面
+        /// </summary>
+        /// <returns></returns>
         internal async Task<GreenOnionsImageMessage?> BilibiliLiveCover()
         {
             if (Url.Contains("bilibili") && Url.Contains("/room/"))
@@ -103,7 +107,7 @@ namespace GreenOnions.RSS
                 string? imgUrl = jo?["data"]?["room_info"]?["cover"]?.ToString();
                 if (imgUrl is null)
                     return null;
-                return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy);
+                return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, false, false);
             }
             return null;
         }
@@ -123,12 +127,12 @@ namespace GreenOnions.RSS
                     catch (Exception ex)
                     {
                         LogHelper.WriteErrorLog("使用推特代理下载图片错误。", ex);
-                        return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy);
+                        return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy, false);
                     }
                 }
                 else
                 {
-                    return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy);
+                    return await ImageHelper.CreateImageMessageByUrlAsync(imgUrl, BotInfo.Config.RssUseProxy, false);
                 }
             }
             catch
