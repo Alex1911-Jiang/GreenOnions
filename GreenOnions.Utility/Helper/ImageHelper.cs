@@ -109,13 +109,15 @@ namespace GreenOnions.Utility.Helper
             }
         }
 
-        public static void AntiShielding(this Stream stream)
+        public static Stream AntiShielding(this Stream stream)
         {
             using Image img = Image.Load(stream);
             using Image<Rgba32> bmp = img.CloneAs<Rgba32>();
             bmp.AntiShielding();
-            stream.Seek(0, SeekOrigin.Begin);
+            Stream ms = new MemoryStream();
             bmp.SaveAsPng(stream);
+            stream.Dispose();
+            return ms;
         }
         
         public static void AntiShielding(this Image<Rgba32> bmp)
@@ -143,7 +145,7 @@ namespace GreenOnions.Utility.Helper
             {
                 Stream imgStream = await HttpHelper.GetStreamAsync(url, useProxy);
                 if (BotInfo.Config.HPictureAntiShielding)  //反和谐
-                    AntiShielding(imgStream);
+                    imgStream = AntiShielding(imgStream);
                 return new GreenOnionsImageMessage(imgStream);
             }
             else  //直接发送地址

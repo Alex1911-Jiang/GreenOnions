@@ -13,9 +13,9 @@ namespace GreenOnions.HPicture.Items
         {
             string[] files = Directory.GetFiles(BotInfo.Config.LocalHPictureDirect, "*", SearchOption.AllDirectories);
             Random rdm = new Random(Guid.NewGuid().GetHashCode());
-            MemoryStream ms = new MemoryStream(File.ReadAllBytes(files[rdm.Next(files.Length)]));
+            Stream ms = new MemoryStream(File.ReadAllBytes(files[rdm.Next(files.Length)]));
             if (BotInfo.Config.HPictureAntiShielding)
-                ms.AntiShielding();
+                ms = ms.AntiShielding();
             ImageStream = ms;
         }
     }
