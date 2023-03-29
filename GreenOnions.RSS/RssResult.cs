@@ -97,9 +97,8 @@ namespace GreenOnions.RSS
         {
             if (Url.Contains("bilibili") && Url.Contains("/room/"))
             {
-                using HttpClient client = HttpHelper.CreateClient(BotInfo.Config.RssUseProxy);
                 string roomId = Url[(Url.LastIndexOf("/room/") + "/room/".Length)..];
-                string apiResult = await HttpHelper.GetStringAsync(client, $@"https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id={roomId}");
+                string apiResult = await HttpHelper.GetStringAsync($@"https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id={roomId}", false);
                 JObject jo = JsonConvert.DeserializeObject<JObject>(apiResult);
                 string? imgUrl = jo?["data"]?["room_info"]?["cover"]?.ToString();
                 if (imgUrl is null)

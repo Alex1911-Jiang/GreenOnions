@@ -57,6 +57,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="ItemFroms\FrmRssFromat.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resource.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
