@@ -35,6 +35,7 @@ namespace GreenOnions.Command
             bool bSet = false;
             bool bList = false;
             bool bDescription = false;
+            bool bReset = false;
             bool bRss = false;
             bool bAddRss = false;
             bool bRemoveRss = false;
@@ -42,6 +43,7 @@ namespace GreenOnions.Command
                 (bSet = message.StartsWith("--set ", StringComparison.OrdinalIgnoreCase)) || 
                 (bList = message.StartsWith("--list", StringComparison.OrdinalIgnoreCase)) ||
                 (bDescription = message.StartsWith("--description ", StringComparison.OrdinalIgnoreCase)) ||
+                (bReset = message.StartsWith("--reset ", StringComparison.OrdinalIgnoreCase)) ||
                 (bRss = message.StartsWith("--rss", StringComparison.OrdinalIgnoreCase)) ||
                 (bAddRss = message.StartsWith("--addrss ", StringComparison.OrdinalIgnoreCase)) ||
                 (bRemoveRss = message.StartsWith("--removerss ", StringComparison.OrdinalIgnoreCase)))
@@ -183,6 +185,21 @@ namespace GreenOnions.Command
                             lstEnumName.Add(item.ToString()!);
                         return $"属性<{prop.Name}>值设置失败，该属性是一个枚举，允许的值有:\r\n{string.Join(";\r\n", lstEnumName)}。";
                     }
+                }
+                else if (bReset)  //重置属性为默认值
+                {
+                    string commandBody = message.Substring("--reset".Length).Trim();
+                    if (string.IsNullOrWhiteSpace(commandBody))
+                        return "您需要在--reset命令后+<空格>+<属性名称>(不含尖括号)，用于将此属性重置为默认值。";
+
+                    PropertyInfo? prop = FindProperty(commandBody);
+                    if (prop is null)
+                        return $"不存在属性<{commandBody}>，请使用\"--list\"列出属性。";
+
+                    BotConfig defaultConfig = new BotConfig();
+                    var defaultValue = prop.GetValue(defaultConfig);
+                    prop.SetValue(BotInfo.Config, defaultValue);
+                    return $"属性<{prop.Name}>的值已重置为:{defaultValue}。";
                 }
                 else if (bList)  //列出属性
                 {

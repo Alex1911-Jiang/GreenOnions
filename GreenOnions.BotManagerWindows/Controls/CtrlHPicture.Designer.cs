@@ -761,9 +761,9 @@
             this.lblLoliconHPictureCmd.Location = new System.Drawing.Point(6, 83);
             this.lblLoliconHPictureCmd.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblLoliconHPictureCmd.Name = "lblLoliconHPictureCmd";
-            this.lblLoliconHPictureCmd.Size = new System.Drawing.Size(130, 24);
+            this.lblLoliconHPictureCmd.Size = new System.Drawing.Size(86, 24);
             this.lblLoliconHPictureCmd.TabIndex = 42;
-            this.lblLoliconHPictureCmd.Text = "色图/美图命令:";
+            this.lblLoliconHPictureCmd.Text = "色图命令:";
             // 
             // btnRemoveWhiteGroup
             // 
@@ -1137,7 +1137,7 @@
             this.Controls.Add(this.lblUserCmd);
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.Name = "CtrlHPicture";
-            this.Size = new System.Drawing.Size(929, 1452);
+            this.Size = new System.Drawing.Size(903, 1426);
             this.pnlHPictureCheckBoxes.ResumeLayout(false);
             this.pnlHPictureCheckBoxes.PerformLayout();
             this.pnlHPictureCmd.ResumeLayout(false);
