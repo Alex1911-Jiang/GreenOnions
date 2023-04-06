@@ -315,7 +315,10 @@ namespace GreenOnions.RSS
                     {
                         if (firstIsQuestion && isEmptyMsg)
                             continue;
-                        resultMsg.Add(item.Format[i].Substring(firstIsQuestion ? 1 : 0, keyIndex));
+                        int startSubIndex = firstIsQuestion ? 1 : 0;
+                        int subLength = keyIndex - startSubIndex;
+                        if (subLength > 0)
+                            resultMsg.Add(item.Format[i].Substring(firstIsQuestion ? 1 : 0, subLength));
                         if (itemMsg is not null)
                             resultMsg.AddRange(itemMsg);
                         resultMsg.Add("\r\n");
