@@ -50,7 +50,7 @@ namespace GreenOnions.RSS
                     {
                         if (string.IsNullOrWhiteSpace(item.Url))
                         {
-                            LogWarn($"{item.Url}没有设置Url，不进行抓取");
+                            LogWarn($"没有设置Url，不进行抓取");
                             continue;
                         }
                         //如果在调试模式并且转发的QQ和群组均不在管理员和调试群组集合中时不去请求
@@ -123,9 +123,15 @@ namespace GreenOnions.RSS
             await foreach (RssResult? rssResult in RssXmlToResult(xml, item.Url!))
             {
                 if (rssResult is null)
+                {
+                    LogWarn("当前解析结果为空，无法发送");
                     continue;
+                }
                 if (!FilterMessage(item, rssResult.InnerTitle, rssResult.Text))  //过滤词
+                {
+                    LogInfo("结果集中包含过滤词，不发送");
                     continue;
+                }
 
                 try
                 {
@@ -611,6 +617,7 @@ namespace GreenOnions.RSS
                             break;
                     }
                 }
+                LogInfo("当前Content内容解析成功");
                 yield return result;
             }
         }
@@ -641,6 +648,7 @@ namespace GreenOnions.RSS
                 result.Url = url;
                 result.Title = title;
                 result.PubDate = pubDate;
+
                 foreach (XmlNode subNode in node.ChildNodes)
                 {
                     switch (subNode.Name.ToLower())
@@ -682,6 +690,7 @@ namespace GreenOnions.RSS
                             break;
                     }
                 }
+                LogInfo("当前Atom内容解析成功");
                 yield return result;
             }
         }
