@@ -11,7 +11,7 @@ namespace GreenOnions.BotMain.OneBot
 {
     public static class MessageEvents
     {
-        private static readonly Regex regexTags = new Regex("<@?成员QQ>|<成员昵称>|<@?操作者QQ>|<操作者昵称>");
+        private static readonly Regex regexTags = new Regex("<@?成员QQ>|<成员昵称>|<@?操作者QQ>|<操作者昵称>", RegexOptions.Compiled);
         public static async ValueTask Event_OnGroupMessage(string eventType, GroupMessageEventArgs eventArgs)
         {
             if (eventArgs.SoraApi == null)
@@ -103,6 +103,9 @@ namespace GreenOnions.BotMain.OneBot
 
         public static async ValueTask Event_OnGroupMemberChange(string eventType, GroupMemberChangeEventArgs eventArgs)
         {
+            if (eventArgs.ChangedUser.Id == BotInfo.Config.QQId)
+                return;
+
             if (eventArgs.SoraApi == null)
             {
                 LogHelper.WriteErrorLog("SoraApi为空", null);
@@ -137,7 +140,7 @@ namespace GreenOnions.BotMain.OneBot
             }
         }
 
-        private static async Task<MessageBody> ReplaceMessage(string messageCmd, long group, User member, User? Operator = null)
+        private static async Task<MessageBody> ReplaceMessage(string messageCmd, long group, User member, User? @operator = null)
         {
             MessageBody outMsg = new MessageBody();
             string remainMessage = messageCmd;
@@ -164,46 +167,39 @@ namespace GreenOnions.BotMain.OneBot
                 }
                 else if (identifier == "<成员昵称>")
                 {
-                    if (member.Id == BotInfo.Config.QQId)
+                    var getMember = await member.SoraApi.GetGroupMemberInfo(group, member.Id);
+                    if (string.IsNullOrEmpty(getMember.memberInfo.Card))
                     {
-                        outMsg.AddText(BotInfo.Config.BotName);
+                        var getUserInfo = await member.GetUserInfo();
+                        outMsg.AddText(getUserInfo.userInfo.Nick);
                     }
                     else
                     {
-                        var getMember = await member.SoraApi.GetGroupMemberInfo(group, member.Id);
-                        if (string.IsNullOrEmpty(getMember.memberInfo.Card))
-                        {
-                            var getUserInfo = await member.GetUserInfo();
-                            outMsg.AddText(getUserInfo.userInfo.Nick);
-                        }
-                        else
-                        {
-                            outMsg.AddText(getMember.memberInfo.Card);
-                        }
+                        outMsg.AddText(getMember.memberInfo.Card);
                     }
                 }
-                else if (Operator is not null)
+                else if (@operator is not null)
                 {
                     if (identifier == "<@操作者QQ>")
                     {
-                        outMsg.Add(SoraSegment.At(Operator.Id));
+                        outMsg.Add(SoraSegment.At(@operator.Id));
                     }
                     else if (identifier == "<操作者QQ>")
                     {
-                        outMsg.AddText(Operator.Id.ToString());
+                        outMsg.AddText(@operator.Id.ToString());
                     }
                     else if (identifier == "<操作者昵称>")
                     {
-                        if (Operator.Id == BotInfo.Config.QQId)
+                        if (@operator.Id == BotInfo.Config.QQId)
                         {
                             outMsg.AddText(BotInfo.Config.BotName);
                         }
                         else
                         {
-                            var getOperator = await Operator.SoraApi.GetGroupMemberInfo(group, Operator.Id);
+                            var getOperator = await @operator.SoraApi.GetGroupMemberInfo(group, @operator.Id);
                             if (string.IsNullOrEmpty(getOperator.memberInfo.Card))
                             {
-                                var getUserInfo = await Operator.GetUserInfo();
+                                var getUserInfo = await @operator.GetUserInfo();
                                 outMsg.AddText(getUserInfo.userInfo.Nick);
                             }
                             else

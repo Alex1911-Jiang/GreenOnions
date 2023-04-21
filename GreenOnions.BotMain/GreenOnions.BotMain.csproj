@@ -21,6 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EleCho.GoCqHttpSdk" Version="1.0.12" />
     <PackageReference Include="Konata.Core" Version="1.3.2" />
     <PackageReference Include="Mirai-CSharp.HttpApi" Version="2.1.9" />
     <PackageReference Include="Mirai-CSharp.ImageConverter" Version="2.1.9" />
