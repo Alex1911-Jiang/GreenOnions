@@ -1,6 +1,8 @@
 ﻿using System.Net.Sockets;
 using EleCho.GoCqHttpSdk;
+using EleCho.GoCqHttpSdk.Action;
 using GreenOnions.BotMain.Go_CqHttp;
+using GreenOnions.BotMain.MiraiApiHttp;
 using GreenOnions.Interface;
 using GreenOnions.RSS;
 using GreenOnions.Utility;
@@ -24,6 +26,7 @@ namespace GreenOnions.BotMain.OneBot
                 _session = new CqWsSession(new CqWsSessionOptions()
                 {
                     BaseUri = new Uri($"ws://{ip}:{port}"),  // WebSocket 地址
+                    AccessToken = accessToken,
                     UseApiEndPoint = true,                     // 使用 api 终结点
                     UseEventEndPoint = true,                   // 使用事件终结点
                 });
@@ -44,153 +47,113 @@ namespace GreenOnions.BotMain.OneBot
                 //    await next();
                 //});
                 _session.HandlePipeline();
-                
 
-
-                _service.Event.OnGroupMessage += MessageEvents.Event_OnGroupMessage;
-                _service.Event.OnPrivateMessage += MessageEvents.Event_OnPrivateMessage;
-                _service.Event.OnGroupMemberChange += MessageEvents.Event_OnGroupMemberChange;
-                _service.Event.OnGroupMemberMute += MessageEvents.Event_OnGroupMemberMute;
-
-                bool connectCancel = false;
-                BotInfo.IsLogin = false;
-                _ = Task.Delay(3000).ContinueWith(async _ =>
+                void RecallMessage(long messageId, int revokeTime)
                 {
-                    if (!BotInfo.IsLogin)
-                        await _service.StopService();
-                });
-
-                //启动服务并捕捉错误
-                await _service.StartService().RunCatch(e =>
-                {
-                    connectCancel = true;
-                    if (e is not null)
-                        LogHelper.WriteErrorLog("Sora服务异常", e);
-                    //Log.Error("Sora _service", Log.ErrorLogBuilder(e));
-                });
-                if (connectCancel)
-                {
-                    throw new SocketException(10061);
+                    Task.Delay(revokeTime).ContinueWith(_ => _session.RecallMessage(messageId));
                 }
 
-                SoraApi? api = null;
+                string nickname = _session.GetLoginInformation()?.Nickname ?? "未知";
 
-                _service.Event.OnClientConnect += async (eventType, eventArgs) =>
-                {
-                    api = eventArgs.SoraApi;
+                ConnectedEvent?.Invoke(true, nickname);
 
-                    void RecallMessage(int messageId, int revokeTime)
+                GreenOnionsApi greenOnionsApi = new(
+                    async (targetId, msg) =>
                     {
-                        Task.Delay(revokeTime).ContinueWith(_ => api.RecallMessage(messageId));
-                    }
+                        if (msg is null || msg.Count == 0)
+                            return 0;
 
-                    BotInfo.Config.QQId = eventArgs.SoraApi.GetLoginUserId();
-
-                    List<FriendInfo> IFriendInfos = (await eventArgs.SoraApi.GetFriendList()).friendList;
-                    string nickname = "未知";
-
-                    var self = IFriendInfos.Where(q => q.UserId == qqId).FirstOrDefault();
-                    if (self is not null)
-                        nickname = self.Nick;
-
-                    ConnectedEvent?.Invoke(true, nickname);
-
-                    GreenOnionsApi greenOnionsApi = new (
-                        async (targetId, msg) =>
+                        long sendedFriendMessageId = 0;
+                        if (msg.First() is GreenOnionsForwardMessage)
                         {
-                            if (msg is null || msg.Count == 0)
-                                return 0;
-
-                            int sendedFriendMessageId = 0;
-                            if (msg.First() is GreenOnionsForwardMessage)
-                            {
-                                var soraMsg = msg.ToOneBotForwardMessage();
-                                sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateForwardMsg(targetId, soraMsg)).messageId;
-                            }
-                            else
-                            {
-                                var soraMsg = msg.ToOneBotMessages();
-                                if (soraMsg is null || soraMsg.Count == 0)
-                                    return 0;
-                                sendedFriendMessageId = (await eventArgs.SoraApi.SendPrivateMessage(targetId, soraMsg)).messageId;
-                            }
-                            if (msg.RevokeTime > 0 && sendedFriendMessageId != -1)
-                                RecallMessage(sendedFriendMessageId, msg.RevokeTime * 1000);
-                            return sendedFriendMessageId;
-                        },
-                        async (targetId, msg) =>
+                            var soraMsg = msg.ToCqForwardMessage();
+                            sendedFriendMessageId = (await _session.SendPrivateForwardMessageAsync(targetId, soraMsg))?.MessageId ?? 0;
+                        }
+                        else
                         {
-                            if (msg is null)
-                                return 0;
-                            int sendedGroupMessageId = 0;
-                            if (msg.First() is GreenOnionsForwardMessage)
-                            {
-                                var soraMsg = msg.ToOneBotForwardMessage();
-                                sendedGroupMessageId = (await eventArgs.SoraApi.SendGroupForwardMsg(targetId, soraMsg)).messageId;
-                            }
-                            else
-                            {
-                                var soraMsg = msg.ToOneBotMessages();
-                                if (soraMsg is null || soraMsg.Count == 0)
-                                    return 0;
-                                sendedGroupMessageId = (await eventArgs.SoraApi.SendGroupMessage(targetId, soraMsg)).messageId;
-                            }
-                            if (msg.RevokeTime > 0 && sendedGroupMessageId != -1)
-                                RecallMessage(sendedGroupMessageId, msg.RevokeTime * 1000);
-                            return sendedGroupMessageId;
-                        },
-                        async (targetId, targetGroup, msg) =>
-                        {
-                            if (msg is null)
-                                return 0;
-                            var soraMsg = msg.ToOneBotMessages();
+                            var soraMsg = msg.ToCqMessages();
                             if (soraMsg is null || soraMsg.Count == 0)
                                 return 0;
-                            int sendedTempMessageId = (await eventArgs.SoraApi.SendTemporaryMessage(targetId, targetGroup, soraMsg)).messageId;
-                            if (msg.RevokeTime > 0 && sendedTempMessageId != -1)
-                                RecallMessage(sendedTempMessageId, msg.RevokeTime * 1000);
-                            return sendedTempMessageId;
-                        },
-                        async () => (await eventArgs.SoraApi.GetFriendList()).friendList.Select(f => new GreenOnionsFriendInfo(f.UserId, f.Nick, f.Remark)).ToList(),
-                        async () => (await eventArgs.SoraApi.GetGroupList()).groupList.Select(g => new GreenOnionsGroupInfo(g.GroupId, g.GroupName)).ToList(),
-                        async (groupId) => (await eventArgs.SoraApi.GetGroupMemberList(groupId)).groupMemberList.Select(m => m.ToGreenOnionsMemberInfo()).ToList(),
-                        async (groupId, memberId) => (await eventArgs.SoraApi.GetGroupMemberInfo(groupId, memberId)).memberInfo.ToGreenOnionsMemberInfo());
-
-                    BotInfo.API = greenOnionsApi;
-
-                    BotInfo.IsLogin = true;
-
-                    try
-                    {
-                        RssHelper.StartRssTask(greenOnionsApi);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogHelper.WriteErrorLog("启动RSS抓取线程发生错误", ex);
-                        throw;
-                    }
-
-                    PluginManager.Connected(BotInfo.Config.QQId, greenOnionsApi);
-
-                    if (BotInfo.Config.LeaveGroupAfterBeMushin)  //自动退出被禁言的群
-                    {
-                        if (api is not null)
-                        {
-                            var groups = await api.GetGroupList();
-                            foreach (var group in groups.groupList)
-                            {
-                                var selfInfo = await api.GetGroupMemberInfo(group.GroupId, BotInfo.Config.QQId);
-                                if (selfInfo.memberInfo.ShutUpTime > DateTime.Now)
-                                    await api.LeaveGroup(group.GroupId);
-                            }
+                            sendedFriendMessageId = _session.SendPrivateMessage(targetId, soraMsg)?.MessageId ?? 0;
                         }
+                        if (msg.RevokeTime > 0 && sendedFriendMessageId != -1)
+                            RecallMessage(sendedFriendMessageId, msg.RevokeTime * 1000);
+                        return sendedFriendMessageId;
+                    },
+                    async (targetId, msg) =>
+                    {
+                        if (msg is null)
+                            return 0;
+                        long sendedGroupMessageId = 0;
+                        if (msg.First() is GreenOnionsForwardMessage)
+                        {
+                            var soraMsg = msg.ToCqForwardMessage();
+                            sendedGroupMessageId = (await _session.SendGroupForwardMessageAsync(targetId, soraMsg))?.MessageId ?? 0;
+                        }
+                        else
+                        {
+                            var soraMsg = msg.ToCqMessages();
+                            if (soraMsg is null || soraMsg.Count == 0)
+                                return 0;
+                            sendedGroupMessageId = _session.SendGroupMessage(targetId, soraMsg)?.MessageId ?? 0;
+                        }
+                        if (msg.RevokeTime > 0 && sendedGroupMessageId != -1)
+                            RecallMessage(sendedGroupMessageId, msg.RevokeTime * 1000);
+                        return sendedGroupMessageId;
+                    },
+                    async (targetId, targetGroup, msg) =>
+                    {
+                        if (msg is null || msg.Count == 0)
+                            return 0;
+
+                        long sendedTempMessageId = 0;
+                        var soraMsg = msg.ToCqMessages();
+                        if (soraMsg is null || soraMsg.Count == 0)
+                            return 0;
+                        sendedTempMessageId = _session.SendPrivateMessage(targetId, targetGroup, soraMsg)?.MessageId ?? 0;
+
+                        if (msg.RevokeTime > 0 && sendedTempMessageId != -1)
+                            RecallMessage(sendedTempMessageId, msg.RevokeTime * 1000);
+                        return sendedTempMessageId;
+                    },
+                    async () => (await _session.GetFriendListAsync()).Friends.Select(f => new GreenOnionsFriendInfo(f.UserId, f.Nickname, f.Remark)).ToList(),
+                    async () => (await _session.GetGroupListAsync()).Groups.Select(g => new GreenOnionsGroupInfo(g.GroupId, g.GroupName)).ToList(),
+                    async groupId => (await _session.GetGroupMemberListAsync(groupId)).Members.Select(m => m.ToGreenOnionsMemberInfo()).ToList(),
+                    async (groupId, memberId) => (await _session.GetGroupMemberInformationAsync(groupId, memberId)).ToGreenOnionsMemberInfo());
+
+                BotInfo.API = greenOnionsApi;
+
+                BotInfo.IsLogin = true;
+
+                try
+                {
+                    RssHelper.StartRssTask(greenOnionsApi);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.WriteErrorLog("启动RSS抓取线程发生错误", ex);
+                    throw;
+                }
+
+                PluginManager.Connected(BotInfo.Config.QQId, greenOnionsApi);
+
+                if (BotInfo.Config.LeaveGroupAfterBeMushin)  //自动退出被禁言的群
+                {
+                    CqGetGroupListActionResult? groups = _session.GetGroupList();
+                    if (groups is null)
+                        return;
+                    foreach (var group in groups.Groups)
+                    {
+                        var selfInfo = _session.GetGroupMemberInformation(group.GroupId, BotInfo.Config.QQId);
+                        if (selfInfo.BanExpireTime > DateTime.Now)
+                            _session.LeaveGroup(group.GroupId);
                     }
-                };
+                }
             }
             catch (Exception ex)
             {
-                LogHelper.WriteErrorLog("连接到OneBot失败", ex);
-                ConnectedEvent(false, $"{ex.Message} ({ip}:{port}) OneBot");
+                LogHelper.WriteErrorLog("连接到Go-CqHttp失败", ex);
+                ConnectedEvent(false, $"{ex.Message} ({ip}:{port}) Go-CqHttp");
             }
         }
 

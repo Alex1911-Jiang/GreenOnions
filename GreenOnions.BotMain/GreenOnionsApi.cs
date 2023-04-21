@@ -10,9 +10,9 @@ namespace GreenOnions.BotMain
     /// </summary>
     public sealed class GreenOnionsApi : IGreenOnionsApi
     {
-        public Func<long, GreenOnionsMessages?, Task<int>> _sendFriendMessageAsync { get; init; }
-        public Func<long, GreenOnionsMessages?, Task<int>> _sendGroupMessageAsync { get; init; }
-        public Func<long, long, GreenOnionsMessages?, Task<int>> _sendTempMessageAsync { get; init; }
+        public Func<long, GreenOnionsMessages?, Task<long>> _sendFriendMessageAsync { get; init; }
+        public Func<long, GreenOnionsMessages?, Task<long>> _sendGroupMessageAsync { get; init; }
+        public Func<long, long, GreenOnionsMessages?, Task<long>> _sendTempMessageAsync { get; init; }
         public Func<Task<List<GreenOnionsFriendInfo>>> _getFriendListAsync { get; init; }
         public Func<Task<List<GreenOnionsGroupInfo>>> _getGroupListAsync { get; init; }
         public Func<long, Task<List<GreenOnionsMemberInfo>>> _getMemberListAsync { get; init; }
@@ -22,9 +22,9 @@ namespace GreenOnions.BotMain
         /// 此类不应被用户构造
         /// </summary>
         public GreenOnionsApi(
-            in Func<long, GreenOnionsMessages?, Task<int>> sendFriendMessageAsync,
-            in Func<long, GreenOnionsMessages?, Task<int>> sendGroupMessageAsync,
-            in Func<long, long, GreenOnionsMessages?, Task<int>> sendTempMessageAsync,
+            in Func<long, GreenOnionsMessages?, Task<long>> sendFriendMessageAsync,
+            in Func<long, GreenOnionsMessages?, Task<long>> sendGroupMessageAsync,
+            in Func<long, long, GreenOnionsMessages?, Task<long>> sendTempMessageAsync,
             in Func<Task<List<GreenOnionsFriendInfo>>> getFriendListAsync,
             in Func<Task<List<GreenOnionsGroupInfo>>> getGroupListAsync,
             in Func<long, Task<List<GreenOnionsMemberInfo>>> getMemberListAsync,
@@ -46,7 +46,7 @@ namespace GreenOnions.BotMain
         /// <param name="qqId">好友QQ</param>
         /// <param name="message">要发送的消息</param>
         /// <returns>消息ID</returns>
-        public Task<int> SendFriendMessageAsync(long qqId, GreenOnionsMessages message) => _sendFriendMessageAsync(qqId, message);
+        public Task<long> SendFriendMessageAsync(long qqId, GreenOnionsMessages message) => _sendFriendMessageAsync(qqId, message);
 
         /// <summary>
         /// 发送群消息
@@ -54,7 +54,7 @@ namespace GreenOnions.BotMain
         /// <param name="groupId">目标群号</param>
         /// <param name="message">要发送的消息</param>
         /// <returns>消息ID</returns>
-        public Task<int> SendGroupMessageAsync(long groupId, GreenOnionsMessages message) => _sendGroupMessageAsync(groupId, message);
+        public Task<long> SendGroupMessageAsync(long groupId, GreenOnionsMessages message) => _sendGroupMessageAsync(groupId, message);
 
         /// <summary>
         /// 发送临时消息
@@ -63,7 +63,7 @@ namespace GreenOnions.BotMain
         /// <param name="groupId">目标群号</param>
         /// <param name="message">要发送的消息</param>
         /// <returns>消息ID</returns>
-        public Task<int> SendTempMessageAsync(long qqId, long groupId, GreenOnionsMessages message) => _sendTempMessageAsync(qqId, groupId, message);
+        public Task<long> SendTempMessageAsync(long qqId, long groupId, GreenOnionsMessages message) => _sendTempMessageAsync(qqId, groupId, message);
 
         /// <summary>
         /// 获取好友列表

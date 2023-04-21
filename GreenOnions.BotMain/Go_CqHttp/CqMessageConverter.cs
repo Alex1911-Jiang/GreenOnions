@@ -1,4 +1,5 @@
 ﻿using EleCho.GoCqHttpSdk;
+using EleCho.GoCqHttpSdk.Action;
 using EleCho.GoCqHttpSdk.Message;
 using GreenOnions.BotMain.OneBot;
 using GreenOnions.Interface;
@@ -111,6 +112,16 @@ namespace GreenOnions.BotMain.MiraiApiHttp
                 }
             }
             return nodes;
+        }
+        public static GreenOnionsMemberInfo ToGreenOnionsMemberInfo(this CqGroupMember groupMemberInfo)
+        {
+            int iRole = groupMemberInfo.Role == CqRole.Owner ? 2 : (int)groupMemberInfo.Role;
+            return new GreenOnionsMemberInfo(groupMemberInfo.GroupId, groupMemberInfo.Nickname, (Permission)iRole);
+        }
+        public static GreenOnionsMemberInfo ToGreenOnionsMemberInfo(this CqGetGroupMemberInformationActionResult groupMemberInfo)
+        {
+            int iRole = groupMemberInfo.Role == CqRole.Owner ? 2 : (int)groupMemberInfo.Role;
+            return new GreenOnionsMemberInfo(groupMemberInfo.GroupId, groupMemberInfo.Nickname, (Permission)iRole);
         }
     }
 }
