@@ -314,7 +314,7 @@ namespace GreenOnions.RSS
                     int keyIndex = item.Format[i].IndexOf(tags.Key);
                     if (keyIndex == -1)
                         continue;
-                    noneKey = true;
+                    noneKey = false;
                     GreenOnionsMessages? itemMsg;
                     try
                     {
