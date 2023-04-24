@@ -269,7 +269,7 @@
             // 
             // btnTranslateTest
             // 
-            this.btnTranslateTest.Location = new System.Drawing.Point(862, 115);
+            this.btnTranslateTest.Location = new System.Drawing.Point(862, 86);
             this.btnTranslateTest.Name = "btnTranslateTest";
             this.btnTranslateTest.Size = new System.Drawing.Size(114, 72);
             this.btnTranslateTest.TabIndex = 37;

@@ -302,14 +302,29 @@ namespace GreenOnions.RSS
             GreenOnionsMessages resultMsg = new();
             for (int i = 0; i < item.Format.Length; i++)
             {
+                if (item.Format[i].Length == 0)
+                {
+                    resultMsg.Add("\r\n");
+                    continue;
+                }
                 bool firstIsQuestion = item.Format[i][0] == '?';
-                int keyIndex = -1;
+                bool noneKey = true;
                 foreach (var tags in relpaceTags)
                 {
-                    keyIndex = item.Format[i].IndexOf(tags.Key);
+                    int keyIndex = item.Format[i].IndexOf(tags.Key);
                     if (keyIndex == -1)
                         continue;
-                    GreenOnionsMessages? itemMsg = relpaceTags[tags.Key]();
+                    noneKey = true;
+                    GreenOnionsMessages? itemMsg;
+                    try
+                    {
+                        itemMsg = relpaceTags[tags.Key]();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError($"将内容投影到排版表中出错，错误标签为：{tags.Key}",ex, $"订阅地址为：{result.Url}");
+                        throw;
+                    }
                     bool isEmptyMsg = false;
                     if (itemMsg is null)
                         isEmptyMsg = true;
@@ -341,7 +356,7 @@ namespace GreenOnions.RSS
                         break;
                     }
                 }
-                if (keyIndex == -1)  //没有标签
+                if (noneKey)  //没有标签
                 {
                     if (firstIsQuestion)
                         continue;
@@ -712,7 +727,7 @@ namespace GreenOnions.RSS
             LogHelper.WriteWarningLog(logMessage);
         }
 
-        private static void LogError(string logMessageStart, Exception ex, string logMessageEnd)
+        private static void LogError(string logMessageStart, Exception ex, string logMessageEnd = "")
         {
             while (Logs!.Count > 5000)
                 Logs.TryDequeue(out _);
