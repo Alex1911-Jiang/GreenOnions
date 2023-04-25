@@ -22,17 +22,17 @@ namespace GreenOnions.BotMain.Oicq
                 (targetId, msg) =>
                 {
                     SendMessage(msg, targetId);
-                    return Task.FromResult(0);
+                    return Task.FromResult(0l);
                 },
                 (targetId, msg) =>
                 {
                     SendMessage(msg, null, targetId);
-                    return Task.FromResult(0);
+                    return Task.FromResult(0l);
                 },
                 (targetId, targetGroup, msg) =>
                 {
                     SendMessage(msg, targetId, targetGroup);
-                    return Task.FromResult(0);
+                    return Task.FromResult(0l);
                 },
                 //TODO fl gl gml bot.pickMember.info
                 //async () => (await _session.GetFriendListAsync()).Select(f => new GreenOnionsFriendInfo(f.Id, f.Name, f.Remark)).ToList(),
