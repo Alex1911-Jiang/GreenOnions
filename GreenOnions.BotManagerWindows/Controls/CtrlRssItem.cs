@@ -187,7 +187,7 @@ namespace GreenOnions.BotManagerWindows.Controls
 
         private void btnHeaders_Click(object sender, EventArgs e)
         {
-            FrmRssHeders frmRssHeders = new FrmRssHeders(RssHeders);
+            FrmRssHeaders frmRssHeders = new FrmRssHeaders(RssHeders);
             frmRssHeders.ShowDialog();
             RssHeders = frmRssHeders.Headers;
         }

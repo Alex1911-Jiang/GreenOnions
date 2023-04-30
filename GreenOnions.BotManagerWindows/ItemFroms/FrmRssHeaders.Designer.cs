@@ -1,6 +1,6 @@
 ﻿namespace GreenOnions.BotManagerWindows.ItemFroms
 {
-    partial class FrmRssHeders
+    partial class FrmRssHeaders
     {
         /// <summary>
         /// Required designer variable.
@@ -63,7 +63,7 @@
             this.dgvHeaderValueColumn.MinimumWidth = 8;
             this.dgvHeaderValueColumn.Name = "dgvHeaderValueColumn";
             // 
-            // FrmRssHeders
+            // FrmRssHeaders
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -71,9 +71,9 @@
             this.Controls.Add(this.dgvHeader);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FrmRssHeders";
+            this.Name = "FrmRssHeaders";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "编辑Heders";
+            this.Text = "编辑Headers";
             ((System.ComponentModel.ISupportInitialize)(this.dgvHeader)).EndInit();
             this.ResumeLayout(false);
 

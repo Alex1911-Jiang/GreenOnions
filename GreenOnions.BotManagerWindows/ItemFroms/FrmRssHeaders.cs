@@ -2,11 +2,11 @@
 
 namespace GreenOnions.BotManagerWindows.ItemFroms
 {
-    public partial class FrmRssHeders : Form
+    public partial class FrmRssHeaders : Form
     {
         public Dictionary<string,string>? Headers { get; set; }
 
-        public FrmRssHeders(Dictionary<string, string>? rssHeders)
+        public FrmRssHeaders(Dictionary<string, string>? rssHeders)
         {
             Headers = rssHeders;
             InitializeComponent();
