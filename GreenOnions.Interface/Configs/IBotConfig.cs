@@ -895,12 +895,17 @@ namespace GreenOnions.Interface.Configs
         /// <summary>
         /// 推特图片反代地址
         /// </summary>
-        public string TwimgProxyUrl { get;}
+        public string RssTwimgProxyUrl { get;}
 
         /// <summary>
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
         public HashSet<RssSubscriptionItem>? RssSubscription { get; }
+
+        /// <summary>
+        /// 一次更新的多篇文章合并到一条消息中
+        /// </summary>
+        public bool RssMergeIntoOneMessage { get; }
 
         #endregion -- RSS 配置项 --
     }

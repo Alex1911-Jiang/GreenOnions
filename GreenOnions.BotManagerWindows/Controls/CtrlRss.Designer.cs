@@ -34,8 +34,9 @@
             this.txbReadRssInterval = new System.Windows.Forms.TextBox();
             this.lblReadRssInterval = new System.Windows.Forms.Label();
             this.pnlRssSettings = new System.Windows.Forms.Panel();
+            this.chkRssMergeIntoOneMessage = new System.Windows.Forms.CheckBox();
             this.lblTwimgProxyUrl = new System.Windows.Forms.Label();
-            this.txbTwimgProxyUrl = new System.Windows.Forms.TextBox();
+            this.txbRssTwimgProxyUrl = new System.Windows.Forms.TextBox();
             this.chkRssUseProxy = new System.Windows.Forms.CheckBox();
             this.chkRssParallel = new System.Windows.Forms.CheckBox();
             this.btnRssLogViewer = new System.Windows.Forms.Button();
@@ -75,16 +76,16 @@
             // 
             this.txbReadRssInterval.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbReadRssInterval.Location = new System.Drawing.Point(456, 4);
+            this.txbReadRssInterval.Location = new System.Drawing.Point(624, 4);
             this.txbReadRssInterval.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.txbReadRssInterval.Name = "txbReadRssInterval";
-            this.txbReadRssInterval.Size = new System.Drawing.Size(411, 30);
+            this.txbReadRssInterval.Size = new System.Drawing.Size(243, 30);
             this.txbReadRssInterval.TabIndex = 6;
             // 
             // lblReadRssInterval
             // 
             this.lblReadRssInterval.AutoSize = true;
-            this.lblReadRssInterval.Location = new System.Drawing.Point(240, 7);
+            this.lblReadRssInterval.Location = new System.Drawing.Point(408, 7);
             this.lblReadRssInterval.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblReadRssInterval.Name = "lblReadRssInterval";
             this.lblReadRssInterval.Size = new System.Drawing.Size(206, 24);
@@ -93,8 +94,9 @@
             // 
             // pnlRssSettings
             // 
+            this.pnlRssSettings.Controls.Add(this.chkRssMergeIntoOneMessage);
             this.pnlRssSettings.Controls.Add(this.lblTwimgProxyUrl);
-            this.pnlRssSettings.Controls.Add(this.txbTwimgProxyUrl);
+            this.pnlRssSettings.Controls.Add(this.txbRssTwimgProxyUrl);
             this.pnlRssSettings.Controls.Add(this.chkRssUseProxy);
             this.pnlRssSettings.Controls.Add(this.chkRssParallel);
             this.pnlRssSettings.Controls.Add(this.btnRssLogViewer);
@@ -107,6 +109,16 @@
             this.pnlRssSettings.Size = new System.Drawing.Size(990, 80);
             this.pnlRssSettings.TabIndex = 9;
             // 
+            // chkRssMergeIntoOneMessage
+            // 
+            this.chkRssMergeIntoOneMessage.AutoSize = true;
+            this.chkRssMergeIntoOneMessage.Location = new System.Drawing.Point(238, 6);
+            this.chkRssMergeIntoOneMessage.Name = "chkRssMergeIntoOneMessage";
+            this.chkRssMergeIntoOneMessage.Size = new System.Drawing.Size(162, 28);
+            this.chkRssMergeIntoOneMessage.TabIndex = 14;
+            this.chkRssMergeIntoOneMessage.Text = "合并为一条消息";
+            this.chkRssMergeIntoOneMessage.UseVisualStyleBackColor = true;
+            // 
             // lblTwimgProxyUrl
             // 
             this.lblTwimgProxyUrl.AutoSize = true;
@@ -118,10 +130,10 @@
             // 
             // txbTwimgProxyUrl
             // 
-            this.txbTwimgProxyUrl.Location = new System.Drawing.Point(184, 41);
-            this.txbTwimgProxyUrl.Name = "txbTwimgProxyUrl";
-            this.txbTwimgProxyUrl.Size = new System.Drawing.Size(799, 30);
-            this.txbTwimgProxyUrl.TabIndex = 12;
+            this.txbRssTwimgProxyUrl.Location = new System.Drawing.Point(184, 41);
+            this.txbRssTwimgProxyUrl.Name = "txbTwimgProxyUrl";
+            this.txbRssTwimgProxyUrl.Size = new System.Drawing.Size(799, 30);
+            this.txbRssTwimgProxyUrl.TabIndex = 12;
             // 
             // chkRssUseProxy
             // 
@@ -181,6 +193,7 @@
         private CheckBox chkRssParallel;
         private CheckBox chkRssUseProxy;
         private Label lblTwimgProxyUrl;
-        private TextBox txbTwimgProxyUrl;
+        private TextBox txbRssTwimgProxyUrl;
+        private CheckBox chkRssMergeIntoOneMessage;
     }
 }

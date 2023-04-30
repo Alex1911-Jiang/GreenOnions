@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -120,6 +118,9 @@ namespace GreenOnions.RSS
             XmlDocument? xml = await RequestRssXml(item);
             if (xml is null)
                 return;
+
+            List<GreenOnionsMessages> multiForwardMsg = new List<GreenOnionsMessages>();
+
             await foreach (RssResult? rssResult in RssXmlToResult(xml, item.Url!))
             {
                 if (rssResult is null)
@@ -137,13 +138,19 @@ namespace GreenOnions.RSS
                 {
                     GreenOnionsMessages msg = CreateRssMessage(item, rssResult);
 
-                    LogInfo($"{item.Url}需要转发的群:{(item.ForwardGroups is null ? 0 : item.ForwardGroups.Length)}个");
-                    if (item.ForwardGroups?.Length > 0)
-                        await SendRssGroupMessage(item, msg);
-                    LogInfo($"{item.Url}需要转发的好友:{(item.ForwardQQs is null ? 0 : item.ForwardQQs.Length)}个");
-                    if (item.ForwardQQs?.Length > 0)
-                        await SendRssFriendMessage(item, msg);
-
+                    if (BotInfo.Config.RssMergeIntoOneMessage)
+                    {
+                        multiForwardMsg.Add(msg);
+                    }
+                    else
+                    {
+                        LogInfo($"{item.Url}需要转发的群:{(item.ForwardGroups is null ? 0 : item.ForwardGroups.Length)}个");
+                        if (item.ForwardGroups?.Length > 0)
+                            await SendRssGroupMessage(item, msg);
+                        LogInfo($"{item.Url}需要转发的好友:{(item.ForwardQQs is null ? 0 : item.ForwardQQs.Length)}个");
+                        if (item.ForwardQQs?.Length > 0)
+                            await SendRssFriendMessage(item, msg);
+                    }
                     if (BotInfo.LastOneSendRssTime.ContainsKey(item.Url!))
                     {
                         if (rssResult.PubDate > BotInfo.LastOneSendRssTime[item.Url!])
@@ -160,6 +167,16 @@ namespace GreenOnions.RSS
                 {
                     LogError("获取RSS内容失败", ex,$"订阅地址为：{item.Url}");
                 }
+            }
+
+            if (BotInfo.Config.RssMergeIntoOneMessage && multiForwardMsg.Count > 0)
+            {
+                LogInfo($"{item.Url}需要转发的群:{(item.ForwardGroups is null ? 0 : item.ForwardGroups.Length)}个");
+                if (item.ForwardGroups?.Length > 0)
+                    await SendRssGroupMessage(item, multiForwardMsg);
+                LogInfo($"{item.Url}需要转发的好友:{(item.ForwardQQs is null ? 0 : item.ForwardQQs.Length)}个");
+                if (item.ForwardQQs?.Length > 0)
+                    await SendRssFriendMessage(item, multiForwardMsg);
             }
         }
 
@@ -374,17 +391,32 @@ namespace GreenOnions.RSS
                 LogInfo($"{item.Url}发送模式为合并转发");
                 GreenOnionsForwardMessage greenOnionsForwardMessage = new(BotInfo.Config.QQId, BotInfo.Config.BotName, msg);
                 for (int i = 0; i < item.ForwardGroups?.Length; i++)
-                {
                     await _api!.SendGroupMessageAsync(item.ForwardGroups[i], greenOnionsForwardMessage);
-                }
             }
             else
             {
                 LogInfo($"{item.Url}发送模式为直接发送");
                 for (int i = 0; i < item.ForwardGroups?.Length; i++)
-                {
                     await _api!.SendGroupMessageAsync(item.ForwardGroups[i], msg);
-                }
+            }
+            LogInfo($"{item.Url}全部群消息发送完毕");
+        }
+
+        private static async Task SendRssGroupMessage(RssSubscriptionItem item, List<GreenOnionsMessages> msgs)
+        {
+            if (item.SendByForward)
+            {
+                LogInfo($"{item.Url}发送模式为合并转发");
+                GreenOnionsForwardMessage greenOnionsForwardMessage = BuildRssForwardMessage(msgs);
+                for (int i = 0; i < item.ForwardGroups?.Length; i++)
+                    await _api!.SendGroupMessageAsync(item.ForwardGroups[i], greenOnionsForwardMessage);
+            }
+            else
+            {
+                LogInfo($"{item.Url}发送模式为直接发送");
+                GreenOnionsMessages msg = BuildRssMultiMessage(msgs);
+                for (int i = 0; i < item.ForwardGroups?.Length; i++)
+                    await _api!.SendGroupMessageAsync(item.ForwardGroups[i], msg);
             }
             LogInfo($"{item.Url}全部群消息发送完毕");
         }
@@ -399,19 +431,54 @@ namespace GreenOnions.RSS
                 LogInfo($"{item.Url}发送模式为合并转发");
                 GreenOnionsForwardMessage greenOnionsForwardMessage = new(BotInfo.Config.QQId, BotInfo.Config.BotName, msg);
                 for (int i = 0; i < item.ForwardQQs?.Length; i++)
-                {
                     await _api!.SendFriendMessageAsync(item.ForwardQQs[i], greenOnionsForwardMessage);
-                }
             }
             else
             {
                 LogInfo($"{item.Url}发送模式为直接发送");
                 for (int i = 0; i < item.ForwardQQs?.Length; i++)
-                {
                     await _api!.SendFriendMessageAsync(item.ForwardQQs[i], msg);
-                }
             }
             LogInfo($"{item.Url}全部好友消息发送完毕");
+        }
+
+        private static async Task SendRssFriendMessage(RssSubscriptionItem item, List<GreenOnionsMessages> msgs)
+        {
+            for (int i = 0; i < msgs.Count; i++)
+                msgs[i].RemoveAll(m => m is GreenOnionsAtMessage);
+
+            LogInfo($"{item.Url}组合好友消息完成");
+            if (item.SendByForward)
+            {
+                LogInfo($"{item.Url}发送模式为合并转发");
+                GreenOnionsForwardMessage greenOnionsForwardMessage = BuildRssForwardMessage(msgs);
+                for (int i = 0; i < item.ForwardQQs?.Length; i++)
+                    await _api!.SendFriendMessageAsync(item.ForwardQQs[i], greenOnionsForwardMessage);
+            }
+            else
+            {
+                LogInfo($"{item.Url}发送模式为直接发送");
+                GreenOnionsMessages msg = BuildRssMultiMessage(msgs);
+                for (int i = 0; i < item.ForwardQQs?.Length; i++)
+                    await _api!.SendFriendMessageAsync(item.ForwardQQs[i], msg);
+            }
+            LogInfo($"{item.Url}全部好友消息发送完毕");
+        }
+
+        private static GreenOnionsForwardMessage BuildRssForwardMessage(List<GreenOnionsMessages> msgs)
+        {
+            GreenOnionsForwardMessage greenOnionsForwardMessage = new();
+            for (int i = 0; i < msgs.Count; i++)
+                greenOnionsForwardMessage.Add(BotInfo.Config.QQId, BotInfo.Config.BotName, msgs[i]);
+            return greenOnionsForwardMessage;
+        }
+
+        private static GreenOnionsMessages BuildRssMultiMessage(List<GreenOnionsMessages> msgs)
+        {
+            GreenOnionsMessages msg = new GreenOnionsMessages();
+            for (int i = 0; i < msgs.Count; i++)
+                msg.AddRange(msgs[i]);
+            return msg;
         }
 
         private static bool FilterMessage(RssSubscriptionItem item, string innerTitle, string description)

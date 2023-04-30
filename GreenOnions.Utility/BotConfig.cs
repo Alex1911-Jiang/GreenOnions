@@ -627,9 +627,9 @@ namespace GreenOnions.Utility
         public bool HPictureLoliconRequestByPlugin { get; set; }
 
         /// <summary>
-        /// 反和谐（仅限Windows，且需要先开启 所有图片下载到本地发送文件 功能）
+        /// 反和谐（需要先开启 所有图片下载到本地发送文件 功能）
         /// </summary>
-        [PropertyChineseName("反和谐", "色图", "仅限Windows，且需要先开启 所有图片下载到本地发送文件 功能")]
+        [PropertyChineseName("反和谐", "色图", "需要先开启 所有图片下载到本地发送文件 功能")]
         public bool HPictureAntiShielding { get; set; } = false;
 
         /// <summary>
@@ -1030,13 +1030,19 @@ namespace GreenOnions.Utility
         /// 推特图片反代地址
         /// </summary>
         [PropertyChineseName("推特图片反向代理地址", "RSS订阅转发")]
-        public string TwimgProxyUrl { get; set; } = string.Empty;
+        public string RssTwimgProxyUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// 订阅的地址和需要转发到的QQ或群列表
         /// </summary>
         [PropertyChineseName("RSS订阅项", "RSS订阅转发")]
         public HashSet<RssSubscriptionItem>? RssSubscription { get; set; } = null;
+
+        /// <summary>
+        /// 一次更新的多篇文章合并到一条消息中
+        /// </summary>
+        [PropertyChineseName("合并为一条消息", "RSS订阅转发", "一次更新的多篇文章合并到一条消息中")]
+        public bool RssMergeIntoOneMessage { get; set; } = false;
 
         #endregion -- RSS 配置项 --
     }

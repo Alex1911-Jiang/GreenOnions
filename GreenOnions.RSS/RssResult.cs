@@ -116,12 +116,12 @@ namespace GreenOnions.RSS
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(BotInfo.Config.TwimgProxyUrl) && imgUrl.StartsWith("https://pbs.twimg.com/"))
+                if (!string.IsNullOrWhiteSpace(BotInfo.Config.RssTwimgProxyUrl) && imgUrl.StartsWith("https://pbs.twimg.com/"))
                 {
                     try
                     {
                         string urlParam = HttpUtility.UrlEncode(imgUrl);
-                        Stream imgStream = await HttpHelper.GetStreamAsync($"{BotInfo.Config.TwimgProxyUrl}{urlParam}", false);
+                        Stream imgStream = await HttpHelper.GetStreamAsync($"{BotInfo.Config.RssTwimgProxyUrl}{urlParam}", false);
                         return new GreenOnionsImageMessage(imgStream);
                     }
                     catch (Exception ex)
