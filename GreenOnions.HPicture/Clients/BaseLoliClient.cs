@@ -46,7 +46,17 @@ namespace GreenOnions.HPicture.Clients
 
             string strUrl = $@"{ApiUrl}?{paramUrl}";
 
-            JToken jt = await RequestLoli(strUrl);
+            JToken jt;
+
+            try
+            {
+               jt = await RequestLoli(strUrl);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteErrorLog("访问色图API发生错误", ex, $"请求地址为：{strUrl}");
+                throw;
+            }
             IEnumerable<LoliHPictureItem> loliItems = JTokenToItem(jt);
 
             if (loliItems is null)
