@@ -63,7 +63,7 @@ namespace GreenOnions.BotManagerWindows.ItemFroms
                                         txbLogs.AppendText(logLine);
                                         txbLogs.Select(txbLogs.Text.Length - logLine.Length, logLine.Length);
                                         if (logMessage.StartsWith("警告"))
-                                            txbLogs.SelectionColor = Color.Yellow;
+                                            txbLogs.SelectionColor = Color.Orange;
                                         else if (logMessage.StartsWith("错误"))
                                             txbLogs.SelectionColor = Color.Red;
                                         else

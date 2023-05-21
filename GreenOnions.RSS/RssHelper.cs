@@ -58,9 +58,9 @@ namespace GreenOnions.RSS
                             continue;
                         }
                         if (BotInfo.Config.RssParallel)
-                            _rssTasks.Add(item.Url, GetRssData(item));
+                            _rssTasks.Add(item.Url, SendRss(item));
                         else
-                            GetRssData(item).GetAwaiter().GetResult();
+                            SendRss(item).GetAwaiter().GetResult();
                     }
                     Task.WaitAll(_rssTasks.Values.ToArray());
                     int SleepTime = (int)Math.Round(BotInfo.Config.ReadRssInterval * 1000 * 60);
@@ -81,28 +81,40 @@ namespace GreenOnions.RSS
         {
             Dictionary<string, string> result = new();
             if (_mainTask is null || _rssTasks is null)
-                result.Add("中控线程","尚未启动");
-            else
-                result.Add("中控线程", "正常工作中");
-            if (_rssTasks is not null)
+                result.Add("中控线程", "尚未启动");
+            else if (_mainTask.IsCompleted)
             {
-                foreach (var item in _rssTasks)
+                if (_mainTask.IsFaulted)
+                    result.Add("中控线程", "错误停止");
+                else if (_mainTask.IsCanceled)
+                    result.Add("中控线程", "正常停止");
+            }
+            else
+            {
+                result.Add("中控线程", "正常工作中");
+            }
+
+            if (_rssTasks is null)
+            {
+                return result;
+            }
+
+            foreach (var item in _rssTasks)
+            {
+                if (item.Value.IsCompleted)
                 {
-                    if (item.Value.IsCompleted)
-                    {
-                        StringBuilder taskStatus = new("已停止，");
-                        if (item.Value.IsFaulted)
-                            taskStatus.Append("被中断");
-                        else if (item.Value.IsCanceled)
-                            taskStatus.Append("被取消");
-                        else
-                            taskStatus.Append("正常结束");
-                        result.Add(item.Key, taskStatus.ToString());
-                    }
+                    StringBuilder taskStatus = new("已停止，");
+                    if (item.Value.IsFaulted)
+                        taskStatus.Append("错误中断");
+                    else if (item.Value.IsCanceled)
+                        taskStatus.Append("被取消");
                     else
-                    {
-                        result.Add(item.Key, "正常工作中");
-                    }
+                        taskStatus.Append("正常结束");
+                    result.Add(item.Key, taskStatus.ToString());
+                }
+                else
+                {
+                    result.Add(item.Key, "正常工作中");
                 }
             }
             return result;
@@ -113,7 +125,7 @@ namespace GreenOnions.RSS
         /// </summary>
         /// <param name="item">订阅源对象</param>
         /// <returns></returns>
-        private static async Task GetRssData(RssSubscriptionItem item)
+        private static async Task SendRss(RssSubscriptionItem item)
         {
             XmlDocument? xml = await RequestRssXml(item);
             if (xml is null)
@@ -133,16 +145,24 @@ namespace GreenOnions.RSS
                     LogInfo("结果集中包含过滤词，不发送");
                     continue;
                 }
-
+                GreenOnionsMessages msg;
                 try
                 {
-                    GreenOnionsMessages msg = CreateRssMessage(item, rssResult);
+                    msg = CreateRssMessage(item, rssResult);
+                }
+                catch (Exception ex)
+                {
+                    LogError("创建消息失败", ex, $"订阅地址为：{item.Url}");
+                    continue;
+                }
 
-                    if (BotInfo.Config.RssMergeIntoOneMessage)
-                    {
-                        multiForwardMsg.Add(msg);
-                    }
-                    else
+                if (BotInfo.Config.RssMergeIntoOneMessage)
+                {
+                    multiForwardMsg.Add(msg);
+                }
+                else
+                {
+                    try
                     {
                         LogInfo($"{item.Url}需要转发的群:{(item.ForwardGroups is null ? 0 : item.ForwardGroups.Length)}个");
                         if (item.ForwardGroups?.Length > 0)
@@ -151,32 +171,40 @@ namespace GreenOnions.RSS
                         if (item.ForwardQQs?.Length > 0)
                             await SendRssFriendMessage(item, msg);
                     }
-                    if (BotInfo.LastOneSendRssTime.ContainsKey(item.Url!))
+                    catch (Exception ex)
                     {
-                        if (rssResult.PubDate > BotInfo.LastOneSendRssTime[item.Url!])
-                            BotInfo.LastOneSendRssTime[item.Url!] = rssResult.PubDate;
+                        LogError("直接发送消息失败", ex, $"订阅地址为：{item.Url}");
+                        continue;
                     }
-                    else
-                        BotInfo.LastOneSendRssTime.TryAdd(item.Url!, rssResult.PubDate);  //群和好友均推送完毕后记录此地址的最后发布时间
-                    string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter());
-                    File.WriteAllText("rssCache.json", serRssCache);
-
-                    LogInfo($"{item.Url}记录最后发布时间完毕");
                 }
-                catch (Exception ex)
+                if (BotInfo.LastOneSendRssTime.ContainsKey(item.Url!))
                 {
-                    LogError("获取RSS内容失败", ex,$"订阅地址为：{item.Url}");
+                    if (rssResult.PubDate > BotInfo.LastOneSendRssTime[item.Url!])
+                        BotInfo.LastOneSendRssTime[item.Url!] = rssResult.PubDate;
                 }
+                else
+                    BotInfo.LastOneSendRssTime.TryAdd(item.Url!, rssResult.PubDate);  //群和好友均推送完毕后记录此地址的最后发布时间
+                string serRssCache = JsonConvert.SerializeObject(BotInfo.LastOneSendRssTime, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter());
+                File.WriteAllText("rssCache.json", serRssCache);
+
+                LogInfo($"{item.Url}记录最后发布时间完毕");
             }
 
             if (BotInfo.Config.RssMergeIntoOneMessage && multiForwardMsg.Count > 0)
             {
-                LogInfo($"{item.Url}需要转发的群:{(item.ForwardGroups is null ? 0 : item.ForwardGroups.Length)}个");
-                if (item.ForwardGroups?.Length > 0)
-                    await SendRssGroupMessage(item, multiForwardMsg);
-                LogInfo($"{item.Url}需要转发的好友:{(item.ForwardQQs is null ? 0 : item.ForwardQQs.Length)}个");
-                if (item.ForwardQQs?.Length > 0)
-                    await SendRssFriendMessage(item, multiForwardMsg);
+                try
+                {
+                    LogInfo($"{item.Url}需要转发的群:{(item.ForwardGroups is null ? 0 : item.ForwardGroups.Length)}个");
+                    if (item.ForwardGroups?.Length > 0)
+                        await SendRssGroupMessage(item, multiForwardMsg);
+                    LogInfo($"{item.Url}需要转发的好友:{(item.ForwardQQs is null ? 0 : item.ForwardQQs.Length)}个");
+                    if (item.ForwardQQs?.Length > 0)
+                        await SendRssFriendMessage(item, multiForwardMsg);
+                }
+                catch (Exception ex)
+                {
+                    LogError("发送合并转发消息失败", ex, $"订阅地址为：{item.Url}");
+                }
             }
         }
 
