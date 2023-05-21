@@ -20,23 +20,26 @@ namespace GreenOnions.BotMain
             if (!Directory.Exists(_pluginsPath))
                 Directory.CreateDirectory(_pluginsPath);
 
-            string[] pluginItemPath = Directory.GetDirectories(_pluginsPath);
+            string[] pluginItemPaths = Directory.GetDirectories(_pluginsPath);
 
-            Dictionary<string, IPlugin> loadedPlugins = new Dictionary<string, IPlugin>();
-
-            foreach (string pluginItem in pluginItemPath)
+            foreach (string pluginItemPath in pluginItemPaths)
             {
-                File.Copy("GreenOnions.Interface.dll", Path.Combine(pluginItem, "GreenOnions.Interface.dll"), true);
+                if (pluginItemPath.Substring(pluginItemPath.LastIndexOf('\\') + 1) == "GreenOnions.PluginConfigEditor")
+                {
+                    continue;
+                }
+
+                File.Copy("GreenOnions.Interface.dll", Path.Combine(pluginItemPath, "GreenOnions.Interface.dll"), true);
                 if (File.Exists("GreenOnions.Interface.xml"))
-                    File.Copy("GreenOnions.Interface.xml", Path.Combine(pluginItem, "GreenOnions.Interface.xml"), true);
+                    File.Copy("GreenOnions.Interface.xml", Path.Combine(pluginItemPath, "GreenOnions.Interface.xml"), true);
                 if (File.Exists("GreenOnions.Interface.json"))
-                    File.Copy("GreenOnions.Interface.json", Path.Combine(pluginItem, "GreenOnions.Interface.json"), true);
+                    File.Copy("GreenOnions.Interface.json", Path.Combine(pluginItemPath, "GreenOnions.Interface.json"), true);
 #if DEBUG
-                File.Copy("GreenOnions.Interface.pdb", Path.Combine(pluginItem, "GreenOnions.Interface.pdb"), true);
+                File.Copy("GreenOnions.Interface.pdb", Path.Combine(pluginItemPath, "GreenOnions.Interface.pdb"), true);
 #endif
 
                 Dictionary<string, string> dependPath = new Dictionary<string, string>();
-                string[] dlls = Directory.GetFiles(pluginItem, "*.dll", SearchOption.TopDirectoryOnly);
+                string[] dlls = Directory.GetFiles(pluginItemPath, "*.dll", SearchOption.TopDirectoryOnly);
                 foreach (string dll in dlls)
                 {
                     string dllPath = Path.GetDirectoryName(dll)!;
@@ -66,7 +69,10 @@ namespace GreenOnions.BotMain
                             if (plugin is null)
                                 continue;
 
-                            loadedPlugins.Add(dllPath.Substring(dllPath.LastIndexOf(@"\") + 1), plugin);
+                            plugin.OnLoad(pluginItemPath, BotInfo.Config);
+
+                            Plugins.Add(plugin);
+
                             if (!BotInfo.PluginStatus.ContainsKey(plugin.Name))
                                 BotInfo.PluginStatus.Add(plugin.Name, true);
                         }
@@ -75,21 +81,6 @@ namespace GreenOnions.BotMain
                     {
                         LogHelper.WriteErrorLog($"插件{pluginFileName}加载失败", ex);
                     }
-                }
-            }
-
-            foreach (KeyValuePair<string, IPlugin> loadedPlugin in loadedPlugins)
-            {
-                Plugins.Add(loadedPlugin.Value);
-                try
-                {
-                    loadedPlugin.Value.OnLoad(Path.Combine(_pluginsPath, loadedPlugin.Key), BotInfo.Config);
-                    SetToolPluginMethod(loadedPlugin.Value);
-                    LogHelper.WriteInfoLog($"插件{loadedPlugin.Value.Name}加载成功");
-                }
-                catch (Exception ex)
-                {
-                    LogHelper.WriteErrorLog($"插件{loadedPlugin.Value.Name}加载失败", ex);
                 }
             }
             return Plugins.Count;
