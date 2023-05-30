@@ -48,6 +48,8 @@ namespace GreenOnions.BotManagerWindows
             this.btnPlugins = new System.Windows.Forms.Button();
             this.btnConnectToKnife = new System.Windows.Forms.Button();
             this.btnConnectToOicq = new System.Windows.Forms.Button();
+            this.btnKonata = new System.Windows.Forms.Button();
+            this.btnConnectToGoCqhttp = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblQQ
@@ -138,7 +140,7 @@ namespace GreenOnions.BotManagerWindows
             // 
             // btnBotSettings
             // 
-            this.btnBotSettings.Location = new System.Drawing.Point(69, 283);
+            this.btnBotSettings.Location = new System.Drawing.Point(68, 283);
             this.btnBotSettings.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.btnBotSettings.Name = "btnBotSettings";
             this.btnBotSettings.Size = new System.Drawing.Size(267, 35);
@@ -180,10 +182,10 @@ namespace GreenOnions.BotManagerWindows
             // btnConnectToOneBot
             // 
             this.btnConnectToOneBot.Enabled = false;
-            this.btnConnectToOneBot.Location = new System.Drawing.Point(346, 240);
+            this.btnConnectToOneBot.Location = new System.Drawing.Point(345, 240);
             this.btnConnectToOneBot.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.btnConnectToOneBot.Name = "btnConnectToOneBot";
-            this.btnConnectToOneBot.Size = new System.Drawing.Size(267, 35);
+            this.btnConnectToOneBot.Size = new System.Drawing.Size(266, 35);
             this.btnConnectToOneBot.TabIndex = 6;
             this.btnConnectToOneBot.Text = "连接到OneBot";
             this.btnConnectToOneBot.UseVisualStyleBackColor = true;
@@ -191,7 +193,7 @@ namespace GreenOnions.BotManagerWindows
             // 
             // btnPlugins
             // 
-            this.btnPlugins.Location = new System.Drawing.Point(346, 283);
+            this.btnPlugins.Location = new System.Drawing.Point(345, 283);
             this.btnPlugins.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.btnPlugins.Name = "btnPlugins";
             this.btnPlugins.Size = new System.Drawing.Size(267, 35);
@@ -222,11 +224,37 @@ namespace GreenOnions.BotManagerWindows
             this.btnConnectToOicq.Visible = false;
             this.btnConnectToOicq.Click += new System.EventHandler(this.btnConnectToOicq_Click);
             // 
+            // btnKonata
+            // 
+            this.btnKonata.Location = new System.Drawing.Point(199, 4);
+            this.btnKonata.Name = "btnKonata";
+            this.btnKonata.Size = new System.Drawing.Size(112, 34);
+            this.btnKonata.TabIndex = 11;
+            this.btnKonata.Text = "Konata";
+            this.btnKonata.UseVisualStyleBackColor = true;
+            this.btnKonata.Visible = false;
+            this.btnKonata.Click += new System.EventHandler(this.btnKonata_Click);
+            // 
+            // btnConnectToGoCqhttp
+            // 
+            this.btnConnectToGoCqhttp.Enabled = false;
+            this.btnConnectToGoCqhttp.Location = new System.Drawing.Point(345, 197);
+            this.btnConnectToGoCqhttp.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.btnConnectToGoCqhttp.Name = "btnConnectToGoCqhttp";
+            this.btnConnectToGoCqhttp.Size = new System.Drawing.Size(267, 35);
+            this.btnConnectToGoCqhttp.TabIndex = 12;
+            this.btnConnectToGoCqhttp.Text = "连接到go-cqhttp";
+            this.btnConnectToGoCqhttp.UseVisualStyleBackColor = true;
+            this.btnConnectToGoCqhttp.Visible = false;
+            this.btnConnectToGoCqhttp.Click += new System.EventHandler(this.btnConnectToGoCqhttp_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 351);
+            this.ClientSize = new System.Drawing.Size(684, 337);
+            this.Controls.Add(this.btnConnectToGoCqhttp);
+            this.Controls.Add(this.btnKonata);
             this.Controls.Add(this.btnConnectToOicq);
             this.Controls.Add(this.btnConnectToKnife);
             this.Controls.Add(this.btnPlugins);
@@ -272,5 +300,7 @@ namespace GreenOnions.BotManagerWindows
         private System.Windows.Forms.Button btnPlugins;
         private Button btnConnectToKnife;
         private Button btnConnectToOicq;
+        private Button btnKonata;
+        private Button btnConnectToGoCqhttp;
     }
 }

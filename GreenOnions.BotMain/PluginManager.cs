@@ -49,7 +49,15 @@ namespace GreenOnions.BotMain
                     try
                     {
                         AssemblyLoadContext assemblyLoadContext = new AssemblyLoadContext(pluginFileName);
-                        Assembly pluginAssembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
+                        Assembly pluginAssembly;
+                        try
+                        {
+                            pluginAssembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
+                        }
+                        catch (BadImageFormatException)
+                        {
+                            continue;
+                        }
                         dependPath.Add(pluginFileName, dllPath);
                         assemblyLoadContext.Resolving += (context, assemblyName) =>
                         {

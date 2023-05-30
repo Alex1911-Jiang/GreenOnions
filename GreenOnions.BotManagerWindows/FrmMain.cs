@@ -6,6 +6,8 @@ using GreenOnions.BotMain.OneBot;
 using GreenOnions.Interface.Configs.Enums;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
+using GreenOnions.BotMain.Konata;
+using GreenOnions.BotMain.Go_CqHttp;
 
 namespace GreenOnions.BotManagerWindows
 {
@@ -20,10 +22,10 @@ namespace GreenOnions.BotManagerWindows
 			InitializeComponent();
 
 			try
-            {
-                webBrowserForm = new WebBrowserForm();
-                EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocument;
-            }
+			{
+				webBrowserForm = new WebBrowserForm();
+				EventHelper.GetDocumentByBrowserEvent += webBrowserForm.GetDocument;
+			}
 			catch (Exception ex)
 			{
 				LogHelper.WriteErrorLog("初始化浏览器组件失败！请检查 VC++2015-2019 是否已安装", ex);
@@ -36,7 +38,7 @@ namespace GreenOnions.BotManagerWindows
 				if (!File.Exists("config.json"))
 				{
 					MessageBox.Show("初次使用本机器人，请先配置相关参数。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    new FrmAppSetting().ShowDialog();
+					new FrmAppSetting().ShowDialog();
 				}
 
 				txbQQ.Text = BotInfo.Config.QQId.ToString();
@@ -60,18 +62,20 @@ namespace GreenOnions.BotManagerWindows
 			btnPlugins.Text = $"插件列表({iLoadCount})";
 
 			btnConnectToMiraiApiHttp.Enabled = true;
-            btnConnectToOneBot.Enabled = true;
+			btnConnectToOneBot.Enabled = true;
+			btnConnectToGoCqhttp.Enabled = true;
 
-            //自动连接到机器人平台
-            if (BotInfo.Config.AutoConnectEnabled)
-            {
-                Task.Delay(BotInfo.Config.AutoConnectDelay * 1000).Wait();
-                ConnectToPlatform(BotInfo.Config.AutoConnectProtocol);
-            }
+			//自动连接到机器人平台
+			if (BotInfo.Config.AutoConnectEnabled)
+			{
+				Task.Delay(BotInfo.Config.AutoConnectDelay * 1000).Wait();
+				ConnectToPlatform(BotInfo.Config.AutoConnectProtocol);
+			}
 
 #if DEBUG
 			btnConnectToKnife.Visible = true;
 			btnConnectToOicq.Visible = true;
+            btnKonata.Visible = true;
 #endif
 		}
 
@@ -102,17 +106,18 @@ namespace GreenOnions.BotManagerWindows
 			{
 				_miraiClient = platform switch
 				{
-                    BotPlatform.Mirai_Api_Http => new MiraiApiHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, nickNameOrErrorMessage,platform)),
-                    BotPlatform.OneBot => new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, nickNameOrErrorMessage, platform)),
-                    BotPlatform.Oicq => new OicqClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, nickNameOrErrorMessage, platform)),
+					BotPlatform.Mirai_Api_Http => new MiraiApiHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, nickNameOrErrorMessage, platform)),
+					BotPlatform.OneBot => new OneBotClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, nickNameOrErrorMessage, platform)),
+					BotPlatform.Oicq => new OicqClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, nickNameOrErrorMessage, platform)),
 					BotPlatform.Kinfe => new KnifeClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, nickNameOrErrorMessage, platform)),
-					_ => throw new NotImplementedException(),
+                    BotPlatform.GoCqhttp => new Go_CqHttpClient((bConnect, nickNameOrErrorMessage) => Connecting(bConnect, BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey, nickNameOrErrorMessage, platform)),
+                    _ => throw new NotImplementedException(),
 				};
 				await _miraiClient.Connect(BotInfo.Config.QQId, BotInfo.Config.IP, BotInfo.Config.Port, BotInfo.Config.VerifyKey);
 
-                WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnect);
-            }
-            catch (Exception ex)
+				WorkingTimeRecorder.StartRecord(platform, ConnectToPlatform, Disconnect);
+			}
+			catch (Exception ex)
 			{
 				MessageBox.Show($"连接失败：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -130,43 +135,51 @@ namespace GreenOnions.BotManagerWindows
 		private async void Disconnect()
 		{
 			if (_miraiClient is not null)
-                await _miraiClient.Disconnect();
+				await _miraiClient.Disconnect();
 
 			btnConnectToMiraiApiHttp.Click -= btnDeconnect_Click;
 			btnConnectToMiraiApiHttp.Click += btnConnectToMiraiApiHttp_Click;
 
 			btnConnectToOneBot.Click -= btnDeconnect_Click;
 			btnConnectToOneBot.Click += btnConnectToOneBot_Click;
-		}
+
+            btnConnectToGoCqhttp.Click -= btnDeconnect_Click;
+            btnConnectToGoCqhttp.Click += btnConnectToOneBot_Click;
+        }
 
 		private void btnConnectToMiraiApiHttp_Click(object? sender, EventArgs e)
 		{
 			ConnectToPlatform(BotPlatform.Mirai_Api_Http);
 		}
 
-		private void btnConnectToOneBot_Click(object? sender, EventArgs e)
+        private void btnConnectToGoCqhttp_Click(object sender, EventArgs e)
+        {
+            ConnectToPlatform(BotPlatform.GoCqhttp);
+        }
+
+        private void btnConnectToOneBot_Click(object? sender, EventArgs e)
 		{
 			ConnectToPlatform(BotPlatform.OneBot);
 		}
 
-        private void btnConnectToKnife_Click(object sender, EventArgs e)
-        {
+		private void btnConnectToKnife_Click(object sender, EventArgs e)
+		{
 			ConnectToPlatform(BotPlatform.Kinfe);
-        }
+		}
 
-        private void btnConnectToOicq_Click(object sender, EventArgs e)
-        {
-            ConnectToPlatform(BotPlatform.Oicq);
-        }
+		private void btnConnectToOicq_Click(object sender, EventArgs e)
+		{
+			ConnectToPlatform(BotPlatform.Oicq);
+		}
 
-        private void btnBotSettings_Click(object sender, EventArgs e)
+		private void btnBotSettings_Click(object sender, EventArgs e)
 		{
 			btnBotSettings.Enabled = false;
-            FrmAppSetting frmSetting = new FrmAppSetting();
+			FrmAppSetting frmSetting = new FrmAppSetting();
 			frmSetting.FormClosed += (_, _) => btnBotSettings.Enabled = true;
 			frmSetting.Show();
 		}
-		
+
 		private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			Visible = true;
@@ -192,7 +205,11 @@ namespace GreenOnions.BotManagerWindows
 					btnConnectToOneBot.Click -= btnConnectToOneBot_Click;
 					btnConnectToOneBot.Click += btnDeconnect_Click;
 
-					notifyIcon.Text = $"葱葱机器人:{nickNameOrErrorMessage}";
+                    btnConnectToGoCqhttp.Text = "断开连接";
+                    btnConnectToGoCqhttp.Click -= btnConnectToOneBot_Click;
+                    btnConnectToGoCqhttp.Click += btnDeconnect_Click;
+
+                    notifyIcon.Text = $"葱葱机器人:{nickNameOrErrorMessage}";
 
 					BotInfo.Config.QQId = qqId;
 					BotInfo.Config.IP = ip;
@@ -211,6 +228,7 @@ namespace GreenOnions.BotManagerWindows
 				{
 					btnConnectToMiraiApiHttp.Text = "连接到mirai-api-http";
 					btnConnectToOneBot.Text = "连接到OneBot";
+                    btnConnectToGoCqhttp.Text = "连接到go-cqhttp";
 					lblState.Text = $"连接状态: 未连接到机器人平台";
 					lblState.ForeColor = Color.Red;
 					notifyIcon.Text = $"葱葱机器人";
@@ -251,6 +269,14 @@ namespace GreenOnions.BotManagerWindows
 		private void btnPlugins_Click(object sender, EventArgs e)
 		{
 			new FrmPlugins().ShowDialog();
+		}
+
+		private void btnKonata_Click(object sender, EventArgs e)
+		{
+			KonataClient client = new BotMain.Konata.KonataClient();
+			client.Login();
+
+
 		}
     }
 }

@@ -1,14 +1,11 @@
-﻿using System.Net.Sockets;
-using EleCho.GoCqHttpSdk;
+﻿using EleCho.GoCqHttpSdk;
 using EleCho.GoCqHttpSdk.Action;
-using GreenOnions.BotMain.Go_CqHttp;
-using GreenOnions.BotMain.MiraiApiHttp;
 using GreenOnions.Interface;
 using GreenOnions.RSS;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
 
-namespace GreenOnions.BotMain.OneBot
+namespace GreenOnions.BotMain.Go_CqHttp
 {
     public class Go_CqHttpClient : MiraiClient
     {
@@ -22,7 +19,6 @@ namespace GreenOnions.BotMain.OneBot
         {
             try
             {
-                //实例化Sora服务
                 _session = new CqWsSession(new CqWsSessionOptions()
                 {
                     BaseUri = new Uri($"ws://{ip}:{port}"),  // WebSocket 地址
@@ -41,21 +37,21 @@ namespace GreenOnions.BotMain.OneBot
                 //    // next 是中间件管道中的下一个中间件, 
                 //    // 如果你希望当中间件执行时, 不继续执行下一个中间件
                 //    // 可以选择不执行 next
-
-
-
+                    
                 //    await next();
                 //});
-                _session.HandlePipeline();
+                //_session.HandlePipeline();
+
+                //string nickname = _session.GetFriendList()?.Friends.Where(f => f.UserId == qqId).FirstOrDefault()?.Nickname ?? "未知";
+
+                string nickname = _session.GetLoginInformation()?.Nickname ?? "未知";
+
+                ConnectedEvent?.Invoke(true, nickname);
 
                 void RecallMessage(long messageId, int revokeTime)
                 {
                     Task.Delay(revokeTime).ContinueWith(_ => _session.RecallMessage(messageId));
                 }
-
-                string nickname = _session.GetLoginInformation()?.Nickname ?? "未知";
-
-                ConnectedEvent?.Invoke(true, nickname);
 
                 GreenOnionsApi greenOnionsApi = new(
                     async (targetId, msg) =>

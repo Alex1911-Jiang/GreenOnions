@@ -10,5 +10,6 @@
         Konata = 2,
         Oicq = 3,
         Kinfe = 4,
+        GoCqhttp = 5,
     }
 }

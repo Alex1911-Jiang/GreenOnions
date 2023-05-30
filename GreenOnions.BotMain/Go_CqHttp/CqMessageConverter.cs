@@ -1,11 +1,10 @@
 ﻿using EleCho.GoCqHttpSdk;
 using EleCho.GoCqHttpSdk.Action;
 using EleCho.GoCqHttpSdk.Message;
-using GreenOnions.BotMain.OneBot;
 using GreenOnions.Interface;
 using GreenOnions.Utility.Helper;
 
-namespace GreenOnions.BotMain.MiraiApiHttp
+namespace GreenOnions.BotMain.Go_CqHttp
 {
     public static class CqMessageConverter
     {
