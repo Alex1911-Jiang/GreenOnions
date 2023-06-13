@@ -5,11 +5,10 @@
     /// </summary>
     public enum BotPlatform
     {
-        Mirai_Api_Http = 0,
-        OneBot = 1,
-        Konata = 2,
-        Oicq = 3,
-        Kinfe = 4,
-        GoCqhttp = 5,
+        Mirai_Api_Http,
+        OneBot,
+        GoCqhttp,
+        Konata,
+        Oicq,
     }
 }

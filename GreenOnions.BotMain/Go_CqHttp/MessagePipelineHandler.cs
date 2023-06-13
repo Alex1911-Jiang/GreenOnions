@@ -3,8 +3,6 @@ using EleCho.GoCqHttpSdk;
 using EleCho.GoCqHttpSdk.Action;
 using EleCho.GoCqHttpSdk.Message;
 using EleCho.GoCqHttpSdk.Post;
-using GreenOnions.BotMain.Konata;
-using GreenOnions.BotMain.MiraiApiHttp;
 using GreenOnions.Interface;
 using GreenOnions.Utility;
 using GreenOnions.Utility.Helper;
@@ -41,13 +39,11 @@ namespace GreenOnions.BotMain.Go_CqHttp
                             return;
                         if (iRevokeTime > 0)
                         {
-                            _ = session.SendPrivateMessageAsync(context.Sender.UserId, msg).ContinueWith(async sendedCallBack =>
-                            {
-                                if (sendedCallBack.IsFaulted || sendedCallBack.IsCanceled)
-                                    return;
-                                await Task.Delay(1000 * iRevokeTime);
-                                await session.RecallMessageAsync(sendedCallBack.Result!.MessageId);
-                            });
+                            var sendedMsg = await session.SendPrivateMessageAsync(context.Sender.UserId, msg);
+                            if (sendedMsg is null)
+                                return;
+                            await Task.Delay(1000 * iRevokeTime);
+                            await session.RecallMessageAsync(sendedMsg.MessageId);
                         }
                         else
                         {
@@ -63,6 +59,14 @@ namespace GreenOnions.BotMain.Go_CqHttp
                 if (!CheckPreconditionsGroup(context))
                     return;
 
+                for (int i = 0; i < context.Message.Count; i++)
+                {
+                    if (context.Message[i] is not CqAtMsg atMsg || atMsg.IsAtAll || atMsg.Name is not null)
+                        continue;
+                    var member = await session.GetGroupMemberInformationAsync(context.GroupId, atMsg.Target);
+                    atMsg.Name = member?.GroupNickname;
+                }
+
                 bool isHandle = await MessageHandler.HandleMesage(context.Message.ToGreenOnionsMessages(context.MessageId, context.Sender.UserId, context.Sender.Nickname), null, async outMsg =>
                 {
                     if (outMsg is null || outMsg.Count == 0)
@@ -73,7 +77,7 @@ namespace GreenOnions.BotMain.Go_CqHttp
                         var msg = outMsg.ToCqForwardMessage();
                         if (msg is null || msg.Count == 0)
                             return;
-                        session.SendGroupForwardMessage(context.GroupId, msg);
+                        await session.SendGroupForwardMessageAsync(context.GroupId, msg);
                     }
                     else
                     {
@@ -82,13 +86,11 @@ namespace GreenOnions.BotMain.Go_CqHttp
                             return;
                         if (iRevokeTime > 0)
                         {
-                            _ = session.SendGroupMessageAsync(context.GroupId, msg).ContinueWith(async sendedCallBack =>
-                            {
-                                if (sendedCallBack.IsFaulted || sendedCallBack.IsCanceled)
-                                    return;
-                                await Task.Delay(1000 * iRevokeTime);
-                                await session.RecallMessageAsync(sendedCallBack.Result!.MessageId);
-                            });
+                            var sendedMsg = await session.SendGroupMessageAsync(context.GroupId, msg);
+                            if (sendedMsg is null)
+                                return;
+                            await Task.Delay(1000 * iRevokeTime);
+                            await session.RecallMessageAsync(sendedMsg.MessageId);
                         }
                         else
                         {

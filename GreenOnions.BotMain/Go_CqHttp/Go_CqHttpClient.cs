@@ -28,23 +28,24 @@ namespace GreenOnions.BotMain.Go_CqHttp
                 });
                 await _session.StartAsync();
 
-                //_session.PostPipeline.Use(async (context, next) =>
-                //{
-                //    // context 为上报数据的上下文, 其中包含了具体的信息
+                _session.PostPipeline.Use(async (context, next) =>
+                {
+                    // context 为上报数据的上下文, 其中包含了具体的信息
 
-                //    // 在这里添加你的逻辑代码 //
+                    // 在这里添加你的逻辑代码 //
 
-                //    // next 是中间件管道中的下一个中间件, 
-                //    // 如果你希望当中间件执行时, 不继续执行下一个中间件
-                //    // 可以选择不执行 next
-                    
-                //    await next();
-                //});
-                //_session.HandlePipeline();
+                    // next 是中间件管道中的下一个中间件, 
+                    // 如果你希望当中间件执行时, 不继续执行下一个中间件
+                    // 可以选择不执行 next
+
+                    await next();
+                });
+                _session.HandlePipeline();
 
                 //string nickname = _session.GetFriendList()?.Friends.Where(f => f.UserId == qqId).FirstOrDefault()?.Nickname ?? "未知";
 
-                string nickname = _session.GetLoginInformation()?.Nickname ?? "未知";
+                var loginInfo = await _session.GetLoginInformationAsync();
+                string nickname = loginInfo?.Nickname ?? "未知";
 
                 ConnectedEvent?.Invoke(true, nickname);
 
@@ -62,15 +63,16 @@ namespace GreenOnions.BotMain.Go_CqHttp
                         long sendedFriendMessageId = 0;
                         if (msg.First() is GreenOnionsForwardMessage)
                         {
-                            var soraMsg = msg.ToCqForwardMessage();
-                            sendedFriendMessageId = (await _session.SendPrivateForwardMessageAsync(targetId, soraMsg))?.MessageId ?? 0;
+                            var goCqhttpMsg = msg.ToCqForwardMessage();
+                            sendedFriendMessageId = (await _session.SendPrivateForwardMessageAsync(targetId, goCqhttpMsg))?.MessageId ?? 0;
                         }
                         else
                         {
-                            var soraMsg = msg.ToCqMessages();
-                            if (soraMsg is null || soraMsg.Count == 0)
+                            var goCqhttpMsg = msg.ToCqMessages();
+                            if (goCqhttpMsg is null || goCqhttpMsg.Count == 0)
                                 return 0;
-                            sendedFriendMessageId = _session.SendPrivateMessage(targetId, soraMsg)?.MessageId ?? 0;
+                            var sendedMsg = await _session.SendPrivateMessageAsync(targetId, goCqhttpMsg);
+                            sendedFriendMessageId = sendedMsg?.MessageId ?? 0;
                         }
                         if (msg.RevokeTime > 0 && sendedFriendMessageId != -1)
                             RecallMessage(sendedFriendMessageId, msg.RevokeTime * 1000);
@@ -83,15 +85,16 @@ namespace GreenOnions.BotMain.Go_CqHttp
                         long sendedGroupMessageId = 0;
                         if (msg.First() is GreenOnionsForwardMessage)
                         {
-                            var soraMsg = msg.ToCqForwardMessage();
-                            sendedGroupMessageId = (await _session.SendGroupForwardMessageAsync(targetId, soraMsg))?.MessageId ?? 0;
+                            var goCqhttpMsg = msg.ToCqForwardMessage();
+                            sendedGroupMessageId = (await _session.SendGroupForwardMessageAsync(targetId, goCqhttpMsg))?.MessageId ?? 0;
                         }
                         else
                         {
-                            var soraMsg = msg.ToCqMessages();
-                            if (soraMsg is null || soraMsg.Count == 0)
+                            var goCqhttpMsg = msg.ToCqMessages();
+                            if (goCqhttpMsg is null || goCqhttpMsg.Count == 0)
                                 return 0;
-                            sendedGroupMessageId = _session.SendGroupMessage(targetId, soraMsg)?.MessageId ?? 0;
+                            var sendedMsg = await _session.SendGroupMessageAsync(targetId, goCqhttpMsg);
+                            sendedGroupMessageId = sendedMsg?.MessageId ?? 0;
                         }
                         if (msg.RevokeTime > 0 && sendedGroupMessageId != -1)
                             RecallMessage(sendedGroupMessageId, msg.RevokeTime * 1000);
@@ -103,10 +106,11 @@ namespace GreenOnions.BotMain.Go_CqHttp
                             return 0;
 
                         long sendedTempMessageId = 0;
-                        var soraMsg = msg.ToCqMessages();
-                        if (soraMsg is null || soraMsg.Count == 0)
+                        var goCqhttpMsg = msg.ToCqMessages();
+                        if (goCqhttpMsg is null || goCqhttpMsg.Count == 0)
                             return 0;
-                        sendedTempMessageId = _session.SendPrivateMessage(targetId, targetGroup, soraMsg)?.MessageId ?? 0;
+                        var sendedMsg = await _session.SendPrivateMessageAsync(targetId, targetGroup, goCqhttpMsg);
+                        sendedTempMessageId = sendedMsg?.MessageId ?? 0;
 
                         if (msg.RevokeTime > 0 && sendedTempMessageId != -1)
                             RecallMessage(sendedTempMessageId, msg.RevokeTime * 1000);

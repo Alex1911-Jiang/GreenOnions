@@ -18,7 +18,7 @@ namespace GreenOnions.BotMain.Go_CqHttp
                     if (cqMessage[i] is CqAtMsg atMsg)
                         greenOnionsMessages.Add(new GreenOnionsAtMessage(atMsg.Target, atMsg.Name));
                     else if (cqMessage[i] is CqTextMsg textMsg)
-                        greenOnionsMessages.Add(textMsg.ToString() ?? string.Empty);
+                        greenOnionsMessages.Add(textMsg.Text);
                     else if (cqMessage[i] is CqImageMsg imageMsg)
                         greenOnionsMessages.Add(new GreenOnionsImageMessage(ImageHelper.ReplaceGroupUrl(imageMsg.Url!.ToString()!)));
                     else if (cqMessage[i] is CqFaceMsg faceMsg)
@@ -69,10 +69,6 @@ namespace GreenOnions.BotMain.Go_CqHttp
                         else
                             cqMessage.Add(new CqAtMsg(atMsg.AtId));
                     }
-                    //else if (greenOnionsMessage[i] is GreenOnionsForwardMessage forwardMsg)
-                    //{
-                        
-                    //}
                     else if (greenOnionsMessage[i] is GreenOnionsVoiceMessage voiceMsg)
                     {
                         if (!string.IsNullOrEmpty(voiceMsg.Url))
