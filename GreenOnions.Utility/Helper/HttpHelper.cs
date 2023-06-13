@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -16,7 +17,7 @@ namespace GreenOnions.Utility.Helper
                 httpClientHandler.UseProxy = useProxy;
                 httpClientHandler.Proxy = new WebProxy(BotInfo.Config.ProxyUrl);
             }
-            return new HttpClient(httpClientHandler) { Timeout = Timeout.InfiniteTimeSpan };
+            return new HttpClient(httpClientHandler) { Timeout = Timeout.InfiniteTimeSpan, DefaultRequestVersion = new Version(2, 0) };
         }
 
         public async static Task<(string document, string redirectUrl)> GetHttpResponseStringAndRedirectUrlAsync(HttpClient client, string url)
