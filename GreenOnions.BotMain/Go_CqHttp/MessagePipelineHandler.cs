@@ -67,7 +67,7 @@ namespace GreenOnions.BotMain.Go_CqHttp
                     atMsg.Name = member?.GroupNickname;
                 }
 
-                bool isHandle = await MessageHandler.HandleMesage(context.Message.ToGreenOnionsMessages(context.MessageId, context.Sender.UserId, context.Sender.Nickname), null, async outMsg =>
+                bool isHandle = await MessageHandler.HandleMesage(context.Message.ToGreenOnionsMessages(context.MessageId, context.Sender.UserId, context.Sender.Nickname), context.GroupId, async outMsg =>
                 {
                     if (outMsg is null || outMsg.Count == 0)
                         return;

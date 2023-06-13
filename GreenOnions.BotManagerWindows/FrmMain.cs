@@ -266,10 +266,8 @@ namespace GreenOnions.BotManagerWindows
 
         private void btnKonata_Click(object sender, EventArgs e)
         {
-            KonataClient client = new BotMain.Konata.KonataClient();
+            KonataClient client = new KonataClient();
             client.Login();
-
-
         }
     }
 }
