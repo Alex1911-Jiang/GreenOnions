@@ -49,9 +49,10 @@ namespace GreenOnions.BotMain.Go_CqHttp
 
                 ConnectedEvent?.Invoke(true, nickname);
 
-                void RecallMessage(long messageId, int revokeTime)
+                async void RecallMessage(long messageId, int revokeTime)
                 {
-                    Task.Delay(revokeTime).ContinueWith(_ => _session.RecallMessage(messageId));
+                    await Task.Delay(revokeTime);
+                    await _session.RecallMessageAsync(messageId);
                 }
 
                 GreenOnionsApi greenOnionsApi = new(
@@ -139,14 +140,14 @@ namespace GreenOnions.BotMain.Go_CqHttp
 
                 if (BotInfo.Config.LeaveGroupAfterBeMushin)  //自动退出被禁言的群
                 {
-                    CqGetGroupListActionResult? groups = _session.GetGroupList();
+                    CqGetGroupListActionResult? groups = await _session.GetGroupListAsync();
                     if (groups is null)
                         return;
                     foreach (var group in groups.Groups)
                     {
-                        var selfInfo = _session.GetGroupMemberInformation(group.GroupId, BotInfo.Config.QQId);
+                        var selfInfo = await _session.GetGroupMemberInformationAsync(group.GroupId, BotInfo.Config.QQId);
                         if (selfInfo.BanExpireTime > DateTime.Now)
-                            _session.LeaveGroup(group.GroupId);
+                            await _session.LeaveGroupAsync(group.GroupId);
                     }
                 }
             }
