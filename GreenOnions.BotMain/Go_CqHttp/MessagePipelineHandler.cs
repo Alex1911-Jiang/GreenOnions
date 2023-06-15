@@ -94,7 +94,7 @@ namespace GreenOnions.BotMain.Go_CqHttp
                         }
                         else
                         {
-                            session.SendGroupMessage(context.GroupId, msg);
+                            session.SendGroupMessageAsync(context.GroupId, msg);
                         }
                     }
                 });
@@ -110,7 +110,7 @@ namespace GreenOnions.BotMain.Go_CqHttp
                 if (BotInfo.Config.SendMemberJoinedMessage)
                     cmdMsg = BotInfo.Config.MemberJoinedMessage;
 
-                CqGetGroupMemberInformationActionResult? user = session.GetGroupMemberInformation(context.GroupId, context.UserId);
+                CqGetGroupMemberInformationActionResult? user = await session.GetGroupMemberInformationAsync(context.GroupId, context.UserId);
                 if (!string.IsNullOrEmpty(cmdMsg))
                     await session.SendGroupMessageAsync(context.GroupId, new CqMessage(new CqTextMsg(cmdMsg)));
             });
@@ -129,7 +129,7 @@ namespace GreenOnions.BotMain.Go_CqHttp
                         if (!BotInfo.Config.SendMemberBeKickedMessage)
                             return;
                         cmdMsg = BotInfo.Config.MemberBeKickedMessage;
-                        @operator = session.GetGroupMemberInformation(context.GroupId, context.OperatorId);
+                        @operator = await session.GetGroupMemberInformationAsync(context.GroupId, context.OperatorId);
                         break;
                     case CqGroupDecreaseChangeType.Leave:
                         if (!BotInfo.Config.SendMemberPositiveLeaveMessage)
@@ -137,11 +137,10 @@ namespace GreenOnions.BotMain.Go_CqHttp
                         cmdMsg = BotInfo.Config.MemberPositiveLeaveMessage;
                         break;
                 }
-                member = session.GetGroupMemberInformation(context.GroupId, context.UserId);
+                member = await session.GetGroupMemberInformationAsync(context.GroupId, context.UserId);
                 if (!string.IsNullOrEmpty(cmdMsg))
                     await session.SendGroupMessageAsync(context.GroupId, ReplaceMessage(cmdMsg, member, @operator));
             });
-            //session.UseGroupMemberBanChanged
         }
 
         private static CqMessage ReplaceMessage(string messageCmd, CqGetGroupMemberInformationActionResult? member, CqGetGroupMemberInformationActionResult? @operator = null)
