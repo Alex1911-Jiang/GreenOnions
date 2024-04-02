@@ -571,7 +571,7 @@ namespace GreenOnions.PictureSearcher
 
                     if (jHeader["status"].ToString() == "-1")
                     {
-                        LogHelper.WriteWarningLog($"SauceNAO(后端)没有配置API-Key");
+                        LogHelper.WriteWarningLog($"SauceNAO(后端)没有配置API-Key, 请求地址为：{SauceNAOUrl}");
                         BotInfo.API.SendMessageToAdmins("SauceNAO 未配置API-Key");
                         return ("SauceNAO 没有配置 API-Key，请联系机器人管理员。", true);  //没有返回内容
                     }
