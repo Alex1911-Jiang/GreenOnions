@@ -1,10 +1,9 @@
 ﻿using GreenOnions.NT.Base;
-using Lagrange.Core.Common;
 using YamlDotNet.Serialization;
 
 namespace GreenOnions.NT.Core
 {
-    public class Config
+    public class Config : ICommonConfig
     {
         public static Config Instance { get; set; } = new Config();
 
@@ -24,11 +23,8 @@ namespace GreenOnions.NT.Core
                 return;
             }
             string config = File.ReadAllText(configDirect);
-            Instance = YamlConvert.DeserializeObject<Config>(config);
+            Instance = YamlConvert.DeserializeObject<Config>(config) ?? new Config();
         }
-
-        [YamlMember(Description = "登录配置")]
-        public BotConfig? BotConfig { get; set; }
 
         /// <summary>
         /// 代理地址
@@ -37,16 +33,16 @@ namespace GreenOnions.NT.Core
         public string ProxyUrl { get; set; }
 
         /// <summary>
-        /// 机器人QQ号
+        /// 登录代理的用户名
         /// </summary>
-        [YamlMember(Description = "机器人QQ号")]
-        public long BotQQ { get; set; } = 0;
+        [YamlMember(Description = "登录代理的用户名（如果有）")]
+        public string ProxyUserName { get; set; }
 
         /// <summary>
-        /// 机器人密码
+        /// 登录代理的密码
         /// </summary>
-        [YamlMember(Description = "机器人密码（如果不填则使用扫码登录）")]
-        public long BotPassword { get; set; } = 0;
+        [YamlMember(Description = "登录代理的密码（如果有）")]
+        public string ProxyPassword { get; set; }
 
         /// <summary>
         /// 机器人名称
@@ -56,19 +52,19 @@ namespace GreenOnions.NT.Core
 
 
         [YamlMember(Description = "管理员QQ号")]
-        public HashSet<long> AdminQQ { get; set; } = new HashSet<long>();
+        public HashSet<uint> AdminQQ { get; set; } = new HashSet<uint>();
 
         /// <summary>
         /// 黑名单组
         /// </summary>
         [YamlMember(Description = "群黑名单")]
-        public HashSet<long> BannedGroup { get; set; } = new HashSet<long>();
+        public HashSet<uint> BannedGroup { get; set; } = new HashSet<uint>();
 
         /// <summary>
         /// 黑名单用户
         /// </summary>
         [YamlMember(Description = "用户黑名单")]
-        public HashSet<long> BannedUser { get; set; } = new HashSet<long>();
+        public HashSet<uint> BannedUser { get; set; } = new HashSet<uint>();
 
         /// <summary>
         /// 是否启用调试模式
@@ -80,13 +76,7 @@ namespace GreenOnions.NT.Core
         /// 调试群组
         /// </summary>
         [YamlMember(Description = "调试群组号")]
-        public HashSet<long> DebugGroups { get; set; } = new HashSet<long>();
-
-        /// <summary>
-        /// 允许使用Chromium去访问网站
-        /// </summary>
-        [YamlMember(Description = "调试群组号")]
-        public bool UseChromium { get; set; } = false;
+        public HashSet<uint> DebugGroups { get; set; } = new HashSet<uint>();
 
     }
 }

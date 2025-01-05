@@ -10,26 +10,27 @@ using ZXing.Rendering;
 
 class Program
 {
-    public static byte[] GenerateRandomMACAddress()
-    {
-        byte[] macAddress = new byte[6];
-        new Random().NextBytes(macAddress);
-        return macAddress;
-    }
-
     static async Task Main(string[] args)
     {
         Config.LoadConfig();
-        BotConfig botConfig = Config.Instance.BotConfig ?? new BotConfig();
+
+        string botConfigDirect = Path.Combine(AppContext.BaseDirectory, "botConfig.yml");
+        BotConfig? botConfig = null;
+        if (File.Exists(botConfigDirect))
+        {
+            string yamlBotConfig = File.ReadAllText(botConfigDirect);
+            botConfig = YamlConvert.DeserializeObject<BotConfig>(yamlBotConfig);
+        }
+        bool noBotConfig = botConfig is null;
 
         string deviceInfoDirect = Path.Combine(AppContext.BaseDirectory, "device.yml");
-        BotDeviceInfo? device = null;
+        BotDeviceInfo? deviceInfo = null;
         if (File.Exists(deviceInfoDirect))
         {
-            string deviceInfo = File.ReadAllText(deviceInfoDirect);
-            device = YamlConvert.DeserializeObject<BotDeviceInfo>(deviceInfo);
+            string yamlDeviceInfo = File.ReadAllText(deviceInfoDirect);
+            deviceInfo = YamlConvert.DeserializeObject<BotDeviceInfo>(yamlDeviceInfo);
         }
-        bool noDevice = device is null || string.IsNullOrWhiteSpace(device.DeviceName);
+        bool noDeviceInfo = deviceInfo is null;
 
         string keystoreDirect = Path.Combine(AppContext.BaseDirectory, "keystore.yml");
         BotKeystore? keystore = null;
@@ -38,10 +39,12 @@ class Program
             string keystoreInfo = File.ReadAllText(keystoreDirect);
             keystore = YamlConvert.DeserializeObject<BotKeystore>(keystoreInfo);
         }
-        bool noKeystore = keystore is null || string.IsNullOrWhiteSpace(keystore.Uid);
+        bool noKeystore = keystore is null;
+
+        Console.WriteLine("欢迎使用葱葱机器人NT");
 
         BotContext bot;
-        if (noDevice || noKeystore)
+        if (noBotConfig || noDeviceInfo || noKeystore)
         {
         IL_InputUin:
             Console.WriteLine("请输入QQ号：");
@@ -57,11 +60,15 @@ class Program
             Console.WriteLine("请输入密码，或直接回车使用扫码登录：");
             string? password = Console.ReadLine();
 
-            bot = BotFactory.Create(botConfig, uin, password!, out device);
+            botConfig = new BotConfig();
+            bot = BotFactory.Create(botConfig, uin, password!, out deviceInfo);
 
-            string deviceYml = YamlConvert.SerializeObject(device);
-            File.WriteAllText(deviceInfoDirect, deviceYml);
-            if (string.IsNullOrEmpty(password))
+            PluginManager.Load(bot);
+
+            File.WriteAllText(botConfigDirect, YamlConvert.SerializeObject(botConfig));
+            File.WriteAllText(deviceInfoDirect, YamlConvert.SerializeObject(deviceInfo));
+
+            if (string.IsNullOrEmpty(password))  //扫码登录
             {
                 (string Url, byte[] Png)? qrCode = await bot.FetchQrCode();
                 if (qrCode is null)
@@ -72,46 +79,38 @@ class Program
 
                 Console.WriteLine(qrCode.Value.Url);
                 GenerateQRCode(qrCode.Value.Url);
-                //TODO：在此处将Url输出为二维码，或将Png转成控制台能显示字符组成的图片输出
 
                 Console.WriteLine("扫码成功后请按回车继续");
                 Console.ReadLine();
 
                 await bot.LoginByQrCode();
             }
-            else
-            {
-                bool loginSuccess = await bot.LoginByPassword();
-                if (!loginSuccess)
-                {
-                    Console.WriteLine("登录失败，请重试或使用扫码登录");
-                    goto IL_InputPassword;
-                }
-            }
         }
-        else
+        else  //自动登录
         {
-            bot = BotFactory.Create(botConfig, device!, keystore!);
-            bool loginSuccess = await bot.LoginByPassword();
-            if (!loginSuccess)
-            {
-                Console.WriteLine("登录失败");
-                Environment.Exit(0);
-                return;
-            }
+            bot = BotFactory.Create(botConfig!, deviceInfo!, keystore!);
+            PluginManager.Load(bot);
         }
 
-        Config.Instance.BotConfig = botConfig;
+        bool loginSuccess = await bot.LoginByPassword();
+        if (!loginSuccess)
+        {
+            Console.WriteLine("登录失败，请重试或尝试使用其他方式登录");
+            Environment.Exit(0);
+            return;
+        }
+
         Config.SaveConfig();
 
-        Console.WriteLine("登录成功");
+        Console.WriteLine($"登录成功，机器人昵称：{bot.BotName}");
         keystore = bot.UpdateKeystore();
         File.WriteAllText(keystoreDirect, YamlConvert.SerializeObject(keystore));
 
         bot.Invoker.OnFriendMessageReceived += MessageReceived.OnFriendMessage;
+        bot.Invoker.OnGroupMessageReceived += MessageReceived.OnGroupMessage;
+        bot.Invoker.OnTempMessageReceived += MessageReceived.OnTempMessage;
     }
 
-    
 
     static void GenerateQRCode(string text)
     {

@@ -1,6 +1,7 @@
 ﻿using GreenOnions.NT.Base;
 using Lagrange.Core;
 using Lagrange.Core.Common.Interface.Api;
+using Lagrange.Core.Event.EventArg;
 using Lagrange.Core.Message;
 using Lagrange.Core.Message.Entity;
 
@@ -8,7 +9,7 @@ namespace GreenOnions.NT.Core
 {
     public static class MessageReceived
     {
-        public static void OnFriendMessage(BotContext context, Lagrange.Core.Event.EventArg.FriendMessageEvent e)
+        public static async void OnFriendMessage(BotContext context, FriendMessageEvent e)
         {
             if (e.Chain.GetEntity<FaceEntity>() is FaceEntity face)
             {
@@ -65,8 +66,7 @@ namespace GreenOnions.NT.Core
             else if (e.Chain.GetEntity<TextEntity>() is TextEntity text)
             {
                 LogHelper.LogMessage($"收到好友文本消息：{text.Text}");
-                var privateMessageChain = MessageBuilder.Friend(e.Chain.FriendUin).Text("222").Build();
-                context.SendMessage(privateMessageChain);
+                //await context.ReplyAsync(e.Chain, "222");
             }
             else if (e.Chain.GetEntity<VideoEntity>() is VideoEntity video)
             {
@@ -80,6 +80,24 @@ namespace GreenOnions.NT.Core
             //{
             //    LogHelper.LogMessage($"收到好友@消息：{at.AtName}，@QQ：{qq}");
             //}
+        }
+
+
+        public static void OnGroupMessage(BotContext context, GroupMessageEvent e)
+        {
+            if (e.Chain.GetEntity<TextEntity>() is TextEntity text)
+            {
+                LogHelper.LogMessage($"收到群文本消息：{text.Text}");
+            }
+        }
+
+        public static async void OnTempMessage(BotContext context, TempMessageEvent e)
+        {
+            if (e.Chain.GetEntity<TextEntity>() is TextEntity text)
+            {
+                LogHelper.LogMessage($"收到临时文本消息：{text.Text}");
+                await context.ReplyAsync(e.Chain, "444");
+            }
         }
     }
 }
