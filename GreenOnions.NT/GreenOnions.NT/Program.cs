@@ -1,9 +1,11 @@
-﻿using GreenOnions.NT.Base;
+﻿using System.IO.Compression;
+using GreenOnions.NT.Base;
 using GreenOnions.NT.Core;
 using Lagrange.Core;
 using Lagrange.Core.Common;
 using Lagrange.Core.Common.Interface;
 using Lagrange.Core.Common.Interface.Api;
+using Newtonsoft.Json;
 using ZXing;
 using ZXing.Common;
 using ZXing.Rendering;
@@ -14,29 +16,29 @@ class Program
     {
         Config.LoadConfig();
 
-        string botConfigDirect = Path.Combine(AppContext.BaseDirectory, "botConfig.yml");
+        string botConfigPath = Path.Combine(AppContext.BaseDirectory, "botConfig.yml");
         BotConfig? botConfig = null;
-        if (File.Exists(botConfigDirect))
+        if (File.Exists(botConfigPath))
         {
-            string yamlBotConfig = File.ReadAllText(botConfigDirect);
+            string yamlBotConfig = File.ReadAllText(botConfigPath);
             botConfig = YamlConvert.DeserializeObject<BotConfig>(yamlBotConfig);
         }
         bool noBotConfig = botConfig is null;
 
-        string deviceInfoDirect = Path.Combine(AppContext.BaseDirectory, "device.yml");
+        string deviceInfoPath = Path.Combine(AppContext.BaseDirectory, "device.yml");
         BotDeviceInfo? deviceInfo = null;
-        if (File.Exists(deviceInfoDirect))
+        if (File.Exists(deviceInfoPath))
         {
-            string yamlDeviceInfo = File.ReadAllText(deviceInfoDirect);
+            string yamlDeviceInfo = File.ReadAllText(deviceInfoPath);
             deviceInfo = YamlConvert.DeserializeObject<BotDeviceInfo>(yamlDeviceInfo);
         }
         bool noDeviceInfo = deviceInfo is null;
 
-        string keystoreDirect = Path.Combine(AppContext.BaseDirectory, "keystore.yml");
+        string keystorePath = Path.Combine(AppContext.BaseDirectory, "keystore.yml");
         BotKeystore? keystore = null;
-        if (File.Exists(keystoreDirect))
+        if (File.Exists(keystorePath))
         {
-            string keystoreInfo = File.ReadAllText(keystoreDirect);
+            string keystoreInfo = File.ReadAllText(keystorePath);
             keystore = YamlConvert.DeserializeObject<BotKeystore>(keystoreInfo);
         }
         bool noKeystore = keystore is null;
@@ -69,8 +71,8 @@ class Program
 
             PluginManager.Load(bot);
 
-            File.WriteAllText(botConfigDirect, YamlConvert.SerializeObject(botConfig));
-            File.WriteAllText(deviceInfoDirect, YamlConvert.SerializeObject(deviceInfo));
+            File.WriteAllText(botConfigPath, YamlConvert.SerializeObject(botConfig));
+            File.WriteAllText(deviceInfoPath, YamlConvert.SerializeObject(deviceInfo));
 
             if (string.IsNullOrEmpty(password))  //扫码登录
             {
@@ -105,8 +107,8 @@ class Program
         if (!loginSuccess)
         {
             Console.WriteLine("登录失败，请重试或尝试使用其他方式登录");
-            if (File.Exists(keystoreDirect))
-                File.Delete(keystoreDirect);
+            if (File.Exists(keystorePath))
+                File.Delete(keystorePath);
             Environment.Exit(0);
             return;
         }
@@ -115,7 +117,110 @@ class Program
 
         Console.WriteLine($"登录成功，机器人昵称：{bot.BotName}");
         keystore = bot.UpdateKeystore();
-        File.WriteAllText(keystoreDirect, YamlConvert.SerializeObject(keystore));
+        File.WriteAllText(keystorePath, YamlConvert.SerializeObject(keystore));
+
+        Console.WriteLine("您可以输入：help查询支持的命令");
+
+        while (true)
+        {
+            string? cmd = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(cmd))
+            {
+                continue;
+            }
+            else if (cmd == "help")
+            {
+                Console.WriteLine(@"支持以下命令：
+list-plugins : 在Github查找葱葱官方提供的插件列表
+install-plugin <插件名称> : 在Github下载该插件并安装(或更新到最新版本)
+exit : 退出葱葱");
+            }
+            else if (cmd == "exit")
+            {
+                Environment.Exit(0);
+                return;
+            }
+            else if (cmd == "list-plugins")
+            {
+                Dictionary<string, GreenOnionsPluginRelease>? pluginReleases = await SearchPluginsFromGithub();
+                if (pluginReleases is null)
+                    continue;
+                foreach (var pluginRelease in pluginReleases)
+                    Console.WriteLine($"《{pluginRelease.Key}》版本号：{pluginRelease.Value.Version}，更新说明：{pluginRelease.Value.Description}");
+            }
+            else if (cmd.StartsWith("install-plugin"))
+            {
+                string pluginName = cmd.Substring("install-plugin".Length).Trim();
+                Dictionary<string, GreenOnionsPluginRelease>? pluginReleases = await SearchPluginsFromGithub();
+                if (pluginReleases is null)
+                    continue;
+                if (!pluginReleases.TryGetValue(pluginName, out GreenOnionsPluginRelease? plugin))
+                {
+                    Console.WriteLine($"找不到名为《{pluginName}》的插件");
+                    continue;
+                }
+                using HttpClient client = new HttpClient();
+                var resp = await client.GetAsync(plugin.Url);
+                if (!resp.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"下载《{pluginName}》插件失败，{(int)resp.StatusCode} {resp.StatusCode}");
+                    continue;
+                }
+                Stream pluginZip = await resp.Content.ReadAsStreamAsync();
+
+                string pluginPath = Path.Combine(AppContext.BaseDirectory, "Plugins", plugin.PackageName.Substring(0, plugin.PackageName.LastIndexOf('.')));
+                Directory.CreateDirectory(pluginPath);
+                ZipFile.ExtractToDirectory(pluginZip, pluginPath);
+                LogHelper.LogMessage($"下载{pluginName}插件完成");
+                PluginManager.Load(bot);
+            }
+        }
+    }
+
+    private static async Task<Dictionary<string, GreenOnionsPluginRelease>?> SearchPluginsFromGithub()
+    {
+        using HttpClient client = new HttpClient();
+        client.DefaultRequestHeaders.UserAgent.TryParseAdd("DotNetHttpClient/8.0");
+        var resp = await client.GetAsync("https://api.github.com/repos/Alex1911-Jiang/GreenOnions.Plugins/releases");
+        if (!resp.IsSuccessStatusCode)
+        {
+            LogHelper.LogError($"在Github查找葱葱官方插件失败 {(int)resp.StatusCode} {resp.StatusCode}");
+            return null;
+        }
+        string releaseJson = await resp.Content.ReadAsStringAsync();
+        GithubRelease[]? releases = JsonConvert.DeserializeObject<GithubRelease[]>(releaseJson);
+        if (releases is null)
+        {
+            LogHelper.LogError($"在Github查找葱葱官方插件失败，解析内容错误");
+            return null;
+        }
+
+        GithubRelease release = releases.First();
+
+        Dictionary<string, GreenOnionsPluginRelease> pluginReleases = new Dictionary<string, GreenOnionsPluginRelease>();
+        foreach (var item in release.assets)
+        {
+            GreenOnionsPluginRelease pluginRelease = new GreenOnionsPluginRelease
+            {
+                PackageName = item.name,
+                Description = release.body,
+                Version = release.name,
+                Url = item.browser_download_url,
+            };
+            if (pluginReleases.TryGetValue(release.tag_name, out GreenOnionsPluginRelease? sameRelease) && sameRelease.Version > pluginRelease.Version)
+                continue;
+            pluginReleases[release.tag_name] = pluginRelease;
+        }
+
+        return pluginReleases;
+    }
+
+    public class GreenOnionsPluginRelease
+    {
+        public string PackageName { get; set; }
+        public string Description { get; set; }
+        public long Version { get; set; }
+        public string Url { get; set; }
     }
 
 
@@ -143,4 +248,91 @@ class Program
             Console.WriteLine();
         }
     }
+
+
+    public class GithubRelease
+    {
+        public string url { get; set; }
+        public string assets_url { get; set; }
+        public string upload_url { get; set; }
+        public string html_url { get; set; }
+        public int id { get; set; }
+        public GithubAuthor author { get; set; }
+        public string node_id { get; set; }
+        public string tag_name { get; set; }
+        public string target_commitish { get; set; }
+        public long name { get; set; }
+        public bool draft { get; set; }
+        public bool prerelease { get; set; }
+        public DateTime created_at { get; set; }
+        public DateTime published_at { get; set; }
+        public GithubAsset[] assets { get; set; }
+        public string tarball_url { get; set; }
+        public string zipball_url { get; set; }
+        public string body { get; set; }
+    }
+
+    public class GithubAuthor
+    {
+        public string login { get; set; }
+        public int id { get; set; }
+        public string node_id { get; set; }
+        public string avatar_url { get; set; }
+        public string gravatar_id { get; set; }
+        public string url { get; set; }
+        public string html_url { get; set; }
+        public string followers_url { get; set; }
+        public string following_url { get; set; }
+        public string gists_url { get; set; }
+        public string starred_url { get; set; }
+        public string subscriptions_url { get; set; }
+        public string organizations_url { get; set; }
+        public string repos_url { get; set; }
+        public string events_url { get; set; }
+        public string received_events_url { get; set; }
+        public string type { get; set; }
+        public string user_view_type { get; set; }
+        public bool site_admin { get; set; }
+    }
+
+    public class GithubAsset
+    {
+        public string url { get; set; }
+        public int id { get; set; }
+        public string node_id { get; set; }
+        public string name { get; set; }
+        public object label { get; set; }
+        public GithubUploader uploader { get; set; }
+        public string content_type { get; set; }
+        public string state { get; set; }
+        public int size { get; set; }
+        public int download_count { get; set; }
+        public DateTime created_at { get; set; }
+        public DateTime updated_at { get; set; }
+        public string browser_download_url { get; set; }
+    }
+
+    public class GithubUploader
+    {
+        public string login { get; set; }
+        public int id { get; set; }
+        public string node_id { get; set; }
+        public string avatar_url { get; set; }
+        public string gravatar_id { get; set; }
+        public string url { get; set; }
+        public string html_url { get; set; }
+        public string followers_url { get; set; }
+        public string following_url { get; set; }
+        public string gists_url { get; set; }
+        public string starred_url { get; set; }
+        public string subscriptions_url { get; set; }
+        public string organizations_url { get; set; }
+        public string repos_url { get; set; }
+        public string events_url { get; set; }
+        public string received_events_url { get; set; }
+        public string type { get; set; }
+        public string user_view_type { get; set; }
+        public bool site_admin { get; set; }
+    }
+
 }
