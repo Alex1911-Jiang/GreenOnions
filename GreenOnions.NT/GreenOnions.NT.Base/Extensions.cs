@@ -8,6 +8,8 @@ namespace GreenOnions.NT.Base
     {
         public static async Task ReplyAsync(this BotContext context, MessageChain chain, string text)
         {
+            if (string.IsNullOrEmpty(text))
+                return;
             MessageChain msg;
             if (chain.GroupUin is not null)
                 msg = MessageBuilder.Group(chain.GroupUin.Value).Forward(chain).Text(text).Build();

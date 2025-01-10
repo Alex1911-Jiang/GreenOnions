@@ -63,6 +63,10 @@ class Program
             botConfig = new BotConfig();
             bot = BotFactory.Create(botConfig, uin, password!, out deviceInfo);
 
+            bot.Invoker.OnFriendMessageReceived += MessageReceived.OnFriendMessage;
+            bot.Invoker.OnGroupMessageReceived += MessageReceived.OnGroupMessage;
+            bot.Invoker.OnTempMessageReceived += MessageReceived.OnTempMessage;
+
             PluginManager.Load(bot);
 
             File.WriteAllText(botConfigDirect, YamlConvert.SerializeObject(botConfig));
@@ -89,6 +93,11 @@ class Program
         else  //自动登录
         {
             bot = BotFactory.Create(botConfig!, deviceInfo!, keystore!);
+
+            bot.Invoker.OnFriendMessageReceived += MessageReceived.OnFriendMessage;
+            bot.Invoker.OnGroupMessageReceived += MessageReceived.OnGroupMessage;
+            bot.Invoker.OnTempMessageReceived += MessageReceived.OnTempMessage;
+
             PluginManager.Load(bot);
         }
 
@@ -96,6 +105,8 @@ class Program
         if (!loginSuccess)
         {
             Console.WriteLine("登录失败，请重试或尝试使用其他方式登录");
+            if (File.Exists(keystoreDirect))
+                File.Delete(keystoreDirect);
             Environment.Exit(0);
             return;
         }
@@ -105,10 +116,6 @@ class Program
         Console.WriteLine($"登录成功，机器人昵称：{bot.BotName}");
         keystore = bot.UpdateKeystore();
         File.WriteAllText(keystoreDirect, YamlConvert.SerializeObject(keystore));
-
-        bot.Invoker.OnFriendMessageReceived += MessageReceived.OnFriendMessage;
-        bot.Invoker.OnGroupMessageReceived += MessageReceived.OnGroupMessage;
-        bot.Invoker.OnTempMessageReceived += MessageReceived.OnTempMessage;
     }
 
 
