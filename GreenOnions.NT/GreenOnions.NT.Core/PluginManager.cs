@@ -1,16 +1,28 @@
-﻿using System.Reflection;
+﻿using System.IO.Compression;
+using System.Reflection;
 using System.Runtime.Loader;
+using System.Text;
 using GreenOnions.NT.Base;
+using GreenOnions.NT.Core.Models;
+using GreenOnions.NT.Core.Models.Github;
 using Lagrange.Core;
+using Newtonsoft.Json;
 
 namespace GreenOnions.NT.Core
 {
     public static class PluginManager
     {
         private static string _pluginsPath = Path.Combine(Environment.CurrentDirectory, "Plugins");
-        private static List<IPlugin> _plugins = new List<IPlugin>();
+        private static Dictionary<string, IPlugin> _plugins = new Dictionary<string, IPlugin>();
+        private static Dictionary<string, PluginReleaseInfo>? _pluginList = null;
 
-        public static int Load(BotContext bot)
+        public static IPlugin? GetPluginByName(string name)
+        {
+            _plugins.TryGetValue(name, out IPlugin? plugin);
+            return plugin;
+        }
+
+        public static int LoadAllPlugins(BotContext bot)
         {
             if (!Directory.Exists(_pluginsPath))
                 Directory.CreateDirectory(_pluginsPath);
@@ -19,72 +31,177 @@ namespace GreenOnions.NT.Core
 
             foreach (string pluginItemPath in pluginItemPaths)
             {
-                if (pluginItemPath.Substring(pluginItemPath.LastIndexOf('\\') + 1) == "GreenOnions.PluginConfigEditor")
-                {
-                    continue;
-                }
+                //if (pluginItemPath.Substring(pluginItemPath.LastIndexOf('\\') + 1) == "GreenOnions.PluginConfigEditor")
+                //    continue;
 
-                File.Copy("GreenOnions.NT.Base.dll", Path.Combine(pluginItemPath, "GreenOnions.NT.Base.dll"), true);
-                if (File.Exists("GreenOnions.NT.Base.xml"))
-                    File.Copy("GreenOnions.NT.Base.xml", Path.Combine(pluginItemPath, "GreenOnions.NT.Base.xml"), true);
-                if (File.Exists("GreenOnions.NT.Base.json"))
-                    File.Copy("GreenOnions.NT.Base.json", Path.Combine(pluginItemPath, "GreenOnions.NT.Base.json"), true);
-#if DEBUG
-                File.Copy("GreenOnions.NT.Base.pdb", Path.Combine(pluginItemPath, "GreenOnions.NT.Base.pdb"), true);
-#endif
-
-                Dictionary<string, string> dependPath = new Dictionary<string, string>();
-                string[] dlls = Directory.GetFiles(pluginItemPath, "*.dll", SearchOption.TopDirectoryOnly);
-                foreach (string dll in dlls)
-                {
-                    string dllPath = Path.GetDirectoryName(dll)!;
-                    string pluginFileName = Path.GetFileNameWithoutExtension(dll);
-                    if (pluginFileName == "GreenOnions.NT.Base")
-                        continue;
-                    try
-                    {
-                        AssemblyLoadContext assemblyLoadContext = new AssemblyLoadContext(pluginFileName);
-                        Assembly pluginAssembly;
-                        try
-                        {
-                            pluginAssembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
-                        }
-                        catch (Exception)
-                        {
-                            continue;
-                        }
-                        dependPath.Add(pluginFileName, dllPath);
-                        assemblyLoadContext.Resolving += (context, assemblyName) =>
-                        {
-                            string filename = $@"{Path.Combine(dependPath[context.Name!], $"{assemblyName.Name}.dll")}";
-                            if (File.Exists(filename))
-                                return context.LoadFromAssemblyPath(filename);
-                            return null;
-                        };
-
-                        Type[] types = pluginAssembly.GetTypes();
-                        foreach (Type type in types)
-                        {
-                            if (type.GetInterface("IPlugin") is null)
-                                continue;
-
-                            IPlugin? plugin = (IPlugin?)Activator.CreateInstance(type);
-                            if (plugin is null)
-                                continue;
-
-                            plugin.OnLoad(pluginItemPath, bot, Config.Instance);
-
-                            _plugins.Add(plugin);
-                            break;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        LogHelper.LogException(ex, $"插件{pluginFileName}加载失败");
-                    }
-                }
+                LoadOncePlugin(pluginItemPath, bot);
             }
             return _plugins.Count;
+        }
+
+        public static async Task UpgradePlugins()
+        {
+            if (!Directory.Exists(_pluginsPath))
+                Directory.CreateDirectory(_pluginsPath);
+
+            string[] pluginItemPaths = Directory.GetDirectories(_pluginsPath);
+
+            foreach (string pluginItemPath in pluginItemPaths)
+            {
+                string? upgradeFile = Directory.GetFiles(pluginItemPath, ".upgrade", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                if (upgradeFile is null)
+                    continue;
+                string base64 = File.ReadAllText(upgradeFile);
+                string pluginName = Encoding.UTF8.GetString(Convert.FromBase64String(base64));
+
+                await InstallPlugin(pluginName);
+                File.Delete(upgradeFile);
+            }
+        }
+
+        public static bool LoadOncePlugin(string pluginPath, BotContext bot)
+        {
+            Dictionary<string, string> dependPath = new Dictionary<string, string>();
+            string[] dlls = Directory.GetFiles(pluginPath, "*.dll", SearchOption.TopDirectoryOnly);
+            foreach (string dll in dlls)
+            {
+                string dllPath = Path.GetDirectoryName(dll)!;
+                string pluginFileName = Path.GetFileNameWithoutExtension(dll);
+                if (pluginFileName == "GreenOnions.NT.Base")
+                    continue;
+                try
+                {
+                    AssemblyLoadContext assemblyLoadContext = new AssemblyLoadContext(pluginFileName);
+                    Assembly pluginAssembly;
+                    try
+                    {
+                        pluginAssembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                    dependPath.Add(pluginFileName, dllPath);
+                    assemblyLoadContext.Resolving += (context, assemblyName) =>
+                    {
+                        string filename = $@"{Path.Combine(dependPath[context.Name!], $"{assemblyName.Name}.dll")}";
+                        if (File.Exists(filename))
+                            return context.LoadFromAssemblyPath(filename);
+                        return null;
+                    };
+
+                    Type[] types = pluginAssembly.GetTypes();
+                    foreach (Type type in types)
+                    {
+                        if (type.GetInterface(nameof(IPlugin)) is null)
+                            continue;
+
+                        IPlugin? plugin = (IPlugin?)Activator.CreateInstance(type);
+                        if (plugin is null)
+                            continue;
+
+                        if (_plugins.ContainsKey(plugin.Name))
+                        {
+                            LogHelper.LogWarning($"已加载《{plugin.Name}》插件无法重复加载");
+                            return false;
+                        }
+
+                        plugin.OnLoad(pluginPath, bot, Config.Instance);
+                        LogHelper.LogMessage($"《{plugin.Name}》插件加载成功，版本：{plugin.GetVersion()}");
+
+                        _plugins.Add(plugin.Name, plugin);
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.LogException(ex, $"《{pluginFileName}》插件加载失败");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static async Task<RestResult<string>> InstallPlugin(string pluginName)
+        {
+            Dictionary<string, PluginReleaseInfo> pluginReleases = _pluginList ?? await SearchPluginsOnGithub();
+            if (!pluginReleases.TryGetValue(pluginName, out PluginReleaseInfo? plugin))
+                return new RestResult<string>(false, null, $"找不到名为《{pluginName}》的插件");
+            IPlugin? installedPlugin = PluginManager.GetPluginByName(pluginName);
+            string? pluginPath = installedPlugin?.GetPath();
+            if (installedPlugin is not null && pluginPath is not null)
+            {
+                long installedVersion = installedPlugin.GetVersion();
+                if (installedVersion >= plugin.Version)
+                    return new RestResult<string>(false, null, $"当前安装的《{pluginName}》插件已是最新版本：{installedVersion}");
+                string pluginDirect = Path.Combine(Path.GetDirectoryName(pluginPath)!, $".upgrade");
+                File.WriteAllText(pluginDirect, Convert.ToBase64String(Encoding.UTF8.GetBytes(pluginName)));
+                return new RestResult<string>(false, null, $"已创建升级计划，《{pluginName}》插件将在您下次启动葱葱NT时自动升级");
+            }
+
+            using HttpClient client = new HttpClient();
+            var resp = await client.GetAsync(plugin.Url);
+            if (!resp.IsSuccessStatusCode)
+                return new RestResult<string>(false, null, $"下载《{pluginName}》插件失败，{(int)resp.StatusCode} {resp.StatusCode}");
+            long totalBytes = resp.Content.Headers.ContentLength!.Value;
+            Stream pluginZip = await resp.Content.ReadAsStreamAsync();
+
+            double totalRead = 0;
+            byte[] buffer = new byte[8192];
+            int read = 0;
+            do
+            {
+                read = await pluginZip.ReadAsync(buffer, 0, buffer.Length);
+                totalRead += read;
+                int progress = (int)Math.Round(totalRead / totalBytes * 50);
+                Console.Write($"\r正在下载《{pluginName}》插件，进度：[{string.Empty.PadLeft(progress, '=').PadRight(50)}]");
+                await Task.Delay(1);
+            } while (read > 0);
+            Console.WriteLine();
+
+            string installPath = Path.Combine(AppContext.BaseDirectory, "Plugins", plugin.PackageName);
+            Directory.CreateDirectory(installPath);
+            ZipFile.ExtractToDirectory(pluginZip, installPath, true);
+            LogHelper.LogMessage($"安装《{pluginName}》插件完成");
+            return new RestResult<string>(false, installPath);
+        }
+
+        public static async Task<Dictionary<string, PluginReleaseInfo>> SearchPluginsOnGithub()
+        {
+            using HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.UserAgent.TryParseAdd("DotNetRuntime/8.0");
+            var resp = await client.GetAsync("https://api.github.com/repos/Alex1911-Jiang/GreenOnions.Plugins/releases");
+            if (!resp.IsSuccessStatusCode)
+            {
+                LogHelper.LogError($"在Github查找葱葱官方插件失败 {(int)resp.StatusCode} {resp.StatusCode}");
+                throw new Exception($"在Github查找葱葱官方插件失败 {(int)resp.StatusCode} {resp.StatusCode}");
+            }
+            string releaseJson = await resp.Content.ReadAsStringAsync();
+            GithubRelease[]? releases = JsonConvert.DeserializeObject<GithubRelease[]>(releaseJson);
+            if (releases is null)
+            {
+                LogHelper.LogError($"在Github查找葱葱官方插件失败，解析内容错误");
+                throw new Exception($"在Github查找葱葱官方插件失败，解析内容错误");
+            }
+
+            GithubRelease release = releases.First();
+
+            Dictionary<string, PluginReleaseInfo> pluginReleases = new Dictionary<string, PluginReleaseInfo>();
+            foreach (var item in release.assets)
+            {
+                PluginReleaseInfo pluginRelease = new PluginReleaseInfo
+                {
+                    PackageName = item.name.Substring(0, item.name.LastIndexOf('.')),
+                    Description = release.body,
+                    Version = release.name,
+                    Url = item.browser_download_url,
+                };
+                if (pluginReleases.TryGetValue(release.tag_name, out PluginReleaseInfo? sameRelease) && sameRelease.Version > pluginRelease.Version)
+                    continue;
+                pluginReleases[release.tag_name] = pluginRelease;
+            }
+            _pluginList = pluginReleases;
+            return pluginReleases;
         }
     }
 }
