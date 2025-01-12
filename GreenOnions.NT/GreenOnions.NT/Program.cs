@@ -11,7 +11,12 @@ using ZXing.Rendering;
 
 class Program
 {
-    static async Task Main(string[] args)
+    static void Main(string[] args)
+    {
+        Load().ContinueWith(task => ReadCommand(task.Result));
+    }
+
+    private static async Task<BotContext> Load()
     {
         Config.LoadConfig();
 
@@ -65,7 +70,6 @@ class Program
 
             botConfig = new BotConfig();
             bot = BotFactory.Create(botConfig, uin, password!, out deviceInfo);
-
             bot.Invoker.OnFriendMessageReceived += MessageReceived.OnFriendMessage;
             bot.Invoker.OnGroupMessageReceived += MessageReceived.OnGroupMessage;
             bot.Invoker.OnTempMessageReceived += MessageReceived.OnTempMessage;
@@ -113,7 +117,7 @@ class Program
             if (File.Exists(keystorePath))
                 File.Delete(keystorePath);
             Environment.Exit(0);
-            return;
+            return bot;
         }
 
         Config.SaveConfig();
@@ -121,9 +125,12 @@ class Program
         Console.WriteLine($"登录成功，机器人昵称：{bot.BotName}");
         keystore = bot.UpdateKeystore();
         File.WriteAllText(keystorePath, YamlConvert.SerializeObject(keystore));
+        return bot;
+    }
 
+    private static async void ReadCommand(BotContext bot)
+    {
         Console.WriteLine("您可以输入：help查询支持的命令");
-
         while (true)
         {
             string? cmd = Console.ReadLine();
@@ -136,12 +143,17 @@ class Program
                 Console.WriteLine(@"支持以下命令：
 list-plugins : 在Github查找葱葱官方提供的插件列表
 install-plugin <插件名称> : 在Github下载该插件并安装(或更新到最新版本)
+reload-config : 重新加载配置文件
 exit : 退出葱葱");
             }
             else if (cmd == "exit")
             {
                 Environment.Exit(0);
                 return;
+            }
+            else if (cmd == "reload-config")
+            {
+                Config.LoadConfig();
             }
             else if (cmd == "list-plugins")
             {

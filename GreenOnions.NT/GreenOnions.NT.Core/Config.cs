@@ -24,25 +24,26 @@ namespace GreenOnions.NT.Core
             }
             string config = File.ReadAllText(configDirect);
             Instance = YamlConvert.DeserializeObject<Config>(config) ?? new Config();
+            PluginManager.OnConfigUpdate();
         }
 
         /// <summary>
         /// 代理地址
         /// </summary>
         [YamlMember(Description = "代理地址（如果是Http代理就只写地址和端口，例:'127.0.0.1:10809'，如果是是Socks5则加上'socks5://'例:'socks5://127.0.0.1:10808'）")]
-        public string ProxyUrl { get; set; }
+        public string? ProxyUrl { get; set; } = null;
 
         /// <summary>
         /// 登录代理的用户名
         /// </summary>
         [YamlMember(Description = "登录代理的用户名（如果有）")]
-        public string ProxyUserName { get; set; }
+        public string? ProxyUserName { get; set; } = null;
 
         /// <summary>
         /// 登录代理的密码
         /// </summary>
         [YamlMember(Description = "登录代理的密码（如果有）")]
-        public string ProxyPassword { get; set; }
+        public string? ProxyPassword { get; set; } = null;
 
         /// <summary>
         /// 机器人名称

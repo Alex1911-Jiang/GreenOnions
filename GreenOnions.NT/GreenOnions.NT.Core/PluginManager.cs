@@ -14,12 +14,18 @@ namespace GreenOnions.NT.Core
     {
         private static string _pluginsPath = Path.Combine(Environment.CurrentDirectory, "Plugins");
         private static Dictionary<string, IPlugin> _plugins = new Dictionary<string, IPlugin>();
-        private static Dictionary<string, PluginReleaseInfo>? _pluginList = null;
+        private static Dictionary<string, PluginReleaseInfo>? _pluginInfos = null;
 
         public static IPlugin? GetPluginByName(string name)
         {
             _plugins.TryGetValue(name, out IPlugin? plugin);
             return plugin;
+        }
+
+        public static void OnConfigUpdate()
+        {
+            foreach (var item in _plugins.Values)
+                item.OnConfigUpdate(Config.Instance);
         }
 
         public static int LoadAllPlugins(BotContext bot)
@@ -69,18 +75,20 @@ namespace GreenOnions.NT.Core
                 string pluginFileName = Path.GetFileNameWithoutExtension(dll);
                 if (pluginFileName == "GreenOnions.NT.Base")
                     continue;
+
+                AssemblyLoadContext assemblyLoadContext = new AssemblyLoadContext(pluginFileName);
+                Assembly pluginAssembly;
                 try
                 {
-                    AssemblyLoadContext assemblyLoadContext = new AssemblyLoadContext(pluginFileName);
-                    Assembly pluginAssembly;
-                    try
-                    {
-                        pluginAssembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
-                    }
-                    catch (Exception)
-                    {
-                        continue;
-                    }
+                    pluginAssembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+
+                try
+                {
                     dependPath.Add(pluginFileName, dllPath);
                     assemblyLoadContext.Resolving += (context, assemblyName) =>
                     {
@@ -124,7 +132,7 @@ namespace GreenOnions.NT.Core
 
         public static async Task<RestResult<string>> InstallPlugin(string pluginName)
         {
-            Dictionary<string, PluginReleaseInfo> pluginReleases = _pluginList ?? await SearchPluginsOnGithub();
+            Dictionary<string, PluginReleaseInfo> pluginReleases = _pluginInfos ?? await SearchPluginsOnGithub();
             if (!pluginReleases.TryGetValue(pluginName, out PluginReleaseInfo? plugin))
                 return new RestResult<string>(false, null, $"找不到名为《{pluginName}》的插件");
             IPlugin? installedPlugin = PluginManager.GetPluginByName(pluginName);
@@ -200,7 +208,7 @@ namespace GreenOnions.NT.Core
                     continue;
                 pluginReleases[release.tag_name] = pluginRelease;
             }
-            _pluginList = pluginReleases;
+            _pluginInfos = pluginReleases;
             return pluginReleases;
         }
     }

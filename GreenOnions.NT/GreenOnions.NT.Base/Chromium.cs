@@ -16,7 +16,9 @@ namespace GreenOnions.NT.Base
                 throw new HttpRequestException(null, null, resp.Status);
             while (resp.Status != System.Net.HttpStatusCode.OK)
                 resp = await page.WaitForNavigationAsync();
-            var html = await page.EvaluateFunctionAsync<string>("() => document.querySelector('body > pre').innerHTML");
+            var html = await page.EvaluateFunctionAsync<string>("() => document.body.innerHTML");
+            if (html.StartsWith("<pre>"))
+                html = await page.EvaluateFunctionAsync<string>("() => document.querySelector('body > pre').innerHTML");
             return html;
         }
     }
