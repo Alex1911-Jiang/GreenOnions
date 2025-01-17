@@ -5,12 +5,10 @@ namespace GreenOnions.NT.Core
 {
     public class Config : ICommonConfig
     {
-        public static Config Instance { get; set; } = new Config();
-
         public static void SaveConfig()
         {
             string configDirect = Path.Combine(AppContext.BaseDirectory, "config.yml");
-            string config = YamlConvert.SerializeObject(Instance);
+            string config = YamlConvert.SerializeObject(SngletonInstance.Config);
             File.WriteAllText(configDirect, config);
         }
 
@@ -19,11 +17,11 @@ namespace GreenOnions.NT.Core
             string configDirect = Path.Combine(AppContext.BaseDirectory, "config.yml");
             if (!File.Exists(configDirect))
             {
-                Instance = new Config();
+                SngletonInstance.Config = new Config();
                 return;
             }
             string config = File.ReadAllText(configDirect);
-            Instance = YamlConvert.DeserializeObject<Config>(config) ?? new Config();
+            SngletonInstance.Config = YamlConvert.DeserializeObject<Config>(config) ?? new Config();
             PluginManager.OnConfigUpdate();
         }
 

@@ -109,6 +109,7 @@ class Program
 
             Console.WriteLine("尝试使用Keystore自动登录，如果长时间未出现登录成功，请删除keystore.yml后重新登录");
         }
+        SngletonInstance.Bot = bot;
 
         bool loginSuccess = await bot.LoginByPassword();
         if (!loginSuccess)

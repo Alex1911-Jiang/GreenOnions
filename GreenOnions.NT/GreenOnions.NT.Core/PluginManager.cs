@@ -25,7 +25,7 @@ namespace GreenOnions.NT.Core
         public static void OnConfigUpdate()
         {
             foreach (var item in _plugins.Values)
-                item.OnConfigUpdate(Config.Instance);
+                item.OnConfigUpdate(SngletonInstance.Config!);
         }
 
         public static int LoadAllPlugins(BotContext bot)
@@ -114,7 +114,7 @@ namespace GreenOnions.NT.Core
                             return false;
                         }
 
-                        plugin.OnLoad(pluginPath, bot, Config.Instance);
+                        plugin.OnLoad(pluginPath, bot, SngletonInstance.Config!);
                         LogHelper.LogMessage($"《{plugin.Name}》插件加载成功，版本：{plugin.GetVersion()}");
 
                         _plugins.Add(plugin.Name, plugin);
