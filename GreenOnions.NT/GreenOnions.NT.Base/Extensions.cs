@@ -37,14 +37,6 @@ namespace GreenOnions.NT.Base
             await SngletonInstance.Bot.SendMessage(msg);
         }
 
-        public static async Task ReplyAsync(this MessageChain chain, MessageBuilder msg)
-        {
-            if (SngletonInstance.Bot is null)
-                throw new Exception("未构建机器人实例，请先登录");
-
-            await SngletonInstance.Bot.SendMessage(msg.Build());
-        }
-
         public static async Task SendMessageToAdmin(this BotContext bot, string text)
         {
             if (string.IsNullOrEmpty(text))

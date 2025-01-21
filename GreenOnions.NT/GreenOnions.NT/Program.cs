@@ -65,11 +65,12 @@ class Program
             }
 
         IL_InputPassword:
-            Console.WriteLine("请输入密码，或直接回车使用扫码登录：");
-            string? password = Console.ReadLine();
+            //Console.WriteLine("请输入密码，或直接回车使用扫码登录：");
+            //string? password = Console.ReadLine();
+            string password = "";
 
             botConfig = new BotConfig();
-            bot = BotFactory.Create(botConfig, uin, password!, out deviceInfo);
+            bot = BotFactory.Create(botConfig, uin, password, out deviceInfo);
             bot.Invoker.OnFriendMessageReceived += MessageReceived.OnFriendMessage;
             bot.Invoker.OnGroupMessageReceived += MessageReceived.OnGroupMessage;
             bot.Invoker.OnTempMessageReceived += MessageReceived.OnTempMessage;
@@ -79,23 +80,23 @@ class Program
             File.WriteAllText(botConfigPath, YamlConvert.SerializeObject(botConfig));
             File.WriteAllText(deviceInfoPath, YamlConvert.SerializeObject(deviceInfo));
 
-            if (string.IsNullOrEmpty(password))  //扫码登录
+            //if (string.IsNullOrEmpty(password))  //扫码登录
+            //{
+            (string Url, byte[] Png)? qrCode = await bot.FetchQrCode();
+            if (qrCode is null)
             {
-                (string Url, byte[] Png)? qrCode = await bot.FetchQrCode();
-                if (qrCode is null)
-                {
-                    Console.WriteLine("请求扫码登录接口失败，请重试或使用密码登录");
-                    goto IL_InputPassword;
-                }
-
-                Console.WriteLine(qrCode.Value.Url);
-                GenerateQRCode(qrCode.Value.Url);
-
-                Console.WriteLine("扫码成功后请按回车继续");
-                Console.ReadLine();
-
-                await bot.LoginByQrCode();
+                Console.WriteLine("请求扫码登录接口失败，请重试或使用密码登录");
+                goto IL_InputPassword;
             }
+
+            Console.WriteLine(qrCode.Value.Url);
+            GenerateQRCode(qrCode.Value.Url);
+
+            Console.WriteLine("扫码成功后请按回车继续");
+            Console.ReadLine();
+
+            await bot.LoginByQrCode();
+            //}
         }
         else  //自动登录
         {

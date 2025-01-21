@@ -150,7 +150,7 @@ namespace GreenOnions.NT.Core
             bool useProxy = false;
             if (SngletonInstance.Config is Config config)
                 useProxy = config.UseProxy;
-            HttpClientHandler handler = new HttpClientHandler { UseProxy = useProxy };
+            using HttpClientHandler handler = new HttpClientHandler { UseProxy = useProxy };
             using HttpClient client = new HttpClient(handler);
             var resp = await client.GetAsync(plugin.Url);
             if (!resp.IsSuccessStatusCode)
@@ -183,7 +183,7 @@ namespace GreenOnions.NT.Core
             bool useProxy = false;
             if (SngletonInstance.Config is Config config)
                 useProxy = config.UseProxy;
-            HttpClientHandler handler = new HttpClientHandler { UseProxy = useProxy };
+            using HttpClientHandler handler = new HttpClientHandler { UseProxy = useProxy };
             using HttpClient client = new HttpClient(handler);
             client.DefaultRequestHeaders.UserAgent.TryParseAdd("DotNetRuntime/8.0");
             var resp = await client.GetAsync("https://api.github.com/repos/Alex1911-Jiang/GreenOnions.Plugins/releases");
