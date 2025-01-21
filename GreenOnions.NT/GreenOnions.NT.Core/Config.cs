@@ -49,6 +49,12 @@ namespace GreenOnions.NT.Core
         public string? ProxyPassword { get; set; } = null;
 
         /// <summary>
+        /// 使用代理
+        /// </summary>
+        [YamlMember(Description = "核心是否使用代理（只应用于检查更新和下载插件）")]
+        public bool UseProxy { get; set; } = false;
+
+        /// <summary>
         /// 机器人名称
         /// </summary>
         [YamlMember(Description = "机器人名称（用于在QQ消息中唤起机器人）")]
@@ -81,6 +87,5 @@ namespace GreenOnions.NT.Core
         /// </summary>
         [YamlMember(Description = "调试群组号")]
         public HashSet<uint> DebugGroups { get; set; } = new HashSet<uint>();
-
     }
 }

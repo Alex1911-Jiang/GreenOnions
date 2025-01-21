@@ -147,7 +147,11 @@ namespace GreenOnions.NT.Core
                 return new RestResult<string>(false, null, $"已创建升级计划，《{pluginName}》插件将在您下次启动葱葱NT时自动升级");
             }
 
-            using HttpClient client = new HttpClient();
+            bool useProxy = false;
+            if (SngletonInstance.Config is Config config)
+                useProxy = config.UseProxy;
+            HttpClientHandler handler = new HttpClientHandler { UseProxy = useProxy };
+            using HttpClient client = new HttpClient(handler);
             var resp = await client.GetAsync(plugin.Url);
             if (!resp.IsSuccessStatusCode)
                 return new RestResult<string>(false, null, $"下载《{pluginName}》插件失败，{(int)resp.StatusCode} {resp.StatusCode}");
@@ -176,7 +180,11 @@ namespace GreenOnions.NT.Core
 
         public static async Task<Dictionary<string, PluginReleaseInfo>> SearchPluginsOnGithub()
         {
-            using HttpClient client = new HttpClient();
+            bool useProxy = false;
+            if (SngletonInstance.Config is Config config)
+                useProxy = config.UseProxy;
+            HttpClientHandler handler = new HttpClientHandler { UseProxy = useProxy };
+            using HttpClient client = new HttpClient(handler);
             client.DefaultRequestHeaders.UserAgent.TryParseAdd("DotNetRuntime/8.0");
             var resp = await client.GetAsync("https://api.github.com/repos/Alex1911-Jiang/GreenOnions.Plugins/releases");
             if (!resp.IsSuccessStatusCode)
