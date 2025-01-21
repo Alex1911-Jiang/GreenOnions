@@ -13,18 +13,17 @@ namespace GreenOnions.NT.Core
     public static class PluginManager
     {
         private static string _pluginsPath = Path.Combine(Environment.CurrentDirectory, "Plugins");
-        private static Dictionary<string, IPlugin> _plugins = new Dictionary<string, IPlugin>();
         private static Dictionary<string, PluginReleaseInfo>? _pluginInfos = null;
 
         public static IPlugin? GetPluginByName(string name)
         {
-            _plugins.TryGetValue(name, out IPlugin? plugin);
+            SngletonInstance.Plugins.TryGetValue(name, out IPlugin? plugin);
             return plugin;
         }
 
         public static void OnConfigUpdate()
         {
-            foreach (var item in _plugins.Values)
+            foreach (var item in SngletonInstance.Plugins.Values)
                 item.OnConfigUpdate(SngletonInstance.Config!);
         }
 
@@ -42,7 +41,7 @@ namespace GreenOnions.NT.Core
 
                 LoadOncePlugin(pluginItemPath, bot);
             }
-            return _plugins.Count;
+            return SngletonInstance.Plugins.Count;
         }
 
         public static async Task UpgradePlugins()
@@ -76,6 +75,12 @@ namespace GreenOnions.NT.Core
                 if (pluginFileName == "GreenOnions.NT.Base")
                     continue;
 
+                if (SngletonInstance.Plugins.ContainsKey(pluginFileName))
+                {
+                    LogHelper.LogWarning($"已加载（{pluginFileName}）插件无需重复加载");
+                    return false;
+                }
+
                 AssemblyLoadContext assemblyLoadContext = new AssemblyLoadContext(pluginFileName);
                 Assembly pluginAssembly;
                 try
@@ -107,17 +112,17 @@ namespace GreenOnions.NT.Core
                         IPlugin? plugin = (IPlugin?)Activator.CreateInstance(type);
                         if (plugin is null)
                             continue;
-
-                        if (_plugins.ContainsKey(plugin.Name))
+                        string pluginNamespace = plugin.GetNamespace();
+                        if (SngletonInstance.Plugins.ContainsKey(plugin.Name))
                         {
-                            LogHelper.LogWarning($"已加载《{plugin.Name}》插件无法重复加载");
+                            LogHelper.LogWarning($"已加载《{plugin.Name}》（{pluginNamespace}）插件无法重复加载");
                             return false;
                         }
 
                         plugin.OnLoad(pluginPath, bot, SngletonInstance.Config!);
-                        LogHelper.LogMessage($"《{plugin.Name}》插件加载成功，版本：{plugin.GetVersion()}");
+                        LogHelper.LogMessage($"《{plugin.Name}》（{pluginNamespace}）插件加载成功，版本：{plugin.GetVersion()}");
 
-                        _plugins.Add(plugin.Name, plugin);
+                        SngletonInstance.Plugins.Add(plugin.GetNamespace(), plugin);
                         break;
                     }
                 }

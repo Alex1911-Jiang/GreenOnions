@@ -20,14 +20,15 @@ namespace GreenOnions.NT.Base
             return true;
         }
 
-        public static async Task ReplyAsync(this MessageChain chain, string text)
+        public static async Task ReplyAsync(this MessageChain chain, string text, bool replaceTag = true)
         {
             if (string.IsNullOrEmpty(text))
                 return;
             if (SngletonInstance.Bot is null)
                 throw new Exception("未构建机器人实例，请先登录");
 
-            text = ReplaceTags(text);
+            if (replaceTag)
+                text = ReplaceTags(text);
 
             MessageChain msg;
             if (chain.GroupUin is not null)
@@ -70,9 +71,14 @@ namespace GreenOnions.NT.Base
             return Convert.ToInt64($"{year}{monthAndDay:0000}{hourAndMinute:0000}");
         }
 
-        public static string? GetPath(this IPlugin self)
+        public static string GetPath(this IPlugin self)
         {
-            return Assembly.GetAssembly(self.GetType())?.Location;
+            return Assembly.GetAssembly(self.GetType())!.Location;
+        }
+
+        public static string GetNamespace(this IPlugin self)
+        {
+            return self.GetType().Namespace!;
         }
 
         public static string ReplaceTags(this string text)

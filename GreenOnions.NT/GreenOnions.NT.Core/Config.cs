@@ -23,10 +23,13 @@ namespace GreenOnions.NT.Core
             }
             string config = File.ReadAllText(configDirect);
             SngletonInstance.Config = YamlConvert.DeserializeObject<Config>(config) ?? new Config();
-            WebProxy webProxy = new WebProxy(SngletonInstance.Config.ProxyUrl);
-            if (!string.IsNullOrEmpty(SngletonInstance.Config.ProxyUserName) && !string.IsNullOrEmpty(SngletonInstance.Config.ProxyPassword))
-                webProxy.Credentials = new NetworkCredential(SngletonInstance.Config.ProxyUserName, SngletonInstance.Config.ProxyPassword);
-            HttpClient.DefaultProxy = webProxy;
+            if (!string.IsNullOrWhiteSpace(SngletonInstance.Config.ProxyUrl))
+            {
+                WebProxy webProxy = new WebProxy(SngletonInstance.Config.ProxyUrl);
+                if (!string.IsNullOrEmpty(SngletonInstance.Config.ProxyUserName) && !string.IsNullOrEmpty(SngletonInstance.Config.ProxyPassword))
+                    webProxy.Credentials = new NetworkCredential(SngletonInstance.Config.ProxyUserName, SngletonInstance.Config.ProxyPassword);
+                HttpClient.DefaultProxy = webProxy;
+            }
             PluginManager.OnConfigUpdate();
         }
 
