@@ -7,7 +7,10 @@ namespace GreenOnions.NT.Base
     {
         public static string SerializeObject<T>(T value)
         {
-            var serializer = new SerializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
+            var serializer = new SerializerBuilder()
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                .DisableAliases()
+                .Build();
             return serializer.Serialize(value);
         }
 
@@ -15,12 +18,15 @@ namespace GreenOnions.NT.Base
         {
             try
             {
-                var deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).IgnoreUnmatchedProperties().Build();
+                var deserializer = new DeserializerBuilder()
+                    .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                    .IgnoreUnmatchedProperties()
+                    .Build();
                 return deserializer.Deserialize<T>(yaml);
             }
             catch (Exception ex)
             {
-                LogHelper.LogException(ex, "反序列化配置文件失败");
+                LogHelper.LogException(ex, $"反序列化配置文件失败，错误信息：{ex.Message}");
                 return null;
             }
         }

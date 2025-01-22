@@ -22,8 +22,8 @@ namespace GreenOnions.NT.Base
         /// </summary>
         /// <param name="pluginPath">传入插件所在目录, 插件配置项尽量存放在此目录, 避免使用机器人目录</param>
         /// <param name="bot">机器人对象</param>
-        public void OnLoad(string pluginPath, BotContext bot, ICommonConfig commonConfig);
+        public void OnLoaded(string pluginPath, BotContext bot, ICommonConfig commonConfig);
 
-        public void OnConfigUpdate(ICommonConfig commonConfig);
+        public void OnConfigUpdated(ICommonConfig commonConfig);
     }
 }

@@ -24,7 +24,7 @@ namespace GreenOnions.NT.Core
         public static void OnConfigUpdate()
         {
             foreach (var item in SngletonInstance.Plugins.Values)
-                item.OnConfigUpdate(SngletonInstance.Config!);
+                item.OnConfigUpdated(SngletonInstance.Config!);
         }
 
         public static int LoadAllPlugins(BotContext bot)
@@ -119,7 +119,7 @@ namespace GreenOnions.NT.Core
                             return false;
                         }
 
-                        plugin.OnLoad(pluginPath, bot, SngletonInstance.Config!);
+                        plugin.OnLoaded(pluginPath, bot, SngletonInstance.Config!);
                         LogHelper.LogMessage($"《{plugin.Name}》（{pluginNamespace}）插件加载成功，版本：{plugin.GetVersion()}");
 
                         SngletonInstance.Plugins.Add(plugin.GetNamespace(), plugin);
@@ -128,7 +128,7 @@ namespace GreenOnions.NT.Core
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.LogException(ex, $"《{pluginFileName}》插件加载失败");
+                    LogHelper.LogException(ex, $"《{pluginFileName}》插件加载失败，错误信息：{ex.Message}");
                     return false;
                 }
             }
