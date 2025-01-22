@@ -5,8 +5,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <VersionSuffix>1.$([System.DateTime]::Now.ToString(yyyy)).$([System.DateTime]::Now.ToString(MMdd)).$([System.DateTime]::Now.ToString(HHmm))</VersionSuffix>
     <AssemblyVersion>$(VersionSuffix)</AssemblyVersion>
     <Version>$(VersionSuffix)</Version>

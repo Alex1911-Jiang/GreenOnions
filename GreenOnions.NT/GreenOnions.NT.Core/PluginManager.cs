@@ -180,7 +180,7 @@ namespace GreenOnions.NT.Core
             Directory.CreateDirectory(installPath);
             ZipFile.ExtractToDirectory(pluginZip, installPath, true);
             LogHelper.LogMessage($"安装《{pluginName}》插件完成");
-            return new RestResult<string>(false, installPath);
+            return new RestResult<string>(true, installPath);
         }
 
         public static async Task<Dictionary<string, PluginReleaseInfo>> SearchPluginsOnGithub()
@@ -205,21 +205,22 @@ namespace GreenOnions.NT.Core
                 throw new Exception($"在Github查找葱葱官方插件失败，解析内容错误");
             }
 
-            GithubRelease release = releases.First();
-
             Dictionary<string, PluginReleaseInfo> pluginReleases = new Dictionary<string, PluginReleaseInfo>();
-            foreach (var item in release.assets)
+            foreach (var release in releases)
             {
-                PluginReleaseInfo pluginRelease = new PluginReleaseInfo
+                foreach (var item in release.assets)
                 {
-                    PackageName = item.name.Substring(0, item.name.LastIndexOf('.')),
-                    Description = release.body,
-                    Version = release.name,
-                    Url = item.browser_download_url,
-                };
-                if (pluginReleases.TryGetValue(release.tag_name, out PluginReleaseInfo? sameRelease) && sameRelease.Version > pluginRelease.Version)
-                    continue;
-                pluginReleases[release.tag_name] = pluginRelease;
+                    PluginReleaseInfo pluginRelease = new PluginReleaseInfo
+                    {
+                        PackageName = item.name.Substring(0, item.name.LastIndexOf('.')),
+                        Description = release.body,
+                        Version = release.name,
+                        Url = item.browser_download_url,
+                    };
+                    if (pluginReleases.TryGetValue(release.tag_name, out PluginReleaseInfo? sameRelease) && sameRelease.Version > pluginRelease.Version)
+                        continue;
+                    pluginReleases[release.tag_name] = pluginRelease;
+                }
             }
             _pluginInfos = pluginReleases;
             return pluginReleases;
