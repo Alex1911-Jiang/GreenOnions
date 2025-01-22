@@ -85,7 +85,7 @@ class Program
             (string Url, byte[] Png)? qrCode = await bot.FetchQrCode();
             if (qrCode is null)
             {
-                Console.WriteLine("请求扫码登录接口失败，请重试或使用密码登录");
+                Console.WriteLine("请求扫码登录接口失败，请重试");
                 goto IL_InputPassword;
             }
 
@@ -127,12 +127,23 @@ class Program
         Console.WriteLine($"登录成功，机器人昵称：{bot.BotName}");
         keystore = bot.UpdateKeystore();
         File.WriteAllText(keystorePath, YamlConvert.SerializeObject(keystore));
+
+        Dictionary<string, PluginReleaseInfo>? pluginReleases = await PluginManager.SearchPluginsOnGithub();
+        if (pluginReleases is null)
+            return bot;
+
+        foreach (var pluginRelease in pluginReleases)
+        {
+            if (SngletonInstance.Plugins.TryGetValue(pluginRelease.Value.PackageName, out IPlugin? lastPlugin) && pluginRelease.Value.Version > lastPlugin.GetVersion())
+                Console.WriteLine($"《{pluginRelease.Key}》（{pluginRelease.Value.PackageName}）插件有新版本：{pluginRelease.Value.Version} 可更新");
+        }
+
         return bot;
     }
 
     private static async void ReadCommand(BotContext bot)
     {
-        Console.WriteLine("您可以输入：help查询支持的命令");
+        Console.WriteLine("您可以输入：help 查询支持的命令");
         while (true)
         {
             string? cmd = Console.ReadLine();
@@ -163,7 +174,7 @@ exit : 退出葱葱");
                 if (pluginReleases is null)
                     continue;
                 foreach (var pluginRelease in pluginReleases)
-                    Console.WriteLine($"《{pluginRelease.Key}》插件版本号：{pluginRelease.Value.Version}，更新说明：{pluginRelease.Value.Description}");
+                    Console.WriteLine($"《{pluginRelease.Key}》（{pluginRelease.Value.PackageName}）插件版本号：{pluginRelease.Value.Version}，更新说明：{pluginRelease.Value.Description}");
             }
             else if (cmd.StartsWith("install-plugin"))
             {
