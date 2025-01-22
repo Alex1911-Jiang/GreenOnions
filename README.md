@@ -38,3 +38,20 @@ GreenOnions 是一个基于[Lagrange.Core](https://github.com/LagrangeDev/Lagran
 23. 输入：sh start.sh #启动GreenOnion
     
 大功告成，此时断开远程也不会导致GreenOnions被关闭了，接下来愉快的使用GreenOnions吧（您重新通过SSH连接到服务器后，可以使用：screen -r GreenOnions 切换到GreenOnions进程中）
+
+### 一些在控制台常用的命令：
+
+help：列出GreenOnions支持的命令
+
+list-plugins：列出[插件仓库](https://github.com/Alex1911-Jiang/GreenOnions.Plugins)中所有可下载的插件
+
+install-plugin 插件名称：下载并安装插件
+
+reload-config：重读配置文件（包括插件的配置）
+
+### TODO:
+1. 移植旧GreenOnions的插件
+2. 增加连接到OneBot而非内置登录的工作方式
+3. 增加基于Avalonia的图形化启动器
+4. 增加自动检查本体更新的功能
+5. 添加一个Web启动器¿
