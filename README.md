@@ -26,16 +26,17 @@ GreenOnions 是一个基于[Lagrange.Core](https://github.com/LagrangeDev/Lagran
 11. 输入：sudo unzip GreenOnions.NT.zip #解压
 12. 输入：sh start.sh #启动GreenOnions（到这一步已经可以有限程度的运行了，但由于GreenOnions部分业务插件依赖Chromium，而Chromiun又必须在 **非root** 用户运行，所以还需要以下步骤创建并切换到一个低权限用户）
 13. 按下：Ctrl+C #退出GreenOnions
-14. 输入：cd .. #退到目录的上一层
-15. 输入：sudo chmod -R 777 GreenOnions #给文件夹设为允许低权限用户访问
-16. 输入：sudo adduser 用户名 #添加用户
-17. 根据指引输入新创建用户的密码
-18. 输入：su 用户名 #切换到非root用户
-19. 输入：cd GreenOnions #进入文件夹
-20. 输入：sh start.sh #启动GreenOnions（到这一步您已经完整的启动了GreenOnions，但退出远程时GreenOnions会被关闭，所以您还需要使用screen托管（如果您安装了桌面并在桌面启动的终端，可以跳过以下所有步骤））
-21. 按下：Ctrl+C #退出GreenOnions
-22. 输入：screen -S GreenOnions #创建并切换到一个新会话中
-23. 输入：sh start.sh #启动GreenOnion
+14. 输入：sudo apt-get install -y ca-certificates fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 lsb-release wget xdg-utils  #安装Chromium所需的依赖
+15. 输入：cd .. #退到目录的上一层
+16. 输入：chmod -R 777 GreenOnions #给文件夹设为允许低权限用户访问
+17. 输入：sudo adduser 用户名 #添加用户
+18. 根据指引输入新创建用户的密码
+19. 输入：su 用户名 #切换到非root用户
+20. 输入：cd GreenOnions #进入文件夹
+21. 输入：sh start.sh #启动GreenOnions（到这一步您已经完整的启动了GreenOnions，但退出远程时GreenOnions会被关闭，所以您还需要使用screen托管（如果您安装了桌面并在桌面启动的终端，可以跳过以下所有步骤））
+22. 按下：Ctrl+C #退出GreenOnions
+23. 输入：screen -S GreenOnions #创建并切换到一个新会话中
+24. 输入：sh start.sh #启动GreenOnion
     
 大功告成，此时断开远程也不会导致GreenOnions被关闭了，接下来愉快的使用GreenOnions吧（您重新通过SSH连接到服务器后，可以使用：screen -r GreenOnions 切换到GreenOnions进程中）
 
