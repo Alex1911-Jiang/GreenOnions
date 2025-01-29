@@ -11,12 +11,7 @@ using ZXing.Rendering;
 
 class Program
 {
-    static void Main(string[] args)
-    {
-        Load().ContinueWith(task => ReadCommand(task.Result));
-    }
-
-    private static async Task<BotContext> Load()
+    static async Task Main(string[] args)
     {
         Config.LoadConfig();
 
@@ -119,7 +114,7 @@ class Program
             if (File.Exists(keystorePath))
                 File.Delete(keystorePath);
             Environment.Exit(0);
-            return bot;
+            return;
         }
 
         Config.SaveConfig();
@@ -128,9 +123,7 @@ class Program
         keystore = bot.UpdateKeystore();
         File.WriteAllText(keystorePath, YamlConvert.SerializeObject(keystore));
 
-        Dictionary<string, PluginReleaseInfo>? pluginReleases = await PluginManager.SearchPluginsOnGithub();
-        if (pluginReleases is null)
-            return bot;
+        Dictionary<string, PluginReleaseInfo> pluginReleases = await PluginManager.SearchPluginsOnGithub();
 
         foreach (var pluginRelease in pluginReleases)
         {
@@ -138,7 +131,7 @@ class Program
                 Console.WriteLine($"《{pluginRelease.Key}》（{pluginRelease.Value.PackageName}）插件有新版本：{pluginRelease.Value.Version} 可更新");
         }
 
-        return bot;
+        ReadCommand(bot);
     }
 
     private static async void ReadCommand(BotContext bot)
@@ -167,6 +160,7 @@ exit : 退出葱葱");
             else if (cmd == "reload-config")
             {
                 Config.LoadConfig();
+                Console.WriteLine("已重新加载配置文件");
             }
             else if (cmd == "list-plugins")
             {

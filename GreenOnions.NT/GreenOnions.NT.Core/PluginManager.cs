@@ -59,8 +59,20 @@ namespace GreenOnions.NT.Core
                 string base64 = File.ReadAllText(upgradeFile);
                 string pluginName = Encoding.UTF8.GetString(Convert.FromBase64String(base64));
 
-                await InstallPlugin(pluginName);
-                File.Delete(upgradeFile);
+                try
+                {
+                    var rest = await InstallPlugin(pluginName);
+                    if (!rest.Success)
+                    {
+                        LogHelper.LogWarning($"更新《{pluginName}》插件失败，{rest.Message}");
+                        continue;
+                    }
+                    File.Delete(upgradeFile);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.LogException(ex, $"在Github查找葱葱官方插件失败 {ex.Message}");
+                }
             }
         }
 
@@ -140,7 +152,10 @@ namespace GreenOnions.NT.Core
             Dictionary<string, PluginReleaseInfo> pluginReleases = _pluginInfos ?? await SearchPluginsOnGithub();
             if (!pluginReleases.TryGetValue(pluginName, out PluginReleaseInfo? plugin))
                 return new RestResult<string>(false, null, $"找不到名为《{pluginName}》的插件");
-            IPlugin? installedPlugin = PluginManager.GetPluginByName(pluginName);
+
+            LogHelper.LogMessage($"开始更新插件《{pluginName}》");
+
+            IPlugin? installedPlugin = PluginManager.GetPluginByName(plugin.PackageName);
             string? pluginPath = installedPlugin?.GetPath();
             if (installedPlugin is not null && pluginPath is not null)
             {
