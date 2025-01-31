@@ -84,10 +84,20 @@ class Program
                 goto IL_InputPassword;
             }
 
-            Console.WriteLine(qrCode.Value.Url);
-            GenerateQRCode(qrCode.Value.Url);
+            Console.WriteLine("由于部分命令行存在输出字符变为全角的问题，请根据以下提示选择二维码方块渲染宽度");
+        IL_ReselectRectWidth:
+            Console.WriteLine("██  ← 如果你看到了一个正方形（或两个竖着的长方形）请输入1，如果看到了两个正方形，请输入2");
+            string? rectWidth = Console.ReadLine();
+            if (string.IsNullOrEmpty(rectWidth) || !int.TryParse(rectWidth, out int width) || width < 1 || width > 2)
+            {
+                Console.WriteLine("方块渲染宽度选择错误，请重新输入");
+                goto IL_ReselectRectWidth;
+            }
 
-            Console.WriteLine("扫码成功后请按回车继续");
+            Console.WriteLine(qrCode.Value.Url);
+            GenerateQRCode(qrCode.Value.Url, width);
+
+            Console.WriteLine("扫码成功后请按回车继续（如果二维码显示不正常，尝试选择另一种宽度）");
             Console.ReadLine();
 
             await bot.LoginByQrCode();
@@ -185,26 +195,27 @@ exit : 退出葱葱");
     }
 
 
-    static void GenerateQRCode(string text)
+    static void GenerateQRCode(string text, int rectWidth)
     {
         var barcodeWriter = new BarcodeWriter<PixelData>()
         {
             Format = BarcodeFormat.QR_CODE,
             Options = new EncodingOptions
             {
-                Width = 10,
-                Height = 10,
+                Width = 8,
+                Height = 8,
                 Margin = 1
             },
             Renderer = new PixelDataRenderer(),
         };
 
+        string rect = rectWidth == 1 ? "██" : "█";  //█■??
         var pixelData = barcodeWriter.Write(text);
         for (int y = 0; y < pixelData.Height; y++)
         {
             for (int x = 0; x < pixelData.Width; x++)
             {
-                Console.Write(pixelData.Pixels[(y * pixelData.Width + x) * 4] == 0 ? "██" : "  ");
+                Console.Write(pixelData.Pixels[(y * pixelData.Width + x) * 4] == 0 ? rect : "  ");
             }
             Console.WriteLine();
         }
