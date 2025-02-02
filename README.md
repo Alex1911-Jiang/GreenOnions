@@ -15,7 +15,7 @@ GreenOnions 是一个基于[Lagrange.Core](https://github.com/LagrangeDev/Lagran
 1. 请确保您的系统版本在20.04或更高，建议22.04起（20.04虽然能安装，但由于源中没有.Net 8.0安装包，所以您需要[手动安装.NET](https://learn.microsoft.com/zh-cn/dotnet/core/install/linux-scripted-manual)）
 2. 输入 su root #切换到root用户
 3. （22.04或更高版本的系统）输入：sudo apt-get update && \
-  sudo apt-get install -y dotnet-sdk-9.0 #安装.NET
+  sudo apt-get install -y dotnet-sdk-8.0 #安装.NET
 4. 输入：sudo apt install wget #安装下载器
 5. 输入：sudo apt install unzip #安装解压软件
 6. 输入：sudo apt install screen #安装命令行会话管理软件（云服务器都有预装这个软件，如果你使用的是云服务器或者安装了桌面，可以跳过这步）
