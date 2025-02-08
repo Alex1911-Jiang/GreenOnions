@@ -5,6 +5,7 @@ using Lagrange.Core;
 using Lagrange.Core.Common;
 using Lagrange.Core.Common.Interface;
 using Lagrange.Core.Common.Interface.Api;
+using Lagrange.Core.Event.EventArg;
 using ZXing;
 using ZXing.Common;
 using ZXing.Rendering;
@@ -66,9 +67,7 @@ class Program
 
             botConfig = new BotConfig();
             bot = BotFactory.Create(botConfig, uin, password, out deviceInfo);
-            bot.Invoker.OnFriendMessageReceived += MessageReceived.OnFriendMessage;
-            bot.Invoker.OnGroupMessageReceived += MessageReceived.OnGroupMessage;
-            bot.Invoker.OnTempMessageReceived += MessageReceived.OnTempMessage;
+            bot.Invoker.OnBotLogEvent += OnLog;
 
             PluginManager.LoadAllPlugins(bot);
 
@@ -106,10 +105,7 @@ class Program
         else  //自动登录
         {
             bot = BotFactory.Create(botConfig!, deviceInfo!, keystore!);
-
-            bot.Invoker.OnFriendMessageReceived += MessageReceived.OnFriendMessage;
-            bot.Invoker.OnGroupMessageReceived += MessageReceived.OnGroupMessage;
-            bot.Invoker.OnTempMessageReceived += MessageReceived.OnTempMessage;
+            bot.Invoker.OnBotLogEvent += OnLog;
 
             PluginManager.LoadAllPlugins(bot);
 
@@ -194,8 +190,32 @@ exit : 退出葱葱");
         }
     }
 
+    private static void OnLog(BotContext context, BotLogEvent e)
+    {
+        switch (e.Level)
+        {
+            case LogLevel.Debug:
+                //LogHelper.LogDebug(e.EventMessage);
+                break;
+            case LogLevel.Verbose:
+                LogHelper.LogDebug(e.EventMessage);
+                break;
+            case LogLevel.Information:
+                LogHelper.LogMessage(e.EventMessage);
+                break;
+            case LogLevel.Warning:
+                LogHelper.LogWarning(e.EventMessage);
+                break;
+            case LogLevel.Exception:
+                LogHelper.LogError(e.EventMessage);
+                break;
+            case LogLevel.Fatal:
+                LogHelper.LogError(e.EventMessage);
+                break;
+        }
+    }
 
-    static void GenerateQRCode(string text, int rectWidth)
+    private static void GenerateQRCode(string text, int rectWidth)
     {
         var barcodeWriter = new BarcodeWriter<PixelData>()
         {
