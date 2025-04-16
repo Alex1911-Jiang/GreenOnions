@@ -2,6 +2,8 @@
 
 GreenOnions 是一个基于[Lagrange.Core](https://github.com/LagrangeDev/Lagrange.Core)的QQ机器人
 
+[![QQ群](https://img.shields.io/badge/QQ群-550398174-blue.svg "QQ群")](https://jq.qq.com/?_wv=1027&k=rJ7RA3SF "QQ群")
+
 本软件自身只有登录QQ和加载插件能力，不含任何业务功能，支持的业务功能请移步[插件仓库](https://github.com/Alex1911-Jiang/GreenOnions.Plugins)查看
 
 ### Windows食用指南：
@@ -49,6 +51,8 @@ list-plugins：列出[插件仓库](https://github.com/Alex1911-Jiang/GreenOnion
 install-plugin 插件名称：下载并安装插件
 
 reload-config：重读配置文件（包括插件的配置）
+
+###### 至于为什么叫葱葱, ~~一是一开始是给某初音群用的, 叫这个名字可以打压某助手,~~ 二是早期没自己开发的时候使用 [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot) 的机器人叫竹竹, 就想找个类似的名字
 
 ### TODO:
 1. 移植旧GreenOnions的插件
