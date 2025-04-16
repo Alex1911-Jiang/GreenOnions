@@ -6,6 +6,7 @@ using Lagrange.Core.Common;
 using Lagrange.Core.Common.Interface;
 using Lagrange.Core.Common.Interface.Api;
 using Lagrange.Core.Event.EventArg;
+using Lagrange.Core.Message;
 using ZXing;
 using ZXing.Common;
 using ZXing.Rendering;
@@ -156,6 +157,10 @@ class Program
 list-plugins : 在Github查找葱葱官方提供的插件列表
 install-plugin <插件名称> : 在Github下载该插件并安装(或更新到最新版本)
 reload-config : 重新加载配置文件
+send-friend-message <好友QQ号> <消息内容> : 向好友发送消息
+send-group-message <群号> <消息内容>: 向群发送消息
+upload-friend-file <好友QQ号> <文件完整路径> : 向好友发送文件
+upload-group-file <群号> <文件完整路径> : 向群发送文件
 exit : 退出葱葱");
             }
             else if (cmd == "exit")
@@ -186,6 +191,78 @@ exit : 退出葱葱");
                     continue;
                 }
                 PluginManager.LoadOncePlugin(result.Data!, bot);
+            }
+            else if (cmd.StartsWith("send-friend-message"))
+            {
+                string[] args = cmd.Substring("send-friend-message".Length).Trim().Split(' ');
+                if (args.Length < 2)
+                {
+                    Console.WriteLine("参数错误，请输入好友QQ号和消息内容");
+                    continue;
+                }
+                if (!uint.TryParse(args[0], out uint friendUin))
+                {
+                    Console.WriteLine("参数错误，QQ号不合法");
+                    continue;
+                }
+                string message = string.Join(' ', args.Skip(1));
+                Console.WriteLine($"向好友{friendUin}发送消息：{message}");
+                MessageBuilder builder = MessageBuilder.Friend(friendUin);
+                builder.Text(message);
+                await bot.SendMessage(builder.Build());
+            }
+            else if (cmd.StartsWith("send-group-message"))
+            {
+                string[] args = cmd.Substring("send-group-message".Length).Trim().Split(' ');
+                if (args.Length < 2)
+                {
+                    Console.WriteLine("参数错误，请输入群号和消息内容");
+                    continue;
+                }
+                if (!uint.TryParse(args[0], out uint groupUin))
+                {
+                    Console.WriteLine("参数错误，群号不合法");
+                    continue;
+                }
+                string message = string.Join(' ', args.Skip(1));
+                Console.WriteLine($"向群{groupUin}发送消息：{message}");
+                MessageBuilder builder = MessageBuilder.Group(groupUin);
+                builder.Text(message);
+                await bot.SendMessage(builder.Build());
+            }
+            else if (cmd.StartsWith("upload-friend-file"))
+            {
+                string[] args = cmd.Substring("upload-friend-file".Length).Trim().Split(' ');
+                if (args.Length < 2)
+                {
+                    Console.WriteLine("参数错误，请输入好友QQ号和文件路径");
+                    continue;
+                }
+                if (!uint.TryParse(args[0], out uint friendUin))
+                {
+                    Console.WriteLine("参数错误，QQ号不合法");
+                    continue;
+                }
+                string fileName = string.Join(' ', args.Skip(1));
+                Console.WriteLine($"向好友{friendUin}发送文件：{fileName}");
+                await bot.UploadFriendFile(friendUin, new Lagrange.Core.Message.Entity.FileEntity(fileName));
+            }
+            else if (cmd.StartsWith("upload-group-file"))
+            {
+                string[] args = cmd.Substring("upload-group-file".Length).Trim().Split(' ');
+                if (args.Length < 2)
+                {
+                    Console.WriteLine("参数错误，请输入好友群号和文件路径");
+                    continue;
+                }
+                if (!uint.TryParse(args[0], out uint groupUin))
+                {
+                    Console.WriteLine("参数错误，群号不合法");
+                    continue;
+                }
+                string fileName = string.Join(' ', args.Skip(1));
+                Console.WriteLine($"向群{groupUin}发送文件：{fileName}");
+                await bot.GroupFSUpload(groupUin, new Lagrange.Core.Message.Entity.FileEntity(fileName));
             }
         }
     }
