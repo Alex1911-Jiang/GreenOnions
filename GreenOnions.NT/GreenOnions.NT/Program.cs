@@ -1,4 +1,5 @@
-﻿using GreenOnions.NT.Base;
+﻿using System.Text.RegularExpressions;
+using GreenOnions.NT.Base;
 using GreenOnions.NT.Core;
 using GreenOnions.NT.Core.Models;
 using Lagrange.Core;
@@ -134,8 +135,13 @@ class Program
 
         foreach (var pluginRelease in pluginReleases)
         {
-            if (SngletonInstance.Plugins.TryGetValue(pluginRelease.Value.PackageName, out IPlugin? lastPlugin) && pluginRelease.Value.Version > lastPlugin.GetVersion())
-                Console.WriteLine($"《{pluginRelease.Key}》（{pluginRelease.Value.PackageName}）插件有新版本：{pluginRelease.Value.Version} 可更新");
+            if (SngletonInstance.Plugins.TryGetValue(pluginRelease.Value.PackageName, out IPlugin? lastPlugin))
+            {
+                long nowVersion = lastPlugin.GetVersion();
+                if (pluginRelease.Value.Version <= nowVersion)
+                    continue;
+                Console.WriteLine($"《{pluginRelease.Key}》（{pluginRelease.Value.PackageName}）插件有新版本：{pluginRelease.Value.Version} 可更新（当前版本：{nowVersion}）");
+            }
         }
 
         ReadCommand(bot);
