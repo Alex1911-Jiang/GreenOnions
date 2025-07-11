@@ -1,13 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.NT.Core", "GreenOnions.NT.Core\GreenOnions.NT.Core.csproj", "{85CD76BE-15CC-4129-B663-2DD4E9C68978}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.NT", "GreenOnions.NT\GreenOnions.NT.csproj", "{23674AE8-6F76-4DB3-AFEA-1A6AF5E44D4E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.NT.Base", "GreenOnions.NT.Base\GreenOnions.NT.Base.csproj", "{EA80DDB0-69D7-46A8-BA41-3BDC11E017E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOnions.NT.OneBot", "GreenOnions.NT.OneBot\GreenOnions.NT.OneBot.csproj", "{A39D0D3D-77A6-4D87-B753-37BCCD7215AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagrange.OneBot", "..\..\Lagrange.Core\Lagrange.OneBot\Lagrange.OneBot.csproj", "{1C57F5B8-59B5-E057-2B83-294C6AFB8278}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagrange.Core", "..\..\Lagrange.Core\Lagrange.Core\Lagrange.Core.csproj", "{6139FE1D-0F40-86FA-5543-B6426596646C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,8 +33,23 @@ Global
 		{EA80DDB0-69D7-46A8-BA41-3BDC11E017E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA80DDB0-69D7-46A8-BA41-3BDC11E017E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA80DDB0-69D7-46A8-BA41-3BDC11E017E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A39D0D3D-77A6-4D87-B753-37BCCD7215AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A39D0D3D-77A6-4D87-B753-37BCCD7215AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A39D0D3D-77A6-4D87-B753-37BCCD7215AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A39D0D3D-77A6-4D87-B753-37BCCD7215AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C57F5B8-59B5-E057-2B83-294C6AFB8278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C57F5B8-59B5-E057-2B83-294C6AFB8278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C57F5B8-59B5-E057-2B83-294C6AFB8278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C57F5B8-59B5-E057-2B83-294C6AFB8278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6139FE1D-0F40-86FA-5543-B6426596646C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6139FE1D-0F40-86FA-5543-B6426596646C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6139FE1D-0F40-86FA-5543-B6426596646C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6139FE1D-0F40-86FA-5543-B6426596646C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F715DC6E-05DF-4A94-84CB-22BBD4E3D79F}
 	EndGlobalSection
 EndGlobal

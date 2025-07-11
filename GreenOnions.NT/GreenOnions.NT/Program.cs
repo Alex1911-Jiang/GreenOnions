@@ -53,6 +53,7 @@ class Program
         if (noBotConfig || noDeviceInfo || noKeystore)
         {
         IL_InputUin:
+            Console.WriteLine("请先在手机上切换到要扫码登录的QQ，如果在二维码出现后再在手机执行登录或切换账号操作会导致二维码过期");
             Console.WriteLine("请输入QQ号：");
             string? strUin = Console.ReadLine();
             uint uin = 0;
