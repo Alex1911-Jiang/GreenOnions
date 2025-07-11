@@ -72,7 +72,6 @@ namespace GreenOnions.NT.OneBot
                 //Console.WriteLine("请输入密码，或直接回车使用扫码登录：");
                 //string? password = Console.ReadLine();
                 string password = "";
-
                 botConfig = new BotConfig();
                 bot = BotFactory.Create(botConfig, uin, password, out deviceInfo);
                 bot.Invoker.OnBotLogEvent += OnLog;
