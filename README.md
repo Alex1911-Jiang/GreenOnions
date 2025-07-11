@@ -4,7 +4,7 @@ GreenOnions 是一个基于[Lagrange.Core](https://github.com/LagrangeDev/Lagran
 
 [![QQ群](https://img.shields.io/badge/QQ群-550398174-blue.svg "QQ群")](https://jq.qq.com/?_wv=1027&k=rJ7RA3SF "QQ群")
 
-本软件自身只有登录QQ和加载插件能力，不含任何业务功能，支持的业务功能请移步[插件仓库](https://github.com/Alex1911-Jiang/GreenOnions.Plugins)查看
+本软件自身只有登录QQ和加载插件能力，不含任何业务功能，支持的业务功能请移步[插件仓库](https://github.com/Alex1911-Jiang/GreenOnions.Plugins)查看，同时支持开放OneBot协议的服务让第三方插件接入
 
 ### Windows食用指南：
 
