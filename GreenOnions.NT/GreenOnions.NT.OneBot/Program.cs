@@ -177,17 +177,23 @@ namespace GreenOnions.NT.OneBot
                 Console.ReadLine();
             }
 
-            _ = Host.CreateApplicationBuilder()
+            var app = Host.CreateApplicationBuilder()
                 .ConfigureLagrangeCore(bot)
                 .ConfigureOneBot()
-                .Build()
+                .Build();
+            var webHostTask = app
                 .InitializeMusicSigner() // Very ugly (
                 .RunAsync();
 
-            ReadCommand(bot);
+            var consoleTask = Task.Run(() => ReadCommand(app.Services, bot));
+            await Task.WhenAny(webHostTask, consoleTask);
+            if (consoleTask.IsCompleted)
+            {
+                await app.StopAsync();
+            }
         }
 
-        private static async void ReadCommand(BotContext bot)
+        private static async void ReadCommand(IServiceProvider services, BotContext bot)
         {
             Console.WriteLine("您可以输入：help 查询支持的命令");
             while (true)
