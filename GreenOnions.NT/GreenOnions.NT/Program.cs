@@ -132,17 +132,24 @@ class Program
         keystore = bot.UpdateKeystore();
         File.WriteAllText(keystorePath, YamlConvert.SerializeObject(keystore));
 
-        Dictionary<string, PluginReleaseInfo> pluginReleases = await PluginManager.SearchPluginsOnGithub();
-
-        foreach (var pluginRelease in pluginReleases)
+        try
         {
-            if (SngletonInstance.Plugins.TryGetValue(pluginRelease.Value.PackageName, out IPlugin? lastPlugin))
+            Dictionary<string, PluginReleaseInfo> pluginReleases = await PluginManager.SearchPluginsOnGithub();
+
+            foreach (var pluginRelease in pluginReleases)
             {
-                long nowVersion = lastPlugin.GetVersion();
-                if (pluginRelease.Value.Version <= nowVersion)
-                    continue;
-                Console.WriteLine($"《{pluginRelease.Key}》（{pluginRelease.Value.PackageName}）插件有新版本：{pluginRelease.Value.Version} 可更新（当前版本：{nowVersion}）");
+                if (SngletonInstance.Plugins.TryGetValue(pluginRelease.Value.PackageName, out IPlugin? lastPlugin))
+                {
+                    long nowVersion = lastPlugin.GetVersion();
+                    if (pluginRelease.Value.Version <= nowVersion)
+                        continue;
+                    Console.WriteLine($"《{pluginRelease.Key}》（{pluginRelease.Value.PackageName}）插件有新版本：{pluginRelease.Value.Version} 可更新（当前版本：{nowVersion}）");
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            LogHelper.LogException(ex, ex.Message);
         }
 
         ReadCommand(bot);
