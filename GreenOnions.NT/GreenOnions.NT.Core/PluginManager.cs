@@ -178,6 +178,9 @@ namespace GreenOnions.NT.Core
             long totalBytes = resp.Content.Headers.ContentLength!.Value;
             Stream pluginZip = await resp.Content.ReadAsStreamAsync();
 
+            bool isAnsiSupported = Environment.OSVersion.Platform == PlatformID.Unix ||
+                                  Environment.OSVersion.Platform == PlatformID.MacOSX;
+
             double totalRead = 0;
             byte[] buffer = new byte[8192];
             int read = 0;
@@ -186,7 +189,11 @@ namespace GreenOnions.NT.Core
                 read = await pluginZip.ReadAsync(buffer, 0, buffer.Length);
                 totalRead += read;
                 int progress = (int)Math.Round(totalRead / totalBytes * 50);
-                Console.Write($"\r正在下载《{pluginName}》插件，进度：[{string.Empty.PadLeft(progress, '=').PadRight(50)}]");
+                if (isAnsiSupported)
+                    Console.Write("\x1b[2K\r"); // ANSI序列
+                else
+                    Console.Write("\r");
+                Console.Write($"正在下载《{pluginName}》插件，进度：[{string.Empty.PadLeft(progress, '=').PadRight(50)}]");
                 await Task.Delay(1);
             } while (read > 0);
             Console.WriteLine();
